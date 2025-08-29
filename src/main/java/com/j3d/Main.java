@@ -10,12 +10,18 @@ import com.jaiva.JBundler;
 import javax.swing.*;
 import java.awt.*;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+/**
+ * Main is main.
+ */
 public class Main extends JPanel {
     public static Dimension scrSize = new Dimension(1800, 1000);
     public static JBundler jBundler = null;
 
+    /**
+     * Initializes (if not already initialized) the Jaiva Instance by inputting the input file and passing {@link Testing} class
+     * @param g The graphics
+     * @param r The Renderer Instance.
+     */
     private void initBundler(Graphics g, Renderer r) {
         if (jBundler == null) {
             try {
