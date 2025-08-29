@@ -1,9 +1,9 @@
-package com.j3d.engine;
+package com.j3d.engine.events;
 
 /**
  * Events is an enum that describes the possible Events that a listener can listen for.
  */
-public enum Events {
+public enum EventType {
     /**
      * The position of the node coordinates have changed and parent
      * geometry needs to update itself.
@@ -21,5 +21,10 @@ public enum Events {
      * <p></p>
      * e.g. Where a line (parent) has in it's list own list of points, a point (node) in the midpoint of the given line. When the line's distance changes, the node needs to accomodate that.
      */
-    PARENT_UPDATED
+    PARENT_UPDATED,
+    /**
+     * The parent was deleted entirely, the node geometry needs to update itself accordingly.
+     * By deleting itself or doing nothing.
+     */
+    PARENT_DELETED,
 }
