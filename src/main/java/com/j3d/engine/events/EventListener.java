@@ -5,7 +5,7 @@ package com.j3d.engine.events;
  */
 public interface EventListener {
     /**
-     * onEvent is called by {@link EventEmitter} via {@link EventEmitter#broadcast(EventType, EventBroadcast)}. Allowing the
+     * onEvent is called by {@link EventEmitter} via {@link EventEmitter#broadcast(EventType, ObjectType, EventBroadcast)}. Allowing the
      * emitter to call any other object that implements this.
      * @param event The type of event
      * @param properties The given event properties
