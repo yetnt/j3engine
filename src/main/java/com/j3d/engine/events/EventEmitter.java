@@ -11,11 +11,27 @@ public abstract class EventEmitter {
     /**
      * All registered EventListeners
      */
-    HashMap<ObjectType, ArrayList<EventListener>> registered = new HashMap<>();
+    protected HashMap<ObjectType, ArrayList<EventListener>> registered = new HashMap<>();
 
     public EventEmitter() {
         registered.put(ObjectType.NODE, new ArrayList<>());
         registered.put(ObjectType.PARENT, new ArrayList<>());
+    }
+
+    /**
+     * Returns the amoutn of nodes registered
+     * @return integer
+     */
+    public int registeredNodes() {
+        return registered.get(ObjectType.NODE).size();
+    }
+
+    /**
+     * Returns the amoutn of parents registered
+     * @return integer.
+     */
+    public int registeredParents() {
+        return registered.get(ObjectType.PARENT).size();
     }
 
     /**
@@ -40,6 +56,14 @@ public abstract class EventEmitter {
             case PARENT -> registered.get(ObjectType.PARENT).remove(event);
             case NODE -> registered.get(ObjectType.NODE).remove(event);
         }
+    }
+
+    /**
+     * Deregisters all event listeners.
+     */
+    public void detachAll() {
+        registered.get(ObjectType.PARENT).clear();
+        registered.get(ObjectType.NODE).clear();
     }
 
     /**

@@ -1,33 +1,84 @@
 package com.j3d.engine.geometry;
 
 import com.j3d.engine.Renderer;
+import com.j3d.engine.events.ObjectType;
 import com.j3d.engine.geometry.base.CartesianPoint;
-import com.j3d.engine.geometry.base.ScreenPoint;
-
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
 import com.j3d.engine.geometry.base.BasePoint;
 
+/**
+ * GTri represents a Triangle. What'd you expect kau.
+ */
 public class GTri extends GObject{
+    /**
+     * Leg A, connected to Leg B and Leg C
+     */
     private GLine LegA;
+    /**
+     * Leg B, conected to Leg A and Leg C
+     */
     private GLine LegB;
+    /**
+     * Leg C, connected to Leg A and Leg B
+     */
     private GLine LegC;
 
-    public GTri(Renderer renderer, GPoint A, GPoint B, GPoint C) {
+    @Override
+    public void draw(Renderer renderer) {
+        renderer.getGraphics().fillPolygon(
+                new int[] {
+                        LegA.getStartPoint().toScreen(renderer).x,
+                        LegA.getEndPoint().toScreen(renderer).x,
+                        LegB.getEndPoint().toScreen(renderer).x
+                },
+                new int[] {
+                        LegA.getStartPoint().toScreen(renderer).y,
+                        LegA.getEndPoint().toScreen(renderer).y,
+                        LegB.getEndPoint().toScreen(renderer).y
+                },
+                3
+        );
+    }
 
+    /**
+     * Private method to draw a triangle from 3 lines.
+     * @param r Renderer Instance
+     * @param leg1 Leg 1
+     * @param leg2 Leg 2
+     * @param leg3 Leg 3
+     */
+    private void drawTri(Renderer r, GLine leg1, GLine leg2, GLine leg3) {
+        LegA = leg1;
+        LegB = leg2;
+        LegC = leg3;
+        draw(r);
+    }
+
+    /**
+     * Constructs a new GTri from 3 points.
+     * @param renderer Renderer Instance
+     * @param A Point A
+     * @param B Point B
+     * @param C Point C
+     */
+    public GTri(Renderer renderer, GPoint A, GPoint B, GPoint C) {
+        super(renderer);
+        attach(A, ObjectType.NODE);
+        attach(B, ObjectType.NODE);
+        attach(C, ObjectType.NODE);
+        A.attach(this, ObjectType.PARENT);
+        B.attach(this, ObjectType.PARENT);
+        C.attach(this, ObjectType.PARENT);
             // draw the triangle.
-        ScreenPoint screenA = A.getPivot().toScreen(renderer);
-        ScreenPoint screenB = B.getPivot().toScreen(renderer);
-        ScreenPoint screenC = C.getPivot().toScreen(renderer);
-        renderer.getGraphics().drawPolygon(
-                new int[] {screenA.x, screenB.x, screenC.x},
-                new int[] {screenA.y, screenB.y, screenC.y},
-                2);
-        LegA = new GLine(renderer, A, B);
-        LegB = new GLine(renderer, B, C);
-        LegC = new GLine(renderer, C, A);
+
+        drawTri(
+                renderer,
+                new GLine(renderer, A, B),
+                new GLine(renderer, B, C),
+                new GLine(renderer, C, A)
+        );
         setPivot(new CartesianPoint(
                 (A.getPivot().x + B.getPivot().x + C.getPivot().x) / 3,
                 (A.getPivot().y + B.getPivot().y + C.getPivot().y) / 3
@@ -35,6 +86,7 @@ public class GTri extends GObject{
     }
 
     public GTri(Renderer r, GLine A, GLine B, GLine C) {
+        super(r);
         CartesianPoint[] points = {
                 A.getStartPoint(), A.getEndPoint(),
                 B.getStartPoint(), B.getEndPoint(),
@@ -58,9 +110,10 @@ public class GTri extends GObject{
             throw new IllegalArgumentException("Points are collinear—no triangle formed.");
         }
 
-        this.LegA = A;
-        this.LegB = B;
-        this.LegC = C;
+        drawTri(
+                r,
+                A, B, C
+        );
     }
 
 

@@ -27,4 +27,10 @@ public enum EventType {
      * By deleting itself or doing nothing.
      */
     PARENT_DELETED,
+    /**
+     * The parent was exploded, meaning all child nodes need to remove themselves as nodes from the parent, and become individual nodes.
+     * <p></p>
+     * e.g. A line (parent) has a list of points (nodes). When the polygon is exploded, all points need to remove themselves from the polygon's list of points, and become individual points.
+     */
+    PARENT_EXPLODED
 }
