@@ -88,8 +88,9 @@ public class Testing extends BaseGlobals {
             if (!(arrB instanceof ArrayList<?>))
                 throw new RuntimeException("point 2 was not given!");
             CartesianPoint B = CartesianPoint.fromArray((ArrayList<Integer>) arrB);
-            GLine line = ((Renderer)config.object).line(A, B);
-            return line.toArray();
+//            GLine line = ((Renderer)config.object).line(A, B);
+//            return line.toArray();
+            return arrA;
         }
     }
 
@@ -109,9 +110,9 @@ public class Testing extends BaseGlobals {
             Object objY = Primitives.toPrimitive(params.getLast(), false, config, scope);
             if (!(objY instanceof Integer) && !(objY instanceof Double))
                 throw new RuntimeException("y coordinate is not a number");
-            ((Renderer)config.object).point(new CartesianPoint(
-                    objX instanceof Integer ? (int)objX : (double)objX,
-                    objY instanceof Integer ? (int)objY : (double)objY));
+//            ((Renderer)config.object).point(new CartesianPoint(
+//                    objX instanceof Integer ? (int)objX : (double)objX,
+//                    objY instanceof Integer ? (int)objY : (double)objY));
             return new ArrayList<>(java.util.Arrays.asList(objX, objY));
         }
     }
@@ -126,7 +127,7 @@ public class Testing extends BaseGlobals {
         @Override
         public Object call(Token.TFuncCall tFuncCall, ArrayList<Object> params, IConfig<Object> config, Scope scope) throws Exception {
             checkParams(tFuncCall, scope);
-            ((Renderer)config.object).axis();
+//            ((Renderer)config.object).axis();
             return Token.voidValue(tFuncCall.lineNumber);
         }
     }

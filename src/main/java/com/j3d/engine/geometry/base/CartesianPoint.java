@@ -16,6 +16,21 @@ public class CartesianPoint extends BasePoint<Double> {
 
     /**
      * Default Constructor
+     */
+    public CartesianPoint() {
+        super(null, null);
+    }
+
+    /**
+     * If this Cartesian Point is empty
+     * @return boolean
+     */
+    public boolean isNotEmpty() {
+        return x != null || y != null;
+    }
+
+    /**
+     * Constructor with X and Y
      * @param X X-coordiante
      * @param Y Y-coordinate
      */
@@ -56,6 +71,11 @@ public class CartesianPoint extends BasePoint<Double> {
      */
     public ArrayList<Double> toArray() {
         return new ArrayList<>(Arrays.asList(x, y));
+    }
+
+    @Override
+    public String toString() {
+        return ("{" + x + "; " + y + "}");
     }
 
     @Override

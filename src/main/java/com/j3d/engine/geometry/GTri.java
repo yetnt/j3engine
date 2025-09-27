@@ -3,6 +3,8 @@ package com.j3d.engine.geometry;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.events.ObjectType;
 import com.j3d.engine.geometry.base.CartesianPoint;
+
+import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -26,8 +28,8 @@ public class GTri extends GObject{
     private GLine LegC;
 
     @Override
-    public void draw(Renderer renderer) {
-        renderer.getGraphics().fillPolygon(
+    public void draw(Renderer renderer, Graphics2D graphics2D) {
+        graphics2D.fillPolygon(
                 new int[] {
                         LegA.getStartPoint().toScreen(renderer).x,
                         LegA.getEndPoint().toScreen(renderer).x,
@@ -40,20 +42,6 @@ public class GTri extends GObject{
                 },
                 3
         );
-    }
-
-    /**
-     * Private method to draw a triangle from 3 lines.
-     * @param r Renderer Instance
-     * @param leg1 Leg 1
-     * @param leg2 Leg 2
-     * @param leg3 Leg 3
-     */
-    private void drawTri(Renderer r, GLine leg1, GLine leg2, GLine leg3) {
-        LegA = leg1;
-        LegB = leg2;
-        LegC = leg3;
-        draw(r);
     }
 
     /**
@@ -73,12 +61,10 @@ public class GTri extends GObject{
         C.attach(this, ObjectType.PARENT);
             // draw the triangle.
 
-        drawTri(
-                renderer,
-                new GLine(renderer, A, B),
-                new GLine(renderer, B, C),
-                new GLine(renderer, C, A)
-        );
+        LegA = new GLine(renderer, A, B);
+        LegB = new GLine(renderer, B, C);
+        LegC = new GLine(renderer, C, A);
+
         setPivot(new CartesianPoint(
                 (A.getPivot().x + B.getPivot().x + C.getPivot().x) / 3,
                 (A.getPivot().y + B.getPivot().y + C.getPivot().y) / 3
@@ -109,11 +95,9 @@ public class GTri extends GObject{
         if (BasePoint.areCollinear(vertices.get(0), vertices.get(1), vertices.get(2))) {
             throw new IllegalArgumentException("Points are collinear—no triangle formed.");
         }
-
-        drawTri(
-                r,
-                A, B, C
-        );
+        LegA = A;
+        LegB = B;
+        LegC = C;
     }
 
 

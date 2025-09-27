@@ -13,14 +13,10 @@ import java.util.Objects;
 
 /**
  * Renderer is a class responsible for the creation of {@link GObject}s and handling of what's going on in the
- * render. It's passed by instance allowing every {@link GObject} to use {@link Renderer#graphics}
+ * render.
  * @see Graphics2D
  */
 public class Renderer {
-    /**
-     * The graphics given by the {@link javax.swing.JPanel#paintComponents(Graphics)}
-     */
-    private Graphics2D graphics;
     /**
      * The dimensions of the window.
      */
@@ -28,7 +24,7 @@ public class Renderer {
     /**
      * An ArrayDeque of objects in this render.
      */
-    private ArrayDeque<GObject> gObjects = new ArrayDeque<>();
+    public ArrayDeque<GObject> gObjects = new ArrayDeque<>();
     /**
      * Factor to scale the {@link CartesianPoint} vs {@link ScreenPoint} units.
      * <p>
@@ -43,11 +39,9 @@ public class Renderer {
 
     /**
      * Default Constructor
-     * @param g The graphics
      * @param dim The dimensions of the screen
      */
-    public Renderer(Graphics g, Dimension dim) {
-        graphics = (Graphics2D) g;
+    public Renderer(Dimension dim) {
         screenSize = dim;
     }
 
@@ -60,9 +54,7 @@ public class Renderer {
     public GLine line(CartesianPoint A, CartesianPoint B) {
         GPoint gPointA = findOrCreatePoint(A);
         GPoint gPointB = findOrCreatePoint(B);
-        GLine line = new GLine(this, gPointA, gPointB);
-        gObjects.add(line);
-        return line;
+        return new GLine(this, gPointA, gPointB);
     }
 
     /**
@@ -71,15 +63,13 @@ public class Renderer {
      * @return A new GPoint
      */
     public GPoint point(CartesianPoint point) {
-        GPoint p = new GPoint(this, point);
-        gObjects.add(p);
-        return p;
+        return new GPoint(this, point);
     }
 
     /**
      * Draws the Cartesian XY Axis at play.
      */
-    public void axis() {
+    public void axis(Graphics2D graphics) {
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         // Draw X axis (horizontal)
@@ -90,7 +80,7 @@ public class Renderer {
 
         // Optional: draw origin marker
         graphics.setColor(Color.RED);
-        graphics.fillOval(screenSize.width / 2 - 3, screenSize.height / 2 - 3, 6, 6);
+        graphics.fillOval(screenSize.width / 2 - GPoint.DIAMETER / 2, screenSize.height / 2 - GPoint.DIAMETER / 2, GPoint.DIAMETER, GPoint.DIAMETER);
 
         graphics.setColor(Color.BLACK);
     }
@@ -98,11 +88,18 @@ public class Renderer {
     /**
      * "Clears" the screen by drawing a white box over it.
      */
-    public void clear() {
-        // Optional: manually clear with a color
-        graphics.setColor(Color.WHITE); // or whatever your background is
-        graphics.fillRect(0, 0, screenSize.width, screenSize.height);
+    public void clear(Graphics2D graphics) {
+//        graphics.setColor(Color.WHITE); // or whatever your background is
+        graphics.clearRect(0, 0, screenSize.width, screenSize.height);
+    }
 
+    /**
+     * Deletes the given GObject.
+     * @param obj The object to delete.
+     * @return true if the object existed and got removed.
+     */
+    public boolean delete(GObject obj) {
+        return gObjects.remove(obj);
     }
 
 //    public void draw() {
@@ -134,12 +131,10 @@ public class Renderer {
         }
         return new GPoint(this, target);
     }
-
-    /**
-     * Returns the graphics used by the renderer
-     * @return Graphics2D
-     */
-    public Graphics2D getGraphics() {
-        return graphics;
+    
+    public void draw(Graphics2D graphics) {
+        for (GObject o : gObjects) {
+            o.draw(this, graphics);
+        }
     }
 }

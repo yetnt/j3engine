@@ -8,6 +8,7 @@ import com.j3d.engine.events.ObjectType;
 import com.j3d.engine.geometry.base.CartesianPoint;
 import com.j3d.engine.geometry.base.ScreenPoint;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -31,7 +32,7 @@ public class GPoint extends GObject {
      */
     public GPoint(Renderer renderer, CartesianPoint cartesianPoint) {
         super(renderer);
-        drawPoint(renderer, cartesianPoint);
+        setPivot(cartesianPoint);
     }
 
     /**
@@ -71,7 +72,6 @@ public class GPoint extends GObject {
 //        broadcast(EventType.PARENT_UPDATED, ObjectType.NODE, new Event(this, getPivot(), pivot, renderer));
         // The above line of code has been commented out as a point cannot be a parent
         super.setPivot(pivot);
-        drawPoint(renderer, pivot);
     }
 
     @Override
@@ -129,21 +129,21 @@ public class GPoint extends GObject {
     }
 
     @Override
-    public void draw(Renderer renderer) {
+    public void draw(Renderer renderer, Graphics2D graphics2D) {
         ScreenPoint p = this.getPivot().toScreen(renderer);
-        renderer.getGraphics().fillOval(p.x - DIAMETER / 2, p.y - DIAMETER / 2, DIAMETER, DIAMETER);
+        graphics2D.fillOval(p.x - DIAMETER / 2, p.y - DIAMETER / 2, DIAMETER, DIAMETER);
     }
 
-    /**
-     * A private method that actually draws the point.
-     * This method is private as it always draws the point irrespective of event listeners and other update signalers
-     * @param renderer The Renderer Instance
-     * @param cartesianPoint The actual point.
-     */
-    private void drawPoint(Renderer renderer, CartesianPoint cartesianPoint) {
-        setPivot(cartesianPoint);
-        draw(renderer);
-    }
+//    /**
+//     * A private method that actually draws the point.
+//     * This method is private as it always draws the point irrespective of event listeners and other update signalers
+//     * @param renderer The Renderer Instance
+//     * @param cartesianPoint The actual point.
+//     */
+//    private void drawPoint(Renderer renderer,Graphics2D graphics2D, CartesianPoint cartesianPoint) {
+//        setPivot(cartesianPoint);
+//        draw(renderer, graphics2D);
+//    }
 
     @Override
     public ArrayList<Object> toArray() {

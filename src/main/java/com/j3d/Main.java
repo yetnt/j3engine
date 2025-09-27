@@ -2,13 +2,13 @@ package com.j3d;
 
 import com.j3d.engine.geometry.base.Dimension;
 import com.j3d.engine.Renderer;
-import com.j3d.engine.geometry.base.CartesianPoint;
 import com.j3d.engine.geometry.base.ScreenPoint;
 import com.j3d.jaiva.Testing;
 import com.jaiva.JBundler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 
 /**
  * Main is main.
@@ -16,6 +16,22 @@ import java.awt.*;
 public class Main extends JPanel {
     public static Dimension scrSize = new Dimension(1800, 1000);
     public static JBundler jBundler = null;
+    public static Renderer renderer = null;
+    public static Executor executor = null;
+    public static boolean run = true;
+    public static Frame f = null;
+
+    public Main() {
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                int x = e.getX();
+                int y = e.getY();
+                System.out.println("Mouse clicked at: (" + x + ", " + y + ")" + " CartesianPoint:" + new ScreenPoint(x, y).toPoint(renderer));
+                // You can trigger a repaint or other logic here
+            }
+        });
+    }
 
     /**
      * Initializes (if not already initialized) the Jaiva Instance by inputting the input file and passing {@link Testing} class
@@ -33,12 +49,25 @@ public class Main extends JPanel {
         }
     }
 
+
+    @Override
+    public void paint(Graphics g) {
+        if (!run) {
+            renderer.draw((Graphics2D) g);
+            return;
+        }
+        Renderer renderer1 = new Renderer(new Dimension(getWidth(), getHeight()));
+        renderer = renderer1;
+        executor = new Executor(renderer1);
+        NewJFrame.run(renderer, executor, f);
+        executor.run((Graphics2D) g);
+        run = false;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Renderer renderer = new Renderer(g, new Dimension(getWidth(), getHeight()));
-        Executor executor = new Executor(renderer);
-        executor.run();
+        super.paintComponent(g); 
+//        renderer.draw();
         // Draw a dot at (100, 100)
 //        initBundler(g, renderer);
     }
@@ -50,6 +79,7 @@ public class Main extends JPanel {
         frame.setResizable(false);
         frame.add(new Main());
         frame.setVisible(true);
+        f = frame;
     }
 
 }

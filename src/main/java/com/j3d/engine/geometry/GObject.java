@@ -7,6 +7,7 @@ import com.j3d.engine.events.EventListener;
 import com.j3d.engine.events.EventType;
 import com.j3d.engine.geometry.base.CartesianPoint;
 
+import java.awt.*;
 import java.util.*;
 
 /**
@@ -26,9 +27,10 @@ public abstract class GObject extends EventEmitter implements EventListener {
     /**
      * Draws this geometry to the screen.
      * @param renderer The Renderer instance
+     * @param graphics2D The Graphics2D instance
      * @implNote This is meant to be overridden by inheritors.
      */
-    public void draw(Renderer renderer) {
+    public void draw(Renderer renderer, Graphics2D graphics2D) {
         return;
     }
 

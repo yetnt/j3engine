@@ -6,6 +6,8 @@ import com.j3d.engine.events.EventEmitter;
 import com.j3d.engine.events.EventType;
 import com.j3d.engine.events.ObjectType;
 import com.j3d.engine.geometry.base.CartesianPoint;
+
+import java.awt.*;
 import java.util.Objects;
 
 /**
@@ -22,8 +24,8 @@ public class GLine extends GObject {
     private CartesianPoint endPoint;
     
     @Override
-    public void draw(Renderer renderer) {
-        renderer.getGraphics().drawLine(
+    public void draw(Renderer renderer, Graphics2D graphics2D) {
+        graphics2D.drawLine(
                 startPoint.toScreen(renderer).x,
                 startPoint.toScreen(renderer).y,
                 endPoint.toScreen(renderer).x,
@@ -31,11 +33,11 @@ public class GLine extends GObject {
         );
     }
 
-    private void drawLine(Renderer renderer, GPoint A, GPoint B) {
-        startPoint = A.getPivot();
-        endPoint = B.getPivot();
-        draw(renderer);
-    }
+//    private void drawLine(Renderer renderer, Graphics2D graphics2D,GPoint A, GPoint B) {
+//        startPoint = A.getPivot();
+//        endPoint = B.getPivot();
+//        draw(renderer, graphics2D);
+//    }
 
     /**
      * Updates the given GLine by redrawing itself and broadcasting the updates to parent Objects
@@ -46,8 +48,9 @@ public class GLine extends GObject {
     private void update(Renderer renderer, GPoint A, GPoint B) {
         broadcast(EventType.NODE_UPDATED, ObjectType.PARENT, new Event(this, renderer, this.startPoint, this.endPoint, A.getPivot(), B.getPivot()));
         broadcast(EventType.PARENT_UPDATED, ObjectType.NODE, new Event(this, renderer, this.startPoint, this.endPoint, A.getPivot(), B.getPivot()));
-
-        drawLine(renderer, A, B);
+        startPoint = A.getPivot();
+        endPoint = B.getPivot();
+//        drawLine(renderer, graphics2D, A, B);
     }
 
     /**
@@ -58,7 +61,9 @@ public class GLine extends GObject {
      */
     public GLine(Renderer renderer, GPoint A, GPoint B) {
         super(renderer);
-        drawLine(renderer, A, B);
+        startPoint = A.getPivot();
+        endPoint = B.getPivot();
+//        drawLine(renderer, graphics2D, A, B);
 
         attach(A, ObjectType.NODE);
         attach(B, ObjectType.NODE);
@@ -155,7 +160,7 @@ public class GLine extends GObject {
      * @param renderer The Renderer Instance.
      */
     public void setEndPoint(CartesianPoint end, Renderer renderer) {
-        broadcast(EventType.PARENT_UPDATED, ObjectType.NODE, new Event(this, renderer,this.startPoint, this.endPoint, new CartesianPoint(), end));
+        broadcast(EventType.PARENT_UPDATED, ObjectType.NODE, new Event(this, renderer, this.startPoint, this.endPoint, new CartesianPoint(), end));
         this.endPoint = end;
     }
 
@@ -173,7 +178,7 @@ public class GLine extends GObject {
      * @param renderer The Renderer Instance.
      */
     public void setStartPoint(CartesianPoint start, Renderer renderer) {
-        broadcast(EventType.PARENT_UPDATED, ObjectType.NODE, new Event(this, renderer,this.startPoint, this.endPoint, start));
+        broadcast(EventType.PARENT_UPDATED, ObjectType.NODE, new Event(this, renderer, this.startPoint, this.endPoint, start));
         this.startPoint = start;
     }
 

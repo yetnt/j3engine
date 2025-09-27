@@ -13,7 +13,7 @@ public class Executor {
     /**
      * The renderer instance.
      */
-    private Renderer renderer;
+    private final Renderer renderer;
 
     /**
      * Default Constructor
@@ -26,8 +26,20 @@ public class Executor {
     /**
      * Runs the executor.
      */
-    public void run() {
-        GLine line = renderer.line(new CartesianPoint(0, 9), new CartesianPoint(-30.2, 60));
-//        renderer.draw();
+    public void run(Graphics2D graphics2D) {
+        // x = 1 line
+
+        // draw the x = y line
+
+        GTri t = new GTri(
+                renderer,
+                new GPoint(renderer, new CartesianPoint(0, 0)),
+                new GPoint(renderer, new CartesianPoint(20, 10)),
+                new GPoint(renderer, new CartesianPoint(15, -20))
+        );
+
+        // draws 3 lines that hopefully connects to a triangle
+
+        renderer.axis(graphics2D);
     }
 }
