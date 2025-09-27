@@ -130,6 +130,7 @@ public class GPoint extends GObject {
 
     @Override
     public void draw(Renderer renderer, Graphics2D graphics2D) {
+        graphics2D.setColor(col);
         ScreenPoint p = this.getPivot().toScreen(renderer);
         graphics2D.fillOval(p.x - DIAMETER / 2, p.y - DIAMETER / 2, DIAMETER, DIAMETER);
     }

@@ -32,6 +32,7 @@ public class Executor {
         // draw the x = y line
 
         GTri t = new GTri(
+                Color.RED,
                 renderer,
                 new GPoint(renderer, new CartesianPoint(0, 0)),
                 new GPoint(renderer, new CartesianPoint(20, 10)),
@@ -41,5 +42,9 @@ public class Executor {
         // draws 3 lines that hopefully connects to a triangle
 
         renderer.axis(graphics2D);
+    }
+
+    public void cube(Graphics2D graphics2D) {
+
     }
 }

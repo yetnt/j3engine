@@ -25,6 +25,7 @@ public class GLine extends GObject {
     
     @Override
     public void draw(Renderer renderer, Graphics2D graphics2D) {
+        graphics2D.setColor(col);
         graphics2D.drawLine(
                 startPoint.toScreen(renderer).x,
                 startPoint.toScreen(renderer).y,
@@ -146,11 +147,14 @@ public class GLine extends GObject {
                 }
             }
             case PARENT_DELETED -> {
-
+                if (properties instanceof  GTri.Event) {
+                    // the triangle got deleted, delete ourselves
+                    deleteSelf(properties.renderer);
+                }
             }
-            case PARENT_UPDATED -> {
-                // parent was updated
-            }
+//            case PARENT_UPDATED -> {
+//                // the triangle directly calls setEndPoint and setStartPoint. This isn't needed.
+//            }
         }
     }
 

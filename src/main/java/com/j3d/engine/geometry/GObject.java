@@ -14,6 +14,7 @@ import java.util.*;
  * GObject is an abstract class that represents any actual tangible Geometry in the 2d space (Cartesian space) that a user can see and interact with.
  */
 public abstract class GObject extends EventEmitter implements EventListener {
+    protected Color col = Color.BLACK;
     /**
      * The pivot point of this geometry. Unless a {@link GPoint} where this represents the actual location
      * of the point.
@@ -42,6 +43,18 @@ public abstract class GObject extends EventEmitter implements EventListener {
         renderer.gObjects.add(this);
     }
 
+
+    /**
+     * Default Constructor. with color
+     * @param renderer The renderer instance
+     * @param colour The colour.
+     */
+    public GObject(Renderer renderer, Color colour) {
+        Id = UUID.randomUUID().toString();
+        renderer.gObjects.add(this);
+        col = colour;
+    }
+
     /**
      * Returns the pivot point.
      * @return a CartesianPoint
@@ -65,6 +78,23 @@ public abstract class GObject extends EventEmitter implements EventListener {
      */
     public void setPivot(CartesianPoint pivot) {
         this.pivot = pivot;
+    }
+
+
+    /**
+     * Sets the colour
+     * @param colour The new colour
+     */
+    public void setColour(Color colour) {
+        col = colour;
+    }
+
+    /**
+     * Returns this geometry's color
+     * @return The Color
+     */
+    public Color getColour() {
+        return col;
     }
 
     /**

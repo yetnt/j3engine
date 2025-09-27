@@ -1,6 +1,9 @@
 package com.j3d.engine.geometry;
 
 import com.j3d.engine.Renderer;
+import com.j3d.engine.events.EventBroadcast;
+import com.j3d.engine.events.EventEmitter;
+import com.j3d.engine.events.EventType;
 import com.j3d.engine.events.ObjectType;
 import com.j3d.engine.geometry.base.CartesianPoint;
 
@@ -27,8 +30,26 @@ public class GTri extends GObject{
      */
     private GLine LegC;
 
+    public static class Event extends EventBroadcast {
+
+        public GLine[] LegA = new GLine[2];
+        public GLine[] LegB = new GLine[2];
+        public GLine[] LegC = new GLine[2];
+
+        /**
+         * Default Constructor for EventBroadcast
+         *
+         * @param e The initiator of the broadcast.
+         * @param r The Renderer instance.
+         */
+        public Event(EventEmitter e, Renderer r) {
+            super(e, r);
+        }
+    }
+
     @Override
     public void draw(Renderer renderer, Graphics2D graphics2D) {
+        graphics2D.setColor(col);
         graphics2D.fillPolygon(
                 new int[] {
                         LegA.getStartPoint().toScreen(renderer).x,
@@ -44,15 +65,32 @@ public class GTri extends GObject{
         );
     }
 
+    @Override
+    public void onEvent(EventType event, EventBroadcast properties) {
+        switch (event) {
+//            case NODE_UPDATED: {
+//                if (properties instanceof GLine.Event prop) {
+//                    // In this case the line already moved itself, so we just need to redraw the tri.
+//                }
+//                break;
+//            }
+            case NODE_DELETED: {
+                // Low key, just delete ourselves. What is a triangle with 2 lines?
+                deleteSelf(properties.renderer);
+            }
+        }
+    }
+
     /**
      * Constructs a new GTri from 3 points.
+     * @param c The colour
      * @param renderer Renderer Instance
      * @param A Point A
      * @param B Point B
      * @param C Point C
      */
-    public GTri(Renderer renderer, GPoint A, GPoint B, GPoint C) {
-        super(renderer);
+    public GTri(Color c, Renderer renderer, GPoint A, GPoint B, GPoint C) {
+        super(renderer, c);
         attach(A, ObjectType.NODE);
         attach(B, ObjectType.NODE);
         attach(C, ObjectType.NODE);
@@ -71,8 +109,8 @@ public class GTri extends GObject{
         ));
     }
 
-    public GTri(Renderer r, GLine A, GLine B, GLine C) {
-        super(r);
+    public GTri(Color c, Renderer r, GLine A, GLine B, GLine C) {
+        super(r, c);
         CartesianPoint[] points = {
                 A.getStartPoint(), A.getEndPoint(),
                 B.getStartPoint(), B.getEndPoint(),

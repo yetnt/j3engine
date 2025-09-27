@@ -124,7 +124,7 @@ public class Renderer {
         Iterator<GObject> iterator = gObjects.iterator();
         while (iterator.hasNext()) {
             GObject obj = iterator.next();
-            if (obj instanceof GPoint gp && Objects.equals(gp.getPivot(), target)) {
+            if (obj instanceof GPoint gp && gp.getPivot().equals(target)) {
                 iterator.remove(); // Remove from current parent
                 return gp;
             }

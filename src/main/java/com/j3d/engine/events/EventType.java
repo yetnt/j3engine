@@ -32,5 +32,9 @@ public enum EventType {
      * <p></p>
      * e.g. A line (parent) has a list of points (nodes). When the polygon is exploded, all points need to remove themselves from the polygon's list of points, and become individual points.
      */
-    PARENT_EXPLODED
+    PARENT_EXPLODED,
+    /**
+     * When a triangle gets transformed or translated.
+     */
+    PARENT_TRANSFORMED
 }

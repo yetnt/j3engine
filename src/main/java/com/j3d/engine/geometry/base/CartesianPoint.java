@@ -14,6 +14,8 @@ import java.util.Objects;
  */
 public class CartesianPoint extends BasePoint<Double> {
 
+    private static final double EPSILON = 0.01;
+
     /**
      * Default Constructor
      */
@@ -82,6 +84,12 @@ public class CartesianPoint extends BasePoint<Double> {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof CartesianPoint other)) return false;
-        return Objects.equals(this.x, other.x) && Objects.equals(this.y, other.y);
+        return Math.abs(x - other.x) < EPSILON && Math.abs(y - other.y) < EPSILON;
+    }
+
+    @Override
+    public int hashCode() {
+        // Use the same epsilon rounding for consistent hashing
+        return Objects.hash(Math.round(x / EPSILON), Math.round(y / EPSILON));
     }
 }
