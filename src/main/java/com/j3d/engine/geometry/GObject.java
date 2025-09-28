@@ -68,7 +68,7 @@ public abstract class GObject extends EventEmitter implements EventListener {
      * @return true if the object was deleted
      * @implNote This is meant to be overriden by inheritors.
      */
-    public boolean deleteSelf(Renderer renderer) {
+    public boolean deleteSelf(Renderer renderer, GObject ...excluded) {
         return renderer.delete(this);
     }
 

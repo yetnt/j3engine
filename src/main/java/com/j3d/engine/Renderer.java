@@ -137,4 +137,21 @@ public class Renderer {
             o.draw(this, graphics);
         }
     }
+
+    public GPoint findPointNearCursor(CartesianPoint mousePos, double snapRadius) {
+        double snapRadiusSquared = snapRadius * snapRadius;
+        for (GObject obj : gObjects) {
+            if (obj instanceof GPoint point) {
+                double distanceSq = point.getPivot().distanceSquaredTo(mousePos);
+                if (distanceSq <= snapRadiusSquared) {
+                    return point; // Found a point to drag!
+                }
+            }
+        }
+        return null; // No point found in snap radius
+    }
+
+    public void movePointTo(GPoint point, CartesianPoint newPosition) {
+        point.setPivot(this, newPosition);
+    }
 }

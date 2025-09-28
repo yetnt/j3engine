@@ -27,7 +27,7 @@ public abstract class EventEmitter {
     }
 
     /**
-     * Returns the amoutn of parents registered
+     * Returns the amount of parents registered
      * @return integer.
      */
     public int registeredParents() {

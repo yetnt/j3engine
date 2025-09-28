@@ -92,4 +92,17 @@ public class CartesianPoint extends BasePoint<Double> {
         // Use the same epsilon rounding for consistent hashing
         return Objects.hash(Math.round(x / EPSILON), Math.round(y / EPSILON));
     }
+
+    public double distanceTo(CartesianPoint other) {
+        double dx = this.x - other.x;
+        double dy = this.y - other.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+
+    public double distanceSquaredTo(CartesianPoint other) {
+        double dx = this.x - other.x;
+        double dy = this.y - other.y;
+        return dx * dx + dy * dy;
+    }
 }

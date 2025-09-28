@@ -10,6 +10,7 @@ import com.j3d.engine.geometry.base.ScreenPoint;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -67,21 +68,32 @@ public class GPoint extends GObject {
      * @param renderer The Renderer Instance
      * @param pivot The point on the cartesian plane.
      */
-    private void update(Renderer renderer, CartesianPoint pivot) {
-        broadcast(EventType.NODE_UPDATED, ObjectType.PARENT, new Event(this, getPivot(), pivot, renderer));
+    private void update(Renderer renderer, CartesianPoint pivot, GObject ...exclusions) {
+        Event e = new Event(this, getPivot(), pivot, renderer);
+        e.exclusions.add(this);
+        e.exclusions.addAll(Arrays.asList(exclusions));
+        broadcast(EventType.NODE_UPDATED, ObjectType.PARENT, e);
 //        broadcast(EventType.PARENT_UPDATED, ObjectType.NODE, new Event(this, getPivot(), pivot, renderer));
         // The above line of code has been commented out as a point cannot be a parent
         super.setPivot(pivot);
     }
 
+    public void setPivot(Renderer renderer, CartesianPoint pivot) {
+        update(renderer, pivot);
+    }
+
     @Override
-    public boolean deleteSelf(Renderer renderer) {
-        broadcast(EventType.NODE_DELETED, ObjectType.PARENT, new Event(this, getPivot(), new CartesianPoint(), renderer));
+    public boolean deleteSelf(Renderer renderer, GObject ...excluded) {
+        Event e = new Event(this, getPivot(), new CartesianPoint(), renderer);
+        e.exclusions.addAll(Arrays.asList(excluded));
+        e.exclusions.add(this);
+        broadcast(EventType.NODE_DELETED, ObjectType.PARENT, e);
         return super.deleteSelf(renderer);
     }
 
     @Override
     public void onEvent(EventType event, EventBroadcast properties) {
+        if (properties.exclusions.contains(this)) return;
         switch (event) {
             case PARENT_DELETED -> {
                 if (Objects.requireNonNull(properties) instanceof GLine.Event gl) {
@@ -91,7 +103,7 @@ public class GPoint extends GObject {
                     if (registeredParents() == 1) {
                         // Only delete self, if there is only 1 parent.
                         // meaning it was that deleted line
-                        deleteSelf(gl.renderer);
+                        deleteSelf(gl.renderer, properties.exclusions.toArray(GObject[]::new));
                         // otherwise, it may have multiple parents meaning its connected
                         // to some other line so dont delete it.
                     }
@@ -109,7 +121,7 @@ public class GPoint extends GObject {
                     if (gl.newStart.isNotEmpty() && gl.oldStart.equals(getPivot())) pt = gl.newStart;
                     // same as above.
                     if (gl.newEnd.isNotEmpty() && gl.oldEnd.equals(getPivot())) pt = gl.newEnd;
-                    if (pt.isNotEmpty()) this.update(gl.renderer, pt);
+                    if (pt.isNotEmpty()) this.update(gl.renderer, pt,properties.exclusions.toArray(GObject[]::new));
                 } else {
                     throw new IllegalStateException("Unexpected value: " + properties);
                 }

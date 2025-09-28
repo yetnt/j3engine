@@ -8,6 +8,9 @@ import com.j3d.engine.events.ObjectType;
 import com.j3d.engine.geometry.base.CartesianPoint;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Objects;
 
 /**
@@ -46,9 +49,12 @@ public class GLine extends GObject {
      * @param A GPoint A
      * @param B GPoint A
      */
-    private void update(Renderer renderer, GPoint A, GPoint B) {
-        broadcast(EventType.NODE_UPDATED, ObjectType.PARENT, new Event(this, renderer, this.startPoint, this.endPoint, A.getPivot(), B.getPivot()));
-        broadcast(EventType.PARENT_UPDATED, ObjectType.NODE, new Event(this, renderer, this.startPoint, this.endPoint, A.getPivot(), B.getPivot()));
+    private void update(Renderer renderer, GPoint A, GPoint B, GObject ...exclusions) {
+        Event e = new Event(this, renderer, this.startPoint, this.endPoint, A.getPivot(), B.getPivot());
+        e.exclusions.addAll(Arrays.asList(exclusions));
+        e.exclusions.add(this);
+        broadcast(EventType.NODE_UPDATED, ObjectType.PARENT, e);
+        broadcast(EventType.PARENT_UPDATED, ObjectType.NODE, e);
         startPoint = A.getPivot();
         endPoint = B.getPivot();
 //        drawLine(renderer, graphics2D, A, B);
@@ -121,20 +127,25 @@ public class GLine extends GObject {
 //    }
 
     @Override
-    public boolean deleteSelf(Renderer renderer) {
-        broadcast(EventType.NODE_DELETED, ObjectType.PARENT, new Event(this, renderer, this.startPoint, this.endPoint));
-        broadcast(EventType.PARENT_DELETED, ObjectType.NODE, new Event(this, renderer, this.startPoint, this.endPoint));
+    public boolean deleteSelf(Renderer renderer, GObject ...excluded) {
+        Event e = new Event(this, renderer, this.startPoint, this.endPoint);
+        e.exclusions.addAll(new ArrayList<>(Arrays.asList(excluded)));
+        e.exclusions.add(this);
+        broadcast(EventType.NODE_DELETED, ObjectType.PARENT, e);
+        broadcast(EventType.PARENT_DELETED, ObjectType.NODE, e);
         return super.deleteSelf(renderer);
     }
 
     @Override
     public void onEvent(EventType event, EventBroadcast properties) {
+        if (properties.exclusions.contains(this)) return;
         switch (event) {
             case NODE_UPDATED -> {
                 // a node was updated
                 if (Objects.requireNonNull(properties) instanceof GPoint.Event pe) {
-                    if (pe.oldCartesianPoint.equals(startPoint)) setStartPoint(pe.newCartesianPoint, pe.renderer);
-                    else if (pe.oldCartesianPoint.equals(endPoint)) setEndPoint(pe.newCartesianPoint, pe.renderer);
+                    System.out.println(pe.exclusions);
+                    if (pe.oldCartesianPoint.equals(startPoint)) setStartPoint(pe.newCartesianPoint, pe.renderer, properties.exclusions.toArray(GObject[]::new));
+                    else if (pe.oldCartesianPoint.equals(endPoint)) setEndPoint(pe.newCartesianPoint, pe.renderer, properties.exclusions.toArray(GObject[]::new));
                     else setPivot(pe.newCartesianPoint);
                 } else {
                     throw new IllegalStateException("Unexpected value: " + properties);
@@ -143,13 +154,13 @@ public class GLine extends GObject {
             case NODE_DELETED -> {
                 if (Objects.requireNonNull(properties) instanceof GPoint.Event pe) {
                     // A line requires 2 points to exist. Delete self if we cant exist.
-                    deleteSelf(pe.renderer);
+                    deleteSelf(pe.renderer, properties.exclusions.toArray(GObject[]::new));
                 }
             }
             case PARENT_DELETED -> {
                 if (properties instanceof  GTri.Event) {
                     // the triangle got deleted, delete ourselves
-                    deleteSelf(properties.renderer);
+                    deleteSelf(properties.renderer, properties.exclusions.toArray(GObject[]::new));
                 }
             }
 //            case PARENT_UPDATED -> {
@@ -163,8 +174,11 @@ public class GLine extends GObject {
      * @param end The end point
      * @param renderer The Renderer Instance.
      */
-    public void setEndPoint(CartesianPoint end, Renderer renderer) {
-        broadcast(EventType.PARENT_UPDATED, ObjectType.NODE, new Event(this, renderer, this.startPoint, this.endPoint, new CartesianPoint(), end));
+    public void setEndPoint(CartesianPoint end, Renderer renderer, GObject... exclusions) {
+        Event e =  new Event(this, renderer, this.startPoint, this.endPoint, new CartesianPoint(), end);
+        e.exclusions.addAll(Arrays.asList(exclusions));
+        e.exclusions.add(this);
+        broadcast(EventType.PARENT_UPDATED, ObjectType.NODE,e);
         this.endPoint = end;
     }
 
@@ -181,8 +195,11 @@ public class GLine extends GObject {
      * @param start The start point
      * @param renderer The Renderer Instance.
      */
-    public void setStartPoint(CartesianPoint start, Renderer renderer) {
-        broadcast(EventType.PARENT_UPDATED, ObjectType.NODE, new Event(this, renderer, this.startPoint, this.endPoint, start));
+    public void setStartPoint(CartesianPoint start, Renderer renderer, GObject... exclusions) {
+        Event e = new Event(this, renderer, this.startPoint, this.endPoint, start, new CartesianPoint());
+        e.exclusions.addAll(Arrays.asList(exclusions));
+        e.exclusions.add(this);
+        broadcast(EventType.PARENT_UPDATED, ObjectType.NODE, e);
         this.startPoint = start;
     }
 

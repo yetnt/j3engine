@@ -1,8 +1,9 @@
 package com.j3d.engine.events;
 
 import com.j3d.engine.Renderer;
+import com.j3d.engine.geometry.GObject;
 
-import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * EventBroadcast is an abstract class which is used to represent the properties that the
@@ -18,6 +19,8 @@ public abstract class EventBroadcast {
      * The Renderer instance.
      */
     public final Renderer renderer;
+
+    public ArrayList<GObject> exclusions = new ArrayList<>();
 
     /**
      * Default Constructor for EventBroadcast

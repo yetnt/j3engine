@@ -5,7 +5,15 @@
 package com.j3d;
 
 import com.j3d.engine.Renderer;
-import java.awt.Frame;
+import com.j3d.engine.geometry.GLine;
+import com.j3d.engine.geometry.GObject;
+import com.j3d.engine.geometry.GPoint;
+import com.j3d.engine.geometry.GTri;
+import com.j3d.engine.geometry.base.CartesianPoint;
+
+import java.awt.*;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  *
@@ -35,7 +43,12 @@ public class NewJFrame extends javax.swing.JFrame {
 
         drawButton = new java.awt.Button();
         clearButton = new java.awt.Button();
-        jSlider1 = new javax.swing.JSlider();
+        randomTriBtn = new javax.swing.JButton();
+        debugLabel = new javax.swing.JLabel();
+        drawLabel = new javax.swing.JLabel();
+        debugDumpLabel = new javax.swing.JLabel();
+        objectCountLabel = new javax.swing.JLabel();
+        objectCount = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -54,49 +67,118 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
-        jSlider1.setMaximum(30);
-        jSlider1.setMinimum(-30);
+        randomTriBtn.setText("randomTri");
+        randomTriBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                randomTriBtnActionPerformed(evt);
+            }
+        });
+
+        debugLabel.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        debugLabel.setText("Debug");
+
+        drawLabel.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        drawLabel.setText("Draw");
+
+        debugDumpLabel.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        debugDumpLabel.setText("Debug Dump");
+
+        objectCountLabel.setText("n. of objects");
+
+        objectCount.setText("null");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(78, 78, 78)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSlider1, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
+                    .addComponent(debugLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(randomTriBtn)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(drawButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(86, 86, 86))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(drawLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(drawButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(29, 29, 29)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(debugDumpLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(objectCountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(objectCount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(118, Short.MAX_VALUE)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(drawLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(debugDumpLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(drawButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
-                .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(101, 101, 101))
+                    .addComponent(drawButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(objectCountLabel)
+                        .addComponent(objectCount)))
+                .addGap(48, 48, 48)
+                .addComponent(debugLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(randomTriBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(87, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void drawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawButtonActionPerformed
-        frame.revalidate();
+
         frame.repaint();
-        System.out.println("sd");
+        System.out.println(renderer.gObjects.size());
     }//GEN-LAST:event_drawButtonActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
+        renderer.gObjects.clear();
         frame.repaint();
-//        renderer.clear();
         
     }//GEN-LAST:event_clearButtonActionPerformed
+
+    private void randomTriBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomTriBtnActionPerformed
+
+        Random random = new Random();
+        int red = random.nextInt(256);   // 0 to 255
+        int green = random.nextInt(256);
+        int blue = random.nextInt(256);
+
+        Color randomColor = new Color(red, green, blue);
+
+        GTri t = new GTri(randomColor, renderer,
+                new GPoint(renderer, new CartesianPoint(ThreadLocalRandom.current().nextInt(-40, 40), ThreadLocalRandom.current().nextInt(-10, 10))),
+                new GPoint(renderer, new CartesianPoint(ThreadLocalRandom.current().nextInt(-40, 40), ThreadLocalRandom.current().nextInt(-10, 10))),
+                new GPoint(renderer, new CartesianPoint(ThreadLocalRandom.current().nextInt(-40, 40), ThreadLocalRandom.current().nextInt(-10, 10)))
+        );
+        
+//        System.out.println(t.getLegA().getStartPoint());
+//        System.out.println(t.getLegA().getEndPoint());
+        int tris = 0, lines = 0, pts = 0;
+        for (GObject ob : renderer.gObjects) {
+             switch (ob) {
+                case GTri tri -> tris++;
+                case GLine line -> lines++;
+                case GPoint pt -> pts++;
+                default -> {
+                    ;
+                }
+            }
+        }
+        objectCount.setText(renderer.gObjects.size()+" | pts: "+pts+" | lines: "+lines+" | tris: "+tris);
+        
+    }//GEN-LAST:event_randomTriBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -138,7 +220,12 @@ public class NewJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button clearButton;
+    private javax.swing.JLabel debugDumpLabel;
+    private javax.swing.JLabel debugLabel;
     private java.awt.Button drawButton;
-    private javax.swing.JSlider jSlider1;
+    private javax.swing.JLabel drawLabel;
+    private javax.swing.JLabel objectCount;
+    private javax.swing.JLabel objectCountLabel;
+    private javax.swing.JButton randomTriBtn;
     // End of variables declaration//GEN-END:variables
 }
