@@ -83,11 +83,11 @@ public class Testing extends BaseGlobals {
             Object arrA = Primitives.toPrimitive(params.getFirst(), false, config, scope);
             if (!(arrA instanceof ArrayList<?>))
                 throw new RuntimeException("point 1 was not given!");
-            CartesianPoint A = CartesianPoint.fromArray((ArrayList<Integer>) arrA);
+            CartesianPoint A = CartesianPoint.fromList((ArrayList<Integer>) arrA);
             Object arrB = Primitives.toPrimitive(params.getLast(), false, config, scope);
             if (!(arrB instanceof ArrayList<?>))
                 throw new RuntimeException("point 2 was not given!");
-            CartesianPoint B = CartesianPoint.fromArray((ArrayList<Integer>) arrB);
+            CartesianPoint B = CartesianPoint.fromList((ArrayList<Integer>) arrB);
 //            GLine line = ((Renderer)config.object).line(A, B);
 //            return line.toArray();
             return arrA;

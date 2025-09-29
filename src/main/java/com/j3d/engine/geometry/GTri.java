@@ -91,17 +91,25 @@ public class GTri extends GObject{
      */
     public GTri(Color c, Renderer renderer, GPoint A, GPoint B, GPoint C) {
         super(renderer, c);
-        attach(A, ObjectType.NODE);
-        attach(B, ObjectType.NODE);
-        attach(C, ObjectType.NODE);
-        A.attach(this, ObjectType.PARENT);
-        B.attach(this, ObjectType.PARENT);
-        C.attach(this, ObjectType.PARENT);
+//        attach(A, ObjectType.NODE);
+//        attach(B, ObjectType.NODE);
+//        attach(C, ObjectType.NODE);
+//        A.attach(this, ObjectType.PARENT);
+//        B.attach(this, ObjectType.PARENT);
+//        C.attach(this, ObjectType.PARENT);
             // draw the triangle.
 
         LegA = new GLine(renderer, A, B);
         LegB = new GLine(renderer, B, C);
         LegC = new GLine(renderer, C, A);
+
+        attach(LegA, ObjectType.NODE);
+        attach(LegB, ObjectType.NODE);
+        attach(LegC, ObjectType.NODE);
+        LegA.attach(this, ObjectType.PARENT);
+        LegB.attach(this, ObjectType.PARENT);
+        LegC.attach(this, ObjectType.PARENT);
+
 
         setPivot(new CartesianPoint(
                 (A.getPivot().x + B.getPivot().x + C.getPivot().x) / 3,
@@ -133,6 +141,14 @@ public class GTri extends GObject{
         if (BasePoint.areCollinear(vertices.get(0), vertices.get(1), vertices.get(2))) {
             throw new IllegalArgumentException("Points are collinear—no triangle formed.");
         }
+
+        attach(A, ObjectType.NODE);
+        attach(B, ObjectType.NODE);
+        attach(C, ObjectType.NODE);
+        A.attach(this, ObjectType.PARENT);
+        B.attach(this, ObjectType.PARENT);
+        C.attach(this, ObjectType.PARENT);
+
         LegA = A;
         LegB = B;
         LegC = C;

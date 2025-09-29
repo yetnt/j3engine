@@ -121,11 +121,10 @@ public class Renderer {
      * @return A new, or old GPoint.
      */
     public GPoint findOrCreatePoint(CartesianPoint target) {
-        Iterator<GObject> iterator = gObjects.iterator();
-        while (iterator.hasNext()) {
-            GObject obj = iterator.next();
+        // Iterate through existing objects to find a matching point
+        for (GObject obj : gObjects) {
             if (obj instanceof GPoint gp && gp.getPivot().equals(target)) {
-                iterator.remove(); // Remove from current parent
+                // Found an existing point, return it.
                 return gp;
             }
         }
