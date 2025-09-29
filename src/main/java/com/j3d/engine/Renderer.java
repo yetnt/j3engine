@@ -8,8 +8,6 @@ import com.j3d.engine.geometry.base.Dimension;
 
 import java.awt.*;
 import java.util.ArrayDeque;
-import java.util.Iterator;
-import java.util.Objects;
 
 /**
  * Renderer is a class responsible for the creation of {@link GObject}s and handling of what's going on in the
@@ -22,9 +20,9 @@ public class Renderer {
      */
     public Dimension screenSize;
     /**
-     * An ArrayDeque of objects in this render.
+     * An ArrayDeque of Layers.
      */
-    public ArrayDeque<GObject> gObjects = new ArrayDeque<>();
+    public ArrayDeque<Layer> layers = new ArrayDeque<>();
     /**
      * Factor to scale the {@link CartesianPoint} vs {@link ScreenPoint} units.
      * <p>
@@ -43,17 +41,21 @@ public class Renderer {
      */
     public Renderer(Dimension dim) {
         screenSize = dim;
+        layers.add(new Layer("background")); // the default layer
+        layers.add(new Layer()); // testing layer.
     }
 
     /**
      * Create a new GLine from 2 CartesianPoints
      * @param A Point 1
      * @param B Point 2
+     * @param l The layer. if null, the default layer is used.
      * @return A new GLine.
      */
-    public GLine line(CartesianPoint A, CartesianPoint B) {
-        GPoint gPointA = findOrCreatePoint(A);
-        GPoint gPointB = findOrCreatePoint(B);
+    public GLine line(CartesianPoint A, CartesianPoint B, Layer l) {
+        l = l == null ? layers.getFirst() : l;
+        GPoint gPointA = findOrCreatePoint(A, l);
+        GPoint gPointB = findOrCreatePoint(B, l);
         return new GLine(this, gPointA, gPointB);
     }
 
@@ -99,7 +101,12 @@ public class Renderer {
      * @return true if the object existed and got removed.
      */
     public boolean delete(GObject obj) {
-        return gObjects.remove(obj);
+        for (Layer layer : layers) {
+            if (layer.remove(obj)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 //    public void draw() {
@@ -115,14 +122,15 @@ public class Renderer {
 
 
     /**
-     * Optimization, this method will try to find a GPoint that is at the same coordinates of the given CartesianPoint.
-     * If not found, it creates said GPoint.
-     * @param target The cartesianPoint.
-     * @return A new, or old GPoint.
+     * Finds an existing {@link GPoint} in the specified layer that matches the target {@link CartesianPoint}.
+     * If no such point exists, a new {@link GPoint} is created and returned.
+     * @param target The {@link CartesianPoint} to search for or create.
+     * @param l The {@link Layer} to search within. If {@code null}, the first layer is used.
+     * @return An existing or newly created {@link GPoint} corresponding to the target {@link CartesianPoint}.
      */
-    public GPoint findOrCreatePoint(CartesianPoint target) {
+    public GPoint findOrCreatePoint(CartesianPoint target, Layer l) {
         // Iterate through existing objects to find a matching point
-        for (GObject obj : gObjects) {
+        for (GObject obj : l == null ? layers.getFirst() : l) {
             if (obj instanceof GPoint gp && gp.getPivot().equals(target)) {
                 // Found an existing point, return it.
                 return gp;
@@ -131,26 +139,90 @@ public class Renderer {
         return new GPoint(this, target);
     }
     
+    /**
+     * Draws all objects in all layers to the screen.
+     *
+     * @param graphics The Graphics2D object to draw on.
+     */
     public void draw(Graphics2D graphics) {
-        for (GObject o : gObjects) {
-            o.draw(this, graphics);
-        }
+            layers.forEach(layer -> layer.draw(this, graphics));
     }
 
+    /**
+     * Finds a {@link GPoint} near the given cursor position within a specified snap radius.
+     * @param mousePos The current position of the mouse cursor in Cartesian coordinates.
+     * @param snapRadius The maximum distance from the cursor for a point to be considered "near".
+     * @return The {@link GPoint} found near the cursor, or {@code null} if no point is within the snap radius.
+     */
     public GPoint findPointNearCursor(CartesianPoint mousePos, double snapRadius) {
         double snapRadiusSquared = snapRadius * snapRadius;
-        for (GObject obj : gObjects) {
-            if (obj instanceof GPoint point) {
-                double distanceSq = point.getPivot().distanceSquaredTo(mousePos);
-                if (distanceSq <= snapRadiusSquared) {
-                    return point; // Found a point to drag!
+        for (Layer layer : layers) {
+            for (GObject obj : layer) {
+                if (obj instanceof GPoint point) {
+                    double distanceSq = point.getPivot().distanceSquaredTo(mousePos);
+                    if (distanceSq <= snapRadiusSquared) {
+                        return point; // Found a point to drag!
+                    }
                 }
             }
         }
         return null; // No point found in snap radius
     }
 
+    /**
+     * Moves a given GPoint to a new Cartesian position.
+     *
+     * @param point The GPoint to move.
+     * @param newPosition The new CartesianPoint position for the GPoint.
+     */
     public void movePointTo(GPoint point, CartesianPoint newPosition) {
         point.setPivot(this, newPosition);
+    }
+
+    /**
+     * Moves a {@link GObject} from its current {@link Layer} to a {@code differentLayer}.
+     * @param obj The {@link GObject} to move.
+     * @param differentLayer The target {@link Layer} to move the object to.
+     * @return {@code true} if the object was successfully moved, {@code false} otherwise (e.g., if the object was not found in any layer).
+     */
+    public boolean moveObjTo(GObject obj, Layer differentLayer) {
+        for (Layer layer : layers) {
+            if (layer.remove(obj)) {
+                differentLayer.add(obj);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Finds a {@link GObject} by its unique ID across all layers.
+     * @param Id The unique ID of the object to find.
+     * @return The {@link GObject} with the matching ID, or {@code null} if no such object is found.
+     */
+    public GObject findObject(String Id) {
+        for (Layer layer : layers) {
+            for (GObject obj : layer) {
+                if (obj.getId().equals(Id)) {
+                    return obj;
+                }
+            }
+        }
+        return null;
+
+    }
+
+    /**
+     * Finds a {@link Layer} by its identifier.
+     * @param id The identifier of the layer to find.
+     * @return The {@link Layer} with the matching identifier, or {@code null} if no such layer is found.
+     */
+    public Layer findLayer(String id) {
+        for (Layer layer : layers) {
+            if (layer.getIdentifier().equals(id)) {
+                return layer;
+            }
+        }
+        return null;
     }
 }

@@ -171,4 +171,9 @@ public class GPoint extends GObject {
         if (!(obj instanceof GPoint other)) return false;
         return Objects.equals(this.getPivot(), other.getPivot());
     }
+
+    @Override
+    public String toString() {
+        return "GPoint {" + getPivot().x + ", " + getPivot().y + "}";
+    }
 }

@@ -190,4 +190,9 @@ public class GTri extends GObject{
                         C.x * (A.y - B.y)
         );
     }
+
+    @Override
+    public String toString() {
+        return col.toString() + " GTri";
+    }
 }

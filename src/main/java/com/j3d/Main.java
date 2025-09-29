@@ -34,7 +34,6 @@ public class Main extends JPanel {
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 int x = e.getX();
                 int y = e.getY();
-                System.out.println("Mouse clicked at: (" + x + ", " + y + ")" + " CartesianPoint:" + new ScreenPoint(x, y).toPoint(renderer));
                 // You can trigger a repaint or other logic here
             }
 
@@ -42,7 +41,6 @@ public class Main extends JPanel {
             public void mousePressed(MouseEvent e) {
                 CartesianPoint mousePos = new ScreenPoint(e.getX(), e.getY()).toPoint(renderer);
                 currentlyDragging = renderer.findPointNearCursor(mousePos, SNAP_RADIUS); // 2 unit snap radius
-                System.out.println(currentlyDragging);
             }
 
             @Override
@@ -58,7 +56,6 @@ public class Main extends JPanel {
                     CartesianPoint newPos = new ScreenPoint(e.getX(), e.getY()).toPoint(renderer);
                     renderer.movePointTo(currentlyDragging, newPos);
                     f.repaint();
-                    System.out.println("new moved");
                 }
             }
         });

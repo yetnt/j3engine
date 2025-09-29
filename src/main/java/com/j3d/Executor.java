@@ -40,12 +40,12 @@ public class Executor {
         CartesianPoint offset = new CartesianPoint(0, 0); // Center the cube at the origin
 
         // Define the 6 visible vertices of a standard isometric cube
-        GPoint top = renderer.findOrCreatePoint(new CartesianPoint(offset.x, offset.y + size));
-        GPoint bottom = renderer.findOrCreatePoint(new CartesianPoint(offset.x, offset.y - size));
-        GPoint leftTop = renderer.findOrCreatePoint(new CartesianPoint(offset.x - size, offset.y + size / 2));
-        GPoint leftBottom = renderer.findOrCreatePoint(new CartesianPoint(offset.x - size, offset.y - size / 2));
-        GPoint rightTop = renderer.findOrCreatePoint(new CartesianPoint(offset.x + size, offset.y + size / 2));
-        GPoint rightBottom = renderer.findOrCreatePoint(new CartesianPoint(offset.x + size, offset.y - size / 2));
+        GPoint top = renderer.findOrCreatePoint(new CartesianPoint(offset.x, offset.y + size), null);
+        GPoint bottom = renderer.findOrCreatePoint(new CartesianPoint(offset.x, offset.y - size), null);
+        GPoint leftTop = renderer.findOrCreatePoint(new CartesianPoint(offset.x - size, offset.y + size / 2), null);
+        GPoint leftBottom = renderer.findOrCreatePoint(new CartesianPoint(offset.x - size, offset.y - size / 2), null);
+        GPoint rightTop = renderer.findOrCreatePoint(new CartesianPoint(offset.x + size, offset.y + size / 2), null);
+        GPoint rightBottom = renderer.findOrCreatePoint(new CartesianPoint(offset.x + size, offset.y - size / 2), null);
 
         // Create the three visible faces of the cube using different shades for a 3D effect
         // Top face (lightest color)
@@ -55,7 +55,7 @@ public class Executor {
         createFace(leftBottom, leftTop, top, bottom, new Color(80, 80, 180));
 
         // Right face (medium color)
-        createFace(rightBottom, rightTop, top, bottom, new Color(120, 120, 220));
+        createFace(rightBottom, rightTop, top, bottom, new Color(10, 200, 12));
     }
 
     /**
@@ -70,7 +70,7 @@ public class Executor {
      */
     private void createFace(GPoint p1, GPoint p2, GPoint p3, GPoint p4, Color color) {
         // Create the face with two triangles
-        new GTri(color, renderer, p1, p2, p3);
+        new GTri(color.brighter(), renderer, p1, p2, p3);
         new GTri(color, renderer, p1, p3, p4);
     }
 

@@ -4,6 +4,7 @@
  */
 package com.j3d;
 
+import com.j3d.engine.Layer;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.GLine;
 import com.j3d.engine.geometry.GObject;
@@ -12,6 +13,8 @@ import com.j3d.engine.geometry.GTri;
 import com.j3d.engine.geometry.base.CartesianPoint;
 
 import java.awt.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -49,6 +52,12 @@ public class NewJFrame extends javax.swing.JFrame {
         debugDumpLabel = new javax.swing.JLabel();
         objectCountLabel = new javax.swing.JLabel();
         objectCount = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        layerList = new javax.swing.JList<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        objList = new javax.swing.JList<>();
+        moveSelectedObjBtn = new javax.swing.JButton();
+        objsAndLayersLbl = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,6 +96,30 @@ public class NewJFrame extends javax.swing.JFrame {
 
         objectCount.setText("null");
 
+        layerList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(layerList);
+
+        objList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane2.setViewportView(objList);
+
+        moveSelectedObjBtn.setText("moveSelectedObj");
+        moveSelectedObjBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                moveSelectedObjBtnActionPerformed(evt);
+            }
+        });
+
+        objsAndLayersLbl.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        objsAndLayersLbl.setText("Objs                       Layers");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -94,43 +127,67 @@ public class NewJFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(drawLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(drawButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(debugLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(randomTriBtn)
+                    .addComponent(moveSelectedObjBtn)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(randomTriBtn)))
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(objsAndLayersLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(91, 91, 91))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(drawLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(debugDumpLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(objectCountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(objectCount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(drawButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(29, 29, 29)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(debugDumpLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(objectCountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(objectCount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                .addContainerGap(27, Short.MAX_VALUE))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(drawLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(debugDumpLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(drawButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(48, 48, 48))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(objectCountLabel)
+                            .addComponent(objectCount))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(objsAndLayersLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(drawButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(objectCountLabel)
-                        .addComponent(objectCount)))
-                .addGap(48, 48, 48)
-                .addComponent(debugLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(randomTriBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(87, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(debugLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(randomTriBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(moveSelectedObjBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
@@ -139,11 +196,25 @@ public class NewJFrame extends javax.swing.JFrame {
     private void drawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawButtonActionPerformed
 
         frame.repaint();
-        System.out.println(renderer.gObjects.size());
+        System.out.println(renderer.layers.size());
+
+        ArrayList<String> strings = new ArrayList<>();
+        ArrayList<String> layers = new ArrayList<>();
+
+        for (Layer layer : renderer.layers) {
+            layers.add(layer.toString());
+            for (GObject ob : layer) {
+                strings.add(ob.getId() + "|" + ob.toString());
+            }
+        }
+
+        layerList.setListData(layers.toArray(String[]::new));
+        objList.setListData(strings.toArray(String[]::new));
+
     }//GEN-LAST:event_drawButtonActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        renderer.gObjects.clear();
+        renderer.layers.forEach(ArrayDeque::clear);
         frame.repaint();
         
     }//GEN-LAST:event_clearButtonActionPerformed
@@ -166,23 +237,35 @@ public class NewJFrame extends javax.swing.JFrame {
 //        System.out.println(t.getLegA().getStartPoint());
 //        System.out.println(t.getLegA().getEndPoint());
         int tris = 0, lines = 0, pts = 0;
-        for (GObject ob : renderer.gObjects) {
-             switch (ob) {
-                case GTri tri -> tris++;
-                case GLine line -> lines++;
-                case GPoint pt -> pts++;
-                default -> {
-                    ;
+        for (Layer layer : renderer.layers) {
+            for (GObject ob : layer) {
+                switch (ob) {
+                    case GTri tri -> tris++;
+                    case GLine line -> lines++;
+                    case GPoint pt -> pts++;
+                    default -> {
+                        ;
+                    }
                 }
             }
         }
-        objectCount.setText(renderer.gObjects.size()+" | pts: "+pts+" | lines: "+lines+" | tris: "+tris);
+        objectCount.setText("pts: "+pts+" | lines: "+lines+" | tris: "+tris+" | lyrs: "+renderer.layers.size());
         
     }//GEN-LAST:event_randomTriBtnActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void moveSelectedObjBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moveSelectedObjBtnActionPerformed
+        java.util.List<String> selectedValuesList = objList.getSelectedValuesList();
+        String selectedLayer = layerList.getSelectedValue();
+
+        for (String  selected : selectedValuesList) {
+            String selectedObjId =  selected.substring(0,  selected.indexOf('|'));
+            GObject selectedObj = renderer.findObject(selectedObjId);
+            Layer selectedLayerObj = renderer.findLayer(selectedLayer);
+            renderer.moveObjTo(selectedObj, selectedLayerObj);
+        }
+        frame.repaint();
+    }//GEN-LAST:event_moveSelectedObjBtnActionPerformed
+
     public static void run(Renderer r, Executor e, Frame f) {
         renderer = r;
         executor = e;
@@ -224,8 +307,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel debugLabel;
     private java.awt.Button drawButton;
     private javax.swing.JLabel drawLabel;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JList<String> layerList;
+    private javax.swing.JButton moveSelectedObjBtn;
+    private javax.swing.JList<String> objList;
     private javax.swing.JLabel objectCount;
     private javax.swing.JLabel objectCountLabel;
+    private javax.swing.JLabel objsAndLayersLbl;
     private javax.swing.JButton randomTriBtn;
     // End of variables declaration//GEN-END:variables
 }

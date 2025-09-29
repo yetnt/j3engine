@@ -40,7 +40,7 @@ public abstract class GObject extends EventEmitter implements EventListener {
      */
     public GObject(Renderer renderer) {
         Id = UUID.randomUUID().toString();
-        renderer.gObjects.add(this);
+        renderer.layers.getFirst().add(this);
     }
 
 
@@ -51,7 +51,7 @@ public abstract class GObject extends EventEmitter implements EventListener {
      */
     public GObject(Renderer renderer, Color colour) {
         Id = UUID.randomUUID().toString();
-        renderer.gObjects.add(this);
+        renderer.layers.getFirst().add(this);
         col = colour;
     }
 

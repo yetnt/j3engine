@@ -237,4 +237,11 @@ public class GLine extends GObject {
                 Math.pow(startPoint.getPivot().x- endPoint.getPivot().x, 2) + Math.pow(startPoint.getPivot().y- endPoint.getPivot().y, 2)
         );
     }
+
+    @Override
+    public String toString() {
+        return "GLine [ " + startPoint +
+                " -> " + endPoint +
+                " ]";
+    }
 }
