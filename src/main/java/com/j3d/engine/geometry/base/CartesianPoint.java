@@ -62,13 +62,16 @@ public class CartesianPoint extends BasePoint<Double> {
      * @param arr The array.
      * @return The new cartesian point
      */
-    public static CartesianPoint fromArray(ArrayList<? extends Number> arr) {
-        if (arr.size() != 2) throw new RuntimeException("ArrayList was given more than 2 input values.");
-        return new CartesianPoint(arr.getFirst().intValue(), arr.getLast().intValue());
+    public static CartesianPoint fromList(ArrayList<? extends Number> arr) {
+        if (arr == null || arr.size() != 2) {
+            throw new IllegalArgumentException("Input list must contain exactly 2 numbers.");
+        }
+        // Use doubleValue() to preserve floating-point precision
+        return new CartesianPoint(arr.get(0).doubleValue(), arr.get(1).doubleValue());
     }
 
     /**
-     * Reverse of {@link CartesianPoint#fromArray(ArrayList)}
+     * Reverse of {@link CartesianPoint#fromList(ArrayList)}
      * @return A 2 Dimensional ArrayList of doubles.
      */
     public ArrayList<Double> toArray() {
