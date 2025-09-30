@@ -1,6 +1,8 @@
 package com.j3d.engine;
 
-import com.j3d.engine.geometry.GObject;
+import com.j3d.engine.geometry.geo2d.GObject;
+import com.j3d.engine.geometry.geo3d.Camera;
+import com.j3d.engine.geometry.geo3d.Thing;
 
 import java.awt.*;
 import java.util.ArrayDeque;
@@ -36,7 +38,7 @@ import java.util.ArrayDeque;
  * @see GObject
  * @see ArrayDeque
  */
-public class Layer extends ArrayDeque<GObject> {
+public class Layer extends ArrayDeque<Thing> {
 
     private final String identifier;
 
@@ -80,11 +82,13 @@ public class Layer extends ArrayDeque<GObject> {
      * Draws all {@link GObject}s contained within this layer onto the provided
      * {@link Graphics2D} context. Each object's {@code draw} method is called.
      *
+     * @param renderer The {@code Renderer} instance.
      * @param graphics2D The {@code Graphics2D} context to draw upon.
+     * @param camera The {@code Camera} instance.
      */
-    public void draw(Renderer renderer,Graphics2D graphics2D) {
-        for (GObject o : this) {
-            o.draw(renderer, graphics2D);
+    public void draw(Renderer renderer,Graphics2D graphics2D, Camera camera) {
+        for (Thing o : this) {
+            o.draw(renderer, graphics2D, camera);
         }
     }
 

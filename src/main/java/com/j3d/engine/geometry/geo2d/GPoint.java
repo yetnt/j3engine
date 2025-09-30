@@ -1,12 +1,12 @@
-package com.j3d.engine.geometry;
+package com.j3d.engine.geometry.geo2d;
 
 import com.j3d.engine.Renderer;
 import com.j3d.engine.events.EventBroadcast;
 import com.j3d.engine.events.EventEmitter;
 import com.j3d.engine.events.EventType;
 import com.j3d.engine.events.ObjectType;
-import com.j3d.engine.geometry.base.CartesianPoint;
-import com.j3d.engine.geometry.base.ScreenPoint;
+import com.j3d.engine.geometry.geo3d.Camera;
+import com.j3d.engine.geometry.geo3d.Vector3;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -28,11 +28,10 @@ public class GPoint extends GObject {
 
     /**
      * Default Constructor
-     * @param renderer The Renderer Instance
+     *
      * @param cartesianPoint The point on the cartesian plane that this object lies on
      */
-    public GPoint(Renderer renderer, CartesianPoint cartesianPoint) {
-        super(renderer);
+    public GPoint(Vector3 cartesianPoint) {
         setPivot(cartesianPoint);
     }
 
@@ -44,11 +43,11 @@ public class GPoint extends GObject {
         /**
          * The new location of the GPoint
          */
-        public final CartesianPoint newCartesianPoint;
+        public final Vector3 newCartesianPoint;
         /**
          * The old location of the GPoint
          */
-        public final CartesianPoint oldCartesianPoint;
+        public final Vector3 oldCartesianPoint;
 
         /**
          * Default Constructor
@@ -56,7 +55,7 @@ public class GPoint extends GObject {
          * @param old The Old Cartesian Point
          * @param cp The New Cartesian Point
          */
-        public Event(EventEmitter e,CartesianPoint old, CartesianPoint cp, Renderer r) {
+        public Event(EventEmitter e,Vector3 old, Vector3 cp, Renderer r) {
             super(e, r);
             oldCartesianPoint = old;
             newCartesianPoint = cp;
@@ -68,7 +67,7 @@ public class GPoint extends GObject {
      * @param renderer The Renderer Instance
      * @param pivot The point on the cartesian plane.
      */
-    private void update(Renderer renderer, CartesianPoint pivot, GObject ...exclusions) {
+    private void update(Renderer renderer, Vector3 pivot, GObject ...exclusions) {
         Event e = new Event(this, getPivot(), pivot, renderer);
         e.exclusions.add(this);
         e.exclusions.addAll(Arrays.asList(exclusions));
@@ -78,16 +77,17 @@ public class GPoint extends GObject {
         super.setPivot(pivot);
     }
 
-    public void setPivot(Renderer renderer, CartesianPoint pivot) {
+    public void setPivot(Renderer renderer, Vector3 pivot) {
         update(renderer, pivot);
     }
 
     @Override
     public boolean deleteSelf(Renderer renderer, GObject ...excluded) {
-        Event e = new Event(this, getPivot(), new CartesianPoint(), renderer);
+        Event e = new Event(this, getPivot(), new Vector3(), renderer);
         e.exclusions.addAll(Arrays.asList(excluded));
         e.exclusions.add(this);
         broadcast(EventType.NODE_DELETED, ObjectType.PARENT, e);
+        renderer.points.remove(this);
         return super.deleteSelf(renderer);
     }
 
@@ -116,7 +116,7 @@ public class GPoint extends GObject {
             case PARENT_UPDATED -> { // A parent was updated, we need to update ourselves
                 if (Objects.requireNonNull(properties) instanceof GLine.Event gl) {// A line was updated, update ourselves.
                     // Find which point
-                    CartesianPoint pt = new CartesianPoint();
+                    Vector3 pt = new Vector3();
                     // Check if the start is non-null and whether the old start does equal the current
                     if (gl.newStart.isNotEmpty() && gl.oldStart.equals(getPivot())) pt = gl.newStart;
                     // same as above.
@@ -141,9 +141,10 @@ public class GPoint extends GObject {
     }
 
     @Override
-    public void draw(Renderer renderer, Graphics2D graphics2D) {
+    public void draw(Renderer renderer, Graphics2D graphics2D, Camera cam) {
+        renderer.points.add(this);
         graphics2D.setColor(col);
-        ScreenPoint p = this.getPivot().toScreen(renderer);
+        ScreenPoint p = this.getPivot().toPoint2(cam).toScreen(renderer);
         graphics2D.fillOval(p.x - DIAMETER / 2, p.y - DIAMETER / 2, DIAMETER, DIAMETER);
     }
 
@@ -174,6 +175,6 @@ public class GPoint extends GObject {
 
     @Override
     public String toString() {
-        return "GPoint {" + getPivot().x + ", " + getPivot().y + "}";
+        return "GPoint {" + getPivot().getY() + ", " + getPivot().getX() +  ", " + getPivot().getZ() + "}";
     }
 }

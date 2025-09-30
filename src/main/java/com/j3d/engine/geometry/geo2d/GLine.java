@@ -1,16 +1,16 @@
-package com.j3d.engine.geometry;
+package com.j3d.engine.geometry.geo2d;
 
 import com.j3d.engine.Renderer;
 import com.j3d.engine.events.EventBroadcast;
 import com.j3d.engine.events.EventEmitter;
 import com.j3d.engine.events.EventType;
 import com.j3d.engine.events.ObjectType;
-import com.j3d.engine.geometry.base.CartesianPoint;
+import com.j3d.engine.geometry.geo3d.Camera;
+import com.j3d.engine.geometry.geo3d.Vector3;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Objects;
 
 /**
@@ -27,13 +27,13 @@ public class GLine extends GObject {
     private GPoint endPoint;
     
     @Override
-    public void draw(Renderer renderer, Graphics2D graphics2D) {
+    public void draw(Renderer renderer, Graphics2D graphics2D, Camera cam) {
         graphics2D.setColor(col);
         graphics2D.drawLine(
-                startPoint.getPivot().toScreen(renderer).x,
-                startPoint.getPivot().toScreen(renderer).y,
-                endPoint.getPivot().toScreen(renderer).x,
-                endPoint.getPivot().toScreen(renderer).y
+                startPoint.getPivot().toPoint2(cam).toScreen(renderer).x,
+                startPoint.getPivot().toPoint2(cam).toScreen(renderer).y,
+                endPoint.getPivot().toPoint2(cam).toScreen(renderer).x,
+                endPoint.getPivot().toPoint2(cam).toScreen(renderer).y
         );
     }
 
@@ -62,12 +62,11 @@ public class GLine extends GObject {
 
     /**
      * Default Constructor
-     * @param renderer The Renderer
+     *
      * @param A The start point
      * @param B THe end point
      */
-    public GLine(Renderer renderer, GPoint A, GPoint B) {
-        super(renderer);
+    public GLine(GPoint A, GPoint B) {
         startPoint = A;
         endPoint = B;
 //        drawLine(renderer, graphics2D, A, B);
@@ -77,11 +76,13 @@ public class GLine extends GObject {
         A.attach(this, ObjectType.PARENT);
         B.attach(this, ObjectType.PARENT);
 
-        // set the pivot to the midpoint of the line.
-        setPivot(new CartesianPoint(
-                (A.getPivot().x + B.getPivot().x) / 2,
-                (A.getPivot().y + B.getPivot().y) / 2
+        // set the pivot to the midpoint of the line
+        setPivot(new Vector3(
+                (A.getPivot().getX() + B.getPivot().getX()) / 2,
+                (A.getPivot().getY() + B.getPivot().getY()) / 2,
+                0
         ));
+
     }
 
 
@@ -90,10 +91,10 @@ public class GLine extends GObject {
      */
     public static class Event extends EventBroadcast {
 
-        public CartesianPoint newStart;
-        public CartesianPoint oldStart;
-        public CartesianPoint newEnd;
-        public CartesianPoint oldEnd;
+        public Vector3 newStart;
+        public Vector3 oldStart;
+        public Vector3 newEnd;
+        public Vector3 oldEnd;
 
         /**
          * Constructor for EventBroadcast with a new start point
@@ -104,13 +105,13 @@ public class GLine extends GObject {
          * @param oE old ending point
          * @param pts The new points, pass empty if you're not updating an end point.
          */
-        public Event(EventEmitter e, Renderer r,CartesianPoint oS, CartesianPoint oE, CartesianPoint ...pts) {
+        public Event(EventEmitter e, Renderer r, Vector3 oS, Vector3 oE, Vector3 ...pts) {
             super(e, r);
             oldStart = oS;
             oldEnd = oE;
             boolean flip = true;
 //            assert pts.length == 2;
-            for (CartesianPoint pt : pts) {
+            for (Vector3 pt : pts) {
                 if (flip) {
                     newStart = pt;
                     flip = false;
@@ -144,8 +145,8 @@ public class GLine extends GObject {
                 // a node was updated
                 if (Objects.requireNonNull(properties) instanceof GPoint.Event pe) {
                     System.out.println(pe.exclusions);
-                    if (pe.oldCartesianPoint.equals(startPoint)) setStartPoint(pe.newCartesianPoint, pe.renderer, properties.exclusions.toArray(GObject[]::new));
-                    else if (pe.oldCartesianPoint.equals(endPoint)) setEndPoint(pe.newCartesianPoint, pe.renderer, properties.exclusions.toArray(GObject[]::new));
+                    if (pe.oldCartesianPoint.equals(startPoint.getPivot())) setStartPoint(pe.newCartesianPoint, pe.renderer, properties.exclusions.toArray(GObject[]::new));
+                    else if (pe.oldCartesianPoint.equals(endPoint.getPivot())) setEndPoint(pe.newCartesianPoint, pe.renderer, properties.exclusions.toArray(GObject[]::new));
                     else setPivot(pe.newCartesianPoint);
                 } else {
                     throw new IllegalStateException("Unexpected value: " + properties);
@@ -174,8 +175,8 @@ public class GLine extends GObject {
      * @param end The end point
      * @param renderer The Renderer Instance.
      */
-    public void setEndPoint(CartesianPoint end, Renderer renderer, GObject... exclusions) {
-        Event e =  new Event(this, renderer, this.startPoint.getPivot(), this.endPoint.getPivot(), new CartesianPoint(), end);
+    public void setEndPoint(Vector3 end, Renderer renderer, GObject... exclusions) {
+        Event e =  new Event(this, renderer, this.startPoint.getPivot(), this.endPoint.getPivot(), new Vector3(), end);
         e.exclusions.addAll(Arrays.asList(exclusions));
         e.exclusions.add(this);
         broadcast(EventType.PARENT_UPDATED, ObjectType.NODE,e);
@@ -186,7 +187,7 @@ public class GLine extends GObject {
      * Returns the end point
      * @return CartesianPoint
      */
-    public CartesianPoint getEndPoint() {
+    public Vector3 getEndPoint() {
         return endPoint.getPivot();
     }
 
@@ -204,8 +205,8 @@ public class GLine extends GObject {
      * @param start The start point
      * @param renderer The Renderer Instance.
      */
-    public void setStartPoint(CartesianPoint start, Renderer renderer, GObject... exclusions) {
-        Event e = new Event(this, renderer, this.startPoint.getPivot(), this.endPoint.getPivot(), start, new CartesianPoint());
+    public void setStartPoint(Vector3 start, Renderer renderer, GObject... exclusions) {
+        Event e = new Event(this, renderer, this.startPoint.getPivot(), this.endPoint.getPivot(), start, new Vector3());
         e.exclusions.addAll(Arrays.asList(exclusions));
         e.exclusions.add(this);
         broadcast(EventType.PARENT_UPDATED, ObjectType.NODE, e);
@@ -216,7 +217,7 @@ public class GLine extends GObject {
      * Returns the start point
      * @return start point.
      */
-    public CartesianPoint getStartPoint() {
+    public Vector3 getStartPoint() {
         return startPoint.getPivot();
     }
 
@@ -234,7 +235,7 @@ public class GLine extends GObject {
      */
     public double length() {
         return Math.sqrt(
-                Math.pow(startPoint.getPivot().x- endPoint.getPivot().x, 2) + Math.pow(startPoint.getPivot().y- endPoint.getPivot().y, 2)
+                Math.pow(startPoint.getPivot().getX()- endPoint.getPivot().getX(), 2) + Math.pow(startPoint.getPivot().getY()- endPoint.getPivot().getY(), 2)
         );
     }
 

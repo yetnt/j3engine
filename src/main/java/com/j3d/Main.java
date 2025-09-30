@@ -1,10 +1,13 @@
 package com.j3d;
 
-import com.j3d.engine.geometry.GPoint;
-import com.j3d.engine.geometry.base.CartesianPoint;
-import com.j3d.engine.geometry.base.Dimension;
+import com.j3d.engine.geometry.geo2d.GPoint;
+import com.j3d.engine.geometry.geo2d.CartesianPoint;
+import com.j3d.engine.geometry.geo2d.Dimension;
 import com.j3d.engine.Renderer;
-import com.j3d.engine.geometry.base.ScreenPoint;
+import com.j3d.engine.geometry.geo2d.ScreenPoint;
+import com.j3d.engine.geometry.geo3d.Camera;
+import com.j3d.engine.geometry.geo3d.Rotation;
+import com.j3d.engine.geometry.geo3d.Vector3;
 import com.j3d.jaiva.Testing;
 import com.jaiva.JBundler;
 
@@ -24,6 +27,10 @@ public class Main extends JPanel {
     public static Executor executor = null;
     public static boolean run = true;
     public static Frame f = null;
+    public static Camera camera = new Camera()
+            .setPosition(new Vector3(10, 10, 10))
+            .setRotation(new Rotation(0, 0, 0))
+            .setProjectionPlane(new Vector3(0, 0, 1));
 
     private GPoint currentlyDragging = null;
     private static final double SNAP_RADIUS = 2.0;
@@ -53,7 +60,7 @@ public class Main extends JPanel {
             @Override
             public void mouseDragged(MouseEvent e) {
                 if (currentlyDragging != null) {
-                    CartesianPoint newPos = new ScreenPoint(e.getX(), e.getY()).toPoint(renderer);
+                    Vector3 newPos = new Vector3(e.getX(), e.getY(), 0);
                     renderer.movePointTo(currentlyDragging, newPos);
                     f.repaint();
                 }
@@ -81,7 +88,22 @@ public class Main extends JPanel {
     @Override
     public void paint(Graphics g) {
         if (!run) {
-            renderer.draw((Graphics2D) g);
+//            renderer.axis((Graphics2D) g, camera);
+            double axisLength = camera.getPosition().magnitude() * 0.9;
+            Vector3 origin = new Vector3(0, 0, 0);
+            Vector3 offset = new Vector3(0.01, 0.01, 0.01); // avoids collapse
+
+            g.setColor(Color.RED);
+            renderer.drawLine3D((Graphics2D) g, origin.add(offset), origin.add(new Vector3(axisLength, 0, 0)), camera);
+
+            g.setColor(Color.GREEN);
+            renderer.drawLine3D((Graphics2D) g, origin.add(offset), origin.add(new Vector3(0, axisLength, 0)), camera);
+
+            g.setColor(Color.BLUE);
+            renderer.drawLine3D((Graphics2D) g, origin.add(offset), origin.add(new Vector3(0, 0, axisLength)), camera);
+
+            g.setColor(Color.BLACK);
+            renderer.draw((Graphics2D) g, camera);
             return;
         }
         Renderer renderer1 = new Renderer(new Dimension(getWidth(), getHeight()));

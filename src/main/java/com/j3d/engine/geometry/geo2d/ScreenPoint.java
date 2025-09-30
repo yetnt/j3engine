@@ -1,6 +1,7 @@
-package com.j3d.engine.geometry.base;
+package com.j3d.engine.geometry.geo2d;
 
 import com.j3d.engine.Renderer;
+import com.j3d.engine.geometry.base.BasePoint;
 
 /**
  * ScreenPoint, not to be confused with {@link CartesianPoint}, is a point on the actual screen (window) open.

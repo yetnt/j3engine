@@ -23,8 +23,8 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="drawLabel" alignment="0" min="-2" pref="109" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
@@ -33,81 +33,102 @@
                       <Component id="drawButton" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="debugLabel" alignment="0" min="-2" pref="109" max="-2" attributes="0"/>
-                  <Component id="moveSelectedObjBtn" min="-2" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       <Component id="randomTriBtn" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="objsAndLayersLbl" max="32767" attributes="0"/>
-                      <EmptySpace min="-2" pref="91" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="sliderZ" pref="0" max="32767" attributes="0"/>
+                          <Component id="sliderY" alignment="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="sliderX" alignment="0" pref="176" max="32767" attributes="0"/>
+                          <Component id="camXYZLabel" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="XLabel" alignment="0" min="-2" pref="37" max="-2" attributes="0"/>
+                          <Component id="YLabel" alignment="0" min="-2" pref="37" max="-2" attributes="0"/>
+                          <Component id="ZLabel" alignment="0" min="-2" pref="37" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="debugDumpLabel" min="-2" pref="282" max="-2" attributes="0"/>
-                              <Group type="102" attributes="0">
-                                  <Component id="objectCountLabel" min="-2" pref="68" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="objectCount" max="32767" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jScrollPane2" min="-2" pref="288" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jScrollPane1" min="-2" pref="98" max="-2" attributes="0"/>
-                          </Group>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="sliderRoll" alignment="0" pref="176" max="32767" attributes="0"/>
+                          <Component id="sliderPitch" alignment="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="sliderYaw" alignment="0" pref="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="YawLabel" min="-2" pref="37" max="-2" attributes="0"/>
+                          <Component id="PitchLabel" min="-2" pref="37" max="-2" attributes="0"/>
+                          <Component id="RollLabel" min="-2" pref="37" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
+                  <Component id="camRotationLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace pref="123" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="drawLabel" alignment="3" min="-2" pref="44" max="-2" attributes="0"/>
-                  <Component id="debugDumpLabel" alignment="3" min="-2" pref="44" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
+                      <Component id="drawLabel" min="-2" pref="44" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="clearButton" min="-2" max="-2" attributes="0"/>
                           <Component id="drawButton" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="objectCountLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="objectCount" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="objsAndLayersLbl" min="-2" pref="44" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                       <Component id="debugLabel" min="-2" pref="44" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="randomTriBtn" min="-2" pref="23" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="moveSelectedObjBtn" min="-2" pref="23" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="jScrollPane1" alignment="0" pref="202" max="32767" attributes="0"/>
-                      <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="camXYZLabel" min="-2" pref="44" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="sliderX" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="sliderY" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                              <Component id="sliderZ" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="camRotationLabel1" min="-2" pref="44" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="sliderYaw" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="YawLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="sliderPitch" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="PitchLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="sliderRoll" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="RollLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="XLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="YLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                              <Component id="ZLabel" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="18" max="32767" attributes="0"/>
+              <EmptySpace pref="48" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -156,88 +177,107 @@
         <Property name="text" type="java.lang.String" value="Draw"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="debugDumpLabel">
+    <Component class="javax.swing.JSlider" name="sliderX">
       <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="36" style="0"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Debug Dump"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="objectCountLabel">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="n. of objects"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="objectCount">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="null"/>
-      </Properties>
-    </Component>
-    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
-      <AuxValues>
-        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-      </AuxValues>
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-      <SubComponents>
-        <Component class="javax.swing.JList" name="layerList">
-          <Properties>
-            <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-              <StringArray count="5">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
-                <StringItem index="4" value="Item 5"/>
-              </StringArray>
-            </Property>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-          </AuxValues>
-        </Component>
-      </SubComponents>
-    </Container>
-    <Container class="javax.swing.JScrollPane" name="jScrollPane2">
-      <AuxValues>
-        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-      </AuxValues>
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-      <SubComponents>
-        <Component class="javax.swing.JList" name="objList">
-          <Properties>
-            <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-              <StringArray count="5">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
-                <StringItem index="4" value="Item 5"/>
-              </StringArray>
-            </Property>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-          </AuxValues>
-        </Component>
-      </SubComponents>
-    </Container>
-    <Component class="javax.swing.JButton" name="moveSelectedObjBtn">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="moveSelectedObj"/>
+        <Property name="minimum" type="int" value="-100"/>
+        <Property name="value" type="int" value="0"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="moveSelectedObjBtnActionPerformed"/>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="sliderXStateChanged"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="objsAndLayersLbl">
+    <Component class="javax.swing.JSlider" name="sliderY">
+      <Properties>
+        <Property name="minimum" type="int" value="-100"/>
+        <Property name="value" type="int" value="0"/>
+      </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="sliderYStateChanged"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JSlider" name="sliderZ">
+      <Properties>
+        <Property name="minimum" type="int" value="-100"/>
+        <Property name="value" type="int" value="0"/>
+      </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="sliderZStateChanged"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="camXYZLabel">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="36" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Objs                       Layers"/>
+        <Property name="text" type="java.lang.String" value="Cam XYZ"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSlider" name="sliderYaw">
+      <Properties>
+        <Property name="maximum" type="int" value="180"/>
+        <Property name="minimum" type="int" value="-180"/>
+        <Property name="value" type="int" value="0"/>
+      </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="sliderYawStateChanged"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JSlider" name="sliderPitch">
+      <Properties>
+        <Property name="maximum" type="int" value="180"/>
+        <Property name="minimum" type="int" value="-180"/>
+        <Property name="value" type="int" value="0"/>
+      </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="sliderPitchStateChanged"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JSlider" name="sliderRoll">
+      <Properties>
+        <Property name="maximum" type="int" value="180"/>
+        <Property name="minimum" type="int" value="-180"/>
+        <Property name="value" type="int" value="0"/>
+      </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="sliderRollStateChanged"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="camRotationLabel1">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="36" style="0"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Cam Rotation"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="YawLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Yaw"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="PitchLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Pitch"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="RollLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Roll"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="XLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="X"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="YLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Y"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="ZLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Z"/>
       </Properties>
     </Component>
   </SubComponents>

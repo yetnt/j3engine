@@ -4,19 +4,11 @@
  */
 package com.j3d;
 
-import com.j3d.engine.Layer;
 import com.j3d.engine.Renderer;
-import com.j3d.engine.geometry.GLine;
-import com.j3d.engine.geometry.GObject;
-import com.j3d.engine.geometry.GPoint;
-import com.j3d.engine.geometry.GTri;
-import com.j3d.engine.geometry.base.CartesianPoint;
+import com.j3d.engine.geometry.geo3d.Vector3;
 
 import java.awt.*;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  *
@@ -49,15 +41,20 @@ public class NewJFrame extends javax.swing.JFrame {
         randomTriBtn = new javax.swing.JButton();
         debugLabel = new javax.swing.JLabel();
         drawLabel = new javax.swing.JLabel();
-        debugDumpLabel = new javax.swing.JLabel();
-        objectCountLabel = new javax.swing.JLabel();
-        objectCount = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        layerList = new javax.swing.JList<>();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        objList = new javax.swing.JList<>();
-        moveSelectedObjBtn = new javax.swing.JButton();
-        objsAndLayersLbl = new javax.swing.JLabel();
+        sliderX = new javax.swing.JSlider();
+        sliderY = new javax.swing.JSlider();
+        sliderZ = new javax.swing.JSlider();
+        camXYZLabel = new javax.swing.JLabel();
+        sliderYaw = new javax.swing.JSlider();
+        sliderPitch = new javax.swing.JSlider();
+        sliderRoll = new javax.swing.JSlider();
+        camRotationLabel1 = new javax.swing.JLabel();
+        YawLabel = new javax.swing.JLabel();
+        PitchLabel = new javax.swing.JLabel();
+        RollLabel = new javax.swing.JLabel();
+        XLabel = new javax.swing.JLabel();
+        YLabel = new javax.swing.JLabel();
+        ZLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -89,43 +86,81 @@ public class NewJFrame extends javax.swing.JFrame {
         drawLabel.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         drawLabel.setText("Draw");
 
-        debugDumpLabel.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        debugDumpLabel.setText("Debug Dump");
-
-        objectCountLabel.setText("n. of objects");
-
-        objectCount.setText("null");
-
-        layerList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(layerList);
-
-        objList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane2.setViewportView(objList);
-
-        moveSelectedObjBtn.setText("moveSelectedObj");
-        moveSelectedObjBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                moveSelectedObjBtnActionPerformed(evt);
+        sliderX.setMinimum(-100);
+        sliderX.setValue(0);
+        sliderX.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sliderXStateChanged(evt);
             }
         });
 
-        objsAndLayersLbl.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        objsAndLayersLbl.setText("Objs                       Layers");
+        sliderY.setMinimum(-100);
+        sliderY.setValue(0);
+        sliderY.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sliderYStateChanged(evt);
+            }
+        });
+
+        sliderZ.setMinimum(-100);
+        sliderZ.setValue(0);
+        sliderZ.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sliderZStateChanged(evt);
+            }
+        });
+
+        camXYZLabel.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        camXYZLabel.setText("Cam XYZ");
+
+        sliderYaw.setMaximum(180);
+        sliderYaw.setMinimum(-180);
+        sliderYaw.setValue(0);
+        sliderYaw.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sliderYawStateChanged(evt);
+            }
+        });
+
+        sliderPitch.setMaximum(180);
+        sliderPitch.setMinimum(-180);
+        sliderPitch.setValue(0);
+        sliderPitch.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sliderPitchStateChanged(evt);
+            }
+        });
+
+        sliderRoll.setMaximum(180);
+        sliderRoll.setMinimum(-180);
+        sliderRoll.setValue(0);
+        sliderRoll.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sliderRollStateChanged(evt);
+            }
+        });
+
+        camRotationLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        camRotationLabel1.setText("Cam Rotation");
+
+        YawLabel.setText("Yaw");
+
+        PitchLabel.setText("Pitch");
+
+        RollLabel.setText("Roll");
+
+        XLabel.setText("X");
+
+        YLabel.setText("Y");
+
+        ZLabel.setText("Z");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(drawLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
@@ -133,61 +168,81 @@ public class NewJFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(drawButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(debugLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(moveSelectedObjBtn)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addComponent(randomTriBtn)))
-                .addGap(29, 29, 29)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(objsAndLayersLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(91, 91, 91))
-                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(sliderZ, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(sliderY, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(sliderX, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                            .addComponent(camXYZLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(debugDumpLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(objectCountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(objectCount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(XLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(YLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ZLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(sliderRoll, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                            .addComponent(sliderPitch, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                            .addComponent(sliderYaw, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(YawLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(PitchLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(RollLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(camRotationLabel1))
+                .addContainerGap(123, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(drawLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(debugDumpLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(drawLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(drawButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(48, 48, 48))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(objectCountLabel)
-                            .addComponent(objectCount))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(objsAndLayersLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
                         .addComponent(debugLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(randomTriBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(moveSelectedObjBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                        .addComponent(randomTriBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(camXYZLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(sliderX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(sliderY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(8, 8, 8)
+                                .addComponent(sliderZ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(camRotationLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(sliderYaw, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(YawLabel))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(sliderPitch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(PitchLabel))
+                                .addGap(8, 8, 8)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(sliderRoll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(RollLabel)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(XLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(YLabel)
+                                .addGap(8, 8, 8)
+                                .addComponent(ZLabel)))))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
 
         pack();
@@ -196,20 +251,6 @@ public class NewJFrame extends javax.swing.JFrame {
     private void drawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawButtonActionPerformed
 
         frame.repaint();
-        System.out.println(renderer.layers.size());
-
-        ArrayList<String> strings = new ArrayList<>();
-        ArrayList<String> layers = new ArrayList<>();
-
-        for (Layer layer : renderer.layers) {
-            layers.add(layer.toString());
-            for (GObject ob : layer) {
-                strings.add(ob.getId() + "|" + ob.toString());
-            }
-        }
-
-        layerList.setListData(layers.toArray(String[]::new));
-        objList.setListData(strings.toArray(String[]::new));
 
     }//GEN-LAST:event_drawButtonActionPerformed
 
@@ -221,50 +262,72 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void randomTriBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomTriBtnActionPerformed
 
-        Random random = new Random();
-        int red = random.nextInt(256);   // 0 to 255
-        int green = random.nextInt(256);
-        int blue = random.nextInt(256);
-
-        Color randomColor = new Color(red, green, blue);
-
-        GTri t = new GTri(randomColor, renderer,
-                new GPoint(renderer, new CartesianPoint(ThreadLocalRandom.current().nextInt(-40, 40), ThreadLocalRandom.current().nextInt(-10, 10))),
-                new GPoint(renderer, new CartesianPoint(ThreadLocalRandom.current().nextInt(-40, 40), ThreadLocalRandom.current().nextInt(-10, 10))),
-                new GPoint(renderer, new CartesianPoint(ThreadLocalRandom.current().nextInt(-40, 40), ThreadLocalRandom.current().nextInt(-10, 10)))
-        );
-        
-//        System.out.println(t.getLegA().getStartPoint());
-//        System.out.println(t.getLegA().getEndPoint());
-        int tris = 0, lines = 0, pts = 0;
-        for (Layer layer : renderer.layers) {
-            for (GObject ob : layer) {
-                switch (ob) {
-                    case GTri tri -> tris++;
-                    case GLine line -> lines++;
-                    case GPoint pt -> pts++;
-                    default -> {
-                        ;
-                    }
-                }
-            }
-        }
-        objectCount.setText("pts: "+pts+" | lines: "+lines+" | tris: "+tris+" | lyrs: "+renderer.layers.size());
+//        Random random = new Random();
+//        int red = random.nextInt(256);   // 0 to 255
+//        int green = random.nextInt(256);
+//        int blue = random.nextInt(256);
+//
+//        Color randomColor = new Color(red, green, blue);
+//
+//        GTri t = new GTri(randomColor,
+//                new GPoint(new CartesianPoint(ThreadLocalRandom.current().nextInt(-40, 40), ThreadLocalRandom.current().nextInt(-10, 10))),
+//                new GPoint(new CartesianPoint(ThreadLocalRandom.current().nextInt(-40, 40), ThreadLocalRandom.current().nextInt(-10, 10))),
+//                new GPoint(new CartesianPoint(ThreadLocalRandom.current().nextInt(-40, 40), ThreadLocalRandom.current().nextInt(-10, 10)))
+//        );
         
     }//GEN-LAST:event_randomTriBtnActionPerformed
 
-    private void moveSelectedObjBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moveSelectedObjBtnActionPerformed
-        java.util.List<String> selectedValuesList = objList.getSelectedValuesList();
-        String selectedLayer = layerList.getSelectedValue();
-
-        for (String  selected : selectedValuesList) {
-            String selectedObjId =  selected.substring(0,  selected.indexOf('|'));
-            GObject selectedObj = renderer.findObject(selectedObjId);
-            Layer selectedLayerObj = renderer.findLayer(selectedLayer);
-            renderer.moveObjTo(selectedObj, selectedLayerObj);
-        }
+    private void sliderXStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderXStateChanged
+        int value = sliderX.getValue();
+//        Main.camera.setPosition(Main.camera.getPosition().add(new Vector3(value, 0, 0)));
+        Main.camera.setPosition(new Vector3(
+                value,
+                Main.camera.getPosition().getY(),
+                Main.camera.getPosition().getZ()
+        ));
         frame.repaint();
-    }//GEN-LAST:event_moveSelectedObjBtnActionPerformed
+
+    }//GEN-LAST:event_sliderXStateChanged
+
+    private void sliderYStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderYStateChanged
+        int value = sliderY.getValue();
+//        Main.camera.setPosition(Main.camera.getPosition().add(new Vector3(0, value, 0)));
+        Main.camera.setPosition(new Vector3(
+                Main.camera.getPosition().getX(),
+                value,
+                Main.camera.getPosition().getZ()
+        ));
+        frame.repaint();
+    }//GEN-LAST:event_sliderYStateChanged
+
+    private void sliderZStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderZStateChanged
+        int value = sliderZ.getValue();
+//        Main.camera.setPosition(Main.camera.getPosition().add(new Vector3(0, 0, value)));
+        Main.camera.setPosition(new Vector3(
+                Main.camera.getPosition().getX(),
+                Main.camera.getPosition().getY(),
+                value
+        ));
+        frame.repaint();
+    }//GEN-LAST:event_sliderZStateChanged
+
+    private void sliderYawStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderYawStateChanged
+        int value = sliderYaw.getValue();
+        Main.camera.getRotation().setYaw(value);
+        frame.repaint();
+    }//GEN-LAST:event_sliderYawStateChanged
+
+    private void sliderPitchStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderPitchStateChanged
+        int value = sliderPitch.getValue();
+        Main.camera.getRotation().setPitch(value);
+        frame.repaint();
+    }//GEN-LAST:event_sliderPitchStateChanged
+
+    private void sliderRollStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderRollStateChanged
+        int value = sliderRoll.getValue();
+        Main.camera.getRotation().setRoll(value);
+        frame.repaint();
+    }//GEN-LAST:event_sliderRollStateChanged
 
     public static void run(Renderer r, Executor e, Frame f) {
         renderer = r;
@@ -302,19 +365,24 @@ public class NewJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel PitchLabel;
+    private javax.swing.JLabel RollLabel;
+    private javax.swing.JLabel XLabel;
+    private javax.swing.JLabel YLabel;
+    private javax.swing.JLabel YawLabel;
+    private javax.swing.JLabel ZLabel;
+    private javax.swing.JLabel camRotationLabel1;
+    private javax.swing.JLabel camXYZLabel;
     private java.awt.Button clearButton;
-    private javax.swing.JLabel debugDumpLabel;
     private javax.swing.JLabel debugLabel;
     private java.awt.Button drawButton;
     private javax.swing.JLabel drawLabel;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JList<String> layerList;
-    private javax.swing.JButton moveSelectedObjBtn;
-    private javax.swing.JList<String> objList;
-    private javax.swing.JLabel objectCount;
-    private javax.swing.JLabel objectCountLabel;
-    private javax.swing.JLabel objsAndLayersLbl;
     private javax.swing.JButton randomTriBtn;
+    private javax.swing.JSlider sliderPitch;
+    private javax.swing.JSlider sliderRoll;
+    private javax.swing.JSlider sliderX;
+    private javax.swing.JSlider sliderY;
+    private javax.swing.JSlider sliderYaw;
+    private javax.swing.JSlider sliderZ;
     // End of variables declaration//GEN-END:variables
 }

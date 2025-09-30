@@ -1,4 +1,6 @@
-package com.j3d.engine.geometry.base;
+package com.j3d.engine.geometry.geo2d;
+
+import com.j3d.engine.geometry.base.BasePoint;
 
 /**
  * Dimension, like {@link BasePoint} is a 2 dimensional class, however holding width and height

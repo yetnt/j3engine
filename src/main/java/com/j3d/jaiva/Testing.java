@@ -1,8 +1,7 @@
 package com.j3d.jaiva;
 
 import com.j3d.engine.Renderer;
-import com.j3d.engine.geometry.GLine;
-import com.j3d.engine.geometry.base.CartesianPoint;
+import com.j3d.engine.geometry.geo2d.CartesianPoint;
 import com.jaiva.interpreter.Primitives;
 import com.jaiva.interpreter.Scope;
 import com.jaiva.interpreter.globals.BaseGlobals;

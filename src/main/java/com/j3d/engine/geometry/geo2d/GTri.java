@@ -1,17 +1,18 @@
-package com.j3d.engine.geometry;
+package com.j3d.engine.geometry.geo2d;
 
 import com.j3d.engine.Renderer;
 import com.j3d.engine.events.EventBroadcast;
 import com.j3d.engine.events.EventEmitter;
 import com.j3d.engine.events.EventType;
 import com.j3d.engine.events.ObjectType;
-import com.j3d.engine.geometry.base.CartesianPoint;
 
 import java.awt.*;
 import java.util.*;
 import java.util.List;
 
 import com.j3d.engine.geometry.base.BasePoint;
+import com.j3d.engine.geometry.geo3d.Camera;
+import com.j3d.engine.geometry.geo3d.Vector3;
 
 /**
  * GTri represents a Triangle. What'd you expect kau.
@@ -48,18 +49,18 @@ public class GTri extends GObject{
     }
 
     @Override
-    public void draw(Renderer renderer, Graphics2D graphics2D) {
+    public void draw(Renderer renderer, Graphics2D graphics2D, Camera cam) {
         graphics2D.setColor(col);
         graphics2D.fillPolygon(
                 new int[] {
-                        LegA.getStartPoint().toScreen(renderer).x,
-                        LegA.getEndPoint().toScreen(renderer).x,
-                        LegB.getEndPoint().toScreen(renderer).x
+                        LegA.getStartPoint().toPoint2(cam).toScreen(renderer).x,
+                        LegA.getEndPoint().toPoint2(cam).toScreen(renderer).x,
+                        LegB.getEndPoint().toPoint2(cam).toScreen(renderer).x
                 },
                 new int[] {
-                        LegA.getStartPoint().toScreen(renderer).y,
-                        LegA.getEndPoint().toScreen(renderer).y,
-                        LegB.getEndPoint().toScreen(renderer).y
+                        LegA.getStartPoint().toPoint2(cam).toScreen(renderer).y,
+                        LegA.getEndPoint().toPoint2(cam).toScreen(renderer).y,
+                        LegB.getEndPoint().toPoint2(cam).toScreen(renderer).y
                 },
                 3
         );
@@ -75,7 +76,7 @@ public class GTri extends GObject{
 //                break;
 //            }
             case NODE_DELETED: {
-                // Low key, just delete ourselves. What is a triangle with 2 lines?
+                // Low-key, just delete ourselves. What is a triangle with 2 lines?
                 deleteSelf(properties.renderer);
             }
         }
@@ -83,14 +84,14 @@ public class GTri extends GObject{
 
     /**
      * Constructs a new GTri from 3 points.
+     *
      * @param c The colour
-     * @param renderer Renderer Instance
      * @param A Point A
      * @param B Point B
      * @param C Point C
      */
-    public GTri(Color c, Renderer renderer, GPoint A, GPoint B, GPoint C) {
-        super(renderer, c);
+    public GTri(Color c, GPoint A, GPoint B, GPoint C) {
+        super(c);
 //        attach(A, ObjectType.NODE);
 //        attach(B, ObjectType.NODE);
 //        attach(C, ObjectType.NODE);
@@ -99,9 +100,9 @@ public class GTri extends GObject{
 //        C.attach(this, ObjectType.PARENT);
             // draw the triangle.
 
-        LegA = new GLine(renderer, A, B);
-        LegB = new GLine(renderer, B, C);
-        LegC = new GLine(renderer, C, A);
+        LegA = new GLine(A, B);
+        LegB = new GLine(B, C);
+        LegC = new GLine(C, A);
 
         attach(LegA, ObjectType.NODE);
         attach(LegB, ObjectType.NODE);
@@ -111,23 +112,24 @@ public class GTri extends GObject{
         LegC.attach(this, ObjectType.PARENT);
 
 
-        setPivot(new CartesianPoint(
-                (A.getPivot().x + B.getPivot().x + C.getPivot().x) / 3,
-                (A.getPivot().y + B.getPivot().y + C.getPivot().y) / 3
+        setPivot(new Vector3(
+                (A.getPivot().getX() + B.getPivot().getX() + C.getPivot().getX()) / 3,
+                (A.getPivot().getY() + B.getPivot().getY() + C.getPivot().getY()) / 3,
+                (A.getPivot().getZ() + B.getPivot().getZ() + C.getPivot().getZ()) / 3
         ));
     }
 
-    public GTri(Color c, Renderer r, GLine A, GLine B, GLine C) {
-        super(r, c);
-        CartesianPoint[] points = {
+    public GTri(Color c, GLine A, GLine B, GLine C) {
+        super(c);
+        Vector3[] points = {
                 A.getStartPoint(), A.getEndPoint(),
                 B.getStartPoint(), B.getEndPoint(),
                 C.getStartPoint(), C.getEndPoint()
         };
 
         // Count how many times each unique point appears
-        Map<CartesianPoint, Integer> pointCount = new HashMap<>();
-        for (CartesianPoint p : points) {
+        Map<Vector3, Integer> pointCount = new HashMap<>();
+        for (Vector3 p : points) {
             pointCount.merge(p, 1, Integer::sum);
         }
 
@@ -136,11 +138,11 @@ public class GTri extends GObject{
             throw new IllegalArgumentException("Lines do not form a closed triangle.");
         }
 
-        // Optional: Check for collinearity
-        List<CartesianPoint> vertices = new ArrayList<>(pointCount.keySet());
-        if (BasePoint.areCollinear(vertices.get(0), vertices.get(1), vertices.get(2))) {
-            throw new IllegalArgumentException("Points are collinear—no triangle formed.");
-        }
+        // Optional: Check for collinearity (This was used when points were defined on the 2d space.)
+//        List<Vector3> vertices = new ArrayList<>(pointCount.keySet());
+//        if (BasePoint.areCollinear(vertices.get(0), vertices.get(1), vertices.get(2))) {
+//            throw new IllegalArgumentException("Points are collinear—no triangle formed.");
+//        }
 
         attach(A, ObjectType.NODE);
         attach(B, ObjectType.NODE);
@@ -180,15 +182,11 @@ public class GTri extends GObject{
     }
 
     public double area() {
-        CartesianPoint A = LegA.getStartPoint();
-        CartesianPoint B = LegA.getEndPoint();
-        CartesianPoint C = LegB.getEndPoint(); // assuming LegB connects B → C
+        Vector3 A = LegA.getStartPoint();
+        Vector3 B = LegA.getEndPoint();
+        Vector3 C = LegB.getEndPoint(); // assuming LegB connects B → C
 
-        return 0.5 * Math.abs(
-                A.x * (B.y - C.y) +
-                        B.x * (C.y - A.y) +
-                        C.x * (A.y - B.y)
-        );
+        return Math.abs((B.getX() - A.getX()) * (C.getY() - A.getY()) - (B.getY() - A.getY()) * (C.getX() - A.getX())) / 2;
     }
 
     @Override

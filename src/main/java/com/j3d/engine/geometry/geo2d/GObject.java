@@ -1,11 +1,12 @@
-package com.j3d.engine.geometry;
+package com.j3d.engine.geometry.geo2d;
 
 import com.j3d.engine.Renderer;
 import com.j3d.engine.events.EventBroadcast;
 import com.j3d.engine.events.EventEmitter;
 import com.j3d.engine.events.EventListener;
 import com.j3d.engine.events.EventType;
-import com.j3d.engine.geometry.base.CartesianPoint;
+import com.j3d.engine.geometry.geo3d.Camera;
+import com.j3d.engine.geometry.geo3d.Vector3;
 
 import java.awt.*;
 import java.util.*;
@@ -19,7 +20,7 @@ public abstract class GObject extends EventEmitter implements EventListener {
      * The pivot point of this geometry. Unless a {@link GPoint} where this represents the actual location
      * of the point.
      */
-    private CartesianPoint pivot;
+    private Vector3 pivot;
     /**
      * A Unique UUID to identify this geometry.
      */
@@ -29,29 +30,27 @@ public abstract class GObject extends EventEmitter implements EventListener {
      * Draws this geometry to the screen.
      * @param renderer The Renderer instance
      * @param graphics2D The Graphics2D instance
+     * @param cam The camera.
      * @implNote This is meant to be overridden by inheritors.
      */
-    public void draw(Renderer renderer, Graphics2D graphics2D) {
+    public void draw(Renderer renderer, Graphics2D graphics2D, Camera cam) {
         return;
     }
 
     /**
      * Default Constructor.
      */
-    public GObject(Renderer renderer) {
+    public GObject() {
         Id = UUID.randomUUID().toString();
-        renderer.layers.getFirst().add(this);
     }
 
 
     /**
      * Default Constructor. with color
-     * @param renderer The renderer instance
      * @param colour The colour.
      */
-    public GObject(Renderer renderer, Color colour) {
+    public GObject(Color colour) {
         Id = UUID.randomUUID().toString();
-        renderer.layers.getFirst().add(this);
         col = colour;
     }
 
@@ -59,7 +58,7 @@ public abstract class GObject extends EventEmitter implements EventListener {
      * Returns the pivot point.
      * @return a CartesianPoint
      */
-    public CartesianPoint getPivot() {
+    public Vector3 getPivot() {
         return pivot;
     }
 
@@ -76,7 +75,7 @@ public abstract class GObject extends EventEmitter implements EventListener {
      * Sets the pivot point.
      * @param pivot The new pivot point.
      */
-    public void setPivot(CartesianPoint pivot) {
+    public void setPivot(Vector3 pivot) {
         this.pivot = pivot;
     }
 

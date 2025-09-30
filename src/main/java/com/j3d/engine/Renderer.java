@@ -1,10 +1,10 @@
 package com.j3d.engine;
 
-import com.j3d.engine.geometry.GLine;
-import com.j3d.engine.geometry.GObject;
-import com.j3d.engine.geometry.GPoint;
-import com.j3d.engine.geometry.base.*;
-import com.j3d.engine.geometry.base.Dimension;
+import com.j3d.engine.geometry.geo2d.*;
+import com.j3d.engine.geometry.geo2d.Dimension;
+import com.j3d.engine.geometry.geo3d.Camera;
+import com.j3d.engine.geometry.geo3d.Thing;
+import com.j3d.engine.geometry.geo3d.Vector3;
 
 import java.awt.*;
 import java.util.ArrayDeque;
@@ -23,6 +23,8 @@ public class Renderer {
      * An ArrayDeque of Layers.
      */
     public ArrayDeque<Layer> layers = new ArrayDeque<>();
+
+    public ArrayDeque<GPoint> points = new ArrayDeque<>();
     /**
      * Factor to scale the {@link CartesianPoint} vs {@link ScreenPoint} units.
      * <p>
@@ -52,11 +54,11 @@ public class Renderer {
      * @param l The layer. if null, the default layer is used.
      * @return A new GLine.
      */
-    public GLine line(CartesianPoint A, CartesianPoint B, Layer l) {
+    public GLine line(Vector3 A, Vector3 B, Layer l) {
         l = l == null ? layers.getFirst() : l;
         GPoint gPointA = findOrCreatePoint(A, l);
         GPoint gPointB = findOrCreatePoint(B, l);
-        return new GLine(this, gPointA, gPointB);
+        return new GLine(gPointA, gPointB);
     }
 
     /**
@@ -64,8 +66,8 @@ public class Renderer {
      * @param point Point 1
      * @return A new GPoint
      */
-    public GPoint point(CartesianPoint point) {
-        return new GPoint(this, point);
+    public GPoint point(Vector3 point) {
+        return new GPoint(point);
     }
 
     /**
@@ -85,6 +87,61 @@ public class Renderer {
         graphics.fillOval(screenSize.width / 2 - GPoint.DIAMETER / 2, screenSize.height / 2 - GPoint.DIAMETER / 2, GPoint.DIAMETER, GPoint.DIAMETER);
 
         graphics.setColor(Color.BLACK);
+    }
+
+    /**
+     * Draws the Cartesian XYZ Axis at play.
+     */
+    public void axis(Graphics2D graphics, Camera c) {
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        // Draw X Axis.
+        ScreenPoint A1 = new Vector3(20, 0, 0).toPoint2(c).toScreen(this);
+        ScreenPoint B1 = new Vector3(-20, 0, 0).toPoint2(c).toScreen(this);
+
+        graphics.drawLine(A1.x, A1.y, B1.x, B1.y);
+
+        System.out.println(A1.x);
+        System.out.println(A1.y);
+        System.out.println(B1.x);
+        System.out.println(B1.y);
+
+        // Draw Y Axis.
+        ScreenPoint A2 = new Vector3(0, 20, 0).toPoint2(c).toScreen(this);
+        ScreenPoint B2 = new Vector3(0, -20, 0).toPoint2(c).toScreen(this);
+
+        graphics.drawLine(A2.x, A2.y, B2.x, B2.y);
+
+        System.out.println(A2.x);
+        System.out.println(A2.y);
+        System.out.println(B2.x);
+        System.out.println(B2.y);
+
+        // Draw Z Axis.
+        ScreenPoint A = new Vector3(0, 0, 5).toPoint2(c).toScreen(this);
+        ScreenPoint B = new Vector3(0, 0, -5).toPoint2(c).toScreen(this);
+
+        graphics.drawLine(A.x, A.y, B.x, B.y);
+
+        System.out.println(A.x);
+        System.out.println(A.y);
+        System.out.println(B.x);
+        System.out.println(B.y);
+
+
+        // Optional: draw origin marker
+//        graphics.setColor(Color.RED);
+//        graphics.fillOval(screenSize.width / 2 - GPoint.DIAMETER / 2, screenSize.height / 2 - GPoint.DIAMETER / 2, GPoint.DIAMETER, GPoint.DIAMETER);
+//
+//        graphics.setColor(Color.BLACK);
+    }
+
+    public void drawLine3D(Graphics2D g, Vector3 start, Vector3 end, Camera cam) {
+        ScreenPoint p1 = start.toPoint2(cam).toScreen(this);
+        ScreenPoint p2 = end.toPoint2(cam).toScreen(this);
+        if (p1 != null && p2 != null) {
+            g.drawLine(p1.x, p1.y, p2.x, p2.y);
+        }
     }
 
     /**
@@ -128,24 +185,30 @@ public class Renderer {
      * @param l The {@link Layer} to search within. If {@code null}, the first layer is used.
      * @return An existing or newly created {@link GPoint} corresponding to the target {@link CartesianPoint}.
      */
-    public GPoint findOrCreatePoint(CartesianPoint target, Layer l) {
+    public GPoint findOrCreatePoint(Vector3 target, Layer l) {
         // Iterate through existing objects to find a matching point
-        for (GObject obj : l == null ? layers.getFirst() : l) {
-            if (obj instanceof GPoint gp && gp.getPivot().equals(target)) {
-                // Found an existing point, return it.
-                return gp;
+        for (Thing t : l == null ? layers.getFirst() : l) {
+            for (GObject obj : t.getObjects()) {
+                if (obj instanceof GPoint gp && gp.getPivot().equals(target)) {
+                    // Found an existing point, return it.
+                    return gp;
+                }
             }
         }
-        return new GPoint(this, target);
+        GPoint point = new GPoint(target);
+        // parent it to the first Thing
+        layers.getFirst().getFirst().getObjects().add(point);
+        return point;
     }
     
     /**
      * Draws all objects in all layers to the screen.
      *
      * @param graphics The Graphics2D object to draw on.
+     * @param camera The camera instance.
      */
-    public void draw(Graphics2D graphics) {
-            layers.forEach(layer -> layer.draw(this, graphics));
+    public void draw(Graphics2D graphics, Camera camera) {
+            layers.forEach(layer -> layer.draw(this, graphics, camera));
     }
 
     /**
@@ -157,11 +220,13 @@ public class Renderer {
     public GPoint findPointNearCursor(CartesianPoint mousePos, double snapRadius) {
         double snapRadiusSquared = snapRadius * snapRadius;
         for (Layer layer : layers) {
-            for (GObject obj : layer) {
-                if (obj instanceof GPoint point) {
-                    double distanceSq = point.getPivot().distanceSquaredTo(mousePos);
-                    if (distanceSq <= snapRadiusSquared) {
-                        return point; // Found a point to drag!
+            for (Thing t : layer) {
+                for (GObject obj : t.getObjects()) {
+                    if (obj instanceof GPoint point) {
+                        double distanceSq = point.getPivot().distanceSquaredTo(mousePos);
+                        if (distanceSq <= snapRadiusSquared) {
+                            return point; // Found a point to drag!
+                        }
                     }
                 }
             }
@@ -175,17 +240,17 @@ public class Renderer {
      * @param point The GPoint to move.
      * @param newPosition The new CartesianPoint position for the GPoint.
      */
-    public void movePointTo(GPoint point, CartesianPoint newPosition) {
+    public void movePointTo(GPoint point, Vector3 newPosition) {
         point.setPivot(this, newPosition);
     }
 
     /**
-     * Moves a {@link GObject} from its current {@link Layer} to a {@code differentLayer}.
-     * @param obj The {@link GObject} to move.
+     * Moves a {@link Thing} from its current {@link Layer} to a {@code differentLayer}.
+     * @param obj The {@link Thing} to move.
      * @param differentLayer The target {@link Layer} to move the object to.
      * @return {@code true} if the object was successfully moved, {@code false} otherwise (e.g., if the object was not found in any layer).
      */
-    public boolean moveObjTo(GObject obj, Layer differentLayer) {
+    public boolean moveObjTo(Thing obj, Layer differentLayer) {
         for (Layer layer : layers) {
             if (layer.remove(obj)) {
                 differentLayer.add(obj);
@@ -200,11 +265,13 @@ public class Renderer {
      * @param Id The unique ID of the object to find.
      * @return The {@link GObject} with the matching ID, or {@code null} if no such object is found.
      */
-    public GObject findObject(String Id) {
+    public GObject findThing(String Id) {
         for (Layer layer : layers) {
-            for (GObject obj : layer) {
-                if (obj.getId().equals(Id)) {
-                    return obj;
+            for (Thing t : layer) {
+                for (GObject obj : t.getObjects()) {
+                    if (obj.getId().equals(Id)) {
+                        return obj;
+                    }
                 }
             }
         }

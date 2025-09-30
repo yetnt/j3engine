@@ -1,7 +1,7 @@
 package com.j3d.engine.events;
 
 import com.j3d.engine.Renderer;
-import com.j3d.engine.geometry.GObject;
+import com.j3d.engine.geometry.geo2d.GObject;
 
 import java.util.ArrayList;
 
