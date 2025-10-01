@@ -4,11 +4,15 @@
  */
 package com.j3d;
 
+import com.j3d.engine.Layer;
 import com.j3d.engine.Renderer;
+import com.j3d.engine.geometry.geo2d.GPoint;
+import com.j3d.engine.geometry.geo2d.GTri;
+import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.Vector3;
 
 import java.awt.*;
-import java.util.ArrayDeque;
+import java.util.Random;
 
 /**
  *
@@ -102,7 +106,8 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
-        sliderZ.setMinimum(-100);
+        sliderZ.setMaximum(50);
+        sliderZ.setMinimum(-50);
         sliderZ.setValue(0);
         sliderZ.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -249,31 +254,39 @@ public class NewJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void drawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawButtonActionPerformed
-
         frame.repaint();
-
     }//GEN-LAST:event_drawButtonActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        renderer.layers.forEach(ArrayDeque::clear);
+        renderer.layers.forEach(frame -> {
+            if (!frame.getIdentifier().equals(Layer.backgroundId)) frame.clear();
+        });
         frame.repaint();
         
     }//GEN-LAST:event_clearButtonActionPerformed
 
     private void randomTriBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomTriBtnActionPerformed
+        Random random = new Random();
+        int red = random.nextInt(256);   // 0 to 255
+        int green = random.nextInt(256);
+        int blue = random.nextInt(256);
+//
+        Color randomColor = new Color(red, green, blue);
 
-//        Random random = new Random();
-//        int red = random.nextInt(256);   // 0 to 255
-//        int green = random.nextInt(256);
-//        int blue = random.nextInt(256);
-//
-//        Color randomColor = new Color(red, green, blue);
-//
-//        GTri t = new GTri(randomColor,
-//                new GPoint(new CartesianPoint(ThreadLocalRandom.current().nextInt(-40, 40), ThreadLocalRandom.current().nextInt(-10, 10))),
-//                new GPoint(new CartesianPoint(ThreadLocalRandom.current().nextInt(-40, 40), ThreadLocalRandom.current().nextInt(-10, 10))),
-//                new GPoint(new CartesianPoint(ThreadLocalRandom.current().nextInt(-40, 40), ThreadLocalRandom.current().nextInt(-10, 10)))
-//        );
+        Vector3 lowerBound = new Vector3(-10 , -10, -10);
+        Vector3 upperBound = new Vector3(10 , 10, 10);
+
+        GPoint[] gps = new GPoint[]{
+                new GPoint(Vector3.random(lowerBound, upperBound)),
+                new GPoint(Vector3.random(lowerBound, upperBound)),
+                new GPoint(Vector3.random(lowerBound, upperBound))
+        };
+
+        GTri t = new GTri(randomColor,
+                gps[0], gps[1], gps[2]
+        );
+
+        Thing g = new Thing(renderer, null).addObjs(t, gps[0], gps[1], gps[2]);
         
     }//GEN-LAST:event_randomTriBtnActionPerformed
 
