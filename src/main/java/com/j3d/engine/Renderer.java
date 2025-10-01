@@ -8,6 +8,7 @@ import com.j3d.engine.geometry.geo3d.Vector3;
 
 import java.awt.*;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 
 /**
  * Renderer is a class responsible for the creation of {@link GObject}s and handling of what's going on in the
@@ -22,7 +23,7 @@ public class Renderer {
     /**
      * An ArrayDeque of Layers.
      */
-    public ArrayDeque<Layer> layers = new ArrayDeque<>();
+    public ArrayList<Layer> layers = new ArrayList<>();
 
     public ArrayDeque<GPoint> points = new ArrayDeque<>();
     /**
@@ -43,7 +44,9 @@ public class Renderer {
      */
     public Renderer(Dimension dim) {
         screenSize = dim;
-        layers.add(new Layer("background")); // the default layer
+        Layer bg = new Layer(Layer.backgroundId);
+        layers.add(bg); // the default layer
+        bg.add(new Thing(this, bg));
         layers.add(new Layer()); // testing layer.
     }
 
@@ -55,7 +58,7 @@ public class Renderer {
      * @return A new GLine.
      */
     public GLine line(Vector3 A, Vector3 B, Layer l) {
-        l = l == null ? layers.getFirst() : l;
+        l = l == null ? layers.get(1) : l;
         GPoint gPointA = findOrCreatePoint(A, l);
         GPoint gPointB = findOrCreatePoint(B, l);
         return new GLine(gPointA, gPointB);
@@ -90,58 +93,55 @@ public class Renderer {
     }
 
     /**
-     * Draws the Cartesian XYZ Axis at play.
+     * Draws the 3D Cartesian axes (X, Y, Z) in the scene, relative to the camera's position.
+     * The length of the axes is scaled based on the camera's distance from the origin.
+     * @param g The Graphics2D object to draw on.
+     * @param camera The camera instance used for perspective transformation.
      */
-    public void axis(Graphics2D graphics, Camera c) {
-        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    public void axis(Graphics2D g, Camera camera) {
+        double axisLength = camera.getPosition().magnitude() * 0.9;
+        Vector3 origin = new Vector3(0, 0, 0);
+        Vector3 offset = new Vector3(0, 0, 0); // avoids collapse
 
-        // Draw X Axis.
-        ScreenPoint A1 = new Vector3(20, 0, 0).toPoint2(c).toScreen(this);
-        ScreenPoint B1 = new Vector3(-20, 0, 0).toPoint2(c).toScreen(this);
+        g.setColor(Color.RED);
+        this.drawLine3D(g, origin.add(offset), origin.add(new Vector3(axisLength, 0, 0)), camera);
+        this.drawText3D(g, origin.add(new Vector3(axisLength+5, 0, 0)), "X", camera);
 
-        graphics.drawLine(A1.x, A1.y, B1.x, B1.y);
+        g.setColor(Color.GREEN);
+        this.drawLine3D(g, origin.add(offset), origin.add(new Vector3(0, axisLength, 0)), camera);
+        this.drawText3D(g, origin.add(new Vector3(0, axisLength+5, 0)), "Y", camera);
 
-        System.out.println(A1.x);
-        System.out.println(A1.y);
-        System.out.println(B1.x);
-        System.out.println(B1.y);
-
-        // Draw Y Axis.
-        ScreenPoint A2 = new Vector3(0, 20, 0).toPoint2(c).toScreen(this);
-        ScreenPoint B2 = new Vector3(0, -20, 0).toPoint2(c).toScreen(this);
-
-        graphics.drawLine(A2.x, A2.y, B2.x, B2.y);
-
-        System.out.println(A2.x);
-        System.out.println(A2.y);
-        System.out.println(B2.x);
-        System.out.println(B2.y);
-
-        // Draw Z Axis.
-        ScreenPoint A = new Vector3(0, 0, 5).toPoint2(c).toScreen(this);
-        ScreenPoint B = new Vector3(0, 0, -5).toPoint2(c).toScreen(this);
-
-        graphics.drawLine(A.x, A.y, B.x, B.y);
-
-        System.out.println(A.x);
-        System.out.println(A.y);
-        System.out.println(B.x);
-        System.out.println(B.y);
-
-
-        // Optional: draw origin marker
-//        graphics.setColor(Color.RED);
-//        graphics.fillOval(screenSize.width / 2 - GPoint.DIAMETER / 2, screenSize.height / 2 - GPoint.DIAMETER / 2, GPoint.DIAMETER, GPoint.DIAMETER);
-//
-//        graphics.setColor(Color.BLACK);
+        g.setColor(Color.BLUE);
+        this.drawLine3D(g, origin.add(offset), origin.add(new Vector3(0, 0, axisLength)), camera);
+        this.drawText3D(g, origin.add(new Vector3(0, 0, axisLength+5)), "Z", camera);
     }
 
     public void drawLine3D(Graphics2D g, Vector3 start, Vector3 end, Camera cam) {
-        ScreenPoint p1 = start.toPoint2(cam).toScreen(this);
-        ScreenPoint p2 = end.toPoint2(cam).toScreen(this);
+        ScreenPoint p1 = start.toPoint(cam).toScreen(this);
+        ScreenPoint p2 = end.toPoint(cam).toScreen(this);
         if (p1 != null && p2 != null) {
             g.drawLine(p1.x, p1.y, p2.x, p2.y);
         }
+    }
+
+    /**
+     * Draws 3D text at a specified location in the scene.
+     *
+     * @param g The Graphics2D object to draw on.
+     * @param location The 3D {@link Vector3} coordinates where the text should be drawn.
+     * @param text The string to be drawn.
+     * @param cam The {@link Camera} instance used for perspective transformation.
+     */
+    public void drawText3D(Graphics2D g, Vector3 location, String text, Camera cam) {
+        ScreenPoint p = location.toPoint(cam).toScreen(this);
+        FontMetrics fm = g.getFontMetrics();
+        int width = fm.stringWidth(text);
+        int height = fm.getHeight();
+
+        g.setColor(new Color(255, 255, 255, 111));
+        g.fillRect(p.x, p.y - height, width, height);
+        g.setColor(new Color(255, 255, 255, 255));
+        g.drawString(text, p.x, p.y - 2);
     }
 
     /**

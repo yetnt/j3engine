@@ -28,9 +28,9 @@ public class Main extends JPanel {
     public static boolean run = true;
     public static Frame f = null;
     public static Camera camera = new Camera()
-            .setPosition(new Vector3(10, 10, 10))
+            .setPosition(new Vector3(20, 20, -20))
             .setRotation(new Rotation(0, 0, 0))
-            .setProjectionPlane(new Vector3(0, 0, 1));
+            .setProjectionPlane(new Vector3(0, 0, 50));
 
     private GPoint currentlyDragging = null;
     private static final double SNAP_RADIUS = 2.0;
@@ -89,20 +89,6 @@ public class Main extends JPanel {
     public void paint(Graphics g) {
         if (!run) {
 //            renderer.axis((Graphics2D) g, camera);
-            double axisLength = camera.getPosition().magnitude() * 0.9;
-            Vector3 origin = new Vector3(0, 0, 0);
-            Vector3 offset = new Vector3(0.01, 0.01, 0.01); // avoids collapse
-
-            g.setColor(Color.RED);
-            renderer.drawLine3D((Graphics2D) g, origin.add(offset), origin.add(new Vector3(axisLength, 0, 0)), camera);
-
-            g.setColor(Color.GREEN);
-            renderer.drawLine3D((Graphics2D) g, origin.add(offset), origin.add(new Vector3(0, axisLength, 0)), camera);
-
-            g.setColor(Color.BLUE);
-            renderer.drawLine3D((Graphics2D) g, origin.add(offset), origin.add(new Vector3(0, 0, axisLength)), camera);
-
-            g.setColor(Color.BLACK);
             renderer.draw((Graphics2D) g, camera);
             return;
         }
@@ -112,6 +98,7 @@ public class Main extends JPanel {
         NewJFrame.run(renderer, executor, f);
         executor.run((Graphics2D) g);
         run = false;
+        renderer.draw((Graphics2D) g, camera);
     }
 
     @Override

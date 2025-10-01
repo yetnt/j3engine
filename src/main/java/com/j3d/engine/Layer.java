@@ -6,6 +6,9 @@ import com.j3d.engine.geometry.geo3d.Thing;
 
 import java.awt.*;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Objects;
 
 /**
  * A {@code Layer} is a fundamental concept in the rendering pipeline, representing a
@@ -38,9 +41,11 @@ import java.util.ArrayDeque;
  * @see GObject
  * @see ArrayDeque
  */
-public class Layer extends ArrayDeque<Thing> {
+public class Layer extends ArrayList<Thing> {
 
     private final String identifier;
+
+    public static final String backgroundId = "BACKG";
 
     /**
      * Default Constructor
@@ -87,7 +92,9 @@ public class Layer extends ArrayDeque<Thing> {
      * @param camera The {@code Camera} instance.
      */
     public void draw(Renderer renderer,Graphics2D graphics2D, Camera camera) {
-        for (Thing o : this) {
+        if (!getIdentifier().equals(backgroundId))
+            sort(Comparator.comparingDouble(t -> t.getCentroid().distance(camera.getPosition())));
+        for (Thing o : this.reversed()) {
             o.draw(renderer, graphics2D, camera);
         }
     }
