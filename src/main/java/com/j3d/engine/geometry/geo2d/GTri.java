@@ -77,6 +77,7 @@ public class GTri extends GObject{
         switch (event) {
             case NODE_UPDATED: {
                 GLine.Event prop = (GLine.Event) properties;// In this case the line already moved itself, so we just need to redraw the tri.
+                calcNormal(LegA.getStartPoint(), LegA.getEndPoint(), LegB.getEndPoint());
                 break;
             }
             case NODE_DELETED: {
