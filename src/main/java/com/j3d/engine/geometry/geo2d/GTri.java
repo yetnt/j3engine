@@ -8,9 +8,7 @@ import com.j3d.engine.events.ObjectType;
 
 import java.awt.*;
 import java.util.*;
-import java.util.List;
 
-import com.j3d.engine.geometry.base.BasePoint;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.Vector3;
 
@@ -30,6 +28,11 @@ public class GTri extends GObject{
      * Leg C, connected to Leg A and Leg B
      */
     private GLine LegC;
+
+    /**
+     * The normal of the triangle.
+     */
+    public Vector3 normal;
 
     public static class Event extends EventBroadcast {
 
@@ -53,33 +56,46 @@ public class GTri extends GObject{
         graphics2D.setColor(col);
         graphics2D.fillPolygon(
                 new int[] {
-                        LegA.getStartPoint().toPoint2(cam).toScreen(renderer).x,
-                        LegA.getEndPoint().toPoint2(cam).toScreen(renderer).x,
-                        LegB.getEndPoint().toPoint2(cam).toScreen(renderer).x
+                        LegA.getStartPoint().toPoint(cam).toScreen(renderer).x,
+                        LegA.getEndPoint().toPoint(cam).toScreen(renderer).x,
+                        LegB.getEndPoint().toPoint(cam).toScreen(renderer).x
                 },
                 new int[] {
-                        LegA.getStartPoint().toPoint2(cam).toScreen(renderer).y,
-                        LegA.getEndPoint().toPoint2(cam).toScreen(renderer).y,
-                        LegB.getEndPoint().toPoint2(cam).toScreen(renderer).y
+                        LegA.getStartPoint().toPoint(cam).toScreen(renderer).y,
+                        LegA.getEndPoint().toPoint(cam).toScreen(renderer).y,
+                        LegB.getEndPoint().toPoint(cam).toScreen(renderer).y
                 },
                 3
         );
+        // The following code draws the normal
+        graphics2D.setColor(Color.RED);
+        renderer.drawLine3D(graphics2D, getPivot(), getPivot().add(normal.mult(0.5)), cam);
     }
 
     @Override
     public void onEvent(EventType event, EventBroadcast properties) {
         switch (event) {
-//            case NODE_UPDATED: {
-//                if (properties instanceof GLine.Event prop) {
-//                    // In this case the line already moved itself, so we just need to redraw the tri.
-//                }
-//                break;
-//            }
+            case NODE_UPDATED: {
+                GLine.Event prop = (GLine.Event) properties;// In this case the line already moved itself, so we just need to redraw the tri.
+                break;
+            }
             case NODE_DELETED: {
                 // Low-key, just delete ourselves. What is a triangle with 2 lines?
                 deleteSelf(properties.renderer);
             }
         }
+    }
+
+    /**
+     * Calculates the normal vector of the triangle given three vertices.
+     * @param A The first vertex of the triangle.
+     * @param B The second vertex of the triangle.
+     * @param C The third vertex of the triangle.
+     */
+    public void calcNormal(Vector3 A, Vector3 B, Vector3 C) {
+        Vector3 AB = B.sub(A);
+        Vector3 AC = C.sub(A);
+        normal = AB.cross(AC).normalize();
     }
 
     /**
@@ -111,12 +127,9 @@ public class GTri extends GObject{
         LegB.attach(this, ObjectType.PARENT);
         LegC.attach(this, ObjectType.PARENT);
 
+        setPivot(A.getPivot().add(B.getPivot()).add(C.getPivot()).div(3));
 
-        setPivot(new Vector3(
-                (A.getPivot().getX() + B.getPivot().getX() + C.getPivot().getX()) / 3,
-                (A.getPivot().getY() + B.getPivot().getY() + C.getPivot().getY()) / 3,
-                (A.getPivot().getZ() + B.getPivot().getZ() + C.getPivot().getZ()) / 3
-        ));
+        calcNormal(A.getPivot(), B.getPivot(), C.getPivot());
     }
 
     public GTri(Color c, GLine A, GLine B, GLine C) {
@@ -154,6 +167,10 @@ public class GTri extends GObject{
         LegA = A;
         LegB = B;
         LegC = C;
+
+        setPivot(A.getStartPoint().add(B.getStartPoint()).add(C.getStartPoint()).div(3));
+
+        calcNormal(A.getStartPoint(), B.getStartPoint(), C.getStartPoint());
     }
 
 

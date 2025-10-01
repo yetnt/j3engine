@@ -1,18 +1,17 @@
 package com.j3d.engine.geometry.geo3d;
 
-import com.j3d.engine.geometry.base.BasePoint;
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
- * Vector3 is a simple class that holds 3 double values, x, y, and z.
- * <p>
- *     In it's current state, it is not used by the engine, but will be when all 2d geometry is implemented and battle tested.
- *</p>
+ * Represents a 3D vector with X, Y, and Z components.
  */
+
 public class Vector3 {
     private final double X;
     private final double Y;
@@ -47,69 +46,111 @@ public class Vector3 {
     }
 
     /**
-     * Normalizes the given vector.
-     * @param v The vector to normalize.
+     * Normalizes the vector
      * @return A new normalized Vector3.
      */
-    public static Vector3 normalize(Vector3 v) {
-        double magnitude = Math.sqrt(v.getX() * v.getX() + v.getY() * v.getY() + v.getZ() * v.getZ());
-        return new Vector3(v.getX() / magnitude, v.getY() / magnitude, v.getZ() / magnitude);
+    public Vector3 normalize() {
+        double magnitude = Math.sqrt(X * X + Y * Y + Z * Z);
+        return new Vector3(X / magnitude, Y / magnitude, Z / magnitude);
+    }
+
+    /**
+     * Adds two vectors together.
+     * @param v The vector to add.
+     * @return A new vector
+     */
+    public Vector3 add(Vector3 v) {
+        return new Vector3(this.X + v.X, this.Y + v.Y, this.Z + v.Z);
+    }
+
+    /**
+     * Calculates the magnitude (length) of the vector.
+     * @return The magnitude of the vector.
+     */
+    public double magnitude() {
+        return Math.sqrt(this.X * this.X + this.Y * this.Y + this.Z * this.Z);
+    }
+
+    /**
+     * Multiplies the vector by a scalar value.
+     * @param scalar The scalar value to multiply by.
+     * @return A new Vector3 with the scaled values.
+     */
+    public Vector3 mult(double scalar) {
+        return new Vector3(this.X * scalar, this.Y * scalar, this.Z * scalar);
+    }
+
+    /**
+     * Multiplies this vector by another vector component-wise.
+     * @param B The vector to multiply by.
+     * @return A new Vector3 with the component-wise product.
+     */
+    public Vector3 mult(Vector3 B) {
+        return new Vector3(this.X * B.getX(), this.Y * B.getY(), this.Z * B.getZ());
+    }
+
+    /**
+     * Divides the vector by a scalar value.
+     * @param scalar The scalar value to divide by.
+     * @return A new Vector3 with the divided values.
+     */
+    public Vector3 div(double scalar) {
+        return new Vector3(this.X / scalar, this.Y / scalar, this.Z / scalar);
+    }
+
+    /**
+     * Calculates the cross product of this vector and another vector.
+     * @param B The other vector.
+     * @return A new Vector3 representing the cross product.
+     */
+    public Vector3 cross(Vector3 B) {
+        return new Vector3(
+                Y * B.getZ() - Z * B.getY(),
+                Z * B.getX() - X * B.getZ(),
+                X * B.getY() - Y * B.getX()
+        );
+    }
+
+    /**
+     * Subtracts another vector from this vector.
+     * @param B The vector to subtract.
+     * @return A new Vector3 representing the result of the subtraction.
+     */
+    public Vector3 sub(Vector3 B) {
+        return new Vector3(this.X - B.X, this.Y - B.Y, this.Z - B.Z);
+    }
+
+    /**
+     * Calculates the Euclidean distance between this vector and another vector.
+     * @param B The other vector.
+     * @return The distance between the two vectors.
+     */
+    public double distance(Vector3 B) {
+        return Math.sqrt(Math.pow(X - B.getX(), 2) + Math.pow(Y - B.getY(), 2) + Math.pow(Z - B.getZ(), 2));
+    }
+
+    /**
+     * Generates a random Vector3 within a specified range.
+     * @param low The lower bound vector.
+     * @param high The upper bound vector.
+     * @return A new random Vector3.
+     */
+    public static Vector3 random(Vector3 low, Vector3 high) {
+        return new Vector3(
+                Math.random() * (high.getX() - low.getX()) + low.getX(),
+                Math.random() * (high.getY() - low.getY()) + low.getY(),
+                Math.random() * (high.getZ() - low.getZ()) + low.getZ()
+        );
     }
 
     /**
      * Projects this 3D vector onto a 2D Cartesian plane based on the camera's properties.
      *
-     * @param camera The camera defining the viewpoint and projection.
+     * @param cam The camera defining the viewpoint and projection.
      * @return The resulting 2D {@link CartesianPoint}.
+     * @see <a href="https://en.wikipedia.org/wiki/3D_projection#Mathematical_formula">3D Projection:(Perspective) Mathematical Formula</a>
      */
-    public CartesianPoint toPoint(Camera camera) {
-        // camera properties
-        Vector3 cameraPos = camera.getPosition();
-        Rotation cameraRot = camera.getRotation();
-        Vector3 projectionPlane = camera.getProjectionPlane();
-
-        // translate the point relative to the camera's position
-        double pointX = this.getX() - cameraPos.getX();
-        double pointY = this.getY() - cameraPos.getY();
-        double pointZ = this.getZ() - cameraPos.getZ();
-
-        // rotate the point based on the camera's rotation (Tait-Bryan angles)
-        double sYaw = Math.sin(cameraRot.getYaw());
-        double cYaw = Math.cos(cameraRot.getYaw());
-        double sPitch = Math.sin(cameraRot.getPitch());
-        double cPitch = Math.cos(cameraRot.getPitch());
-        double sRoll = Math.sin(cameraRot.getRoll());
-        double cRoll = Math.cos(cameraRot.getRoll());
-
-        // Apply rotation matrix (Yaw, then Pitch, then Roll)
-        // This is a combined rotation matrix multiplication.
-        double d_x = cYaw * (sPitch * pointY + cPitch * pointZ) - sYaw * pointX;
-        double common = sYaw * (sPitch * pointY + cPitch * pointZ) + cYaw * pointX;
-        double d_y = sRoll * (cPitch * pointY - sPitch * pointZ) + cRoll * common;
-        double d_z = cRoll * (cPitch * pointY - sPitch * pointZ) - sRoll * common;
-
-        // Apply perspective projection
-        // Check to avoid division by zero if a point is at the same z-level as the camera's focal point
-        if (d_z <= 0) {
-            // This point is behind or on the camera plane, it cannot be projected.
-            // Returning a point far off-screen is one way to handle this.
-            return new CartesianPoint(Double.MAX_VALUE, Double.MAX_VALUE);
-        }
-        /*
-        if (d_z < 1e-5) { // Use a small epsilon for a near clipping plane
-            // This point is behind or on the camera plane, it cannot be projected.
-            // Returning a point far off-screen is one way to handle this.
-            return new CartesianPoint(Double.MAX_VALUE, Double.MAX_VALUE);
-        }
-         */
-
-        double b_x = (projectionPlane.getZ() / d_z) * d_x - projectionPlane.getX();
-        double b_y = (projectionPlane.getZ() / d_z) * d_y - projectionPlane.getY();
-
-        return new CartesianPoint(b_x, b_y);
-    }
-
-    public CartesianPoint toPoint2(Camera cam) {
+    public CartesianPoint toPoint(Camera cam) {
         Vector3 a = this;
         Vector3 c = cam.getPosition();
         Vector3 theta = cam.getRotation().toRadVector3();
@@ -162,12 +203,12 @@ public class Vector3 {
         return dx * dx + dy * dy + dz * dz;
     }
 
-    public Vector3 add(Vector3 v) {
-        return new Vector3(this.X + v.X, this.Y + v.Y, this.Z + v.Z);
-    }
-
-    public double magnitude() {
-        return Math.sqrt(this.X * this.X + this.Y * this.Y + this.Z * this.Z);
+    public static Vector3 reduce(ArrayList<Vector3> vectors, BiFunction<Vector3, Vector3, Vector3> reducer) {
+        Vector3 result = vectors.getFirst();
+        for (int i = 1; i < vectors.size(); i++) {
+            result = reducer.apply(result, vectors.get(i));
+        }
+        return result;
     }
 
     @Override

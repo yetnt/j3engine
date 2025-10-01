@@ -144,7 +144,7 @@ public class GPoint extends GObject {
     public void draw(Renderer renderer, Graphics2D graphics2D, Camera cam) {
         renderer.points.add(this);
         graphics2D.setColor(col);
-        ScreenPoint p = this.getPivot().toPoint2(cam).toScreen(renderer);
+        ScreenPoint p = this.getPivot().toPoint(cam).toScreen(renderer);
         graphics2D.fillOval(p.x - DIAMETER / 2, p.y - DIAMETER / 2, DIAMETER, DIAMETER);
     }
 

@@ -30,10 +30,10 @@ public class GLine extends GObject {
     public void draw(Renderer renderer, Graphics2D graphics2D, Camera cam) {
         graphics2D.setColor(col);
         graphics2D.drawLine(
-                startPoint.getPivot().toPoint2(cam).toScreen(renderer).x,
-                startPoint.getPivot().toPoint2(cam).toScreen(renderer).y,
-                endPoint.getPivot().toPoint2(cam).toScreen(renderer).x,
-                endPoint.getPivot().toPoint2(cam).toScreen(renderer).y
+                startPoint.getPivot().toPoint(cam).toScreen(renderer).x,
+                startPoint.getPivot().toPoint(cam).toScreen(renderer).y,
+                endPoint.getPivot().toPoint(cam).toScreen(renderer).x,
+                endPoint.getPivot().toPoint(cam).toScreen(renderer).y
         );
     }
 
