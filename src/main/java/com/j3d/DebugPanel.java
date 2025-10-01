@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package com.j3d;
 
@@ -11,6 +11,7 @@ import com.j3d.engine.geometry.geo2d.GTri;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.Vector3;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
@@ -18,17 +19,25 @@ import java.util.Random;
  *
  * @author ACER
  */
-public class NewJFrame extends javax.swing.JFrame {
-    
-    public static Executor executor = null;
-    public static Renderer renderer = null;
-    public static Frame frame = null;
+public class DebugPanel extends javax.swing.JPanel {
+
+    public Executor executor = null;
+    public Renderer renderer = null;
+    public Frame frame = null;
+
 
     /**
-     * Creates new form NewJFrame
+     * Creates new form NewJPanel
      */
-    public NewJFrame() {
+    public DebugPanel() {
         initComponents();
+        try {
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            SwingUtilities.updateComponentTreeUI(this); // 'this' refers to the panel
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -40,15 +49,6 @@ public class NewJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        drawButton = new java.awt.Button();
-        clearButton = new java.awt.Button();
-        randomTriBtn = new javax.swing.JButton();
-        debugLabel = new javax.swing.JLabel();
-        drawLabel = new javax.swing.JLabel();
-        sliderX = new javax.swing.JSlider();
-        sliderY = new javax.swing.JSlider();
-        sliderZ = new javax.swing.JSlider();
-        camXYZLabel = new javax.swing.JLabel();
         sliderYaw = new javax.swing.JSlider();
         sliderPitch = new javax.swing.JSlider();
         sliderRoll = new javax.swing.JSlider();
@@ -58,9 +58,57 @@ public class NewJFrame extends javax.swing.JFrame {
         RollLabel = new javax.swing.JLabel();
         XLabel = new javax.swing.JLabel();
         YLabel = new javax.swing.JLabel();
+        drawButton = new java.awt.Button();
+        clearButton = new java.awt.Button();
+        randomTriBtn = new javax.swing.JButton();
+        debugLabel = new javax.swing.JLabel();
+        drawLabel = new javax.swing.JLabel();
+        sliderX = new javax.swing.JSlider();
+        sliderY = new javax.swing.JSlider();
+        sliderZ = new javax.swing.JSlider();
         ZLabel = new javax.swing.JLabel();
+        camXYZLabel = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        sliderYaw.setMaximum(180);
+        sliderYaw.setMinimum(-180);
+        sliderYaw.setValue(0);
+        sliderYaw.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sliderYawStateChanged(evt);
+            }
+        });
+
+        sliderPitch.setMaximum(180);
+        sliderPitch.setMinimum(-180);
+        sliderPitch.setValue(0);
+        sliderPitch.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sliderPitchStateChanged(evt);
+            }
+        });
+
+        sliderRoll.setMaximum(180);
+        sliderRoll.setMinimum(-180);
+        sliderRoll.setValue(0);
+        sliderRoll.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sliderRollStateChanged(evt);
+            }
+        });
+
+        camRotationLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        camRotationLabel1.setText("Cam Rotation");
+
+        YawLabel.setText("Yaw");
+
+        PitchLabel.setText("Pitch");
+
+        RollLabel.setText("Roll");
+
+        XLabel.setText("X");
+
+        YLabel.setText("Y");
 
         drawButton.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         drawButton.setLabel("draw");
@@ -115,57 +163,19 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
+        ZLabel.setText("Z");
+
         camXYZLabel.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         camXYZLabel.setText("Cam XYZ");
 
-        sliderYaw.setMaximum(180);
-        sliderYaw.setMinimum(-180);
-        sliderYaw.setValue(0);
-        sliderYaw.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                sliderYawStateChanged(evt);
-            }
-        });
+        jTextField1.setText("cmd");
 
-        sliderPitch.setMaximum(180);
-        sliderPitch.setMinimum(-180);
-        sliderPitch.setValue(0);
-        sliderPitch.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                sliderPitchStateChanged(evt);
-            }
-        });
-
-        sliderRoll.setMaximum(180);
-        sliderRoll.setMinimum(-180);
-        sliderRoll.setValue(0);
-        sliderRoll.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                sliderRollStateChanged(evt);
-            }
-        });
-
-        camRotationLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        camRotationLabel1.setText("Cam Rotation");
-
-        YawLabel.setText("Yaw");
-
-        PitchLabel.setText("Pitch");
-
-        RollLabel.setText("Roll");
-
-        XLabel.setText("X");
-
-        YLabel.setText("Y");
-
-        ZLabel.setText("Z");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(35, 35, 35)
+                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(drawLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
@@ -173,17 +183,15 @@ public class NewJFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(drawButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(debugLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(randomTriBtn)))
+                    .addComponent(randomTriBtn))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(sliderZ, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addComponent(sliderY, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(sliderX, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
-                            .addComponent(camXYZLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(sliderX, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(camXYZLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(XLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -191,16 +199,17 @@ public class NewJFrame extends javax.swing.JFrame {
                             .addComponent(ZLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(sliderRoll, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                            .addComponent(sliderRoll, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
                             .addComponent(sliderPitch, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                            .addComponent(sliderYaw, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
+                            .addComponent(sliderYaw, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(YawLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(PitchLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(RollLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(camRotationLabel1))
-                .addContainerGap(123, Short.MAX_VALUE))
+                    .addComponent(camRotationLabel1)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,17 +217,18 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(drawLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(62, 62, 62)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(drawButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(31, 31, 31)
                         .addComponent(debugLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(randomTriBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(camXYZLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(camXYZLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(drawLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -247,82 +257,11 @@ public class NewJFrame extends javax.swing.JFrame {
                                 .addComponent(YLabel)
                                 .addGap(8, 8, 8)
                                 .addComponent(ZLabel)))))
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void drawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawButtonActionPerformed
-        frame.repaint();
-    }//GEN-LAST:event_drawButtonActionPerformed
-
-    private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        renderer.layers.forEach(frame -> {
-            if (!frame.getIdentifier().equals(Layer.backgroundId)) frame.clear();
-        });
-        frame.repaint();
-        
-    }//GEN-LAST:event_clearButtonActionPerformed
-
-    private void randomTriBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomTriBtnActionPerformed
-        Random random = new Random();
-        int red = random.nextInt(256);   // 0 to 255
-        int green = random.nextInt(256);
-        int blue = random.nextInt(256);
-//
-        Color randomColor = new Color(red, green, blue);
-
-        Vector3 lowerBound = new Vector3(-10 , -10, -10);
-        Vector3 upperBound = new Vector3(10 , 10, 10);
-
-        GPoint[] gps = new GPoint[]{
-                new GPoint(Vector3.random(lowerBound, upperBound)),
-                new GPoint(Vector3.random(lowerBound, upperBound)),
-                new GPoint(Vector3.random(lowerBound, upperBound))
-        };
-
-        GTri t = new GTri(randomColor,
-                gps[0], gps[1], gps[2]
-        );
-
-        Thing g = new Thing(renderer, null).addObjs(t, gps[0], gps[1], gps[2]);
-        
-    }//GEN-LAST:event_randomTriBtnActionPerformed
-
-    private void sliderXStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderXStateChanged
-        int value = sliderX.getValue();
-//        Main.camera.setPosition(Main.camera.getPosition().add(new Vector3(value, 0, 0)));
-        Main.camera.setPosition(new Vector3(
-                value,
-                Main.camera.getPosition().getY(),
-                Main.camera.getPosition().getZ()
-        ));
-        frame.repaint();
-
-    }//GEN-LAST:event_sliderXStateChanged
-
-    private void sliderYStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderYStateChanged
-        int value = sliderY.getValue();
-//        Main.camera.setPosition(Main.camera.getPosition().add(new Vector3(0, value, 0)));
-        Main.camera.setPosition(new Vector3(
-                Main.camera.getPosition().getX(),
-                value,
-                Main.camera.getPosition().getZ()
-        ));
-        frame.repaint();
-    }//GEN-LAST:event_sliderYStateChanged
-
-    private void sliderZStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderZStateChanged
-        int value = sliderZ.getValue();
-//        Main.camera.setPosition(Main.camera.getPosition().add(new Vector3(0, 0, value)));
-        Main.camera.setPosition(new Vector3(
-                Main.camera.getPosition().getX(),
-                Main.camera.getPosition().getY(),
-                value
-        ));
-        frame.repaint();
-    }//GEN-LAST:event_sliderZStateChanged
 
     private void sliderYawStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderYawStateChanged
         int value = sliderYaw.getValue();
@@ -342,39 +281,80 @@ public class NewJFrame extends javax.swing.JFrame {
         frame.repaint();
     }//GEN-LAST:event_sliderRollStateChanged
 
-    public static void run(Renderer r, Executor e, Frame f) {
+    private void drawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawButtonActionPerformed
+        frame.repaint();
+    }//GEN-LAST:event_drawButtonActionPerformed
+
+    private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
+        renderer.layers.forEach(frame -> {
+            if (!frame.getIdentifier().equals(Layer.backgroundId)) frame.clear();
+        });
+        frame.repaint();
+
+    }//GEN-LAST:event_clearButtonActionPerformed
+
+    private void randomTriBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomTriBtnActionPerformed
+        Random random = new Random();
+        int red = random.nextInt(256);   // 0 to 255
+        int green = random.nextInt(256);
+        int blue = random.nextInt(256);
+        //
+        Color randomColor = new Color(red, green, blue);
+
+        Vector3 lowerBound = new Vector3(-10 , -10, -10);
+        Vector3 upperBound = new Vector3(10 , 10, 10);
+
+        GPoint[] gps = new GPoint[]{
+            new GPoint(Vector3.random(lowerBound, upperBound)),
+            new GPoint(Vector3.random(lowerBound, upperBound)),
+            new GPoint(Vector3.random(lowerBound, upperBound))
+        };
+
+        GTri t = new GTri(randomColor,
+            gps[0], gps[1], gps[2]
+        );
+
+        Thing g = new Thing(renderer, null).addObjs(t, gps[0], gps[1], gps[2]);
+
+    }//GEN-LAST:event_randomTriBtnActionPerformed
+
+    private void sliderXStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderXStateChanged
+        int value = sliderX.getValue();
+        //        Main.camera.setPosition(Main.camera.getPosition().add(new Vector3(value, 0, 0)));
+        Main.camera.setPosition(new Vector3(
+            value,
+            Main.camera.getPosition().getY(),
+            Main.camera.getPosition().getZ()
+        ));
+        frame.repaint();
+    }//GEN-LAST:event_sliderXStateChanged
+
+    private void sliderYStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderYStateChanged
+        int value = sliderY.getValue();
+        //        Main.camera.setPosition(Main.camera.getPosition().add(new Vector3(0, value, 0)));
+        Main.camera.setPosition(new Vector3(
+            Main.camera.getPosition().getX(),
+            value,
+            Main.camera.getPosition().getZ()
+        ));
+        frame.repaint();
+    }//GEN-LAST:event_sliderYStateChanged
+
+    private void sliderZStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderZStateChanged
+        int value = sliderZ.getValue();
+        //        Main.camera.setPosition(Main.camera.getPosition().add(new Vector3(0, 0, value)));
+        Main.camera.setPosition(new Vector3(
+            Main.camera.getPosition().getX(),
+            Main.camera.getPosition().getY(),
+            value
+        ));
+        frame.repaint();
+    }//GEN-LAST:event_sliderZStateChanged
+
+    public void run(Renderer r, Executor e, Frame f) {
         renderer = r;
         executor = e;
         frame = f;
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new NewJFrame().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -390,6 +370,7 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel debugLabel;
     private java.awt.Button drawButton;
     private javax.swing.JLabel drawLabel;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton randomTriBtn;
     private javax.swing.JSlider sliderPitch;
     private javax.swing.JSlider sliderRoll;

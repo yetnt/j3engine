@@ -1,10 +1,7 @@
 package com.j3d;
 
-import com.j3d.engine.geometry.geo2d.GPoint;
-import com.j3d.engine.geometry.geo2d.CartesianPoint;
 import com.j3d.engine.geometry.geo2d.Dimension;
 import com.j3d.engine.Renderer;
-import com.j3d.engine.geometry.geo2d.ScreenPoint;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.Rotation;
 import com.j3d.engine.geometry.geo3d.Vector3;
@@ -13,9 +10,6 @@ import com.jaiva.JBundler;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 
 /**
  * Main is main.
@@ -27,45 +21,41 @@ public class Main extends JPanel {
     public static Executor executor = null;
     public static boolean run = true;
     public static Frame f = null;
+    private static DebugPanel dp = new DebugPanel();
     public static Camera camera = new Camera()
             .setPosition(new Vector3(20, 20, -20))
             .setRotation(new Rotation(0, 0, 0))
             .setProjectionPlane(new Vector3(0, 0, 50));
 
-    private GPoint currentlyDragging = null;
-    private static final double SNAP_RADIUS = 2.0;
-
     public Main() {
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
-                int x = e.getX();
-                int y = e.getY();
-                // You can trigger a repaint or other logic here
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                CartesianPoint mousePos = new ScreenPoint(e.getX(), e.getY()).toPoint(renderer);
-                currentlyDragging = renderer.findPointNearCursor(mousePos, SNAP_RADIUS); // 2 unit snap radius
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                currentlyDragging = null;
-            }
-        });
-
-        addMouseMotionListener(new MouseMotionAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                if (currentlyDragging != null) {
-                    Vector3 newPos = new Vector3(e.getX(), e.getY(), 0);
-                    renderer.movePointTo(currentlyDragging, newPos);
-                    f.repaint();
-                }
-            }
-        });
+//        addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(java.awt.event.MouseEvent e) {
+//                int x = e.getX();
+//                int y = e.getY();
+//                // You can trigger a repaint or other logic here
+//            }
+//
+//            @Override
+//            public void mousePressed(MouseEvent e) {
+//                CartesianPoint mousePos = new ScreenPoint(e.getX(), e.getY()).toPoint(renderer);
+//            }
+//
+//            @Override
+//            public void mouseReleased(MouseEvent e) {
+//            }
+//        });
+//
+//        addMouseMotionListener(new MouseMotionAdapter() {
+//            @Override
+//            public void mouseDragged(MouseEvent e) {
+//                if (currentlyDragging != null) {
+//                    Vector3 newPos = new Vector3(e.getX(), e.getY(), 0);
+//                    renderer.movePointTo(currentlyDragging, newPos);
+//                    f.repaint();
+//                }
+//            }
+//        });
     }
 
     /**
@@ -87,15 +77,12 @@ public class Main extends JPanel {
 
     @Override
     public void paint(Graphics g) {
+        super.paint(g);
         if (!run) {
 //            renderer.axis((Graphics2D) g, camera);
             renderer.draw((Graphics2D) g, camera);
             return;
         }
-        Renderer renderer1 = new Renderer(new Dimension(getWidth(), getHeight()));
-        renderer = renderer1;
-        executor = new Executor(renderer1);
-        NewJFrame.run(renderer, executor, f);
         executor.run((Graphics2D) g);
         run = false;
         renderer.draw((Graphics2D) g, camera);
@@ -111,12 +98,36 @@ public class Main extends JPanel {
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Dot Drawer");
+
+        f = frame;
+        renderer = new Renderer(scrSize);
+        executor = new Executor(renderer);
+        dp.run(renderer, executor, f);
+        JLayeredPane layeredPane = frame.getLayeredPane();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(scrSize.width, scrSize.height);
         frame.setResizable(false);
-        frame.add(new Main());
+
+        Main mainPanel = new Main();
+        mainPanel.setVisible(true);
+        mainPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN));
+        mainPanel.setBounds(0, 0, scrSize.width, scrSize.height);
+        mainPanel.setPreferredSize(new java.awt.Dimension(scrSize.width, scrSize.height));
+        layeredPane.add(mainPanel, JLayeredPane.DEFAULT_LAYER);
+
+        dp.setBounds(20, 20, 400, 335); // small corner overlay
+        dp.setOpaque(true);
+        dp.setBackground(Color.WHITE);
+        dp.setVisible(true);
+        layeredPane.add(dp, JLayeredPane.PALETTE_LAYER);
+
+        JButton toggleButton = new JButton("Toggle Debug");
+        toggleButton.addActionListener(e -> dp.setVisible(!dp.isVisible()));
+        toggleButton.setBounds(20, 370, 120, 30); // position it below dp
+        layeredPane.add(toggleButton, JLayeredPane.PALETTE_LAYER);
+//        frame.add(new Main());
         frame.setVisible(true);
-        f = frame;
+
     }
 
 }
