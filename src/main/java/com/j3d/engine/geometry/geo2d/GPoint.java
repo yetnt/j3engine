@@ -3,14 +3,11 @@ package com.j3d.engine.geometry.geo2d;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.events.EventBroadcast;
 import com.j3d.engine.events.EventEmitter;
-import com.j3d.engine.events.EventType;
-import com.j3d.engine.events.ObjectType;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.Vector3;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -25,6 +22,14 @@ public class GPoint extends GObject {
      * </p>
      */
     public static final int DIAMETER = 7;
+
+    @Override
+    public void draw(Renderer renderer, Graphics2D graphics2D, Camera cam) {
+        renderer.points.add(this);
+        graphics2D.setColor(col);
+        ScreenPoint p = this.getPivot().toPoint(cam).toScreen(renderer);
+        graphics2D.fillOval(p.x - DIAMETER / 2, p.y - DIAMETER / 2, DIAMETER, DIAMETER);
+    }
 
     /**
      * Default Constructor
@@ -62,102 +67,15 @@ public class GPoint extends GObject {
         }
     }
 
-    /**
-     * Updates the given GPoint by redrawing itself and broadcasting the updates to parent Objects
-     * @param renderer The Renderer Instance
-     * @param pivot The point on the cartesian plane.
-     */
-    private void update(Renderer renderer, Vector3 pivot, GObject ...exclusions) {
-        Event e = new Event(this, getPivot(), pivot, renderer);
-        e.exclusions.add(this);
-        e.exclusions.addAll(Arrays.asList(exclusions));
-        broadcast(EventType.NODE_UPDATED, ObjectType.PARENT, e);
-//        broadcast(EventType.PARENT_UPDATED, ObjectType.NODE, new Event(this, getPivot(), pivot, renderer));
-        // The above line of code has been commented out as a point cannot be a parent
-        super.setPivot(pivot);
-    }
-
-    public void setPivot(Renderer renderer, Vector3 pivot) {
-        update(renderer, pivot);
-    }
-
     @Override
     public boolean deleteSelf(Renderer renderer, GObject ...excluded) {
         Event e = new Event(this, getPivot(), new Vector3(), renderer);
-        e.exclusions.addAll(Arrays.asList(excluded));
-        e.exclusions.add(this);
-        broadcast(EventType.NODE_DELETED, ObjectType.PARENT, e);
+//        e.exclusions.addAll(Arrays.asList(excluded));
+//        e.exclusions.add(this);
+//        broadcast(EventType.NODE_DELETED, ObjectType.PARENT, e);
         renderer.points.remove(this);
         return super.deleteSelf(renderer);
     }
-
-    @Override
-    public void onEvent(EventType event, EventBroadcast properties) {
-        if (properties.exclusions.contains(this)) return;
-        switch (event) {
-            case PARENT_DELETED -> {
-                if (Objects.requireNonNull(properties) instanceof GLine.Event gl) {
-                    GLine line = (GLine) gl.emitter;
-                    // Detach self from parent
-                    line.detach(this, ObjectType.NODE);
-                    if (registeredParents() == 1) {
-                        // Only delete self, if there is only 1 parent.
-                        // meaning it was that deleted line
-                        deleteSelf(gl.renderer, properties.exclusions.toArray(GObject[]::new));
-                        // otherwise, it may have multiple parents meaning its connected
-                        // to some other line so dont delete it.
-                    }
-                    // Detach parent from self
-                    detach(line, ObjectType.PARENT);
-                } else {
-                    throw new IllegalStateException("Unexpected value: " + properties);
-                }
-            }
-            case PARENT_UPDATED -> { // A parent was updated, we need to update ourselves
-                if (Objects.requireNonNull(properties) instanceof GLine.Event gl) {// A line was updated, update ourselves.
-                    // Find which point
-                    Vector3 pt = new Vector3();
-                    // Check if the start is non-null and whether the old start does equal the current
-                    if (gl.newStart.isNotEmpty() && gl.oldStart.equals(getPivot())) pt = gl.newStart;
-                    // same as above.
-                    if (gl.newEnd.isNotEmpty() && gl.oldEnd.equals(getPivot())) pt = gl.newEnd;
-                    if (pt.isNotEmpty()) this.update(gl.renderer, pt,properties.exclusions.toArray(GObject[]::new));
-                } else {
-                    throw new IllegalStateException("Unexpected value: " + properties);
-                }
-            }
-            case PARENT_EXPLODED -> {
-                if (Objects.requireNonNull(properties) instanceof GLine.Event gl) {// A line was exploded, we need to detach ourselves from it.
-                    GLine line = (GLine) gl.emitter;
-                    // Detach self from parent (The parent is to have already done this after emitting the event)
-//                    line.detach(this, ObjectType.NODE);
-                    // Detach parent from self
-                    detach(line, ObjectType.PARENT);
-                } else {
-                    throw new IllegalStateException("Unexpected value: " + properties);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void draw(Renderer renderer, Graphics2D graphics2D, Camera cam) {
-        renderer.points.add(this);
-        graphics2D.setColor(col);
-        ScreenPoint p = this.getPivot().toPoint(cam).toScreen(renderer);
-        graphics2D.fillOval(p.x - DIAMETER / 2, p.y - DIAMETER / 2, DIAMETER, DIAMETER);
-    }
-
-//    /**
-//     * A private method that actually draws the point.
-//     * This method is private as it always draws the point irrespective of event listeners and other update signalers
-//     * @param renderer The Renderer Instance
-//     * @param cartesianPoint The actual point.
-//     */
-//    private void drawPoint(Renderer renderer,Graphics2D graphics2D, CartesianPoint cartesianPoint) {
-//        setPivot(cartesianPoint);
-//        draw(renderer, graphics2D);
-//    }
 
     @Override
     public ArrayList<Object> toArray() {

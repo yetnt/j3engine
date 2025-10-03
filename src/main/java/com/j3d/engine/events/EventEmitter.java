@@ -11,71 +11,40 @@ public abstract class EventEmitter {
     /**
      * All registered EventListeners
      */
-    protected HashMap<ObjectType, ArrayList<EventListener>> registered = new HashMap<>();
+    protected ArrayList<EventListener> registered = new ArrayList<>();
 
     public EventEmitter() {
-        registered.put(ObjectType.NODE, new ArrayList<>());
-        registered.put(ObjectType.PARENT, new ArrayList<>());
-    }
-
-    /**
-     * Returns the amoutn of nodes registered
-     * @return integer
-     */
-    public int registeredNodes() {
-        return registered.get(ObjectType.NODE).size();
-    }
-
-    /**
-     * Returns the amount of parents registered
-     * @return integer.
-     */
-    public int registeredParents() {
-        return registered.get(ObjectType.PARENT).size();
     }
 
     /**
      * Registers an event listener into the list of listeners.
      * @param event The listener to attach
-     * @param type The type of object
      */
-    public void attach(EventListener event, ObjectType type) {
-        switch (type) {
-            case PARENT -> registered.get(ObjectType.PARENT).add(event);
-            case NODE -> registered.get(ObjectType.NODE).add(event);
-        }
+    public void attach(EventListener event) {
+        registered.add(event);
     }
 
     /**
      * Deregisters an event listener.
      * @param event The listener to detach.
-     * @param type The type of object
      */
-    public void detach(EventListener event, ObjectType type) {
-        switch (type) {
-            case PARENT -> registered.get(ObjectType.PARENT).remove(event);
-            case NODE -> registered.get(ObjectType.NODE).remove(event);
-        }
+    public void detach(EventListener event) {
+        registered.remove(event);
     }
 
     /**
      * Deregisters all event listeners.
      */
     public void detachAll() {
-        registered.get(ObjectType.PARENT).clear();
-        registered.get(ObjectType.NODE).clear();
+        registered.clear();
     }
 
     /**
      * Calls all events with the given event type and broadcast properties
      * @param eventType The event type.
-     * @param type The type of object
      * @param properties Properties to pass onto the listener.
      */
-    public void broadcast(EventType eventType, ObjectType type, EventBroadcast properties) {
-        switch (type) {
-            case PARENT -> registered.get(ObjectType.PARENT).forEach(event -> event.onEvent(eventType, properties));
-            case NODE -> registered.get(ObjectType.NODE).forEach(event -> event.onEvent(eventType, properties));
-        }
+    public void broadcast(EventType eventType, EventBroadcast properties) {
+        registered.forEach(event -> event.onEvent(eventType, properties));
     }
 }

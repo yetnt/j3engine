@@ -20,8 +20,6 @@ public abstract class EventBroadcast {
      */
     public final Renderer renderer;
 
-    public ArrayList<GObject> exclusions = new ArrayList<>();
-
     /**
      * Default Constructor for EventBroadcast
      * @param e The initiator of the broadcast.

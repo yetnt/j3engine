@@ -5,36 +5,11 @@ package com.j3d.engine.events;
  */
 public enum EventType {
     /**
-     * The position of the node coordinates have changed and parent
-     * geometry needs to update itself.
-     * <p></p>
-     * e.g. Where a line (parent) has 2 points (2 nodes), If the points are moved, the line has to update to account for that.
+     * The object was translated.
      */
-    NODE_UPDATED,
+    OBJ_TRANSLATED,
     /**
-     * The node was deleted entirely, the parent geometry needs to update itself accordingly.
-     * By either deleting itself, or turning itself into a bunch of nodes.
+     * The object was deleted.
      */
-    NODE_DELETED,
-    /**
-     * The parent of the given node was updated, the node should update itself accordingly
-     * <p></p>
-     * e.g. Where a line (parent) has in it's list own list of points, a point (node) in the midpoint of the given line. When the line's distance changes, the node needs to accomodate that.
-     */
-    PARENT_UPDATED,
-    /**
-     * The parent was deleted entirely, the node geometry needs to update itself accordingly.
-     * By deleting itself or doing nothing.
-     */
-    PARENT_DELETED,
-    /**
-     * The parent was exploded, meaning all child nodes need to remove themselves as nodes from the parent, and become individual nodes.
-     * <p></p>
-     * e.g. A line (parent) has a list of points (nodes). When the polygon is exploded, all points need to remove themselves from the polygon's list of points, and become individual points.
-     */
-    PARENT_EXPLODED,
-    /**
-     * When a triangle gets transformed or translated.
-     */
-    PARENT_TRANSFORMED
+    OBJ_DELETED
 }
