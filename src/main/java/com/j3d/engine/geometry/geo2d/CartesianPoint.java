@@ -1,7 +1,8 @@
 package com.j3d.engine.geometry.geo2d;
 
 import com.j3d.engine.Renderer;
-import com.j3d.engine.geometry.base.BasePoint;
+import com.j3d.engine.geometry.BasePoint;
+import com.j3d.engine.geometry.ScreenPoint;
 
 import java.util.ArrayList;
 import java.util.Arrays;

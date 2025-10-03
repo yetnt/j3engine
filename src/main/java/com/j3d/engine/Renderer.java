@@ -1,7 +1,8 @@
 package com.j3d.engine;
 
+import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.*;
-import com.j3d.engine.geometry.geo2d.Dimension;
+import com.j3d.engine.geometry.Dimension;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.Vector3;
@@ -241,7 +242,7 @@ public class Renderer {
      * @param newPosition The new CartesianPoint position for the GPoint.
      */
     public void movePointTo(GPoint point, Vector3 newPosition) {
-        point.setPivot(this, newPosition);
+        point.setPivot(newPosition);
     }
 
     /**

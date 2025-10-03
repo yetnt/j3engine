@@ -3,6 +3,7 @@ package com.j3d.engine.geometry.geo2d;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.events.EventBroadcast;
 import com.j3d.engine.events.EventEmitter;
+import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.Vector3;
 

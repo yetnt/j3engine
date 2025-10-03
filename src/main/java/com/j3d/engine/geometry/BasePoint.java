@@ -1,4 +1,4 @@
-package com.j3d.engine.geometry.base;
+package com.j3d.engine.geometry;
 
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
 
