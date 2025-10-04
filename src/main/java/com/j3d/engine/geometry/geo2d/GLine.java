@@ -35,6 +35,23 @@ public class GLine extends GObject {
         );
     }
 
+    @Override
+    public void drawSelected(Graphics2D graphics2D) {
+        graphics2D.setColor(col.brighter());
+        graphics2D.setStroke(new BasicStroke(2));
+        graphics2D.drawLine(
+                startPoint.getPivot().toPoint(camera).toScreen(renderer).x,
+                startPoint.getPivot().toPoint(camera).toScreen(renderer).y,
+                endPoint.getPivot().toPoint(camera).toScreen(renderer).x,
+                endPoint.getPivot().toPoint(camera).toScreen(renderer).y
+        );
+        graphics2D.setStroke(new BasicStroke(1));
+        draw(graphics2D);
+        renderer.drawText3D(graphics2D, getPivot().sub(new Vector3(1, 1, 1)), "[{" + getPivot().getY() + ", " + getPivot().getX() + ", " + getPivot().getZ() + "} -> {" +
+                 endPoint.getPivot().getY() + ", " + endPoint.getPivot().getX() + ", " + endPoint.getPivot().getZ() +
+                "}]", camera);
+    }
+
     /**
      * Default Constructor
      *

@@ -321,4 +321,7 @@ public class Renderer {
         }
         return currentSelection;
     }
-}
+
+    public ArrayList<GObject> getSelected() {
+        return currentSelection.getSelected();
+    }}

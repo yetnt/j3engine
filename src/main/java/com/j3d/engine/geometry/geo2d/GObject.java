@@ -25,6 +25,10 @@ public abstract class GObject extends EventEmitter implements EventListener {
      * A Unique UUID to identify this geometry.
      */
     private final UUID Id;
+//    /**
+//     * Whether this geometry is selected or not.
+//     */
+//    public boolean isSelected = false;
 
     /**
      * Draws this geometry to the screen.
@@ -32,6 +36,15 @@ public abstract class GObject extends EventEmitter implements EventListener {
      * @implNote This is meant to be overridden by inheritors.
      */
     public void draw(Graphics2D graphics2D) {
+        return;
+    }
+
+    /**
+     * Draws this geometry to the screen, but in a selected state.
+     * @param graphics2D The Graphics2D instance
+     * @implNote This is meant to be overridden by inheritors.
+     */
+    public void drawSelected(Graphics2D graphics2D) {
         return;
     }
 

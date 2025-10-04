@@ -84,10 +84,18 @@ public class Thing {
 //            }
 //        }
         for (GObject o : objects.reversed()) {
-            o.draw(graphics2D);
+            if (Main.renderer.getSelected().contains(o)) {
+                o.drawSelected(graphics2D);
+            } else  {
+                o.draw(graphics2D);
+            }
         }
     }
 
+    /**
+     * Returns the unique identifier of this Thing.
+     * @return The UUID of this Thing.
+     */
     public UUID getId() {
         return id;
     }

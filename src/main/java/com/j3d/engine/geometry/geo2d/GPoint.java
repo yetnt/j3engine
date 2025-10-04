@@ -33,6 +33,15 @@ public class GPoint extends GObject {
         graphics2D.fillOval(p.x - DIAMETER / 2, p.y - DIAMETER / 2, DIAMETER, DIAMETER);
     }
 
+    @Override
+    public void drawSelected(Graphics2D graphics2D) {
+        graphics2D.setColor(Color.WHITE);
+        ScreenPoint p = this.getPivot().toPoint(Main.camera).toScreen(Main.renderer);
+        graphics2D.fillOval(p.x - (DIAMETER+1) / 2, p.y - (DIAMETER+1) / 2, (DIAMETER+1), (DIAMETER+1));
+        draw(graphics2D);
+        Main.renderer.drawText3D(graphics2D, getPivot().sub(new Vector3(1, 1, 1)), "{" + getPivot().getY() + ", " + getPivot().getX() + ", " + getPivot().getZ() + "}", Main.camera);
+    }
+
     /**
      * Default Constructor
      *

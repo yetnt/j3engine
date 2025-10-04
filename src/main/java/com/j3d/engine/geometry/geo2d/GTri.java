@@ -56,6 +56,30 @@ public class GTri extends GObject{
         Main.renderer.drawLine3D(graphics2D, getPivot(), getPivot().add(normal.mult(0.5)), Main.camera);
     }
 
+    @Override
+    public void drawSelected(Graphics2D graphics2D) {
+        setPivot(LegA.getStart().getPivot().add(LegB.getStart().getPivot()).add(LegC.getStart().getPivot()).div(3));
+        calcNormal(LegA.getStart().getPivot(), LegB.getStart().getPivot(), LegC.getStart().getPivot());
+        graphics2D.setColor(col.brighter());
+        graphics2D.setStroke(new BasicStroke(2));
+        graphics2D.fillPolygon(
+                new int[] {
+                        LegA.getStart().getPivot().toPoint(Main.camera).toScreen(Main.renderer).x,
+                        LegA.getEnd().getPivot().toPoint(Main.camera).toScreen(Main.renderer).x,
+                        LegB.getEnd().getPivot().toPoint(Main.camera).toScreen(Main.renderer).x
+                },
+                new int[] {
+                        LegA.getStart().getPivot().toPoint(Main.camera).toScreen(Main.renderer).y,
+                        LegA.getEnd().getPivot().toPoint(Main.camera).toScreen(Main.renderer).y,
+                        LegB.getEnd().getPivot().toPoint(Main.camera).toScreen(Main.renderer).y
+                },
+                3
+        );
+        graphics2D.setStroke(new BasicStroke(1));
+        draw(graphics2D);
+        Main.renderer.drawText3D(graphics2D, getPivot().sub(new Vector3(1, 1, 1)), "Triangle - " + getId(), Main.camera);
+    }
+
     /**
      * Constructs a new GTri from 3 points.
      *
