@@ -8,6 +8,9 @@ import com.j3d.engine.geometry.geo3d.Vector3;
 
 import java.awt.*;
 
+import static com.j3d.Main.camera;
+import static com.j3d.Main.renderer;
+
 /**
  * GLine represents, you guessed it, a line.
  */
@@ -22,13 +25,13 @@ public class GLine extends GObject {
     private final GPoint endPoint;
     
     @Override
-    public void draw(Renderer renderer, Graphics2D graphics2D, Camera cam) {
+    public void draw(Graphics2D graphics2D) {
         graphics2D.setColor(col);
         graphics2D.drawLine(
-                startPoint.getPivot().toPoint(cam).toScreen(renderer).x,
-                startPoint.getPivot().toPoint(cam).toScreen(renderer).y,
-                endPoint.getPivot().toPoint(cam).toScreen(renderer).x,
-                endPoint.getPivot().toPoint(cam).toScreen(renderer).y
+                startPoint.getPivot().toPoint(camera).toScreen(renderer).x,
+                startPoint.getPivot().toPoint(camera).toScreen(renderer).y,
+                endPoint.getPivot().toPoint(camera).toScreen(renderer).x,
+                endPoint.getPivot().toPoint(camera).toScreen(renderer).y
         );
     }
 

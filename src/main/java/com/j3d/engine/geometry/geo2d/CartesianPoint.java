@@ -54,6 +54,7 @@ public class CartesianPoint extends BasePoint<Double> {
         int screenX = (int) (adjustedX + renderer.screenSize.width / 2);
         int screenY = (int) (renderer.screenSize.height / 2 - adjustedY);
 
+
         return new ScreenPoint(screenX, screenY);
     }
 

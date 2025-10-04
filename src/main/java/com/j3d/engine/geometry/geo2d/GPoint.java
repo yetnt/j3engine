@@ -1,5 +1,6 @@
 package com.j3d.engine.geometry.geo2d;
 
+import com.j3d.Main;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.events.EventBroadcast;
 import com.j3d.engine.events.EventEmitter;
@@ -25,10 +26,10 @@ public class GPoint extends GObject {
     public static final int DIAMETER = 7;
 
     @Override
-    public void draw(Renderer renderer, Graphics2D graphics2D, Camera cam) {
-        renderer.points.add(this);
+    public void draw(Graphics2D graphics2D) {
+        Main.renderer.points.add(this);
         graphics2D.setColor(col);
-        ScreenPoint p = this.getPivot().toPoint(cam).toScreen(renderer);
+        ScreenPoint p = this.getPivot().toPoint(Main.camera).toScreen(Main.renderer);
         graphics2D.fillOval(p.x - DIAMETER / 2, p.y - DIAMETER / 2, DIAMETER, DIAMETER);
     }
 

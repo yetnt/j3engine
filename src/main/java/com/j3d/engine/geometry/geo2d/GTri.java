@@ -1,5 +1,6 @@
 package com.j3d.engine.geometry.geo2d;
 
+import com.j3d.Main;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.events.EventBroadcast;
 import com.j3d.engine.events.EventEmitter;
@@ -33,26 +34,26 @@ public class GTri extends GObject{
     public Vector3 normal;
 
     @Override
-    public void draw(Renderer renderer, Graphics2D graphics2D, Camera cam) {
+    public void draw(Graphics2D graphics2D) {
         setPivot(LegA.getStart().getPivot().add(LegB.getStart().getPivot()).add(LegC.getStart().getPivot()).div(3));
         calcNormal(LegA.getStart().getPivot(), LegB.getStart().getPivot(), LegC.getStart().getPivot());
         graphics2D.setColor(col);
         graphics2D.fillPolygon(
                 new int[] {
-                        LegA.getStart().getPivot().toPoint(cam).toScreen(renderer).x,
-                        LegA.getEnd().getPivot().toPoint(cam).toScreen(renderer).x,
-                        LegB.getEnd().getPivot().toPoint(cam).toScreen(renderer).x
+                        LegA.getStart().getPivot().toPoint(Main.camera).toScreen(Main.renderer).x,
+                        LegA.getEnd().getPivot().toPoint(Main.camera).toScreen(Main.renderer).x,
+                        LegB.getEnd().getPivot().toPoint(Main.camera).toScreen(Main.renderer).x
                 },
                 new int[] {
-                        LegA.getStart().getPivot().toPoint(cam).toScreen(renderer).y,
-                        LegA.getEnd().getPivot().toPoint(cam).toScreen(renderer).y,
-                        LegB.getEnd().getPivot().toPoint(cam).toScreen(renderer).y
+                        LegA.getStart().getPivot().toPoint(Main.camera).toScreen(Main.renderer).y,
+                        LegA.getEnd().getPivot().toPoint(Main.camera).toScreen(Main.renderer).y,
+                        LegB.getEnd().getPivot().toPoint(Main.camera).toScreen(Main.renderer).y
                 },
                 3
         );
         // The following code draws the normal
         graphics2D.setColor(Color.RED);
-        renderer.drawLine3D(graphics2D, getPivot(), getPivot().add(normal.mult(0.5)), cam);
+        Main.renderer.drawLine3D(graphics2D, getPivot(), getPivot().add(normal.mult(0.5)), Main.camera);
     }
 
     /**

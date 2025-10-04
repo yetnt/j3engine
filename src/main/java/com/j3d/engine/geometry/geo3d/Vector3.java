@@ -179,7 +179,7 @@ public class Vector3 {
         double dy = sinX * (cosY * z + sinY * (sinZ * y + cosZ * x)) + cosX * (cosZ * y - sinZ * x);
         double dz = cosX * (cosY * z + sinY * (sinZ * y + cosZ * x)) - sinX * (cosZ * y - sinZ * x);
 
-        if (dz < 1e-18) return new CartesianPoint(Double.MAX_VALUE, Double.MIN_VALUE); // or skip rendering this point
+        if (dz < 1e-18) dz = 1e-6;
 
         double scale = 1;
         double bz = scale * ((e.getZ() / dz) * dx + e.getX());

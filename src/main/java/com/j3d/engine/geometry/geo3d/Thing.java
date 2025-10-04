@@ -1,5 +1,6 @@
 package com.j3d.engine.geometry.geo3d;
 
+import com.j3d.Main;
 import com.j3d.engine.Layer;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.geo2d.GObject;
@@ -26,7 +27,7 @@ public class Thing {
 
     private final List<GPoint> points = new ArrayList<>();
 
-    public static double depthConstant = 0.01;
+    public static double depthConstant = 2.25;
 
     /** A Flag set by the Thing itself to check whether its part of the background. if so it only draws the
      * axes and the background.
@@ -60,25 +61,30 @@ public class Thing {
         return this;
     }
 
-    public void draw(Renderer renderer, Graphics2D graphics2D, Camera camera) {
+    public void draw(Graphics2D graphics2D, ArrayList<UUID> visible) {
         if (isBg) {
             graphics2D.setColor(new Color(52, 52, 52));
-            graphics2D.fillRect(0, 0, renderer.screenSize.width, renderer.screenSize.height);
-            renderer.axis(graphics2D, camera);
+            graphics2D.fillRect(0, 0, Main.scrSize.width, Main.scrSize.height);
+            Main.renderer.axis(graphics2D, Main.camera);
             return;
         }
 
         objects.sort(Comparator.comparingDouble(o -> {
             if (o instanceof GTri t) {
-                double depth = t.getPivot().distance(camera.getPosition());
-                double facing = t.normal.dot(camera.getPosition().sub(t.getPivot()).normalize());
+                double depth = t.getPivot().distance(Main.camera.getPosition());
+                double facing = t.normal.dot(Main.camera.getPosition().sub(t.getPivot()).normalize());
                 return depth - facing * depthConstant; // some flipping factor that makes ts work
             } else {
-                return o.getPivot().distance(camera.getPosition());
+                return o.getPivot().distance(Main.camera.getPosition());
             }
         }));
+//        for (GObject o : objects.reversed()) {
+//            if (visible.contains(o.getId())) {
+//                o.draw(graphics2D);
+//            }
+//        }
         for (GObject o : objects.reversed()) {
-            o.draw(renderer, graphics2D, camera);
+            o.draw(graphics2D);
         }
     }
 

@@ -173,7 +173,7 @@ public class DebugPanel extends javax.swing.JPanel {
 
         triConstSlider.setMaximum(1000);
         triConstSlider.setMinimum(1);
-        triConstSlider.setValue(1);
+        triConstSlider.setValue(225);
         triConstSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 triConstSliderStateChanged(evt);

@@ -1,14 +1,12 @@
 package com.j3d.engine;
 
+import com.j3d.Main;
 import com.j3d.engine.geometry.geo2d.GObject;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.Thing;
 
 import java.awt.*;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * A {@code Layer} is a fundamental concept in the rendering pipeline, representing a
@@ -87,15 +85,14 @@ public class Layer extends ArrayList<Thing> {
      * Draws all {@link GObject}s contained within this layer onto the provided
      * {@link Graphics2D} context. Each object's {@code draw} method is called.
      *
-     * @param renderer The {@code Renderer} instance.
      * @param graphics2D The {@code Graphics2D} context to draw upon.
-     * @param camera The {@code Camera} instance.
+     * @param visible A list of UUIDs representing visible objects.
      */
-    public void draw(Renderer renderer,Graphics2D graphics2D, Camera camera) {
+    public void draw(Graphics2D graphics2D, ArrayList<UUID> visible) {
         if (!getIdentifier().equals(backgroundId))
-            sort(Comparator.comparingDouble(t -> t.getCentroid().distance(camera.getPosition())));
+            sort(Comparator.comparingDouble(t -> t.getCentroid().distance(Main.camera.getPosition())));
         for (Thing o : this.reversed()) {
-            o.draw(renderer, graphics2D, camera);
+            o.draw(graphics2D, visible);
         }
     }
 

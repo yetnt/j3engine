@@ -1,16 +1,20 @@
 package com.j3d.engine;
 
+import com.j3d.ZDepthIdBuffer;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.*;
 import com.j3d.engine.geometry.Dimension;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.Vector3;
+import com.j3d.engine.interact.SelectionManager;
 import com.j3d.engine.interact.SelectionQuery;
+import com.j3d.engine.interact.SelectionType;
 
 import java.awt.*;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Renderer is a class responsible for the creation of {@link GObject}s and handling of what's going on in the
@@ -35,6 +39,13 @@ public class Renderer {
      * The Scale factor helps by making it such that (if SCALE is set to 10), inputting (0, 1) as a {@link CartesianPoint}, when converted to {@link ScreenPoint} it is multiplied by 10 units.
      */
     public double SCALE = 10.0;
+
+    private ZDepthIdBuffer buff = new ZDepthIdBuffer();
+
+    /**
+     * The current selection made by the user.
+     */
+    private SelectionManager currentSelection = new SelectionManager();
 
     /**
      * Default Constructor
@@ -195,7 +206,9 @@ public class Renderer {
      * @param camera The camera instance.
      */
     public void draw(Graphics2D graphics, Camera camera) {
-            layers.forEach(layer -> layer.draw(this, graphics, camera));
+//        ArrayList<UUID> visibleObjects = buff.draw(layers);
+        ArrayList<UUID> visibleObjects = new ArrayList<>();
+        layers.forEach(layer -> layer.draw(graphics, visibleObjects));
     }
 
     /**
@@ -280,7 +293,32 @@ public class Renderer {
         return null;
     }
 
-    public void select(SelectionQuery selectionQuery) {
-
+    /**
+     * Updates the current selection based on the provided {@link SelectionQuery}.
+     * <p>
+     * This method modifies the current selection according to the type specified in the {@code selectionQuery}:
+     * <ul>
+     *     <li>{@link SelectionType#ALL}: Selects all objects within the defined area.</li>
+     *     <li>{@link SelectionType#BOUNDS_STRICT}: Selects objects fully contained within the selection boundaries.</li>
+     *     <li>{@link SelectionType#BOUNDS_SOFT}: Selects objects that intersect with or are partially within the selection boundaries.</li>
+     *     <li>{@link SelectionType#INVERT}: Inverts the current selection, selecting unselected objects and deselecting selected ones.</li>
+     *     <li>{@link SelectionType#INCLUDE}: Adds objects from the new selection to the existing selection.</li>
+     *     <li>{@link SelectionType#EXCLUDE}: Removes objects from the existing selection that are present in the new selection.</li>
+     * </ul>
+     * </p>
+     * @param selectionQuery The {@link SelectionQuery} defining the selection criteria and type.
+     */
+    public SelectionManager select(SelectionQuery selectionQuery) {
+        // first handle if an existing selection was made.
+        if (currentSelection.isNothingSelected())
+            currentSelection = new SelectionManager(layers, selectionQuery);
+        // check if the type is of EXCLUDE or INCLUDE
+        SelectionManager newSelection = new SelectionManager(layers, selectionQuery);
+        switch (selectionQuery.type) {
+            case EXCLUDE: currentSelection.exclude(newSelection); break;
+            case INCLUDE: currentSelection.include(newSelection); break;
+            case ALL, BOUNDS_STRICT, BOUNDS_SOFT, INVERT: currentSelection = newSelection;
+        }
+        return currentSelection;
     }
 }

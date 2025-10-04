@@ -9,6 +9,7 @@ import com.j3d.engine.geometry.geo3d.Rotation;
 import com.j3d.engine.geometry.geo3d.Vector3;
 import com.j3d.engine.interact.SelectionQuery;
 import com.j3d.engine.interact.SelectionType;
+import com.j3d.engine.interact.SelectionUI;
 import com.j3d.jaiva.Testing;
 import com.jaiva.JBundler;
 
@@ -95,14 +96,7 @@ public class Main extends JPanel {
         renderer.draw((Graphics2D) g, camera);
         // draw selection area ontop of all render things.
         if (selectionArea[0] != null && selectionArea[1] != null) {
-            g.setColor(new Color(255, 1, 1, 92));
-            ScreenPoint i = selectionArea[0];
-            ScreenPoint ii = selectionArea[1];
-            g.fillRect(Math.min(i.x, ii.x), Math.min(i.y, ii.y), Math.abs(i.x - ii.x), Math.abs(i.y - ii.y));
-            SelectionQuery selectionBounds = new SelectionQuery(
-                    i, ii,
-                    SelectionType.BOUNDS_STRICT
-            );
+            SelectionUI.run((Graphics2D)g, selectionArea, renderer);
         }
         log.println("Painted/Repainted Scene");
     }

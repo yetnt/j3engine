@@ -24,16 +24,14 @@ public abstract class GObject extends EventEmitter implements EventListener {
     /**
      * A Unique UUID to identify this geometry.
      */
-    private final String Id;
+    private final UUID Id;
 
     /**
      * Draws this geometry to the screen.
-     * @param renderer The Renderer instance
      * @param graphics2D The Graphics2D instance
-     * @param cam The camera.
      * @implNote This is meant to be overridden by inheritors.
      */
-    public void draw(Renderer renderer, Graphics2D graphics2D, Camera cam) {
+    public void draw(Graphics2D graphics2D) {
         return;
     }
 
@@ -41,7 +39,7 @@ public abstract class GObject extends EventEmitter implements EventListener {
      * Default Constructor.
      */
     public GObject() {
-        Id = UUID.randomUUID().toString();
+        Id = UUID.randomUUID();
     }
 
 
@@ -50,7 +48,7 @@ public abstract class GObject extends EventEmitter implements EventListener {
      * @param colour The colour.
      */
     public GObject(Color colour) {
-        Id = UUID.randomUUID().toString();
+        Id = UUID.randomUUID();
         col = colour;
     }
 
@@ -100,7 +98,7 @@ public abstract class GObject extends EventEmitter implements EventListener {
      * Returns this geometry's unique identifier
      * @return The UUID
      */
-    public String getId() {
+    public UUID getId() {
         return Id;
     }
 
