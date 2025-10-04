@@ -46,6 +46,14 @@ public class Vector3 {
     }
 
     /**
+     * Calculates the dot product of this vector and another vector.
+     * @param v The other vector.
+     * @return The dot product.
+     */
+    public double dot(Vector3 v) {
+        return X * v.getX() + Y * v.getY() + Z * v.getZ();
+    }
+    /**
      * Normalizes the vector
      * @return A new normalized Vector3.
      */

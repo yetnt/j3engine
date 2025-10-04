@@ -293,4 +293,18 @@ public class Renderer {
         }
         return null;
     }
+
+    public <T extends GObject> T select(Class<T> filter, CartesianPoint mousePos) {
+        //TODO: Implement.
+        for (Layer layer : layers) {
+            for (Thing t : layer) {
+                for (GObject obj : t.getObjects()) {
+                    if (filter.isInstance(obj)) {
+                        return (T) obj;
+                    }
+                }
+            }
+        }
+        return null;
+    }
 }

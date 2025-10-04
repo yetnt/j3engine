@@ -1,61 +1,70 @@
 package com.j3d;
 
-import com.j3d.engine.geometry.geo2d.Dimension;
+import com.j3d.engine.Logger;
+import com.j3d.engine.geometry.Dimension;
 import com.j3d.engine.Renderer;
+import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.Rotation;
 import com.j3d.engine.geometry.geo3d.Vector3;
+import com.j3d.engine.interact.SelectionQuery;
+import com.j3d.engine.interact.SelectionType;
 import com.j3d.jaiva.Testing;
 import com.jaiva.JBundler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 /**
  * Main is main.
  */
 public class Main extends JPanel {
+    public static Logger log;
     public static Dimension scrSize = new Dimension(1800, 1000);
     public static JBundler jBundler = null;
     public static Renderer renderer = null;
     public static Executor executor = null;
     public static boolean run = true;
     public static Frame f = null;
-    private static DebugPanel dp = new DebugPanel();
     public static Camera camera = new Camera()
             .setPosition(new Vector3(20, 20, -20))
             .setRotation(new Rotation(0, 0, 0))
             .setProjectionPlane(new Vector3(0, 0, 50));
+    private static DebugPanel dp = new DebugPanel();
+    private ScreenPoint mousePos = null;
+    private ScreenPoint[] selectionArea = new ScreenPoint[2];
 
     public Main() {
-//        addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(java.awt.event.MouseEvent e) {
-//                int x = e.getX();
-//                int y = e.getY();
-//                // You can trigger a repaint or other logic here
-//            }
-//
-//            @Override
-//            public void mousePressed(MouseEvent e) {
-//                CartesianPoint mousePos = new ScreenPoint(e.getX(), e.getY()).toPoint(renderer);
-//            }
-//
-//            @Override
-//            public void mouseReleased(MouseEvent e) {
-//            }
-//        });
-//
-//        addMouseMotionListener(new MouseMotionAdapter() {
-//            @Override
-//            public void mouseDragged(MouseEvent e) {
-//                if (currentlyDragging != null) {
-//                    Vector3 newPos = new Vector3(e.getX(), e.getY(), 0);
-//                    renderer.movePointTo(currentlyDragging, newPos);
-//                    f.repaint();
-//                }
-//            }
-//        });
+        addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                selectionArea = new ScreenPoint[]{null, null}; // Reset selection area
+                f.repaint();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                mousePos = new ScreenPoint(e.getX(), e.getY());
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                mousePos = null;
+            }
+        });
+
+        addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                selectionArea[0] = mousePos;
+                selectionArea[1] = new ScreenPoint(e.getX(), e.getY());
+                f.repaint();
+            }
+        });
     }
 
     /**
@@ -78,14 +87,24 @@ public class Main extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        if (!run) {
+        if (run) {
 //            renderer.axis((Graphics2D) g, camera);
-            renderer.draw((Graphics2D) g, camera);
-            return;
+            executor.run((Graphics2D) g);
+            run = false;
         }
-        executor.run((Graphics2D) g);
-        run = false;
         renderer.draw((Graphics2D) g, camera);
+        // draw selection area ontop of all render things.
+        if (selectionArea[0] != null && selectionArea[1] != null) {
+            g.setColor(new Color(255, 1, 1, 92));
+            ScreenPoint i = selectionArea[0];
+            ScreenPoint ii = selectionArea[1];
+            g.fillRect(Math.min(i.x, ii.x), Math.min(i.y, ii.y), Math.abs(i.x - ii.x), Math.abs(i.y - ii.y));
+            SelectionQuery selectionBounds = new SelectionQuery(
+                    i, ii,
+                    SelectionType.BOUNDS_STRICT
+            );
+        }
+        log.println("Painted/Repainted Scene");
     }
 
     @Override
@@ -115,15 +134,16 @@ public class Main extends JPanel {
         mainPanel.setPreferredSize(new java.awt.Dimension(scrSize.width, scrSize.height));
         layeredPane.add(mainPanel, JLayeredPane.DEFAULT_LAYER);
 
-        dp.setBounds(20, 20, 400, 335); // small corner overlay
+        dp.setBounds(20, 40, dp.getPreferredSize().width, dp.getPreferredSize().height); // small corner overlay
         dp.setOpaque(true);
         dp.setBackground(Color.WHITE);
         dp.setVisible(true);
+        log = new Logger(dp.logTextArea); // initialize logger with the text area
         layeredPane.add(dp, JLayeredPane.PALETTE_LAYER);
 
         JButton toggleButton = new JButton("Toggle Debug");
         toggleButton.addActionListener(e -> dp.setVisible(!dp.isVisible()));
-        toggleButton.setBounds(20, 370, 120, 30); // position it below dp
+        toggleButton.setBounds(20, 5, toggleButton.getPreferredSize().width, toggleButton.getPreferredSize().height); // position it below dp
         layeredPane.add(toggleButton, JLayeredPane.PALETTE_LAYER);
 //        frame.add(new Main());
         frame.setVisible(true);

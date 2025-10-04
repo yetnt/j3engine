@@ -3,6 +3,8 @@ package com.j3d.engine.geometry;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
 
+import java.awt.*;
+
 /**
  * ScreenPoint, not to be confused with {@link CartesianPoint}, is a point on the actual screen (window) open.
  * Where (0, 0) is the top left corner of the window.
@@ -33,6 +35,14 @@ public class ScreenPoint extends BasePoint<Integer> {
         double cartesianY = adjustedY + renderer.cameraOffset.y;
 
         return new CartesianPoint(cartesianX, cartesianY);
+    }
+
+    /**
+     * Returns the ScreenPoint as {@link Point}
+     * @return A Point
+     */
+    public Point toSwingPoint() {
+        return new Point(x, y);
     }
 
 }
