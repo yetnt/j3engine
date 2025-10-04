@@ -34,7 +34,8 @@ public class Executor {
 //        renderer.axis(graphics2D, Main.camera);
 
 //        test();
-        cube();
+        Thing cub = cube();
+        cub.translate(new Vector3(0, 20, 0));
     }
 
     public void test() {
@@ -45,7 +46,7 @@ public class Executor {
         new Thing(renderer, null).addObjs(triangl, triangl.getLegA(), triangl.getLegB(), triangl.getLegC(), A, B, C);
     }
 
-    public void cube() {
+    public Thing cube() {
         GPoint A = new GPoint(new Vector3(-5, 5, -5));
         GPoint B = new GPoint(new Vector3(-5, -5, -5));
         GPoint C = new GPoint(new Vector3(5, 5, -5));
@@ -67,8 +68,8 @@ public class Executor {
         GTri face6tri1 = new GTri(Color.YELLOW, D, F, B);
         GTri face6tri2 = new GTri(Color.YELLOW.darker(), F, B, G);
 
-        new Thing(renderer, null).addObjs(
-                A, B, C, D, E, F, G, face1tri1, face1tri2, face2tri1, face2tri2, face3tri1, face3tri2, face4tri1, face4tri2,
+        return new Thing(renderer, null).addObjs(
+                A, B, C, D, E, F, G, H, face1tri1, face1tri2, face2tri1, face2tri2, face3tri1, face3tri2, face4tri1, face4tri2,
                 face5tri1, face5tri2, face6tri1, face6tri2
         );
     }

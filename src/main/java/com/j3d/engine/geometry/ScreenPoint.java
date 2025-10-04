@@ -31,8 +31,8 @@ public class ScreenPoint extends BasePoint<Integer> {
         double adjustedX = (x - renderer.screenSize.width / 2) / renderer.SCALE;
         double adjustedY = (renderer.screenSize.height / 2 - y) / renderer.SCALE;
 
-        double cartesianX = adjustedX + renderer.cameraOffset.x;
-        double cartesianY = adjustedY + renderer.cameraOffset.y;
+        double cartesianX = adjustedX;
+        double cartesianY = adjustedY;
 
         return new CartesianPoint(cartesianX, cartesianY);
     }

@@ -6,6 +6,7 @@ import com.j3d.engine.geometry.Dimension;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.Vector3;
+import com.j3d.engine.interact.SelectionQuery;
 
 import java.awt.*;
 import java.util.ArrayDeque;
@@ -34,10 +35,6 @@ public class Renderer {
      * The Scale factor helps by making it such that (if SCALE is set to 10), inputting (0, 1) as a {@link CartesianPoint}, when converted to {@link ScreenPoint} it is multiplied by 10 units.
      */
     public double SCALE = 10.0;
-    /**
-     * Unused as of now.
-     */
-    public Point cameraOffset = new Point(0, 0);
 
     /**
      * Default Constructor
@@ -167,17 +164,6 @@ public class Renderer {
         return false;
     }
 
-//    public void draw() {
-////        clear();
-////        axis();
-//        for (GObject objs : objectQueue) {
-//            for (Runnable r : objs.getDrawQueue()) {
-//                r.run();
-//            }
-//        }
-//        frames.add(new Frame(objectQueue));
-//    }
-
 
     /**
      * Finds an existing {@link GPoint} in the specified layer that matches the target {@link CartesianPoint}.
@@ -294,17 +280,7 @@ public class Renderer {
         return null;
     }
 
-    public <T extends GObject> T select(Class<T> filter, CartesianPoint mousePos) {
-        //TODO: Implement.
-        for (Layer layer : layers) {
-            for (Thing t : layer) {
-                for (GObject obj : t.getObjects()) {
-                    if (filter.isInstance(obj)) {
-                        return (T) obj;
-                    }
-                }
-            }
-        }
-        return null;
+    public void select(SelectionQuery selectionQuery) {
+
     }
 }
