@@ -1,11 +1,18 @@
 package com.j3d.engine.interact;
 
+import com.j3d.Main;
 import com.j3d.engine.Layer;
+import com.j3d.engine.geometry.geo2d.GLine;
 import com.j3d.engine.geometry.geo2d.GObject;
+import com.j3d.engine.geometry.geo2d.GPoint;
+import com.j3d.engine.geometry.geo2d.GTri;
 import com.j3d.engine.geometry.geo3d.Thing;
+import com.j3d.engine.geometry.geo3d.Vector3;
 
 import java.util.ArrayList;
 import java.util.function.Predicate;
+
+import static com.j3d.Main.camera;
 
 /**
  * Manages the selection of GObjects within a collection of Layers and Things.
@@ -56,6 +63,40 @@ public class SelectionManager {
                 }
             }
         }
+        this.filter(obj -> {
+            if (obj instanceof GTri tri) {
+                Vector3 a = tri.getLegA().getStart().getPivot();
+                Vector3 b = tri.getLegB().getStart().getPivot();
+                Vector3 c = tri.getLegC().getStart().getPivot();
+
+                Vector3 ab = b.sub(a);
+                Vector3 ac = c.sub(a);
+                Vector3 normal = ab.cross(ac).normalize();
+
+                Vector3 toCamera = camera.getPosition().sub(a);
+                return normal.dot(toCamera) > 0;
+            }
+            if (obj instanceof GLine) return ((GLine) obj).getPivot().getZ() < camera.getPosition().getZ();
+            if (obj instanceof GPoint) return ((GPoint) obj).getPivot().getZ() < camera.getPosition().getZ();
+            return true;
+        });
+
+    }
+
+    /**
+     * Constructs an empty SelectionManager with no selected GObjects.
+     */
+    public SelectionManager() {
+        // Empty constructor for creating an empty selection manager.
+    }
+
+    /**
+     * Checks if no GObjects are currently selected.
+     *
+     * @return true if no GObjects are selected, false otherwise.
+     */
+    public boolean isNothingSelected() {
+        return selected.isEmpty();
     }
 
     /**
