@@ -1,5 +1,6 @@
 package com.j3d.engine.interact.selection;
 
+import com.j3d.Main;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.ScreenPoint;
 
@@ -18,6 +19,8 @@ public class SelectionUI {
         ScreenPoint i = selectionArea[0];
         ScreenPoint ii = selectionArea[1];
         g.setColor(isStrict ? STRICT_COLOR : SOFT_COLOR);
+        if (isStrict) Main.Cursors.set("selectStrict");
+        else Main.Cursors.set("selectSoft");
         g.fillRect(Math.min(i.x, ii.x), Math.min(i.y, ii.y), Math.abs(i.x - ii.x), Math.abs(i.y - ii.y));
         SelectionQuery selectionQuery = new SelectionQuery(
                 i, ii,

@@ -1,9 +1,8 @@
 package com.j3d.engine.interact.cmd.base;
 
 /**
- * Subcommand is a command that is a subcommand of another command.
- * It inherits from Command and does not add any new functionality.
- * It is used to differentiate between commands and subcommands.
+ * Subcommand class that extends Command and implements Argument.
+ * This class can be used to create subcommands within a command structure.
  */
 public class Subcommand extends Command implements Argument {
     public Subcommand(String name, String description) {
