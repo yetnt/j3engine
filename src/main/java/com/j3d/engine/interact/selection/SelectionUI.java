@@ -1,4 +1,4 @@
-package com.j3d.engine.interact;
+package com.j3d.engine.interact.selection;
 
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.ScreenPoint;

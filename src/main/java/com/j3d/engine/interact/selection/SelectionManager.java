@@ -1,6 +1,5 @@
-package com.j3d.engine.interact;
+package com.j3d.engine.interact.selection;
 
-import com.j3d.Main;
 import com.j3d.engine.Layer;
 import com.j3d.engine.geometry.geo2d.GLine;
 import com.j3d.engine.geometry.geo2d.GObject;

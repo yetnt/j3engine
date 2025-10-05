@@ -1,4 +1,4 @@
-package com.j3d.engine.interact;
+package com.j3d.engine.interact.selection;
 
 /**
  * SelectionType is an enum that describes the different types of selections that can be made.
