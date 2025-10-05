@@ -7,17 +7,14 @@ import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.Rotation;
 import com.j3d.engine.geometry.geo3d.Vector3;
-import com.j3d.engine.interact.SelectionQuery;
-import com.j3d.engine.interact.SelectionType;
-import com.j3d.engine.interact.SelectionUI;
+import com.j3d.engine.interact.cmd.CommandParser;
+import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.jaiva.Testing;
 import com.jaiva.JBundler;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.*;
 
 /**
  * Main is main.
@@ -37,6 +34,8 @@ public class Main extends JPanel {
     private static DebugPanel dp = new DebugPanel();
     private ScreenPoint mousePos = null;
     private ScreenPoint[] selectionArea = new ScreenPoint[2];
+    private static CommandPallete commandPallete = new CommandPallete();
+    public static CommandParser commandParser;
 
     public Main() {
         addMouseListener(new MouseAdapter() {
@@ -110,9 +109,10 @@ public class Main extends JPanel {
     }
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Dot Drawer");
+        JFrame frame = new JFrame("J3D");
 
         f = frame;
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         renderer = new Renderer(scrSize);
         executor = new Executor(renderer);
         dp.run(renderer, executor, f);
@@ -139,6 +139,33 @@ public class Main extends JPanel {
         toggleButton.addActionListener(e -> dp.setVisible(!dp.isVisible()));
         toggleButton.setBounds(20, 5, toggleButton.getPreferredSize().width, toggleButton.getPreferredSize().height); // position it below dp
         layeredPane.add(toggleButton, JLayeredPane.PALETTE_LAYER);
+
+        commandPallete.validate(); // Ensures layout is calculated
+        java.awt.Dimension size = commandPallete.getPreferredSize();
+
+        int x = (scrSize.width - size.width) / 2;
+        int y = scrSize.height - size.height - 200;
+
+        commandPallete.setBounds(x, y, size.width, size.height);
+        commandPallete.setOpaque(true);
+        commandPallete.setBackground(new Color(30, 30, 30, 178));
+        commandPallete.setVisible(true);
+        layeredPane.add(commandPallete, JLayeredPane.PALETTE_LAYER);
+        commandParser = new CommandParser(commandPallete.logLabel, commandPallete.inputField);
+
+        mainPanel.getRootPane().setFocusable(true);
+        mainPanel.getRootPane().requestFocusInWindow();
+
+        mainPanel.getRootPane().addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (!commandPallete.inputField.isFocusOwner()) {
+                    commandPallete.inputField.requestFocus();
+                    commandPallete.inputField.setText(String.valueOf(e.getKeyChar()));
+                }
+            }
+        });
+
 //        frame.add(new Main());
         frame.setVisible(true);
 

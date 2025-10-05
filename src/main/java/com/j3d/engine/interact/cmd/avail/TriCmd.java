@@ -1,0 +1,80 @@
+package com.j3d.engine.interact.cmd.avail;
+
+import com.j3d.engine.geometry.geo2d.GLine;
+import com.j3d.engine.geometry.geo2d.GPoint;
+import com.j3d.engine.geometry.geo2d.GTri;
+import com.j3d.engine.geometry.geo3d.Vector3;
+import com.j3d.engine.interact.cmd.base.Command;
+import com.j3d.engine.interact.cmd.base.TypedArg;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class TriCmd extends Command {
+    public TriCmd() {
+        super("tri", "Creates a triangle in 3D space.");
+        this.aliases("triangle", "tr")
+            .args(
+                 new TypedArg("v1", "The position of the first vertex or line", false, Vector3.class, GPoint.class, GLine.class),
+                 new TypedArg("v2", "The position of the second vertex or line", false, Vector3.class, GPoint.class, GLine.class),
+                 new TypedArg("v3", "The position of the third vertex or line", false, Vector3.class, GPoint.class, GLine.class),
+                    new TypedArg("col", "The color of the triangle", true, Color.class)
+            );
+    }
+
+    @Override
+    public void run(JLabel logLabel, Object... args) {
+        if (args.length != 3 && args.length != 4) {
+            logLabel.setText("Invalid number of arguments. Usage: tri <v1: Vector3|GPoint|GLine> <v2: Vector3|GPoint|GLine> <v3: Vector3|GPoint|GLine>");
+            return;
+        }
+        // Each argument has to be either a Vector3, GPoint, or GLine
+
+        for (Object arg : args) {
+            if (!(arg instanceof Vector3 || arg instanceof GPoint || arg instanceof GLine)) {
+                logLabel.setText("Invalid argument types. Usage: tri <v1: Vector3|GPoint|GLine> <v2: Vector3|GPoint|GLine> <v3: Vector3|GPoint|GLine>");
+                return;
+            }
+        }
+        // Arguments have to be of the same type
+        boolean allVector3 = args[0] instanceof Vector3 && args[1] instanceof Vector3 && args[2] instanceof Vector3;
+        boolean allGPoint = args[0] instanceof GPoint && args[1] instanceof GPoint && args[2] instanceof GPoint;
+        boolean allGLine = args[0] instanceof GLine && args[1] instanceof GLine && args[2] instanceof GLine;
+
+        if (!allVector3 && !allGPoint && !allGLine) {
+            logLabel.setText("Arguments must be of the same type. All Vector3, all GPoint, or all GLine.");
+            return;
+        }
+
+        if (args.length == 4 && !(args[3] instanceof Color)) {
+            logLabel.setText("Invalid type for color argument. Must be Color.");
+            return;
+        }
+
+        Color col = (args.length == 4) ? (Color) args[3] : Color.WHITE;
+
+        if (allGPoint || allVector3) {
+            GPoint[] vertices = new GPoint[3];
+            for (int i = 0; i < 3; i++) {
+                if (args[i] instanceof Vector3 v) {
+                    vertices[i] = new GPoint(v);
+                } else if (args[i] instanceof GPoint p) {
+                    vertices[i] = p;
+                }
+            }
+            new GTri(col, vertices[0], vertices[1], vertices[2]);
+            logLabel.setText("Triangle created with vertices: " + vertices[0] + ", " + vertices[1] + ", " + vertices[2]);
+        } else {
+            GLine[] lines = new GLine[3];
+            for (int i = 0; i < 3; i++) {
+                lines[i] = (GLine) args[i];
+            }
+            try {
+                new GTri(col, lines[0], lines[1], lines[2]);
+                logLabel.setText("Triangle created with lines: " + lines[0] + ", " + lines[1] + ", " + lines[2]);
+            } catch (IllegalArgumentException e) {
+                logLabel.setText("Error creating triangle: " + e.getMessage());
+            }
+        }
+    }
+}

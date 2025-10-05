@@ -1,0 +1,32 @@
+package com.j3d.engine.interact.cmd.avail;
+
+import com.j3d.Main;
+import com.j3d.engine.geometry.geo2d.GPoint;
+import com.j3d.engine.geometry.geo3d.Thing;
+import com.j3d.engine.geometry.geo3d.Vector3;
+import com.j3d.engine.interact.cmd.base.Command;
+import com.j3d.engine.interact.cmd.base.TypedArg;
+
+import javax.swing.*;
+
+public class PointCmd extends Command {
+    public PointCmd() {
+        super("point", "Creates a point in 3D space.");
+        this.aliases("pnt", "pt")
+            .args(
+                new TypedArg("v", "The position of the new point", false, Vector3.class)
+            );
+    }
+
+    @Override
+    public void run(JLabel logLabel, Object... args) {
+        if (args.length != 1 || !(args[0] instanceof Vector3 position)) {
+            logLabel.setText("Invalid arguments. Usage: point <Vector3>");
+            return;
+        }
+
+        new Thing(Main.renderer, null).addObjs(new GPoint(position));
+        logLabel.setText("Point created at position: " + position);
+        Main.log.println("Point created at position: " + position);
+    }
+}

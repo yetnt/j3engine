@@ -7,9 +7,9 @@ import com.j3d.engine.geometry.Dimension;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.Vector3;
-import com.j3d.engine.interact.SelectionManager;
-import com.j3d.engine.interact.SelectionQuery;
-import com.j3d.engine.interact.SelectionType;
+import com.j3d.engine.interact.selection.SelectionManager;
+import com.j3d.engine.interact.selection.SelectionQuery;
+import com.j3d.engine.interact.selection.SelectionType;
 
 import java.awt.*;
 import java.util.ArrayDeque;
@@ -324,4 +324,24 @@ public class Renderer {
 
     public ArrayList<GObject> getSelected() {
         return currentSelection.getSelected();
-    }}
+    }
+
+    /**
+     * Finds a {@link GObject} by its UUID across all layers.
+     * @param id The UUID of the object to find.
+     * @return The {@link GObject} with the matching UUID, or {@code null} if no such object is found.
+     */
+    public GObject findObjectByUUID(UUID id) {
+        for (Layer layer : layers) {
+            for (Thing t : layer) {
+                for (GObject obj : t.getObjects()) {
+                    if (obj.getId().equals(id)) {
+                        return obj;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+}
