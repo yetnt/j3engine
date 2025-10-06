@@ -74,6 +74,24 @@ public class Camera {
         return this;
     }
 
+//    /**
+//     * Computes the forward direction vector of the camera based on its rotation.
+//     * This vector indicates the direction the camera is facing in 3D space.
+//     *
+//     * @return A normalized Vector3 representing the camera's forward direction.
+//     */
+//    public Vector3 getForward() {
+//        double yaw = Math.toRadians(rotation.getYaw());     // horizontal angle
+//        double pitch = Math.toRadians(rotation.getPitch()); // vertical angle
+//
+//        return new Vector3(
+//                Math.cos(pitch) * Math.sin(yaw),
+//                Math.sin(pitch),
+//                Math.cos(pitch) * Math.cos(yaw)
+//        ).normalize();
+//    }
+
+
     @Override
     public String toString() {
         return "Camera{" + "position=" + position + ", rotation=" + rotation + ", projectionPlane=" + projectionPlane + '}';

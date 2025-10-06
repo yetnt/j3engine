@@ -147,4 +147,12 @@ public class Thing {
             p.setPivot(p.getPivot().add(v));
         }
     }
+
+    public void rotate(Vector3 axis, double angleDegrees) {
+        for (GPoint p : points) {
+            Vector3 dir = p.getPivot().sub(centroid);
+            dir = dir.rotateAroundAxis(axis, angleDegrees);
+            p.setPivot(centroid.add(dir));
+        }
+    }
 }

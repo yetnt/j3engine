@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package com.j3d;
+package com.j3d.engine.interact.cmd;
 
 /**
  *
@@ -28,6 +28,11 @@ public class CommandPallete extends javax.swing.JPanel {
 
         inputField = new javax.swing.JTextField();
         logLabel = new javax.swing.JLabel();
+        suggestionsScrollPane = new javax.swing.JScrollPane();
+        suggestionPane = new javax.swing.JPanel();
+
+        setMaximumSize(new java.awt.Dimension(768, 236));
+        setMinimumSize(new java.awt.Dimension(768, 236));
 
         inputField.setBackground(new java.awt.Color(51, 51, 51));
         inputField.setForeground(new java.awt.Color(255, 255, 255));
@@ -35,6 +40,19 @@ public class CommandPallete extends javax.swing.JPanel {
         logLabel.setForeground(new java.awt.Color(255, 255, 255));
         logLabel.setLabelFor(inputField);
         logLabel.setText("jLabel1");
+
+        javax.swing.GroupLayout suggestionPaneLayout = new javax.swing.GroupLayout(suggestionPane);
+        suggestionPane.setLayout(suggestionPaneLayout);
+        suggestionPaneLayout.setHorizontalGroup(
+            suggestionPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 184, Short.MAX_VALUE)
+        );
+        suggestionPaneLayout.setVerticalGroup(
+            suggestionPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 161, Short.MAX_VALUE)
+        );
+
+        suggestionsScrollPane.setViewportView(suggestionPane);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -44,15 +62,20 @@ public class CommandPallete extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(inputField, javax.swing.GroupLayout.DEFAULT_SIZE, 756, Short.MAX_VALUE)
-                    .addComponent(logLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(logLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(suggestionsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
+                .addContainerGap(11, Short.MAX_VALUE)
+                .addComponent(suggestionsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(logLabel)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(inputField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -61,6 +84,8 @@ public class CommandPallete extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTextField inputField;
+    public javax.swing.JScrollPane suggestionsScrollPane;
     public javax.swing.JLabel logLabel;
+    public javax.swing.JPanel suggestionPane;
     // End of variables declaration//GEN-END:variables
 }

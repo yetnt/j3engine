@@ -1,6 +1,7 @@
 package com.j3d.engine.interact.cmd.base;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * TypedArg is a generic class that can hold a value of any type.
@@ -21,5 +22,20 @@ public class TypedArg implements Argument {
 
     public ArrayList<Class> getType() {
         return type;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public boolean isOptional() {
+        return optional;
     }
 }

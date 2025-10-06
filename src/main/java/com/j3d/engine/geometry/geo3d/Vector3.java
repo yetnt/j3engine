@@ -227,4 +227,27 @@ public class Vector3 {
                 ", Z=" + Z +
                 '}';
     }
+
+    /**
+     * Rotates this vector around a given axis by a specified angle using Rodrigues' rotation formula.
+     * @param axis The axis to rotate around (should be a normalized vector).
+     * @param angleDegrees The angle in degrees to rotate.
+     * @return A new Vector3 representing the rotated vector.
+     */
+    public Vector3 rotateAroundAxis(Vector3 axis, double angleDegrees) {
+        double angleRad = Math.toRadians(angleDegrees);
+        double cosTheta = Math.cos(angleRad);
+        double sinTheta = Math.sin(angleRad);
+        Vector3 normalizedAxis = axis.normalize();
+
+        double u = normalizedAxis.getX();
+        double v = normalizedAxis.getY();
+        double w = normalizedAxis.getZ();
+
+        double xPrime = (u * (u * X + v * Y + w * Z)) * (1 - cosTheta) + X * cosTheta + (-w * Y + v * Z) * sinTheta;
+        double yPrime = (v * (u * X + v * Y + w * Z)) * (1 - cosTheta) + Y * cosTheta + (w * X - u * Z) * sinTheta;
+        double zPrime = (w * (u * X + v * Y + w * Z)) * (1 - cosTheta) + Z * cosTheta + (-v * X + u * Y) * sinTheta;
+
+        return new Vector3(xPrime, yPrime, zPrime);
+    }
 }

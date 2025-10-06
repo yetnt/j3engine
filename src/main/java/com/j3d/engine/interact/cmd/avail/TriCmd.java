@@ -1,8 +1,10 @@
 package com.j3d.engine.interact.cmd.avail;
 
+import com.j3d.Main;
 import com.j3d.engine.geometry.geo2d.GLine;
 import com.j3d.engine.geometry.geo2d.GPoint;
 import com.j3d.engine.geometry.geo2d.GTri;
+import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.Vector3;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.TypedArg;
@@ -12,27 +14,39 @@ import java.awt.*;
 
 public class TriCmd extends Command {
     public TriCmd() {
-        super("tri", "Creates a triangle in 3D space.");
-        this.aliases("triangle", "tr")
+        super("triangle", "Creates a triangle in 3D space.");
+        this.aliases("tri", "tr")
             .args(
                  new TypedArg("v1", "The position of the first vertex or line", false, Vector3.class, GPoint.class, GLine.class),
                  new TypedArg("v2", "The position of the second vertex or line", false, Vector3.class, GPoint.class, GLine.class),
                  new TypedArg("v3", "The position of the third vertex or line", false, Vector3.class, GPoint.class, GLine.class),
                     new TypedArg("col", "The color of the triangle", true, Color.class)
             );
+
+        // Custom Usage Args parsing because the args have to be of the same type.
+
+        usages.put(
+                new java.util.ArrayList<>(java.util.List.of(Vector3.class, Vector3.class, Vector3.class, Color.class)), " (vector3) (vector3) (vector3) #color?#"
+        );
+        usages.put(
+                new java.util.ArrayList<>(java.util.List.of(GPoint.class, GPoint.class, GPoint.class, Color.class)), " <point> <point> <point> #color?#"
+        );
+        usages.put(
+                new java.util.ArrayList<>(java.util.List.of(GLine.class, GLine.class, GLine.class, Color.class)), " <line> <line> <line> #color?#"
+        );
     }
 
     @Override
-    public void run(JLabel logLabel, Object... args) {
+    public void run(JLabel logLabel, String aliasUsed, Object... args) {
         if (args.length != 3 && args.length != 4) {
-            logLabel.setText("Invalid number of arguments. Usage: tri <v1: Vector3|GPoint|GLine> <v2: Vector3|GPoint|GLine> <v3: Vector3|GPoint|GLine>");
+            logLabel.setText("Invalid number of arguments. Usage:" + returnUsagesWhere(aliasUsed, Vector3.class)[0] + " or " + returnUsagesWhere(aliasUsed, GPoint.class)[0] + " or " + returnUsagesWhere(aliasUsed, GLine.class)[0]);
             return;
         }
         // Each argument has to be either a Vector3, GPoint, or GLine
 
         for (Object arg : args) {
-            if (!(arg instanceof Vector3 || arg instanceof GPoint || arg instanceof GLine)) {
-                logLabel.setText("Invalid argument types. Usage: tri <v1: Vector3|GPoint|GLine> <v2: Vector3|GPoint|GLine> <v3: Vector3|GPoint|GLine>");
+            if (!(arg instanceof Vector3 || arg instanceof GPoint || arg instanceof GLine || arg instanceof Color)) {
+                logLabel.setText("Invalid argument types. Usage:" + returnUsagesWhere(aliasUsed, Vector3.class)[0] + " or " + returnUsagesWhere(aliasUsed, GPoint.class)[0] + " or " + returnUsagesWhere(aliasUsed, GLine.class)[0]);
                 return;
             }
         }
@@ -47,7 +61,7 @@ public class TriCmd extends Command {
         }
 
         if (args.length == 4 && !(args[3] instanceof Color)) {
-            logLabel.setText("Invalid type for color argument. Must be Color.");
+            logLabel.setText("Invalid type for color argument.");
             return;
         }
 
@@ -62,7 +76,7 @@ public class TriCmd extends Command {
                     vertices[i] = p;
                 }
             }
-            new GTri(col, vertices[0], vertices[1], vertices[2]);
+            new Thing(Main.renderer, null).addObjs(new GTri(col, vertices[0], vertices[1], vertices[2]), vertices[0], vertices[1], vertices[2]);
             logLabel.setText("Triangle created with vertices: " + vertices[0] + ", " + vertices[1] + ", " + vertices[2]);
         } else {
             GLine[] lines = new GLine[3];
@@ -70,7 +84,7 @@ public class TriCmd extends Command {
                 lines[i] = (GLine) args[i];
             }
             try {
-                new GTri(col, lines[0], lines[1], lines[2]);
+                new Thing(Main.renderer, null).addObjs(new GTri(col, lines[0], lines[1], lines[2]), lines[0], lines[1], lines[2]);
                 logLabel.setText("Triangle created with lines: " + lines[0] + ", " + lines[1] + ", " + lines[2]);
             } catch (IllegalArgumentException e) {
                 logLabel.setText("Error creating triangle: " + e.getMessage());

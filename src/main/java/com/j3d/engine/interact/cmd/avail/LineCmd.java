@@ -9,6 +9,8 @@ import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.TypedArg;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LineCmd extends Command {
     public LineCmd() {
@@ -18,17 +20,26 @@ public class LineCmd extends Command {
                 new TypedArg("start", "The starting position of the line or a point", false, Vector3.class, GPoint.class),
                 new TypedArg("end", "The ending position of the line or a point", false, Vector3.class, GPoint.class)
             );
+
+        // Custom Usage Args parsing because the args have to be of the same type.
+
+        usages.put(
+                new ArrayList<>(List.of(Vector3.class, Vector3.class)), " (vector3) (vector3)"
+        );
+        usages.put(
+                new ArrayList<>(List.of(GPoint.class, GPoint.class)), " <point> <point>"
+        );
     }
 
     @Override
-    public void run(JLabel logLabel, Object... args) {
+    public void run(JLabel logLabel, String aliasUsed, Object... args) {
         if (args.length != 2) {
-            logLabel.setText("Invalid number of arguments. Usage: line <start: Vector3|GPoint> <end: Vector3|GPoint>");
+            logLabel.setText("Invalid number of arguments. Usage:" + returnUsagesWhere(aliasUsed, Vector3.class)[0] + " or " + returnUsagesWhere(aliasUsed, GPoint.class)[0]);
             return;
         }
         if (!(args[0] instanceof Vector3 || args[0] instanceof GPoint) ||
             !(args[1] instanceof Vector3 || args[1] instanceof GPoint)) {
-            logLabel.setText("Invalid argument types. Usage: line <start: Vector3|GPoint> <end: Vector3|GPoint>");
+            logLabel.setText("Invalid argument types. Usage:Usage:" + returnUsagesWhere(aliasUsed, Vector3.class)[0] + " or " + returnUsagesWhere(aliasUsed, GPoint.class)[0]);
             return;
         }
         // Arguments have to be of the same type

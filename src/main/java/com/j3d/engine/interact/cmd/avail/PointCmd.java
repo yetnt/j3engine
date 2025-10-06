@@ -15,13 +15,13 @@ public class PointCmd extends Command {
         this.aliases("pnt", "pt")
             .args(
                 new TypedArg("v", "The position of the new point", false, Vector3.class)
-            );
+            ).parseUsages();
     }
 
     @Override
-    public void run(JLabel logLabel, Object... args) {
+    public void run(JLabel logLabel, String aliasUsed, Object... args) {
         if (args.length != 1 || !(args[0] instanceof Vector3 position)) {
-            logLabel.setText("Invalid arguments. Usage: point <Vector3>");
+            logLabel.setText("Invalid arguments. Usage:" + returnUsagesWhere(aliasUsed, Vector3.class)[0]);
             return;
         }
 

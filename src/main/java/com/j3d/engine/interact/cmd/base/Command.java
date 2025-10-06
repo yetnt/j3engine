@@ -1,14 +1,30 @@
 package com.j3d.engine.interact.cmd.base;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 public class Command {
     public ArrayList<String> aliases = new ArrayList<>();
     public String description;
     public String usage = "This will be auto-generated.";
     public ArrayList<Argument> args = new ArrayList<>();
+
+    /**
+     * A map to hold different usages based on argument types.
+     * Where for a command which may have multiple types for one argument,
+     * the key is an ArrayList of Classes representing the types of the arguments,
+     * and the value is a String representing the usage for that specific combination of argument types.
+     * <p>
+     *     For example, for a command that can take either an Integer or a String as its first argument,
+     *     and a Double as its second argument, you might have two entries in the usages map:
+     *     <ul>
+     *         <li>Key: [Integer.class, Double.class], Value: "command &lt;int&gt; &lt;double&gt;"</li>
+     *         <li>Key: [String.class, Double.class], Value: "command &lt;string&gt; &lt;double&gt;"</li>
+     *     </ul>
+     *     This allows the command to provide specific usage instructions based on the types of arguments provided
+     * </p>
+     */
+    protected HashMap<ArrayList<Class>, String> usages = new HashMap<>();
 
     public Command(String name, String d) {
         aliases.add(name);
@@ -27,10 +43,171 @@ public class Command {
 
     /**
      * The method to be overridden by subclasses to implement command functionality.
+     * @param logLabel The JLabel to display log messages.
+     * @param aliasUsed The alias of the command that was used to invoke it.
      * @param args The arguments passed to the command.
      */
-    public void run(JLabel logLabel, Object... args) {
+    public void run(JLabel logLabel, String aliasUsed, Object... args) {
         // To be overridden by subclasses
     }
 
+    /**
+     * Dispatches the command to the appropriate subcommand based on the first argument.
+     * @param subcommandName The name of the subcommand to dispatch to.
+     * @param args The raw arguments passed to the main command, including the subcommand name as the first argument.
+     */
+    protected void dispatchToSubcommands(String subcommandName, JLabel logLabel, Object... args) {
+        for (Argument arg : this.args) {
+            if (!(arg instanceof Subcommand subcommand)) continue;
+            if (subcommand.aliases.contains(subcommandName.toLowerCase())) {
+                Object[] subArgs = new Object[args.length - 1];
+                String alias = (String) args[0];
+                System.arraycopy(args, 1, subArgs, 0, args.length - 1);
+                subcommand.run(logLabel, alias, subArgs);
+                return;
+            }
+        }
+    }
+
+    /**
+     * Parses the usages of the command based on its arguments.
+     * This method populates the usages map with all possible usages of the command,
+     * taking into account subcommands and typed arguments.
+     * <p>
+     *     If an inheriting class does some special shenanigans with it's arguments.
+     *     It should handle the parsing itself.
+     * </p>
+     * @return The Command instance with populated usages.
+     */
+    public Command parseUsages() {
+        // This method is going to be long as hell I can already feel it.
+        // For each returned usage, don't prefix the command name, just the arguments.
+        // So later the suggestions can prefix the command name or the given alias for said command.
+        ArrayList<ArrayList<Class>> typeAccumulator = new ArrayList<>(
+        );
+        ArrayList<StringBuilder> usageAccumulator = new ArrayList<>();
+        for (Argument arg : args) {
+            if (arg instanceof Subcommand sub) {
+                // Step 1: If the argument is a Subcommand, get all it's usages and add
+                // them to this command's usages.
+                for (var entry : sub.getUsages().entrySet()) {
+                    ArrayList<Class> key = new ArrayList<>();
+                    key.addFirst(String.class); // The first argument is always the subcommand name
+                    key.addAll(entry.getKey());
+                    String value = " " + sub.aliases.getFirst() + " " + entry.getValue();
+                    usages.put(key, value);
+                }
+                continue; // If a command has subcommands, it can't have anything else. So exit early.
+                // Not bad. That was simple its just recursion.
+            }
+            // separated from the above if for clarity.
+            if (arg instanceof TypedArg tArg) {
+                // Step 2: If the argument is a TypedArg, we need to unfortunately handle
+                // multiple types.
+                // For something that is defined by it's UUID,
+                //      use <ClassName> (Goes for Thing, GObject, GPoint, GLine and GTri)
+                // For something that is a direct type
+                //      use (Type) (Goes for Vector3, String, Double)
+                // Special cases:
+                // Color: use #Color#
+                // Next problem: a TypedArg can take multiple types. And we need to
+                // create a usage for each type.
+                for (int i = 0; i < tArg.getType().size(); i++) {
+                    Class cls = tArg.getType().get(i);
+                    // If the accumulators are empty at the index, we need to add a new entry.
+                    if (typeAccumulator.size() <= i) {
+                        typeAccumulator.add(new ArrayList<>());
+                        usageAccumulator.add(new StringBuilder());
+                    }
+                    ArrayList<Class> clsList = typeAccumulator.get(i);
+                    clsList.add(cls);
+                    StringBuilder usageAccumulatorEntry = usageAccumulator.get(i);
+                    switch (cls.getSimpleName()) {
+                        case "Thing" -> usageAccumulatorEntry.append("<Thing").append(tArg.isOptional() ? "?" : "").append("> ");
+                        case "GPoint" -> usageAccumulatorEntry.append("<point").append(tArg.isOptional() ? "?" : "").append("> ");
+                        case "GLine" -> usageAccumulatorEntry.append("<line").append(tArg.isOptional() ? "?" : "").append("> ");
+                        case "GTri" -> usageAccumulatorEntry.append("<triangle").append(tArg.isOptional() ? "?" : "").append("> ");
+                        case "Color" -> usageAccumulatorEntry.append("#color").append(tArg.isOptional() ? "?" : "").append("# ");
+                        case "Vector3" -> usageAccumulatorEntry.append("(vector3").append(tArg.isOptional() ? "?" : "").append(") ");
+                        case "String" -> usageAccumulatorEntry.append("(string").append(tArg.isOptional() ? "?" : "").append(") ");
+                        case "Double" -> usageAccumulatorEntry.append("(number").append(tArg.isOptional() ? "?" : "").append(") ");
+                        case "Any" -> usageAccumulatorEntry.append("<any").append(tArg.isOptional() ? "?" : "").append("> ");
+                        default -> throw new IllegalStateException("Unexpected value: " + cls.getSimpleName());
+                    }
+                }
+            } else if (arg instanceof TaggedArg tagArg) {
+                // probably the simplest one, A tagged arg is always a... tag.
+                // However, we need to add this arg to every usage within the accumulator and typeAccumulator
+                // If the accumulators are empty, we need to add a new entry.
+                if (typeAccumulator.isEmpty()) {
+                    typeAccumulator.add(new ArrayList<>(List.of(TaggedArg.class)));
+                    usageAccumulator.add(new StringBuilder("{tag} "));
+                } else {
+                    for (ArrayList<Class> clsList : typeAccumulator) {
+                        clsList.add(TaggedArg.class);
+                    }
+                    for (StringBuilder usage : usageAccumulator) {
+                        usage.append("{tag").append(tagArg.isOptional() ? "?" : "").append("} ");
+                    }
+                }
+            } else if (arg instanceof ArgSet setArg) {
+                // Another simple one, An ArgSet is always a set of predefined strings.
+                // However, we need to add this arg to every usage within the accumulator and typeAccumulator
+                // If the accumulators are empty, we need to add a new entry.
+                if (typeAccumulator.isEmpty()) {
+                    typeAccumulator.add(new ArrayList<>(List.of(String.class)));
+                    usageAccumulator.add(new StringBuilder("[" + String.join("|", setArg.getAllowedValues()) + "] "));
+                } else {
+                    for (ArrayList<Class> clsList : typeAccumulator) {
+                        clsList.add(String.class);
+                    }
+                    for (StringBuilder usage : usageAccumulator) {
+                        usage.append("[").append(String.join("|", setArg.getAllowedValues())).append(setArg.isOptional() ? "?" : "").append("] ");
+                    }
+                }
+            } else {
+                throw new IllegalStateException("Unknown argument type: " + arg.getClass().getSimpleName());
+            }
+        }
+
+        // Now we need to combine the typeAccumulator and usageAccumulator into the usages map.
+        for (int i = 0; i < typeAccumulator.size(); i++) {
+            ArrayList<Class> key = typeAccumulator.get(i);
+            String value = usageAccumulator.get(i).toString().trim();
+            usages.put(key, value);
+        }
+
+        return this;
+    }
+
+    public HashMap<ArrayList<Class>, String> getUsages() {
+        return usages;
+    }
+
+    /**
+     * Returns all usages that match or partially match the given argument types.
+     * This is useful for providing dynamic usage suggestions based on the types of arguments provided.
+     * @param alias The alias of the command to prefix the usage with.
+     * @param types The argument types to match against.
+     * @return An array of usage strings that match the given argument types.
+     */
+    public String[] returnUsagesWhere(String alias, Class ...types) {
+        ArrayList<String> matchedUsages = new ArrayList<>();
+        for (var entry : usages.entrySet()) {
+            ArrayList<Class> key = entry.getKey();
+            String value = entry.getValue();
+            // Check if the key matches or partially matches the given types
+            boolean matches = true;
+            for (int i = 0; i < types.length; i++) {
+                if (i >= key.size() || !key.get(i).isAssignableFrom(types[i])) {
+                    matches = false;
+                    break;
+                }
+            }
+            if (matches) {
+                matchedUsages.add(alias + " " +value);
+            }
+        }
+        return matchedUsages.toArray(new String[0]);
+    }
 }
