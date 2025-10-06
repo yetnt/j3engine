@@ -1,5 +1,6 @@
 package com.j3d;
 
+import com.j3d.engine.interact.cmd.CommandPallete;
 import com.j3d.engine.Logger;
 import com.j3d.engine.geometry.Dimension;
 import com.j3d.engine.Renderer;
@@ -112,6 +113,22 @@ public class Main extends JPanel {
 //        initBundler(g, renderer);
     }
 
+    public static void repaintL() {
+        SwingUtilities.invokeLater(() -> {
+            if (dp != null) {
+                dp.revalidate();
+                dp.repaint();
+            }
+            if (commandPallete != null) {
+                commandPallete.revalidate();
+                commandPallete.repaint();
+            }
+            if (f != null) {
+                f.revalidate();
+                f.repaint();
+            }
+        });
+    }
     public static void main(String[] args) {
         JFrame frame = new JFrame("J3D");
 
@@ -144,7 +161,7 @@ public class Main extends JPanel {
         toggleButton.setBounds(20, 5, toggleButton.getPreferredSize().width, toggleButton.getPreferredSize().height); // position it below dp
         layeredPane.add(toggleButton, JLayeredPane.PALETTE_LAYER);
 
-        commandPallete.validate(); // Ensures layout is calculated
+//        commandPallete.validate(); // Ensures layout is calculated
         java.awt.Dimension size = commandPallete.getPreferredSize();
 
         int x = (scrSize.width - size.width) / 2;
@@ -152,10 +169,19 @@ public class Main extends JPanel {
 
         commandPallete.setBounds(x, y, size.width, size.height);
         commandPallete.setOpaque(true);
-        commandPallete.setBackground(new Color(30, 30, 30, 178));
+        commandPallete.setBackground(new Color(30, 30, 30, 8));
         commandPallete.setVisible(true);
-        layeredPane.add(commandPallete, JLayeredPane.PALETTE_LAYER);
-        commandParser = new CommandParser(commandPallete.logLabel, commandPallete.inputField);
+        layeredPane.add(commandPallete, JLayeredPane.POPUP_LAYER);
+
+        commandPallete.suggestionPane.setAlignmentX(Component.LEFT_ALIGNMENT);
+        commandPallete.suggestionsScrollPane.setPreferredSize(new java.awt.Dimension(184, 161)); // or whatever fits your layout
+        commandPallete.suggestionsScrollPane.setMaximumSize(new java.awt.Dimension(184, 161));
+        commandPallete.suggestionPane.setMaximumSize(
+                new java.awt.Dimension(Integer.MAX_VALUE, 50)
+        );
+        commandPallete.suggestionPane.setLayout(new BoxLayout(commandPallete.suggestionPane, BoxLayout.Y_AXIS));
+
+        commandParser = new CommandParser(commandPallete);
 
         mainPanel.getRootPane().setFocusable(true);
         mainPanel.getRootPane().requestFocusInWindow();
@@ -173,7 +199,7 @@ public class Main extends JPanel {
 //        frame.add(new Main());
         frame.setVisible(true);
 
-        Main.Cursors.init(mainPanel);
+        Main.Cursors.init(frame);
         Main.Cursors.setDefault();
     }
     public static class Cursors {

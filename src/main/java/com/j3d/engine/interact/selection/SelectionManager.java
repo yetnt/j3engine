@@ -62,24 +62,39 @@ public class SelectionManager {
                 }
             }
         }
-        this.filter(obj -> {
-            if (obj instanceof GTri tri) {
-                Vector3 a = tri.getLegA().getStart().getPivot();
-                Vector3 b = tri.getLegB().getStart().getPivot();
-                Vector3 c = tri.getLegC().getStart().getPivot();
 
-                Vector3 ab = b.sub(a);
-                Vector3 ac = c.sub(a);
-                Vector3 normal = ab.cross(ac).normalize();
-
-                Vector3 toCamera = camera.getPosition().sub(a);
-                return normal.dot(toCamera) > 0;
-            }
-            if (obj instanceof GLine) return ((GLine) obj).getPivot().getZ() < camera.getPosition().getZ();
-            if (obj instanceof GPoint) return ((GPoint) obj).getPivot().getZ() < camera.getPosition().getZ();
-            return true;
-        });
-
+        // The following filter is supposed to sort by Z but is wonky.
+        // Via commands the user will sort what they want and don't want themselves.
+//        this.filter(obj -> {
+//            Vector3 viewDir = camera.getForward().normalize(); // camera's viewing direction
+//
+//            if (obj instanceof GTri tri) {
+//                Vector3 a = tri.getLegA().getStart().getPivot();
+//                Vector3 b = tri.getLegB().getStart().getPivot();
+//                Vector3 c = tri.getLegC().getStart().getPivot();
+//
+//                Vector3 ab = b.sub(a);
+//                Vector3 ac = c.sub(a);
+//                Vector3 normal = ab.cross(ac).normalize();
+//
+//                // Check if triangle is facing the camera
+//                return normal.dot(viewDir) < 0;
+//            }
+//
+//            if (obj instanceof GLine line) {
+//                Vector3 toLine = line.getPivot().sub(camera.getPosition()).normalize();
+//                return viewDir.dot(toLine) > 0;
+//            }
+//
+//            if (obj instanceof GPoint point) {
+//                Vector3 toPoint = point.getPivot().sub(camera.getPosition()).normalize();
+//                return viewDir.dot(toPoint) > 0;
+//            }
+//
+//            return true;
+//        });
+//
+//        System.out.println("check");
     }
 
     /**

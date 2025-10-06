@@ -6,6 +6,7 @@ import com.j3d.engine.geometry.geo2d.GLine;
 import com.j3d.engine.geometry.geo2d.GObject;
 import com.j3d.engine.geometry.geo2d.GPoint;
 import com.j3d.engine.geometry.geo2d.GTri;
+import com.j3d.engine.geometry.geo3d.Vector3;
 
 import java.awt.*;
 

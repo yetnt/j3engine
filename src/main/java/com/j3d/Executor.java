@@ -34,16 +34,17 @@ public class Executor {
 //        renderer.axis(graphics2D, Main.camera);
 
 //        test();
-        Thing cub = cube();
+        Thing cub = test();
         cub.translate(new Vector3(0, 20, 0));
     }
 
-    public void test() {
+    public Thing test() {
         GPoint A = new GPoint(new Vector3(10, 0, 0));
         GPoint B = new GPoint(new Vector3(0, 10, 0));
         GPoint C = new GPoint(new Vector3(0, 0, 10));
         GTri triangl = new GTri(Color.ORANGE, A, B, C);
-        new Thing(renderer, null).addObjs(triangl, triangl.getLegA(), triangl.getLegB(), triangl.getLegC(), A, B, C);
+        Main.log.println(triangl.getId().toString());
+        return new Thing(renderer, null).addObjs(triangl, triangl.getLegA(), triangl.getLegB(), triangl.getLegC(), A, B, C);
     }
 
     public Thing cube() {

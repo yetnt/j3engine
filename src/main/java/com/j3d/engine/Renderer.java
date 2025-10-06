@@ -344,4 +344,31 @@ public class Renderer {
         return null;
     }
 
+    public Thing findThingByUUID(UUID id) {
+        for (Layer layer : layers) {
+            for (Thing t : layer) {
+                if (t.getId().equals(id)) {
+                    return t;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Finds the parent {@link Thing} of a given {@link GObject}.
+     * @param o The {@link GObject} whose parent {@link Thing} is to be found.
+     * @return The parent {@link Thing} containing the specified {@link GObject}, or {@code null} if no such parent is found.
+     */
+    public Thing findObjectParent(GObject o) {
+        for (Layer layer : layers) {
+            for (Thing t : layer) {
+                if (t.getObjects().contains(o)) {
+                    return t;
+                }
+            }
+        }
+        return null;
+    }
+
 }
