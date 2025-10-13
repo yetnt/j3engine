@@ -187,6 +187,7 @@ public class DebugPanel extends javax.swing.JPanel {
 
         logTextArea.setColumns(20);
         logTextArea.setRows(5);
+        logTextArea.setEditable(false);
         jScrollPane1.setViewportView(logTextArea);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

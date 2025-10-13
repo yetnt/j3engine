@@ -14,10 +14,12 @@ public class Suggestions {
     private final ArrayList<Suggestion> suggestions = new ArrayList<>();
     private final JPanel suggestionsPanel;
     private final JScrollPane suggestionScrollPane;
+    private final JTextArea commandTxtArea;
 
-    public Suggestions(JPanel suggestionsPanel, JScrollPane scrollPane) {
+    public Suggestions(JPanel suggestionsPanel, JScrollPane scrollPane, JTextArea commandTxtArea) {
         this.suggestionsPanel = suggestionsPanel;
         this.suggestionScrollPane = scrollPane;
+        this.commandTxtArea = commandTxtArea;
         suggestionsPanel.removeAll();
         Main.repaintL();
 //        suggestionContainer.revalidate();
@@ -36,17 +38,20 @@ public class Suggestions {
         Main.repaintL();
     }
 
-    public void onKeyInput(String input) {
+
+
+    public void onKeyInput(String input, ArrayList<Object> currentArgs) {
         suggestionsPanel.removeAll();
 
         if (input.indexOf(' ') != -1) {
 //            suggestionContainer.revalidate();
 //            suggestionContainer.repaint();
             updateSuggestionPane();
+            onEnd(input, currentArgs);
             Main.repaintL();
             return;
-
         }
+        commandTxtArea.setText("");
 
         // sort suggestions. put those that start with input first, then those that contain input
         suggestions.sort(
@@ -75,8 +80,23 @@ public class Suggestions {
         Main.repaintL();
     }
 
+    private void onEnd(String input, ArrayList<Object> currentArgs) {
+        // Get the name from arg[0]
+        String[] parts = input.split(" ");
+        if (parts.length == 0) return;
+        String cmdName = parts[0];
+        Command cmd = CommandsManager.getCommand(cmdName);
+        if (cmd == null) return;
+        // print all usages to commandTxtArea
+        String output = cmd.getUsages().values().stream().reduce("",
+                (acc, usage) -> acc + cmdName + usage + "\n"
+                );
+        commandTxtArea.setText(output.trim());
+    }
+
     private ImageIcon createIcon(String id) {
         URL imageURL = Main.class.getResource("/commands/" + id + ".png");
+        assert imageURL != null;
         return new ImageIcon(new ImageIcon(imageURL).getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH));
     }
 

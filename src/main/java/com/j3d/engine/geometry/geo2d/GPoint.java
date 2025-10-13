@@ -104,6 +104,6 @@ public class GPoint extends GObject {
 
     @Override
     public String toString() {
-        return "GPoint {" + getPivot().getY() + ", " + getPivot().getX() +  ", " + getPivot().getZ() + "}";
+        return "GPoint {" + getPivot().getX() + ", " + getPivot().getY() +  ", " + getPivot().getZ() + "}";
     }
 }

@@ -162,20 +162,23 @@ public class Main extends JPanel {
         layeredPane.add(toggleButton, JLayeredPane.PALETTE_LAYER);
 
 //        commandPallete.validate(); // Ensures layout is calculated
+        Rectangle bounds = frame.getBounds();
         java.awt.Dimension size = commandPallete.getPreferredSize();
-
-        int x = (scrSize.width - size.width) / 2;
-        int y = scrSize.height - size.height - 200;
-
+        int x = ((bounds.width - size.width) / 2) - 60;
+        int y = bounds.height - size.height - 200;
         commandPallete.setBounds(x, y, size.width, size.height);
+
+        commandPallete.mainCommandsPanel.setOpaque(false);
+        commandPallete.commandInfoPanel.setOpaque(false);
+        commandPallete.suggestionPane.setVisible(false);
         commandPallete.setOpaque(true);
         commandPallete.setBackground(new Color(30, 30, 30, 8));
         commandPallete.setVisible(true);
         layeredPane.add(commandPallete, JLayeredPane.POPUP_LAYER);
 
         commandPallete.suggestionPane.setAlignmentX(Component.LEFT_ALIGNMENT);
-        commandPallete.suggestionsScrollPane.setPreferredSize(new java.awt.Dimension(184, 161)); // or whatever fits your layout
-        commandPallete.suggestionsScrollPane.setMaximumSize(new java.awt.Dimension(184, 161));
+        commandPallete.getSuggestionsScrollPane().setPreferredSize(new java.awt.Dimension(184, 161)); // or whatever fits your layout
+        commandPallete.getSuggestionsScrollPane().setMaximumSize(new java.awt.Dimension(184, 161));
         commandPallete.suggestionPane.setMaximumSize(
                 new java.awt.Dimension(Integer.MAX_VALUE, 50)
         );

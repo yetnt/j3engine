@@ -30,7 +30,7 @@ public class CommandParser {
 
     public CommandParser(CommandPallete p) {
         this.cmdP = p;
-        suggestions = new Suggestions(cmdP.suggestionPane, cmdP.suggestionsScrollPane);
+        suggestions = new Suggestions(cmdP.suggestionPane, cmdP.getSuggestionsScrollPane(), cmdP.commandTextArea);
         cmdP.inputField.addActionListener(e -> {
             ignoreDocumentEvent = true;
             parse();
@@ -57,9 +57,9 @@ public class CommandParser {
                     }
 
                     if (cmdP.inputField.getText().isEmpty()) {
-                        suggestions = new Suggestions(cmdP.suggestionPane, cmdP.suggestionsScrollPane);
+                        suggestions = new Suggestions(cmdP.suggestionPane, cmdP.getSuggestionsScrollPane(), cmdP.commandTextArea);
                     } else {
-                        suggestions.onKeyInput(cmdP.inputField.getText());
+                        suggestions.onKeyInput(cmdP.inputField.getText(), arguments);
                     }
 
                 } catch (BadLocationException ex) {
@@ -71,7 +71,7 @@ public class CommandParser {
                 if (ignoreDocumentEvent) return;
                 if (!accumulator.isEmpty()) {
                     accumulator = accumulator.substring(0, accumulator.length() - 1);
-                    suggestions.onKeyInput(cmdP.inputField.getText());
+                    suggestions.onKeyInput(cmdP.inputField.getText(), arguments);
                 }
 
                 if (cmdP.inputField.getText().isEmpty()) {

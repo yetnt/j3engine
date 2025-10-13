@@ -195,7 +195,7 @@ public class Renderer {
         }
         GPoint point = new GPoint(target);
         // parent it to the first Thing
-        layers.getFirst().getFirst().getObjects().add(point);
+        layers.getFirst().getFirst().addObjs(point);
         return point;
     }
     
