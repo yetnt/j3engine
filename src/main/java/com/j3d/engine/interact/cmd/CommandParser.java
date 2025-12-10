@@ -171,6 +171,7 @@ public class CommandParser {
             if (arguments.isEmpty())
                 return;
             if (cmd == null) {
+                Main.repaintL();
                 cmdP.logLabel.setText("Command not found: " + cmdName);
                 return;
             }

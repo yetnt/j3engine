@@ -4,8 +4,6 @@
  */
 package com.j3d.engine.interact.cmd;
 
-import javax.swing.JScrollPane;
-
 /**
  *
  * @author ACER
@@ -30,10 +28,6 @@ public class CommandPallete extends javax.swing.JPanel {
 
         inputField = new javax.swing.JTextField();
         logLabel = new javax.swing.JLabel();
-        mainCommandsPanel = new javax.swing.JPanel();
-        commandInfoPanel = new javax.swing.JPanel();
-        commandTextArea = new javax.swing.JTextArea();
-        commandNameLabel = new javax.swing.JLabel();
 
         setMaximumSize(new java.awt.Dimension(690, 236));
         setMinimumSize(new java.awt.Dimension(690, 236));
@@ -45,76 +39,17 @@ public class CommandPallete extends javax.swing.JPanel {
         logLabel.setLabelFor(inputField);
         logLabel.setText("jLabel1");
 
-        commandTextArea.setEditable(false);
-        commandTextArea.setColumns(20);
-        commandTextArea.setForeground(new java.awt.Color(255, 255, 255));
-        commandTextArea.setRows(5);
-        commandTextArea.setFocusable(false);
-
-        commandNameLabel.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        commandNameLabel.setText("jLabel1");
-
-        javax.swing.GroupLayout commandInfoPanelLayout = new javax.swing.GroupLayout(commandInfoPanel);
-        commandInfoPanel.setLayout(commandInfoPanelLayout);
-        commandInfoPanelLayout.setHorizontalGroup(
-            commandInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(commandInfoPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(commandInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(commandNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(commandInfoPanelLayout.createSequentialGroup()
-                        .addComponent(commandTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 178, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        commandInfoPanelLayout.setVerticalGroup(
-            commandInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, commandInfoPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(commandNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
-                .addComponent(commandTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
-        commandTextArea.getAccessibleContext().setAccessibleParent(this);
-
-        javax.swing.GroupLayout mainCommandsPanelLayout = new javax.swing.GroupLayout(mainCommandsPanel);
-        mainCommandsPanel.setLayout(mainCommandsPanelLayout);
-        mainCommandsPanelLayout.setHorizontalGroup(
-            mainCommandsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainCommandsPanelLayout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
-                .addComponent(commandInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        mainCommandsPanelLayout.setVerticalGroup(
-            mainCommandsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainCommandsPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(commandInfoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(logLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(inputField))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(mainCommandsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(10, 10, 10))
+            .addComponent(logLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE)
+            .addComponent(inputField, javax.swing.GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(mainCommandsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(logLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(inputField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -124,11 +59,7 @@ public class CommandPallete extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JPanel commandInfoPanel;
-    public javax.swing.JLabel commandNameLabel;
-    public javax.swing.JTextArea commandTextArea;
     public javax.swing.JTextField inputField;
     public javax.swing.JLabel logLabel;
-    public javax.swing.JPanel mainCommandsPanel;
     // End of variables declaration//GEN-END:variables
 }

@@ -168,8 +168,6 @@ public class Main extends JPanel {
         int y = bounds.height - size.height - 200;
         commandPallete.setBounds(x, y, size.width, size.height);
 
-        commandPallete.mainCommandsPanel.setOpaque(false);
-        commandPallete.commandInfoPanel.setOpaque(false);
         commandPallete.setOpaque(true);
         commandPallete.setBackground(new Color(30, 30, 30, 8));
         commandPallete.setVisible(true);

@@ -34,7 +34,7 @@ public class Executor {
 //        renderer.axis(graphics2D, Main.camera);
 
 //        test();
-        Thing cub = test();
+        Thing cub = cube();
         cub.translate(new Vector3(0, 20, 0));
     }
 
