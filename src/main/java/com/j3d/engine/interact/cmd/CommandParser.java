@@ -23,14 +23,11 @@ public class CommandParser {
 //    private final JLabel cmdP.logLabel;
     private String accumulator = "";
     private final ArrayList<Object> arguments = new ArrayList<>();
-//    private final JPanel suggestionPane;
-    private Suggestions suggestions;
     private boolean ignoreDocumentEvent = false;
     private final CommandPallete cmdP;
 
     public CommandParser(CommandPallete p) {
         this.cmdP = p;
-        suggestions = new Suggestions(cmdP.suggestionPane, cmdP.getSuggestionsScrollPane(), cmdP.commandTextArea);
         cmdP.inputField.addActionListener(e -> {
             ignoreDocumentEvent = true;
             parse();
@@ -50,16 +47,11 @@ public class CommandParser {
                     String insertedText = cmdP.inputField.getDocument().getText(offset, length);
 
                     for (char c : insertedText.toCharArray()) {
+                        //noinspection StringConcatenationInLoop
                         accumulator += c;
                         if (c == ' ' && !inBrace(c)) {
                             parse();
                         }
-                    }
-
-                    if (cmdP.inputField.getText().isEmpty()) {
-                        suggestions = new Suggestions(cmdP.suggestionPane, cmdP.getSuggestionsScrollPane(), cmdP.commandTextArea);
-                    } else {
-                        suggestions.onKeyInput(cmdP.inputField.getText(), arguments);
                     }
 
                 } catch (BadLocationException ex) {
@@ -71,7 +63,6 @@ public class CommandParser {
                 if (ignoreDocumentEvent) return;
                 if (!accumulator.isEmpty()) {
                     accumulator = accumulator.substring(0, accumulator.length() - 1);
-                    suggestions.onKeyInput(cmdP.inputField.getText(), arguments);
                 }
 
                 if (cmdP.inputField.getText().isEmpty()) {

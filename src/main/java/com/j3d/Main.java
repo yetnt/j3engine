@@ -170,19 +170,10 @@ public class Main extends JPanel {
 
         commandPallete.mainCommandsPanel.setOpaque(false);
         commandPallete.commandInfoPanel.setOpaque(false);
-        commandPallete.suggestionPane.setVisible(false);
         commandPallete.setOpaque(true);
         commandPallete.setBackground(new Color(30, 30, 30, 8));
         commandPallete.setVisible(true);
         layeredPane.add(commandPallete, JLayeredPane.POPUP_LAYER);
-
-        commandPallete.suggestionPane.setAlignmentX(Component.LEFT_ALIGNMENT);
-        commandPallete.getSuggestionsScrollPane().setPreferredSize(new java.awt.Dimension(184, 161)); // or whatever fits your layout
-        commandPallete.getSuggestionsScrollPane().setMaximumSize(new java.awt.Dimension(184, 161));
-        commandPallete.suggestionPane.setMaximumSize(
-                new java.awt.Dimension(Integer.MAX_VALUE, 50)
-        );
-        commandPallete.suggestionPane.setLayout(new BoxLayout(commandPallete.suggestionPane, BoxLayout.Y_AXIS));
 
         commandParser = new CommandParser(commandPallete);
 

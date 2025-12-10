@@ -11,10 +11,6 @@ import javax.swing.JScrollPane;
  * @author ACER
  */
 public class CommandPallete extends javax.swing.JPanel {
-    
-    public JScrollPane getSuggestionsScrollPane() {
-        return suggestionsScrollPane;
-    }
 
     /**
      * Creates new form CommandPallete
@@ -35,8 +31,6 @@ public class CommandPallete extends javax.swing.JPanel {
         inputField = new javax.swing.JTextField();
         logLabel = new javax.swing.JLabel();
         mainCommandsPanel = new javax.swing.JPanel();
-        suggestionsScrollPane = new javax.swing.JScrollPane();
-        suggestionPane = new javax.swing.JPanel();
         commandInfoPanel = new javax.swing.JPanel();
         commandTextArea = new javax.swing.JTextArea();
         commandNameLabel = new javax.swing.JLabel();
@@ -50,19 +44,6 @@ public class CommandPallete extends javax.swing.JPanel {
         logLabel.setForeground(new java.awt.Color(255, 255, 255));
         logLabel.setLabelFor(inputField);
         logLabel.setText("jLabel1");
-
-        javax.swing.GroupLayout suggestionPaneLayout = new javax.swing.GroupLayout(suggestionPane);
-        suggestionPane.setLayout(suggestionPaneLayout);
-        suggestionPaneLayout.setHorizontalGroup(
-            suggestionPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 184, Short.MAX_VALUE)
-        );
-        suggestionPaneLayout.setVerticalGroup(
-            suggestionPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 253, Short.MAX_VALUE)
-        );
-
-        suggestionsScrollPane.setViewportView(suggestionPane);
 
         commandTextArea.setEditable(false);
         commandTextArea.setColumns(20);
@@ -83,7 +64,7 @@ public class CommandPallete extends javax.swing.JPanel {
                     .addComponent(commandNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(commandInfoPanelLayout.createSequentialGroup()
                         .addComponent(commandTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 178, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         commandInfoPanelLayout.setVerticalGroup(
@@ -91,7 +72,7 @@ public class CommandPallete extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, commandInfoPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(commandNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addComponent(commandTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -101,16 +82,13 @@ public class CommandPallete extends javax.swing.JPanel {
         mainCommandsPanel.setLayout(mainCommandsPanelLayout);
         mainCommandsPanelLayout.setHorizontalGroup(
             mainCommandsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainCommandsPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(suggestionsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(commandInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 476, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainCommandsPanelLayout.createSequentialGroup()
+                .addContainerGap(15, Short.MAX_VALUE)
+                .addComponent(commandInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         mainCommandsPanelLayout.setVerticalGroup(
             mainCommandsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(suggestionsScrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
             .addGroup(mainCommandsPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(commandInfoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -152,7 +130,5 @@ public class CommandPallete extends javax.swing.JPanel {
     public javax.swing.JTextField inputField;
     public javax.swing.JLabel logLabel;
     public javax.swing.JPanel mainCommandsPanel;
-    public javax.swing.JPanel suggestionPane;
-    public javax.swing.JScrollPane suggestionsScrollPane;
     // End of variables declaration//GEN-END:variables
 }
