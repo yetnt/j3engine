@@ -19,12 +19,15 @@ public class TriListener implements EventListener {
     public GTri tri;
     public Vector3 lastPosition;
     public double lastDistanceFromCamera;
+    public double depth;
     private boolean isDirty = false;
 
     public TriListener(GTri tri) {
         this.triID = tri.getId();
         this.lastPosition = tri.getPivot();
         this.tri = tri;
+        this.lastDistanceFromCamera = tri.getPivot().sub(Main.camera.getPosition()).magnitude();
+        this.depth = tri.calcDepth();
     }
 
     /**
@@ -53,6 +56,7 @@ public class TriListener implements EventListener {
 
         this.lastPosition = tri.getPivot();
         this.lastDistanceFromCamera = tri.getPivot().sub(cam.getPosition()).magnitude();
+        this.depth = tri.calcDepth();
 
         isDirty = true;
     }

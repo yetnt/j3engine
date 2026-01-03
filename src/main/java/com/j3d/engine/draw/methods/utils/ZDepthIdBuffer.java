@@ -1,4 +1,4 @@
-package com.j3d.engine.draw.methods;
+package com.j3d.engine.draw.methods.utils;
 
 import com.j3d.J3DSettings;
 import com.j3d.Main;

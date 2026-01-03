@@ -57,20 +57,62 @@ public class GTri extends GObject{
         LegA.draw(graphics2D);
         LegB.draw(graphics2D);
         LegC.draw(graphics2D);
-        // The following code draws the normal
-        graphics2D.setColor(Color.RED);
-        Main.renderer.drawLine3D(graphics2D, getPivot(), getPivot().add(normal.mult(0.5)), Main.camera);
     }
 
     private void drawDist() {
                 Main.renderer.scheduleOverlap(
                         g -> {
-                            if (!J3DSettings.isShowTriDistances()) return;
-                            // draw text showing the tris distance from camera
-                            Vector3 triCentroid = this.getPivot();
-                            Main.renderer.drawText3D(g, triCentroid, String.format("Dist: %.2f", triCentroid.distance(Main.camera.getPosition())), Main.camera);
+                            if (J3DSettings.isShowTriDistances()) {
+                                // draw text showing the tris distance from camera
+                                Vector3 triCentroid = this.getPivot();
+                                Main.renderer.drawText3D(g, triCentroid,
+                                        String.format("Dist: %.2f", this.getPivot().sub(Main.camera.getPosition()).magnitude()),
+                                        Main.camera,
+                                        new Color(0, 0, 0),
+                                        this.getColour());
+                            }
+                            if (J3DSettings.isShowDepth()) {
+                                // draw text showing the tris depth from camera
+                                Vector3 triCentroid = this.getPivot();
+                                double depth = this.calcDepth();
+                                Main.renderer.drawText3D(g, triCentroid.add(new Vector3(1, 0, 0)),
+                                        String.format("Depth: %.2f", depth),
+                                        Main.camera,
+                                        new Color(0, 0, 0),
+                                        this.getColour());
+                            }
+                            if (J3DSettings.isShowNormals()) {
+                                // draw text showing the tris normal
+                                Vector3 triCentroid = this.getPivot();
+                                Main.renderer.drawText3D(g, triCentroid.sub(new Vector3(4, 0, 0)),
+                                        String.format("Normal: (%.2f, %.2f, %.2f)", normal.getX(), normal.getY(), normal.getZ()),
+                                        Main.camera,
+                                        new Color(0, 0, 0),
+                                        this.getColour());
+                                // The following code draws the normal
+                                g.setColor(Color.RED);
+                                Main.renderer.drawLine3D(g, getPivot(), getPivot().add(normal.mult(0.5)), Main.camera);
+                            }
                         }
                 );
+    }
+
+
+    /**
+     * Calculates the depth of the tri relative to the camera's forward direction.
+     * @return The depth value.
+     */
+    public double calcDepth() {
+        Vector3 toTri = getPivot().sub(Main.camera.getPosition());
+        return toTri.dot(Main.camera.getForward().normalize());
+    }
+
+    /**
+     * Calculates the Euclidean distance from the triangle's pivot to the camera position.
+     * @return
+     */
+    public double euclideanDist() {
+        return getPivot().sub(Main.camera.getPosition()).magnitude();
     }
 
     @Override

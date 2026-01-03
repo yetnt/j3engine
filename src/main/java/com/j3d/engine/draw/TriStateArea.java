@@ -1,7 +1,10 @@
 package com.j3d.engine.draw;
 
 import com.j3d.Main;
+import com.j3d.engine.draw.methods.CamDepthSort;
 import com.j3d.engine.draw.methods.CamDistSort;
+import com.j3d.engine.draw.methods.DDUUIDSort;
+import com.j3d.engine.draw.methods.VisibleSort;
 import com.j3d.engine.geometry.geo2d.GTri;
 
 import java.awt.*;
@@ -42,6 +45,9 @@ public class TriStateArea {
         queue = switch (method) {
             case NONE -> new ArrayList<>();
             case CAMDISTSORT -> new CamDistSort(registered);
+            case VISIBLESORT ->  new VisibleSort(registered);
+            case CAMDEPTHSORT -> new CamDepthSort(registered);
+            case DDUUIDSORT -> new DDUUIDSort(registered);
             //case BUCKETSORT ->new BucketSort(registered);
             default -> new CamDistSort(registered);
         };
@@ -64,7 +70,7 @@ public class TriStateArea {
     }
 
     public static void draw(Graphics2D g) {
-        for  (GTri tri : queue.reversed())
+        for  (GTri tri : queue)
             if (Main.renderer.getSelected().contains(tri)) {
                 tri.drawSelected(g);
             } else {

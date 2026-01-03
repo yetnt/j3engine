@@ -1,7 +1,6 @@
 package com.j3d.engine;
 
 import com.j3d.engine.draw.TriStateArea;
-import com.j3d.engine.draw.methods.ZDepthIdBuffer;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.*;
 import com.j3d.engine.geometry.Dimension;
@@ -154,9 +153,31 @@ public class Renderer {
         int width = fm.stringWidth(text);
         int height = fm.getHeight();
 
-        g.setColor(new Color(255, 255, 255, 111));
+        g.setColor(new Color(39, 36, 36, 111));
         g.fillRect(p.x, p.y - height, width, height);
         g.setColor(new Color(255, 255, 255, 255));
+        g.drawString(text, p.x, p.y - 2);
+    }
+
+    /**
+     * Draws 3D text at a specified location in the scene with custom background and foreground colors.
+     *
+     * @param g The Graphics2D object to draw on.
+     * @param location The 3D {@link Vector3} coordinates where the text should be drawn.
+     * @param text The string to be drawn.
+     * @param cam The {@link Camera} instance used for perspective transformation.
+     * @param bgColor The background color for the text box.
+     * @param fgColor The foreground color for the text.
+     */
+    public void drawText3D(Graphics2D g, Vector3 location, String text, Camera cam, Color bgColor, Color fgColor) {
+        ScreenPoint p = location.toPoint(cam).toScreen(this);
+        FontMetrics fm = g.getFontMetrics();
+        int width = fm.stringWidth(text);
+        int height = fm.getHeight();
+
+        g.setColor(bgColor);
+        g.fillRect(p.x, p.y - height, width, height);
+        g.setColor(fgColor);
         g.drawString(text, p.x, p.y - 2);
     }
 

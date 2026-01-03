@@ -30,6 +30,14 @@ public class J3DSettings {
      * Flag to determine if triangle distances from the camera are displayed.
      */
     private static boolean showTriDistances = false;
+    /**
+     * Flag to determine if depth information is displayed.
+     */
+    private static boolean showDepth = false;
+    /**
+     * Flag to determine if normals are displayed.
+     */
+    private static boolean showNormals = false;
 
     public static TriangleSortMethod getTriangleSortMethod() {
         return triangleSortMethod;
@@ -51,5 +59,19 @@ public class J3DSettings {
     }
     public static void setShowTriDistances(boolean showTriDistances) {
         J3DSettings.showTriDistances = showTriDistances;
+    }
+
+    public static boolean isShowDepth() {
+        return showDepth;
+    }
+    public static void setShowDepth(boolean showDepth) {
+        J3DSettings.showDepth = showDepth;
+    }
+
+    public static boolean isShowNormals() {
+        return showNormals;
+    }
+    public static void setShowNormals(boolean showNormals) {
+        J3DSettings.showNormals = showNormals;
     }
 }

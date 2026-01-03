@@ -11,7 +11,19 @@ public enum TriangleSortMethod {
      */
     CAMDISTSORT,
     /**
+     * Triangles are sorted based on their depth values.
+     */
+    CAMDEPTHSORT,
+    /**
+     * Triangles are sorted like CamDepth then CamDist then lastly based on their unique identifiers (UUIDs).
+     */
+    DDUUIDSORT,
+    /**
      * Triangles are sorted into buckets based on their depth values.
      */
-    BUCKETSORT;
+    BUCKETSORT,
+    /**
+     * Triangles are sorted based on their visibility.
+     */
+    VISIBLESORT;
 }

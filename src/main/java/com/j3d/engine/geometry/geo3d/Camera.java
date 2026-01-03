@@ -80,16 +80,20 @@ public class Camera {
 //     *
 //     * @return A normalized Vector3 representing the camera's forward direction.
 //     */
-//    public Vector3 getForward() {
-//        double yaw = Math.toRadians(rotation.getYaw());     // horizontal angle
-//        double pitch = Math.toRadians(rotation.getPitch()); // vertical angle
-//
+    public Vector3 getForward() {
+        double yaw = Math.toRadians(rotation.getYaw());     // horizontal angle
+        double pitch = Math.toRadians(rotation.getPitch()); // vertical angle
+
 //        return new Vector3(
 //                Math.cos(pitch) * Math.sin(yaw),
 //                Math.sin(pitch),
 //                Math.cos(pitch) * Math.cos(yaw)
-//        ).normalize();
-//    }
+        return new Vector3(
+                        Math.cos(yaw) * Math.sin(pitch),
+                        Math.sin(yaw),
+                        Math.cos(yaw) * Math.cos(pitch)
+                ).normalize();
+    }
 
 
     @Override
