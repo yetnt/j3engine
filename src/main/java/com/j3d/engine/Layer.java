@@ -96,6 +96,14 @@ public class Layer extends ArrayList<Thing> {
         }
     }
 
+    public void draw(Graphics2D graphics2D) {
+        if (!getIdentifier().equals(backgroundId))
+            sort(Comparator.comparingDouble(t -> t.getCentroid().distance(Main.camera.getPosition())));
+        for (Thing o : this.reversed()) {
+            o.draw(graphics2D);
+        }
+    }
+
     @Override
     public String toString() {
         return identifier;

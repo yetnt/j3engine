@@ -11,5 +11,5 @@ public interface EventListener {
      * @param properties The given event properties
      * @implNote This method is to be overridden by implementors.
      */
-    public void onEvent(EventType event, EventBroadcast properties);
+    public <K> void onEvent(EventType event, EventBroadcast<K> properties);
 }

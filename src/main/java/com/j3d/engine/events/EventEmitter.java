@@ -44,7 +44,7 @@ public abstract class EventEmitter {
      * @param eventType The event type.
      * @param properties Properties to pass onto the listener.
      */
-    public void broadcast(EventType eventType, EventBroadcast properties) {
+    public <K> void broadcast(EventType eventType, EventBroadcast<K> properties) {
         registered.forEach(event -> event.onEvent(eventType, properties));
     }
 }

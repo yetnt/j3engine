@@ -6,6 +6,7 @@ import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.Vector3;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Executor is a class called by {@link Main#main(String[])} that just draws things ot the window
@@ -34,8 +35,55 @@ public class Executor {
 //        renderer.axis(graphics2D, Main.camera);
 
 //        test();
-        Thing cub = cube();
-        cub.translate(new Vector3(0, 20, 0));
+//        Thing cub = cube();
+//        cub.translate(new Vector3(0, 20, 0));
+        Thing tris = threeTris();
+    }
+
+    /**
+     * Creates three triangles stacked vertically along the Z axis.
+     * This is mainly for depth testing.
+     * @return
+     */
+    public Thing threeTris() {
+        GPoint A = new GPoint(new Vector3(10, 0, 0));
+        GPoint B = new GPoint(new Vector3(0, 10, 0));
+        GPoint C = new GPoint(new Vector3(10, 10, 0));
+        GTri tri1 = new GTri(Color.ORANGE, A, B, C);
+
+        GPoint A1 = new GPoint(new Vector3(10, 0, 10));
+        GPoint B1 = new GPoint(new Vector3(0, 10, 10));
+        GPoint C1 = new GPoint(new Vector3(10, 10, 10));
+        GTri tri2 = new GTri(Color.PINK, A1, B1, C1);
+
+        GPoint A2 = new GPoint(new Vector3(10, 0, 20));
+        GPoint B2 = new GPoint(new Vector3(0, 10, 20));
+        GPoint C2 = new GPoint(new Vector3(10, 10, 20));
+        GTri tri3 = new GTri(Color.CYAN, A2, B2, C2);
+
+        ArrayList<GTri> tris = new ArrayList<>();
+        tris.add(tri1);
+        tris.add(tri2);
+        tris.add(tri3);
+
+        tris.forEach(
+                tri -> Main.renderer.scheduleOverlap(
+                        g -> {
+                            // draw text showing the tris distance from camera
+                            Vector3 triCentroid = tri.getPivot();
+                            Main.renderer.drawText3D(g, triCentroid, String.format("Dist: %.2f", triCentroid.distance(Main.camera.getPosition())), Main.camera);
+                        }
+                )
+        );
+
+        return new Thing(renderer, null).addObjs(tri1, tri2, tri3,
+                tri1.getLegA(), tri1.getLegB(), tri1.getLegC(),
+                tri2.getLegA(), tri2.getLegB(), tri2.getLegC(),
+                tri3.getLegA(), tri3.getLegB(), tri3.getLegC(),
+                A, B, C,
+                A1, B1, C1,
+                A2, B2, C2
+        );
     }
 
     public Thing test() {

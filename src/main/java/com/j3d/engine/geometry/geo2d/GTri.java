@@ -2,6 +2,7 @@ package com.j3d.engine.geometry.geo2d;
 
 import com.j3d.Main;
 import com.j3d.engine.Renderer;
+import com.j3d.engine.draw.TriStateArea;
 import com.j3d.engine.events.EventBroadcast;
 import com.j3d.engine.events.EventEmitter;
 
@@ -51,6 +52,10 @@ public class GTri extends GObject{
                 },
                 3
         );
+        // dispatch to lines
+        LegA.draw(graphics2D);
+        LegB.draw(graphics2D);
+        LegC.draw(graphics2D);
         // The following code draws the normal
         graphics2D.setColor(Color.RED);
         Main.renderer.drawLine3D(graphics2D, getPivot(), getPivot().add(normal.mult(0.5)), Main.camera);
@@ -77,6 +82,10 @@ public class GTri extends GObject{
         );
         graphics2D.setStroke(new BasicStroke(1));
         draw(graphics2D);
+        // dispatch to lines
+        LegA.drawSelected(graphics2D);
+        LegB.drawSelected(graphics2D);
+        LegC.drawSelected(graphics2D);
         Main.renderer.drawText3D(graphics2D, getPivot().sub(new Vector3(1, 1, 1)), "Triangle - " + getId(), Main.camera);
     }
 
@@ -98,6 +107,8 @@ public class GTri extends GObject{
         setPivot(A.getPivot().add(B.getPivot()).add(C.getPivot()).div(3));
 
         calcNormal(A.getPivot(), B.getPivot(), C.getPivot());
+
+        TriStateArea.register(this);
     }
 
     public GTri(Color c, GLine A, GLine B, GLine C) {
@@ -126,6 +137,7 @@ public class GTri extends GObject{
         setPivot(A.getStart().getPivot().add(B.getStart().getPivot()).add(C.getStart().getPivot()).div(3));
 
         calcNormal(A.getStart().getPivot(), B.getStart().getPivot(), C.getStart().getPivot());
+        TriStateArea.register(this);
     }
 
     public static class Event extends EventBroadcast {

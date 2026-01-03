@@ -3,6 +3,10 @@ package com.j3d.engine.geometry.geo3d;
 import com.j3d.Main;
 import com.j3d.engine.Layer;
 import com.j3d.engine.Renderer;
+import com.j3d.engine.draw.TriStateArea;
+import com.j3d.engine.events.EventBroadcast;
+import com.j3d.engine.events.EventType;
+import com.j3d.engine.events.spec.TriUpdatedBroadcast;
 import com.j3d.engine.geometry.geo2d.GObject;
 import com.j3d.engine.geometry.geo2d.GPoint;
 import com.j3d.engine.geometry.geo2d.GTri;
@@ -78,18 +82,55 @@ public class Thing {
                 return o.getPivot().distance(Main.camera.getPosition());
             }
         }));
+        for (GObject o : objects.reversed()) {
+            if (visible.contains(o.getId())) {
+                o.draw(graphics2D);
+            }
+        }
+//        for (GObject o : objects.reversed()) {
+//            if (Main.renderer.getSelected().contains(o)) {
+//                o.drawSelected(graphics2D);
+//            } else  {
+//                o.draw(graphics2D);
+//            }
+//        }
+    }
+
+    public void draw(Graphics2D graphics2D) {
+        if (isBg) {
+            graphics2D.setColor(new Color(52, 52, 52));
+            graphics2D.fillRect(0, 0, Main.scrSize.width, Main.scrSize.height);
+            Main.renderer.axis(graphics2D, Main.camera);
+            return;
+        }
+
+        for (GObject o : objects) {
+            if (o instanceof GTri t) {
+                TriStateArea.addToQueue(t);
+            }
+        }
+
+//        objects.sort(Comparator.comparingDouble(o -> {
+//            if (o instanceof GTri t) {
+//                double depth = t.getPivot().distance(Main.camera.getPosition());
+//                double facing = t.normal.dot(Main.camera.getPosition().sub(t.getPivot()).normalize());
+//                return depth - facing * depthConstant; // some flipping factor that makes ts work
+//            } else {
+//                return o.getPivot().distance(Main.camera.getPosition());
+//            }
+//        }));
 //        for (GObject o : objects.reversed()) {
 //            if (visible.contains(o.getId())) {
 //                o.draw(graphics2D);
 //            }
 //        }
-        for (GObject o : objects.reversed()) {
-            if (Main.renderer.getSelected().contains(o)) {
-                o.drawSelected(graphics2D);
-            } else  {
-                o.draw(graphics2D);
-            }
-        }
+//        for (GObject o : objects.reversed()) {
+//            if (Main.renderer.getSelected().contains(o)) {
+//                o.drawSelected(graphics2D);
+//            } else  {
+//                o.draw(graphics2D);
+//            }
+//        }
     }
 
     /**
@@ -119,6 +160,15 @@ public class Thing {
     }
 
     /**
+     * Notifies all GTri objects within this Thing that they have been updated.
+     */
+    private void notifyTris() {
+        for (GTri tri : objects.stream().filter(o -> o instanceof GTri).map(o -> (GTri) o).toList()) {
+            tri.broadcast(EventType.OBJ_UPDATED, new TriUpdatedBroadcast(tri, Main.renderer));
+        }
+    }
+
+    /**
      * Scales the Thing by a uniform factor around its centroid.
      * @param scale The uniform scaling factor.
      */
@@ -126,6 +176,7 @@ public class Thing {
         for (GPoint p : points) {
             p.setPivot(p.getPivot().sub(centroid).mult(scale).add(centroid));
         }
+        notifyTris();
     }
 
     /**
@@ -136,6 +187,7 @@ public class Thing {
         for (GPoint p : points) {
             p.setPivot(p.getPivot().sub(centroid).mult(scale).add(centroid));
         }
+        notifyTris();
     }
 
     /**
@@ -146,6 +198,7 @@ public class Thing {
         for (GPoint p : points) {
             p.setPivot(p.getPivot().add(v));
         }
+        notifyTris();
     }
 
     public void rotate(Vector3 axis, double angleDegrees) {
@@ -154,5 +207,6 @@ public class Thing {
             dir = dir.rotateAroundAxis(axis, angleDegrees);
             p.setPivot(centroid.add(dir));
         }
+        notifyTris();
     }
 }

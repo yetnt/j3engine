@@ -7,7 +7,7 @@ public enum EventType {
     /**
      * The object was translated.
      */
-    OBJ_TRANSLATED,
+    OBJ_UPDATED,
     /**
      * The object was deleted.
      */

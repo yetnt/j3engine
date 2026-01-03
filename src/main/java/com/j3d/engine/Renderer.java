@@ -1,6 +1,7 @@
 package com.j3d.engine;
 
-import com.j3d.ZDepthIdBuffer;
+import com.j3d.engine.draw.TriStateArea;
+import com.j3d.engine.draw.methods.ZDepthIdBuffer;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.*;
 import com.j3d.engine.geometry.Dimension;
@@ -15,6 +16,7 @@ import java.awt.*;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * Renderer is a class responsible for the creation of {@link GObject}s and handling of what's going on in the
@@ -48,6 +50,12 @@ public class Renderer {
     private SelectionManager currentSelection = new SelectionManager();
 
     /**
+     * A list of overlap Runnables to be executed after rendering such that it's on top of everything else.
+     * This is not for UI but mainly for debugging purposes.
+     */
+    private ArrayList<Consumer<Graphics2D>> overlaps = new ArrayList<>();
+
+    /**
      * Default Constructor
      * @param dim The dimensions of the screen
      */
@@ -57,6 +65,14 @@ public class Renderer {
         layers.add(bg); // the default layer
         bg.add(new Thing(this, bg));
         layers.add(new Layer()); // testing layer.
+    }
+
+    /**
+     * Schedules an overlap Runnable to be executed after rendering.
+     * @param r The Runnable to execute.
+     */
+    public void scheduleOverlap(Consumer<Graphics2D> r) {
+        overlaps.add(r);
     }
 
     /**
@@ -207,8 +223,13 @@ public class Renderer {
      */
     public void draw(Graphics2D graphics, Camera camera) {
 //        ArrayList<UUID> visibleObjects = buff.draw(layers);
-        ArrayList<UUID> visibleObjects = new ArrayList<>();
-        layers.forEach(layer -> layer.draw(graphics, visibleObjects));
+//        ArrayList<UUID> visibleObjects = new ArrayList<>();
+        layers.forEach(layer -> layer.draw(graphics));
+        TriStateArea.draw(graphics);
+        // Draw overlaps
+        for (Consumer<Graphics2D> r : overlaps) {
+            r.accept(graphics);
+        }
     }
 
     /**
