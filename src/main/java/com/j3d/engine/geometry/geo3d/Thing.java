@@ -1,10 +1,10 @@
 package com.j3d.engine.geometry.geo3d;
 
+import com.j3d.J3DSettings;
 import com.j3d.Main;
 import com.j3d.engine.Layer;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.draw.TriStateArea;
-import com.j3d.engine.events.EventBroadcast;
 import com.j3d.engine.events.EventType;
 import com.j3d.engine.events.spec.TriUpdatedBroadcast;
 import com.j3d.engine.geometry.geo2d.GObject;
@@ -68,7 +68,7 @@ public class Thing {
     public void draw(Graphics2D graphics2D, ArrayList<UUID> visible) {
         if (isBg) {
             graphics2D.setColor(new Color(52, 52, 52));
-            graphics2D.fillRect(0, 0, Main.scrSize.width, Main.scrSize.height);
+            graphics2D.fillRect(0, 0, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
             Main.renderer.axis(graphics2D, Main.camera);
             return;
         }
@@ -99,7 +99,7 @@ public class Thing {
     public void draw(Graphics2D graphics2D) {
         if (isBg) {
             graphics2D.setColor(new Color(52, 52, 52));
-            graphics2D.fillRect(0, 0, Main.scrSize.width, Main.scrSize.height);
+            graphics2D.fillRect(0, 0, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
             Main.renderer.axis(graphics2D, Main.camera);
             return;
         }

@@ -1,5 +1,6 @@
 package com.j3d.engine.geometry.geo2d;
 
+import com.j3d.J3DSettings;
 import com.j3d.Main;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.draw.TriStateArea;
@@ -61,6 +62,17 @@ public class GTri extends GObject{
         Main.renderer.drawLine3D(graphics2D, getPivot(), getPivot().add(normal.mult(0.5)), Main.camera);
     }
 
+    private void drawDist() {
+                Main.renderer.scheduleOverlap(
+                        g -> {
+                            if (!J3DSettings.isShowTriDistances()) return;
+                            // draw text showing the tris distance from camera
+                            Vector3 triCentroid = this.getPivot();
+                            Main.renderer.drawText3D(g, triCentroid, String.format("Dist: %.2f", triCentroid.distance(Main.camera.getPosition())), Main.camera);
+                        }
+                );
+    }
+
     @Override
     public void drawSelected(Graphics2D graphics2D) {
         setPivot(LegA.getStart().getPivot().add(LegB.getStart().getPivot()).add(LegC.getStart().getPivot()).div(3));
@@ -109,6 +121,7 @@ public class GTri extends GObject{
         calcNormal(A.getPivot(), B.getPivot(), C.getPivot());
 
         TriStateArea.register(this);
+        drawDist();
     }
 
     public GTri(Color c, GLine A, GLine B, GLine C) {
@@ -138,6 +151,7 @@ public class GTri extends GObject{
 
         calcNormal(A.getStart().getPivot(), B.getStart().getPivot(), C.getStart().getPivot());
         TriStateArea.register(this);
+        drawDist();
     }
 
     public static class Event extends EventBroadcast {

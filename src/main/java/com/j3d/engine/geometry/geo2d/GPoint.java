@@ -39,7 +39,7 @@ public class GPoint extends GObject {
         ScreenPoint p = this.getPivot().toPoint(Main.camera).toScreen(Main.renderer);
         graphics2D.fillOval(p.x - (DIAMETER+1) / 2, p.y - (DIAMETER+1) / 2, (DIAMETER+1), (DIAMETER+1));
         draw(graphics2D);
-        Main.renderer.drawText3D(graphics2D, getPivot().sub(new Vector3(1, 1, 1)), "{" + getPivot().getY() + ", " + getPivot().getX() + ", " + getPivot().getZ() + "}", Main.camera);
+//        Main.renderer.drawText3D(graphics2D, getPivot().sub(new Vector3(1, 1, 1)), "{" + getPivot().getY() + ", " + getPivot().getX() + ", " + getPivot().getZ() + "}", Main.camera);
     }
 
     /**

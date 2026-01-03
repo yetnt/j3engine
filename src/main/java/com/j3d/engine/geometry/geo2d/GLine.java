@@ -53,9 +53,9 @@ public class GLine extends GObject {
         // dispatch to points
         startPoint.drawSelected(graphics2D);
         endPoint.drawSelected(graphics2D);
-        renderer.drawText3D(graphics2D, getPivot().sub(new Vector3(1, 1, 1)), "[{" + getPivot().getY() + ", " + getPivot().getX() + ", " + getPivot().getZ() + "} -> {" +
-                 endPoint.getPivot().getY() + ", " + endPoint.getPivot().getX() + ", " + endPoint.getPivot().getZ() +
-                "}]", camera);
+//        renderer.drawText3D(graphics2D, getPivot().sub(new Vector3(1, 1, 1)), "[{" + getPivot().getY() + ", " + getPivot().getX() + ", " + getPivot().getZ() + "} -> {" +
+//                 endPoint.getPivot().getY() + ", " + endPoint.getPivot().getX() + ", " + endPoint.getPivot().getZ() +
+//                "}]", camera);
     }
 
     /**

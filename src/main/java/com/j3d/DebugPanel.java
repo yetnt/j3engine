@@ -81,6 +81,7 @@ public class DebugPanel extends javax.swing.JPanel {
         CamDistSortRadio = new javax.swing.JRadioButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        backFaceCullingCheckBox = new javax.swing.JCheckBox();
 
         sliderYaw.setMaximum(180);
         sliderYaw.setMinimum(-180);
@@ -225,6 +226,13 @@ public class DebugPanel extends javax.swing.JPanel {
 
         jLabel2.setText("Triangle Debugging Info");
 
+        backFaceCullingCheckBox.setText("Back Face Culling");
+        backFaceCullingCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backFaceCullingCheckBoxActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -264,7 +272,8 @@ public class DebugPanel extends javax.swing.JPanel {
                                             .addComponent(TriDistRadioButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(NoneRadioButton)
                                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(backFaceCullingCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(sliderRoll, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
@@ -334,22 +343,25 @@ public class DebugPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(13, 13, 13)
-                                .addComponent(CamDistSortRadio)
-                                .addGap(7, 7, 7)
-                                .addComponent(BucketSortRadio)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(NoneRadioButton)
-                                .addGap(1, 1, 1)
-                                .addComponent(TriDistRadioButton))
-                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(YLabel)
                                 .addGap(8, 8, 8)
                                 .addComponent(ZLabel))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel1)
+                                    .addGap(13, 13, 13)
+                                    .addComponent(CamDistSortRadio)
+                                    .addGap(7, 7, 7)
+                                    .addComponent(BucketSortRadio)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jLabel2)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(NoneRadioButton)
+                                    .addGap(1, 1, 1)
+                                    .addComponent(TriDistRadioButton)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(backFaceCullingCheckBox))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(triConstSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -466,6 +478,10 @@ public class DebugPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_TriDistRadioButtonActionPerformed
 
+    private void backFaceCullingCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backFaceCullingCheckBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_backFaceCullingCheckBoxActionPerformed
+
     public void run(Renderer r, Executor e, Frame f) {
         renderer = r;
         executor = e;
@@ -483,6 +499,7 @@ public class DebugPanel extends javax.swing.JPanel {
     private javax.swing.JLabel YLabel;
     private javax.swing.JLabel YawLabel;
     private javax.swing.JLabel ZLabel;
+    private javax.swing.JCheckBox backFaceCullingCheckBox;
     private javax.swing.JLabel camRotationLabel1;
     private javax.swing.JLabel camXYZLabel;
     private java.awt.Button clearButton;

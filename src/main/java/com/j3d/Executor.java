@@ -66,16 +66,6 @@ public class Executor {
         tris.add(tri2);
         tris.add(tri3);
 
-        tris.forEach(
-                tri -> Main.renderer.scheduleOverlap(
-                        g -> {
-                            // draw text showing the tris distance from camera
-                            Vector3 triCentroid = tri.getPivot();
-                            Main.renderer.drawText3D(g, triCentroid, String.format("Dist: %.2f", triCentroid.distance(Main.camera.getPosition())), Main.camera);
-                        }
-                )
-        );
-
         return new Thing(renderer, null).addObjs(tri1, tri2, tri3,
                 tri1.getLegA(), tri1.getLegB(), tri1.getLegC(),
                 tri2.getLegA(), tri2.getLegB(), tri2.getLegC(),

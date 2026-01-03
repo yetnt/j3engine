@@ -1,5 +1,6 @@
 package com.j3d.engine.draw.methods;
 
+import com.j3d.J3DSettings;
 import com.j3d.Main;
 import com.j3d.engine.Layer;
 import com.j3d.engine.geometry.geo2d.GLine;
@@ -32,7 +33,7 @@ public class ZDepthIdBuffer {
 
     // Default constructor: allocates new buffers
     public ZDepthIdBuffer() {
-        this(Main.scrSize.width, Main.scrSize.height);
+        this(J3DSettings.screenSize.width, J3DSettings.screenSize.height);
     }
 
     // Constructor for specific dimensions

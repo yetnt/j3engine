@@ -2,7 +2,6 @@ package com.j3d;
 
 import com.j3d.engine.interact.cmd.CommandPallete;
 import com.j3d.engine.Logger;
-import com.j3d.engine.geometry.Dimension;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo3d.Camera;
@@ -25,7 +24,6 @@ import java.util.Objects;
  */
 public class Main extends JPanel {
     public static Logger log;
-    public static Dimension scrSize = new Dimension(1800, 1000);
     public static JBundler jBundler = null;
     public static Renderer renderer = null;
     public static Executor executor = null;
@@ -107,10 +105,10 @@ public class Main extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g); 
-//        renderer.draw();
-        // Draw a dot at (100, 100)
-//        initBundler(g, renderer);
+//        super.paintComponent(g);
+////        renderer.draw();
+//        // Draw a dot at (100, 100)
+////        initBundler(g, renderer);
     }
 
     public static void repaintL() {
@@ -134,19 +132,19 @@ public class Main extends JPanel {
 
         f = frame;
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        renderer = new Renderer(scrSize);
+        renderer = new Renderer(J3DSettings.screenSize);
         executor = new Executor(renderer);
         dp.run(renderer, executor, f);
         JLayeredPane layeredPane = frame.getLayeredPane();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(scrSize.width, scrSize.height);
+        frame.setSize(J3DSettings.screenSize.width, J3DSettings.screenSize.height);
         frame.setResizable(false);
 
         Main mainPanel = new Main();
         mainPanel.setVisible(true);
         mainPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN));
-        mainPanel.setBounds(0, 0, scrSize.width, scrSize.height);
-        mainPanel.setPreferredSize(new java.awt.Dimension(scrSize.width, scrSize.height));
+        mainPanel.setBounds(0, 0, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
+        mainPanel.setPreferredSize(new java.awt.Dimension(J3DSettings.screenSize.width, J3DSettings.screenSize.height));
         layeredPane.add(mainPanel, JLayeredPane.DEFAULT_LAYER);
 
         dp.setBounds(20, 40, dp.getPreferredSize().width, dp.getPreferredSize().height); // small corner overlay

@@ -34,15 +34,6 @@ public class Renderer {
     public ArrayList<Layer> layers = new ArrayList<>();
 
     public ArrayDeque<GPoint> points = new ArrayDeque<>();
-    /**
-     * Factor to scale the {@link CartesianPoint} vs {@link ScreenPoint} units.
-     * <p>
-     * This is such that the screen space is not used as the default grid. Where (0, 1) and (0, 0) are but a pixel apart.
-     * The Scale factor helps by making it such that (if SCALE is set to 10), inputting (0, 1) as a {@link CartesianPoint}, when converted to {@link ScreenPoint} it is multiplied by 10 units.
-     */
-    public double SCALE = 10.0;
-
-    private ZDepthIdBuffer buff = new ZDepthIdBuffer();
 
     /**
      * The current selection made by the user.

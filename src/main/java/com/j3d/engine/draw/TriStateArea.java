@@ -31,7 +31,21 @@ public class TriStateArea {
      * A deque used for sorting GTri based on whichever method TriStateArea uses.
      * The deque is cleared after each render cycle.
      */
-    private static final CamDistSort queue = new CamDistSort(registered);
+    private static ArrayList<GTri> queue;
+
+    static {
+        // later set bucket sort to
+        setSortMethod(TriangleSortMethod.CAMDISTSORT);
+    }
+
+    public static void setSortMethod(TriangleSortMethod method) {
+        queue = switch (method) {
+            case NONE -> new ArrayList<>();
+            case CAMDISTSORT -> new CamDistSort(registered);
+            //case BUCKETSORT ->new BucketSort(registered);
+            default -> new CamDistSort(registered);
+        };
+    }
 
     public static void register(GTri tri) {
         TriListener listener = new TriListener(tri);

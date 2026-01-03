@@ -1,5 +1,6 @@
 package com.j3d.engine.geometry;
 
+import com.j3d.J3DSettings;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
 
@@ -28,8 +29,8 @@ public class ScreenPoint extends BasePoint<Integer> {
      * @return A CartesianPoint
      */
     public CartesianPoint toPoint(Renderer renderer) {
-        double adjustedX = (x - renderer.screenSize.width / 2) / renderer.SCALE;
-        double adjustedY = (renderer.screenSize.height / 2 - y) / renderer.SCALE;
+        double adjustedX = (x - renderer.screenSize.width / 2) / J3DSettings.SCALE;
+        double adjustedY = (renderer.screenSize.height / 2 - y) / J3DSettings.SCALE;
 
         double cartesianX = adjustedX;
         double cartesianY = adjustedY;

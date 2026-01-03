@@ -1,5 +1,6 @@
 package com.j3d.jaiva;
 
+import com.j3d.J3DSettings;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
 import com.jaiva.interpreter.Primitives;
@@ -67,7 +68,7 @@ public class Testing extends BaseLibrary {
         @Override
         public Object call(TFuncCall tFuncCall, ArrayList<Object> params, IConfig<Object> config, Scope scope) throws Exception {
             checkParams(tFuncCall, scope);
-            ((Renderer)config.object).SCALE = (int) Primitives.toPrimitive(params.getFirst(), false, config, scope);
+            J3DSettings.SCALE = (int) Primitives.toPrimitive(params.getFirst(), false, config, scope);
             return voidValue(tFuncCall.lineNumber);
         }
     }
