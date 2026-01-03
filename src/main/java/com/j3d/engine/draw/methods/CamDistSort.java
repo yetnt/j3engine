@@ -1,16 +1,15 @@
 package com.j3d.engine.draw.methods;
 
+import com.j3d.engine.draw.SortMethod;
 import com.j3d.engine.draw.TriListener;
 import com.j3d.engine.geometry.geo2d.GTri;
 
 import java.util.ArrayList;
 
-public class CamDistSort extends ArrayList<GTri> {
-    private static ArrayList<TriListener> registered = new  ArrayList<>();
+public class CamDistSort extends SortMethod {
 
     public CamDistSort(ArrayList<TriListener> registered) {
-        super();
-        CamDistSort.registered = registered; // Set the static registered list, since its stored by instance.
+        super(registered);
     }
 
     @Override
