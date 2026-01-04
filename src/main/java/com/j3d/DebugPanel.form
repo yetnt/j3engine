@@ -105,10 +105,8 @@
                       <Component id="CamDistSortRadio" alignment="0" max="32767" attributes="0"/>
                       <Component id="jLabel1" alignment="0" min="-2" pref="172" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                      <Component id="DDUUIDSortRadioButton" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="camDepthSortRadioButton" alignment="0" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="DDUUIDSortRadioButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="camDepthSortRadioButton" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
           </Group>
@@ -436,7 +434,6 @@
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
           <ComponentRef name="sortMethodButtonGroup"/>
         </Property>
-        <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="CamDist Sort"/>
       </Properties>
       <Events>
@@ -517,6 +514,7 @@
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
           <ComponentRef name="sortMethodButtonGroup"/>
         </Property>
+        <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="DDUUID"/>
       </Properties>
       <Events>

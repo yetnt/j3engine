@@ -38,6 +38,7 @@ public class J3DSettings {
      * Flag to determine if normals are displayed.
      */
     private static boolean showNormals = false;
+    public static double cameraMoveSpeed = 0.3;
 
     public static TriangleSortMethod getTriangleSortMethod() {
         return triangleSortMethod;

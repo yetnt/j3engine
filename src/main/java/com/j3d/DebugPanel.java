@@ -221,7 +221,6 @@ public class DebugPanel extends javax.swing.JPanel {
         });
 
         sortMethodButtonGroup.add(CamDistSortRadio);
-        CamDistSortRadio.setSelected(true);
         CamDistSortRadio.setText("CamDist Sort");
         CamDistSortRadio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -280,6 +279,7 @@ public class DebugPanel extends javax.swing.JPanel {
         });
 
         sortMethodButtonGroup.add(DDUUIDSortRadioButton);
+        DDUUIDSortRadioButton.setSelected(true);
         DDUUIDSortRadioButton.setText("DDUUID");
         DDUUIDSortRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -357,9 +357,8 @@ public class DebugPanel extends javax.swing.JPanel {
                         .addComponent(BucketSortRadio)
                         .addComponent(CamDistSortRadio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(DDUUIDSortRadioButton, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(camDepthSortRadioButton, javax.swing.GroupLayout.Alignment.LEADING)))
+                    .addComponent(DDUUIDSortRadioButton)
+                    .addComponent(camDepthSortRadioButton))
                 .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(

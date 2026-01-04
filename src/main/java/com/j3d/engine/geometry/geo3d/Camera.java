@@ -47,6 +47,10 @@ public class Camera {
         this.projectionPlane = new Vector3(0, 0, 2);
     }
 
+    public void move(Vector3 delta) {
+        this.position = this.position.add(delta);
+    }
+
     public Vector3 getPosition() {
         return position;
     }
@@ -93,6 +97,18 @@ public class Camera {
                         Math.sin(yaw),
                         Math.cos(yaw) * Math.cos(pitch)
                 ).normalize();
+    }
+
+    /**
+     * Adjusts the camera's rotation to look at a specific target point in 3D space.
+     *
+     * @param target The target point to look at.
+     */
+    public void lookAt(Vector3 target) {
+        Vector3 direction = target.sub(this.position).normalize();
+        double yaw = Math.toDegrees(Math.asin((direction.getY())));
+        double pitch = Math.toDegrees(Math.atan2(direction.getX(), direction.getZ()));
+        this.rotation = new Rotation(pitch, yaw, 0);
     }
 
 

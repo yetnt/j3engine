@@ -37,7 +37,19 @@ public class Executor {
 //        test();
         Thing cub = cube();
         cub.translate(new Vector3(0, 20, 0));
+
 //        Thing tris = threeTris();
+
+        // cam shenanigans
+//        new Thread(() -> {
+//            while (true) {
+//                Main.camera.move(new Vector3(0, 1, 0));
+//                Main.camera.lookAt(cub.getCentroid());
+//                Main.f.repaint();
+//                try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
+//            }
+//        }).start();
+
     }
 
     /**

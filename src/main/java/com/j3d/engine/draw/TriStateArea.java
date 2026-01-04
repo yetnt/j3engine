@@ -38,7 +38,7 @@ public class TriStateArea {
 
     static {
         // later set bucket sort to
-        setSortMethod(TriangleSortMethod.CAMDISTSORT);
+        setSortMethod(TriangleSortMethod.DDUUIDSORT);
     }
 
     public static void setSortMethod(TriangleSortMethod method) {

@@ -68,6 +68,26 @@ public class Main extends JPanel {
                 f.repaint();
             }
         });
+
+        // WASD for camera movement
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                System.out.println("sdf");
+                double moveAmount = 1.0;
+                switch (key) {
+                    case KeyEvent.VK_W -> camera.move(new Vector3(0, 0, moveAmount));
+                    case KeyEvent.VK_S -> camera.move(new Vector3(0, 0, -moveAmount));
+                    case KeyEvent.VK_A -> camera.move(new Vector3(-moveAmount, 0, 0));
+                    case KeyEvent.VK_D -> camera.move(new Vector3(moveAmount, 0, 0));
+                    case KeyEvent.VK_Q -> camera.move(new Vector3(0, moveAmount, 0));
+                    case KeyEvent.VK_E -> camera.move(new Vector3(0, -moveAmount, 0));
+                }
+                f.repaint();
+            }
+        });
+
     }
 
     /**
@@ -142,6 +162,13 @@ public class Main extends JPanel {
 
         Main mainPanel = new Main();
         mainPanel.setVisible(true);
+        mainPanel.setFocusable(true);
+
+        InputMap im = mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = mainPanel.getActionMap();
+        new KeyBindings(im, am, commandPallete);
+
+        mainPanel.requestFocusInWindow();
         mainPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN));
         mainPanel.setBounds(0, 0, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
         mainPanel.setPreferredSize(new java.awt.Dimension(J3DSettings.screenSize.width, J3DSettings.screenSize.height));
@@ -150,7 +177,7 @@ public class Main extends JPanel {
         dp.setBounds(20, 40, dp.getPreferredSize().width, dp.getPreferredSize().height); // small corner overlay
         dp.setOpaque(true);
         dp.setBackground(Color.WHITE);
-        dp.setVisible(true);
+        dp.setVisible(false);
         log = new Logger(dp.logTextArea); // initialize logger with the text area
         layeredPane.add(dp, JLayeredPane.PALETTE_LAYER);
 
@@ -178,10 +205,13 @@ public class Main extends JPanel {
 
         mainPanel.getRootPane().addKeyListener(new KeyAdapter() {
             @Override
-            public void keyTyped(KeyEvent e) {
-                if (!commandPallete.inputField.isFocusOwner()) {
-                    commandPallete.inputField.requestFocus();
-                    commandPallete.inputField.setText(String.valueOf(e.getKeyChar()));
+            public void keyPressed(KeyEvent e) {
+//                if (!commandPallete.inputField.isFocusOwner()) {
+//                    commandPallete.inputField.requestFocus();
+//                    commandPallete.inputField.setText(String.valueOf(e.getKeyChar()));
+//                }
+                if (commandPallete.inputField.isFocusOwner() && e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    mainPanel.requestFocus();
                 }
             }
         });
@@ -231,4 +261,5 @@ public class Main extends JPanel {
             set("default");
         }
     }
+
 }
