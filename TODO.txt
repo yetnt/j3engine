@@ -1,0 +1,24 @@
+TO-DO: (Refactoring draw and ordering ipeline)
+
+1. DONE - Create the draw() method in TriStateArea to just yank the queue and draw
+2. [DONE] Change queue to ArrayList
+3. [DONE] make a base class for the queue that extends ArrayList so when tris are added they're immediately sorted by whatever method
+4. [DONE] Update GTri to draw lines itself and updatesd Gline to draw points itself. Essentialy GTri.draw calls GLine.draw and calls GPoint.draw.
+5. implement bucket sorting
+6. [DONE] try z depth buffer too
+7. Backface culling (for each method)
+8. [DONE] Debug radio buttons to toggle backface culling on or off
+9. [DONE] compare.
+
+Future ToDo (Important)
+
+1. (CURRENT) UI
+2. A/B Testing with a hook class that asks the user if the program did the right thing. (should prolyl call Main.main())
+
+Future ToDo (optional)
+
+1. Spheres and curves
+2. Layer/Thing hiding
+3. Textures and importing pictures
+4. Undo/Redo
+5. import/export obj
