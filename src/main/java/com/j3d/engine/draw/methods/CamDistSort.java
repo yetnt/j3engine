@@ -55,8 +55,8 @@ public class CamDistSort extends SortMethod {
 //            if (listener1 == null || listener2 == null)
 //                return 0;
                 // fall back to euclideanDist() if depths are equal
-                double euclidDist1 = tri1.getPivot().magnitude();
-                double euclidDist2 = tri2.getPivot().magnitude();
+                double euclidDist1 = tri1.euclideanDist();
+                double euclidDist2 = tri2.euclideanDist();
                 return Double.compare(euclidDist2, euclidDist1); // Sort in descending order (farthest first)
         });
     }
