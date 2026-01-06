@@ -1,5 +1,7 @@
 package com.j3d.engine.react.history;
 
+import com.j3d.Main;
+
 import java.util.ArrayList;
 
 /**
@@ -28,9 +30,14 @@ public class History extends ArrayList<Action<?>> {
      */
     public void undo() {
         if (this.isEmpty()) return;
+        if (!this.getLast().isReversible()) {
+            Main.log.println("Attempt to undo: " + this.getLast().getDescription());
+            return;
+        };
         Action<?> action = this.removeLast();
         action.undo();
         backup.add(action);
+        Main.log.println("Undo -> " + action.getDescription());
     }
 
     /**
@@ -41,6 +48,7 @@ public class History extends ArrayList<Action<?>> {
         Action<?> action = backup.removeLast();
         action.run();
         this.add(action);
+        Main.log.println("Redo -> " + action.getDescription());
     }
 
     @Override

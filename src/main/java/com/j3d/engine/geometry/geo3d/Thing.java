@@ -13,6 +13,7 @@ import com.j3d.engine.geometry.geo2d.GTri;
 import com.j3d.engine.react.history.AbstractAction;
 import com.j3d.engine.react.history.Action;
 import com.j3d.engine.react.history.ConstructorAction;
+import com.j3d.engine.react.history.VoidAction;
 
 import java.awt.*;
 import java.util.*;
@@ -168,8 +169,8 @@ public class Thing {
      * Scales the Thing by a uniform factor around its centroid.
      * @param scale The uniform scaling factor.
      */
-    public Action<Void> scale(double scale) {
-        return new Action<Void>() {
+    public VoidAction scale(double scale) {
+        return new VoidAction() {
             private final ArrayList<Vector3> originalPositions = new ArrayList<>();
             @Override
             public Void run() {
@@ -205,8 +206,8 @@ public class Thing {
      * Scales the Thing by a vector factor around its centroid.
      * @param scale The scaling vector, where each component scales along its respective axis.
      */
-    public Action<Void> scale(Vector3 scale) {
-        return new Action<Void>() {
+    public VoidAction scale(Vector3 scale) {
+        return new VoidAction() {
             private final ArrayList<Vector3> originalPositions = new ArrayList<>();
             @Override
             public Void run() {
@@ -242,8 +243,8 @@ public class Thing {
      * Translates the Thing by a given vector.
      * @param v The translation vector.
      */
-    public Action<Void> translate(Vector3 v) {
-        return new Action<Void>() {
+    public VoidAction translate(Vector3 v) {
+        return new VoidAction() {
             private final ArrayList<Vector3> originalPositions = new ArrayList<>();
             @Override
             public Void run() {
@@ -275,8 +276,8 @@ public class Thing {
         };
     }
 
-    public Action<Void> rotate(Vector3 axis, double angleDegrees) {
-        return new Action<Void>() {
+    public VoidAction rotate(Vector3 axis, double angleDegrees) {
+        return new VoidAction() {
             private final ArrayList<Vector3> originalPositions = new ArrayList<>();
             @Override
             public Void run() {

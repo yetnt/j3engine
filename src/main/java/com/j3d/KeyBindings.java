@@ -1,5 +1,6 @@
 package com.j3d;
 
+import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.geo3d.Rotation;
 import com.j3d.engine.geometry.geo3d.Vector3;
 import com.j3d.engine.interact.cmd.CommandPallete;
@@ -104,6 +105,25 @@ class KeyBindings {
             public void actionPerformed(ActionEvent e) {
                 Main.camera.setPosition(new Vector3(0, 0, 0));
                 Main.camera.setRotation(new Rotation(0, 0, 0));
+                Main.f.repaint();
+            }
+        });
+
+        // Undo and Redo bindings
+
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK), "undoAction");
+        am.put("undoAction", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Renderer.history.undo();
+                Main.f.repaint();
+            }
+        });
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK), "redoAction");
+        am.put("redoAction", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Renderer.history.redo();
                 Main.f.repaint();
             }
         });

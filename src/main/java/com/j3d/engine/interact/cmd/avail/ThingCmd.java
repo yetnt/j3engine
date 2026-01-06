@@ -14,6 +14,7 @@ import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.Subcommand;
 import com.j3d.engine.interact.cmd.base.TypedArg;
 import com.j3d.engine.react.history.Action;
+import com.j3d.engine.react.history.VoidAction;
 
 import javax.swing.JLabel;
 import java.util.ArrayList;
@@ -173,19 +174,19 @@ public class ThingCmd extends Command {
                 case "x" -> {
                     // Vector representing X axis
                     Vector3 xAxis = new Vector3(1, 0, 0);
-                    Action<Void> action = t.rotate(xAxis, v);
+                    VoidAction action = t.rotate(xAxis, v);
                     Renderer.history.add(action);
                 }
                 case "y" -> {
                     // Vector representing Y axis
                     Vector3 yAxis = new Vector3(0, 1, 0);
-                    Action<Void> action = t.rotate(yAxis, v);
+                    VoidAction action = t.rotate(yAxis, v);
                     Renderer.history.add(action);
                 }
                 case "z" -> {
                     // Vector representing Z axis
                     Vector3 zAxis = new Vector3(0, 0, 1);
-                    Action<Void> action = t.rotate(zAxis, v);
+                    VoidAction action = t.rotate(zAxis, v);
                     Renderer.history.add(action);
                 }
                 case "c" -> {
@@ -194,7 +195,7 @@ public class ThingCmd extends Command {
                         logLabel.setText("Thing has no points to determine centroid for 'c' axis rotation.");
                         return;
                     }
-                    Action<Void> action = t.rotate(t.getCentroid().normalize(), v);
+                    VoidAction action = t.rotate(t.getCentroid().normalize(), v);
                     Renderer.history.add(action);
                 }
                 default -> {
@@ -232,12 +233,12 @@ public class ThingCmd extends Command {
             }
 
             if (args[1] instanceof Double s) {
-                Action<Void> action = t.scale(s);
+                VoidAction action = t.scale(s);
                 Renderer.history.add(action);
                 action.run();
                 logLabel.setText("Thing scaled uniformly by " + s);
             } else if (args[1] instanceof Vector3 v) {
-                Action<Void> action = t.scale(v);
+                VoidAction action = t.scale(v);
                 Renderer.history.add(action);
                 action.run();
                 logLabel.setText("Thing scaled by vector " + v);

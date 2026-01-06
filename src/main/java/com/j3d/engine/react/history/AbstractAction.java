@@ -3,7 +3,7 @@ package com.j3d.engine.react.history;
 /**
  * AbstractAction is an abstract class that implements the Action interface with default behaviors.
  */
-public abstract class AbstractAction implements Action<Void> {
+public abstract class AbstractAction implements VoidAction {
 
     @Override
     public Void run() {

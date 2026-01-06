@@ -4,6 +4,7 @@ import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.geo2d.*;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.Vector3;
+import com.j3d.engine.react.history.VoidAction;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -36,7 +37,11 @@ public class Executor {
 
 //        test();
         Thing cub = cube();
-        cub.translate(new Vector3(0, 20, 0));
+//        VoidAction action = cub.translate(new Vector3(0, 20, 0));
+        VoidAction action = cub.rotate(new Vector3(0, 0, 1), 45);
+        action.run();
+        Renderer.history.add(action); // add to history to allow undo/redo
+
 
 //        Thing tris = threeTris();
 
