@@ -2,6 +2,7 @@ package com.j3d.engine.interact.cmd.avail;
 
 import com.j3d.Main;
 import com.j3d.engine.Layer;
+import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.geo2d.GLine;
 import com.j3d.engine.geometry.geo2d.GObject;
 import com.j3d.engine.geometry.geo2d.GPoint;
@@ -12,8 +13,9 @@ import com.j3d.engine.interact.cmd.base.ArgSet;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.Subcommand;
 import com.j3d.engine.interact.cmd.base.TypedArg;
+import com.j3d.engine.react.history.Action;
 
-import javax.swing.*;
+import javax.swing.JLabel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -171,17 +173,20 @@ public class ThingCmd extends Command {
                 case "x" -> {
                     // Vector representing X axis
                     Vector3 xAxis = new Vector3(1, 0, 0);
-                    t.rotate(xAxis, v);
+                    Action<Void> action = t.rotate(xAxis, v);
+                    Renderer.history.add(action);
                 }
                 case "y" -> {
                     // Vector representing Y axis
                     Vector3 yAxis = new Vector3(0, 1, 0);
-                    t.rotate(yAxis, v);
+                    Action<Void> action = t.rotate(yAxis, v);
+                    Renderer.history.add(action);
                 }
                 case "z" -> {
                     // Vector representing Z axis
                     Vector3 zAxis = new Vector3(0, 0, 1);
-                    t.rotate(zAxis, v);
+                    Action<Void> action = t.rotate(zAxis, v);
+                    Renderer.history.add(action);
                 }
                 case "c" -> {
                     // Rotate around centroid
@@ -189,7 +194,8 @@ public class ThingCmd extends Command {
                         logLabel.setText("Thing has no points to determine centroid for 'c' axis rotation.");
                         return;
                     }
-                    t.rotate(t.getCentroid().normalize(), v);
+                    Action<Void> action = t.rotate(t.getCentroid().normalize(), v);
+                    Renderer.history.add(action);
                 }
                 default -> {
                     logLabel.setText("Invalid axis. Must be 'x', 'y', 'z', or 'c'. Usage:" + returnUsagesWhere(aliasUsed, Thing.class, String.class, Double.class)[0]);
@@ -226,10 +232,14 @@ public class ThingCmd extends Command {
             }
 
             if (args[1] instanceof Double s) {
-                t.scale(s);
+                Action<Void> action = t.scale(s);
+                Renderer.history.add(action);
+                action.run();
                 logLabel.setText("Thing scaled uniformly by " + s);
             } else if (args[1] instanceof Vector3 v) {
-                t.scale(v);
+                Action<Void> action = t.scale(v);
+                Renderer.history.add(action);
+                action.run();
                 logLabel.setText("Thing scaled by vector " + v);
             } else {
                 logLabel.setText("Invalid scale argument. Must be a number or vector3.");

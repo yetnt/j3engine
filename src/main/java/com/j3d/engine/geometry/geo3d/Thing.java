@@ -5,11 +5,14 @@ import com.j3d.Main;
 import com.j3d.engine.Layer;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.draw.TriStateArea;
-import com.j3d.engine.events.EventType;
-import com.j3d.engine.events.spec.TriUpdatedBroadcast;
+import com.j3d.engine.react.events.EventType;
+import com.j3d.engine.react.events.spec.TriUpdatedBroadcast;
 import com.j3d.engine.geometry.geo2d.GObject;
 import com.j3d.engine.geometry.geo2d.GPoint;
 import com.j3d.engine.geometry.geo2d.GTri;
+import com.j3d.engine.react.history.AbstractAction;
+import com.j3d.engine.react.history.Action;
+import com.j3d.engine.react.history.ConstructorAction;
 
 import java.awt.*;
 import java.util.*;
@@ -45,6 +48,29 @@ public class Thing {
         }
         l.add(this);
         id = UUID.randomUUID();
+        // Add to history for undo/redo functionality
+        final Layer finalL = l;
+        Renderer.history.add(
+                new ConstructorAction() {
+                    private final Thing thing = Thing.this;
+                    @Override
+                    public Void run() {
+                        // will be called after undo, so we need to re-add the thing
+                        finalL.add(thing);
+                        return null;
+                    }
+
+                    @Override
+                    public void undo() {
+                        finalL.remove(thing);
+                    }
+
+                    @Override
+                    public String getDescription() {
+                        return "Construct:Thing";
+                    }
+                }
+        );
     }
 
     /**
@@ -65,37 +91,6 @@ public class Thing {
         return this;
     }
 
-    public void draw(Graphics2D graphics2D, ArrayList<UUID> visible) {
-        if (isBg) {
-            graphics2D.setColor(new Color(52, 52, 52));
-            graphics2D.fillRect(0, 0, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
-            Main.renderer.axis(graphics2D, Main.camera);
-            return;
-        }
-
-        objects.sort(Comparator.comparingDouble(o -> {
-            if (o instanceof GTri t) {
-                double depth = t.getPivot().distance(Main.camera.getPosition());
-                double facing = t.normal.dot(Main.camera.getPosition().sub(t.getPivot()).normalize());
-                return depth - facing * depthConstant; // some flipping factor that makes ts work
-            } else {
-                return o.getPivot().distance(Main.camera.getPosition());
-            }
-        }));
-        for (GObject o : objects.reversed()) {
-            if (visible.contains(o.getId())) {
-                o.draw(graphics2D);
-            }
-        }
-//        for (GObject o : objects.reversed()) {
-//            if (Main.renderer.getSelected().contains(o)) {
-//                o.drawSelected(graphics2D);
-//            } else  {
-//                o.draw(graphics2D);
-//            }
-//        }
-    }
-
     public void draw(Graphics2D graphics2D) {
         if (isBg) {
             graphics2D.setColor(new Color(52, 52, 52));
@@ -109,28 +104,6 @@ public class Thing {
                 TriStateArea.addToQueue(t);
             }
         }
-
-//        objects.sort(Comparator.comparingDouble(o -> {
-//            if (o instanceof GTri t) {
-//                double depth = t.getPivot().distance(Main.camera.getPosition());
-//                double facing = t.normal.dot(Main.camera.getPosition().sub(t.getPivot()).normalize());
-//                return depth - facing * depthConstant; // some flipping factor that makes ts work
-//            } else {
-//                return o.getPivot().distance(Main.camera.getPosition());
-//            }
-//        }));
-//        for (GObject o : objects.reversed()) {
-//            if (visible.contains(o.getId())) {
-//                o.draw(graphics2D);
-//            }
-//        }
-//        for (GObject o : objects.reversed()) {
-//            if (Main.renderer.getSelected().contains(o)) {
-//                o.drawSelected(graphics2D);
-//            } else  {
-//                o.draw(graphics2D);
-//            }
-//        }
     }
 
     /**
@@ -153,10 +126,33 @@ public class Thing {
      * Creates a copy of this Thing, adding its GObjects to the specified renderer and layer.
      * @param renderer The renderer to associate the new Thing with.
      * @param l The layer to add the new Thing to.
-     * @return A new Thing instance with the same GObjects as this one.
+     * @return An Action that performs the copy operation.
      */
-    public Thing copy(Renderer renderer, Layer l) {
-        return new Thing(renderer, l).addObjs(objects.toArray(GObject[]::new));
+    public Action<Thing> copy(Renderer renderer, Layer l) {
+        return new Action<Thing>() {
+            private Thing newThing;
+
+            @Override
+            public Thing run() {
+                newThing = new Thing(renderer, l).addObjs(objects.toArray(GObject[]::new));
+                return newThing;
+            }
+
+            @Override
+            public void undo() {
+                renderer.removeThing(newThing);
+            }
+
+            @Override
+            public boolean isReversible() {
+                return true;
+            }
+
+            @Override
+            public String getDescription() {
+                return "Thing:Copy";
+            }
+        };
     }
 
     /**
@@ -172,41 +168,145 @@ public class Thing {
      * Scales the Thing by a uniform factor around its centroid.
      * @param scale The uniform scaling factor.
      */
-    public void scale(double scale) {
-        for (GPoint p : points) {
-            p.setPivot(p.getPivot().sub(centroid).mult(scale).add(centroid));
-        }
-        notifyTris();
+    public Action<Void> scale(double scale) {
+        return new Action<Void>() {
+            private final ArrayList<Vector3> originalPositions = new ArrayList<>();
+            @Override
+            public Void run() {
+                for (GPoint p : points) {
+                    originalPositions.add(p.getPivot().copy());
+                    p.setPivot(p.getPivot().sub(centroid).mult(scale).add(centroid));
+                }
+                notifyTris();
+                return null;
+            }
+
+            @Override
+            public void undo() {
+                for (int i = 0; i < points.size(); i++) {
+                    points.get(i).setPivot(originalPositions.get(i));
+                }
+                notifyTris();
+            }
+
+            @Override
+            public boolean isReversible() {
+                return true;
+            }
+
+            @Override
+            public String getDescription() {
+                return "Thing:ScaleUniform";
+            }
+        };
     }
 
     /**
      * Scales the Thing by a vector factor around its centroid.
      * @param scale The scaling vector, where each component scales along its respective axis.
      */
-    public void scale(Vector3 scale) {
-        for (GPoint p : points) {
-            p.setPivot(p.getPivot().sub(centroid).mult(scale).add(centroid));
-        }
-        notifyTris();
+    public Action<Void> scale(Vector3 scale) {
+        return new Action<Void>() {
+            private final ArrayList<Vector3> originalPositions = new ArrayList<>();
+            @Override
+            public Void run() {
+                for (GPoint p : points) {
+                    originalPositions.add(p.getPivot().copy());
+                    p.setPivot(p.getPivot().sub(centroid).mult(scale).add(centroid));
+                }
+                notifyTris();
+                return null;
+            }
+
+            @Override
+            public void undo() {
+                for (int i = 0; i < points.size(); i++) {
+                    points.get(i).setPivot(originalPositions.get(i));
+                }
+                notifyTris();
+            }
+
+            @Override
+            public boolean isReversible() {
+                return true;
+            }
+
+            @Override
+            public String getDescription() {
+                return "Thing:ScaleVector";
+            }
+        };
     }
 
     /**
      * Translates the Thing by a given vector.
      * @param v The translation vector.
      */
-    public void translate(Vector3 v) {
-        for (GPoint p : points) {
-            p.setPivot(p.getPivot().add(v));
-        }
-        notifyTris();
+    public Action<Void> translate(Vector3 v) {
+        return new Action<Void>() {
+            private final ArrayList<Vector3> originalPositions = new ArrayList<>();
+            @Override
+            public Void run() {
+                for (GPoint p : points) {
+                    originalPositions.add(p.getPivot().copy());
+                    p.setPivot(p.getPivot().add(v));
+                }
+                notifyTris();
+                return null;
+            }
+
+            @Override
+            public void undo() {
+                for (int i = 0; i < points.size(); i++) {
+                    points.get(i).setPivot(originalPositions.get(i));
+                }
+                notifyTris();
+            }
+
+            @Override
+            public boolean isReversible() {
+                return true;
+            }
+
+            @Override
+            public String getDescription() {
+                return "Thing:ScaleVector";
+            }
+        };
     }
 
-    public void rotate(Vector3 axis, double angleDegrees) {
-        for (GPoint p : points) {
-            Vector3 dir = p.getPivot().sub(centroid);
-            dir = dir.rotateAroundAxis(axis, angleDegrees);
-            p.setPivot(centroid.add(dir));
-        }
-        notifyTris();
+    public Action<Void> rotate(Vector3 axis, double angleDegrees) {
+        return new Action<Void>() {
+            private final ArrayList<Vector3> originalPositions = new ArrayList<>();
+            @Override
+            public Void run() {
+                for (GPoint p : points) {
+                    originalPositions.add(p.getPivot().copy());
+                    Vector3 dir = p.getPivot().sub(centroid);
+                    dir = dir.rotateAroundAxis(axis, angleDegrees);
+                    p.setPivot(centroid.add(dir));
+                }
+                notifyTris();
+                return null;
+            }
+
+            @Override
+            public void undo() {
+                for (int i = 0; i < points.size(); i++) {
+                    points.get(i).setPivot(originalPositions.get(i));
+                }
+                notifyTris();
+            }
+
+            @Override
+            public boolean isReversible() {
+                return true;
+            }
+
+            @Override
+            public String getDescription() {
+                return "Thing:Rotate";
+            }
+        };
     }
 }

@@ -4,6 +4,8 @@ import com.j3d.Main;
 import com.j3d.engine.geometry.geo2d.GObject;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.Thing;
+import com.j3d.engine.react.history.Action;
+import com.j3d.engine.react.history.ConstructorAction;
 
 import java.awt.*;
 import java.util.*;
@@ -51,6 +53,27 @@ public class Layer extends ArrayList<Thing> {
      */
     public Layer(String id) {
         identifier = id;
+        final String idFinal = id;
+        Renderer.history.add(
+                new ConstructorAction() {
+                    final Layer layer = Layer.this;
+                    @Override
+                    public Void run() {
+                        Main.renderer.layers.add(layer);
+                        return null;
+                    }
+
+                    @Override
+                    public void undo() {
+                        Main.renderer.layers.remove(layer);
+                    }
+
+                    @Override
+                    public String getDescription() {
+                        return "Construct:Layer-" + id;
+                    }
+                }
+        );
     }
 
     /**
@@ -58,6 +81,19 @@ public class Layer extends ArrayList<Thing> {
      */
     public Layer() {
         identifier = "LAYER-0";
+        Renderer.history.add(
+                new ConstructorAction() {
+                    @Override
+                    public boolean isReversible() {
+                        return false;
+                    }
+
+                    @Override
+                    public String getDescription() {
+                        return "Construct:Layer-Default";
+                    }
+                }
+        );
     }
 
     /**
@@ -74,28 +110,45 @@ public class Layer extends ArrayList<Thing> {
      * The {@code otherlayer} itself remains unchanged.
      *
      * @param otherlayer The {@code Layer} whose contents are to be merged into this layer.
-     * @return This {@code Layer} after the merge operation, allowing for method chaining.
+     * @return An {@link Action} representing the squash operation, which can be undone if needed.
      */
-    public Layer squashWith(Layer otherlayer) {
-        this.addAll(otherlayer);
-        return this;
+    public Action<Layer> squashWith(Layer otherlayer) {
+        final Layer current = this;
+        final Layer other = otherlayer;
+        return new Action<Layer>() {
+            // Keep the objects that were added for undo functionality
+            private ArrayList<Thing> addedObjects = new ArrayList<>(otherlayer);
+            @Override
+            public Layer run() {
+                current.addAll(otherlayer);
+                return current;
+            }
+
+            @Override
+            public void undo() {
+                current.removeAll(addedObjects);
+            }
+
+            @Override
+            public boolean isReversible() {
+                return true;
+            }
+
+            @Override
+            public String getDescription() {
+                return "Layer-"+ current.getIdentifier() + ":SquashWith-" + other.getIdentifier();
+            }
+        };
     }
 
     /**
-     * Draws all {@link GObject}s contained within this layer onto the provided
-     * {@link Graphics2D} context. Each object's {@code draw} method is called.
+     * Draws all {@link Thing} instances in this layer using the provided
+     * {@link Graphics2D} context. The drawing order is determined by the
+     * distance of each {@code Thing}'s centroid from the camera position,
+     * ensuring proper depth representation in the rendered scene.
      *
-     * @param graphics2D The {@code Graphics2D} context to draw upon.
-     * @param visible A list of UUIDs representing visible objects.
+     * @param graphics2D The {@code Graphics2D} context used for drawing.
      */
-    public void draw(Graphics2D graphics2D, ArrayList<UUID> visible) {
-        if (!getIdentifier().equals(backgroundId))
-            sort(Comparator.comparingDouble(t -> t.getCentroid().distance(Main.camera.getPosition())));
-        for (Thing o : this.reversed()) {
-            o.draw(graphics2D, visible);
-        }
-    }
-
     public void draw(Graphics2D graphics2D) {
         if (!getIdentifier().equals(backgroundId))
             sort(Comparator.comparingDouble(t -> t.getCentroid().distance(Main.camera.getPosition())));

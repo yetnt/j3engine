@@ -4,13 +4,12 @@ import com.j3d.J3DSettings;
 import com.j3d.Main;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.draw.TriStateArea;
-import com.j3d.engine.events.EventBroadcast;
-import com.j3d.engine.events.EventEmitter;
+import com.j3d.engine.react.events.EventBroadcast;
+import com.j3d.engine.react.events.EventEmitter;
 
 import java.awt.*;
 import java.util.*;
 
-import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.Vector3;
 
 /**

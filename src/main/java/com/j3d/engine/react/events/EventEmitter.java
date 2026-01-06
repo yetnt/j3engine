@@ -1,7 +1,6 @@
-package com.j3d.engine.events;
+package com.j3d.engine.react.events;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * EventEmitter is an abstract class that allows for other classes to attach

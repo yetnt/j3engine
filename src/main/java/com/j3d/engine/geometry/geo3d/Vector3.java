@@ -152,6 +152,14 @@ public class Vector3 {
     }
 
     /**
+     * Creates a copy of this vector.
+     * @return A new Vector3 that is a copy of this vector.
+     */
+    public Vector3 copy() {
+        return new Vector3(this.X, this.Y, this.Z);
+    }
+
+    /**
      * Projects this 3D vector onto a 2D Cartesian plane based on the camera's properties.
      *
      * @param cam The camera defining the viewpoint and projection.

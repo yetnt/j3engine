@@ -1,11 +1,10 @@
 package com.j3d.engine.geometry.geo2d;
 
 import com.j3d.engine.Renderer;
-import com.j3d.engine.events.EventBroadcast;
-import com.j3d.engine.events.EventEmitter;
-import com.j3d.engine.events.EventListener;
-import com.j3d.engine.events.EventType;
-import com.j3d.engine.geometry.geo3d.Camera;
+import com.j3d.engine.react.events.EventBroadcast;
+import com.j3d.engine.react.events.EventEmitter;
+import com.j3d.engine.react.events.EventListener;
+import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.geometry.geo3d.Vector3;
 
 import java.awt.*;

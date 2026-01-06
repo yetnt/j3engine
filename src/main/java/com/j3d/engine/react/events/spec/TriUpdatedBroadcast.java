@@ -1,7 +1,7 @@
-package com.j3d.engine.events.spec;
+package com.j3d.engine.react.events.spec;
 
 import com.j3d.engine.Renderer;
-import com.j3d.engine.events.EventBroadcast;
+import com.j3d.engine.react.events.EventBroadcast;
 import com.j3d.engine.geometry.geo2d.GTri;
 
 /**

@@ -10,6 +10,7 @@ import com.j3d.engine.geometry.geo3d.Vector3;
 import com.j3d.engine.interact.selection.SelectionManager;
 import com.j3d.engine.interact.selection.SelectionQuery;
 import com.j3d.engine.interact.selection.SelectionType;
+import com.j3d.engine.react.history.History;
 
 import java.awt.*;
 import java.util.ArrayDeque;
@@ -44,6 +45,11 @@ public class Renderer {
      * This is not for UI but mainly for debugging purposes.
      */
     private ArrayList<Consumer<Graphics2D>> overlaps = new ArrayList<>();
+
+    /**
+     * The history manager for undo/redo functionality.
+     */
+    public static History history = new History();
 
     /**
      * Default Constructor
@@ -404,4 +410,15 @@ public class Renderer {
         return null;
     }
 
+    /**
+     * Removes a {@link Thing} from its containing {@link Layer}.
+     * @param thing The {@link Thing} to be removed.
+     */
+    public void removeThing(Thing thing) {
+        for (Layer layer : layers) {
+            if (layer.remove(thing)) {
+                return;
+            }
+        }
+    }
 }
