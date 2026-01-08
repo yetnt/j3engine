@@ -1,5 +1,7 @@
 package com.j3d.ui.tb;
 
+import com.j3d.Main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -10,6 +12,10 @@ public class ToolboxButtons {
     private static final ArrayList<JPanel> toolboxButtons = new ArrayList<>();
 
     static {
+        register("Toggle Debug", e -> {
+            // Toggle debug mode
+            Main.dp.setVisible(!Main.dp.isVisible());
+        });
         // Example button registration
         register("Example Button", e -> {
             System.out.println("Example Button Clicked");

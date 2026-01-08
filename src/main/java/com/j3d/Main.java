@@ -10,6 +10,7 @@ import com.j3d.engine.geometry.geo3d.Vector3;
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.jaiva.Testing;
+import com.j3d.ui.tb.Toolbox;
 import com.jaiva.JBundler;
 
 import javax.swing.*;
@@ -33,7 +34,7 @@ public class Main extends JPanel {
             .setPosition(new Vector3(20, 20, -20))
             .setRotation(new Rotation(0, 0, 0))
             .setProjectionPlane(new Vector3(0, 0, 50));
-    private static DebugPanel dp = new DebugPanel();
+    public static DebugPanel dp = new DebugPanel();
     private ScreenPoint mousePos = null;
     private ScreenPoint[] selectionArea = new ScreenPoint[2];
     private static CommandPallete commandPallete = new CommandPallete();
@@ -65,25 +66,6 @@ public class Main extends JPanel {
             public void mouseDragged(MouseEvent e) {
                 selectionArea[0] = mousePos;
                 selectionArea[1] = new ScreenPoint(e.getX(), e.getY());
-                f.repaint();
-            }
-        });
-
-        // WASD for camera movement
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                int key = e.getKeyCode();
-                System.out.println("sdf");
-                double moveAmount = 1.0;
-                switch (key) {
-                    case KeyEvent.VK_W -> camera.move(new Vector3(0, 0, moveAmount));
-                    case KeyEvent.VK_S -> camera.move(new Vector3(0, 0, -moveAmount));
-                    case KeyEvent.VK_A -> camera.move(new Vector3(-moveAmount, 0, 0));
-                    case KeyEvent.VK_D -> camera.move(new Vector3(moveAmount, 0, 0));
-                    case KeyEvent.VK_Q -> camera.move(new Vector3(0, moveAmount, 0));
-                    case KeyEvent.VK_E -> camera.move(new Vector3(0, -moveAmount, 0));
-                }
                 f.repaint();
             }
         });
@@ -131,6 +113,10 @@ public class Main extends JPanel {
 ////        initBundler(g, renderer);
     }
 
+    /**
+     * Repaints the debug panel, command pallete, and main frame on the Event Dispatch Thread.
+     * This should only be called from non-EDT threads. e.g. from the Renderer thread.
+     */
     public static void repaintL() {
         SwingUtilities.invokeLater(() -> {
             if (dp != null) {
@@ -148,6 +134,13 @@ public class Main extends JPanel {
         });
     }
     public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
+                 UnsupportedLookAndFeelException e) {
+            throw new RuntimeException(e);
+        }
+
         JFrame frame = new JFrame("J3D");
 
         f = frame;
@@ -168,23 +161,28 @@ public class Main extends JPanel {
         ActionMap am = mainPanel.getActionMap();
         new KeyBindings(im, am, commandPallete);
 
+        JPanel toolbox = new Toolbox();
+        // Toolbox at the top and extends full width but not very tall
+        toolbox.setBounds(0, 0, J3DSettings.screenSize.width - 50, toolbox.getPreferredSize().height);
+        layeredPane.add(toolbox, JLayeredPane.MODAL_LAYER); // above default layer
+
         mainPanel.requestFocusInWindow();
         mainPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN));
         mainPanel.setBounds(0, 0, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
         mainPanel.setPreferredSize(new java.awt.Dimension(J3DSettings.screenSize.width, J3DSettings.screenSize.height));
         layeredPane.add(mainPanel, JLayeredPane.DEFAULT_LAYER);
 
-        dp.setBounds(20, 40, dp.getPreferredSize().width, dp.getPreferredSize().height); // small corner overlay
+        dp.setBounds(20, toolbox.getPreferredSize().height + 40, dp.getPreferredSize().width, dp.getPreferredSize().height); // small corner overlay
         dp.setOpaque(true);
         dp.setBackground(Color.WHITE);
         dp.setVisible(false);
         log = new Logger(dp.logTextArea); // initialize logger with the text area
         layeredPane.add(dp, JLayeredPane.PALETTE_LAYER);
 
-        JButton toggleButton = new JButton("Toggle Debug");
-        toggleButton.addActionListener(e -> dp.setVisible(!dp.isVisible()));
-        toggleButton.setBounds(20, 5, toggleButton.getPreferredSize().width, toggleButton.getPreferredSize().height); // position it below dp
-        layeredPane.add(toggleButton, JLayeredPane.PALETTE_LAYER);
+//        JButton toggleButton = new JButton("Toggle Debug");
+//        toggleButton.addActionListener(e -> dp.setVisible(!dp.isVisible()));
+//        toggleButton.setBounds(20, 5, toggleButton.getPreferredSize().width, toggleButton.getPreferredSize().height); // position it below dp
+//        layeredPane.add(toggleButton, JLayeredPane.PALETTE_LAYER);
 
 //        commandPallete.validate(); // Ensures layout is calculated
         Rectangle bounds = frame.getBounds();
