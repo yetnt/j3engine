@@ -58,20 +58,9 @@ public class DebugPanel extends javax.swing.JPanel {
         YawLabel = new javax.swing.JLabel();
         PitchLabel = new javax.swing.JLabel();
         RollLabel = new javax.swing.JLabel();
-        XLabel = new javax.swing.JLabel();
-        YLabel = new javax.swing.JLabel();
-        drawButton = new java.awt.Button();
-        clearButton = new java.awt.Button();
         randomTriBtn = new javax.swing.JButton();
         debugLabel = new javax.swing.JLabel();
         drawLabel = new javax.swing.JLabel();
-        sliderX = new javax.swing.JSlider();
-        sliderY = new javax.swing.JSlider();
-        sliderZ = new javax.swing.JSlider();
-        ZLabel = new javax.swing.JLabel();
-        camXYZLabel = new javax.swing.JLabel();
-        triConstSlider = new javax.swing.JSlider();
-        triConstLabel = new javax.swing.JLabel();
         logLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         logTextArea = new javax.swing.JTextArea();
@@ -88,6 +77,8 @@ public class DebugPanel extends javax.swing.JPanel {
         visibleSortRadioButton = new javax.swing.JRadioButton();
         camDepthSortRadioButton = new javax.swing.JRadioButton();
         DDUUIDSortRadioButton = new javax.swing.JRadioButton();
+        drawButton = new javax.swing.JToggleButton();
+        clearButton = new javax.swing.JToggleButton();
 
         sliderYaw.setMaximum(180);
         sliderYaw.setMinimum(-180);
@@ -116,7 +107,6 @@ public class DebugPanel extends javax.swing.JPanel {
             }
         });
 
-        camRotationLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         camRotationLabel1.setText("Cam Rotation");
 
         YawLabel.setText("Yaw");
@@ -125,25 +115,6 @@ public class DebugPanel extends javax.swing.JPanel {
 
         RollLabel.setText("Roll");
 
-        XLabel.setText("X");
-
-        YLabel.setText("Y");
-
-        drawButton.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        drawButton.setLabel("draw");
-        drawButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                drawButtonActionPerformed(evt);
-            }
-        });
-
-        clearButton.setLabel("clear");
-        clearButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clearButtonActionPerformed(evt);
-            }
-        });
-
         randomTriBtn.setText("randomTri");
         randomTriBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -151,53 +122,10 @@ public class DebugPanel extends javax.swing.JPanel {
             }
         });
 
-        debugLabel.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         debugLabel.setText("Debug");
 
-        drawLabel.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         drawLabel.setText("Draw");
 
-        sliderX.setMinimum(-100);
-        sliderX.setValue(0);
-        sliderX.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                sliderXStateChanged(evt);
-            }
-        });
-
-        sliderY.setMinimum(-100);
-        sliderY.setValue(0);
-        sliderY.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                sliderYStateChanged(evt);
-            }
-        });
-
-        sliderZ.setMinimum(-100);
-        sliderZ.setValue(0);
-        sliderZ.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                sliderZStateChanged(evt);
-            }
-        });
-
-        ZLabel.setText("Z");
-
-        camXYZLabel.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        camXYZLabel.setText("Cam XYZ");
-
-        triConstSlider.setMaximum(1000);
-        triConstSlider.setMinimum(1);
-        triConstSlider.setValue(1);
-        triConstSlider.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                triConstSliderStateChanged(evt);
-            }
-        });
-
-        triConstLabel.setText("triConst");
-
-        logLabel.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         logLabel.setText("Logs");
 
         logTextArea.setColumns(20);
@@ -287,164 +215,127 @@ public class DebugPanel extends javax.swing.JPanel {
             }
         });
 
+        drawButton.setText("draw");
+        drawButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                draw(evt);
+            }
+        });
+
+        clearButton.setText("clear");
+        clearButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clear(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(triConstSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(triConstLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(385, 385, 385)
-                                .addComponent(logLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(drawLabel)
+                        .addGap(32, 32, 32)
+                        .addComponent(drawButton, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(logLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(camRotationLabel1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(sliderRoll, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                            .addComponent(sliderPitch, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                            .addComponent(sliderYaw, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(drawLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(drawButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(debugLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(randomTriBtn))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(camXYZLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(sliderRoll, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                                    .addComponent(sliderPitch, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                                    .addComponent(sliderYaw, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(YawLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(PitchLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(RollLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(NoneRadioButton)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(showTriDistCheckBox)
-                                    .addComponent(showTriDepthCheckBox)
-                                    .addComponent(showTriNormalsCheckBox)))
-                            .addComponent(camRotationLabel1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(sliderZ, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
-                                    .addComponent(sliderY, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                                    .addComponent(sliderX, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(XLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(YLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(ZLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(YawLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(PitchLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(RollLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(debugLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(randomTriBtn)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(NoneRadioButton)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(showTriDistCheckBox)
+                    .addComponent(showTriDepthCheckBox)
+                    .addComponent(showTriNormalsCheckBox)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(backFaceCullingCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(visibleSortRadioButton)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(BucketSortRadio)
-                        .addComponent(CamDistSortRadio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(BucketSortRadio)
+                    .addComponent(CamDistSortRadio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(DDUUIDSortRadioButton)
                     .addComponent(camDepthSortRadioButton))
-                .addGap(20, 20, 20))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(drawLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(camXYZLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(logLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(sliderX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(sliderY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(8, 8, 8)
-                                .addComponent(sliderZ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(camRotationLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(sliderYaw, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(YawLabel))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(sliderPitch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(PitchLabel))
-                                .addGap(8, 8, 8)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(sliderRoll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(RollLabel)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(13, 13, 13)
-                                .addComponent(CamDistSortRadio)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(visibleSortRadioButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(camDepthSortRadioButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(DDUUIDSortRadioButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(BucketSortRadio))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(90, 90, 90)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(drawButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(31, 31, 31)
-                        .addComponent(debugLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(randomTriBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(78, 78, 78)
-                        .addComponent(XLabel)
+                        .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(YLabel)
-                                .addGap(8, 8, 8)
-                                .addComponent(ZLabel))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(NoneRadioButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(showTriDistCheckBox)
+                        .addGap(5, 5, 5)
+                        .addComponent(showTriDepthCheckBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(showTriNormalsCheckBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addGap(13, 13, 13)
+                        .addComponent(CamDistSortRadio)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(visibleSortRadioButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(camDepthSortRadioButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(DDUUIDSortRadioButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(BucketSortRadio)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(backFaceCullingCheckBox))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(NoneRadioButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(showTriDistCheckBox)
-                                .addGap(5, 5, 5)
-                                .addComponent(showTriDepthCheckBox)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(showTriNormalsCheckBox)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(triConstSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(triConstLabel))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(backFaceCullingCheckBox))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(drawLabel)
+                            .addComponent(drawButton)
+                            .addComponent(clearButton))
+                        .addGap(22, 22, 22)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(randomTriBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(debugLabel))
+                        .addGap(18, 18, 18)
+                        .addComponent(logLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(camRotationLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(sliderYaw, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(YawLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(sliderPitch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(PitchLabel))
+                        .addGap(8, 8, 8)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(sliderRoll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(RollLabel))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         NoneRadioButton.getAccessibleContext().setAccessibleName("jRadioButton1");
@@ -467,18 +358,6 @@ public class DebugPanel extends javax.swing.JPanel {
         Main.camera.getRotation().setRoll(value);
         frame.repaint();
     }//GEN-LAST:event_sliderRollStateChanged
-
-    private void drawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawButtonActionPerformed
-        frame.repaint();
-    }//GEN-LAST:event_drawButtonActionPerformed
-
-    private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        renderer.layers.forEach(frame -> {
-            if (!frame.getIdentifier().equals(Layer.backgroundId)) frame.clear();
-        });
-        frame.repaint();
-
-    }//GEN-LAST:event_clearButtonActionPerformed
 
     private void randomTriBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomTriBtnActionPerformed
         Random random = new Random();
@@ -507,46 +386,6 @@ public class DebugPanel extends javax.swing.JPanel {
         frame.repaint();
 
     }//GEN-LAST:event_randomTriBtnActionPerformed
-
-    private void sliderXStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderXStateChanged
-        int value = sliderX.getValue();
-        //        Main.camera.setPosition(Main.camera.getPosition().add(new Vector3(value, 0, 0)));
-        Main.camera.setPosition(new Vector3(
-            value,
-            Main.camera.getPosition().getY(),
-            Main.camera.getPosition().getZ()
-        ));
-        frame.repaint();
-    }//GEN-LAST:event_sliderXStateChanged
-
-    private void sliderYStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderYStateChanged
-        int value = sliderY.getValue();
-        //        Main.camera.setPosition(Main.camera.getPosition().add(new Vector3(0, value, 0)));
-        Main.camera.setPosition(new Vector3(
-            Main.camera.getPosition().getX(),
-            value,
-            Main.camera.getPosition().getZ()
-        ));
-        frame.repaint();
-    }//GEN-LAST:event_sliderYStateChanged
-
-    private void sliderZStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderZStateChanged
-        int value = sliderZ.getValue();
-        //        Main.camera.setPosition(Main.camera.getPosition().add(new Vector3(0, 0, value)));
-        Main.camera.setPosition(new Vector3(
-            Main.camera.getPosition().getX(),
-            Main.camera.getPosition().getY(),
-            value
-        ));
-        frame.repaint();
-    }//GEN-LAST:event_sliderZStateChanged
-
-    private void triConstSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_triConstSliderStateChanged
-        double value = (double) triConstSlider.getValue() / 100;
-        Thing.depthConstant = value;
-        triConstLabel.setText("triConst : " + value);
-        frame.repaint();
-    }//GEN-LAST:event_triConstSliderStateChanged
 
     private void NoneRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NoneRadioButtonActionPerformed
         if (NoneRadioButton.isSelected()) {
@@ -631,6 +470,18 @@ public class DebugPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_camDepthSortRadioButtonActionPerformed
 
+    private void draw(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_draw
+
+        frame.repaint();
+    }//GEN-LAST:event_draw
+
+    private void clear(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear
+        renderer.layers.forEach(frame -> {
+            if (!frame.getIdentifier().equals(Layer.backgroundId)) frame.clear();
+        });
+        frame.repaint();
+    }//GEN-LAST:event_clear
+
     public void run(Renderer r, Executor e, Frame f) {
         renderer = r;
         executor = e;
@@ -644,17 +495,13 @@ public class DebugPanel extends javax.swing.JPanel {
     private javax.swing.JRadioButton NoneRadioButton;
     private javax.swing.JLabel PitchLabel;
     private javax.swing.JLabel RollLabel;
-    private javax.swing.JLabel XLabel;
-    private javax.swing.JLabel YLabel;
     private javax.swing.JLabel YawLabel;
-    private javax.swing.JLabel ZLabel;
     private javax.swing.JCheckBox backFaceCullingCheckBox;
     private javax.swing.JRadioButton camDepthSortRadioButton;
     private javax.swing.JLabel camRotationLabel1;
-    private javax.swing.JLabel camXYZLabel;
-    private java.awt.Button clearButton;
+    private javax.swing.JToggleButton clearButton;
     private javax.swing.JLabel debugLabel;
-    private java.awt.Button drawButton;
+    private javax.swing.JToggleButton drawButton;
     private javax.swing.JLabel drawLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -668,13 +515,8 @@ public class DebugPanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox showTriNormalsCheckBox;
     private javax.swing.JSlider sliderPitch;
     private javax.swing.JSlider sliderRoll;
-    private javax.swing.JSlider sliderX;
-    private javax.swing.JSlider sliderY;
     private javax.swing.JSlider sliderYaw;
-    private javax.swing.JSlider sliderZ;
     private javax.swing.ButtonGroup sortMethodButtonGroup;
-    private javax.swing.JLabel triConstLabel;
-    private javax.swing.JSlider triConstSlider;
     private javax.swing.JRadioButton visibleSortRadioButton;
     // End of variables declaration//GEN-END:variables
 }
