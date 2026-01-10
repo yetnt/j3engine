@@ -1,22 +1,23 @@
 package com.j3d.engine.interact.input.mouse;
 
+import com.j3d.Main;
+
 import java.awt.event.MouseAdapter;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
-public class MouseOwner {
-    private final MouseAdapter mouseAdapter;
-    private final MouseMotionAdapter mouseMotionAdapter;
+public class MouseOwner extends MouseAdapter {
+    private final MOwner owner;
 
-    public MouseOwner(MouseAdapter mouseAdapter, MouseMotionAdapter mouseMotionAdapter) {
-        this.mouseAdapter = mouseAdapter;
-        this.mouseMotionAdapter = mouseMotionAdapter;
+    public MouseOwner(MOwner owner) {
+        this.owner = owner;
     }
 
-    public MouseAdapter getMouseAdapter() {
-        return mouseAdapter;
+    public void requestOwnership() {
+        Main.setMouseOwner(owner);
     }
 
-    public MouseMotionAdapter getMouseMotionAdapter() {
-        return mouseMotionAdapter;
+    protected boolean isNotOwner() {
+        return Main.getMouseOwner() != owner;
     }
 }

@@ -25,6 +25,7 @@ import static com.j3d.Main.camera;
  */
 public class SelectionManager {
     private ArrayList<GObject> selected = new ArrayList<>();
+    public static SelectionMouseOwner selectionMouseOwner = new SelectionMouseOwner();
 
     /**
      * Constructs a SelectionManager and initializes the selection based on the provided layers and a Selection object.

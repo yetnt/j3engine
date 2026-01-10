@@ -8,6 +8,11 @@ import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.Rotation;
 import com.j3d.engine.geometry.geo3d.Vector3;
 import com.j3d.engine.interact.cmd.CommandParser;
+import com.j3d.engine.interact.input.mouse.MOwner;
+import com.j3d.engine.interact.input.mouse.MouseOwner;
+import com.j3d.engine.interact.input.mouse.NoMouseOwner;
+import com.j3d.engine.interact.selection.SelectionManager;
+import com.j3d.engine.interact.selection.SelectionMouseOwner;
 import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.jaiva.Testing;
 import com.j3d.ui.tb.Toolbox;
@@ -16,6 +21,7 @@ import com.jaiva.JBundler;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -35,40 +41,26 @@ public class Main extends JPanel {
             .setRotation(new Rotation(0, 0, 0))
             .setProjectionPlane(new Vector3(0, 0, 50));
     public static DebugPanel dp = new DebugPanel();
-    private ScreenPoint mousePos = null;
-    private ScreenPoint[] selectionArea = new ScreenPoint[2];
+    private static MOwner mouseOwner = MOwner.NONE;
+    public static ScreenPoint mousePos = null;
+    public static ScreenPoint[] selectionArea = new ScreenPoint[2];
     private static CommandPallete commandPallete = new CommandPallete();
     public static CommandParser commandParser;
 
+    public static void setMouseOwner(MOwner owner) {
+        mouseOwner = owner;
+    }
+    public static MOwner getMouseOwner() {
+        return mouseOwner;
+    }
+
     public Main() {
-        addMouseListener(new MouseAdapter() {
+        ArrayList<MouseOwner> owners = new ArrayList<>();
+        owners.add(SelectionManager.selectionMouseOwner);
+        owners.add(new NoMouseOwner());
 
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
-                selectionArea = new ScreenPoint[]{null, null}; // Reset selection area
-                f.repaint();
-                Main.Cursors.setDefault();
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                mousePos = new ScreenPoint(e.getX(), e.getY());
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                mousePos = null;
-            }
-        });
-
-        addMouseMotionListener(new MouseMotionAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                selectionArea[0] = mousePos;
-                selectionArea[1] = new ScreenPoint(e.getX(), e.getY());
-                f.repaint();
-            }
-        });
+        owners.forEach(this::addMouseListener);
+        owners.forEach(this::addMouseMotionListener);
 
     }
 
@@ -169,7 +161,7 @@ public class Main extends JPanel {
         mainPanel.requestFocusInWindow();
         mainPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN));
         mainPanel.setBounds(0, 0, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
-        mainPanel.setPreferredSize(new java.awt.Dimension(J3DSettings.screenSize.width, J3DSettings.screenSize.height));
+        mainPanel.setPreferredSize(new Dimension(J3DSettings.screenSize.width, J3DSettings.screenSize.height));
         layeredPane.add(mainPanel, JLayeredPane.DEFAULT_LAYER);
 
         dp.setBounds(20, toolbox.getPreferredSize().height + 40, dp.getPreferredSize().width, dp.getPreferredSize().height); // small corner overlay
@@ -186,7 +178,7 @@ public class Main extends JPanel {
 
 //        commandPallete.validate(); // Ensures layout is calculated
         Rectangle bounds = frame.getBounds();
-        java.awt.Dimension size = commandPallete.getPreferredSize();
+        Dimension size = commandPallete.getPreferredSize();
         int x = ((bounds.width - size.width) / 2) - 60;
         int y = bounds.height - size.height - 200;
         commandPallete.setBounds(x, y, size.width, size.height);
@@ -217,8 +209,8 @@ public class Main extends JPanel {
 //        frame.add(new Main());
         frame.setVisible(true);
 
-        Main.Cursors.init(frame);
-        Main.Cursors.setDefault();
+        Cursors.init(frame);
+        Cursors.setDefault();
     }
     public static class Cursors {
         private static final Map<String, Cursor> cursors = new HashMap<>();
