@@ -41,7 +41,7 @@ public class Main extends JPanel {
             .setRotation(new Rotation(0, 0, 0))
             .setProjectionPlane(new Vector3(0, 0, 50));
     public static DebugPanel dp = new DebugPanel();
-    private static MOwner mouseOwner = MOwner.NONE;
+    private static MOwner mouseOwner = MOwner.SELECTION;
     public static ScreenPoint mousePos = null;
     public static ScreenPoint[] selectionArea = new ScreenPoint[2];
     private static CommandPallete commandPallete = new CommandPallete();
