@@ -50,6 +50,9 @@ Being a project in 2D graphics, the core of the engine is built around the quest
 #### Base Classes
 
 ```mermaid
+---
+title: j3d.engine.geometry
+---
 classDiagram
     class BasePoint~T extends Number~ {
         +x: T
@@ -60,67 +63,88 @@ classDiagram
     
     note for BasePoint "Base class for points in 2D space."
     
-    class CartesianPoint {
-        +fromList(arr : ArrayList~? extends Number~)$ CartesianPoint
-        +x: double
-        +y: double
-        Constructor(x: double, y: double)
-        Constructor()
-        +isNotEmpty() boolean
-        +toScreen() ScreenPoint
-        +distanceTo(other: CartesianPoint) double
-        +distanceSquaredTo(other: CartesianPoint) double
-        +toArray() ArrayList~Double~
-        +equals(obj: Object) boolean
-        +hashCode() int
-        +toString() string
+    namespace geo2d {
+        class CartesianPoint
+    }
+    class ScreenPoint {
+      +x: int
+      +y: int
+      Constructor(x: int, y: int)
+      +toPoint(renderer: Renderer) CartesianPoint
+      +toSwingPoint() java.awt.Point
+      +toString() string
+    }
+    namespace geo3d {
+        class Vector3
     }
     
     note for CartesianPoint "A point in 2D Cartesian coordinate system."
-    CartesianPoint --|> BasePoint~Double~
-    
-    class ScreenPoint {
-        +x: int
-        +y: int
-        Constructor(x: int, y: int)
-        +toPoint(renderer: Renderer) CartesianPoint
-        +toSwingPoint() java.awt.Point
-        +toString() string
-    }
-    
+    CartesianPoint --|> "is type of" BasePoint~Double~
     note for ScreenPoint "A point in screen coordinates (pixels)."
-    ScreenPoint --|> BasePoint~Integer~
+    ScreenPoint --|> "is type of" BasePoint~Integer~
     ScreenPoint <.. CartesianPoint : used to convert from CartesianPoint
-    
-    class Vector3 {
-        -X: double
-        -Y: double
-        -Z: double
-        +Constructor(x: double, y: double, z: double)
-        +Constructor()
-        +getX() double
-        +getY() double
-        +getZ() double
-        +dot(v: Vector3) double
-        +normalize() Vector3
-        +add(v: Vector3) Vector3
-        +magnitude() double
-        +mult(scalar: double) Vector3
-        +mult(B: Vector3) Vector3
-        +div(scalar: double) Vector3
-        +cross(B: Vector3) Vector3
-        +sub(B: Vector3) Vector3
-        +distance(B: Vector3) double
-        +random(low: Vector3, high: Vector3)$ Vector3
-        +copy() Vector3
-        +toPoint(cam: Camera) CartesianPoint
-        +distanceSquaredTo(mousePos: CartesianPoint) double
-        +reduce(vectors: ArrayList~Vector3~, reducer: BiFunction~Vector3, Vector3, Vector3~)$ Vector3
-        +equals(obj: Object) boolean
-        +hashCode() int
-        +toString() string
-    }
-    
-    Vector3 ..> CartesianPoint : Converts to a 2d Point via Perspective. Using Camera Angle Projection and other stuff (TODO: link the wikipedia article)
+    Vector3 ..> CartesianPoint : Converts to a 2d Point via Perspective. Using Camera Angle Projection and other stuff
     note for Vector3 "A point in 3D space with length height and depth"
+```
+
+
+```mermaid
+---
+title: j3d.engine.geometry.geo3d
+---
+classDiagram
+
+
+  class Vector3 {
+    -X: double
+    -Y: double
+    -Z: double
+    +Constructor(x: double, y: double, z: double)
+    +Constructor()
+    +getX() double
+    +getY() double
+    +getZ() double
+    +dot(v: Vector3) double
+    +normalize() Vector3
+    +add(v: Vector3) Vector3
+    +magnitude() double
+    +mult(scalar: double) Vector3
+    +mult(B: Vector3) Vector3
+    +div(scalar: double) Vector3
+    +cross(B: Vector3) Vector3
+    +sub(B: Vector3) Vector3
+    +distance(B: Vector3) double
+    +random(low: Vector3, high: Vector3)$ Vector3
+    +copy() Vector3
+    +toPoint(cam: Camera) CartesianPoint
+    +distanceSquaredTo(mousePos: CartesianPoint) double
+    +reduce(vectors: ArrayList~Vector3~, reducer: BiFunction~Vector3, Vector3, Vector3~)$ Vector3
+    +equals(obj: Object) boolean
+    +hashCode() int
+    +toString() string
+  }
+```
+
+
+```mermaid
+---
+title: j3d.engine.geometry.geo2d
+---
+classDiagram
+
+  class CartesianPoint {
+    +fromList(arr : ArrayList~? extends Number~)$ CartesianPoint
+    +x: double
+    +y: double
+    Constructor(x: double, y: double)
+    Constructor()
+    +isNotEmpty() boolean
+    +toScreen() ScreenPoint
+    +distanceTo(other: CartesianPoint) double
+    +distanceSquaredTo(other: CartesianPoint) double
+    +toArray() ArrayList~Double~
+    +equals(obj: Object) boolean
+    +hashCode() int
+    +toString() string
+  }
 ```
