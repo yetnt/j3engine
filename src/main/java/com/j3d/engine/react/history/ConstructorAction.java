@@ -6,6 +6,6 @@ package com.j3d.engine.react.history;
  * However, it's suggested to implement it anyway, in the case the action needs to be re-executed
  * (for example, in a redo operation).
  */
-public abstract class ConstructorAction extends AbstractAction {
+public abstract class ConstructorAction extends AbstractAction implements CleanableAction {
 
 }

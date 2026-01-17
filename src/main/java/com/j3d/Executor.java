@@ -30,37 +30,15 @@ public class Executor {
      * Runs the executor.
      */
     public void run(Graphics2D graphics2D) {
-
-        // draws 3 lines that hopefully connects to a triangle
-
-//        renderer.axis(graphics2D, Main.camera);
-
-//        test();
         Thing cub = cube();
-//        VoidAction action = cub.translate(new Vector3(0, 20, 0));
         VoidAction action = cub.rotate(new Vector3(0, 0, 1), 45);
         action.run();
         Renderer.history.add(action); // add to history to allow undo/redo
-
-
-//        Thing tris = threeTris();
-
-        // cam shenanigans
-//        new Thread(() -> {
-//            while (true) {
-//                Main.camera.move(new Vector3(0, 1, 0));
-//                Main.camera.lookAt(cub.getCentroid());
-//                Main.f.repaint();
-//                try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
-//            }
-//        }).start();
-
     }
 
     /**
      * Creates three triangles stacked vertically along the Z axis.
      * This is mainly for depth testing.
-     * @return
      */
     public Thing threeTris() {
         GPoint A = new GPoint(new Vector3(10, 0, 0));

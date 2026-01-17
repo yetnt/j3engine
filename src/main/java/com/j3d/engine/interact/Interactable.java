@@ -1,0 +1,64 @@
+package com.j3d.engine.interact;
+
+import com.j3d.engine.react.history.Action;
+import com.j3d.engine.react.history.CleanableAction;
+import com.j3d.engine.react.history.DirtyVoidAction;
+
+/**
+ */
+public interface Interactable {
+    /**
+     * Whether the given object is hidden or not
+     * @return true if hidden, false otherwise
+     */
+    boolean isHidden();
+
+    /**
+     * Hides the object. This is for internal use. GUI and other user
+     * things should make use of {@link #toggleVisibility()} instead.
+     */
+    void setHidden(boolean hidden);
+
+    /**
+     * Labels the object as for deletion. Has similar implications as
+     * being hidden however it will be cleaned up later and won't be
+     * available on lists.
+     * @return true if the object was marked for deletion
+     */
+    boolean isForDeletion();
+
+    /**
+     * Marks the object for deletion.
+     */
+    void setForDeletion(boolean forDeletion);
+
+    /**
+     * Toggles the visibility of the object.
+     * @return An action that toggles the visibility of the object and returns
+     * the new visibility state.
+     */
+    Action<Boolean> toggleVisibility();
+
+    /**
+     * Deletes the object.
+     * <p>
+     *     The use of the word "later" is because the action of deletion
+     *     is only ever done once the Action object is out of the history's
+     *     bounds. At that point {@link CleanableAction#cleanup()} is called,
+     *     which actually deletes.
+     * </p>
+     * @return An action that deletes the object.
+     */
+    DirtyVoidAction deleteLater();
+
+    /**
+     * An internal delete method which all implementors should
+     * override for instantaneous deletion.
+     * <p>
+     *     This method should not be called by a user interface things.
+     *     However, any object overriding the method must provide a way
+     *     to delete everything relating to it.
+     * </p>
+     */
+    void instantDelete();
+}

@@ -2,15 +2,16 @@ package com.j3d.engine.geometry.geo3d;
 
 import com.j3d.J3DSettings;
 import com.j3d.Main;
+import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.Layer;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.draw.TriStateArea;
+import com.j3d.engine.react.history.DirtyVoidAction;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.react.events.spec.TriUpdatedBroadcast;
 import com.j3d.engine.geometry.geo2d.GObject;
 import com.j3d.engine.geometry.geo2d.GPoint;
 import com.j3d.engine.geometry.geo2d.GTri;
-import com.j3d.engine.react.history.AbstractAction;
 import com.j3d.engine.react.history.Action;
 import com.j3d.engine.react.history.ConstructorAction;
 import com.j3d.engine.react.history.VoidAction;
@@ -22,7 +23,7 @@ import java.util.List;
 /**
  * Represents a 3D object composed of multiple 2D geometric objects (GObjects).
  */
-public class Thing {
+public class Thing implements Interactable {
 
     /** The centroid of the Thing, calculated from the GPoints it contains. */
     private Vector3 centroid;
@@ -42,6 +43,9 @@ public class Thing {
      */
     private boolean isBg = false;
 
+    private boolean hidden = false;
+    private boolean forDeletion = false;
+
     public Thing(Renderer renderer, Layer l) {
         l = l == null ? renderer.layers.get(1) : l;
         if (l.getIdentifier().equals(Layer.backgroundId)) {
@@ -53,17 +57,23 @@ public class Thing {
         final Layer finalL = l;
         Renderer.history.add(
                 new ConstructorAction() {
+                    @Override
+                    public void cleanup() throws Exception {
+                        finalL.remove(thing);
+                        thing.instantDelete();
+                    }
+
                     private final Thing thing = Thing.this;
                     @Override
                     public Void run() {
                         // will be called after undo, so we need to re-add the thing
-                        finalL.add(thing);
+                        setForDeletion(false);
                         return null;
                     }
 
                     @Override
                     public void undo() {
-                        finalL.remove(thing);
+                        setForDeletion(true);
                     }
 
                     @Override
@@ -100,6 +110,7 @@ public class Thing {
             return;
         }
 
+        if (isForDeletion() || isHidden()) return;
         for (GObject o : objects) {
             if (o instanceof GTri t) {
                 TriStateArea.addToQueue(t);
@@ -307,6 +318,99 @@ public class Thing {
             @Override
             public String getDescription() {
                 return "Thing:Rotate";
+            }
+        };
+    }
+
+    /**
+     * Deletes all underlying GObjects. This overrides all history functionality
+     * and should never be used by a user.
+     */
+    @Override
+    public void instantDelete() {
+        for (GObject o : objects) {
+            if (o instanceof GTri tri)
+                tri.deleteSelf();
+        }
+    }
+
+    @Override
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    @Override
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
+
+    @Override
+    public boolean isForDeletion() {
+        return forDeletion;
+    }
+
+    @Override
+    public void setForDeletion(boolean forDeletion) {
+        this.forDeletion = forDeletion;
+    }
+
+    @Override
+    public Action<Boolean> toggleVisibility() {
+        final Thing t = this;
+        return new Action<Boolean>() {
+            final boolean oldState = t.hidden;
+            @Override
+            public Boolean run() {
+                t.setHidden(!t.hidden);
+                return t.hidden;
+            }
+
+            @Override
+            public void undo() {
+                t.setHidden(oldState);
+            }
+
+            @Override
+            public boolean isReversible() {
+                return true;
+            }
+
+            @Override
+            public String getDescription() {
+                return "Thing:VisibilityToggle";
+            }
+        };
+    }
+
+    @Override
+    public DirtyVoidAction deleteLater() {
+        final Thing t = this;
+        return new DirtyVoidAction() {
+            @Override
+            public void cleanup() throws Exception {
+                 Main.renderer.removeThing(t);
+                 t.instantDelete();
+            }
+
+            @Override
+            public Void run() {
+                t.setForDeletion(true);
+                return null;
+            }
+
+            @Override
+            public void undo() {
+                t.setForDeletion(false);
+            }
+
+            @Override
+            public boolean isReversible() {
+                return true;
+            }
+
+            @Override
+            public String getDescription() {
+                return "Thing:Delete";
             }
         };
     }

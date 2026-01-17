@@ -114,13 +114,10 @@ public class GLine extends GObject {
     }
 
     @Override
-    public boolean deleteSelf(Renderer renderer, GObject ...excluded) {
-        Event e = new Event(this, renderer, this.startPoint.getPivot(), this.endPoint.getPivot());
-//        e.exclusions.addAll(new ArrayList<>(Arrays.asList(excluded)));
-//        e.exclusions.add(this);
-//        broadcast(EventType.NODE_DELETED, ObjectType.PARENT, e);
-//        broadcast(EventType.PARENT_DELETED, ObjectType.NODE, e);
-        return super.deleteSelf(renderer);
+    public boolean deleteSelf() {
+        this.startPoint.deleteSelf();
+        this.endPoint.deleteSelf();
+        return true;
     }
 
     /**

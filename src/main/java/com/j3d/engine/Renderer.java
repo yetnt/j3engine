@@ -195,20 +195,6 @@ public class Renderer {
         graphics.clearRect(0, 0, screenSize.width, screenSize.height);
     }
 
-    /**
-     * Deletes the given GObject.
-     * @param obj The object to delete.
-     * @return true if the object existed and got removed.
-     */
-    public boolean delete(GObject obj) {
-        for (Layer layer : layers) {
-            if (layer.remove(obj)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 
     /**
      * Finds an existing {@link GPoint} in the specified layer that matches the target {@link CartesianPoint}.

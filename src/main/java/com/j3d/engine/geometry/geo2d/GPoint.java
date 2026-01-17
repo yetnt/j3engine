@@ -78,13 +78,9 @@ public class GPoint extends GObject {
     }
 
     @Override
-    public boolean deleteSelf(Renderer renderer, GObject ...excluded) {
-        Event e = new Event(this, getPivot(), new Vector3(), renderer);
-//        e.exclusions.addAll(Arrays.asList(excluded));
-//        e.exclusions.add(this);
-//        broadcast(EventType.NODE_DELETED, ObjectType.PARENT, e);
-        renderer.points.remove(this);
-        return super.deleteSelf(renderer);
+    public boolean deleteSelf() {
+        Main.renderer.points.remove(this);
+        return true;
     }
 
     @Override

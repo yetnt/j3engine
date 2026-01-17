@@ -12,7 +12,7 @@ public class History extends ArrayList<Action<?>> {
     /**
      * Where actions that are undone are stored for redo functionality.
      */
-    private ArrayList<Action<?>> backup = new ArrayList<>();
+    private Backup backup = new Backup();
 
     /**
      * Serial version UID for serialization.
@@ -53,8 +53,16 @@ public class History extends ArrayList<Action<?>> {
 
     @Override
     public boolean add(Action<?> action) {
-        if (this.size() >= MAX_HISTORY_SIZE)
-            this.remove(0);
+        if (this.size() >= MAX_HISTORY_SIZE) {
+            Action<?> a = this.remove(0);
+            if (a instanceof CleanableAction cl) {
+                try {
+                    cl.cleanup();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
 
         backup.clear();
         return super.add(action);

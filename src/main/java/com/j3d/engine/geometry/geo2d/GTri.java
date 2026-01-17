@@ -249,4 +249,13 @@ public class GTri extends GObject{
     public String toString() {
         return col.toString() + " GTri";
     }
+
+    @Override
+    public boolean deleteSelf() {
+        TriStateArea.unregister(this);
+        LegA.deleteSelf();
+        LegB.deleteSelf();
+        LegC.deleteSelf();
+        return true;
+    }
 }

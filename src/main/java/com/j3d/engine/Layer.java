@@ -2,8 +2,9 @@ package com.j3d.engine;
 
 import com.j3d.Main;
 import com.j3d.engine.geometry.geo2d.GObject;
-import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.Thing;
+import com.j3d.engine.interact.Interactable;
+import com.j3d.engine.react.history.DirtyVoidAction;
 import com.j3d.engine.react.history.Action;
 import com.j3d.engine.react.history.ConstructorAction;
 
@@ -41,11 +42,14 @@ import java.util.*;
  * @see GObject
  * @see ArrayDeque
  */
-public class Layer extends ArrayList<Thing> {
+public class Layer extends ArrayList<Thing> implements Interactable {
 
     private final String identifier;
 
     public static final String backgroundId = "BACKG";
+
+    private boolean hidden = false;
+    private boolean forDeletion = false;
 
     /**
      * Default Constructor
@@ -56,16 +60,23 @@ public class Layer extends ArrayList<Thing> {
         final String idFinal = id;
         Renderer.history.add(
                 new ConstructorAction() {
+                    @Override
+                    public void cleanup() {
+                        // Layer was fully discarded, instantDelete everything within it.
+                        if (isForDeletion())
+                            layer.instantDelete();
+                    }
+
                     final Layer layer = Layer.this;
                     @Override
                     public Void run() {
-                        Main.renderer.layers.add(layer);
+                        layer.setForDeletion(false);
                         return null;
                     }
 
                     @Override
                     public void undo() {
-                        Main.renderer.layers.remove(layer);
+                        layer.setForDeletion(true);
                     }
 
                     @Override
@@ -83,6 +94,10 @@ public class Layer extends ArrayList<Thing> {
         identifier = "LAYER-0";
         Renderer.history.add(
                 new ConstructorAction() {
+                    @Override
+                    public void cleanup() {
+                        throw new IllegalStateException("The main layer should never have to be cleaned up.");
+                    }
                     @Override
                     public boolean isReversible() {
                         return false;
@@ -152,13 +167,102 @@ public class Layer extends ArrayList<Thing> {
     public void draw(Graphics2D graphics2D) {
         if (!getIdentifier().equals(backgroundId))
             sort(Comparator.comparingDouble(t -> t.getCentroid().distance(Main.camera.getPosition())));
+        if (isHidden() || isForDeletion()) return;
         for (Thing o : this.reversed()) {
             o.draw(graphics2D);
         }
     }
 
     @Override
+    public void instantDelete() {
+        Main.renderer.layers.remove(this);
+        for (Thing t : this) {
+            t.instantDelete();
+        }
+    }
+
+    @Override
     public String toString() {
         return identifier;
+    }
+
+    @Override
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    @Override
+    public boolean isForDeletion() {
+        return forDeletion;
+    }
+
+    @Override
+    public void setForDeletion(boolean forDeletion) {
+        this.forDeletion = forDeletion;
+    }
+
+    @Override
+    public Action<Boolean> toggleVisibility() {
+        final Layer l = this;
+        return new Action<>() {
+            final boolean oldState = l.hidden;
+            @Override
+            public Boolean run() {
+                l.setHidden(!l.hidden);
+                return l.hidden;
+            }
+
+            @Override
+            public void undo() {
+                l.setHidden(oldState);
+            }
+
+            @Override
+            public boolean isReversible() {
+                return true;
+            }
+
+            @Override
+            public String getDescription() {
+                return "Layer:VisibilityToggle";
+            }
+        };
+    }
+
+    @Override
+    public DirtyVoidAction deleteLater() {
+        final Layer l = this;
+        return new DirtyVoidAction() {
+            @Override
+            public void cleanup() throws Exception {
+                if (isForDeletion()) l.instantDelete();
+            }
+
+            @Override
+            public Void run() {
+                l.setForDeletion(true);
+                return null;
+            }
+
+            @Override
+            public void undo() {
+                l.setForDeletion(false);
+            }
+
+            @Override
+            public boolean isReversible() {
+                return true;
+            }
+
+            @Override
+            public String getDescription() {
+                return "Layer:Delete";
+            }
+        };
+    }
+
+    @Override
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
     }
 }
