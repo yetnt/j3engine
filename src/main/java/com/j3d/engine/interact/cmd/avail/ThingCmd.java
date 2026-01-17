@@ -13,8 +13,7 @@ import com.j3d.engine.interact.cmd.base.ArgSet;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.Subcommand;
 import com.j3d.engine.interact.cmd.base.TypedArg;
-import com.j3d.engine.react.history.Action;
-import com.j3d.engine.react.history.VoidAction;
+import com.j3d.engine.react.actions.VoidAction;
 
 import javax.swing.JLabel;
 import java.util.ArrayList;

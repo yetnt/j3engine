@@ -4,9 +4,9 @@ import com.j3d.Main;
 import com.j3d.engine.geometry.geo2d.GObject;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.interact.Interactable;
-import com.j3d.engine.react.history.DirtyVoidAction;
-import com.j3d.engine.react.history.Action;
-import com.j3d.engine.react.history.ConstructorAction;
+import com.j3d.engine.react.actions.DirtyVoidAction;
+import com.j3d.engine.react.actions.Action;
+import com.j3d.engine.react.actions.ConstructorAction;
 
 import java.awt.*;
 import java.util.*;

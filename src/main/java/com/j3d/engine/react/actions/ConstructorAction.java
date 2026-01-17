@@ -1,4 +1,4 @@
-package com.j3d.engine.react.history;
+package com.j3d.engine.react.actions;
 
 /**
  * ConstructorAction is an action who does not (need to) implement {@link #run()} as

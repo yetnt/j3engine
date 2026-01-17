@@ -1,8 +1,8 @@
 package com.j3d.engine.interact;
 
-import com.j3d.engine.react.history.Action;
-import com.j3d.engine.react.history.CleanableAction;
-import com.j3d.engine.react.history.DirtyVoidAction;
+import com.j3d.engine.react.actions.Action;
+import com.j3d.engine.react.actions.CleanableAction;
+import com.j3d.engine.react.actions.DirtyVoidAction;
 
 /**
  */

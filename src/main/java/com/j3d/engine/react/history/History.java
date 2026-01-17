@@ -1,6 +1,8 @@
 package com.j3d.engine.react.history;
 
 import com.j3d.Main;
+import com.j3d.engine.react.actions.Action;
+import com.j3d.engine.react.actions.CleanableAction;
 
 import java.util.ArrayList;
 
