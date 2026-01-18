@@ -1,17 +1,11 @@
 package com.j3d.engine.interact.selection;
 
-import com.j3d.engine.Layer;
-import com.j3d.engine.geometry.geo2d.GLine;
+import com.j3d.engine.layer.Layer;
 import com.j3d.engine.geometry.geo2d.GObject;
-import com.j3d.engine.geometry.geo2d.GPoint;
-import com.j3d.engine.geometry.geo2d.GTri;
 import com.j3d.engine.geometry.geo3d.Thing;
-import com.j3d.engine.geometry.geo3d.Vector3;
 
 import java.util.ArrayList;
 import java.util.function.Predicate;
-
-import static com.j3d.Main.camera;
 
 /**
  * Manages the selection of GObjects within a collection of Layers and Things.

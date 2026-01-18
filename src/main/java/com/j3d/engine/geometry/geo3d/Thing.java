@@ -3,7 +3,7 @@ package com.j3d.engine.geometry.geo3d;
 import com.j3d.J3DSettings;
 import com.j3d.Main;
 import com.j3d.engine.interact.Interactable;
-import com.j3d.engine.Layer;
+import com.j3d.engine.layer.Layer;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.draw.TriStateArea;
 import com.j3d.engine.react.actions.DirtyVoidAction;

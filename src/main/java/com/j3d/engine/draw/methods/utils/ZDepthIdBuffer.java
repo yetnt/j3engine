@@ -2,7 +2,7 @@ package com.j3d.engine.draw.methods.utils;
 
 import com.j3d.J3DSettings;
 import com.j3d.Main;
-import com.j3d.engine.Layer;
+import com.j3d.engine.layer.Layer;
 import com.j3d.engine.geometry.geo2d.GLine;
 import com.j3d.engine.geometry.geo2d.GObject;
 import com.j3d.engine.geometry.geo2d.GPoint;

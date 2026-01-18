@@ -10,6 +10,8 @@ import com.j3d.engine.geometry.geo3d.Vector3;
 import com.j3d.engine.interact.selection.SelectionManager;
 import com.j3d.engine.interact.selection.SelectionQuery;
 import com.j3d.engine.interact.selection.SelectionType;
+import com.j3d.engine.layer.Layer;
+import com.j3d.engine.layer.LayerList;
 import com.j3d.engine.react.history.History;
 
 import java.awt.*;
@@ -19,8 +21,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
- * Renderer is a class responsible for the creation of {@link GObject}s and handling of what's going on in the
- * render.
+ * Renderer is the class. The main class that handles the rendering of 3D objects onto a 2D screen.
  * @see Graphics2D
  */
 public class Renderer {
@@ -29,9 +30,9 @@ public class Renderer {
      */
     public Dimension screenSize;
     /**
-     * An ArrayDeque of Layers.
+     * An Array of Layers
      */
-    public ArrayList<Layer> layers = new ArrayList<>();
+    public LayerList layers = new LayerList();
 
     public ArrayDeque<GPoint> points = new ArrayDeque<>();
 
@@ -302,20 +303,6 @@ public class Renderer {
         }
         return null;
 
-    }
-
-    /**
-     * Finds a {@link Layer} by its identifier.
-     * @param id The identifier of the layer to find.
-     * @return The {@link Layer} with the matching identifier, or {@code null} if no such layer is found.
-     */
-    public Layer findLayer(String id) {
-        for (Layer layer : layers) {
-            if (layer.getIdentifier().equals(id)) {
-                return layer;
-            }
-        }
-        return null;
     }
 
     /**

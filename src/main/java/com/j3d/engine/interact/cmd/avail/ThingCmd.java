@@ -1,7 +1,7 @@
 package com.j3d.engine.interact.cmd.avail;
 
 import com.j3d.Main;
-import com.j3d.engine.Layer;
+import com.j3d.engine.layer.Layer;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.geo2d.GLine;
 import com.j3d.engine.geometry.geo2d.GObject;
@@ -59,7 +59,7 @@ public class ThingCmd extends Command {
             Layer l = null;
             if (args.length == 1) {
                 String layerId = (String) args[0];
-                l = Main.renderer.findLayer(layerId);
+                l = Main.renderer.layers.find(layerId);
             }
             new Thing(Main.renderer, l, "Thing");
             logLabel.setText("New Thing created" + (l != null ? " in layer " + l.getIdentifier() : " in the default layer"));

@@ -1,6 +1,6 @@
 package com.j3d;
 
-import com.j3d.engine.Layer;
+import com.j3d.engine.layer.Layer;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.geo2d.*;
 import com.j3d.engine.geometry.geo3d.Thing;

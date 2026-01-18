@@ -1,6 +1,7 @@
-package com.j3d.engine;
+package com.j3d.engine.layer;
 
 import com.j3d.Main;
+import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.geo2d.GObject;
 import com.j3d.engine.geometry.geo2d.GTri;
 import com.j3d.engine.geometry.geo3d.Thing;

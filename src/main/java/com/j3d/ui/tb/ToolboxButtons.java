@@ -2,12 +2,9 @@ package com.j3d.ui.tb;
 
 import com.j3d.Main;
 import com.j3d.engine.DebugDump;
-import com.j3d.engine.Layer;
-import com.j3d.engine.draw.TriStateArea;
-import com.j3d.engine.geometry.geo2d.GObject;
+import com.j3d.engine.layer.Layer;
 import com.j3d.engine.geometry.geo2d.GTri;
 import com.j3d.engine.geometry.geo3d.Camera;
-import com.j3d.engine.geometry.geo3d.Thing;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +14,6 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ToolboxButtons {
     private static final ArrayList<JPanel> toolboxButtons = new ArrayList<>();
