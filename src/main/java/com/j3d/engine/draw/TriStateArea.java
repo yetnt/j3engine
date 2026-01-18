@@ -38,7 +38,7 @@ public class TriStateArea {
 
     static {
         // later set bucket sort to
-        setSortMethod(TriangleSortMethod.DDUUIDSORT);
+        setSortMethod(TriangleSortMethod.CAMDISTSORT);
     }
 
     public static void setSortMethod(TriangleSortMethod method) {
@@ -70,12 +70,14 @@ public class TriStateArea {
     }
 
     public static void draw(Graphics2D g) {
-        for  (GTri tri : queue)
+        for  (GTri tri : queue) {
+            if (tri.isHidden()) continue;
             if (Main.renderer.getSelected().contains(tri)) {
                 tri.drawSelected(g);
             } else {
                 tri.draw(g);
             }
+        }
     }
 
     public static void addToQueue(GTri tri) {

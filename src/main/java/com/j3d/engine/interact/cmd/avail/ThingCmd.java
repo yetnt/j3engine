@@ -61,7 +61,7 @@ public class ThingCmd extends Command {
                 String layerId = (String) args[0];
                 l = Main.renderer.findLayer(layerId);
             }
-            new Thing(Main.renderer, l);
+            new Thing(Main.renderer, l, "Thing");
             logLabel.setText("New Thing created" + (l != null ? " in layer " + l.getIdentifier() : " in the default layer"));
         }
     }

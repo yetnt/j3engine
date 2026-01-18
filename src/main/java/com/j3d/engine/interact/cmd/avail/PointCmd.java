@@ -1,5 +1,6 @@
 package com.j3d.engine.interact.cmd.avail;
 
+import com.j3d.J3DSettings;
 import com.j3d.Main;
 import com.j3d.engine.geometry.geo2d.GPoint;
 import com.j3d.engine.geometry.geo3d.Thing;
@@ -25,8 +26,8 @@ public class PointCmd extends Command {
             return;
         }
 
-        new Thing(Main.renderer, null).addObjs(new GPoint(position));
+        new Thing(Main.renderer, null, "Point").addObjs(new GPoint(position));
         logLabel.setText("Point created at position: " + position);
-        Main.log.println("Point created at position: " + position);
+        J3DSettings.log.println("Point created at position: " + position);
     }
 }

@@ -31,6 +31,12 @@ public class Thing implements Interactable {
     /** The unique identifier for this Thing. */
     private final UUID id;
 
+    private String name = "Thing";
+
+    public String getName() {
+        return name;
+    }
+
     /** The list of 2D geometric objects that compose this 3D Thing. */
     private final ArrayList<GObject> objects = new ArrayList<>();
 
@@ -46,12 +52,13 @@ public class Thing implements Interactable {
     private boolean hidden = false;
     private boolean forDeletion = false;
 
-    public Thing(Renderer renderer, Layer l) {
+    public Thing(Renderer renderer, Layer l, String name) {
         l = l == null ? renderer.layers.get(1) : l;
         if (l.getIdentifier().equals(Layer.backgroundId)) {
             isBg = true;
         }
         l.add(this);
+        this.name = name;
         id = UUID.randomUUID();
         // Add to history for undo/redo functionality
         final Layer finalL = l;
@@ -141,12 +148,13 @@ public class Thing implements Interactable {
      * @return An Action that performs the copy operation.
      */
     public Action<Thing> copy(Renderer renderer, Layer l) {
+        final Thing current = this;
         return new Action<Thing>() {
             private Thing newThing;
 
             @Override
             public Thing run() {
-                newThing = new Thing(renderer, l).addObjs(objects.toArray(GObject[]::new));
+                newThing = new Thing(renderer, l, current.name + " copy").addObjs(objects.toArray(GObject[]::new));
                 return newThing;
             }
 
@@ -342,6 +350,17 @@ public class Thing implements Interactable {
     @Override
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
+        if (hidden) {
+            for (GObject o : objects) {
+                if (o instanceof GTri tri)
+                    tri.setHidden(true);
+            }
+        } else {
+            for (GObject o : objects) {
+                if (o instanceof GTri tri)
+                    tri.setHidden(false);
+            }
+        }
     }
 
     @Override
@@ -362,12 +381,14 @@ public class Thing implements Interactable {
             @Override
             public Boolean run() {
                 t.setHidden(!t.hidden);
+                notifyTris();
                 return t.hidden;
             }
 
             @Override
             public void undo() {
                 t.setHidden(oldState);
+                notifyTris();
             }
 
             @Override

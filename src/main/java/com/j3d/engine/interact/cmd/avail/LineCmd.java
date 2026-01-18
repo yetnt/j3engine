@@ -1,5 +1,6 @@
 package com.j3d.engine.interact.cmd.avail;
 
+import com.j3d.J3DSettings;
 import com.j3d.Main;
 import com.j3d.engine.geometry.geo2d.GLine;
 import com.j3d.engine.geometry.geo2d.GPoint;
@@ -73,9 +74,9 @@ public class LineCmd extends Command {
         }
 
         // Create the line
-        new Thing(Main.renderer, null).addObjs(
+        new Thing(Main.renderer, null, "Line").addObjs(
                 new GLine(startPos, endPos), startPos, endPos);
         logLabel.setText("Line created from " + startPos.getPivot() + " to " + endPos.getPivot());
-        Main.log.println("Line created from " + startPos.getPivot() + " to " + endPos.getPivot());
+        J3DSettings.log.println("Line created from " + startPos.getPivot() + " to " + endPos.getPivot());
     }
 }

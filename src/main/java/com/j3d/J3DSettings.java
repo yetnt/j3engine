@@ -1,5 +1,6 @@
 package com.j3d;
 
+import com.j3d.engine.Logger;
 import com.j3d.engine.draw.TriStateArea;
 import com.j3d.engine.draw.TriangleSortMethod;
 import com.j3d.engine.geometry.Dimension;
@@ -18,6 +19,7 @@ public class J3DSettings {
      * The Scale factor helps by making it such that (if SCALE is set to 10), inputting (0, 1) as a {@link CartesianPoint}, when converted to {@link ScreenPoint} it is multiplied by 10 units.
      */
     public static double SCALE = 10.0;
+    public static Logger log;
     /**
      * The method used for sorting triangles in the rendering process.
      */

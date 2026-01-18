@@ -18,7 +18,7 @@ public class Plane extends Thing {
     public Vector3 cornerD;
 
     public Plane(Renderer renderer, Layer l, Vector3 a, Vector3 b, Vector3 c, Vector3 d) {
-        super(renderer, l);
+        super(renderer, l, "Plane");
         // Create GTri 1 from cornerA to cornerB to cornerC
         // Create GTri 2 from cornerB to cornerC to cornerD
         GPoint pointB = new GPoint(b);

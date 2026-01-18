@@ -3,7 +3,7 @@ package com.j3d.engine;
 import javax.swing.*;
 
 /**
- * The `Logger` class provides a simple logging utility for applications.
+ * The `Logger` class provides a simple logging utility.
  * It supports logging messages to both the console and a `JTextArea` component.
  * This class includes methods for standard logging, error logging, and clearing the log area.
  */

@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.cmd.avail;
 
-import com.j3d.Main;
+import com.j3d.J3DSettings;
 import com.j3d.engine.interact.cmd.Any;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.Subcommand;
@@ -42,7 +42,7 @@ public class DebugCmd extends Command {
             }
             String typeName = (args[0] == null) ? "null" : args[0].getClass().getName();
             logLabel.setText("Type: " + typeName);
-            Main.log.println("Type: " + typeName);
+            J3DSettings.log.println("Type: " + typeName);
         }
     }
 
@@ -60,7 +60,7 @@ public class DebugCmd extends Command {
                 return;
             }
             logLabel.setText(message);
-            Main.log.println(message);
+            J3DSettings.log.println(message);
         }
     }
 }

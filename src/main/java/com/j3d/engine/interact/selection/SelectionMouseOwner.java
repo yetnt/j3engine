@@ -1,5 +1,6 @@
 package com.j3d.engine.interact.selection;
 
+import com.j3d.J3DSettings;
 import com.j3d.Main;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.interact.input.mouse.MOwner;
@@ -33,7 +34,7 @@ public class SelectionMouseOwner extends MouseOwner {
         if (isNotOwner()) return;
         mousePos = null;
         if (selectionArea[0] != null && selectionArea[1] != null)
-            Main.log.println("Final Selection Area: " + selectionArea[0] + " to " + selectionArea[1]);
+            J3DSettings.log.println("Final Selection Area: " + selectionArea[0] + " to " + selectionArea[1]);
     }
 
     @Override

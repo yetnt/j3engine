@@ -1,17 +1,42 @@
 package com.j3d.ui.tb;
 
 import com.j3d.Main;
+import com.j3d.engine.DebugDump;
+import com.j3d.engine.Layer;
+import com.j3d.engine.draw.TriStateArea;
+import com.j3d.engine.geometry.geo2d.GObject;
+import com.j3d.engine.geometry.geo2d.GTri;
+import com.j3d.engine.geometry.geo3d.Camera;
+import com.j3d.engine.geometry.geo3d.Thing;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ToolboxButtons {
     private static final ArrayList<JPanel> toolboxButtons = new ArrayList<>();
 
+    private static final PrintWriter out;
+
     static {
+        try {
+            out = DebugDump.writer(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss")) + ".csv");
+
+            out.println("time,cx,cy,cz,cpitch,cyaw,croll,layerID,layerVisible,thingName,thingID,triID,tridist,trix,triy,triz,trinx,triny,trinz,tricol,triVisible");
+            out.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            out.flush();
+            out.close();
+        }));
         register("Toggle Debug", e -> {
             // Toggle debug mode
             Main.dp.setVisible(!Main.dp.isVisible());
@@ -23,6 +48,45 @@ public class ToolboxButtons {
         // another for exmaple
         register("Another Button", e -> {
             System.out.println("Another Button Clicked");
+        });
+        register("Dump to Debug", e -> {
+            long current = System.currentTimeMillis();
+            Camera cam = Main.camera;
+
+            for (Layer l : Main.renderer.layers) {
+                l.forEach(thing -> {
+                    thing.getObjects().stream()
+                            .filter(GTri.class::isInstance)
+                            .map(GTri.class::cast)
+                            .forEach(tri -> {
+                                String sb = current + "," +
+                                        cam.getPosition().getX() + "," +
+                                        cam.getPosition().getY() + "," +
+                                        cam.getPosition().getZ() + "," +
+                                        cam.getRotation().getPitch() + "," +
+                                        cam.getRotation().getYaw() + "," +
+                                        cam.getRotation().getRoll() + "," +
+                                        l.getIdentifier() + "," +
+                                        !l.isHidden() + "," +
+                                        thing.getName() + "," +
+                                        thing.getId() + "," +
+                                        tri.getId() + "," +
+                                        tri.euclideanDist() + "," +
+                                        tri.getPivot().getX() + "," +
+                                        tri.getPivot().getY() + "," +
+                                        tri.getPivot().getZ() + "," +
+                                        tri.normal.getX() + "," +
+                                        tri.normal.getY() + "," +
+                                        tri.normal.getZ() + "," +
+                                        String.format("#%02X%02X%02X", tri.getColour().getRed(), tri.getColour().getGreen(), tri.getColour().getBlue()) + "," +
+                                        !tri.isHidden();
+
+                                out.println(sb);
+                                out.flush();
+                            });
+                });
+            }
+
         });
     }
 

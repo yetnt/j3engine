@@ -59,7 +59,7 @@ public class Renderer {
         screenSize = dim;
         Layer bg = new Layer(Layer.backgroundId);
         layers.add(bg); // the default layer
-        bg.add(new Thing(this, bg));
+        bg.add(new Thing(this, bg, "bg"));
         layers.add(new Layer()); // testing layer.
     }
 

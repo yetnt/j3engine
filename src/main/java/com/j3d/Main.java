@@ -12,7 +12,6 @@ import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.engine.interact.input.mouse.MouseOwner;
 import com.j3d.engine.interact.input.mouse.NoMouseOwner;
 import com.j3d.engine.interact.selection.SelectionManager;
-import com.j3d.engine.interact.selection.SelectionMouseOwner;
 import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.jaiva.Testing;
 import com.j3d.ui.tb.Toolbox;
@@ -30,7 +29,6 @@ import java.util.Objects;
  * Main is main.
  */
 public class Main extends JPanel {
-    public static Logger log;
     public static JBundler jBundler = null;
     public static Renderer renderer = null;
     public static Executor executor = null;
@@ -94,7 +92,7 @@ public class Main extends JPanel {
         if (selectionArea[0] != null && selectionArea[1] != null) {
             SelectionUI.run((Graphics2D)g, selectionArea, renderer);
         }
-        log.println("Painted/Repainted Scene");
+//        log.println("Painted/Repainted Scene");
     }
 
     @Override
@@ -168,7 +166,7 @@ public class Main extends JPanel {
         dp.setOpaque(true);
         dp.setBackground(Color.WHITE);
         dp.setVisible(false);
-        log = new Logger(dp.logTextArea); // initialize logger with the text area
+        J3DSettings.log = new Logger(dp.logTextArea); // initialize logger with the text area
         layeredPane.add(dp, JLayeredPane.PALETTE_LAYER);
 
 //        JButton toggleButton = new JButton("Toggle Debug");

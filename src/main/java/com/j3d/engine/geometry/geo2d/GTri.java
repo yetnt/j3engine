@@ -34,6 +34,8 @@ public class GTri extends GObject{
      */
     public Vector3 normal;
 
+    private boolean hidden = false;
+
     @Override
     public void draw(Graphics2D graphics2D) {
         setPivot(LegA.getStart().getPivot().add(LegB.getStart().getPivot()).add(LegC.getStart().getPivot()).div(3));
@@ -193,6 +195,14 @@ public class GTri extends GObject{
         calcNormal(A.getStart().getPivot(), B.getStart().getPivot(), C.getStart().getPivot());
         TriStateArea.register(this);
         drawDist();
+    }
+
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
     }
 
     public static class Event extends EventBroadcast {

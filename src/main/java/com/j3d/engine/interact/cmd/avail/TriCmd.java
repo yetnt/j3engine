@@ -76,7 +76,7 @@ public class TriCmd extends Command {
                     vertices[i] = p;
                 }
             }
-            new Thing(Main.renderer, null).addObjs(new GTri(col, vertices[0], vertices[1], vertices[2]), vertices[0], vertices[1], vertices[2]);
+            new Thing(Main.renderer, null, "Triangle").addObjs(new GTri(col, vertices[0], vertices[1], vertices[2]), vertices[0], vertices[1], vertices[2]);
             logLabel.setText("Triangle created with vertices: " + vertices[0] + ", " + vertices[1] + ", " + vertices[2]);
         } else {
             GLine[] lines = new GLine[3];
@@ -84,7 +84,7 @@ public class TriCmd extends Command {
                 lines[i] = (GLine) args[i];
             }
             try {
-                new Thing(Main.renderer, null).addObjs(new GTri(col, lines[0], lines[1], lines[2]), lines[0], lines[1], lines[2]);
+                new Thing(Main.renderer, null, "Triangle").addObjs(new GTri(col, lines[0], lines[1], lines[2]), lines[0], lines[1], lines[2]);
                 logLabel.setText("Triangle created with lines: " + lines[0] + ", " + lines[1] + ", " + lines[2]);
             } catch (IllegalArgumentException e) {
                 logLabel.setText("Error creating triangle: " + e.getMessage());

@@ -1,13 +1,15 @@
 package com.j3d;
 
+import com.j3d.engine.Layer;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.geo2d.*;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.Vector3;
-import com.j3d.engine.react.actions.VoidAction;
+import com.j3d.engine.react.actions.Action;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Executor is a class called by {@link Main#main(String[])} that just draws things ot the window
@@ -17,6 +19,8 @@ public class Executor {
      * The renderer instance.
      */
     private final Renderer renderer;
+
+    private final Layer layer = new Layer("exec");
 
     /**
      * Default Constructor
@@ -30,10 +34,19 @@ public class Executor {
      * Runs the executor.
      */
     public void run(Graphics2D graphics2D) {
+        Main.renderer.layers.add(layer);
         Thing cub = cube();
-        VoidAction action = cub.rotate(new Vector3(0, 0, 1), 45);
-        action.run();
-        Renderer.history.add(action); // add to history to allow undo/redo
+        Thing tris = threeTris();
+        ArrayList<Action<?>> actions = new ArrayList<>(List.of(
+                cub.rotate(new Vector3(0, 0, 1), 45),
+                cub.translate(new Vector3(4, 2, 3)),
+                cub.scale(0.4),
+                tris.translate(new Vector3(14, 0, 0)),
+                cub.rotate(new Vector3(2, 3, 1), 2),
+                layer.toggleVisibility()
+        ));
+        actions.forEach(Action::run);
+        actions.forEach(Renderer.history::add);
     }
 
     /**
@@ -61,7 +74,7 @@ public class Executor {
         tris.add(tri2);
         tris.add(tri3);
 
-        return new Thing(renderer, null).addObjs(tri1, tri2, tri3,
+        return new Thing(renderer, layer, "Three Tris").addObjs(tri1, tri2, tri3,
                 tri1.getLegA(), tri1.getLegB(), tri1.getLegC(),
                 tri2.getLegA(), tri2.getLegB(), tri2.getLegC(),
                 tri3.getLegA(), tri3.getLegB(), tri3.getLegC(),
@@ -76,8 +89,8 @@ public class Executor {
         GPoint B = new GPoint(new Vector3(0, 10, 0));
         GPoint C = new GPoint(new Vector3(0, 0, 10));
         GTri triangl = new GTri(Color.ORANGE, A, B, C);
-        Main.log.println(triangl.getId().toString());
-        return new Thing(renderer, null).addObjs(triangl, triangl.getLegA(), triangl.getLegB(), triangl.getLegC(), A, B, C);
+        J3DSettings.log.println(triangl.getId().toString());
+        return new Thing(renderer, null, "Test").addObjs(triangl, triangl.getLegA(), triangl.getLegB(), triangl.getLegC(), A, B, C);
     }
 
     public Thing cube() {
@@ -102,7 +115,7 @@ public class Executor {
         GTri face6tri1 = new GTri(Color.YELLOW, D, F, B);
         GTri face6tri2 = new GTri(Color.YELLOW.darker(), F, B, G);
 
-        return new Thing(renderer, null).addObjs(
+        return new Thing(renderer, layer, "Cube").addObjs(
                 A, B, C, D, E, F, G, H, face1tri1, face1tri2, face2tri1, face2tri2, face3tri1, face3tri2, face4tri1, face4tri2,
                 face5tri1, face5tri2, face6tri1, face6tri2
         );

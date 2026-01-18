@@ -6,7 +6,7 @@ import com.j3d.engine.geometry.ScreenPoint;
 
 import java.awt.*;
 
-import static com.j3d.Main.log;
+import static com.j3d.J3DSettings.log;
 
 public class SelectionUI {
     private static final Color STRICT_COLOR = new Color(0, 255, 0, 26);

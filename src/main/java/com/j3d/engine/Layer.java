@@ -2,8 +2,10 @@ package com.j3d.engine;
 
 import com.j3d.Main;
 import com.j3d.engine.geometry.geo2d.GObject;
+import com.j3d.engine.geometry.geo2d.GTri;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.interact.Interactable;
+import com.j3d.engine.react.actions.DirtyAction;
 import com.j3d.engine.react.actions.DirtyVoidAction;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.ConstructorAction;
@@ -127,21 +129,29 @@ public class Layer extends ArrayList<Thing> implements Interactable {
      * @param otherlayer The {@code Layer} whose contents are to be merged into this layer.
      * @return An {@link Action} representing the squash operation, which can be undone if needed.
      */
-    public Action<Layer> squashWith(Layer otherlayer) {
+    public DirtyAction<Layer> squashWith(Layer otherlayer) {
         final Layer current = this;
         final Layer other = otherlayer;
-        return new Action<Layer>() {
+        return new DirtyAction<>() {
+            @Override
+            public void cleanup() throws Exception {
+                if (other.isForDeletion())
+                    other.instantDelete();
+            }
+
             // Keep the objects that were added for undo functionality
             private ArrayList<Thing> addedObjects = new ArrayList<>(otherlayer);
             @Override
             public Layer run() {
                 current.addAll(otherlayer);
+                other.setForDeletion(true); // To the user it won't be available.
                 return current;
             }
 
             @Override
             public void undo() {
                 current.removeAll(addedObjects);
+                other.setForDeletion(false);
             }
 
             @Override
@@ -209,12 +219,23 @@ public class Layer extends ArrayList<Thing> implements Interactable {
             @Override
             public Boolean run() {
                 l.setHidden(!l.hidden);
+                stream().map(Thing::getObjects)
+                        .flatMap(Collection::stream)
+                        .filter(o -> o instanceof GTri)
+                        .map(o -> (GTri) o)
+                        .forEach(o -> o.setHidden(l.hidden));
                 return l.hidden;
             }
 
             @Override
             public void undo() {
                 l.setHidden(oldState);
+                stream().map(Thing::getObjects)
+                        .flatMap(Collection::stream)
+                        .filter(o -> o instanceof GTri)
+                        .map(o -> (GTri) o)
+                        .forEach(o -> o.setHidden(oldState));
+
             }
 
             @Override
