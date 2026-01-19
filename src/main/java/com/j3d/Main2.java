@@ -17,6 +17,7 @@ import com.j3d.engine.interact.input.mouse.MouseOwner;
 import com.j3d.engine.interact.input.mouse.NoMouseOwner;
 import com.j3d.engine.interact.selection.SelectionManager;
 import com.j3d.jaiva.Testing;
+import com.j3d.ui.Cursors;
 import com.j3d.ui.tb.Toolbox;
 import com.jaiva.JBundler;
 import java.awt.Color;
@@ -235,8 +236,8 @@ public class Main2 extends javax.swing.JFrame {
 //        frame.add(new Main());
 //        f.setVisible(true);
 
-        Main.Cursors.init(f);
-        Main.Cursors.setDefault();
+        Cursors.init(f);
+        Cursors.setDefault();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
