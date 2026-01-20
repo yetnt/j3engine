@@ -6,8 +6,12 @@ import javax.swing.*;
 
 import java.awt.*;
 
-import static com.j3d.Main2.*;
+import static com.j3d.Main.*;
 
+/**
+ *  The J3DPanel class extends JPanel and serves as the main drawing surface for the 3D engine.
+ * It overrides the `paint` method to handle rendering of 3D objects, axes, and selection UI.
+ */
 public class J3DPanel extends JPanel {
     public J3DPanel() {
         super();
