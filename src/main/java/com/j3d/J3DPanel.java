@@ -9,14 +9,40 @@ import java.awt.*;
 
 import static com.j3d.J3DSettings.jMenuBarOffsetY;
 import static com.j3d.ui.home.EngineFrame.*;
+import static com.j3d.ui.home.EngineFrame.selectionArea;
 
 /**
  *  The J3DPanel class extends JPanel and serves as the main drawing surface for the 3D engine.
  * It overrides the `paint` method to handle rendering of 3D objects, axes, and selection UI.
  */
 public class J3DPanel extends JPanel {
+    private static ScreenPoint[] selectionAreaOld = new ScreenPoint[]{new ScreenPoint(0, 0), new ScreenPoint(0, 0)};
     public J3DPanel() {
         super();
+    }
+
+    /**
+     * Applies the JMenuBar offset to the selection square so it line sup with the mouse cursor.
+     * Also adheres to the fact that a selection may have not previously changed by storing it statically.
+     * @param sA The selection area
+     * @return The new adjusted selection area
+     * @apiNote      * This is needed because the JMenuBar is not part of the JPanel, but rather the JFrame.
+     * So the mouse coordinates are relative to the JFrame, but the drawing is relative to the JPanel.
+     */
+    public ScreenPoint[] applySelectionAreaOffset(ScreenPoint[] sA) {
+        if (selectionAreaOld[0].equals(sA[0]) && selectionAreaOld[1].equals(sA[1])) {
+            return selectionAreaOld;
+        }
+        int offset = f.getJMenuBar().getSize().height + jMenuBarOffsetY;
+        ScreenPoint a = new ScreenPoint(sA[0].x, sA[0].y - offset);
+        ScreenPoint b = new ScreenPoint(sA[1].x, sA[1].y - offset);
+        selectionAreaOld = new ScreenPoint[] {
+                new ScreenPoint(a.x, a.y),
+                new ScreenPoint(b.x, b.y)
+        };
+        return new ScreenPoint[] {
+                a, b
+        };
     }
 
     @Override
@@ -30,10 +56,7 @@ public class J3DPanel extends JPanel {
         renderer.draw((Graphics2D) g, camera);
         // draw selection area ontop of all render things.
         if (selectionArea[0] != null && selectionArea[1] != null) {
-            int offset = f.getJMenuBar().getSize().height + jMenuBarOffsetY;
-            selectionArea[0] = new ScreenPoint(selectionArea[0].x, selectionArea[0].y - offset);
-            selectionArea[1] = new ScreenPoint(selectionArea[1].x, selectionArea[1].y - offset);
-            SelectionUI.run((Graphics2D)g, selectionArea, renderer);
+            SelectionUI.run((Graphics2D)g, applySelectionAreaOffset(selectionArea), renderer);
         }
 //        log.println("Painted/Repainted Scene");
     }
