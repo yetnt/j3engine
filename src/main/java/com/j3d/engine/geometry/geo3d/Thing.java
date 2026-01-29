@@ -1,7 +1,7 @@
 package com.j3d.engine.geometry.geo3d;
 
 import com.j3d.J3DSettings;
-import com.j3d.Main;
+import com.j3d.ui.home.EngineFrame;
 import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.Renderer;
@@ -113,7 +113,7 @@ public class Thing implements Interactable {
         if (isBg) {
             graphics2D.setColor(new Color(52, 52, 52));
             graphics2D.fillRect(0, 0, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
-            Main.renderer.axis(graphics2D, Main.camera);
+            EngineFrame.renderer.axis(graphics2D, EngineFrame.camera);
             return;
         }
 
@@ -180,7 +180,7 @@ public class Thing implements Interactable {
      */
     private void notifyTris() {
         for (GTri tri : objects.stream().filter(o -> o instanceof GTri).map(o -> (GTri) o).toList()) {
-            tri.broadcast(EventType.OBJ_UPDATED, new TriUpdatedBroadcast(tri, Main.renderer));
+            tri.broadcast(EventType.OBJ_UPDATED, new TriUpdatedBroadcast(tri, EngineFrame.renderer));
         }
     }
 
@@ -409,7 +409,7 @@ public class Thing implements Interactable {
         return new DirtyVoidAction() {
             @Override
             public void cleanup() throws Exception {
-                 Main.renderer.removeThing(t);
+                 EngineFrame.renderer.removeThing(t);
                  t.instantDelete();
             }
 

@@ -1,6 +1,6 @@
 package com.j3d.ui;
 
-import com.j3d.Main;
+import com.j3d.ui.home.EngineFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,7 +28,7 @@ public class Cursors {
     }
 
     private static Cursor createScaledCursor(String path, String name) {
-        ImageIcon icon = new ImageIcon(Objects.requireNonNull(Main.class.getResource(path)));
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(EngineFrame.class.getResource(path)));
         Image image = icon.getImage();
         Image scaled = image.getScaledInstance(32, 32, Image.SCALE_SMOOTH);
         return Toolkit.getDefaultToolkit().createCustomCursor(scaled, new Point(0, 0), name);

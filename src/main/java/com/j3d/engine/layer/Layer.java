@@ -1,6 +1,6 @@
 package com.j3d.engine.layer;
 
-import com.j3d.Main;
+import com.j3d.ui.home.EngineFrame;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.geo2d.GObject;
 import com.j3d.engine.geometry.geo2d.GTri;
@@ -177,7 +177,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
      */
     public void draw(Graphics2D graphics2D) {
         if (!getIdentifier().equals(backgroundId))
-            sort(Comparator.comparingDouble(t -> t.getCentroid().distance(Main.camera.getPosition())));
+            sort(Comparator.comparingDouble(t -> t.getCentroid().distance(EngineFrame.camera.getPosition())));
         if (isHidden() || isForDeletion()) return;
         for (Thing o : this.reversed()) {
             o.draw(graphics2D);
@@ -186,7 +186,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
 
     @Override
     public void instantDelete() {
-        Main.renderer.layers.remove(this);
+        EngineFrame.renderer.layers.remove(this);
         for (Thing t : this) {
             t.instantDelete();
         }

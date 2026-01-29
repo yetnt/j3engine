@@ -1,5 +1,6 @@
 package com.j3d;
 
+import com.j3d.ui.home.EngineFrame;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.geo2d.*;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Executor is a class called by {@link Main#main(String[])} that just draws things ot the window
+ * Executor is a class called by {@link EngineFrame#main(String[])} that just draws things ot the window
  */
 public class Executor {
     /**
@@ -34,7 +35,7 @@ public class Executor {
      * Runs the executor.
      */
     public void run(Graphics2D graphics2D) {
-        Main.renderer.layers.add(layer);
+        EngineFrame.renderer.layers.add(layer);
         Thing cub = cube();
         Thing tris = threeTris();
         ArrayList<Action<?>> actions = new ArrayList<>(List.of(

@@ -2,8 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.j3d;
+package com.j3d.ui.home;
 
+import com.j3d.DebugPanel;
+import com.j3d.Executor;
+import com.j3d.J3DPanel;
+import com.j3d.J3DSettings;
+import com.j3d.KeyBindings;
 import com.j3d.engine.Logger;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.ScreenPoint;
@@ -33,7 +38,7 @@ import static com.j3d.J3DSettings.jMenuBarOffsetY;
  *
  * @author ACER
  */
-public class Main extends javax.swing.JFrame {
+public class EngineFrame extends javax.swing.JFrame {
     public static JBundler jBundler = null;
     public static Renderer renderer = null;
     public static Executor executor = null;
@@ -60,7 +65,7 @@ public class Main extends javax.swing.JFrame {
     /**
      * Creates new form Main2
      */
-    public Main() {
+    public EngineFrame() {
         ArrayList<MouseOwner> owners = new ArrayList<>();
         owners.add(SelectionManager.selectionMouseOwner);
         owners.add(new NoMouseOwner());
@@ -126,9 +131,7 @@ public class Main extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("J3D");
-        setMaximumSize(new java.awt.Dimension(1800, 1000));
         setMinimumSize(new java.awt.Dimension(1800, 1000));
-        setPreferredSize(new java.awt.Dimension(1800, 1000));
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -179,14 +182,16 @@ public class Main extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EngineFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EngineFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EngineFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EngineFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
@@ -196,7 +201,7 @@ public class Main extends javax.swing.JFrame {
                  UnsupportedLookAndFeelException e) {
             throw new RuntimeException(e);
         }
-        f = new Main();
+        f = new EngineFrame();
         final int menuBarOffsetY = (f.getJMenuBar().getSize().height + jMenuBarOffsetY);
         f.setExtendedState(JFrame.MAXIMIZED_BOTH);
         renderer = new Renderer(J3DSettings.screenSize);
@@ -253,7 +258,7 @@ public class Main extends javax.swing.JFrame {
         mainPanel.getRootPane().setFocusable(true);
         mainPanel.getRootPane().requestFocusInWindow();
 
-//        frame.add(new Main());
+//        frame.add(new EngineFrame());
 //        f.setVisible(true);
 
         Cursors.init(f);

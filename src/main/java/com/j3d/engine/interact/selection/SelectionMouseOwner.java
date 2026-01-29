@@ -8,7 +8,7 @@ import com.j3d.ui.Cursors;
 
 import java.awt.event.MouseEvent;
 
-import static com.j3d.Main.*;
+import static com.j3d.ui.home.EngineFrame.*;
 
 public class SelectionMouseOwner extends MouseOwner {
     public SelectionMouseOwner() {
