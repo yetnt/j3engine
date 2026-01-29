@@ -138,7 +138,7 @@ public class Main extends javax.swing.JFrame {
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 827, Short.MAX_VALUE)
+            .addGap(0, 787, Short.MAX_VALUE)
         );
 
         getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
@@ -158,7 +158,7 @@ public class Main extends javax.swing.JFrame {
 
         setJMenuBar(jMenuBar1);
 
-        setSize(new java.awt.Dimension(1503, 857));
+        setSize(new java.awt.Dimension(1503, 817));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -246,7 +246,7 @@ public class Main extends javax.swing.JFrame {
         commandPallete.setOpaque(true);
         commandPallete.setBackground(new Color(30, 30, 30, 8));
         commandPallete.setVisible(true);
-//        layeredPane.add(commandPallete, JLayeredPane.POPUP_LAYER);
+        layeredPane.add(commandPallete, JLayeredPane.POPUP_LAYER);
 
         commandParser = new CommandParser(commandPallete);
 

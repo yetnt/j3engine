@@ -74,10 +74,7 @@ public class Toolbox extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(toolboxScrollpane, javax.swing.GroupLayout.DEFAULT_SIZE, 900, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(toolboxScrollpane, javax.swing.GroupLayout.DEFAULT_SIZE, 909, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
