@@ -27,6 +27,8 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import javax.swing.*;
 
+import static com.j3d.J3DSettings.jMenuBarOffsetY;
+
 /**
  *
  * @author ACER
@@ -118,10 +120,15 @@ public class Main extends javax.swing.JFrame {
         mainPanel = new J3DPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("J3D");
+        setMaximumSize(new java.awt.Dimension(1800, 1000));
+        setMinimumSize(new java.awt.Dimension(1800, 1000));
+        setPreferredSize(new java.awt.Dimension(1800, 1000));
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -137,6 +144,13 @@ public class Main extends javax.swing.JFrame {
         getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
 
         jMenu1.setText("File");
+
+        jMenuItem1.setText("jMenuItem1");
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("jMenuItem2");
+        jMenu1.add(jMenuItem2);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
@@ -183,6 +197,7 @@ public class Main extends javax.swing.JFrame {
             throw new RuntimeException(e);
         }
         f = new Main();
+        final int menuBarOffsetY = (f.getJMenuBar().getSize().height + jMenuBarOffsetY);
         f.setExtendedState(JFrame.MAXIMIZED_BOTH);
         renderer = new Renderer(J3DSettings.screenSize);
         executor = new Executor(renderer);
@@ -200,8 +215,8 @@ public class Main extends javax.swing.JFrame {
 
         Toolbox toolbox = new Toolbox();
         // Toolbox at the top and extends full width but not very tall
-        toolbox.setBounds(0, 0, J3DSettings.screenSize.width - 50, toolbox.getPreferredSize().height);
-        
+        toolbox.setBounds(0, 0 + menuBarOffsetY, J3DSettings.screenSize.width - 50, toolbox.getPreferredSize().height);
+
         // add menubar to layered pane
         JMenuBar mb = f.getJMenuBar();
         if (mb != null) {
@@ -211,11 +226,11 @@ public class Main extends javax.swing.JFrame {
 
         mainPanel.requestFocusInWindow();
         mainPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN));
-        mainPanel.setBounds(0, 0, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
+        mainPanel.setBounds(0, 0 + menuBarOffsetY, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
         mainPanel.setPreferredSize(new Dimension(J3DSettings.screenSize.width, J3DSettings.screenSize.height));
 //        layeredPane.add(mainPanel, JLayeredPane.DEFAULT_LAYER);
 
-        dp.setBounds(20, toolbox.getPreferredSize().height + 40, dp.getPreferredSize().width, dp.getPreferredSize().height); // small corner overlay
+        dp.setBounds(20, toolbox.getPreferredSize().height + menuBarOffsetY, dp.getPreferredSize().width, dp.getPreferredSize().height); // small corner overlay
         dp.setOpaque(true);
         dp.setBackground(Color.WHITE);
         dp.setVisible(false);
@@ -231,7 +246,7 @@ public class Main extends javax.swing.JFrame {
         commandPallete.setOpaque(true);
         commandPallete.setBackground(new Color(30, 30, 30, 8));
         commandPallete.setVisible(true);
-        layeredPane.add(commandPallete, JLayeredPane.POPUP_LAYER);
+//        layeredPane.add(commandPallete, JLayeredPane.POPUP_LAYER);
 
         commandParser = new CommandParser(commandPallete);
 
@@ -256,6 +271,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     public javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     public static javax.swing.JPanel mainPanel;
     // End of variables declaration//GEN-END:variables
 }
