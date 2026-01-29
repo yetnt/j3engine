@@ -8,6 +8,11 @@ import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
 
 public class J3DSettings {
+
+    /**
+     * A constant number to offset all components which get pushed down by the JMenuBar
+     */
+    public static final int jMenuBarOffsetY = 20;
     /**
      * The default screen size for the Renderer.
      */

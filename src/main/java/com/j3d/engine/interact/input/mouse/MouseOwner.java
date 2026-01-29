@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.input.mouse;
 
-import com.j3d.Main;
+import com.j3d.ui.home.EngineFrame;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -14,10 +14,10 @@ public class MouseOwner extends MouseAdapter {
     }
 
     public void requestOwnership() {
-        Main.setMouseOwner(owner);
+        EngineFrame.setMouseOwner(owner);
     }
 
     protected boolean isNotOwner() {
-        return Main.getMouseOwner() != owner;
+        return EngineFrame.getMouseOwner() != owner;
     }
 }

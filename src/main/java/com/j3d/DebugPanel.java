@@ -4,6 +4,7 @@
  */
 package com.j3d;
 
+import com.j3d.ui.home.EngineFrame;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.draw.TriangleSortMethod;
@@ -343,19 +344,19 @@ public class DebugPanel extends javax.swing.JPanel {
 
     private void sliderYawStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderYawStateChanged
         int value = sliderYaw.getValue();
-        Main.camera.getRotation().setYaw(value);
+        EngineFrame.camera.getRotation().setYaw(value);
         frame.repaint();
     }//GEN-LAST:event_sliderYawStateChanged
 
     private void sliderPitchStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderPitchStateChanged
         int value = sliderPitch.getValue();
-        Main.camera.getRotation().setPitch(value);
+        EngineFrame.camera.getRotation().setPitch(value);
         frame.repaint();
     }//GEN-LAST:event_sliderPitchStateChanged
 
     private void sliderRollStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderRollStateChanged
         int value = sliderRoll.getValue();
-        Main.camera.getRotation().setRoll(value);
+        EngineFrame.camera.getRotation().setRoll(value);
         frame.repaint();
     }//GEN-LAST:event_sliderRollStateChanged
 

@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.cmd;
 
-import com.j3d.Main;
+import com.j3d.ui.home.EngineFrame;
 import com.j3d.engine.geometry.geo2d.GObject;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.Vector3;
@@ -88,10 +88,10 @@ public class CommandParser {
      * @param uuid The UUID of the GObject or Thing to find.
      */
     public void argAddUUID(UUID uuid) {
-        GObject g = Main.renderer.findObjectByUUID(uuid);
+        GObject g = EngineFrame.renderer.findObjectByUUID(uuid);
         if (g == null) {
             // try to find a Thing with the given UUID
-            Thing t = Main.renderer.findThingByUUID(uuid);
+            Thing t = EngineFrame.renderer.findThingByUUID(uuid);
             if (t == null) {
                 cmdP.logLabel.setText("No object or thing found with UUID: " + uuid);
             } else {
@@ -171,7 +171,7 @@ public class CommandParser {
             if (arguments.isEmpty())
                 return;
             if (cmd == null) {
-                Main.repaintL();
+                EngineFrame.repaintL();
                 cmdP.logLabel.setText("Command not found: " + cmdName);
                 return;
             }
@@ -181,8 +181,8 @@ public class CommandParser {
         } else {
             cmdP.logLabel.setText("Invalid command name.");
         }
-        Main.repaintL();
-//        Main.f.repaint(); // Repaint the frame to reflect any changes.
+        EngineFrame.repaintL();
+//        EngineFrame.f.repaint(); // Repaint the frame to reflect any changes.
     }
 
     private Color parseColor(String input) {

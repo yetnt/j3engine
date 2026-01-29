@@ -1,7 +1,7 @@
 package com.j3d.engine.draw.methods.utils;
 
 import com.j3d.J3DSettings;
-import com.j3d.Main;
+import com.j3d.ui.home.EngineFrame;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.geometry.geo2d.GLine;
 import com.j3d.engine.geometry.geo2d.GObject;
@@ -64,8 +64,8 @@ public class ZDepthIdBuffer {
 
     // Rasterizes a line using Bresenham's algorithm with depth interpolation
     public void line(GLine line) {
-        Point p1 = line.getStart().getPivot().toPoint(Main.camera).toScreen(Main.renderer).toSwingPoint();
-        Point p2 = line.getEnd().getPivot().toPoint(Main.camera).toScreen(Main.renderer).toSwingPoint();
+        Point p1 = line.getStart().getPivot().toPoint(EngineFrame.camera).toScreen(EngineFrame.renderer).toSwingPoint();
+        Point p2 = line.getEnd().getPivot().toPoint(EngineFrame.camera).toScreen(EngineFrame.renderer).toSwingPoint();
         float z1 = (float) line.getStart().getPivot().getZ();
         float z2 = (float) line.getEnd().getPivot().getZ();
 
@@ -108,7 +108,7 @@ public class ZDepthIdBuffer {
 
     // Rasterizes a single point
     public void point(GPoint pt) {
-        Point screenPt = pt.getPivot().toPoint(Main.camera).toScreen(Main.renderer).toSwingPoint();
+        Point screenPt = pt.getPivot().toPoint(EngineFrame.camera).toScreen(EngineFrame.renderer).toSwingPoint();
         int x = screenPt.x;
         int y = screenPt.y;
         float z = (float) pt.getPivot().getZ();
@@ -126,9 +126,9 @@ public class ZDepthIdBuffer {
      * This avoids costly floating-point operations per pixel.
      */
     public void tri(GTri triangle) {
-        Point p1 = triangle.getLegA().getStart().getPivot().toPoint(Main.camera).toScreen(Main.renderer).toSwingPoint();
-        Point p2 = triangle.getLegB().getStart().getPivot().toPoint(Main.camera).toScreen(Main.renderer).toSwingPoint();
-        Point p3 = triangle.getLegC().getStart().getPivot().toPoint(Main.camera).toScreen(Main.renderer).toSwingPoint();
+        Point p1 = triangle.getLegA().getStart().getPivot().toPoint(EngineFrame.camera).toScreen(EngineFrame.renderer).toSwingPoint();
+        Point p2 = triangle.getLegB().getStart().getPivot().toPoint(EngineFrame.camera).toScreen(EngineFrame.renderer).toSwingPoint();
+        Point p3 = triangle.getLegC().getStart().getPivot().toPoint(EngineFrame.camera).toScreen(EngineFrame.renderer).toSwingPoint();
 
         float z1 = (float) triangle.getLegA().getStart().getPivot().getZ();
         float z2 = (float) triangle.getLegB().getStart().getPivot().getZ();

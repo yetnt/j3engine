@@ -7,8 +7,8 @@ import com.j3d.engine.geometry.geo3d.Vector3;
 
 import java.awt.*;
 
-import static com.j3d.Main.camera;
-import static com.j3d.Main.renderer;
+import static com.j3d.ui.home.EngineFrame.camera;
+import static com.j3d.ui.home.EngineFrame.renderer;
 
 /**
  * GLine represents, you guessed it, a line.

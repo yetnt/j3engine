@@ -24,6 +24,11 @@ public class Dimension {
         this.height = height;
     }
 
+    public Dimension(java.awt.Dimension preferredSize) {
+        this.width = preferredSize.width;
+        this.height = preferredSize.height;
+    }
+
     @Override
     public String toString() {
         return "[" + width + " x " + height + "]";

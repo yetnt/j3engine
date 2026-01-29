@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.selection;
 
-import com.j3d.Main;
+import com.j3d.ui.home.EngineFrame;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.GLine;
 import com.j3d.engine.geometry.geo2d.GObject;
@@ -93,12 +93,12 @@ public class SelectionQuery extends Rectangle {
      * @return true if the selection has the point. False otherwise.
      */
     public boolean has(GPoint point) {
-        return contains(point.getPivot().toPoint(Main.camera).toScreen(Main.renderer).toSwingPoint());
+        return contains(point.getPivot().toPoint(EngineFrame.camera).toScreen(EngineFrame.renderer).toSwingPoint());
     }
 
     public boolean intersectsWith(GLine line) {
-        ScreenPoint A = line.getStart().getPivot().toPoint(Main.camera).toScreen(Main.renderer);
-        ScreenPoint B = line.getEnd().getPivot().toPoint(Main.camera).toScreen(Main.renderer);
+        ScreenPoint A = line.getStart().getPivot().toPoint(EngineFrame.camera).toScreen(EngineFrame.renderer);
+        ScreenPoint B = line.getEnd().getPivot().toPoint(EngineFrame.camera).toScreen(EngineFrame.renderer);
 
         ScreenPoint rectA = points[0];
         ScreenPoint rectB = new ScreenPoint(points[0].x, points[1].y);

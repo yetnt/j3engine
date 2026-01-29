@@ -1,14 +1,14 @@
 package com.j3d.engine.interact.selection;
 
 import com.j3d.J3DSettings;
-import com.j3d.Main;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.engine.interact.input.mouse.MouseOwner;
+import com.j3d.ui.Cursors;
 
 import java.awt.event.MouseEvent;
 
-import static com.j3d.Main.*;
+import static com.j3d.ui.home.EngineFrame.*;
 
 public class SelectionMouseOwner extends MouseOwner {
     public SelectionMouseOwner() {
@@ -20,7 +20,7 @@ public class SelectionMouseOwner extends MouseOwner {
         if (isNotOwner()) return;
         selectionArea = new ScreenPoint[]{null, null}; // Reset selection area
         f.repaint();
-        Main.Cursors.setDefault();
+        Cursors.setDefault();
     }
 
     @Override

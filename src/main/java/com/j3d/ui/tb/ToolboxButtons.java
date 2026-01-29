@@ -1,6 +1,6 @@
 package com.j3d.ui.tb;
 
-import com.j3d.Main;
+import com.j3d.ui.home.EngineFrame;
 import com.j3d.engine.DebugDump;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.geometry.geo2d.GTri;
@@ -35,7 +35,7 @@ public class ToolboxButtons {
         }));
         register("Toggle Debug", e -> {
             // Toggle debug mode
-            Main.dp.setVisible(!Main.dp.isVisible());
+            EngineFrame.dp.setVisible(!EngineFrame.dp.isVisible());
         });
         // Example button registration
         register("Example Button", e -> {
@@ -47,9 +47,9 @@ public class ToolboxButtons {
         });
         register("Dump to Debug", e -> {
             long current = System.currentTimeMillis();
-            Camera cam = Main.camera;
+            Camera cam = EngineFrame.camera;
 
-            for (Layer l : Main.renderer.layers) {
+            for (Layer l : EngineFrame.renderer.layers) {
                 l.forEach(thing -> {
                     thing.getObjects().stream()
                             .filter(GTri.class::isInstance)
