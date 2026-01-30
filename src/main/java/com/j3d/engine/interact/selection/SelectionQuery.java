@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.selection;
 
-import com.j3d.ui.home.EngineFrame;
+import com.j3d.ui.engine.EngineFrame;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.GLine;
 import com.j3d.engine.geometry.geo2d.GObject;

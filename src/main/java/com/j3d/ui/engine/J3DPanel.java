@@ -1,4 +1,4 @@
-package com.j3d;
+package com.j3d.ui.engine;
 
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.interact.selection.SelectionUI;
@@ -8,8 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 
 import static com.j3d.J3DSettings.jMenuBarOffsetY;
-import static com.j3d.ui.home.EngineFrame.*;
-import static com.j3d.ui.home.EngineFrame.selectionArea;
+import static com.j3d.ui.engine.EngineFrame.*;
+import static com.j3d.ui.engine.EngineFrame.selectionArea;
 
 /**
  *  The J3DPanel class extends JPanel and serves as the main drawing surface for the 3D engine.

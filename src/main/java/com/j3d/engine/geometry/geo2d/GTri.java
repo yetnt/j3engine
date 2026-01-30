@@ -1,7 +1,7 @@
 package com.j3d.engine.geometry.geo2d;
 
 import com.j3d.J3DSettings;
-import com.j3d.ui.home.EngineFrame;
+import com.j3d.ui.engine.EngineFrame;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.draw.TriStateArea;
 import com.j3d.engine.react.events.EventBroadcast;

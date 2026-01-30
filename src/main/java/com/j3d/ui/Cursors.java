@@ -1,6 +1,6 @@
 package com.j3d.ui;
 
-import com.j3d.ui.home.EngineFrame;
+import com.j3d.ui.engine.EngineFrame;
 
 import javax.swing.*;
 import java.awt.*;

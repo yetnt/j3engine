@@ -1,10 +1,9 @@
-package com.j3d;
+package com.j3d.engine.interact.input;
 
+import com.j3d.J3DSettings;
 import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.interact.selection.SelectionUtils;
-import com.j3d.ui.home.EngineFrame;
-import com.j3d.engine.Renderer;
-import com.j3d.engine.geometry.geo3d.Rotation;
+import com.j3d.ui.engine.EngineFrame;
 import com.j3d.engine.geometry.geo3d.Vector3;
 import com.j3d.engine.interact.cmd.CommandPallete;
 

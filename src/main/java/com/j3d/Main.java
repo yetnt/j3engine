@@ -4,7 +4,7 @@
  */
 package com.j3d;
 
-import com.j3d.ui.home.EngineFrame;
+import com.j3d.ui.engine.EngineFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 

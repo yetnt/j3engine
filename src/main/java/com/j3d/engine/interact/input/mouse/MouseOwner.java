@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.input.mouse;
 
-import com.j3d.ui.home.EngineFrame;
+import com.j3d.ui.engine.EngineFrame;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

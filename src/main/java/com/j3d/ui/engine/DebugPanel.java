@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package com.j3d;
+package com.j3d.ui.engine;
 
-import com.j3d.ui.home.EngineFrame;
+import com.j3d.Executor;
+import com.j3d.J3DSettings;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.draw.TriangleSortMethod;

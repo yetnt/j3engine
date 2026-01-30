@@ -1,7 +1,7 @@
 package com.j3d.engine.geometry.geo3d;
 
 import com.j3d.J3DSettings;
-import com.j3d.ui.home.EngineFrame;
+import com.j3d.ui.engine.EngineFrame;
 import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.Renderer;

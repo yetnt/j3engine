@@ -2,13 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.j3d.ui.home;
+package com.j3d.ui.engine;
 
-import com.j3d.DebugPanel;
 import com.j3d.Executor;
-import com.j3d.J3DPanel;
 import com.j3d.J3DSettings;
-import com.j3d.KeyBindings;
+import com.j3d.engine.interact.input.KeyBindings;
 import com.j3d.engine.Logger;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.ScreenPoint;
