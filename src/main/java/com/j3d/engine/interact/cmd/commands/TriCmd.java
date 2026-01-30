@@ -1,4 +1,4 @@
-package com.j3d.engine.interact.cmd.avail;
+package com.j3d.engine.interact.cmd.commands;
 
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.engine.geometry.geo2d.GLine;

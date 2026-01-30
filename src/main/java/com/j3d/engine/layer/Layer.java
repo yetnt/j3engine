@@ -16,23 +16,17 @@ import java.util.*;
 
 /**
  * A {@code Layer} is a fundamental concept in the rendering pipeline, representing a
- * collection of {@link GObject} instances that are rendered together. The
+ * collection of {@link Thing} instances that are rendered together. The
  * {@link Renderer} processes these layers in a specific order, drawing the
- * contents of each layer to the screen. By organizing {@code GObject}s into
+ * contents of each layer to the screen. By organizing {@code Thing}s into
  * layers, you can control their stacking order and visibility.
  * <p>
- * The {@code Layer} class extends {@link ArrayDeque}, providing a versatile and
+ * The {@code Layer} class extends {@link ArrayList}, providing a versatile and
  * efficient way to manage the objects within it. You can add, remove, and
  * reorder objects in a layer to dynamically change the scene's composition.
  *
  * <h3>Key Features:</h3>
  * <ul>
- *     <li>
- *         <b>Drawing Order:</b> Layers are rendered sequentially. The
- *         {@link Renderer} draws layers one by one, so the order in which you
- *         add layers to the renderer determines which objects appear on top of
- *         others.
- *     </li>
  *     <li>
  *         <b>Object Grouping:</b> Layers allow you to group related
  *         {@link GObject}s, making it easier to manage complex scenes. For

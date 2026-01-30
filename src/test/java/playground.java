@@ -1,6 +1,4 @@
 import com.j3d.engine.interact.cmd.CommandsManager;
-import com.j3d.engine.interact.cmd.avail.DebugCmd;
-import com.j3d.engine.interact.cmd.avail.PointCmd;
 import com.j3d.engine.interact.cmd.base.Command;
 
 public class playground {

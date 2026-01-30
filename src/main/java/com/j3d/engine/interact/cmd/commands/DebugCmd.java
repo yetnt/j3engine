@@ -1,4 +1,4 @@
-package com.j3d.engine.interact.cmd.avail;
+package com.j3d.engine.interact.cmd.commands;
 
 import com.j3d.J3DSettings;
 import com.j3d.engine.interact.cmd.Any;

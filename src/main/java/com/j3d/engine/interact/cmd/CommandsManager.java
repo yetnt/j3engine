@@ -1,7 +1,8 @@
 package com.j3d.engine.interact.cmd;
 
-import com.j3d.engine.interact.cmd.avail.*;
+import com.j3d.engine.interact.cmd.commands.*;
 import com.j3d.engine.interact.cmd.base.Command;
+import com.j3d.engine.interact.cmd.commands.thing.ThingCmd;
 
 import java.util.ArrayList;
 import java.util.HashMap;
