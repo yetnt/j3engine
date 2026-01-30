@@ -21,13 +21,12 @@ import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.engine.interact.input.mouse.MouseOwner;
 import com.j3d.engine.interact.input.mouse.NoMouseOwner;
 import com.j3d.engine.interact.selection.SelectionManager;
-import com.j3d.jaiva.Testing;
+//import com.j3d.jaiva.Testing;
 import com.j3d.ui.Cursors;
 import com.j3d.ui.tb.Toolbox;
-import com.jaiva.JBundler;
+//import com.jaiva.JBundler;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -39,7 +38,7 @@ import static com.j3d.J3DSettings.jMenuBarOffsetY;
  * @author ACER
  */
 public class EngineFrame extends javax.swing.JFrame {
-    public static JBundler jBundler = null;
+//    public static JBundler jBundler = null;
     public static Renderer renderer = null;
     public static Executor executor = null;
     public static boolean run = true;
@@ -52,7 +51,7 @@ public class EngineFrame extends javax.swing.JFrame {
     private static MOwner mouseOwner = MOwner.SELECTION;
     public static ScreenPoint mousePos = null;
     public static ScreenPoint[] selectionArea = new ScreenPoint[2];
-    private static CommandPallete commandPallete = new CommandPallete();
+    private static final CommandPallete commandPallete = new CommandPallete();
     public static CommandParser commandParser;
 
     public static void setMouseOwner(MOwner owner) {
@@ -82,12 +81,12 @@ public class EngineFrame extends javax.swing.JFrame {
 
         Toolbox toolbox = new Toolbox();
         // Toolbox at the top and extends full width but not very tall
-        toolbox.setBounds(0, 0 + menuBarOffsetY, J3DSettings.screenSize.width - 50, toolbox.getPreferredSize().height);
+        toolbox.setBounds(0, menuBarOffsetY, J3DSettings.screenSize.width - 50, toolbox.getPreferredSize().height);
         layeredPane.add(toolbox, JLayeredPane.MODAL_LAYER); // above default layer
 
         mainPanel.requestFocusInWindow();
         mainPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN));
-        mainPanel.setBounds(0, 0 + menuBarOffsetY, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
+        mainPanel.setBounds(0, menuBarOffsetY, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
         mainPanel.setPreferredSize(new Dimension(J3DSettings.screenSize.width, J3DSettings.screenSize.height));
 //        layeredPane.add(mainPanel, JLayeredPane.DEFAULT_LAYER);
 
@@ -135,21 +134,21 @@ public class EngineFrame extends javax.swing.JFrame {
         complete();
     }
 
-    /**
-     * Initializes (if not already initialized) the Jaiva Instance by inputting the input file and passing {@link Testing} class
-     * @param g The graphics
-     * @param r The Renderer Instance.
-     */
-    private void initBundler(Graphics g, Renderer r) {
-        if (jBundler == null) {
-            try {
-                jBundler = new JBundler("C:\\Users\\ACER\\Documents\\code\\Jaiva3dEngine\\src\\main\\resources\\file.jiv", Testing.class);
-                jBundler.run(r);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
+//    /**
+//     * Initializes (if not already initialized) the Jaiva Instance by inputting the input file and passing {@link Testing} class
+//     * @param g The graphics
+//     * @param r The Renderer Instance.
+//     */
+//    private void initBundler(Graphics g, Renderer r) {
+//        if (jBundler == null) {
+//            try {
+//                jBundler = new JBundler("C:\\Users\\ACER\\Documents\\code\\Jaiva3dEngine\\src\\main\\resources\\file.jiv", Testing.class);
+//                jBundler.run(r);
+//            } catch (Exception e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+//    }
 
 
     /**
@@ -162,10 +161,8 @@ public class EngineFrame extends javax.swing.JFrame {
                 dp.revalidate();
                 dp.repaint();
             }
-            if (commandPallete != null) {
-                commandPallete.revalidate();
-                commandPallete.repaint();
-            }
+            commandPallete.revalidate();
+            commandPallete.repaint();
             if (f != null) {
                 f.revalidate();
                 f.repaint();
