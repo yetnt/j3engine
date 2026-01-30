@@ -85,51 +85,6 @@ public class KeyBindings {
             }
         });
 
-    // R to reset camera position (hold with shift for rotation reset) (hold shift and ctrl for both)
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), "resetCameraPosition");
-        am.put("resetCameraPosition", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                EngineFrame.camera.setPosition(new Vector3(0, 0, 0));
-                EngineFrame.f.repaint();
-            }
-        });
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.SHIFT_DOWN_MASK), "resetCameraRotation");
-        am.put("resetCameraRotation", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                EngineFrame.camera.setRotation(new Rotation(0, 0, 0));
-                EngineFrame.f.repaint();
-            }
-        });
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.SHIFT_DOWN_MASK | InputEvent.CTRL_DOWN_MASK), "resetCameraPositionAndRotation");
-        am.put("resetCameraPositionAndRotation", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                EngineFrame.camera.setPosition(new Vector3(0, 0, 0));
-                EngineFrame.camera.setRotation(new Rotation(0, 0, 0));
-                EngineFrame.f.repaint();
-            }
-        });
-
-        // Undo and Redo bindings
-
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK), "undoAction");
-        am.put("undoAction", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Renderer.history.undo();
-                EngineFrame.f.repaint();
-            }
-        });
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK), "redoAction");
-        am.put("redoAction", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Renderer.history.redo();
-                EngineFrame.f.repaint();
-            }
-        });
 
         // I selection
 

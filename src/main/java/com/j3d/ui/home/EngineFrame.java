@@ -187,7 +187,15 @@ public class EngineFrame extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        editJMenu = new javax.swing.JMenu();
+        undoJMenuItem = new javax.swing.JMenuItem();
+        redoJMenuItem = new javax.swing.JMenuItem();
+        mouseJMenu = new javax.swing.JMenu();
+        viewJMenu = new javax.swing.JMenu();
+        resetPositionJMenuItem = new javax.swing.JMenuItem();
+        resetOrientationJMenuItem = new javax.swing.JMenuItem();
+        resetCameraJMenuItem = new javax.swing.JMenuItem();
+        redrawJMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("J3D");
@@ -216,14 +224,106 @@ public class EngineFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+        editJMenu.setText("Edit");
+
+        undoJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        undoJMenuItem.setText("Undo");
+        undoJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                undoJMenuItemActionPerformed(evt);
+            }
+        });
+        editJMenu.add(undoJMenuItem);
+
+        redoJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        redoJMenuItem.setText("Redo");
+        redoJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                redoJMenuItemActionPerformed(evt);
+            }
+        });
+        editJMenu.add(redoJMenuItem);
+
+        jMenuBar1.add(editJMenu);
+
+        mouseJMenu.setText("Mouse");
+        jMenuBar1.add(mouseJMenu);
+
+        viewJMenu.setText("View");
+
+        resetPositionJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
+        resetPositionJMenuItem.setText("Reset Position");
+        resetPositionJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetPositionJMenuItemActionPerformed(evt);
+            }
+        });
+        viewJMenu.add(resetPositionJMenuItem);
+
+        resetOrientationJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
+        resetOrientationJMenuItem.setText("Reset Orientation");
+        resetOrientationJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetOrientationJMenuItemActionPerformed(evt);
+            }
+        });
+        viewJMenu.add(resetOrientationJMenuItem);
+
+        resetCameraJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
+        resetCameraJMenuItem.setText("Reset Camera");
+        resetCameraJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetCameraJMenuItemActionPerformed(evt);
+            }
+        });
+        viewJMenu.add(resetCameraJMenuItem);
+
+        redrawJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
+        redrawJMenuItem.setText("Redraw");
+        redrawJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                redrawJMenuItemActionPerformed(evt);
+            }
+        });
+        viewJMenu.add(redrawJMenuItem);
+
+        jMenuBar1.add(viewJMenu);
 
         setJMenuBar(jMenuBar1);
 
         setSize(new java.awt.Dimension(1503, 817));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void resetPositionJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetPositionJMenuItemActionPerformed
+        camera.setPosition(new Vector3(0, 0, 0));
+        f.repaint();
+    }//GEN-LAST:event_resetPositionJMenuItemActionPerformed
+
+    private void undoJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoJMenuItemActionPerformed
+        Renderer.history.undo();
+        f.repaint();
+    }//GEN-LAST:event_undoJMenuItemActionPerformed
+
+    private void redoJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoJMenuItemActionPerformed
+        Renderer.history.redo();
+        f.repaint();
+    }//GEN-LAST:event_redoJMenuItemActionPerformed
+
+    private void resetOrientationJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetOrientationJMenuItemActionPerformed
+        camera.setRotation(new Rotation(0, 0, 0));
+        f.repaint();
+    }//GEN-LAST:event_resetOrientationJMenuItemActionPerformed
+
+    private void resetCameraJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetCameraJMenuItemActionPerformed
+        camera.setPosition(new Vector3(0, 0, 0));
+        camera.setRotation(new Rotation(0, 0, 0));
+        f.repaint();
+    }//GEN-LAST:event_resetCameraJMenuItemActionPerformed
+
+    private void redrawJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redrawJMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_redrawJMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -333,11 +433,19 @@ public class EngineFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu editJMenu;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     public javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     public static javax.swing.JPanel mainPanel;
+    private javax.swing.JMenu mouseJMenu;
+    private javax.swing.JMenuItem redoJMenuItem;
+    private javax.swing.JMenuItem redrawJMenuItem;
+    private javax.swing.JMenuItem resetCameraJMenuItem;
+    private javax.swing.JMenuItem resetOrientationJMenuItem;
+    private javax.swing.JMenuItem resetPositionJMenuItem;
+    private javax.swing.JMenuItem undoJMenuItem;
+    private javax.swing.JMenu viewJMenu;
     // End of variables declaration//GEN-END:variables
 }
