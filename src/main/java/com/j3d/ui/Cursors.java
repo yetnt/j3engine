@@ -24,7 +24,9 @@ public class Cursors {
 //            cursors.put("hand", Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         cursors.put("selectSoft", createScaledCursor("/cursors/selectSoft.png", "selectSoft"));
         cursors.put("selectStrict", createScaledCursor("/cursors/selectStrict.png", "selectStrict"));
-        cursors.put("selectInvert", createScaledCursor("/cursors/selectInvert.png", "selectInvert"));
+        cursors.put("selectSubtract", createScaledCursor("/cursors/selectSubtract.png", "selectSubtract"));
+        cursors.put("selectAdd", createScaledCursor("/cursors/selectAdd.png", "selectAdd"));
+
     }
 
     private static Cursor createScaledCursor(String path, String name) {

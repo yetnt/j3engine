@@ -20,7 +20,11 @@ public enum SelectionType {
      * Inverts the selection. Such as if objects A and B exist, and you select A. Inverting the selection will
      * deselect A and select B.
      */
-    INVERT,
+    SUBTRACT,
+    /**
+     * Adds a selection to an existing selection.
+     */
+    ADD,
     /**
      * When a selection already exists, This new selection will add its selection to the existing selection.
      */

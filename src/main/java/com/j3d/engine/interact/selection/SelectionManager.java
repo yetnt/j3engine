@@ -7,6 +7,8 @@ import com.j3d.engine.geometry.geo3d.Thing;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
+import static com.j3d.ui.home.EngineFrame.renderer;
+
 /**
  * Manages the selection of GObjects within a collection of Layers and Things.
  * Provides functionality to filter and retrieve selected objects based on various criteria.
@@ -31,65 +33,39 @@ public class SelectionManager {
             for (Thing t : layer) {
                 for (GObject obj : t.getObjects()) {
                     switch (selectionQuery.type) {
-                        case BOUNDS_STRICT:
+                        case BOUNDS_STRICT -> {
                             // If the entire object is within the selection, it is considered selected.
                             if (selectionQuery.has(obj, false)) selected.add(obj);
-                            break;
-                        case BOUNDS_SOFT:
+                        }
+                        case BOUNDS_SOFT -> {
                             // If any part of the object is within the selection, it is considered selected.
                             if (selectionQuery.has(obj, true)) selected.add(obj);
-                            break;
-                        case INVERT:
-                            // Inverts the selection. Such as if objects A and B exist, and you select A. Inverting the selection will
-                            // deselect A and select B.
-                            if (!selectionQuery.has(obj, true)) selected.add(obj);
-                            break;
-                        case ALL:
-                        case EXCLUDE:
-                        case INCLUDE:
-                        case null, default:
-                        {
-                            // Due to creating a new selection via this constructor, all the above just return whatever we got.
-                            selected.add(obj);
-                            break;
                         }
+                        case SUBTRACT -> {
+                            boolean wasSelected = renderer.getSelected().contains(obj);
+                            boolean inBox = selectionQuery.has(obj, true);
+
+                            if (wasSelected && !inBox)
+                                selected.add(obj); // keep
+                        }
+                        case ADD -> {
+                            // pre-add the current selected objects.
+                            renderer.getSelected().stream()
+                                    .filter(o -> !selected.contains(o))
+                                    .forEach(selected::add);
+                            boolean wasSelected = renderer.getSelected().contains(obj);
+                            boolean inBox = selectionQuery.has(obj, true);
+
+                            if (!wasSelected && inBox)
+                                selected.add(obj); // add
+                        }
+                        case ALL, EXCLUDE, INCLUDE -> // Due to creating a new selection via this constructor, all the above just return whatever we got.
+                                selected.add(obj);
                     }
                 }
             }
         }
 
-        // The following filter is supposed to sort by Z but is wonky.
-        // Via commands the user will sort what they want and don't want themselves.
-//        this.filter(obj -> {
-//            Vector3 viewDir = camera.getForward().normalize(); // camera's viewing direction
-//
-//            if (obj instanceof GTri tri) {
-//                Vector3 a = tri.getLegA().getStart().getPivot();
-//                Vector3 b = tri.getLegB().getStart().getPivot();
-//                Vector3 c = tri.getLegC().getStart().getPivot();
-//
-//                Vector3 ab = b.sub(a);
-//                Vector3 ac = c.sub(a);
-//                Vector3 normal = ab.cross(ac).normalize();
-//
-//                // Check if triangle is facing the camera
-//                return normal.dot(viewDir) < 0;
-//            }
-//
-//            if (obj instanceof GLine line) {
-//                Vector3 toLine = line.getPivot().sub(camera.getPosition()).normalize();
-//                return viewDir.dot(toLine) > 0;
-//            }
-//
-//            if (obj instanceof GPoint point) {
-//                Vector3 toPoint = point.getPivot().sub(camera.getPosition()).normalize();
-//                return viewDir.dot(toPoint) > 0;
-//            }
-//
-//            return true;
-//        });
-//
-//        System.out.println("check");
     }
 
     /**

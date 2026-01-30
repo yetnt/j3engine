@@ -1,5 +1,7 @@
 package com.j3d;
 
+import com.j3d.engine.interact.selection.SelectionUI;
+import com.j3d.engine.interact.selection.SelectionUtils;
 import com.j3d.ui.home.EngineFrame;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.geo3d.Rotation;
@@ -128,5 +130,34 @@ public class KeyBindings {
                 EngineFrame.f.repaint();
             }
         });
+
+        // I selection
+
+        AbstractAction clearInferredSelectionType = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SelectionUI.inferredSelection = SelectionUtils.InferredSelectionType.NONE;
+            }
+        };
+
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, 0, false), "selectSubtract");
+        am.put("selectSubtract", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SelectionUI.inferredSelection = SelectionUtils.InferredSelectionType.SUBTRACT;
+            }
+        });
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, 0, true), "selectSubtractUp");
+        am.put("selectSubtractUp", clearInferredSelectionType);
+
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.SHIFT_DOWN_MASK, false), "selectAdd");
+        am.put("selectAdd", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SelectionUI.inferredSelection = SelectionUtils.InferredSelectionType.ADD;
+            }
+        });
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.SHIFT_DOWN_MASK, true), "selectAddUp");
+        am.put("selectAddUp", clearInferredSelectionType);
     }
 }

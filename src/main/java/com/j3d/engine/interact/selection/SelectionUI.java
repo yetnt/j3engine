@@ -11,21 +11,30 @@ import static com.j3d.J3DSettings.log;
 public class SelectionUI {
     private static final Color STRICT_COLOR = new Color(0, 255, 0, 26);
     private static final Color SOFT_COLOR = new Color(255, 255, 0, 26);
-    private static final Color INVERT_COLOR = new Color(255, 0, 0, 26);
+    private static final Color SUBTRACT_COLOR = new Color(255, 0, 0, 26);
+    private static final Color ADD_COLOR = new Color(154, 0, 255, 26);
+
+    /**
+     * The basic inferred selection via mouse dragging in combination with
+     * keybinds.
+     */
+    public static SelectionUtils.InferredSelectionType inferredSelection = SelectionUtils.InferredSelectionType.NONE;
 
     public static void run(Graphics2D g, ScreenPoint[] selectionArea, Renderer renderer) {
         boolean isStrict = isStrict(selectionArea); // If the user dragged upwards, it's strict, otherwise it's soft.
-//        boolean isInvert = selectionArea[0].x >= selectionArea[1].x; Commented out for now, as invert selection is implemented but this may be confusing.
         ScreenPoint i = selectionArea[0];
         ScreenPoint ii = selectionArea[1];
-        g.setColor(isStrict ? STRICT_COLOR : SOFT_COLOR);
-        Cursors.set(isStrict ? "selectStrict" : "selectSoft");
-//        if (isStrict) Main.Cursors.set("selectStrict");
-//        else Main.Cursors.set("selectSoft");
+//        g.setColor(invert ? SUBTRACT_COLOR : isStrict ? STRICT_COLOR : SOFT_COLOR);
+        g.setColor(SelectionUtils.usingSelectionVariant(inferredSelection, isStrict,
+                ADD_COLOR, SUBTRACT_COLOR, STRICT_COLOR, SOFT_COLOR));
+//        Cursors.set(invert ? "selectSubtract" : isStrict ? "selectStrict" : "selectSoft");
+        Cursors.set(SelectionUtils.usingSelectionVariant(inferredSelection, isStrict,
+                "selectAdd", "selectSubtract", "selectStrict", "selectSoft"));
         g.fillRect(Math.min(i.x, ii.x), Math.min(i.y, ii.y), Math.abs(i.x - ii.x), Math.abs(i.y - ii.y));
         SelectionQuery selectionQuery = new SelectionQuery(
                 i, ii,
-                isStrict ? SelectionType.BOUNDS_STRICT : SelectionType.BOUNDS_SOFT
+                SelectionUtils.usingSelectionVariant(inferredSelection, isStrict,
+                        SelectionType.ADD, SelectionType.SUBTRACT, SelectionType.BOUNDS_STRICT, SelectionType.BOUNDS_SOFT)
         );
         SelectionManager m = renderer.select(selectionQuery);
         log.println("Selected " + m.getSelected().size() + " objects.");
