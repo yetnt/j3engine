@@ -9,6 +9,8 @@ package com.j3d.ui.util;
  * @author ACER
  */
 public class AreYouSure extends javax.swing.JDialog {
+    
+    private boolean proceed = false;
 
     /**
      * Creates new form AreYouSure
@@ -16,6 +18,10 @@ public class AreYouSure extends javax.swing.JDialog {
     public AreYouSure(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+    
+    public boolean canProceed() {
+        return proceed;
     }
 
     /**
@@ -89,12 +95,13 @@ public class AreYouSure extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void yesToggleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yesToggleActionPerformed
-
+        proceed = true;
+        this.dispose();
     }//GEN-LAST:event_yesToggleActionPerformed
 
     private void noToggleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noToggleActionPerformed
-        // Return false
-
+        proceed = false;
+        this.dispose();
     }//GEN-LAST:event_noToggleActionPerformed
 
     /**
