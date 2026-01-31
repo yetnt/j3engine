@@ -32,6 +32,9 @@ public class Toolbox extends javax.swing.JPanel {
         btnA = new javax.swing.JButton();
         btnA_label = new javax.swing.JLabel();
 
+        setMaximumSize(new java.awt.Dimension(1000, 32767));
+        setPreferredSize(new java.awt.Dimension(1000, 134));
+
         toolboxScrollpane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         toolboxScrollpane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
@@ -74,7 +77,7 @@ public class Toolbox extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(toolboxScrollpane, javax.swing.GroupLayout.DEFAULT_SIZE, 909, Short.MAX_VALUE)
+            .addComponent(toolboxScrollpane, javax.swing.GroupLayout.DEFAULT_SIZE, 1000, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

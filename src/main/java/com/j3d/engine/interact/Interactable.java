@@ -1,8 +1,12 @@
 package com.j3d.engine.interact;
 
+import com.j3d.engine.layer.Layer;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.CleanableAction;
 import com.j3d.engine.react.actions.DirtyVoidAction;
+import com.j3d.ui.engine.tree.TreeNodeIdentity;
+
+import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
  */
@@ -61,4 +65,16 @@ public interface Interactable {
      * </p>
      */
     void instantDelete();
+
+    /**
+     * Returns the {@link TreeNodeIdentity} for the given object to use within the {@link com.j3d.ui.engine.tree.List}
+     * @return The identity
+     */
+    TreeNodeIdentity<? extends Interactable> getIdentity();
+
+    /**
+     * The actual tree node for the representation of this object within {@link com.j3d.ui.engine.tree.List}
+     * @return The tree node
+     */
+    DefaultMutableTreeNode getTreeNode();
 }

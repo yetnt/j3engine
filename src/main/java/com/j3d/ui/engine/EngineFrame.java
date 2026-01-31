@@ -4,6 +4,7 @@
  */
 package com.j3d.ui.engine;
 
+import com.j3d.ui.engine.tree.LayerTree;
 import com.j3d.Executor;
 import com.j3d.J3DSettings;
 import com.j3d.engine.interact.input.KeyBindings;
@@ -51,6 +52,7 @@ public class EngineFrame extends javax.swing.JFrame {
     public static ScreenPoint[] selectionArea = new ScreenPoint[2];
     private static final CommandPallete commandPallete = new CommandPallete();
     public static CommandParser commandParser;
+    public static LayerTree list = new LayerTree();
 
     public static void setMouseOwner(MOwner owner) {
         mouseOwner = owner;
@@ -79,14 +81,21 @@ public class EngineFrame extends javax.swing.JFrame {
 
         Toolbox toolbox = new Toolbox();
         // Toolbox at the top and extends full width but not very tall
-        toolbox.setBounds(0, menuBarOffsetY, J3DSettings.screenSize.width - 50, toolbox.getPreferredSize().height);
+        toolbox.setBounds(0, menuBarOffsetY, J3DSettings.screenSize.width - 260, toolbox.getPreferredSize().height);
         layeredPane.add(toolbox, JLayeredPane.MODAL_LAYER); // above default layer
 
         mainPanel.requestFocusInWindow();
         mainPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN));
         mainPanel.setBounds(0, menuBarOffsetY, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
         mainPanel.setPreferredSize(new Dimension(J3DSettings.screenSize.width, J3DSettings.screenSize.height));
-//        layeredPane.add(mainPanel, JLayeredPane.DEFAULT_LAYER);
+
+        list.setBounds(
+                J3DSettings.screenSize.width - 260 -(list.getPreferredSize().width),
+                toolbox.getPreferredSize().height + menuBarOffsetY,
+                list.getPreferredSize().width,
+                list.getPreferredSize().height);
+        layeredPane.add(list, JLayeredPane.POPUP_LAYER);
+        list.setVisible(true);
 
         dp.setBounds(20, toolbox.getPreferredSize().height + menuBarOffsetY, dp.getPreferredSize().width, dp.getPreferredSize().height); // small corner overlay
         dp.setOpaque(true);

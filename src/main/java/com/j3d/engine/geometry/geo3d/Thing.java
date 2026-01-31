@@ -15,7 +15,9 @@ import com.j3d.engine.geometry.geo2d.GTri;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.ConstructorAction;
 import com.j3d.engine.react.actions.VoidAction;
+import com.j3d.ui.engine.tree.TreeNodeIdentity;
 
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -52,6 +54,10 @@ public class Thing implements Interactable {
     private boolean hidden = false;
     private boolean forDeletion = false;
 
+    private TreeNodeIdentity<Thing> treeNodeIdentity;
+    private DefaultMutableTreeNode treeNode;
+
+
     public Thing(Renderer renderer, Layer l, String name) {
         l = l == null ? renderer.layers.get(1) : l;
         if (l.getIdentifier().equals(Layer.backgroundId)) {
@@ -62,6 +68,11 @@ public class Thing implements Interactable {
         id = UUID.randomUUID();
         // Add to history for undo/redo functionality
         final Layer finalL = l;
+        final Thing thing = this;
+        treeNodeIdentity = new TreeNodeIdentity<>(
+                name, this, o -> J3DSettings.log.println(name + " thing was selected in the tree.")
+        );
+        treeNode = EngineFrame.list.addNode(finalL.getTreeNode(), treeNodeIdentity);
         Renderer.history.add(
                 new ConstructorAction() {
                     @Override
@@ -75,12 +86,15 @@ public class Thing implements Interactable {
                     public Void run() {
                         // will be called after undo, so we need to re-add the thing
                         setForDeletion(false);
+                        DefaultMutableTreeNode node = EngineFrame.list.addNode(finalL.getTreeNode(), treeNodeIdentity);
+                        thing.treeNode = node;
                         return null;
                     }
 
                     @Override
                     public void undo() {
                         setForDeletion(true);
+                        EngineFrame.list.removeNode(thing.treeNode);
                     }
 
                     @Override
@@ -340,6 +354,16 @@ public class Thing implements Interactable {
             if (o instanceof GTri tri)
                 tri.deleteSelf();
         }
+    }
+
+    @Override
+    public TreeNodeIdentity<Thing> getIdentity() {
+        return treeNodeIdentity;
+    }
+
+    @Override
+    public DefaultMutableTreeNode getTreeNode() {
+        return treeNode;
     }
 
     @Override

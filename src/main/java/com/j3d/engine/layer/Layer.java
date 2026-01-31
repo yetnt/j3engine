@@ -1,5 +1,6 @@
 package com.j3d.engine.layer;
 
+import com.j3d.J3DSettings;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.geo2d.GObject;
@@ -10,7 +11,10 @@ import com.j3d.engine.react.actions.DirtyAction;
 import com.j3d.engine.react.actions.DirtyVoidAction;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.ConstructorAction;
+import com.j3d.ui.engine.tree.LayerTree;
+import com.j3d.ui.engine.tree.TreeNodeIdentity;
 
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.util.*;
 
@@ -48,6 +52,10 @@ public class Layer extends ArrayList<Thing> implements Interactable {
     private boolean hidden = false;
     private boolean forDeletion = false;
 
+    private TreeNodeIdentity<Layer> treeNodeIdentity;
+    private DefaultMutableTreeNode treeNode;
+
+
     /**
      * Default Constructor
      * @param id The identifier of the layer.
@@ -55,6 +63,10 @@ public class Layer extends ArrayList<Thing> implements Interactable {
     public Layer(String id) {
         identifier = id;
         final String idFinal = id;
+        treeNodeIdentity = new TreeNodeIdentity<>(
+                id, this, o -> J3DSettings.log.println(id + " layer was selected in the tree.")
+        );
+        treeNode = EngineFrame.list.addNode(null, treeNodeIdentity);
         Renderer.history.add(
                 new ConstructorAction() {
                     @Override
@@ -68,12 +80,15 @@ public class Layer extends ArrayList<Thing> implements Interactable {
                     @Override
                     public Void run() {
                         layer.setForDeletion(false);
+                        DefaultMutableTreeNode node = EngineFrame.list.addNode(null, treeNodeIdentity);
+                        layer.treeNode = node;
                         return null;
                     }
 
                     @Override
                     public void undo() {
                         layer.setForDeletion(true);
+                        EngineFrame.list.removeNode(layer.treeNode);
                     }
 
                     @Override
@@ -89,6 +104,10 @@ public class Layer extends ArrayList<Thing> implements Interactable {
      */
     public Layer() {
         identifier = "LAYER-0";
+        treeNodeIdentity = new TreeNodeIdentity<>(
+                "LAYER-0", this, o -> J3DSettings.log.println("Default layer was selected in the tree.")
+        );
+        treeNode = EngineFrame.list.addNode(null, treeNodeIdentity);
         Renderer.history.add(
                 new ConstructorAction() {
                     @Override
@@ -184,6 +203,15 @@ public class Layer extends ArrayList<Thing> implements Interactable {
         for (Thing t : this) {
             t.instantDelete();
         }
+    }
+
+    public TreeNodeIdentity<Layer> getIdentity() {
+        return treeNodeIdentity;
+    }
+
+    @Override
+    public DefaultMutableTreeNode getTreeNode() {
+        return treeNode;
     }
 
     @Override
