@@ -7,6 +7,7 @@ import com.j3d.engine.react.actions.DirtyVoidAction;
 import com.j3d.ui.engine.tree.TreeNodeIdentity;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+import java.util.function.BiConsumer;
 
 /**
  */
@@ -67,14 +68,20 @@ public interface Interactable {
     void instantDelete();
 
     /**
-     * Returns the {@link TreeNodeIdentity} for the given object to use within the {@link com.j3d.ui.engine.tree.List}
+     * Returns the {@link TreeNodeIdentity} for the given object to use within the {@link com.j3d.ui.engine.tree.LayerTree}
      * @return The identity
      */
     TreeNodeIdentity<? extends Interactable> getIdentity();
 
     /**
-     * The actual tree node for the representation of this object within {@link com.j3d.ui.engine.tree.List}
+     * The actual tree node for the representation of this object within {@link com.j3d.ui.engine.tree.LayerTree}
      * @return The tree node
      */
     DefaultMutableTreeNode getTreeNode();
+
+    /**
+     * The callback for when the object is selected in the tree.
+     * @return The callback
+     */
+    BiConsumer<? extends Interactable, DefaultMutableTreeNode> getOnSelect();
 }

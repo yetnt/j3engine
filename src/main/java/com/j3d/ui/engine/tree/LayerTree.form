@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.7" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <Properties>
+    <Property name="opaque" type="boolean" value="false"/>
+  </Properties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -35,6 +38,9 @@
   </Layout>
   <SubComponents>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <Properties>
+        <Property name="opaque" type="boolean" value="false"/>
+      </Properties>
       <AuxValues>
         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
       </AuxValues>
@@ -46,10 +52,11 @@
             <Property name="model" type="javax.swing.tree.TreeModel" editor="org.netbeans.modules.form.editors2.TreeModelEditor">
               <TreeModel code="Layers"/>
             </Property>
+            <Property name="opaque" type="boolean" value="false"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTree()"/>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="root = treeNode1;&#xa;model = (DefaultTreeModel) listJTree.getModel();&#xa;&#xa;listJTree.addTreeSelectionListener(&#xa;    e -&gt; {&#xa;        DefaultMutableTreeNode node = (DefaultMutableTreeNode) listJTree.getLastSelectedPathComponent();&#xa;        &#xa;        if (node == null) return;&#xa;&#xa;        Object obj = node.getUserObject();&#xa;        if (obj instanceof TreeNodeIdentity tni) {&#xa;            if (tni.onSelect != null)&#xa;                tni.onSelect.accept(tni.value);&#xa;        }&#xa;});"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="root = treeNode1;&#xa;model = (DefaultTreeModel) listJTree.getModel();&#xa;&#xa;listJTree.addTreeSelectionListener(&#xa;    e -&gt; {&#xa;        DefaultMutableTreeNode node = (DefaultMutableTreeNode) listJTree.getLastSelectedPathComponent();&#xa;        &#xa;        Arrays.stream(listJTree.getSelectionPaths())&#xa;            .filter(Objects::nonNull)&#xa;            .map(TreePath::getLastPathComponent)&#xa;            .map(o -&gt; (DefaultMutableTreeNode) o)&#xa;            .forEach(node -&gt; {&#xa;                if (node == null) return;&#xa;&#xa;                Object obj = node.getUserObject();&#xa;                if (obj instanceof TreeNodeIdentity tni) {&#xa;                    if (tni.onSelect != null)&#xa;                        tni.onSelect.accept(tni.value, node);&#xa;                }&#xa;            });&#xa;&#xa;});"/>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
           </AuxValues>
         </Component>

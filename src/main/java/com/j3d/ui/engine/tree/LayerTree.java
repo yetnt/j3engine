@@ -4,7 +4,9 @@
  */
 package com.j3d.ui.engine.tree;
 
-import java.util.function.Consumer;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.function.BiConsumer;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -31,7 +33,7 @@ public class LayerTree extends javax.swing.JPanel {
             DefaultMutableTreeNode parent,
             String label,
             T value,
-            Consumer<T> onSelect
+            BiConsumer<T, DefaultMutableTreeNode> onSelect
     ) {
         if (parent == null)
             parent = root;
@@ -93,22 +95,34 @@ public class LayerTree extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         listJTree = new javax.swing.JTree();
 
+        setOpaque(false);
+
+        jScrollPane1.setOpaque(false);
+
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Layers");
         listJTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        listJTree.setOpaque(false);
         root = treeNode1;
         model = (DefaultTreeModel) listJTree.getModel();
 
         listJTree.addTreeSelectionListener(
             e -> {
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) listJTree.getLastSelectedPathComponent();
+//                DefaultMutableTreeNode node = (DefaultMutableTreeNode) listJTree.getLastSelectedPathComponent();
 
-                if (node == null) return;
+                Arrays.stream(listJTree.getSelectionPaths())
+                .filter(Objects::nonNull)
+                .map(TreePath::getLastPathComponent)
+                .map(o -> (DefaultMutableTreeNode) o)
+                .forEach(node -> {
+                    if (node == null) return;
 
-                Object obj = node.getUserObject();
-                if (obj instanceof TreeNodeIdentity tni) {
-                    if (tni.onSelect != null)
-                    tni.onSelect.accept(tni.value);
-                }
+                    Object obj = node.getUserObject();
+                    if (obj instanceof TreeNodeIdentity tni) {
+                        if (tni.onSelect != null)
+                        tni.onSelect.accept(tni.value, node);
+                    }
+                });
+
             });
             jScrollPane1.setViewportView(listJTree);
 

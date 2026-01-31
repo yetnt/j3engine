@@ -38,8 +38,8 @@ public class ToolboxButtons {
             EngineFrame.dp.setVisible(!EngineFrame.dp.isVisible());
         });
         // Example button registration
-        register("Example Button", e -> {
-            System.out.println("Example Button Clicked");
+        register("Toggle Layers", e -> {
+            EngineFrame.list.setVisible(!EngineFrame.list.isVisible());
         });
         // another for exmaple
         register("Another Button", e -> {

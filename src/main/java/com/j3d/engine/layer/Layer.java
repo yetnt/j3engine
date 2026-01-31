@@ -17,6 +17,7 @@ import com.j3d.ui.engine.tree.TreeNodeIdentity;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.util.*;
+import java.util.function.BiConsumer;
 
 /**
  * A {@code Layer} is a fundamental concept in the rendering pipeline, representing a
@@ -48,6 +49,9 @@ public class Layer extends ArrayList<Thing> implements Interactable {
     private final String identifier;
 
     public static final String backgroundId = "BACKG";
+    private final BiConsumer<Layer, DefaultMutableTreeNode> onSelectCallback = (o, t) -> {
+        J3DSettings.log.println("Layer " + o.getIdentifier() + " was selected in the tree.");
+    };
 
     private boolean hidden = false;
     private boolean forDeletion = false;
@@ -63,9 +67,10 @@ public class Layer extends ArrayList<Thing> implements Interactable {
     public Layer(String id) {
         identifier = id;
         final String idFinal = id;
+        if (id.equals(backgroundId))
+            return; // Do not follow through.
         treeNodeIdentity = new TreeNodeIdentity<>(
-                id, this, o -> J3DSettings.log.println(id + " layer was selected in the tree.")
-        );
+                id, this, onSelectCallback);
         treeNode = EngineFrame.list.addNode(null, treeNodeIdentity);
         Renderer.history.add(
                 new ConstructorAction() {
@@ -105,7 +110,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
     public Layer() {
         identifier = "LAYER-0";
         treeNodeIdentity = new TreeNodeIdentity<>(
-                "LAYER-0", this, o -> J3DSettings.log.println("Default layer was selected in the tree.")
+                "LAYER-0", this, onSelectCallback
         );
         treeNode = EngineFrame.list.addNode(null, treeNodeIdentity);
         Renderer.history.add(
@@ -215,6 +220,11 @@ public class Layer extends ArrayList<Thing> implements Interactable {
     }
 
     @Override
+    public BiConsumer<? extends Interactable, DefaultMutableTreeNode> getOnSelect() {
+        return onSelectCallback;
+    }
+
+    @Override
     public String toString() {
         return identifier;
     }
@@ -285,12 +295,14 @@ public class Layer extends ArrayList<Thing> implements Interactable {
             @Override
             public Void run() {
                 l.setForDeletion(true);
+                EngineFrame.list.removeNode(l.treeNode);
                 return null;
             }
 
             @Override
             public void undo() {
                 l.setForDeletion(false);
+                l.treeNode = EngineFrame.list.addNode(null, l.treeNodeIdentity);
             }
 
             @Override

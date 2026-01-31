@@ -1,6 +1,7 @@
 package com.j3d.engine.geometry.geo3d;
 
 import com.j3d.J3DSettings;
+import com.j3d.engine.interact.selection.SelectionQuery;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.layer.Layer;
@@ -21,6 +22,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 /**
  * Represents a 3D object composed of multiple 2D geometric objects (GObjects).
@@ -34,6 +36,13 @@ public class Thing implements Interactable {
     private final UUID id;
 
     private String name = "Thing";
+    private final BiConsumer<Thing, DefaultMutableTreeNode>  onSelectCallback =
+            (o, t) -> {
+                if (this.isBg || this.hidden) return;
+                J3DSettings.log.println(name + " thing was selected in the tree.");
+                EngineFrame.renderer.select(this);
+                EngineFrame.mainPanel.repaint();
+            };
 
     public String getName() {
         return name;
@@ -66,11 +75,13 @@ public class Thing implements Interactable {
         l.add(this);
         this.name = name;
         id = UUID.randomUUID();
+        if (isBg)
+            return;
         // Add to history for undo/redo functionality
         final Layer finalL = l;
         final Thing thing = this;
         treeNodeIdentity = new TreeNodeIdentity<>(
-                name, this, o -> J3DSettings.log.println(name + " thing was selected in the tree.")
+                name, this, onSelectCallback
         );
         treeNode = EngineFrame.list.addNode(finalL.getTreeNode(), treeNodeIdentity);
         Renderer.history.add(
@@ -367,6 +378,11 @@ public class Thing implements Interactable {
     }
 
     @Override
+    public BiConsumer<? extends Interactable, DefaultMutableTreeNode> getOnSelect() {
+        return onSelectCallback;
+    }
+
+    @Override
     public boolean isHidden() {
         return hidden;
     }
@@ -430,6 +446,7 @@ public class Thing implements Interactable {
     @Override
     public DirtyVoidAction deleteLater() {
         final Thing t = this;
+        final DefaultMutableTreeNode parentLayerNode = (DefaultMutableTreeNode) treeNode.getParent();
         return new DirtyVoidAction() {
             @Override
             public void cleanup() throws Exception {
@@ -440,12 +457,15 @@ public class Thing implements Interactable {
             @Override
             public Void run() {
                 t.setForDeletion(true);
+                EngineFrame.list.removeNode(treeNode);
                 return null;
             }
 
             @Override
             public void undo() {
                 t.setForDeletion(false);
+                DefaultMutableTreeNode node = EngineFrame.list.addNode(parentLayerNode, treeNodeIdentity);
+                t.treeNode = node;
             }
 
             @Override

@@ -95,7 +95,7 @@ public class EngineFrame extends javax.swing.JFrame {
                 list.getPreferredSize().width,
                 list.getPreferredSize().height);
         layeredPane.add(list, JLayeredPane.POPUP_LAYER);
-        list.setVisible(true);
+        list.setVisible(false);
 
         dp.setBounds(20, toolbox.getPreferredSize().height + menuBarOffsetY, dp.getPreferredSize().width, dp.getPreferredSize().height); // small corner overlay
         dp.setOpaque(true);
