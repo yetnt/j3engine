@@ -1,9 +1,9 @@
 package com.j3d.engine.interact.input;
 
 import com.j3d.J3DSettings;
+import com.j3d.Static;
 import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.interact.selection.SelectionUtils;
-import com.j3d.ui.engine.EngineFrame;
 import com.j3d.engine.geometry.geo3d.Vector3;
 import com.j3d.engine.interact.cmd.CommandPallete;
 
@@ -28,7 +28,7 @@ public class KeyBindings {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (cmdP.inputField.isFocusOwner()) {
-                    EngineFrame.f.requestFocusInWindow();
+                    Static.mainFrame.requestFocusInWindow();
                 }
             }
         });
@@ -39,48 +39,48 @@ public class KeyBindings {
         am.put("moveCameraForward", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                EngineFrame.camera.move(new Vector3(0, 0, J3DSettings.cameraMoveSpeed));
-                EngineFrame.f.repaint();
+                Static.camera.move(new Vector3(0, 0, J3DSettings.cameraMoveSpeed));
+                Static.mainFrame.repaint();
             }
         });
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), "moveCameraBackward");
         am.put("moveCameraBackward", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                EngineFrame.camera.move(new Vector3(0, 0, -J3DSettings.cameraMoveSpeed));
-                EngineFrame.f.repaint();
+                Static.camera.move(new Vector3(0, 0, -J3DSettings.cameraMoveSpeed));
+                Static.mainFrame.repaint();
             }
         });
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), "moveCameraLeft");
         am.put("moveCameraLeft", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                EngineFrame.camera.move(new Vector3(-J3DSettings.cameraMoveSpeed, 0, 0));
-                EngineFrame.f.repaint();
+                Static.camera.move(new Vector3(-J3DSettings.cameraMoveSpeed, 0, 0));
+                Static.mainFrame.repaint();
             }
         });
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0), "moveCameraRight");
         am.put("moveCameraRight", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                EngineFrame.camera.move(new Vector3(J3DSettings.cameraMoveSpeed, 0, 0));
-                EngineFrame.f.repaint();
+                Static.camera.move(new Vector3(J3DSettings.cameraMoveSpeed, 0, 0));
+                Static.mainFrame.repaint();
             }
         });
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, 0), "moveCameraUp");
         am.put("moveCameraUp", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                EngineFrame.camera.move(new Vector3(0, J3DSettings.cameraMoveSpeed, 0));
-                EngineFrame.f.repaint();
+                Static.camera.move(new Vector3(0, J3DSettings.cameraMoveSpeed, 0));
+                Static.mainFrame.repaint();
             }
         });
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_E, 0), "moveCameraDown");
         am.put("moveCameraDown", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                EngineFrame.camera.move(new Vector3(0, -J3DSettings.cameraMoveSpeed, 0));
-                EngineFrame.f.repaint();
+                Static.camera.move(new Vector3(0, -J3DSettings.cameraMoveSpeed, 0));
+                Static.mainFrame.repaint();
             }
         });
 

@@ -1,6 +1,7 @@
 package com.j3d.engine.interact.selection;
 
 import com.j3d.J3DSettings;
+import com.j3d.Static;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.engine.interact.input.mouse.MouseOwner;
@@ -19,7 +20,7 @@ public class SelectionMouseOwner extends MouseOwner {
     public void mouseClicked(MouseEvent e) {
         if (isNotOwner()) return;
         selectionArea = new ScreenPoint[]{null, null}; // Reset selection area
-        f.repaint();
+        Static.mainFrame.repaint();
         Cursors.setDefault();
     }
 
@@ -42,6 +43,6 @@ public class SelectionMouseOwner extends MouseOwner {
         if (isNotOwner()) return;
         selectionArea[0] = mousePos;
         selectionArea[1] = new ScreenPoint(e.getX(), e.getY());
-        f.repaint();
+        Static.mainFrame.repaint();
     }
 }

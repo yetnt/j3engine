@@ -1,7 +1,7 @@
 package com.j3d.engine.interact.cmd.commands;
 
 import com.j3d.J3DSettings;
-import com.j3d.ui.engine.EngineFrame;
+import com.j3d.Static;
 import com.j3d.engine.geometry.geo2d.GLine;
 import com.j3d.engine.geometry.geo2d.GPoint;
 import com.j3d.engine.geometry.geo3d.Thing;
@@ -55,7 +55,7 @@ public class LineCmd extends Command {
 
         // Determine start position
         if (args[0] instanceof Vector3 v1) {
-            startPos = EngineFrame.renderer.findOrCreatePoint(v1, null);
+            startPos = Static.renderer.findOrCreatePoint(v1, null);
         } else if (args[0] instanceof GPoint p1) {
             startPos = p1;
         } else {
@@ -65,7 +65,7 @@ public class LineCmd extends Command {
 
         // Determine end position
         if (args[1] instanceof Vector3 v2) {
-            endPos = EngineFrame.renderer.findOrCreatePoint(v2, null);
+            endPos = Static.renderer.findOrCreatePoint(v2, null);
         } else if (args[1] instanceof GPoint p2) {
             endPos = p2;
         } else {
@@ -74,7 +74,7 @@ public class LineCmd extends Command {
         }
 
         // Create the line
-        new Thing(EngineFrame.renderer, null, "Line").addObjs(
+        new Thing(Static.renderer, null, "Line").addObjs(
                 new GLine(startPos, endPos), startPos, endPos);
         logLabel.setText("Line created from " + startPos.getPivot() + " to " + endPos.getPivot());
         J3DSettings.log.println("Line created from " + startPos.getPivot() + " to " + endPos.getPivot());

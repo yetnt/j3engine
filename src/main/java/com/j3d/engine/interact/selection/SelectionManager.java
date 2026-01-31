@@ -7,7 +7,7 @@ import com.j3d.engine.geometry.geo3d.Thing;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
-import static com.j3d.ui.engine.EngineFrame.renderer;
+import static com.j3d.Static.renderer;
 
 /**
  * Manages the selection of GObjects within a collection of Layers and Things.

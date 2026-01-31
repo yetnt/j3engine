@@ -1,5 +1,6 @@
 package com.j3d.engine.interact.cmd;
 
+import com.j3d.Static;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.engine.geometry.geo2d.GObject;
 import com.j3d.engine.geometry.geo3d.Thing;
@@ -9,7 +10,6 @@ import com.jaiva.utils.Find;
 import com.jaiva.utils.Pair;
 import com.jaiva.utils.Tuple2;
 
-import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
@@ -88,10 +88,10 @@ public class CommandParser {
      * @param uuid The UUID of the GObject or Thing to find.
      */
     public void argAddUUID(UUID uuid) {
-        GObject g = EngineFrame.renderer.findObjectByUUID(uuid);
+        GObject g = Static.renderer.findObjectByUUID(uuid);
         if (g == null) {
             // try to find a Thing with the given UUID
-            Thing t = EngineFrame.renderer.findThingByUUID(uuid);
+            Thing t = Static.renderer.findThingByUUID(uuid);
             if (t == null) {
                 cmdP.logLabel.setText("No object or thing found with UUID: " + uuid);
             } else {

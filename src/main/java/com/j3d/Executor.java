@@ -35,7 +35,7 @@ public class Executor {
      * Runs the executor.
      */
     public void run(Graphics2D graphics2D) {
-        EngineFrame.renderer.layers.add(layer);
+        Static.renderer.layers.add(layer);
         Thing cub = cube();
         Thing tris = threeTris();
         ArrayList<Action<?>> actions = new ArrayList<>(List.of(

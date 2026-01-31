@@ -1,6 +1,6 @@
 package com.j3d.engine.geometry.geo2d;
 
-import com.j3d.ui.engine.EngineFrame;
+import com.j3d.Static;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.react.events.EventBroadcast;
 import com.j3d.engine.react.events.EventEmitter;
@@ -26,16 +26,16 @@ public class GPoint extends GObject {
 
     @Override
     public void draw(Graphics2D graphics2D) {
-        EngineFrame.renderer.points.add(this);
+        Static.renderer.points.add(this);
         graphics2D.setColor(col);
-        ScreenPoint p = this.getPivot().toPoint(EngineFrame.camera).toScreen(EngineFrame.renderer);
+        ScreenPoint p = this.getPivot().toPoint(Static.camera).toScreen(Static.renderer);
         graphics2D.fillOval(p.x - DIAMETER / 2, p.y - DIAMETER / 2, DIAMETER, DIAMETER);
     }
 
     @Override
     public void drawSelected(Graphics2D graphics2D) {
         graphics2D.setColor(Color.WHITE);
-        ScreenPoint p = this.getPivot().toPoint(EngineFrame.camera).toScreen(EngineFrame.renderer);
+        ScreenPoint p = this.getPivot().toPoint(Static.camera).toScreen(Static.renderer);
         graphics2D.fillOval(p.x - (DIAMETER+1) / 2, p.y - (DIAMETER+1) / 2, (DIAMETER+1), (DIAMETER+1));
         draw(graphics2D);
 //        EngineFrame.renderer.drawText3D(graphics2D, getPivot().sub(new Vector3(1, 1, 1)), "{" + getPivot().getY() + ", " + getPivot().getX() + ", " + getPivot().getZ() + "}", EngineFrame.camera);
@@ -79,7 +79,7 @@ public class GPoint extends GObject {
 
     @Override
     public boolean deleteSelf() {
-        EngineFrame.renderer.points.remove(this);
+        Static.renderer.points.remove(this);
         return true;
     }
 

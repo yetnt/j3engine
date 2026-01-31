@@ -1,7 +1,7 @@
 package com.j3d.engine.geometry.geo2d;
 
 import com.j3d.J3DSettings;
-import com.j3d.ui.engine.EngineFrame;
+import com.j3d.Static;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.draw.TriStateArea;
 import com.j3d.engine.react.events.EventBroadcast;
@@ -42,14 +42,14 @@ public class GTri extends GObject{
         calcNormal(LegA.getStart().getPivot(), LegB.getStart().getPivot(), LegC.getStart().getPivot());
         graphics2D.setColor(col);
         graphics2D.fillPolygon(new int[] {
-                        LegA.getStart().getPivot().toPoint(EngineFrame.camera).toScreen(EngineFrame.renderer).x,
-                        LegA.getEnd().getPivot().toPoint(EngineFrame.camera).toScreen(EngineFrame.renderer).x,
-                        LegB.getEnd().getPivot().toPoint(EngineFrame.camera).toScreen(EngineFrame.renderer).x
+                        LegA.getStart().getPivot().toPoint(Static.camera).toScreen(Static.renderer).x,
+                        LegA.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer).x,
+                        LegB.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer).x
                 },
                 new int[] {
-                        LegA.getStart().getPivot().toPoint(EngineFrame.camera).toScreen(EngineFrame.renderer).y,
-                        LegA.getEnd().getPivot().toPoint(EngineFrame.camera).toScreen(EngineFrame.renderer).y,
-                        LegB.getEnd().getPivot().toPoint(EngineFrame.camera).toScreen(EngineFrame.renderer).y
+                        LegA.getStart().getPivot().toPoint(Static.camera).toScreen(Static.renderer).y,
+                        LegA.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer).y,
+                        LegB.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer).y
                 },
                 3
         );
@@ -60,13 +60,13 @@ public class GTri extends GObject{
     }
 
     private void drawDist() {
-                EngineFrame.renderer.scheduleOverlap(g -> {
+                Static.renderer.scheduleOverlap(g -> {
                             if (J3DSettings.isShowTriDistances()) {
                                 // draw text showing the tris distance from camera
                                 Vector3 triCentroid = this.getPivot();
-                                EngineFrame.renderer.drawText3D(g, triCentroid,
-                                        String.format("Dist: %.2f", this.getPivot().sub(EngineFrame.camera.getPosition()).magnitude()),
-                                        EngineFrame.camera,
+                                Static.renderer.drawText3D(g, triCentroid,
+                                        String.format("Dist: %.2f", this.getPivot().sub(Static.camera.getPosition()).magnitude()),
+                                        Static.camera,
                                         new Color(0, 0, 0),
                                         this.getColour());
                             }
@@ -74,23 +74,23 @@ public class GTri extends GObject{
                                 // draw text showing the tris depth from camera
                                 Vector3 triCentroid = this.getPivot();
                                 double depth = this.calcDepth();
-                                EngineFrame.renderer.drawText3D(g, triCentroid.add(new Vector3(1, 0, 0)),
+                                Static.renderer.drawText3D(g, triCentroid.add(new Vector3(1, 0, 0)),
                                         String.format("Depth: %.2f", depth),
-                                        EngineFrame.camera,
+                                        Static.camera,
                                         new Color(0, 0, 0),
                                         this.getColour());
                             }
                             if (J3DSettings.isShowNormals()) {
                                 // draw text showing the tris normal
                                 Vector3 triCentroid = this.getPivot();
-                                EngineFrame.renderer.drawText3D(g, triCentroid.sub(new Vector3(4, 0, 0)),
+                                Static.renderer.drawText3D(g, triCentroid.sub(new Vector3(4, 0, 0)),
                                         String.format("Normal: (%.2f, %.2f, %.2f)", normal.getX(), normal.getY(), normal.getZ()),
-                                        EngineFrame.camera,
+                                        Static.camera,
                                         new Color(0, 0, 0),
                                         this.getColour());
                                 // The following code draws the normal
                                 g.setColor(Color.RED);
-                                EngineFrame.renderer.drawLine3D(g, getPivot(), getPivot().add(normal.mult(0.5)), EngineFrame.camera);
+                                Static.renderer.drawLine3D(g, getPivot(), getPivot().add(normal.mult(0.5)), Static.camera);
                             }
                         }
                 );
@@ -102,8 +102,8 @@ public class GTri extends GObject{
      * @return The depth value.
      */
     public double calcDepth() {
-        Vector3 toTri = getPivot().sub(EngineFrame.camera.getPosition());
-        return toTri.dot(EngineFrame.camera.getForward().normalize());
+        Vector3 toTri = getPivot().sub(Static.camera.getPosition());
+        return toTri.dot(Static.camera.getForward().normalize());
     }
 
     /**
@@ -111,7 +111,7 @@ public class GTri extends GObject{
      * @return
      */
     public double euclideanDist() {
-        return getPivot().sub(EngineFrame.camera.getPosition()).magnitude();
+        return getPivot().sub(Static.camera.getPosition()).magnitude();
     }
 
     @Override
@@ -121,14 +121,14 @@ public class GTri extends GObject{
         graphics2D.setColor(col.brighter());
         graphics2D.setStroke(new BasicStroke(2));
         graphics2D.fillPolygon(new int[] {
-                        LegA.getStart().getPivot().toPoint(EngineFrame.camera).toScreen(EngineFrame.renderer).x,
-                        LegA.getEnd().getPivot().toPoint(EngineFrame.camera).toScreen(EngineFrame.renderer).x,
-                        LegB.getEnd().getPivot().toPoint(EngineFrame.camera).toScreen(EngineFrame.renderer).x
+                        LegA.getStart().getPivot().toPoint(Static.camera).toScreen(Static.renderer).x,
+                        LegA.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer).x,
+                        LegB.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer).x
                 },
                 new int[] {
-                        LegA.getStart().getPivot().toPoint(EngineFrame.camera).toScreen(EngineFrame.renderer).y,
-                        LegA.getEnd().getPivot().toPoint(EngineFrame.camera).toScreen(EngineFrame.renderer).y,
-                        LegB.getEnd().getPivot().toPoint(EngineFrame.camera).toScreen(EngineFrame.renderer).y
+                        LegA.getStart().getPivot().toPoint(Static.camera).toScreen(Static.renderer).y,
+                        LegA.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer).y,
+                        LegB.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer).y
                 },
                 3
         );
@@ -138,7 +138,7 @@ public class GTri extends GObject{
         LegA.drawSelected(graphics2D);
         LegB.drawSelected(graphics2D);
         LegC.drawSelected(graphics2D);
-        EngineFrame.renderer.drawText3D(graphics2D, getPivot().sub(new Vector3(1, 1, 1)), "Triangle - " + getId(), EngineFrame.camera);
+        Static.renderer.drawText3D(graphics2D, getPivot().sub(new Vector3(1, 1, 1)), "Triangle - " + getId(), Static.camera);
     }
 
     /**

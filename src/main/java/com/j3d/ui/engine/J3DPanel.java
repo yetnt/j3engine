@@ -1,5 +1,6 @@
 package com.j3d.ui.engine;
 
+import com.j3d.Static;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.interact.selection.SelectionUI;
 
@@ -33,7 +34,7 @@ public class J3DPanel extends JPanel {
         if (selectionAreaOld[0].equals(sA[0]) && selectionAreaOld[1].equals(sA[1])) {
             return selectionAreaOld;
         }
-        int offset = f.getJMenuBar().getSize().height + jMenuBarOffsetY;
+        int offset = Static.mainFrame.getJMenuBar().getSize().height + jMenuBarOffsetY;
         ScreenPoint a = new ScreenPoint(sA[0].x, sA[0].y - offset);
         ScreenPoint b = new ScreenPoint(sA[1].x, sA[1].y - offset);
         selectionAreaOld = new ScreenPoint[] {
@@ -50,13 +51,13 @@ public class J3DPanel extends JPanel {
         super.paint(g);
         if (run) {
 //            renderer.axis((Graphics2D) g, camera);
-            executor.run((Graphics2D) g);
+            Static.executor.run((Graphics2D) g);
             run = false;
         }
-        renderer.draw((Graphics2D) g, camera);
+        Static.renderer.draw((Graphics2D) g, Static.camera);
         // draw selection area ontop of all render things.
         if (selectionArea[0] != null && selectionArea[1] != null) {
-            SelectionUI.run((Graphics2D)g, applySelectionAreaOffset(selectionArea), renderer);
+            SelectionUI.run((Graphics2D)g, applySelectionAreaOffset(selectionArea), Static.renderer);
         }
 //        log.println("Painted/Repainted Scene");
     }

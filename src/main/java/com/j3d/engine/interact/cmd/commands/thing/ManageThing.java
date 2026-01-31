@@ -1,5 +1,6 @@
 package com.j3d.engine.interact.cmd.commands.thing;
 
+import com.j3d.Static;
 import com.j3d.engine.geometry.geo2d.GLine;
 import com.j3d.engine.geometry.geo2d.GObject;
 import com.j3d.engine.geometry.geo2d.GPoint;
@@ -8,7 +9,6 @@ import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.interact.cmd.base.ArgSet;
 import com.j3d.engine.interact.cmd.base.Subcommand;
 import com.j3d.engine.interact.cmd.base.TypedArg;
-import com.j3d.ui.engine.EngineFrame;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ class ManageThing extends Subcommand {
         }
         if (action.equals("add")) {
             GObject obj = (GObject) args[2];
-            Thing oldParent = EngineFrame.renderer.findObjectParent(obj);
+            Thing oldParent = Static.renderer.findObjectParent(obj);
             if (oldParent != null) {
                 oldParent.getObjects().remove(obj);
                 t.addObjs(obj);

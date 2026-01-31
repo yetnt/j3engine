@@ -4,14 +4,13 @@
  */
 package com.j3d.ui.engine;
 
-import com.j3d.ui.engine.tree.LayerTree;
+import com.j3d.Static;
 import com.j3d.Executor;
 import com.j3d.J3DSettings;
 import com.j3d.engine.interact.input.KeyBindings;
 import com.j3d.engine.Logger;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.ScreenPoint;
-import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.Rotation;
 import com.j3d.engine.geometry.geo3d.Vector3;
 import com.j3d.engine.interact.cmd.CommandPallete;
@@ -37,22 +36,11 @@ import static com.j3d.J3DSettings.jMenuBarOffsetY;
  * @author ACER
  */
 public class EngineFrame extends javax.swing.JFrame {
-//    public static JBundler jBundler = null;
-    public static Renderer renderer = null;
-    public static Executor executor = null;
     public static boolean run = true;
-    public static JFrame f = null;
-    public static Camera camera = new Camera()
-            .setPosition(new Vector3(20, 20, -20))
-            .setRotation(new Rotation(0, 0, 0))
-            .setProjectionPlane(new Vector3(0, 0, 50));
-    public static DebugPanel dp = new DebugPanel();
     private static MOwner mouseOwner = MOwner.SELECTION;
     public static ScreenPoint mousePos = null;
     public static ScreenPoint[] selectionArea = new ScreenPoint[2];
     private static final CommandPallete commandPallete = new CommandPallete();
-    public static CommandParser commandParser;
-    public static LayerTree list = new LayerTree();
 
     public static void setMouseOwner(MOwner owner) {
         mouseOwner = owner;
@@ -62,21 +50,21 @@ public class EngineFrame extends javax.swing.JFrame {
     }
     
     public void complete() {
-        f = this;
-        final int menuBarOffsetY = (f.getJMenuBar().getSize().height + jMenuBarOffsetY);
-        f.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        renderer = new Renderer(J3DSettings.screenSize);
-        executor = new Executor(renderer);
-        dp.run(renderer, executor, f);
-        JLayeredPane layeredPane = f.getLayeredPane();
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setSize(J3DSettings.screenSize.width, J3DSettings.screenSize.height);
-        f.setResizable(false);
+        Static.mainFrame = this;
+        final int menuBarOffsetY = (Static.mainFrame.getJMenuBar().getSize().height + jMenuBarOffsetY);
+        Static.mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        Static.renderer = new Renderer(J3DSettings.screenSize);
+        Static.executor = new Executor(Static.renderer);
+        Static.debugPanel.run(Static.renderer, Static.executor, Static.mainFrame);
+        JLayeredPane layeredPane = Static.mainFrame.getLayeredPane();
+        Static.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Static.mainFrame.setSize(J3DSettings.screenSize.width, J3DSettings.screenSize.height);
+        Static.mainFrame.setResizable(false);
 
-        mainPanel.setFocusable(true);
+        Static.mainPanel.setFocusable(true);
 
-        InputMap im = mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        ActionMap am = mainPanel.getActionMap();
+        InputMap im = Static.mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = Static.mainPanel.getActionMap();
         new KeyBindings(im, am, commandPallete);
 
         Toolbox toolbox = new Toolbox();
@@ -84,27 +72,27 @@ public class EngineFrame extends javax.swing.JFrame {
         toolbox.setBounds(0, menuBarOffsetY, J3DSettings.screenSize.width - 260, toolbox.getPreferredSize().height);
         layeredPane.add(toolbox, JLayeredPane.MODAL_LAYER); // above default layer
 
-        mainPanel.requestFocusInWindow();
-        mainPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN));
-        mainPanel.setBounds(0, menuBarOffsetY, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
-        mainPanel.setPreferredSize(new Dimension(J3DSettings.screenSize.width, J3DSettings.screenSize.height));
+        Static.mainPanel.requestFocusInWindow();
+        Static.mainPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN));
+        Static.mainPanel.setBounds(0, menuBarOffsetY, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
+        Static.mainPanel.setPreferredSize(new Dimension(J3DSettings.screenSize.width, J3DSettings.screenSize.height));
 
-        list.setBounds(
-                J3DSettings.screenSize.width - 260 -(list.getPreferredSize().width),
+        Static.layerTree.setBounds(
+                J3DSettings.screenSize.width - 260 -(Static.layerTree.getPreferredSize().width),
                 toolbox.getPreferredSize().height + menuBarOffsetY,
-                list.getPreferredSize().width,
-                list.getPreferredSize().height);
-        layeredPane.add(list, JLayeredPane.POPUP_LAYER);
-        list.setVisible(false);
+                Static.layerTree.getPreferredSize().width,
+                Static.layerTree.getPreferredSize().height);
+        layeredPane.add(Static.layerTree, JLayeredPane.POPUP_LAYER);
+        Static.layerTree.setVisible(false);
 
-        dp.setBounds(20, toolbox.getPreferredSize().height + menuBarOffsetY, dp.getPreferredSize().width, dp.getPreferredSize().height); // small corner overlay
-        dp.setOpaque(true);
-        dp.setBackground(Color.WHITE);
-        dp.setVisible(false);
-        J3DSettings.log = new Logger(dp.logTextArea); // initialize logger with the text area
-        layeredPane.add(dp, JLayeredPane.PALETTE_LAYER);
+        Static.debugPanel.setBounds(20, toolbox.getPreferredSize().height + menuBarOffsetY, Static.debugPanel.getPreferredSize().width, Static.debugPanel.getPreferredSize().height); // small corner overlay
+        Static.debugPanel.setOpaque(true);
+        Static.debugPanel.setBackground(Color.WHITE);
+        Static.debugPanel.setVisible(false);
+        J3DSettings.log = new Logger(Static.debugPanel.logTextArea); // initialize logger with the text area
+        layeredPane.add(Static.debugPanel, JLayeredPane.PALETTE_LAYER);
         
-        Rectangle bounds = f.getBounds();
+        Rectangle bounds = Static.mainFrame.getBounds();
         Dimension size = commandPallete.getPreferredSize();
         int x = ((bounds.width - size.width) / 2) - 60;
         int y = bounds.height - size.height - 200;
@@ -115,15 +103,15 @@ public class EngineFrame extends javax.swing.JFrame {
         commandPallete.setVisible(true);
         layeredPane.add(commandPallete, JLayeredPane.POPUP_LAYER);
 
-        commandParser = new CommandParser(commandPallete);
+        Static.commandParser = new CommandParser(commandPallete);
 
-        mainPanel.getRootPane().setFocusable(true);
-        mainPanel.getRootPane().requestFocusInWindow();
+        Static.mainPanel.getRootPane().setFocusable(true);
+        Static.mainPanel.getRootPane().requestFocusInWindow();
 
 //        frame.add(new EngineFrame());
 //        f.setVisible(true);
 
-        Cursors.init(f);
+        Cursors.init(Static.mainFrame);
         Cursors.setDefault();
     }
 
@@ -164,15 +152,15 @@ public class EngineFrame extends javax.swing.JFrame {
      */
     public static void repaintL() {
         SwingUtilities.invokeLater(() -> {
-            if (dp != null) {
-                dp.revalidate();
-                dp.repaint();
+            if (Static.debugPanel != null) {
+                Static.debugPanel.revalidate();
+                Static.debugPanel.repaint();
             }
             commandPallete.revalidate();
             commandPallete.repaint();
-            if (f != null) {
-                f.revalidate();
-                f.repaint();
+            if (Static.mainFrame != null) {
+                Static.mainFrame.revalidate();
+                Static.mainFrame.repaint();
             }
         });
     }
@@ -186,7 +174,7 @@ public class EngineFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        mainPanel = new J3DPanel();
+        Static.mainPanel = new J3DPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -205,8 +193,8 @@ public class EngineFrame extends javax.swing.JFrame {
         setTitle("J3D");
         setMinimumSize(new java.awt.Dimension(1800, 1000));
 
-        javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
-        mainPanel.setLayout(mainPanelLayout);
+        javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(Static.mainPanel);
+        Static.mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 1489, Short.MAX_VALUE)
@@ -216,7 +204,7 @@ public class EngineFrame extends javax.swing.JFrame {
             .addGap(0, 787, Short.MAX_VALUE)
         );
 
-        getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
+        getContentPane().add(Static.mainPanel, java.awt.BorderLayout.CENTER);
 
         jMenu1.setText("File");
 
@@ -300,29 +288,29 @@ public class EngineFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void resetPositionJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetPositionJMenuItemActionPerformed
-        camera.setPosition(new Vector3(0, 0, 0));
-        f.repaint();
+        Static.camera.setPosition(new Vector3(0, 0, 0));
+        Static.mainFrame.repaint();
     }//GEN-LAST:event_resetPositionJMenuItemActionPerformed
 
     private void undoJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoJMenuItemActionPerformed
         Renderer.history.undo();
-        f.repaint();
+        Static.mainFrame.repaint();
     }//GEN-LAST:event_undoJMenuItemActionPerformed
 
     private void redoJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoJMenuItemActionPerformed
         Renderer.history.redo();
-        f.repaint();
+        Static.mainFrame.repaint();
     }//GEN-LAST:event_redoJMenuItemActionPerformed
 
     private void resetOrientationJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetOrientationJMenuItemActionPerformed
-        camera.setRotation(new Rotation(0, 0, 0));
-        f.repaint();
+        Static.camera.setRotation(new Rotation(0, 0, 0));
+        Static.mainFrame.repaint();
     }//GEN-LAST:event_resetOrientationJMenuItemActionPerformed
 
     private void resetCameraJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetCameraJMenuItemActionPerformed
-        camera.setPosition(new Vector3(0, 0, 0));
-        camera.setRotation(new Rotation(0, 0, 0));
-        f.repaint();
+        Static.camera.setPosition(new Vector3(0, 0, 0));
+        Static.camera.setRotation(new Rotation(0, 0, 0));
+        Static.mainFrame.repaint();
     }//GEN-LAST:event_resetCameraJMenuItemActionPerformed
 
     private void redrawJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redrawJMenuItemActionPerformed
@@ -431,7 +419,7 @@ public class EngineFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                f.setVisible(true);
+                Static.mainFrame.setVisible(true);
             }
         });
     }
@@ -442,7 +430,6 @@ public class EngineFrame extends javax.swing.JFrame {
     public javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    public static javax.swing.JPanel mainPanel;
     private javax.swing.JMenu mouseJMenu;
     private javax.swing.JMenuItem redoJMenuItem;
     private javax.swing.JMenuItem redrawJMenuItem;

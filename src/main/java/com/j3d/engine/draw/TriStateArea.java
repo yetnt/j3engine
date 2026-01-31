@@ -1,6 +1,6 @@
 package com.j3d.engine.draw;
 
-import com.j3d.ui.engine.EngineFrame;
+import com.j3d.Static;
 import com.j3d.engine.draw.methods.CamDepthSort;
 import com.j3d.engine.draw.methods.CamDistSort;
 import com.j3d.engine.draw.methods.DDUUIDSort;
@@ -72,7 +72,7 @@ public class TriStateArea {
     public static void draw(Graphics2D g) {
         for  (GTri tri : queue) {
             if (tri.isHidden()) continue;
-            if (EngineFrame.renderer.getSelected().contains(tri)) {
+            if (Static.renderer.getSelected().contains(tri)) {
                 tri.drawSelected(g);
             } else {
                 tri.draw(g);

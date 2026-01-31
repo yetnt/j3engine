@@ -1,8 +1,7 @@
 package com.j3d.engine.geometry.geo3d;
 
 import com.j3d.J3DSettings;
-import com.j3d.engine.interact.selection.SelectionQuery;
-import com.j3d.ui.engine.EngineFrame;
+import com.j3d.Static;
 import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.Renderer;
@@ -40,8 +39,8 @@ public class Thing implements Interactable {
             (o, t) -> {
                 if (this.isBg || this.hidden) return;
                 J3DSettings.log.println(name + " thing was selected in the tree.");
-                EngineFrame.renderer.select(this);
-                EngineFrame.mainPanel.repaint();
+                Static.renderer.select(this);
+                Static.mainPanel.repaint();
             };
 
     public String getName() {
@@ -83,7 +82,7 @@ public class Thing implements Interactable {
         treeNodeIdentity = new TreeNodeIdentity<>(
                 name, this, onSelectCallback
         );
-        treeNode = EngineFrame.list.addNode(finalL.getTreeNode(), treeNodeIdentity);
+        treeNode = Static.layerTree.addNode(finalL.getTreeNode(), treeNodeIdentity);
         Renderer.history.add(
                 new ConstructorAction() {
                     @Override
@@ -97,7 +96,7 @@ public class Thing implements Interactable {
                     public Void run() {
                         // will be called after undo, so we need to re-add the thing
                         setForDeletion(false);
-                        DefaultMutableTreeNode node = EngineFrame.list.addNode(finalL.getTreeNode(), treeNodeIdentity);
+                        DefaultMutableTreeNode node = Static.layerTree.addNode(finalL.getTreeNode(), treeNodeIdentity);
                         thing.treeNode = node;
                         return null;
                     }
@@ -105,7 +104,7 @@ public class Thing implements Interactable {
                     @Override
                     public void undo() {
                         setForDeletion(true);
-                        EngineFrame.list.removeNode(thing.treeNode);
+                        Static.layerTree.removeNode(thing.treeNode);
                     }
 
                     @Override
@@ -138,7 +137,7 @@ public class Thing implements Interactable {
         if (isBg) {
             graphics2D.setColor(new Color(52, 52, 52));
             graphics2D.fillRect(0, 0, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
-            EngineFrame.renderer.axis(graphics2D, EngineFrame.camera);
+            Static.renderer.axis(graphics2D, Static.camera);
             return;
         }
 
@@ -205,7 +204,7 @@ public class Thing implements Interactable {
      */
     private void notifyTris() {
         for (GTri tri : objects.stream().filter(o -> o instanceof GTri).map(o -> (GTri) o).toList()) {
-            tri.broadcast(EventType.OBJ_UPDATED, new TriUpdatedBroadcast(tri, EngineFrame.renderer));
+            tri.broadcast(EventType.OBJ_UPDATED, new TriUpdatedBroadcast(tri, Static.renderer));
         }
     }
 
@@ -450,21 +449,21 @@ public class Thing implements Interactable {
         return new DirtyVoidAction() {
             @Override
             public void cleanup() throws Exception {
-                 EngineFrame.renderer.removeThing(t);
+                 Static.renderer.removeThing(t);
                  t.instantDelete();
             }
 
             @Override
             public Void run() {
                 t.setForDeletion(true);
-                EngineFrame.list.removeNode(treeNode);
+                Static.layerTree.removeNode(treeNode);
                 return null;
             }
 
             @Override
             public void undo() {
                 t.setForDeletion(false);
-                DefaultMutableTreeNode node = EngineFrame.list.addNode(parentLayerNode, treeNodeIdentity);
+                DefaultMutableTreeNode node = Static.layerTree.addNode(parentLayerNode, treeNodeIdentity);
                 t.treeNode = node;
             }
 

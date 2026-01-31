@@ -1,10 +1,10 @@
 package com.j3d.engine.interact.cmd.commands.thing;
 
+import com.j3d.Static;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.interact.cmd.base.Subcommand;
 import com.j3d.engine.interact.cmd.base.TypedArg;
 import com.j3d.engine.layer.Layer;
-import com.j3d.ui.engine.EngineFrame;
 
 import javax.swing.*;
 
@@ -32,9 +32,9 @@ public class NewThing extends Subcommand {
         Layer l = null;
         if (args.length == 1) {
             String layerId = (String) args[0];
-            l = EngineFrame.renderer.layers.find(layerId);
+            l = Static.renderer.layers.find(layerId);
         }
-        new Thing(EngineFrame.renderer, l, "Thing");
+        new Thing(Static.renderer, l, "Thing");
         logLabel.setText("New Thing created" + (l != null ? " in layer " + l.getIdentifier() : " in the default layer"));
     }
 }

@@ -1,7 +1,7 @@
 package com.j3d.engine.layer;
 
 import com.j3d.J3DSettings;
-import com.j3d.ui.engine.EngineFrame;
+import com.j3d.Static;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.geo2d.GObject;
 import com.j3d.engine.geometry.geo2d.GTri;
@@ -11,7 +11,6 @@ import com.j3d.engine.react.actions.DirtyAction;
 import com.j3d.engine.react.actions.DirtyVoidAction;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.ConstructorAction;
-import com.j3d.ui.engine.tree.LayerTree;
 import com.j3d.ui.engine.tree.TreeNodeIdentity;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -71,7 +70,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
             return; // Do not follow through.
         treeNodeIdentity = new TreeNodeIdentity<>(
                 id, this, onSelectCallback);
-        treeNode = EngineFrame.list.addNode(null, treeNodeIdentity);
+        treeNode = Static.layerTree.addNode(null, treeNodeIdentity);
         Renderer.history.add(
                 new ConstructorAction() {
                     @Override
@@ -85,7 +84,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
                     @Override
                     public Void run() {
                         layer.setForDeletion(false);
-                        DefaultMutableTreeNode node = EngineFrame.list.addNode(null, treeNodeIdentity);
+                        DefaultMutableTreeNode node = Static.layerTree.addNode(null, treeNodeIdentity);
                         layer.treeNode = node;
                         return null;
                     }
@@ -93,7 +92,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
                     @Override
                     public void undo() {
                         layer.setForDeletion(true);
-                        EngineFrame.list.removeNode(layer.treeNode);
+                        Static.layerTree.removeNode(layer.treeNode);
                     }
 
                     @Override
@@ -112,7 +111,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
         treeNodeIdentity = new TreeNodeIdentity<>(
                 "LAYER-0", this, onSelectCallback
         );
-        treeNode = EngineFrame.list.addNode(null, treeNodeIdentity);
+        treeNode = Static.layerTree.addNode(null, treeNodeIdentity);
         Renderer.history.add(
                 new ConstructorAction() {
                     @Override
@@ -195,7 +194,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
      */
     public void draw(Graphics2D graphics2D) {
         if (!getIdentifier().equals(backgroundId))
-            sort(Comparator.comparingDouble(t -> t.getCentroid().distance(EngineFrame.camera.getPosition())));
+            sort(Comparator.comparingDouble(t -> t.getCentroid().distance(Static.camera.getPosition())));
         if (isHidden() || isForDeletion()) return;
         for (Thing o : this.reversed()) {
             o.draw(graphics2D);
@@ -204,7 +203,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
 
     @Override
     public void instantDelete() {
-        EngineFrame.renderer.layers.remove(this);
+        Static.renderer.layers.remove(this);
         for (Thing t : this) {
             t.instantDelete();
         }
@@ -295,14 +294,14 @@ public class Layer extends ArrayList<Thing> implements Interactable {
             @Override
             public Void run() {
                 l.setForDeletion(true);
-                EngineFrame.list.removeNode(l.treeNode);
+                Static.layerTree.removeNode(l.treeNode);
                 return null;
             }
 
             @Override
             public void undo() {
                 l.setForDeletion(false);
-                l.treeNode = EngineFrame.list.addNode(null, l.treeNodeIdentity);
+                l.treeNode = Static.layerTree.addNode(null, l.treeNodeIdentity);
             }
 
             @Override

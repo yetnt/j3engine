@@ -1,6 +1,6 @@
 package com.j3d.engine.draw;
 
-import com.j3d.ui.engine.EngineFrame;
+import com.j3d.Static;
 import com.j3d.engine.react.events.EventBroadcast;
 import com.j3d.engine.react.events.EventListener;
 import com.j3d.engine.react.events.EventType;
@@ -26,7 +26,7 @@ public class TriListener implements EventListener {
         this.triID = tri.getId();
         this.lastPosition = tri.getPivot();
         this.tri = tri;
-        this.lastDistanceFromCamera = tri.getPivot().sub(EngineFrame.camera.getPosition()).magnitude();
+        this.lastDistanceFromCamera = tri.getPivot().sub(Static.camera.getPosition()).magnitude();
         this.depth = tri.calcDepth();
     }
 
@@ -51,7 +51,7 @@ public class TriListener implements EventListener {
             return;
 
         // When a tri is updated, recalculate its distance from the camera to ensure proper rendering order.
-        Camera cam = EngineFrame.camera;
+        Camera cam = Static.camera;
         GTri tri = (GTri) properties.emitter;
 
         this.lastPosition = tri.getPivot();
