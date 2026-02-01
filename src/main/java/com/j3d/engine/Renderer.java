@@ -13,11 +13,13 @@ import com.j3d.engine.interact.selection.SelectionType;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.layer.LayerList;
 import com.j3d.engine.react.history.History;
+import com.j3d.ui.J3DTheme;
 
 import java.awt.*;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -125,18 +127,45 @@ public class Renderer {
         double axisLength = camera.getPosition().magnitude() * 0.9;
         Vector3 origin = new Vector3(0, 0, 0);
         Vector3 offset = new Vector3(0, 0, 0); // avoids collapse
+        ArrayList<Double> nums = new ArrayList<>(List.of(-1.0, 1.0));
+        for (double i = 2.0; i < Math.clamp(Math.floor(axisLength), 0, 20); i++) {
+            nums.add(i);
+        };
 
-        g.setColor(Color.RED);
-        this.drawLine3D(g, origin.add(offset), origin.add(new Vector3(axisLength, 0, 0)), camera);
+        g.setColor(J3DTheme.SAGE_GRAY.color());
+//        g.setColor(Color.RED);
+        this.drawLine3D(g,
+                origin.add(offset).sub(new Vector3(2, 0, 0)),
+                origin.add(new Vector3(axisLength, 0, 0)),
+                camera);
         this.drawText3D(g, origin.add(new Vector3(axisLength+5, 0, 0)), "X", camera);
+        nums.forEach(num -> {
+            this.drawLine3D(
+                    g, new Vector3(num, 0, -1), new Vector3(num, 0, 1), camera
+            );
+        });
 
-        g.setColor(Color.GREEN);
-        this.drawLine3D(g, origin.add(offset), origin.add(new Vector3(0, axisLength, 0)), camera);
+//        g.setColor(Color.GREEN);
+        this.drawLine3D(g, origin.add(offset).sub(new Vector3(0, 2, 0)),
+                origin.add(new Vector3(0, axisLength, 0)),
+                camera);
         this.drawText3D(g, origin.add(new Vector3(0, axisLength+5, 0)), "Y", camera);
+        nums.forEach(num -> {
+            this.drawLine3D(
+                    g, new Vector3(-1, num, 0), new Vector3(1, num, 0), camera
+            );
+        });
 
-        g.setColor(Color.BLUE);
-        this.drawLine3D(g, origin.add(offset), origin.add(new Vector3(0, 0, axisLength)), camera);
+//        g.setColor(Color.BLUE);
+        this.drawLine3D(g, origin.add(offset).sub(new Vector3(0, 0, 2)),
+                origin.add(new Vector3(0, 0, axisLength)),
+                camera);
         this.drawText3D(g, origin.add(new Vector3(0, 0, axisLength+5)), "Z", camera);
+        nums.forEach(num -> {
+            this.drawLine3D(
+                    g, new Vector3(0, -1, num), new Vector3(0, 1, num), camera
+            );
+        });
     }
 
     public void drawLine3D(Graphics2D g, Vector3 start, Vector3 end, Camera cam) {

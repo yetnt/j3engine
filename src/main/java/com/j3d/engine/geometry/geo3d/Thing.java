@@ -15,6 +15,7 @@ import com.j3d.engine.geometry.geo2d.GTri;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.ConstructorAction;
 import com.j3d.engine.react.actions.VoidAction;
+import com.j3d.ui.J3DTheme;
 import com.j3d.ui.engine.tree.TreeNodeIdentity;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -135,7 +136,8 @@ public class Thing implements Interactable {
 
     public void draw(Graphics2D graphics2D) {
         if (isBg) {
-            graphics2D.setColor(new Color(52, 52, 52));
+//            graphics2D.setColor(new Color(52, 52, 52));
+            graphics2D.setColor(J3DTheme.CHARCOAL_GREEN.color());
             graphics2D.fillRect(0, 0, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
             Static.renderer.axis(graphics2D, Static.camera);
             return;

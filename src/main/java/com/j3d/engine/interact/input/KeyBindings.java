@@ -15,7 +15,7 @@ import java.awt.event.KeyEvent;
 public class KeyBindings {
 
     public KeyBindings(InputMap im, ActionMap am, CommandPallete cmdP) {
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, InputEvent.SHIFT_DOWN_MASK), "focusCommandPallete");
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, 0), "focusCommandPallete");
         am.put("focusCommandPallete", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -39,6 +39,7 @@ public class KeyBindings {
         am.put("moveCameraForward", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (cmdP.inputField.isFocusOwner()) return;
                 Static.camera.move(new Vector3(0, 0, J3DSettings.cameraMoveSpeed));
                 Static.mainFrame.repaint();
             }
@@ -47,6 +48,7 @@ public class KeyBindings {
         am.put("moveCameraBackward", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (cmdP.inputField.isFocusOwner()) return;
                 Static.camera.move(new Vector3(0, 0, -J3DSettings.cameraMoveSpeed));
                 Static.mainFrame.repaint();
             }
@@ -55,6 +57,7 @@ public class KeyBindings {
         am.put("moveCameraLeft", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (cmdP.inputField.isFocusOwner()) return;
                 Static.camera.move(new Vector3(-J3DSettings.cameraMoveSpeed, 0, 0));
                 Static.mainFrame.repaint();
             }
@@ -63,6 +66,7 @@ public class KeyBindings {
         am.put("moveCameraRight", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (cmdP.inputField.isFocusOwner()) return;
                 Static.camera.move(new Vector3(J3DSettings.cameraMoveSpeed, 0, 0));
                 Static.mainFrame.repaint();
             }
@@ -71,6 +75,7 @@ public class KeyBindings {
         am.put("moveCameraUp", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (cmdP.inputField.isFocusOwner()) return;
                 Static.camera.move(new Vector3(0, J3DSettings.cameraMoveSpeed, 0));
                 Static.mainFrame.repaint();
             }
@@ -79,6 +84,7 @@ public class KeyBindings {
         am.put("moveCameraDown", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (cmdP.inputField.isFocusOwner()) return;
                 Static.camera.move(new Vector3(0, -J3DSettings.cameraMoveSpeed, 0));
                 Static.mainFrame.repaint();
             }
