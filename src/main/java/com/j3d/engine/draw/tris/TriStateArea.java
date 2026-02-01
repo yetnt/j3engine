@@ -1,10 +1,10 @@
-package com.j3d.engine.draw;
+package com.j3d.engine.draw.tris;
 
 import com.j3d.Static;
-import com.j3d.engine.draw.methods.CamDepthSort;
-import com.j3d.engine.draw.methods.CamDistSort;
-import com.j3d.engine.draw.methods.DDUUIDSort;
-import com.j3d.engine.draw.methods.VisibleSort;
+import com.j3d.engine.draw.tris.methods.CamDepthSort;
+import com.j3d.engine.draw.tris.methods.CamDistSort;
+import com.j3d.engine.draw.tris.methods.DDUUIDSort;
+import com.j3d.engine.draw.tris.methods.VisibleSort;
 import com.j3d.engine.geometry.geo2d.GTri;
 
 import java.awt.*;

@@ -1,4 +1,4 @@
-package com.j3d.engine.draw;
+package com.j3d.engine.draw.tris;
 
 import com.j3d.Static;
 import com.j3d.engine.react.events.EventBroadcast;

@@ -1,8 +1,8 @@
-package com.j3d.engine.draw.methods;
+package com.j3d.engine.draw.tris.methods;
 
-import com.j3d.engine.draw.SortMethod;
-import com.j3d.engine.draw.TriListener;
-import com.j3d.engine.draw.methods.utils.ZDepthIdBuffer;
+import com.j3d.engine.draw.tris.SortMethod;
+import com.j3d.engine.draw.tris.TriListener;
+import com.j3d.engine.draw.tris.methods.utils.ZDepthIdBuffer;
 import com.j3d.engine.geometry.geo2d.GTri;
 
 import java.util.*;

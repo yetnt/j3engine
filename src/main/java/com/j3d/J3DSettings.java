@@ -1,8 +1,8 @@
 package com.j3d;
 
 import com.j3d.engine.Logger;
-import com.j3d.engine.draw.TriStateArea;
-import com.j3d.engine.draw.TriangleSortMethod;
+import com.j3d.engine.draw.tris.TriStateArea;
+import com.j3d.engine.draw.tris.TriangleSortMethod;
 import com.j3d.engine.geometry.Dimension;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.CartesianPoint;

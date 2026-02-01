@@ -1,6 +1,6 @@
 package com.j3d.engine;
 
-import com.j3d.engine.draw.TriStateArea;
+import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.*;
 import com.j3d.engine.geometry.Dimension;

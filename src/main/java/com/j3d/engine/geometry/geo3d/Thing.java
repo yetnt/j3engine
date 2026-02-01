@@ -5,7 +5,7 @@ import com.j3d.Static;
 import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.Renderer;
-import com.j3d.engine.draw.TriStateArea;
+import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.react.actions.DirtyVoidAction;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.react.events.spec.TriUpdatedBroadcast;

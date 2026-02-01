@@ -1,18 +1,19 @@
-package com.j3d.engine.draw.methods;
+package com.j3d.engine.draw.tris.methods;
 
-import com.j3d.engine.draw.SortMethod;
-import com.j3d.engine.draw.TriListener;
+import com.j3d.engine.draw.tris.SortMethod;
+import com.j3d.engine.draw.tris.TriListener;
 import com.j3d.engine.geometry.geo2d.GTri;
 
 import java.util.ArrayList;
 
 /**
- * CamDistSort is a sorting method that sorts GTri objects based on their distance from the camera.
+ * CamDepthSort is a sorting method that sorts GTri objects based on their depth values.
  * GTri objects farther from the camera are placed before those closer to the camera.
+ * This is calculated by {@link GTri#calcDepth()}.
  */
-public class CamDistSort extends SortMethod {
+public class CamDepthSort extends SortMethod {
 
-    public CamDistSort(ArrayList<TriListener> registered) {
+    public CamDepthSort(ArrayList<TriListener> registered) {
         super(registered);
     }
 
@@ -54,10 +55,9 @@ public class CamDistSort extends SortMethod {
 //            ).findFirst().orElse(null);
 //            if (listener1 == null || listener2 == null)
 //                return 0;
-                // fall back to euclideanDist() if depths are equal
-                double euclidDist1 = tri1.euclideanDist();
-                double euclidDist2 = tri2.euclideanDist();
-                return Double.compare(euclidDist2, euclidDist1); // Sort in descending order (farthest first)
+            double dist1 = tri1.calcDepth();
+            double dist2 = tri2.calcDepth();
+            return Double.compare(dist2, dist1); // Sort in descending order (farthest first)
         });
     }
 }

@@ -9,7 +9,7 @@ import com.j3d.J3DSettings;
 import com.j3d.Static;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.Renderer;
-import com.j3d.engine.draw.TriangleSortMethod;
+import com.j3d.engine.draw.tris.TriangleSortMethod;
 import com.j3d.engine.geometry.geo2d.GPoint;
 import com.j3d.engine.geometry.geo2d.GTri;
 import com.j3d.engine.geometry.geo3d.Thing;
