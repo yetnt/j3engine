@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 import static com.j3d.J3DSettings.jMenuBarOffsetY;
+import com.j3d.engine.draw.ViewType;
 
 /**
  *
@@ -61,6 +62,7 @@ public class EngineFrame extends javax.swing.JFrame {
         Static.mainFrame.setSize(J3DSettings.screenSize.width, J3DSettings.screenSize.height);
         Static.mainFrame.setResizable(false);
 
+        Static.mainPanel = mainPanel;
         Static.mainPanel.setFocusable(true);
 
         InputMap im = Static.mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -174,7 +176,7 @@ public class EngineFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        Static.mainPanel = new J3DPanel();
+        mainPanel = new J3DPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -184,6 +186,8 @@ public class EngineFrame extends javax.swing.JFrame {
         redoJMenuItem = new javax.swing.JMenuItem();
         mouseJMenu = new javax.swing.JMenu();
         viewJMenu = new javax.swing.JMenu();
+        viewAsNormalJMenuItem = new javax.swing.JMenuItem();
+        viewAsWireframeJMenuItem = new javax.swing.JMenuItem();
         resetPositionJMenuItem = new javax.swing.JMenuItem();
         resetOrientationJMenuItem = new javax.swing.JMenuItem();
         resetCameraJMenuItem = new javax.swing.JMenuItem();
@@ -193,8 +197,8 @@ public class EngineFrame extends javax.swing.JFrame {
         setTitle("J3D");
         setMinimumSize(new java.awt.Dimension(1800, 1000));
 
-        javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(Static.mainPanel);
-        Static.mainPanel.setLayout(mainPanelLayout);
+        javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
+        mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 1489, Short.MAX_VALUE)
@@ -204,7 +208,7 @@ public class EngineFrame extends javax.swing.JFrame {
             .addGap(0, 787, Short.MAX_VALUE)
         );
 
-        getContentPane().add(Static.mainPanel, java.awt.BorderLayout.CENTER);
+        getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
 
         jMenu1.setText("File");
 
@@ -242,6 +246,22 @@ public class EngineFrame extends javax.swing.JFrame {
         jMenuBar1.add(mouseJMenu);
 
         viewJMenu.setText("View");
+
+        viewAsNormalJMenuItem.setText("Normal View");
+        viewAsNormalJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewAsNormalJMenuItemActionPerformed(evt);
+            }
+        });
+        viewJMenu.add(viewAsNormalJMenuItem);
+
+        viewAsWireframeJMenuItem.setText("Wireframe View");
+        viewAsWireframeJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewAsWireframeJMenuItemActionPerformed(evt);
+            }
+        });
+        viewJMenu.add(viewAsWireframeJMenuItem);
 
         resetPositionJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
         resetPositionJMenuItem.setText("Reset Position");
@@ -316,6 +336,16 @@ public class EngineFrame extends javax.swing.JFrame {
     private void redrawJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redrawJMenuItemActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_redrawJMenuItemActionPerformed
+
+    private void viewAsWireframeJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewAsWireframeJMenuItemActionPerformed
+        J3DSettings.setViewType(ViewType.WIREFRAME);
+        Static.mainFrame.repaint();
+    }//GEN-LAST:event_viewAsWireframeJMenuItemActionPerformed
+
+    private void viewAsNormalJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewAsNormalJMenuItemActionPerformed
+        J3DSettings.setViewType(ViewType.NORMAL);
+        Static.mainFrame.repaint();
+    }//GEN-LAST:event_viewAsNormalJMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -430,6 +460,7 @@ public class EngineFrame extends javax.swing.JFrame {
     public javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    public static javax.swing.JPanel mainPanel;
     private javax.swing.JMenu mouseJMenu;
     private javax.swing.JMenuItem redoJMenuItem;
     private javax.swing.JMenuItem redrawJMenuItem;
@@ -437,6 +468,8 @@ public class EngineFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem resetOrientationJMenuItem;
     private javax.swing.JMenuItem resetPositionJMenuItem;
     private javax.swing.JMenuItem undoJMenuItem;
+    private javax.swing.JMenuItem viewAsNormalJMenuItem;
+    private javax.swing.JMenuItem viewAsWireframeJMenuItem;
     private javax.swing.JMenu viewJMenu;
     // End of variables declaration//GEN-END:variables
 }

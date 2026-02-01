@@ -3,6 +3,7 @@ package com.j3d.engine.geometry.geo2d;
 import com.j3d.J3DSettings;
 import com.j3d.Static;
 import com.j3d.engine.Renderer;
+import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.react.events.EventBroadcast;
 import com.j3d.engine.react.events.EventEmitter;
@@ -40,19 +41,21 @@ public class GTri extends GObject{
     public void draw(Graphics2D graphics2D) {
         setPivot(LegA.getStart().getPivot().add(LegB.getStart().getPivot()).add(LegC.getStart().getPivot()).div(3));
         calcNormal(LegA.getStart().getPivot(), LegB.getStart().getPivot(), LegC.getStart().getPivot());
-        graphics2D.setColor(col);
-        graphics2D.fillPolygon(new int[] {
-                        LegA.getStart().getPivot().toPoint(Static.camera).toScreen(Static.renderer).x,
-                        LegA.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer).x,
-                        LegB.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer).x
-                },
-                new int[] {
-                        LegA.getStart().getPivot().toPoint(Static.camera).toScreen(Static.renderer).y,
-                        LegA.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer).y,
-                        LegB.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer).y
-                },
-                3
-        );
+        if (J3DSettings.getViewType() == ViewType.NORMAL) {
+            graphics2D.setColor(col);
+            graphics2D.fillPolygon(new int[]{
+                            LegA.getStart().getPivot().toPoint(Static.camera).toScreen(Static.renderer).x,
+                            LegA.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer).x,
+                            LegB.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer).x
+                    },
+                    new int[]{
+                            LegA.getStart().getPivot().toPoint(Static.camera).toScreen(Static.renderer).y,
+                            LegA.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer).y,
+                            LegB.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer).y
+                    },
+                    3
+            );
+        }
         // dispatch to lines
         LegA.draw(graphics2D);
         LegB.draw(graphics2D);
@@ -118,23 +121,25 @@ public class GTri extends GObject{
     public void drawSelected(Graphics2D graphics2D) {
         setPivot(LegA.getStart().getPivot().add(LegB.getStart().getPivot()).add(LegC.getStart().getPivot()).div(3));
         calcNormal(LegA.getStart().getPivot(), LegB.getStart().getPivot(), LegC.getStart().getPivot());
-        graphics2D.setColor(col.brighter());
-        graphics2D.setStroke(new BasicStroke(2));
-        graphics2D.fillPolygon(new int[] {
-                        LegA.getStart().getPivot().toPoint(Static.camera).toScreen(Static.renderer).x,
-                        LegA.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer).x,
-                        LegB.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer).x
-                },
-                new int[] {
-                        LegA.getStart().getPivot().toPoint(Static.camera).toScreen(Static.renderer).y,
-                        LegA.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer).y,
-                        LegB.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer).y
-                },
-                3
-        );
-        graphics2D.setStroke(new BasicStroke(1));
-        draw(graphics2D);
-        // dispatch to lines
+        if (J3DSettings.getViewType() == ViewType.NORMAL) {
+            graphics2D.setColor(col.brighter());
+            graphics2D.setStroke(new BasicStroke(2));
+            graphics2D.fillPolygon(new int[]{
+                            LegA.getStart().getPivot().toPoint(Static.camera).toScreen(Static.renderer).x,
+                            LegA.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer).x,
+                            LegB.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer).x
+                    },
+                    new int[]{
+                            LegA.getStart().getPivot().toPoint(Static.camera).toScreen(Static.renderer).y,
+                            LegA.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer).y,
+                            LegB.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer).y
+                    },
+                    3
+            );
+            graphics2D.setStroke(new BasicStroke(1));
+            draw(graphics2D);
+            // dispatch to lines
+        }
         LegA.drawSelected(graphics2D);
         LegB.drawSelected(graphics2D);
         LegC.drawSelected(graphics2D);

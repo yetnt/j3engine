@@ -1,6 +1,7 @@
 package com.j3d;
 
 import com.j3d.engine.Logger;
+import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.draw.tris.TriangleSortMethod;
 import com.j3d.engine.geometry.Dimension;
@@ -45,6 +46,10 @@ public class J3DSettings {
      * Flag to determine if normals are displayed.
      */
     private static boolean showNormals = false;
+    /**
+     * How the objects should be drawn.
+     */
+    private static ViewType viewType = ViewType.NORMAL;
     public static double cameraMoveSpeed = 0.3;
 
     public static TriangleSortMethod getTriangleSortMethod() {
@@ -81,5 +86,12 @@ public class J3DSettings {
     }
     public static void setShowNormals(boolean showNormals) {
         J3DSettings.showNormals = showNormals;
+    }
+
+    public static ViewType getViewType() {
+        return viewType;
+    }
+    public static void setViewType(ViewType viewType) {
+        J3DSettings.viewType = viewType;
     }
 }
