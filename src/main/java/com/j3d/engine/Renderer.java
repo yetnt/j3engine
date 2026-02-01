@@ -132,7 +132,7 @@ public class Renderer {
             nums.add(i);
         };
 
-        g.setColor(J3DTheme.SAGE_GRAY.color());
+        g.setColor(J3DTheme.ASH_GREY.color());
 //        g.setColor(Color.RED);
         this.drawLine3D(g,
                 origin.add(offset).sub(new Vector3(2, 0, 0)),
