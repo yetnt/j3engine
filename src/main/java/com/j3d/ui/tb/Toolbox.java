@@ -4,6 +4,8 @@
  */
 package com.j3d.ui.tb;
 
+import com.j3d.ui.J3DTheme;
+
 /**
  *
  * @author ACER
@@ -38,13 +40,17 @@ public class Toolbox extends javax.swing.JPanel {
         toolboxScrollpane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         toolboxScrollpane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
+        toolboxInnerPanel.setBackground(J3DTheme.DARK_SLATE_GREY.color());
         toolboxInnerPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, -4));
 
+        btnA_panel.setBackground(J3DTheme.DARK_SLATE_GREY.color());
         btnA_panel.setMaximumSize(new java.awt.Dimension(100, 120));
         btnA_panel.setMinimumSize(new java.awt.Dimension(120, 120));
         btnA_panel.setPreferredSize(new java.awt.Dimension(100, 120));
         btnA_panel.setLayout(new javax.swing.BoxLayout(btnA_panel, javax.swing.BoxLayout.Y_AXIS));
 
+        btnA.setBackground(J3DTheme.CHARCOAL_BLUE.color());
+        btnA.setForeground(J3DTheme.ASH_GREY.color());
         btnA.setText("examplebtn");
         btnA.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnA.setMaximumSize(new java.awt.Dimension(100, 100));
@@ -58,6 +64,7 @@ public class Toolbox extends javax.swing.JPanel {
         btnA_panel.add(btnA);
 
         btnA_label.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btnA_label.setForeground(J3DTheme.ASH_GREY.color());
         btnA_label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnA_label.setText("default label");
         btnA_label.setMaximumSize(new java.awt.Dimension(100, 16));

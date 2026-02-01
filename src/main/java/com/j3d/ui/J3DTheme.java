@@ -13,35 +13,35 @@ public enum J3DTheme {
      *     Preview: <div style="background-color:#cad2c5; width:150px; height:50px; border:1px solid black;"></div>
      * </p>
      */
-    SAGE_GRAY(new Color(0xcad2c5)),
+    ASH_GREY(new Color(0xcad2c5)),
     /**
      * Hover state
      * <p>
      *     Preview: <div style="background-color:#84a98c; width:150px; height:50px; border:1px solid black;"></div>
      * </p>
      */
-    DUSTY_GREEN(new Color(0x84a98c)),
+    MUTED_TEAL(new Color(0x84a98c)),
     /**
      * Borders for test fgields or separators. Structure.
      * <p>
      *     Preview: <div style="background-color:#52796f; width:150px; height:50px; border:1px solid black;"></div>
      * </p>
      */
-    DEEP_SEA_GREEN(new Color(0x52796f)),
+    DEEP_TEAL(new Color(0x52796f)),
     /**
      * Dark enough for panel backgrounds
      * <p>
      *     Preview: <div style="background-color:#354f52; width:150px; height:50px; border:1px solid black;"></div>
      * </p>
      */
-    DARK_SLATE(new Color(0x354f52)),
+    DARK_SLATE_GREY(new Color(0x354f52)),
     /**
      * Darkest shade, maybe for scene background.
      * <p>
      *     Preview: <div style="background-color:#2f3e46; width:150px; height:50px; border:1px solid black;"></div>
      * </p>
      */
-    CHARCOAL_GREEN(new Color(0x2f3e46));
+    CHARCOAL_BLUE(new Color(0x2f3e46));
 
     J3DTheme(Color color) {
         col = color;
