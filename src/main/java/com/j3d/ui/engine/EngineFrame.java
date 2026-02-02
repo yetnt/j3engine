@@ -179,8 +179,9 @@ public class EngineFrame extends javax.swing.JFrame {
         mainPanel = new J3DPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        openProjectJMenuItem = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        newProjectJMenuItem = new javax.swing.JMenuItem();
         editJMenu = new javax.swing.JMenu();
         undoJMenuItem = new javax.swing.JMenuItem();
         redoJMenuItem = new javax.swing.JMenuItem();
@@ -212,11 +213,20 @@ public class EngineFrame extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
-        jMenuItem1.setText("jMenuItem1");
-        jMenu1.add(jMenuItem1);
+        openProjectJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        openProjectJMenuItem.setText("Save");
+        jMenu1.add(openProjectJMenuItem);
 
-        jMenuItem2.setText("jMenuItem2");
+        jMenuItem2.setText("Open Project");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem2);
+
+        newProjectJMenuItem.setText("New Project");
+        jMenu1.add(newProjectJMenuItem);
 
         jMenuBar1.add(jMenu1);
 
@@ -347,6 +357,10 @@ public class EngineFrame extends javax.swing.JFrame {
         Static.mainFrame.repaint();
     }//GEN-LAST:event_viewAsNormalJMenuItemActionPerformed
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -458,10 +472,11 @@ public class EngineFrame extends javax.swing.JFrame {
     private javax.swing.JMenu editJMenu;
     private javax.swing.JMenu jMenu1;
     public javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     public static javax.swing.JPanel mainPanel;
     private javax.swing.JMenu mouseJMenu;
+    private javax.swing.JMenuItem newProjectJMenuItem;
+    private javax.swing.JMenuItem openProjectJMenuItem;
     private javax.swing.JMenuItem redoJMenuItem;
     private javax.swing.JMenuItem redrawJMenuItem;
     private javax.swing.JMenuItem resetCameraJMenuItem;

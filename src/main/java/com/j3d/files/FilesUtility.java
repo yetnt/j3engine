@@ -2,9 +2,7 @@ package com.j3d.files;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
@@ -33,7 +31,7 @@ public class FilesUtility {
     public static void readFromFile(String path, Consumer<Scanner> consumer, Charset csn) {
         try {
             csn = csn == null ? StandardCharsets.UTF_8 : csn;
-            Scanner scanner = new Scanner(new java.io.File(path), csn);
+            Scanner scanner = new Scanner(new File(path), csn);
             consumer.accept(scanner);
             scanner.close();
         } catch (IOException e) {
@@ -75,22 +73,52 @@ public class FilesUtility {
     }
 
 
-    public static String fileChooser(Consumer<JFileChooser> chooserConfigure) {
+    /**
+     * Shows a file chooser dialog and returns the selected file's absolute path.
+     * @param chooserConfigure A consumer that configures the file chooser.
+     * @return The absolute path of the selected file, or null if no file is selected.
+     */
+    public static String fileChooser(Consumer<JFileChooser> chooserConfigure, JFrame frameParent) {
         JFileChooser chooser = new JFileChooser();
         chooserConfigure.accept(chooser);
 
-        Frame frame = new Frame();
-
-        int result = chooser.showOpenDialog(null);
-        frame.dispose();
+        int result = chooser.showOpenDialog(frameParent);
         return result == JFileChooser.APPROVE_OPTION ? chooser.getSelectedFile().getAbsolutePath() : null;
     }
 
-    public static String folderChooser() {
+    /**
+     * Shows a folder chooser dialog and returns the selected folder's absolute path.
+     * @return The absolute path of the selected folder, or null if no folder is selected.
+     */
+    public static String folderChooser(JFrame frameParent) {
         return fileChooser(chooser -> {
             chooser.setDialogTitle("Select Folder Big Dawgg");
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             chooser.setAcceptAllFileFilterUsed(false);
-        });
+        }, frameParent);
+    }
+
+    public static void writeBinary(String path, String name, Consumer<DataOutputStream> consumer) {
+        try (DataOutputStream out = new DataOutputStream(
+                new BufferedOutputStream(
+                        new FileOutputStream(new File(path, name))))) {
+
+            consumer.accept(out);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void readBinary(String path, Consumer<DataInputStream> consumer) {
+        try (DataInputStream in = new DataInputStream(
+                new BufferedInputStream(
+                        new FileInputStream(path)))) {
+
+            consumer.accept(in);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
