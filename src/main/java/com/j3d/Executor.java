@@ -43,8 +43,7 @@ public class Executor {
                 cub.translate(new Vector3(4, 2, 3)),
                 cub.scale(0.4),
                 tris.translate(new Vector3(14, 0, 0)),
-                cub.rotate(new Vector3(2, 3, 1), 2),
-                layer.toggleVisibility()
+                cub.rotate(new Vector3(2, 3, 1), 2)
         ));
         actions.forEach(Action::run);
         actions.forEach(Renderer.history::add);
