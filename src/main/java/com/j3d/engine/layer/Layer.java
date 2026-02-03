@@ -58,6 +58,17 @@ public class Layer extends ArrayList<Thing> implements Interactable {
     private TreeNodeIdentity<Layer> treeNodeIdentity;
     private DefaultMutableTreeNode treeNode;
 
+    /**
+     * Creates a Layer from raw data. Specifically used for loading from files.
+     * @param id The identifier of the layer.
+     * @param hidden Whether the layer is hidden.
+     * @return The created Layer.
+     */
+    public static Layer fromRaw(String id, boolean hidden) {
+        Layer layer = new Layer(id);
+        layer.setHidden(hidden);
+        return layer;
+    }
 
     /**
      * Default Constructor

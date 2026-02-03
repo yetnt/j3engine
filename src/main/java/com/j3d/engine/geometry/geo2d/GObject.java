@@ -23,7 +23,7 @@ public abstract class GObject extends EventEmitter implements EventListener {
     /**
      * A Unique UUID to identify this geometry.
      */
-    private final UUID Id;
+    private UUID Id;
 //    /**
 //     * Whether this geometry is selected or not.
 //     */
@@ -112,6 +112,14 @@ public abstract class GObject extends EventEmitter implements EventListener {
      */
     public UUID getId() {
         return Id;
+    }
+
+    /**
+     * Sets this geometry's unique identifier
+     * @param id The new UUID
+     */
+    public void setId(UUID id) {
+        Id = id;
     }
 
     /**

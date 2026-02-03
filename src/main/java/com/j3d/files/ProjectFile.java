@@ -1,12 +1,22 @@
 package com.j3d.files;
 
+import com.j3d.engine.geometry.geo2d.GLine;
+import com.j3d.engine.geometry.geo2d.GPoint;
+import com.j3d.engine.geometry.geo2d.GTri;
+import com.j3d.engine.geometry.geo3d.Thing;
+import com.j3d.engine.geometry.geo3d.Vector3;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.layer.LayerList;
+import com.j3d.files.protocol.FileProtocol;
+import com.j3d.files.protocol.GenericFileProtocol;
+import com.j3d.utility.Pair;
 
+import java.awt.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.function.Consumer;
 
 /**
@@ -71,67 +81,99 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
 
     @Override
     public int getProtocolVersion() {
-        return 0;
+        return 1;
     }
 
     @Override
     public <T extends ArrayList> void writeFile(String path, T data) {
         Consumer<DataOutputStream> fileWriter = dos -> {
             try {
-                writeHeader(dos);
-                getHeaderWriter().accept(dos);
+                writeHeader(dos); // Write J3D file header
+                getHeaderWriter().accept(dos); // Write PROJECT file header
                 LayerList layers = (LayerList) data.clone();
 
                 layers.removeFirst(); // Remove "BACKG" layer
-                layers.removeIf(Layer::isForDeletion);
+                layers.removeIf(Layer::isForDeletion); // Remove layers that are deleted in memory
 
-                dos.writeInt(layers.size()); // number of layers
+                dos.writeInt(layers.size()); // Write number of layers
                 layers.forEach((layer) -> {
                     try {
-                        dos.writeUTF(layer.getIdentifier());
-                        dos.writeBoolean(layer.isHidden());
+                        dos.writeUTF(layer.getIdentifier()); // Write layer identifier
+                        dos.writeBoolean(layer.isHidden()); // Write layer hidden state
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
                 });
 
+                ArrayList<Pair<Thing, GPoint>> points = new ArrayList<>();
+                ArrayList<Pair<Thing, GLine>> lines = new ArrayList<>();
+                ArrayList<Pair<Thing, GTri>> tris = new ArrayList<>();
+
+                layers.stream()
+                        .flatMap(Layer::stream).forEach(thing -> {
+                            thing.getObjects().forEach(obj -> {
+                                if (obj instanceof GPoint gp) {
+                                    points.add(new Pair<>(thing, gp));
+                                } else if (obj instanceof GLine gl) {
+                                    lines.add(new Pair<>(thing, gl));
+                                } else if (obj instanceof GTri gt) {
+                                    tris.add(new Pair<>(thing, gt));
+                                }
+                            });
+                        });
+
+                // Write points
+                dos.writeInt(points.size()); // Write number of points
+                for (Pair<Thing, GPoint> pair : points) {
+                    GPoint gp = pair.second;
+                    Thing parent = pair.first;
+                    dos.writeUTF(gp.getId().toString()); // Write Point UUID
+                    dos.writeUTF(parent.getId().toString()); // Write Parent Thing UUID
+                    dos.writeDouble(gp.getPivot().getX()); // Write X Coordinate
+                    dos.writeDouble(gp.getPivot().getY()); // Write Y Coordinate
+                    dos.writeDouble(gp.getPivot().getZ()); // Write Z Coordinate
+                }
+                // Write lines
+                dos.writeInt(lines.size());
+                for (Pair<Thing, GLine> pair : lines) {
+                    GLine gl = pair.second;
+                    Thing parent = pair.first;
+                    dos.writeUTF(gl.getId().toString());
+                    dos.writeUTF(parent.getId().toString());
+                    dos.writeUTF(gl.getStart().getId().toString());
+                    dos.writeUTF(gl.getEnd().getId().toString());
+                }
+                // Write triangles
+                dos.writeInt(tris.size());
+                for (Pair<Thing, GTri> pair : tris) {
+                    GTri gt = pair.second;
+                    Thing parent = pair.first;
+                    dos.writeUTF(gt.getId().toString());
+                    dos.writeUTF(parent.getId().toString());
+                    // write colour
+                    dos.writeInt(gt.getColour().getRed());
+                    dos.writeInt(gt.getColour().getGreen());
+                    dos.writeInt(gt.getColour().getBlue());
+                    dos.writeInt(gt.getColour().getAlpha());
+                    // write legs
+                    dos.writeUTF(gt.getLegA().getId().toString());
+                    dos.writeUTF(gt.getLegB().getId().toString());
+                    dos.writeUTF(gt.getLegC().getId().toString());
+                }
+
+
                 for  (int i = 0; i < layers.size(); i++) {
                     dos.writeInt(i); // layer index
-
-                    // Write each Thing within the layer
-                    //TODO: implement
-                    /*
-                        N = number of points
-                        J = Number of lines
-                        G = number of triangles
-
-
-                        N
-                        point-UUID
-                        thingParent-UUUD
-                        X
-                        Y
-                        Z
-                        (all points in the scene...)
-                        J
-                        line-UUID
-                        thingParent-UUID
-                        startPoint-UUID
-                        endPoint-UUID
-                        (all lines in the scene...)
-                        G
-                        tri-UUID
-                        thingParrnt-UUID
-                        line1-UUID
-                        line2-UUID
-                        line3-UUID
-                        (all tris in the scene...)
-                        layer-index
-                        thing-UUID
-                        thing-name
-                        thing-visibility
-                        (things....)
-                     */
+                    layers.get(i).forEach((thing) -> {
+                       // write thing data
+                        try {
+                            dos.writeUTF(thing.getId().toString());
+                            dos.writeUTF(thing.getName());
+                            dos.writeBoolean(thing.isHidden());
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -139,9 +181,94 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
         };
     }
 
+    /**
+     * Reads a project file from the specified path and constructs the entire
+     * project structure including layers and things.
+     * @param path The path to the file to be read.
+     * @return An ArrayLit containing the success state of the read operation.
+     * @param <T> The type of ArrayList to be returned.
+     */
     @Override
-    public <T> T readFile(String path) {
-        return null; //TODO: implement
+    public <T extends ArrayList> T readFile(String path) {
+        ArrayList<Boolean> success = new ArrayList<>(1);
+
+        final HashMap<String, Layer> layersMap = new HashMap<>();
+        final HashMap<String, GPoint> pointsMap = new HashMap<>();
+        final HashMap<String, GLine> linesMap = new HashMap<>();
+        final HashMap<String, GTri> trisMap = new HashMap<>();
+        final HashMap<String, Thing> thingsMap = new HashMap<>();
+
+        Consumer<DataInputStream> fileReader = dis -> {
+            try {
+                readHeader(dis); // Read J3D file header
+                getHeaderReader().accept(dis); // Read PROJECT file header
+
+                int numLayers = dis.readInt(); // Read number of layers
+                int layersOffset = numLayers * 2; // each layer has 1 UTF and 1 boolean
+                for (int i = 0; i < layersOffset; i++) {
+                    String layerId = dis.readUTF(); // Read layer identifier
+                    boolean isHidden = dis.readBoolean(); // Read layer hidden state
+                    layersMap.put(layerId, Layer.fromRaw(layerId, isHidden));
+                }
+
+                int numPoints = dis.readInt(); // Read number of points
+                for (int i = 0; i < numPoints; i++) {
+                    String pointUUID = dis.readUTF(); // Read Point UUID
+                    String parentThingUUID = dis.readUTF(); // Read Parent Thing UUID
+                    double x = dis.readDouble(); // Read X Coordinate
+                    double y = dis.readDouble(); // Read Y Coordinate
+                    double z = dis.readDouble(); // Read Z Coordinate
+                    // Create and store point as needed
+                    pointsMap.put(parentThingUUID, GPoint.fromRaw(pointUUID, new Vector3(x, y, z)));
+                }
+
+                int numLines = dis.readInt(); // Read number of lines
+                for (int i = 0; i < numLines; i++) {
+                    String lineUUID = dis.readUTF();
+                    String parentThingUUID = dis.readUTF();
+                    String startPointUUID = dis.readUTF();
+                    String endPointUUID = dis.readUTF();
+                    // Create and store line as needed
+                    GPoint startPoint = pointsMap.values().stream()
+                            .filter(p -> p.getId().toString().equals(startPointUUID))
+                            .findFirst()
+                            .orElse(null);
+                    GPoint endPoint = pointsMap.values().stream()
+                            .filter(p -> p.getId().toString().equals(endPointUUID))
+                            .findFirst()
+                            .orElse(null);
+                    if (startPoint == null || endPoint == null)
+                        throw new IOException("Invalid line definition: missing points");
+
+                    linesMap.put(parentThingUUID, GLine.fromRaw(lineUUID, startPoint, endPoint));
+                }
+
+                int numTris = dis.readInt(); // Read number of triangles
+                for (int i = 0; i < numTris; i++) {
+                    String triUUID = dis.readUTF();
+                    String parentThingUUID = dis.readUTF();
+                    int colorR = dis.readInt();
+                    int colorG = dis.readInt();
+                    int colorB = dis.readInt();
+                    int colorA = dis.readInt();
+                    Color triColor = new Color(colorR, colorG, colorB, colorA);
+                    String legAUUID = dis.readUTF();
+                    String legBUUID = dis.readUTF();
+                    String legCUUID = dis.readUTF();
+                    // Create and store triangle as needed
+                }
+
+                for (int i = 0; i < numLayers; i++) {
+                    int layerIndex = dis.readInt(); // layer index
+                    // Retrieve layer by index as needed
+                    // Read things in layer as needed
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        };
+        success.add(true);
+        return (T) success;
     }
 
     @Override

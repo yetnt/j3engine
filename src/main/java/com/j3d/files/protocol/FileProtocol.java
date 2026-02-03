@@ -1,11 +1,9 @@
-package com.j3d.files;
+package com.j3d.files.protocol;
 
 import java.io.DataInputStream;
-import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
@@ -31,7 +29,7 @@ public interface FileProtocol {
      * @return The content of the file as an object of type T.
      * @param <T> The type of the object to be returned.
      */
-    <T> T readFile(String path);
+    <T extends ArrayList> T readFile(String path);
     /**
      * Writes the provided data to a file at the specified path. This should be
      * a direct inverse of the corresponding {@link #readFile(String)} method.

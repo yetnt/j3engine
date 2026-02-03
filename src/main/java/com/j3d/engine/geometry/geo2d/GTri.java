@@ -37,6 +37,11 @@ public class GTri extends GObject{
 
     private boolean hidden = false;
 
+    public static GTri fromRaw(String id, Color col, GLine legA, GLine legB, GLine legC) {
+        GTri gt = new GTri(col, legA, legB, legC);
+        gt.setId(UUID.fromString(id));
+        return gt;
+    }
     @Override
     public void draw(Graphics2D graphics2D) {
         setPivot(LegA.getStart().getPivot().add(LegB.getStart().getPivot()).add(LegC.getStart().getPivot()).div(3));

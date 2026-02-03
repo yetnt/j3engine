@@ -6,6 +6,7 @@ import com.j3d.engine.react.events.EventEmitter;
 import com.j3d.engine.geometry.geo3d.Vector3;
 
 import java.awt.*;
+import java.util.UUID;
 
 import static com.j3d.Static.camera;
 import static com.j3d.Static.renderer;
@@ -22,6 +23,12 @@ public class GLine extends GObject {
      * The endPoint of this line.
      */
     private final GPoint endPoint;
+
+    public static GLine fromRaw(String id, GPoint A, GPoint B) {
+        GLine gl = new GLine(A, B);
+        gl.setId(UUID.fromString(id));
+        return gl;
+    }
     
     @Override
     public void draw(Graphics2D graphics2D) {

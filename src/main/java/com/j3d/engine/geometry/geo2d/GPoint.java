@@ -12,6 +12,7 @@ import com.j3d.engine.geometry.geo3d.Vector3;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * GPoint is a class that represents a single point in 2D space.
@@ -26,6 +27,11 @@ public class GPoint extends GObject {
      */
     public static final int DIAMETER = 7;
 
+    public static GPoint fromRaw(String id, Vector3 point) {
+        GPoint gp = new GPoint(point);
+        gp.setId(UUID.fromString(id));
+        return gp;
+    }
     @Override
     public void draw(Graphics2D graphics2D) {
         Static.renderer.points.add(this);
