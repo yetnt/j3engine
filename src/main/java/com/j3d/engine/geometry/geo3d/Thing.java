@@ -53,7 +53,7 @@ public class Thing implements Interactable {
 
     private final List<GPoint> points = new ArrayList<>();
 
-    public static double depthConstant = 2.25;
+    private Layer parent;
 
     /** A Flag set by the Thing itself to check whether its part of the background. if so it only draws the
      * axes and the background.
@@ -77,29 +77,17 @@ public class Thing implements Interactable {
         this.id = uuid;
     }
 
-
-    public Thing(Renderer renderer, Layer l, String name) {
-        l = l == null ? renderer.layers.get(1) : l;
-        if (l.getIdentifier().equals(Layer.backgroundId)) {
-            isBg = true;
-        }
-        l.add(this);
-        this.name = name;
-        id = UUID.randomUUID();
-        if (isBg)
-            return;
-        // Add to history for undo/redo functionality
-        final Layer finalL = l;
-        final Thing thing = this;
+    @Override
+    public void invokeSwingHooks() {
         treeNodeIdentity = new TreeNodeIdentity<>(
                 name, this, onSelectCallback
         );
-        treeNode = Static.layerTree.addNode(finalL.getTreeNode(), treeNodeIdentity);
+        treeNode = Static.layerTree.addNode(parent.getTreeNode(), treeNodeIdentity);
         Renderer.history.add(
                 new ConstructorAction() {
                     @Override
                     public void cleanup() throws Exception {
-                        finalL.remove(thing);
+                        parent.remove(thing);
                         thing.instantDelete();
                     }
 
@@ -108,7 +96,7 @@ public class Thing implements Interactable {
                     public Void run() {
                         // will be called after undo, so we need to re-add the thing
                         setForDeletion(false);
-                        DefaultMutableTreeNode node = Static.layerTree.addNode(finalL.getTreeNode(), treeNodeIdentity);
+                        DefaultMutableTreeNode node = Static.layerTree.addNode(parent.getTreeNode(), treeNodeIdentity);
                         thing.treeNode = node;
                         return null;
                     }
@@ -125,6 +113,38 @@ public class Thing implements Interactable {
                     }
                 }
         );
+    }
+
+    public Thing(Renderer renderer, Layer l, String name, boolean invokeSwingHooks) {
+        l = l == null ? renderer.layers.get(1) : l;
+        if (l.getIdentifier().equals(Layer.backgroundId)) {
+            isBg = true;
+        }
+        l.add(this);
+        this.name = name;
+        id = UUID.randomUUID();
+        if (isBg)
+            return;
+        // Add to history for undo/redo functionality
+        parent = l;
+        if (invokeSwingHooks)
+            invokeSwingHooks();
+    }
+
+    public Thing(Renderer renderer, Layer l, String name) {
+        l = l == null ? renderer.layers.get(1) : l;
+        if (l.getIdentifier().equals(Layer.backgroundId)) {
+            isBg = true;
+        }
+        l.add(this);
+        this.name = name;
+        id = UUID.randomUUID();
+        if (isBg)
+            return;
+        // Add to history for undo/redo functionality
+        parent = l;
+        invokeSwingHooks();
+
     }
 
     /**

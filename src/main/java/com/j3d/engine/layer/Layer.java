@@ -70,17 +70,10 @@ public class Layer extends ArrayList<Thing> implements Interactable {
         return layer;
     }
 
-    /**
-     * Default Constructor
-     * @param id The identifier of the layer.
-     */
-    public Layer(String id) {
-        identifier = id;
-        final String idFinal = id;
-        if (id.equals(backgroundId))
-            return; // Do not follow through.
+    @Override
+    public void invokeSwingHooks() {
         treeNodeIdentity = new TreeNodeIdentity<>(
-                id, this, onSelectCallback);
+                identifier, this, onSelectCallback);
         treeNode = Static.layerTree.addNode(null, treeNodeIdentity);
         Renderer.history.add(
                 new ConstructorAction() {
@@ -95,8 +88,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
                     @Override
                     public Void run() {
                         layer.setForDeletion(false);
-                        DefaultMutableTreeNode node = Static.layerTree.addNode(null, treeNodeIdentity);
-                        layer.treeNode = node;
+                        layer.treeNode = Static.layerTree.addNode(null, treeNodeIdentity);
                         return null;
                     }
 
@@ -108,10 +100,36 @@ public class Layer extends ArrayList<Thing> implements Interactable {
 
                     @Override
                     public String getDescription() {
-                        return "Construct:Layer-" + id;
+                        return "Construct:Layer-" + identifier;
                     }
                 }
         );
+    }
+
+    /**
+     * Default Constructor
+     * @param id The identifier of the layer.
+     * @param invokeSwingHooks Whether to invoke swing hooks
+     */
+    public Layer(String id, boolean invokeSwingHooks) {
+        identifier = id;
+        final String idFinal = id;
+        if (id.equals(backgroundId))
+            return; // Do not follow through.
+        if (invokeSwingHooks)
+            invokeSwingHooks();
+    }
+
+    /**
+     * Default Constructor
+     * @param id The identifier of the layer.
+     */
+    public Layer(String id) {
+        identifier = id;
+        final String idFinal = id;
+        if (id.equals(backgroundId))
+            return; // Do not follow through.
+        invokeSwingHooks();
     }
 
     /**

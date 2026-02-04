@@ -5,6 +5,7 @@ import com.j3d.engine.DebugDump;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.geometry.geo2d.GTri;
 import com.j3d.engine.geometry.geo3d.Camera;
+import com.j3d.threads.LongTask;
 import com.j3d.ui.J3DTheme;
 
 import javax.swing.*;
@@ -43,8 +44,28 @@ public class ToolboxButtons {
             Static.layerTree.setVisible(!Static.layerTree.isVisible());
         });
         // another for exmaple
-        register("Another Button", e -> {
-            System.out.println("Another Button Clicked");
+        register("Toggle Throbber", e -> {
+            String nString = JOptionPane.showInputDialog("Input time in ms to sleep");
+            if (nString == null) return;
+            int n = Integer.parseInt(nString);
+            LongTask task = new LongTask(
+                    t -> {
+                        int max = 10;
+                        t.progressStart("Doing", max);
+                        try {
+                            for (int i = 0; i < max; i++) {
+                                Thread.sleep(n);
+                                t.updateProgress(i);
+                            }
+                        } catch (InterruptedException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    },
+                    t -> {
+                        // No cleanup needed.
+                    }
+            );
+            task.run();
         });
         register("Dump to Debug", e -> {
             long current = System.currentTimeMillis();

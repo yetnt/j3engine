@@ -84,4 +84,17 @@ public interface Interactable {
      * @return The callback
      */
     BiConsumer<? extends Interactable, DefaultMutableTreeNode> getOnSelect();
+
+    /**
+     * A method to initialise anything swing related within the constructor.
+     * This is typically called within the Interactable's constructor who needs to
+     * create an object outside the EDT thread.
+     * <p>
+     *     A use case (the current use case) would be when an Interactable is loaded
+     *     from disk to memory and the {@link com.j3d.ui.util.Throbber} dialog is
+     *     blocking the EDT thread. After the throbber has finished, you may call invokeSwingHooks safely
+     *     rather than fighting with a blocked EDT thread.
+     * </p>
+     */
+    void invokeSwingHooks();
 }
