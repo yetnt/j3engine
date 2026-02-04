@@ -24,20 +24,20 @@ public interface FileProtocol {
 
     /**
      * Reads a file from the specified path and returns its content as an object of type T. This should be
-     * a direct inverse of the corresponding {@link #writeFile(String, ArrayList)} method.
+     * a direct inverse of the corresponding {@link #writeFile(String, String, ArrayList)} method.
      * @param path The path to the file to be read.
      * @return The content of the file as an object of type T.
      * @param <T> The type of the object to be returned.
      */
-    <T extends ArrayList> T readFile(String path);
+    <T extends ArrayList> T readFile(String path, String name);
     /**
      * Writes the provided data to a file at the specified path. This should be
-     * a direct inverse of the corresponding {@link #readFile(String)} method.
+     * a direct inverse of the corresponding {@link #readFile(String, String)} method.
      * @param path The path to the file to be written.
      * @param data The data to be written to the file.
      * @param <T> The type of the data to be written, which must extend ArrayList.
      */
-    <T extends ArrayList> void writeFile(String path, T data);
+    <T extends ArrayList> void writeFile(String path, String name, T data);
 
     /**
      * Gets a Consumer that writes the protocol-specific header information

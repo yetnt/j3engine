@@ -1,5 +1,8 @@
 package com.j3d.files;
 
+import com.j3d.J3DSettings;
+import com.j3d.Static;
+import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.geo2d.GLine;
 import com.j3d.engine.geometry.geo2d.GPoint;
 import com.j3d.engine.geometry.geo2d.GTri;
@@ -9,14 +12,16 @@ import com.j3d.engine.layer.Layer;
 import com.j3d.engine.layer.LayerList;
 import com.j3d.files.protocol.FileProtocol;
 import com.j3d.files.protocol.GenericFileProtocol;
+import com.j3d.ui.engine.EngineFrame;
+import com.j3d.utility.HashMultiMap;
 import com.j3d.utility.Pair;
 
 import java.awt.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -55,6 +60,10 @@ import java.util.function.Consumer;
  *     <ul>For each triangle:
  *         <ul>Triangle UUID (UTF-8)</ul>
  *         <ul>Thing Parent UUID (UTF-8)</ul>
+ *         <ul>Colour Red (int)</ul>
+ *         <ul>Colour Green (int)</ul>
+ *         <ul>Colour Blue (int)</ul>
+ *         <ul>Colour Alpha (int)</ul>
  *         <ul>Line 1 UUID (UTF-8)</ul>
  *         <ul>Line 2 UUID (UTF-8)</ul>
  *         <ul>Line 3 UUID (UTF-8)</ul>
@@ -85,7 +94,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
     }
 
     @Override
-    public <T extends ArrayList> void writeFile(String path, T data) {
+    public <T extends ArrayList> void writeFile(String path, String name, T data) {
         Consumer<DataOutputStream> fileWriter = dos -> {
             try {
                 writeHeader(dos); // Write J3D file header
@@ -178,7 +187,11 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+
+            J3DSettings.log.println("Wrote project file successfully to " + path);
         };
+
+        FilesUtility.writeBinary(path, name, fileWriter);
     }
 
     /**
@@ -189,14 +202,15 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
      * @param <T> The type of ArrayList to be returned.
      */
     @Override
-    public <T extends ArrayList> T readFile(String path) {
+    public <T extends ArrayList> T readFile(String path, String name) {
         ArrayList<Boolean> success = new ArrayList<>(1);
 
         final HashMap<String, Layer> layersMap = new HashMap<>();
-        final HashMap<String, GPoint> pointsMap = new HashMap<>();
-        final HashMap<String, GLine> linesMap = new HashMap<>();
-        final HashMap<String, GTri> trisMap = new HashMap<>();
-        final HashMap<String, Thing> thingsMap = new HashMap<>();
+        final HashMultiMap<String, GPoint> pointsMap = new HashMultiMap<>();
+        final HashMultiMap<String, GLine> linesMap = new HashMultiMap<>();
+        final HashMultiMap<String, GTri> trisMap = new HashMultiMap<>();
+
+        Static.renderer.layers.removeIf(l -> !Objects.equals(l.getIdentifier(), Layer.backgroundId));
 
         Consumer<DataInputStream> fileReader = dis -> {
             try {
@@ -204,8 +218,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                 getHeaderReader().accept(dis); // Read PROJECT file header
 
                 int numLayers = dis.readInt(); // Read number of layers
-                int layersOffset = numLayers * 2; // each layer has 1 UTF and 1 boolean
-                for (int i = 0; i < layersOffset; i++) {
+                for (int i = 0; i < numLayers; i++) {
                     String layerId = dis.readUTF(); // Read layer identifier
                     boolean isHidden = dis.readBoolean(); // Read layer hidden state
                     layersMap.put(layerId, Layer.fromRaw(layerId, isHidden));
@@ -219,7 +232,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                     double y = dis.readDouble(); // Read Y Coordinate
                     double z = dis.readDouble(); // Read Z Coordinate
                     // Create and store point as needed
-                    pointsMap.put(parentThingUUID, GPoint.fromRaw(pointUUID, new Vector3(x, y, z)));
+                    pointsMap.putValue(parentThingUUID, GPoint.fromRaw(pointUUID, new Vector3(x, y, z)));
                 }
 
                 int numLines = dis.readInt(); // Read number of lines
@@ -230,17 +243,19 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                     String endPointUUID = dis.readUTF();
                     // Create and store line as needed
                     GPoint startPoint = pointsMap.values().stream()
+                            .flatMap(Collection::stream)
                             .filter(p -> p.getId().toString().equals(startPointUUID))
                             .findFirst()
                             .orElse(null);
                     GPoint endPoint = pointsMap.values().stream()
+                            .flatMap(Collection::stream)
                             .filter(p -> p.getId().toString().equals(endPointUUID))
                             .findFirst()
                             .orElse(null);
                     if (startPoint == null || endPoint == null)
                         throw new IOException("Invalid line definition: missing points");
 
-                    linesMap.put(parentThingUUID, GLine.fromRaw(lineUUID, startPoint, endPoint));
+                    linesMap.putValue(parentThingUUID, GLine.fromRaw(lineUUID, startPoint, endPoint));
                 }
 
                 int numTris = dis.readInt(); // Read number of triangles
@@ -255,18 +270,58 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                     String legAUUID = dis.readUTF();
                     String legBUUID = dis.readUTF();
                     String legCUUID = dis.readUTF();
+                    GLine legA = linesMap.values().stream()
+                            .flatMap(Collection::stream)
+                            .filter(l -> l.getId().toString().equals(legAUUID))
+                            .findFirst()
+                            .orElse(null);
+                    GLine legB = linesMap.values().stream()
+                            .flatMap(Collection::stream)
+                            .filter(l -> l.getId().toString().equals(legBUUID))
+                            .findFirst()
+                            .orElse(null);
+                    GLine legC = linesMap.values().stream()
+                            .flatMap(Collection::stream)
+                            .filter(l -> l.getId().toString().equals(legCUUID))
+                            .findFirst()
+                            .orElse(null);
+                    if (legA == null || legB == null || legC == null)
+                        throw new IOException("Invalid triangle definition: missing legs");
+                    trisMap.putValue(parentThingUUID, GTri.fromRaw(triUUID, triColor, legA, legB, legC));
                     // Create and store triangle as needed
                 }
 
                 for (int i = 0; i < numLayers; i++) {
                     int layerIndex = dis.readInt(); // layer index
-                    // Retrieve layer by index as needed
-                    // Read things in layer as needed
+                    Layer l = layersMap.values().stream()
+                            .filter(layer -> layer.getIdentifier().equals(layersMap.keySet().toArray()[layerIndex]))
+                            .findFirst()
+                            .orElse(null);
+                    if (l == null) throw new IOException("Invalid layer index: " + layerIndex);
+                    int numThingsInLayer = dis.readInt();
+                    for (int j = 0; j < numThingsInLayer; j++) {
+                        String thingUUID = dis.readUTF();
+                        String thingName = dis.readUTF();
+                        boolean thingHidden = dis.readBoolean();
+                        Thing thing = Thing.fromRaw(thingName, thingUUID, thingHidden, l, Static.renderer)
+                                .addObjs(
+                                        pointsMap.getValues(thingUUID).toArray(new GPoint[0])
+                                )
+                                .addObjs(
+                                        linesMap.getValues(thingUUID).toArray(new GLine[0])
+                                )
+                                .addObjs(
+                                        trisMap.getValues(thingUUID).toArray(new GTri[0])
+                                );
+                    }
                 }
+
+                J3DSettings.log.println("Project file loaded successfully from " + path);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         };
+        FilesUtility.readBinary(path, name, fileReader);
         success.add(true);
         return (T) success;
     }

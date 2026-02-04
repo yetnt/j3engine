@@ -215,6 +215,11 @@ public class EngineFrame extends javax.swing.JFrame {
 
         openProjectJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         openProjectJMenuItem.setText("Save");
+        openProjectJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openProjectJMenuItemActionPerformed(evt);
+            }
+        });
         jMenu1.add(openProjectJMenuItem);
 
         jMenuItem2.setText("Open Project");
@@ -226,6 +231,11 @@ public class EngineFrame extends javax.swing.JFrame {
         jMenu1.add(jMenuItem2);
 
         newProjectJMenuItem.setText("New Project");
+        newProjectJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newProjectJMenuItemActionPerformed(evt);
+            }
+        });
         jMenu1.add(newProjectJMenuItem);
 
         jMenuBar1.add(jMenu1);
@@ -360,6 +370,14 @@ public class EngineFrame extends javax.swing.JFrame {
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void openProjectJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openProjectJMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_openProjectJMenuItemActionPerformed
+
+    private void newProjectJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newProjectJMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_newProjectJMenuItemActionPerformed
 
     /**
      * @param args the command line arguments

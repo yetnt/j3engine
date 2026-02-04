@@ -33,7 +33,7 @@ public class Thing implements Interactable {
     private Vector3 centroid;
 
     /** The unique identifier for this Thing. */
-    private final UUID id;
+    private UUID id;
 
     private String name = "Thing";
     private final BiConsumer<Thing, DefaultMutableTreeNode>  onSelectCallback =
@@ -65,6 +65,17 @@ public class Thing implements Interactable {
 
     private TreeNodeIdentity<Thing> treeNodeIdentity;
     private DefaultMutableTreeNode treeNode;
+
+    public static Thing fromRaw(String name, String id, boolean hidden, Layer l, Renderer renderer) {
+        Thing t = new Thing(renderer, l, name);
+        t.setHidden(hidden);
+        t.setId(UUID.fromString(id));
+        return t;
+    }
+
+    private void setId(UUID uuid) {
+        this.id = uuid;
+    }
 
 
     public Thing(Renderer renderer, Layer l, String name) {

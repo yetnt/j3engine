@@ -110,10 +110,10 @@ public class FilesUtility {
         }
     }
 
-    public static void readBinary(String path, Consumer<DataInputStream> consumer) {
+    public static void readBinary(String path, String name, Consumer<DataInputStream> consumer) {
         try (DataInputStream in = new DataInputStream(
                 new BufferedInputStream(
-                        new FileInputStream(path)))) {
+                        new FileInputStream(new File(path, name))))) {
 
             consumer.accept(in);
 

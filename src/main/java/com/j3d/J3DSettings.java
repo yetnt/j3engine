@@ -7,6 +7,7 @@ import com.j3d.engine.draw.tris.TriangleSortMethod;
 import com.j3d.engine.geometry.Dimension;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
+import com.j3d.utility.Pair;
 
 public class J3DSettings {
 
@@ -51,6 +52,12 @@ public class J3DSettings {
      */
     private static ViewType viewType = ViewType.NORMAL;
     public static double cameraMoveSpeed = 0.3;
+    /**
+     * The current project open in the engine.
+     * First element is the project path
+     * Second element is the project file name
+     */
+    public static Pair<String, String> project = new Pair<>("", "");
 
     public static TriangleSortMethod getTriangleSortMethod() {
         return triangleSortMethod;
