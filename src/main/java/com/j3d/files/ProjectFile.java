@@ -13,6 +13,7 @@ import com.j3d.engine.layer.LayerList;
 import com.j3d.files.protocol.FileProtocol;
 import com.j3d.files.protocol.GenericFileProtocol;
 import com.j3d.ui.engine.EngineFrame;
+import com.j3d.ui.util.Throbber;
 import com.j3d.utility.HashMultiMap;
 import com.j3d.utility.Pair;
 
@@ -91,6 +92,11 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
     @Override
     public int getProtocolVersion() {
         return 1;
+    }
+
+    @Override
+    public String getExtension() {
+        return "j3p";
     }
 
     @Override
@@ -202,7 +208,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
      * @param <T> The type of ArrayList to be returned.
      */
     @Override
-    public <T extends ArrayList> T readFile(String path, String name) {
+    public <T extends ArrayList> T readFile(String path, String name, Throbber throbber) {
         ArrayList<Boolean> success = new ArrayList<>(1);
 
         final HashMap<String, Layer> layersMap = new HashMap<>();
@@ -218,13 +224,16 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                 getHeaderReader().accept(dis); // Read PROJECT file header
 
                 int numLayers = dis.readInt(); // Read number of layers
+                throbber.progressStart("Reading layers", numLayers);
                 for (int i = 0; i < numLayers; i++) {
                     String layerId = dis.readUTF(); // Read layer identifier
                     boolean isHidden = dis.readBoolean(); // Read layer hidden state
                     layersMap.put(layerId, Layer.fromRaw(layerId, isHidden));
+                    throbber.updateProgress(i + 1);
                 }
 
                 int numPoints = dis.readInt(); // Read number of points
+                throbber.progressStart("Reading points", numPoints);
                 for (int i = 0; i < numPoints; i++) {
                     String pointUUID = dis.readUTF(); // Read Point UUID
                     String parentThingUUID = dis.readUTF(); // Read Parent Thing UUID
@@ -233,9 +242,11 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                     double z = dis.readDouble(); // Read Z Coordinate
                     // Create and store point as needed
                     pointsMap.putValue(parentThingUUID, GPoint.fromRaw(pointUUID, new Vector3(x, y, z)));
+                    throbber.updateProgress(i + 1);
                 }
 
                 int numLines = dis.readInt(); // Read number of lines
+                throbber.progressStart("Reading lines", numLines);
                 for (int i = 0; i < numLines; i++) {
                     String lineUUID = dis.readUTF();
                     String parentThingUUID = dis.readUTF();
@@ -256,9 +267,11 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                         throw new IOException("Invalid line definition: missing points");
 
                     linesMap.putValue(parentThingUUID, GLine.fromRaw(lineUUID, startPoint, endPoint));
+                    throbber.updateProgress(i + 1);
                 }
 
                 int numTris = dis.readInt(); // Read number of triangles
+                throbber.progressStart("Reading triangles", numTris);
                 for (int i = 0; i < numTris; i++) {
                     String triUUID = dis.readUTF();
                     String parentThingUUID = dis.readUTF();
@@ -288,7 +301,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                     if (legA == null || legB == null || legC == null)
                         throw new IOException("Invalid triangle definition: missing legs");
                     trisMap.putValue(parentThingUUID, GTri.fromRaw(triUUID, triColor, legA, legB, legC));
-                    // Create and store triangle as needed
+                    throbber.updateProgress(i + 1);
                 }
 
                 for (int i = 0; i < numLayers; i++) {
@@ -299,6 +312,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                             .orElse(null);
                     if (l == null) throw new IOException("Invalid layer index: " + layerIndex);
                     int numThingsInLayer = dis.readInt();
+                    throbber.progressStart("Reading things in layer " + l.getIdentifier(), numThingsInLayer);
                     for (int j = 0; j < numThingsInLayer; j++) {
                         String thingUUID = dis.readUTF();
                         String thingName = dis.readUTF();
@@ -313,6 +327,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                                 .addObjs(
                                         trisMap.getValues(thingUUID).toArray(new GTri[0])
                                 );
+                        throbber.updateProgress(j + 1);
                     }
                 }
 

@@ -57,7 +57,7 @@ public class J3DSettings {
      * First element is the project path
      * Second element is the project file name
      */
-    public static Pair<String, String> project = new Pair<>("", "");
+    private static Pair<String, String> project;
 
     public static TriangleSortMethod getTriangleSortMethod() {
         return triangleSortMethod;
@@ -100,5 +100,13 @@ public class J3DSettings {
     }
     public static void setViewType(ViewType viewType) {
         J3DSettings.viewType = viewType;
+    }
+
+    public static Pair<String, String> getProject() {
+        return project;
+    }
+
+    public static void setProject(String path, String name) {
+        project = new Pair<>(path, name);
     }
 }

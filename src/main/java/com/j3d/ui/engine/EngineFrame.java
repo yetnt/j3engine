@@ -20,6 +20,8 @@ import com.j3d.engine.interact.input.mouse.MouseOwner;
 import com.j3d.engine.interact.input.mouse.NoMouseOwner;
 import com.j3d.engine.interact.selection.SelectionManager;
 //import com.j3d.jaiva.Testing;
+import com.j3d.files.FilesUtility;
+import com.j3d.files.ProjectFile;
 import com.j3d.ui.Cursors;
 import com.j3d.ui.tb.Toolbox;
 //import com.jaiva.JBundler;
@@ -179,8 +181,8 @@ public class EngineFrame extends javax.swing.JFrame {
         mainPanel = new J3DPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        openProjectJMenuItem = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        saveProjectJMenuItem = new javax.swing.JMenuItem();
+        openProjectMenuItem = new javax.swing.JMenuItem();
         newProjectJMenuItem = new javax.swing.JMenuItem();
         editJMenu = new javax.swing.JMenu();
         undoJMenuItem = new javax.swing.JMenuItem();
@@ -213,22 +215,22 @@ public class EngineFrame extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
-        openProjectJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        openProjectJMenuItem.setText("Save");
-        openProjectJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        saveProjectJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        saveProjectJMenuItem.setText("Save");
+        saveProjectJMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openProjectJMenuItemActionPerformed(evt);
+                saveProjectJMenuItemActionPerformed(evt);
             }
         });
-        jMenu1.add(openProjectJMenuItem);
+        jMenu1.add(saveProjectJMenuItem);
 
-        jMenuItem2.setText("Open Project");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        openProjectMenuItem.setText("Open Project");
+        openProjectMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                openProjectMenuItemActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        jMenu1.add(openProjectMenuItem);
 
         newProjectJMenuItem.setText("New Project");
         newProjectJMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -367,13 +369,24 @@ public class EngineFrame extends javax.swing.JFrame {
         Static.mainFrame.repaint();
     }//GEN-LAST:event_viewAsNormalJMenuItemActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void openProjectMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openProjectMenuItemActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_openProjectMenuItemActionPerformed
 
-    private void openProjectJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openProjectJMenuItemActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_openProjectJMenuItemActionPerformed
+    private void saveProjectJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveProjectJMenuItemActionPerformed
+        if (J3DSettings.getProject() == null) {
+            String fileName = JOptionPane.showInputDialog("Project name?");
+            fileName = fileName == null ? "project1" : fileName;
+
+            String folder = FilesUtility.folderChooser(Static.mainFrame);
+
+            J3DSettings.log.println("Picked the location " + folder + " with the file name " + fileName);
+
+            J3DSettings.setProject(folder, fileName);
+        }
+
+        new ProjectFile().writeFile(J3DSettings.getProject().first, J3DSettings.getProject().second + ".j3p", Static.renderer.layers);
+    }//GEN-LAST:event_saveProjectJMenuItemActionPerformed
 
     private void newProjectJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newProjectJMenuItemActionPerformed
         // TODO add your handling code here:
@@ -490,16 +503,16 @@ public class EngineFrame extends javax.swing.JFrame {
     private javax.swing.JMenu editJMenu;
     private javax.swing.JMenu jMenu1;
     public javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem2;
     public static javax.swing.JPanel mainPanel;
     private javax.swing.JMenu mouseJMenu;
     private javax.swing.JMenuItem newProjectJMenuItem;
-    private javax.swing.JMenuItem openProjectJMenuItem;
+    private javax.swing.JMenuItem openProjectMenuItem;
     private javax.swing.JMenuItem redoJMenuItem;
     private javax.swing.JMenuItem redrawJMenuItem;
     private javax.swing.JMenuItem resetCameraJMenuItem;
     private javax.swing.JMenuItem resetOrientationJMenuItem;
     private javax.swing.JMenuItem resetPositionJMenuItem;
+    private javax.swing.JMenuItem saveProjectJMenuItem;
     private javax.swing.JMenuItem undoJMenuItem;
     private javax.swing.JMenuItem viewAsNormalJMenuItem;
     private javax.swing.JMenuItem viewAsWireframeJMenuItem;

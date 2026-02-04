@@ -31,6 +31,7 @@ public class Throbber extends javax.swing.JDialog {
         setTaskTitle(title);
         SwingUtilities.invokeLater(() -> {
             jProgressBar.setMaximum(maxProgress);
+            jProgressBar.setValue(0);
         });
     }
     
