@@ -110,7 +110,7 @@ public class FilesUtility {
         }
     }
 
-    public static void readBinary(String path, String name, Consumer<DataInputStream> consumer) {
+    public static void readBinary(String path, String name, Consumer<DataInputStream> consumer) throws IOException {
         try (DataInputStream in = new DataInputStream(
                 new BufferedInputStream(
                         new FileInputStream(new File(path, name))))) {
@@ -118,7 +118,7 @@ public class FilesUtility {
             consumer.accept(in);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 }

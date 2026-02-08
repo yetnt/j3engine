@@ -48,7 +48,7 @@ public class ToolboxButtons {
             String nString = JOptionPane.showInputDialog("Input time in ms to sleep");
             if (nString == null) return;
             int n = Integer.parseInt(nString);
-            LongTask task = new LongTask(
+            LongTask<Void> task = new LongTask<>(
                     t -> {
                         int max = 10;
                         t.progressStart("Doing", max);
@@ -60,8 +60,9 @@ public class ToolboxButtons {
                         } catch (InterruptedException ex) {
                             throw new RuntimeException(ex);
                         }
+                        return null;
                     },
-                    t -> {
+                    (t, i)-> {
                         // No cleanup needed.
                     }
             );

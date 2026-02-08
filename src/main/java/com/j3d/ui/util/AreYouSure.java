@@ -4,6 +4,10 @@
  */
 package com.j3d.ui.util;
 
+import com.j3d.ui.J3DTheme;
+
+import java.awt.*;
+
 /**
  *
  * @author ACER
@@ -11,6 +15,13 @@ package com.j3d.ui.util;
 public class AreYouSure extends javax.swing.JDialog {
     
     private boolean proceed = false;
+
+    public AreYouSure(Frame parent, boolean modal, String msg) {
+        super(parent, modal);
+        initComponents();
+        infoJLabel.setText(msg);
+        setLocationRelativeTo(parent);
+    }
 
     /**
      * Creates new form AreYouSure
@@ -33,9 +44,11 @@ public class AreYouSure extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         yesToggle = new javax.swing.JToggleButton();
         noToggle = new javax.swing.JToggleButton();
+        infoJLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Are you for real rn");
@@ -43,50 +56,76 @@ public class AreYouSure extends javax.swing.JDialog {
         setModal(true);
         setType(java.awt.Window.Type.POPUP);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        jLabel1.setText("ARE YOU SURE????");
+        jPanel1.setBackground(J3DTheme.DARK_SLATE_GREY.color());
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel1.setForeground(J3DTheme.ASH_GREY.color());
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Are You Sure?");
+
+        yesToggle.setBackground(J3DTheme.CHARCOAL_BLUE.color().darker());
+        yesToggle.setForeground(J3DTheme.ASH_GREY.color());
         yesToggle.setText("Hell Yeah");
+        yesToggle.setToolTipText("Click this to follow through with the prompt.");
         yesToggle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 yesToggleActionPerformed(evt);
             }
         });
 
+        noToggle.setBackground(J3DTheme.CHARCOAL_BLUE.color());
+        noToggle.setForeground(J3DTheme.ASH_GREY.color());
         noToggle.setText("Nah fam");
+        noToggle.setToolTipText("Click this if you aren't sure you want to continue.");
         noToggle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 noToggleActionPerformed(evt);
             }
         });
 
+        infoJLabel.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        infoJLabel.setForeground(J3DTheme.ASH_GREY.color());
+        infoJLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        infoJLabel.setText("This label needs to be changed. if you see it, it;s chaai.");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(85, 85, 85)
+                .addComponent(yesToggle)
+                .addGap(50, 50, 50)
+                .addComponent(noToggle)
+                .addContainerGap(99, Short.MAX_VALUE))
+            .addComponent(infoJLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabel1)
+                .addGap(26, 26, 26)
+                .addComponent(infoJLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(yesToggle)
+                    .addComponent(noToggle))
+                .addGap(34, 34, 34))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(yesToggle)
-                        .addGap(50, 50, 50)
-                        .addComponent(noToggle)
-                        .addGap(50, 50, 50))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(yesToggle)
-                    .addComponent(noToggle))
-                .addContainerGap(20, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         getAccessibleContext().setAccessibleDescription("");
@@ -147,7 +186,9 @@ public class AreYouSure extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel infoJLabel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JToggleButton noToggle;
     private javax.swing.JToggleButton yesToggle;
     // End of variables declaration//GEN-END:variables

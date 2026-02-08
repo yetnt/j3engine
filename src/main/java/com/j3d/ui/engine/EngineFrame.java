@@ -7,6 +7,7 @@ package com.j3d.ui.engine;
 import com.j3d.Static;
 import com.j3d.Executor;
 import com.j3d.J3DSettings;
+import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.interact.input.KeyBindings;
 import com.j3d.engine.Logger;
 import com.j3d.engine.Renderer;
@@ -22,17 +23,26 @@ import com.j3d.engine.interact.selection.SelectionManager;
 //import com.j3d.jaiva.Testing;
 import com.j3d.files.FilesUtility;
 import com.j3d.files.ProjectFile;
+import com.j3d.threads.LongTask;
 import com.j3d.ui.Cursors;
 import com.j3d.ui.tb.Toolbox;
 //import com.jaiva.JBundler;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 
 import static com.j3d.J3DSettings.jMenuBarOffsetY;
 import com.j3d.engine.draw.ViewType;
+import com.j3d.ui.util.AreYouSure;
 
 /**
  *
@@ -370,7 +380,58 @@ public class EngineFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_viewAsNormalJMenuItemActionPerformed
 
     private void openProjectMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openProjectMenuItemActionPerformed
-        // TODO add your handling code here:
+        AreYouSure ays = new AreYouSure(Static.mainFrame, true,
+                "Whatever is on screen currently will be discarded.");
+        ays.setVisible(true);
+
+        if (!ays.canProceed()) return;
+
+        Static.renderer.resetScene();
+
+        String path = FilesUtility.fileChooser(jfcConfig -> {
+            jfcConfig.setDialogTitle("choose a filel");
+            jfcConfig.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            jfcConfig.setAcceptAllFileFilterUsed(false);
+            jfcConfig.setFileFilter(
+                    new FileFilter() {
+                        @Override
+                        public boolean accept(File f) {
+                            return f.getName().endsWith(".j3p") || !f.isFile();
+                        }
+
+                        @Override
+                        public String getDescription() {
+                            return "J3D Project File";
+                        }
+                    }
+            );
+        }, Static.mainFrame);
+        if (path == null) return;
+        J3DSettings.log.println(path);
+        Path p = Paths.get(path);
+        String fileName = p.getFileName().toString();
+        String fileDir = p.getParent().toString();
+
+        J3DSettings.setProject(fileDir, fileName);
+
+        LongTask<ArrayList<Interactable>> t = new LongTask<>(
+                ta -> {
+                    ArrayList<Interactable> a = null;
+                    try {
+                        a = new ProjectFile()
+                                .readFile(fileDir, fileName, ta);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    System.out.println(a.size());
+                    return a;
+                },
+                (tb, i) -> {
+                    i.forEach(Interactable::invokeSwingHooks);
+                }
+        );
+
+        t.run();
     }//GEN-LAST:event_openProjectMenuItemActionPerformed
 
     private void saveProjectJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveProjectJMenuItemActionPerformed

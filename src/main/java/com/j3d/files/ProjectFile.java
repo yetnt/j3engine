@@ -8,6 +8,7 @@ import com.j3d.engine.geometry.geo2d.GPoint;
 import com.j3d.engine.geometry.geo2d.GTri;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.Vector3;
+import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.layer.LayerList;
 import com.j3d.files.protocol.FileProtocol;
@@ -200,6 +201,10 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
         FilesUtility.writeBinary(path, name, fileWriter);
     }
 
+    private static void o(String message) {
+        System.out.println(message);
+    }
+
     /**
      * Reads a project file from the specified path and constructs the entire
      * project structure including layers and things.
@@ -208,13 +213,17 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
      * @param <T> The type of ArrayList to be returned.
      */
     @Override
-    public <T extends ArrayList> T readFile(String path, String name, Throbber throbber) {
+    public <T extends ArrayList> T readFile(String path, String name, Throbber throbber) throws IOException {
+        final ArrayList<Interactable> interactables =  new ArrayList<>();
         ArrayList<Boolean> success = new ArrayList<>(1);
 
         final HashMap<String, Layer> layersMap = new HashMap<>();
-        final HashMultiMap<String, GPoint> pointsMap = new HashMultiMap<>();
-        final HashMultiMap<String, GLine> linesMap = new HashMultiMap<>();
-        final HashMultiMap<String, GTri> trisMap = new HashMultiMap<>();
+        final HashMultiMap<String, GPoint> pointsParentsMap = new HashMultiMap<>();
+        final HashMap<String, GPoint> pointsMap = new HashMap<>();
+        final HashMultiMap<String, GLine> linesParentsMap = new HashMultiMap<>();
+        final HashMap<String, GLine> linesMap = new HashMap<>();
+        final HashMultiMap<String, GTri> trisParentsMap = new HashMultiMap<>();
+        final HashMap<String, GTri> trisMap = new HashMap<>();
 
         Static.renderer.layers.removeIf(l -> !Objects.equals(l.getIdentifier(), Layer.backgroundId));
 
@@ -228,80 +237,74 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                 for (int i = 0; i < numLayers; i++) {
                     String layerId = dis.readUTF(); // Read layer identifier
                     boolean isHidden = dis.readBoolean(); // Read layer hidden state
-                    layersMap.put(layerId, Layer.fromRaw(layerId, isHidden));
+                    Layer l = Layer.fromRaw(layerId, isHidden);
+                    layersMap.put(layerId, l);
                     throbber.updateProgress(i + 1);
+                    interactables.add(l);
                 }
 
                 int numPoints = dis.readInt(); // Read number of points
-                throbber.progressStart("Reading points", numPoints);
-                for (int i = 0; i < numPoints; i++) {
-                    String pointUUID = dis.readUTF(); // Read Point UUID
-                    String parentThingUUID = dis.readUTF(); // Read Parent Thing UUID
-                    double x = dis.readDouble(); // Read X Coordinate
-                    double y = dis.readDouble(); // Read Y Coordinate
-                    double z = dis.readDouble(); // Read Z Coordinate
-                    // Create and store point as needed
-                    pointsMap.putValue(parentThingUUID, GPoint.fromRaw(pointUUID, new Vector3(x, y, z)));
-                    throbber.updateProgress(i + 1);
+                if (numPoints != 0) {
+                    throbber.progressStart("Reading points", numPoints);
+                    for (int i = 0; i < numPoints; i++) {
+                        String pointUUID = dis.readUTF(); // Read Point UUID
+                        String parentThingUUID = dis.readUTF(); // Read Parent Thing UUID
+                        double x = dis.readDouble(); // Read X Coordinate
+                        double y = dis.readDouble(); // Read Y Coordinate
+                        double z = dis.readDouble(); // Read Z Coordinate
+                        GPoint point = GPoint.fromRaw(pointUUID, new Vector3(x, y, z));
+                        pointsParentsMap.putValue(parentThingUUID, point);
+                        pointsMap.put(pointUUID, point);
+                        throbber.updateProgress(i + 1);
+                    }
                 }
 
                 int numLines = dis.readInt(); // Read number of lines
-                throbber.progressStart("Reading lines", numLines);
-                for (int i = 0; i < numLines; i++) {
-                    String lineUUID = dis.readUTF();
-                    String parentThingUUID = dis.readUTF();
-                    String startPointUUID = dis.readUTF();
-                    String endPointUUID = dis.readUTF();
-                    // Create and store line as needed
-                    GPoint startPoint = pointsMap.values().stream()
-                            .flatMap(Collection::stream)
-                            .filter(p -> p.getId().toString().equals(startPointUUID))
-                            .findFirst()
-                            .orElse(null);
-                    GPoint endPoint = pointsMap.values().stream()
-                            .flatMap(Collection::stream)
-                            .filter(p -> p.getId().toString().equals(endPointUUID))
-                            .findFirst()
-                            .orElse(null);
-                    if (startPoint == null || endPoint == null)
-                        throw new IOException("Invalid line definition: missing points");
+                if (numPoints == 0 && numLines != 0)
+                    throw new IOException("Invalid project file: missing points");
 
-                    linesMap.putValue(parentThingUUID, GLine.fromRaw(lineUUID, startPoint, endPoint));
-                    throbber.updateProgress(i + 1);
+                if (numLines != 0) {
+                    throbber.progressStart("Reading lines", numLines);
+                    for (int i = 0; i < numLines; i++) {
+                        String lineUUID = dis.readUTF();
+                        String parentThingUUID = dis.readUTF();
+                        String startPointUUID = dis.readUTF();
+                        String endPointUUID = dis.readUTF();
+                        // Create and store line as needed
+                        GPoint startPoint = pointsMap.get(startPointUUID);
+                        GPoint endPoint = pointsMap.get(endPointUUID);
+                        if (startPoint == null || endPoint == null)
+                            throw new IOException("Invalid line definition: missing points");
+
+                        GLine line = GLine.fromRaw(lineUUID, startPoint, endPoint);
+                        linesParentsMap.putValue(parentThingUUID, line);
+                        linesMap.put(lineUUID, line);
+                        throbber.updateProgress(i + 1);
+                    }
                 }
 
                 int numTris = dis.readInt(); // Read number of triangles
-                throbber.progressStart("Reading triangles", numTris);
-                for (int i = 0; i < numTris; i++) {
-                    String triUUID = dis.readUTF();
-                    String parentThingUUID = dis.readUTF();
-                    int colorR = dis.readInt();
-                    int colorG = dis.readInt();
-                    int colorB = dis.readInt();
-                    int colorA = dis.readInt();
-                    Color triColor = new Color(colorR, colorG, colorB, colorA);
-                    String legAUUID = dis.readUTF();
-                    String legBUUID = dis.readUTF();
-                    String legCUUID = dis.readUTF();
-                    GLine legA = linesMap.values().stream()
-                            .flatMap(Collection::stream)
-                            .filter(l -> l.getId().toString().equals(legAUUID))
-                            .findFirst()
-                            .orElse(null);
-                    GLine legB = linesMap.values().stream()
-                            .flatMap(Collection::stream)
-                            .filter(l -> l.getId().toString().equals(legBUUID))
-                            .findFirst()
-                            .orElse(null);
-                    GLine legC = linesMap.values().stream()
-                            .flatMap(Collection::stream)
-                            .filter(l -> l.getId().toString().equals(legCUUID))
-                            .findFirst()
-                            .orElse(null);
-                    if (legA == null || legB == null || legC == null)
-                        throw new IOException("Invalid triangle definition: missing legs");
-                    trisMap.putValue(parentThingUUID, GTri.fromRaw(triUUID, triColor, legA, legB, legC));
-                    throbber.updateProgress(i + 1);
+                if (numTris != 0) {
+                    throbber.progressStart("Reading triangles", numTris);
+                    for (int i = 0; i < numTris; i++) {
+                        String triUUID = dis.readUTF();
+                        String parentThingUUID = dis.readUTF();
+                        int colorR = dis.readInt();
+                        int colorG = dis.readInt();
+                        int colorB = dis.readInt();
+                        int colorA = dis.readInt();
+                        Color triColor = new Color(colorR, colorG, colorB, colorA);
+                        String legAUUID = dis.readUTF();
+                        String legBUUID = dis.readUTF();
+                        String legCUUID = dis.readUTF();
+                        GLine legA = linesMap.get(legAUUID);
+                        GLine legB = linesMap.get(legBUUID);
+                        GLine legC = linesMap.get(legCUUID);
+                        if (legA == null || legB == null || legC == null)
+                            throw new IOException("Invalid triangle definition: missing legs");
+                        trisParentsMap.putValue(parentThingUUID, GTri.fromRaw(triUUID, triColor, legA, legB, legC));
+                        throbber.updateProgress(i + 1);
+                    }
                 }
 
                 for (int i = 0; i < numLayers; i++) {
@@ -312,6 +315,8 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                             .orElse(null);
                     if (l == null) throw new IOException("Invalid layer index: " + layerIndex);
                     int numThingsInLayer = dis.readInt();
+                    if (numThingsInLayer == 0) continue;
+
                     throbber.progressStart("Reading things in layer " + l.getIdentifier(), numThingsInLayer);
                     for (int j = 0; j < numThingsInLayer; j++) {
                         String thingUUID = dis.readUTF();
@@ -319,14 +324,15 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                         boolean thingHidden = dis.readBoolean();
                         Thing thing = Thing.fromRaw(thingName, thingUUID, thingHidden, l, Static.renderer)
                                 .addObjs(
-                                        pointsMap.getValues(thingUUID).toArray(new GPoint[0])
+                                        pointsParentsMap.getValues(thingUUID).toArray(new GPoint[0])
                                 )
                                 .addObjs(
-                                        linesMap.getValues(thingUUID).toArray(new GLine[0])
+                                        linesParentsMap.getValues(thingUUID).toArray(new GLine[0])
                                 )
                                 .addObjs(
-                                        trisMap.getValues(thingUUID).toArray(new GTri[0])
+                                        trisParentsMap.getValues(thingUUID).toArray(new GTri[0])
                                 );
+                        interactables.add(thing);
                         throbber.updateProgress(j + 1);
                     }
                 }
@@ -337,8 +343,8 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
             }
         };
         FilesUtility.readBinary(path, name, fileReader);
-        success.add(true);
-        return (T) success;
+//        success.add(true);
+        return (T) interactables;
     }
 
     @Override

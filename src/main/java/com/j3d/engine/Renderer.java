@@ -1,5 +1,6 @@
 package com.j3d.engine;
 
+import com.j3d.Static;
 import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.*;
@@ -16,11 +17,8 @@ import com.j3d.engine.react.history.History;
 import com.j3d.ui.J3DTheme;
 
 import java.awt.*;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
@@ -441,5 +439,33 @@ public class Renderer {
                 return;
             }
         }
+    }
+
+    /**
+     * Resets the entire scene by clearing all layers, selections, and unregistering all triangles from the {@link TriStateArea}.
+     * This effectively returns the renderer to an empty state, ready for a new project or scene.
+     */
+    public void resetScene() {
+        getSelected().clear();
+        layers.forEach(layer -> {
+            if (layer.getTreeNode() == null) return;
+            Static.layerTree.removeNode(layer.getTreeNode());
+        });
+        layers.stream()
+                .flatMap(Collection::stream)
+                .forEach(thing -> {
+                    if (thing.getTreeNode() != null)
+                        Static.layerTree.removeNode(thing.getTreeNode());
+                    thing.getObjects().stream()
+                            .filter(o -> o instanceof GTri)
+                            .map(GTri.class::cast)
+                            .forEach(GTri::deleteSelf);
+                    thing.getObjects().clear();
+                });
+        TriStateArea.clearQueue();
+        layers.clear();
+        points.clear();
+        history.clear(); // also clears backup.
+        Static.mainPanel.repaint();
     }
 }
