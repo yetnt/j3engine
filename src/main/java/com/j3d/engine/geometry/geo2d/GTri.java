@@ -68,7 +68,7 @@ public class GTri extends GObject{
     }
 
     private void drawDist() {
-                Static.renderer.scheduleOverlap(g -> {
+                Static.renderer.scheduleOverlap(getId(), g -> {
                             if (J3DSettings.isShowTriDistances()) {
                                 // draw text showing the tris distance from camera
                                 Vector3 triCentroid = this.getPivot();
@@ -273,6 +273,8 @@ public class GTri extends GObject{
         LegA.deleteSelf();
         LegB.deleteSelf();
         LegC.deleteSelf();
+        TriStateArea.unregister(this);
+        Static.renderer.removeOverlap(getId());
         return true;
     }
 }

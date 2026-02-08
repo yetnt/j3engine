@@ -39,7 +39,7 @@ public interface FileProtocol {
      * @return The content of the file as an object of type T.
      * @param <T> The type of the object to be returned.
      */
-    <T extends ArrayList> T readFile(String path, String name, Throbber throbber) throws IOException;
+    <T extends ArrayList> T readFile(String path, String name, Throbber throbber) throws Exception;
     /**
      * Writes the provided data to a file at the specified path. This should be
      * a direct inverse of the corresponding {@link #readFile(String, String, Throbber)} method.

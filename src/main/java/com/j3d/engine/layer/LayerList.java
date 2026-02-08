@@ -3,6 +3,7 @@ package com.j3d.engine.layer;
 import com.j3d.engine.react.actions.VoidAction;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class LayerList extends ArrayList<Layer> {
 
@@ -11,6 +12,12 @@ public class LayerList extends ArrayList<Layer> {
     }
     public LayerList(int initialCapacity) {
         super(initialCapacity);
+    }
+
+    public static LayerList from(List<Layer> collect) {
+        LayerList list = new LayerList();
+        list.addAll(collect);
+        return list;
     }
 
     @Override

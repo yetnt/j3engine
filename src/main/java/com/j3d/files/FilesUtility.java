@@ -110,15 +110,13 @@ public class FilesUtility {
         }
     }
 
-    public static void readBinary(String path, String name, Consumer<DataInputStream> consumer) throws IOException {
+    public static void readBinary(String path, String name, IOSupplier<DataInputStream> consumer) throws Exception {
         try (DataInputStream in = new DataInputStream(
                 new BufferedInputStream(
                         new FileInputStream(new File(path, name))))) {
 
             consumer.accept(in);
 
-        } catch (IOException e) {
-            throw e;
         }
     }
 }

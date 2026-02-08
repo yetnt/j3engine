@@ -46,7 +46,7 @@ public class Renderer {
      * A list of overlap Runnables to be executed after rendering such that it's on top of everything else.
      * This is not for UI but mainly for debugging purposes.
      */
-    private ArrayList<Consumer<Graphics2D>> overlaps = new ArrayList<>();
+    private HashMap<UUID, Consumer<Graphics2D>> overlaps = new HashMap<>();
 
     /**
      * The history manager for undo/redo functionality.
@@ -69,8 +69,8 @@ public class Renderer {
      * Schedules an overlap Runnable to be executed after rendering.
      * @param r The Runnable to execute.
      */
-    public void scheduleOverlap(Consumer<Graphics2D> r) {
-        overlaps.add(r);
+    public void scheduleOverlap(UUID id, Consumer<Graphics2D> r) {
+        overlaps.put(id, r);
     }
 
     /**
@@ -260,7 +260,7 @@ public class Renderer {
         layers.forEach(layer -> layer.draw(graphics));
         TriStateArea.draw(graphics);
         // Draw overlaps
-        for (Consumer<Graphics2D> r : overlaps) {
+        for (Consumer<Graphics2D> r : overlaps.values()) {
             r.accept(graphics);
         }
     }
@@ -463,9 +463,14 @@ public class Renderer {
                     thing.getObjects().clear();
                 });
         TriStateArea.clearQueue();
+        TriStateArea.clearRegistered();
         layers.clear();
         points.clear();
         history.clear(); // also clears backup.
         Static.mainPanel.repaint();
+    }
+
+    public void removeOverlap(UUID id) {
+        overlaps.remove(id);
     }
 }

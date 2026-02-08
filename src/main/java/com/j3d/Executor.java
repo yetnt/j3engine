@@ -117,7 +117,20 @@ public class Executor {
 
         return new Thing(renderer, layer, "Cube").addObjs(
                 A, B, C, D, E, F, G, H, face1tri1, face1tri2, face2tri1, face2tri2, face3tri1, face3tri2, face4tri1, face4tri2,
-                face5tri1, face5tri2, face6tri1, face6tri2
+                face5tri1, face5tri2, face6tri1, face6tri2,
+                face1tri1.getLegA(), face1tri1.getLegB(), face1tri1.getLegC(),
+                face1tri2.getLegA(), face1tri2.getLegB(), face1tri2.getLegC(),
+                face2tri1.getLegA(), face2tri1.getLegB(), face2tri1.getLegC(),
+                face2tri2.getLegA(), face2tri2.getLegB(), face2tri2.getLegC(),
+                face3tri1.getLegA(), face3tri1.getLegB(), face3tri1.getLegC(),
+                face3tri2.getLegA(), face3tri2.getLegB(), face3tri2.getLegC(),
+                face4tri1.getLegA(), face4tri1.getLegB(), face4tri1.getLegC(),
+                face4tri2.getLegA(), face4tri2.getLegB(), face4tri2.getLegC(),
+                face5tri1.getLegA(), face5tri1.getLegB(), face5tri1.getLegC(),
+                face5tri2.getLegA(), face5tri2.getLegB(), face5tri2.getLegC(),
+                face6tri1.getLegA(), face6tri1.getLegB(), face6tri1.getLegC(),
+                face6tri2.getLegA(), face6tri2.getLegB(), face6tri2.getLegC()
+
         );
     }
 }

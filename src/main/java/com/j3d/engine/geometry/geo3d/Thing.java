@@ -2,6 +2,7 @@ package com.j3d.engine.geometry.geo3d;
 
 import com.j3d.J3DSettings;
 import com.j3d.Static;
+import com.j3d.engine.geometry.geo2d.GLine;
 import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.Renderer;
@@ -160,8 +161,10 @@ public class Thing implements Interactable {
                 points.add(p);
             }
         }
-        Vector3 sum = Vector3.reduce(pts, Vector3::add);
-        centroid = sum.div(pts.size());
+        if (!pts.isEmpty()) {
+            Vector3 sum = Vector3.reduce(pts, Vector3::add);
+            centroid = sum.div(pts.size());
+        }
         return this;
     }
 

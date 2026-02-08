@@ -420,7 +420,7 @@ public class EngineFrame extends javax.swing.JFrame {
                     try {
                         a = new ProjectFile()
                                 .readFile(fileDir, fileName, ta);
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
                     System.out.println(a.size());

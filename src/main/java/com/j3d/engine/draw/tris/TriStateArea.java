@@ -87,4 +87,8 @@ public class TriStateArea {
     public static void addToQueue(GTri tri) {
         queue.add(tri);
     }
+
+    public static void clearRegistered() {
+        registered.clear();
+    }
 }

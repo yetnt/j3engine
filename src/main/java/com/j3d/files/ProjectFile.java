@@ -2,7 +2,6 @@ package com.j3d.files;
 
 import com.j3d.J3DSettings;
 import com.j3d.Static;
-import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.geo2d.GLine;
 import com.j3d.engine.geometry.geo2d.GPoint;
 import com.j3d.engine.geometry.geo2d.GTri;
@@ -13,7 +12,6 @@ import com.j3d.engine.layer.Layer;
 import com.j3d.engine.layer.LayerList;
 import com.j3d.files.protocol.FileProtocol;
 import com.j3d.files.protocol.GenericFileProtocol;
-import com.j3d.ui.engine.EngineFrame;
 import com.j3d.ui.util.Throbber;
 import com.j3d.utility.HashMultiMap;
 import com.j3d.utility.Pair;
@@ -25,6 +23,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * ProjectFile is a J3D file protocol implementation for reading and writing
@@ -177,9 +176,15 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                     dos.writeUTF(gt.getLegC().getId().toString());
                 }
 
+                layers = LayerList.from(layers.stream().filter(
+                        thing -> !thing.isForDeletion()
+                ).collect(Collectors.toList()));
+
 
                 for  (int i = 0; i < layers.size(); i++) {
                     dos.writeInt(i); // layer index
+                    var layer = layers.get(i);
+                    dos.writeInt(layer.size());
                     layers.get(i).forEach((thing) -> {
                        // write thing data
                         try {
@@ -195,14 +200,14 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                 throw new RuntimeException(e);
             }
 
-            J3DSettings.log.println("Wrote project file successfully to " + path);
+            msg("Wrote project file successfully to " + path);
         };
 
         FilesUtility.writeBinary(path, name, fileWriter);
     }
 
-    private static void o(String message) {
-        System.out.println(message);
+    private static void msg(String message) {
+        J3DSettings.log.println(message);
     }
 
     /**
@@ -213,11 +218,12 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
      * @param <T> The type of ArrayList to be returned.
      */
     @Override
-    public <T extends ArrayList> T readFile(String path, String name, Throbber throbber) throws IOException {
+    public <T extends ArrayList> T readFile(String path, String name, Throbber throbber) throws Exception {
         final ArrayList<Interactable> interactables =  new ArrayList<>();
         ArrayList<Boolean> success = new ArrayList<>(1);
 
         final HashMap<String, Layer> layersMap = new HashMap<>();
+        final List<Layer> layerOrder = new ArrayList<>();
         final HashMultiMap<String, GPoint> pointsParentsMap = new HashMultiMap<>();
         final HashMap<String, GPoint> pointsMap = new HashMap<>();
         final HashMultiMap<String, GLine> linesParentsMap = new HashMultiMap<>();
@@ -227,23 +233,30 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
 
         Static.renderer.layers.removeIf(l -> !Objects.equals(l.getIdentifier(), Layer.backgroundId));
 
-        Consumer<DataInputStream> fileReader = dis -> {
+        IOSupplier<DataInputStream> fileReader = dis -> {
             try {
+                msg("Reading project file from " + path);
                 readHeader(dis); // Read J3D file header
                 getHeaderReader().accept(dis); // Read PROJECT file header
 
+                msg("Reading layers");
                 int numLayers = dis.readInt(); // Read number of layers
+                msg(numLayers + " layers");
                 throbber.progressStart("Reading layers", numLayers);
                 for (int i = 0; i < numLayers; i++) {
                     String layerId = dis.readUTF(); // Read layer identifier
                     boolean isHidden = dis.readBoolean(); // Read layer hidden state
                     Layer l = Layer.fromRaw(layerId, isHidden);
                     layersMap.put(layerId, l);
+                    layerOrder.add(l);
                     throbber.updateProgress(i + 1);
                     interactables.add(l);
+                    msg("Read layer " + layerId);
                 }
 
+                msg("Reading things");
                 int numPoints = dis.readInt(); // Read number of points
+                msg(numPoints + " points");
                 if (numPoints != 0) {
                     throbber.progressStart("Reading points", numPoints);
                     for (int i = 0; i < numPoints; i++) {
@@ -256,10 +269,13 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                         pointsParentsMap.putValue(parentThingUUID, point);
                         pointsMap.put(pointUUID, point);
                         throbber.updateProgress(i + 1);
+                        msg("Read point " + pointUUID);
                     }
                 }
 
+                msg("Reading lines");
                 int numLines = dis.readInt(); // Read number of lines
+                msg(numLines + " lines");
                 if (numPoints == 0 && numLines != 0)
                     throw new IOException("Invalid project file: missing points");
 
@@ -280,48 +296,59 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                         linesParentsMap.putValue(parentThingUUID, line);
                         linesMap.put(lineUUID, line);
                         throbber.updateProgress(i + 1);
+                        msg("Read line " + lineUUID);
                     }
                 }
 
+                msg("Reading triangles");
                 int numTris = dis.readInt(); // Read number of triangles
+                msg(numTris + " triangles");
                 if (numTris != 0) {
                     throbber.progressStart("Reading triangles", numTris);
                     for (int i = 0; i < numTris; i++) {
                         String triUUID = dis.readUTF();
                         String parentThingUUID = dis.readUTF();
+                        msg("Reading triangle " + triUUID);
                         int colorR = dis.readInt();
                         int colorG = dis.readInt();
                         int colorB = dis.readInt();
                         int colorA = dis.readInt();
+                        msg("Color: " + colorR + ", " + colorG + ", " + colorB + ", " + colorA);
                         Color triColor = new Color(colorR, colorG, colorB, colorA);
                         String legAUUID = dis.readUTF();
                         String legBUUID = dis.readUTF();
                         String legCUUID = dis.readUTF();
+                        msg("Legs: " + legAUUID + ", " + legBUUID + ", " + legCUUID);
                         GLine legA = linesMap.get(legAUUID);
                         GLine legB = linesMap.get(legBUUID);
                         GLine legC = linesMap.get(legCUUID);
-                        if (legA == null || legB == null || legC == null)
+                        if (legA == null || legB == null || legC == null) {
                             throw new IOException("Invalid triangle definition: missing legs");
+                        }
                         trisParentsMap.putValue(parentThingUUID, GTri.fromRaw(triUUID, triColor, legA, legB, legC));
                         throbber.updateProgress(i + 1);
+                        msg("Read triangle " + triUUID);
                     }
                 }
 
+                msg("Reading layers");
                 for (int i = 0; i < numLayers; i++) {
                     int layerIndex = dis.readInt(); // layer index
-                    Layer l = layersMap.values().stream()
-                            .filter(layer -> layer.getIdentifier().equals(layersMap.keySet().toArray()[layerIndex]))
-                            .findFirst()
-                            .orElse(null);
+                    msg("Reading layer " + layerIndex);
+                    Layer l = layerOrder.get(layerIndex);
                     if (l == null) throw new IOException("Invalid layer index: " + layerIndex);
                     int numThingsInLayer = dis.readInt();
+                    msg("\t"+numThingsInLayer + " things");
                     if (numThingsInLayer == 0) continue;
 
                     throbber.progressStart("Reading things in layer " + l.getIdentifier(), numThingsInLayer);
                     for (int j = 0; j < numThingsInLayer; j++) {
                         String thingUUID = dis.readUTF();
+                        msg("\tReading thing " + thingUUID);
                         String thingName = dis.readUTF();
+                        msg("\t\tName: " + thingName);
                         boolean thingHidden = dis.readBoolean();
+                        msg("\t\tHidden: " + thingHidden);
                         Thing thing = Thing.fromRaw(thingName, thingUUID, thingHidden, l, Static.renderer)
                                 .addObjs(
                                         pointsParentsMap.getValues(thingUUID).toArray(new GPoint[0])
@@ -334,13 +361,19 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                                 );
                         interactables.add(thing);
                         throbber.updateProgress(j + 1);
+                        msg("\tRead thing " + thingUUID);
                     }
                 }
 
                 J3DSettings.log.println("Project file loaded successfully from " + path);
+                msg("Project file loaded successfully");
+                // TODO: Fix object ghost state. probably something to do with TriStateArea
+                // (TO reproduce, import a file and then change TriStateArea sort method.)
+                // TODO: Fix selection not working on imported scene.
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+            return null;
         };
         FilesUtility.readBinary(path, name, fileReader);
 //        success.add(true);
