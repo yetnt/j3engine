@@ -269,7 +269,7 @@ public class GTri extends GObject{
 
     @Override
     public boolean deleteSelf() {
-        TriStateArea.unregister(this);
+        super.deleteSelf();
         LegA.deleteSelf();
         LegB.deleteSelf();
         LegC.deleteSelf();

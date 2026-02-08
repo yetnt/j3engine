@@ -65,7 +65,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
      * @return The created Layer.
      */
     public static Layer fromRaw(String id, boolean hidden) {
-        Layer layer = new Layer(id);
+        Layer layer = new Layer(id, false);
         layer.setHidden(hidden);
         return layer;
     }

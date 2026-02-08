@@ -78,6 +78,7 @@ public abstract class GObject extends EventEmitter implements EventListener {
      * @implNote This is meant to be overriden by inheritors.
      */
     public boolean deleteSelf() {
+        this.detachAll();
         return false;
     }
 

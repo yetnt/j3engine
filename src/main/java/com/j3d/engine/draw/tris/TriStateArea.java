@@ -69,6 +69,10 @@ public class TriStateArea {
         );
     }
 
+    public static void clearQueue() {
+        queue.clear();
+    }
+
     public static void draw(Graphics2D g) {
         for  (GTri tri : queue) {
             if (tri.isHidden()) continue;

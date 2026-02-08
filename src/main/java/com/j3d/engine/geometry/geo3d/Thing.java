@@ -67,7 +67,7 @@ public class Thing implements Interactable {
     private DefaultMutableTreeNode treeNode;
 
     public static Thing fromRaw(String name, String id, boolean hidden, Layer l, Renderer renderer) {
-        Thing t = new Thing(renderer, l, name);
+        Thing t = new Thing(renderer, l, name, false);
         t.setHidden(hidden);
         t.setId(UUID.fromString(id));
         return t;

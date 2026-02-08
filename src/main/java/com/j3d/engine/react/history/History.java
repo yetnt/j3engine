@@ -4,6 +4,7 @@ import com.j3d.J3DSettings;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.CleanableAction;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class History extends ArrayList<Action<?>> {
     /**
      * Serial version UID for serialization.
      */
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private static final int MAX_HISTORY_SIZE = 50;
@@ -78,5 +80,11 @@ public class History extends ArrayList<Action<?>> {
 
         backup.clear();
         return super.add(action);
+    }
+
+    @Override
+    public void clear() {
+        super.clear();
+        backup.clear();
     }
 }

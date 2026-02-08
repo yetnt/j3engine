@@ -122,6 +122,7 @@ public class GLine extends GObject {
 
     @Override
     public boolean deleteSelf() {
+        super.deleteSelf();
         this.startPoint.deleteSelf();
         this.endPoint.deleteSelf();
         return true;

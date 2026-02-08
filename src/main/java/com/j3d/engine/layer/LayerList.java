@@ -13,6 +13,13 @@ public class LayerList extends ArrayList<Layer> {
         super(initialCapacity);
     }
 
+    @Override
+    public void clear() {
+        Layer bg = getFirst();
+        super.clear();
+        add(bg);
+    }
+
     /**
      * Finds a {@link Layer} by its identifier.
      * @param id The identifier of the layer to find.

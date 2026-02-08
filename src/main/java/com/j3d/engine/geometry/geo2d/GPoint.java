@@ -89,6 +89,7 @@ public class GPoint extends GObject {
 
     @Override
     public boolean deleteSelf() {
+        super.deleteSelf();
         Static.renderer.points.remove(this);
         return true;
     }
