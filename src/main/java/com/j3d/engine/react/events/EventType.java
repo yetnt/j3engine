@@ -11,5 +11,9 @@ public enum EventType {
     /**
      * The object was deleted.
      */
-    OBJ_DELETED
+    OBJ_DELETED,
+    /**
+     * The object was selected.
+     */
+    X_SELECTED
 }
