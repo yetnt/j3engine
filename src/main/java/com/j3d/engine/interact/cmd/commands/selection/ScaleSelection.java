@@ -4,8 +4,10 @@ import com.j3d.Static;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.GPoint;
 import com.j3d.engine.geometry.geo3d.Vector3;
+import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Subcommand;
+import com.j3d.ui.engine.EngineFrame;
 
 import javax.swing.*;
 
@@ -19,6 +21,8 @@ import java.util.stream.Collectors;
 
 public class ScaleSelection extends Subcommand {
 
+    public static ScaleMouseOwner scaleMouseOwner = new ScaleMouseOwner();
+
     ScaleSelection() {
         super("scale", "Scales the selection");
         this.aliases("s", "size").parseUsages();
@@ -26,6 +30,7 @@ public class ScaleSelection extends Subcommand {
 
     @Override
     public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
+        Static.commandParser.toggleInputFieldDisabled();
         Consumer<Graphics2D> drawScaleHandle = g -> {
             // Simple 3 dots
             ArrayList<GPoint> points = Static.renderer.getSelected()

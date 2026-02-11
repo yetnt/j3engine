@@ -8,6 +8,8 @@ import com.j3d.Static;
 import com.j3d.Executor;
 import com.j3d.J3DSettings;
 import com.j3d.engine.interact.Interactable;
+import com.j3d.engine.interact.cmd.commands.selection.ScaleMouseOwner;
+import com.j3d.engine.interact.cmd.commands.selection.ScaleSelection;
 import com.j3d.engine.interact.input.KeyBindings;
 import com.j3d.engine.Logger;
 import com.j3d.engine.Renderer;
@@ -21,6 +23,7 @@ import com.j3d.engine.interact.input.mouse.MouseOwner;
 import com.j3d.engine.interact.input.mouse.NoMouseOwner;
 import com.j3d.engine.interact.selection.SelectionManager;
 //import com.j3d.jaiva.Testing;
+import com.j3d.engine.interact.selection.SelectionMouseOwner;
 import com.j3d.files.FilesUtility;
 import com.j3d.files.ProjectFile;
 import com.j3d.threads.LongTask;
@@ -136,6 +139,7 @@ public class EngineFrame extends javax.swing.JFrame {
         ArrayList<MouseOwner> owners = new ArrayList<>();
         owners.add(SelectionManager.selectionMouseOwner);
         owners.add(new NoMouseOwner());
+        owners.add(ScaleSelection.scaleMouseOwner);
 
         owners.forEach(this::addMouseListener);
         owners.forEach(this::addMouseMotionListener);

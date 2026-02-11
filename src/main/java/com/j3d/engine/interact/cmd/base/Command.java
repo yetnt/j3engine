@@ -62,7 +62,7 @@ public class Command {
             if (!(arg instanceof Subcommand subcommand)) continue;
             if (subcommand.aliases.contains(subcommandName.toLowerCase())) {
                 Object[] subArgs = new Object[args.length - 1];
-                String alias = (String) args[0]; // TODO: An issue here????????????????
+                String alias = (String) args[0];
                 System.arraycopy(args, 1, subArgs, 0, args.length - 1);
                 subcommand.run(logLabel, alias, subArgs);
                 return;

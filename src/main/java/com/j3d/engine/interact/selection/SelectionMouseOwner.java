@@ -19,12 +19,16 @@ public class SelectionMouseOwner extends MouseOwner {
         super(MOwner.SELECTION);
     }
 
+    public void clearSelectionSquare() {
+        selectionArea = new ScreenPoint[]{null, null};
+        Static.mainFrame.repaint();
+        Cursors.setDefault();
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
         if (isNotOwner()) return;
-        selectionArea = new ScreenPoint[]{null, null}; // Reset selection area
-        Static.mainFrame.repaint();
-        Cursors.setDefault();
+        clearSelectionSquare();
         broadcast(EventType.X_SELECTED, new EventBroadcast<Void>(null, Static.renderer) {});
     }
 

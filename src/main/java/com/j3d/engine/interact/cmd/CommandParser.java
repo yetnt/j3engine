@@ -10,6 +10,7 @@ import com.jaiva.utils.Find;
 import com.jaiva.utils.Pair;
 import com.jaiva.utils.Tuple2;
 
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
@@ -20,14 +21,20 @@ import java.util.UUID;
 import static com.j3d.engine.interact.cmd.CommandsManager.getCommand;
 
 public class CommandParser {
-//    private final JLabel cmdP.logLabel;
     private String accumulator = "";
     private final ArrayList<Object> arguments = new ArrayList<>();
     private boolean ignoreDocumentEvent = false;
     private final CommandPallete cmdP;
+    private final SafeJLabel label;
+
+    public void toggleInputFieldDisabled() {
+        JTextField input = cmdP.inputField;
+        input.setEnabled(input.isEnabled());
+    }
 
     public CommandParser(CommandPallete p) {
         this.cmdP = p;
+        this.label = new SafeJLabel(cmdP.logLabel);
         cmdP.inputField.addActionListener(e -> {
             ignoreDocumentEvent = true;
             parse();
@@ -93,7 +100,7 @@ public class CommandParser {
             // try to find a Thing with the given UUID
             Thing t = Static.renderer.findThingByUUID(uuid);
             if (t == null) {
-                cmdP.logLabel.setText("No object or thing found with UUID: " + uuid);
+                label.setText("No object or thing found with UUID: " + uuid);
             } else {
                 arguments.add(t);
             }
@@ -132,12 +139,12 @@ public class CommandParser {
                 try {
                     parsedNums.add(Double.parseDouble(num.trim()));
                 } catch (NumberFormatException e) {
-                    cmdP.logLabel.setText("Invalid number format: " + num);
+                    label.setText("Invalid number format: " + num);
                     return;
                 }
             }
             if (parsedNums.size() != 3) {
-                cmdP.logLabel.setText("Invalid number of values in Vector3. Expected 3, got " + parsedNums.size());
+                label.setText("Invalid number of values in Vector3. Expected 3, got " + parsedNums.size());
                 return;
             }
             arguments.add(new Vector3(parsedNums.getFirst(), parsedNums.get(1), parsedNums.getLast()));
@@ -172,14 +179,14 @@ public class CommandParser {
                 return;
             if (cmd == null) {
                 EngineFrame.repaintL();
-                cmdP.logLabel.setText("Command not found: " + cmdName);
+                label.setText("Command not found: " + cmdName);
                 return;
             }
             // Remove the command name from the arguments
             arguments.removeFirst();
-            cmd.run(cmdP.logLabel,cmdName, arguments.toArray());
+            cmd.run(label,cmdName, arguments.toArray());
         } else {
-            cmdP.logLabel.setText("Invalid command name.");
+            label.setText("Invalid command name.");
         }
         EngineFrame.repaintL();
 //        EngineFrame.f.repaint(); // Repaint the frame to reflect any changes.
@@ -192,7 +199,7 @@ public class CommandParser {
         if (input.chars().filter(ch -> ch == ':').count() == 3) {
             String[] parts = input.split(":");
             if (parts.length != 4) {
-                cmdP.logLabel.setText("Invalid color format. Expected R:G:B:A");
+                label.setText("Invalid color format. Expected R:G:B:A");
                 return null;
             }
             try {
@@ -202,13 +209,13 @@ public class CommandParser {
                 int a = Integer.parseInt(parts[3].trim());
                 return new Color(r, g, b, a);
             } catch (NumberFormatException e) {
-                cmdP.logLabel.setText("Invalid number format in color.");
+                label.setText("Invalid number format in color.");
                 return null;
             }
         } else if (input.chars().filter(ch -> ch == ':').count() == 2) {
             String[] parts = input.split(":");
             if (parts.length != 3) {
-                cmdP.logLabel.setText("Invalid color format. Expected R:G:B");
+                label.setText("Invalid color format. Expected R:G:B");
                 return null;
             }
             try {
@@ -217,7 +224,7 @@ public class CommandParser {
                 int b = Integer.parseInt(parts[2].trim());
                 return new Color(r, g, b);
             } catch (NumberFormatException e) {
-                cmdP.logLabel.setText("Invalid number format in color.");
+                label.setText("Invalid number format in color.");
                 return null;
             }
         } else {
@@ -225,7 +232,7 @@ public class CommandParser {
             try {
                 return Color.decode(input);
             } catch (NumberFormatException e) {
-                cmdP.logLabel.setText("Invalid hex color format.");
+                label.setText("Invalid hex color format.");
                 return null;
             }
         }
