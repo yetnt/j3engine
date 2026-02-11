@@ -5,6 +5,7 @@ import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.Rotation;
 import com.j3d.engine.geometry.geo3d.Vector3;
 import com.j3d.engine.interact.cmd.CommandParser;
+import com.j3d.engine.interact.input.KeyBindings;
 import com.j3d.ui.engine.DebugPanel;
 import com.j3d.ui.engine.tree.LayerTree;
 
@@ -47,4 +48,8 @@ public class Static {
      * The Main Draw Panel
      */
     public static JPanel mainPanel;
+    /**
+     * Keybinds
+     */
+    public static KeyBindings keybinds;
 }

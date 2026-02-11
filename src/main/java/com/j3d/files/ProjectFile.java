@@ -365,6 +365,10 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                     }
                 }
 
+                throbber.setTaskTitle("Finalizing");
+
+                Static.renderer.layers.addAll(layerOrder);
+
                 J3DSettings.log.println("Project file loaded successfully from " + path);
                 msg("Project file loaded successfully");
                 // TODO: Fix object ghost state. probably something to do with TriStateArea

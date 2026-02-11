@@ -10,6 +10,9 @@ import com.j3d.ui.Cursors;
 import java.awt.event.MouseEvent;
 
 import static com.j3d.ui.engine.EngineFrame.*;
+import com.j3d.engine.react.events.*;
+
+// TODO: Extend EventEmitter
 
 public class SelectionMouseOwner extends MouseOwner {
     public SelectionMouseOwner() {
@@ -22,6 +25,7 @@ public class SelectionMouseOwner extends MouseOwner {
         selectionArea = new ScreenPoint[]{null, null}; // Reset selection area
         Static.mainFrame.repaint();
         Cursors.setDefault();
+        broadcast(EventType.X_SELECTED, new EventBroadcast<Void>(null, Static.renderer) {});
     }
 
     @Override

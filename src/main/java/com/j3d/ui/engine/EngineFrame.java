@@ -79,7 +79,7 @@ public class EngineFrame extends javax.swing.JFrame {
 
         InputMap im = Static.mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap am = Static.mainPanel.getActionMap();
-        new KeyBindings(im, am, commandPallete);
+        Static.keybinds = new KeyBindings(im, am, commandPallete);
 
         Toolbox toolbox = new Toolbox();
         // Toolbox at the top and extends full width but not very tall

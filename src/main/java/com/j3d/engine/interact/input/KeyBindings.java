@@ -12,9 +12,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
+/**
+ * A class that manages the key bindings for the application. It allows for easy addition and removal
+ * of key bindings, and handles the actions associated with each key binding.
+ */
 public class KeyBindings {
 
+    private final InputMap inputMap;
+    private final ActionMap actionMap;
+
+    /** Initialises the key bindings for the application.
+     * @param im the input map to use for key bindings
+     * @param am the action map to use for key bindings
+     * @param cmdP the command palette to focus/defocus with key bindings
+     */
     public KeyBindings(InputMap im, ActionMap am, CommandPallete cmdP) {
+        inputMap = im;
+        actionMap = am;
+
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, 0), "focusCommandPallete");
         am.put("focusCommandPallete", new AbstractAction() {
             @Override
@@ -90,7 +105,6 @@ public class KeyBindings {
             }
         });
 
-
         // I selection
 
         AbstractAction clearInferredSelectionType = new AbstractAction() {
@@ -119,5 +133,59 @@ public class KeyBindings {
         });
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.SHIFT_DOWN_MASK, true), "selectAddUp");
         am.put("selectAddUp", clearInferredSelectionType);
+    }
+
+    /** Returns the action map containing the actions bound to keys.
+     * @return the action map
+     */
+    public ActionMap getActionMap() {
+        return actionMap;
+    }
+
+    /** Returns the input map containing the key bindings.
+     * @return the input map
+     */
+    public InputMap getInputMap() {
+        return inputMap;
+    }
+
+    /**
+     * Adds a key binding to the input and action maps.
+     * @param keyStroke the keystroke to bind
+     * @param actionName the name of the action to bind (used as the key in the action map)
+     * @param action the action to perform when the keystroke is pressed
+     */
+    public void addKeyBinding(KeyStroke keyStroke, String actionName, Action action) {
+        inputMap.put(keyStroke, actionName);
+        actionMap.put(actionName, action);
+    }
+
+    /**
+     * Removes a key binding from the input and action maps.
+     * @param keyStroke the keystroke to unbind
+     */
+    public void removeKeyBinding(KeyStroke keyStroke) {
+        String actionName = (String) inputMap.get(keyStroke);
+        if (actionName != null) {
+            inputMap.remove(keyStroke);
+            actionMap.remove(actionName);
+        }
+    }
+
+    /**
+     * Adds a one-shot key binding that performs the given action and then removes itself.
+     * @param keyStroke the keystroke to bind
+     * @param actionName the name of the action to bind (used as the key in the action map)
+     * @param action the action to perform when the keystroke is pressed
+     */
+    public void addOneShotKeyBinding(KeyStroke keyStroke, String actionName, Action action) {
+        Action oneShotAction = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                action.actionPerformed(e);
+                removeKeyBinding(keyStroke);
+            }
+        };
+        addKeyBinding(keyStroke, actionName, oneShotAction);
     }
 }
