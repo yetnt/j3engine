@@ -6,11 +6,11 @@ import com.j3d.engine.geometry.geo2d.GObject;
 import com.j3d.engine.geometry.geo2d.GPoint;
 import com.j3d.engine.geometry.geo2d.GTri;
 import com.j3d.engine.geometry.geo3d.Thing;
+import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.ArgSet;
 import com.j3d.engine.interact.cmd.base.Subcommand;
 import com.j3d.engine.interact.cmd.base.TypedArg;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +42,7 @@ class ManageThing extends Subcommand {
     }
 
     @Override
-    public void run(JLabel logLabel, String aliasUsed, Object... args) {
+    public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
         if (args.length != 3 || !(args[0] instanceof String action) || !(args[1] instanceof Thing t) ||
                 !(args[2] instanceof GTri || args[2] instanceof GLine || args[2] instanceof GPoint)) {
             logLabel.setText("Invalid arguments. Usage:" + returnUsagesWhere(aliasUsed, String.class, Thing.class, GTri.class, GLine.class, GPoint.class)[0]);

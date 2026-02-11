@@ -2,11 +2,10 @@ package com.j3d.engine.interact.cmd.commands;
 
 import com.j3d.J3DSettings;
 import com.j3d.engine.interact.cmd.Any;
+import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.Subcommand;
 import com.j3d.engine.interact.cmd.base.TypedArg;
-
-import javax.swing.*;
 
 public class DebugCmd extends Command {
     public DebugCmd() {
@@ -18,7 +17,7 @@ public class DebugCmd extends Command {
     }
 
     @Override
-    public void run(JLabel logLabel, String aliasUsed, Object... args) {
+    public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
         // There has to be at least 2 arguments, the subcommand and its argument(s)
         if (args.length < 1 || !(args[0] instanceof String subcommandName)) {
             logLabel.setText("Invalid arguments. Usage: debug <subcommand> ...");
@@ -35,7 +34,7 @@ public class DebugCmd extends Command {
                 ).parseUsages();
         }
         @Override
-        public void run(javax.swing.JLabel logLabel, String aliasUsed, Object... args) {
+        public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
             if (args.length != 1) {
                 logLabel.setText("Invalid arguments. Usage: typeof <input>");
                 return;
@@ -54,7 +53,7 @@ public class DebugCmd extends Command {
                 ).parseUsages();
         }
         @Override
-        public void run(javax.swing.JLabel logLabel, String aliasUsed, Object... args) {
+        public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
             if (args.length != 1 || !(args[0] instanceof String message)) {
                 logLabel.setText("Invalid arguments. Usage: echo <message: String>");
                 return;

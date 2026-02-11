@@ -6,10 +6,10 @@ import com.j3d.engine.geometry.geo2d.GPoint;
 import com.j3d.engine.geometry.geo2d.GTri;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.Vector3;
+import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.TypedArg;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class TriCmd extends Command {
@@ -37,7 +37,7 @@ public class TriCmd extends Command {
     }
 
     @Override
-    public void run(JLabel logLabel, String aliasUsed, Object... args) {
+    public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
         if (args.length != 3 && args.length != 4) {
             logLabel.setText("Invalid number of arguments. Usage:" + returnUsagesWhere(aliasUsed, Vector3.class)[0] + " or " + returnUsagesWhere(aliasUsed, GPoint.class)[0] + " or " + returnUsagesWhere(aliasUsed, GLine.class)[0]);
             return;

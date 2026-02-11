@@ -1,6 +1,7 @@
 package com.j3d.engine.interact.cmd.base;
 
-import javax.swing.*;
+import com.j3d.engine.interact.cmd.SafeJLabel;
+
 import java.util.*;
 
 public class Command {
@@ -47,7 +48,7 @@ public class Command {
      * @param aliasUsed The alias of the command that was used to invoke it.
      * @param args The arguments passed to the command.
      */
-    public void run(JLabel logLabel, String aliasUsed, Object... args) {
+    public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
         // To be overridden by subclasses
     }
 
@@ -56,7 +57,7 @@ public class Command {
      * @param subcommandName The name of the subcommand to dispatch to.
      * @param args The raw arguments passed to the main command, including the subcommand name as the first argument.
      */
-    protected void dispatchToSubcommands(String subcommandName, JLabel logLabel, Object... args) {
+    protected void dispatchToSubcommands(String subcommandName, SafeJLabel logLabel, Object... args) {
         for (Argument arg : this.args) {
             if (!(arg instanceof Subcommand subcommand)) continue;
             if (subcommand.aliases.contains(subcommandName.toLowerCase())) {

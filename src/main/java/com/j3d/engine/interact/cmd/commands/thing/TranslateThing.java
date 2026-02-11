@@ -2,10 +2,9 @@ package com.j3d.engine.interact.cmd.commands.thing;
 
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.Vector3;
+import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Subcommand;
 import com.j3d.engine.interact.cmd.base.TypedArg;
-
-import javax.swing.*;
 
 class TranslateThing extends Subcommand {
 
@@ -18,7 +17,7 @@ class TranslateThing extends Subcommand {
     }
 
     @Override
-    public void run(JLabel logLabel, String aliasUsed, Object... args) {
+    public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
         if (args.length != 2 || !(args[0] instanceof Thing t) || !(args[1] instanceof Vector3 v)) {
             logLabel.setText("Invalid arguments. Usage:" + returnUsagesWhere(aliasUsed, Thing.class, Vector3.class)[0]);
             return;

@@ -4,9 +4,8 @@ import com.j3d.Static;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.GPoint;
 import com.j3d.engine.geometry.geo3d.Vector3;
-import com.j3d.engine.interact.cmd.base.ArgSet;
+import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Subcommand;
-import com.j3d.engine.interact.cmd.base.TypedArg;
 
 import javax.swing.*;
 
@@ -18,8 +17,6 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static com.j3d.engine.interact.cmd.commands.selection.SelectionCmd.selectDispatch;
-
 public class ScaleSelection extends Subcommand {
 
     ScaleSelection() {
@@ -28,7 +25,7 @@ public class ScaleSelection extends Subcommand {
     }
 
     @Override
-    public void run(JLabel logLabel, String aliasUsed, Object... args) {
+    public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
         Consumer<Graphics2D> drawScaleHandle = g -> {
             // Simple 3 dots
             ArrayList<GPoint> points = Static.renderer.getSelected()
