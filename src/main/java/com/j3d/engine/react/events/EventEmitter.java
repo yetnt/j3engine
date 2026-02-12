@@ -19,27 +19,85 @@ public abstract class EventEmitter implements EventEmitterInterface {
     public EventEmitter() {
     }
 
+    /**
+     * Attaches a listener to the event emitter.
+     * @param event The listener to attach
+     */
     public void attach(EventListener event) {
-        registered.add(event);
+        genericAttach(registered, event);
     }
 
+
+    /**
+     * Detaches a listener from the event emitter.
+     * @param event The listener to detach.
+     */
     public void detach(EventListener event) {
-        registered.remove(event);
+        genericDetach(registered, event);
     }
 
+
+    /**
+     * Detaches all listeners from the event emitter.
+     */
     public void detachAll() {
-        registered.clear();
+        genericDetachAll(registered);
     }
 
+
+    /**
+     * Broadcasts an event to all registered listeners.
+     * @param eventType The event type.
+     * @param properties Properties to pass onto the listener.
+     * @param <K> The object held by the {@link EventBroadcast}.
+     */
     public <K> void broadcast(EventType eventType, EventBroadcast<K> properties) {
+        genericBroadcast(registered, eventType, properties);
+    }
+
+
+    /**
+     * Attaches a listener to the event emitter. Useful for implementors of {@link EventEmitterInterface}.
+     * @param events The list of current listeners
+     * @param event  The listener to attach
+     */
+    public static void genericAttach(ArrayList<EventListener> events, EventListener event) {
+        events.add(event);
+    }
+
+    /**
+     * Detaches a listener from the event emitter. Useful for implementors of {@link EventEmitterInterface}.
+     * @param events The list of current listeners
+     * @param event  The listener to detach
+     */
+    public static void genericDetach(ArrayList<EventListener> events, EventListener event) {
+        events.remove(event);
+    }
+
+    /**
+     * Detaches all listeners from the event emitter. Useful for implementors of {@link EventEmitterInterface}.
+     * @param events The list of current listeners
+     */
+    public static void genericDetachAll(ArrayList<EventListener> events) {
+        events.clear();
+    }
+
+    /**
+     * Broadcasts an event to all registered listeners. Useful for implementors of {@link EventEmitterInterface}.
+     * @param events The list of current listeners
+     * @param eventType The event type.
+     * @param properties Properties to pass onto the listener.
+     * @param <K> The object held by the {@link EventBroadcast}.
+     */
+    public static <K> void genericBroadcast(ArrayList<EventListener> events, EventType eventType, EventBroadcast<K> properties) {
         ArrayList<EventReactor> reactors = new ArrayList<>();
-        registered.forEach(event -> {
+        events.forEach(event -> {
             event.onEvent(eventType, properties);
-            if (event instanceof EventReactor er) {
+            if (event instanceof EventReactor er)
                 reactors.add(er);
-            }
         });
-        reactors.forEach(this::detach);
+        reactors.forEach(events::remove);
         reactors.clear();
     }
+
 }

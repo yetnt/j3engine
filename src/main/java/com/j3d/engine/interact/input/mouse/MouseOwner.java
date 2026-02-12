@@ -29,26 +29,21 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
 
     @Override
     public void attach(EventListener event) {
-        registered.add(event);
+        EventEmitter.genericAttach(registered, event);
     }
 
     @Override
     public void detach(EventListener event) {
-        registered.remove(event);
+        EventEmitter.genericDetach(registered, event);
     }
 
     @Override
     public void detachAll() {
-        registered.clear();
+        EventEmitter.genericDetachAll(registered);
     }
 
     @Override
     public <K> void broadcast(EventType eventType, EventBroadcast<K> properties) {
-        registered.forEach(event -> {
-            event.onEvent(eventType, properties);
-            if (event instanceof EventReactor er) {
-                detach(er);
-            }
-        });
+        EventEmitter.genericBroadcast(registered, eventType, properties);
     }
 }

@@ -59,7 +59,7 @@ public class EngineFrame extends javax.swing.JFrame {
     private static final CommandPallete commandPallete = new CommandPallete();
 
     public static void setMouseOwner(MOwner owner) {
-        mouseOwner = owner;
+        mouseOwner = owner == null ? MOwner.SELECTION : owner;
     }
     public static MOwner getMouseOwner() {
         return mouseOwner;

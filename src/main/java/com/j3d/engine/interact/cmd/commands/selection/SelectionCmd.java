@@ -26,7 +26,7 @@ public class SelectionCmd extends Command {
     private String subcommandName;
     private SafeJLabel logLabel;
     private Object[] _args;
-    private final EventListener listener = new EventReactor() {
+    private final EventReactor listener = new EventReactor() {
         @Override
         public <K> void onEvent(EventType event, EventBroadcast<K> properties) {
             if (Static.renderer.getSelected().isEmpty()) return;
