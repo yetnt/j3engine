@@ -1,9 +1,6 @@
 package com.j3d.engine.interact.input.mouse;
 
-import com.j3d.engine.react.events.EventBroadcast;
-import com.j3d.engine.react.events.EventEmitterInterface;
-import com.j3d.engine.react.events.EventListener;
-import com.j3d.engine.react.events.EventType;
+import com.j3d.engine.react.events.*;
 import com.j3d.ui.engine.EngineFrame;
 
 import java.awt.event.MouseAdapter;
@@ -47,6 +44,11 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
 
     @Override
     public <K> void broadcast(EventType eventType, EventBroadcast<K> properties) {
-        registered.forEach(event -> event.onEvent(eventType, properties));
+        registered.forEach(event -> {
+            event.onEvent(eventType, properties);
+            if (event instanceof EventReactor er) {
+                detach(er);
+            }
+        });
     }
 }

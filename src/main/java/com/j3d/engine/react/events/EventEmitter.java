@@ -32,6 +32,14 @@ public abstract class EventEmitter implements EventEmitterInterface {
     }
 
     public <K> void broadcast(EventType eventType, EventBroadcast<K> properties) {
-        registered.forEach(event -> event.onEvent(eventType, properties));
+        ArrayList<EventReactor> reactors = new ArrayList<>();
+        registered.forEach(event -> {
+            event.onEvent(eventType, properties);
+            if (event instanceof EventReactor er) {
+                reactors.add(er);
+            }
+        });
+        reactors.forEach(this::detach);
+        reactors.clear();
     }
 }

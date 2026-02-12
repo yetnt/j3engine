@@ -7,6 +7,7 @@ import com.j3d.engine.interact.selection.SelectionManager;
 import com.j3d.engine.interact.selection.SelectionMouseOwner;
 import com.j3d.engine.react.events.EventBroadcast;
 import com.j3d.engine.react.events.EventListener;
+import com.j3d.engine.react.events.EventReactor;
 import com.j3d.engine.react.events.EventType;
 
 import javax.swing.*;
@@ -25,22 +26,13 @@ public class SelectionCmd extends Command {
     private String subcommandName;
     private SafeJLabel logLabel;
     private Object[] _args;
-    private EventListener listener = new EventListener() {
+    private final EventListener listener = new EventReactor() {
         @Override
         public <K> void onEvent(EventType event, EventBroadcast<K> properties) {
             if (Static.renderer.getSelected().isEmpty()) return;
             dispatchToSubcommands(subcommandName, logLabel, _args);
-            // concurrent modification is an issue.
-            // TODO: Implement on the event listener level, a single use listener.
-            removeListener();
         }
     };
-    public void removeListener() {
-        if (listener != null) {
-            SelectionManager.selectionMouseOwner.detach(listener);
-            listener = null;
-        }
-    }
 
     public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
         // There has to be at least 2 arguments, the subcommand and its argument(s)

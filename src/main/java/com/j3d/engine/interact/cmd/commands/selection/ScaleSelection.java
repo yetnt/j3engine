@@ -30,6 +30,7 @@ public class ScaleSelection extends Subcommand {
 
     @Override
     public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
+        scaleMouseOwner.requestOwnership();
         Static.commandParser.toggleInputFieldDisabled();
         Consumer<Graphics2D> drawScaleHandle = g -> {
             // Simple 3 dots
