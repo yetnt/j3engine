@@ -1,6 +1,5 @@
 package com.j3d.files;
 
-import com.j3d.J3DSettings;
 import com.j3d.Static;
 import com.j3d.engine.geometry.geo2d.GLine;
 import com.j3d.engine.geometry.geo2d.GPoint;
@@ -207,7 +206,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
     }
 
     private static void msg(String message) {
-        J3DSettings.log.println(message);
+        Static.log.println(message);
     }
 
     /**
@@ -369,7 +368,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
 
                 Static.renderer.layers.addAll(layerOrder);
 
-                J3DSettings.log.println("Project file loaded successfully from " + path);
+                Static.log.println("Project file loaded successfully from " + path);
                 msg("Project file loaded successfully");
                 // TODO: Fix object ghost state. probably something to do with TriStateArea
                 // (TO reproduce, import a file and then change TriStateArea sort method.)

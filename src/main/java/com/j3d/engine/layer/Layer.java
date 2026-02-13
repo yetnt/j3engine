@@ -1,6 +1,5 @@
 package com.j3d.engine.layer;
 
-import com.j3d.J3DSettings;
 import com.j3d.Static;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.geo2d.GObject;
@@ -49,7 +48,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
 
     public static final String backgroundId = "BACKG";
     private final BiConsumer<Layer, DefaultMutableTreeNode> onSelectCallback = (o, t) -> {
-        J3DSettings.log.println("Layer " + o.getIdentifier() + " was selected in the tree.");
+        Static.log.println("Layer " + o.getIdentifier() + " was selected in the tree.");
     };
 
     private boolean hidden = false;

@@ -4,13 +4,9 @@ import com.j3d.Static;
 import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.selection.SelectionManager;
-import com.j3d.engine.interact.selection.SelectionMouseOwner;
-import com.j3d.engine.react.events.EventBroadcast;
-import com.j3d.engine.react.events.EventListener;
+import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventReactor;
 import com.j3d.engine.react.events.EventType;
-
-import javax.swing.*;
 
 public class SelectionCmd extends Command {
 
@@ -28,7 +24,7 @@ public class SelectionCmd extends Command {
     private Object[] _args;
     private final EventReactor listener = new EventReactor() {
         @Override
-        public <K> void onEvent(EventType event, EventBroadcast<K> properties) {
+        public <K> void onEvent(EventType event, EventPayload<K> properties) {
             if (Static.renderer.getSelected().isEmpty()) return;
             dispatchToSubcommands(subcommandName, logLabel, _args);
         }

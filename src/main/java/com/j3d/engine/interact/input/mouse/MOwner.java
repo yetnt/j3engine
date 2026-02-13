@@ -1,5 +1,9 @@
 package com.j3d.engine.interact.input.mouse;
 
+/**
+ * MOwner is an enum which represents the different types of mouse owners in the renderer. It is used to determine which
+ * MouseOwner is the owner of the mouse input in the renderer and to allow for easy switching between different MouseOwners.
+ */
 public enum MOwner {
     /**
      * No mouse owner

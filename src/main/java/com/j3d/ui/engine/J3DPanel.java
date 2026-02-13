@@ -59,6 +59,5 @@ public class J3DPanel extends JPanel {
         if (selectionArea[0] != null && selectionArea[1] != null) {
             SelectionUI.run((Graphics2D)g, applySelectionAreaOffset(selectionArea), Static.renderer);
         }
-//        log.println("Painted/Repainted Scene");
     }
 }

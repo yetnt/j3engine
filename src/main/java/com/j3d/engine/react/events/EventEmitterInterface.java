@@ -25,5 +25,5 @@ public interface EventEmitterInterface {
      * @param eventType The event type.
      * @param properties Properties to pass onto the listener.
      */
-    <K> void broadcast(EventType eventType, EventBroadcast<K> properties);
+    <K> void broadcast(EventType eventType, EventPayload<K> properties);
 }

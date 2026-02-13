@@ -1,5 +1,6 @@
 package com.j3d;
 
+import com.j3d.engine.Logger;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.Rotation;
@@ -7,10 +8,17 @@ import com.j3d.engine.geometry.geo3d.Vector3;
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.input.KeyBindings;
 import com.j3d.ui.engine.DebugPanel;
+import com.j3d.ui.engine.J3DPanel;
 import com.j3d.ui.engine.tree.LayerTree;
 
 import javax.swing.*;
 
+/**
+ * Static is a class which holds static references to important instances in the engine, such as the Renderer, Executor, Main Frame, Camera, etc.
+ * <p>
+ *     This is used to allow for easy access to these instances from anywhere in the code, without having to pass them around
+ * </p>
+ */
 public class Static {
     //    public static JBundler jBundler = null;
     /**
@@ -23,6 +31,7 @@ public class Static {
     public static Executor executor = null;
     /**
      * The Main Frame that is displayed.
+     * Rather call {@link Static#mainPanel}.repaint() instead of mainFrame.repaint() for better performance.
      */
     public static JFrame mainFrame = null;
     /**
@@ -49,7 +58,11 @@ public class Static {
      */
     public static JPanel mainPanel;
     /**
-     * Keybinds
+     * The Key Bindings Manager
      */
     public static KeyBindings keybinds;
+    /**
+     * The Logger Instance
+     */
+    public static Logger log;
 }

@@ -1,6 +1,5 @@
 package com.j3d.engine.interact.selection;
 
-import com.j3d.J3DSettings;
 import com.j3d.Static;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.interact.input.mouse.MOwner;
@@ -12,13 +11,20 @@ import java.awt.event.MouseEvent;
 import static com.j3d.ui.engine.EngineFrame.*;
 import com.j3d.engine.react.events.*;
 
-// TODO: Extend EventEmitter
-
+/**
+ * SelectionMouseOwner is a MouseOwner which is responsible for handling mouse events related to selection in the renderer.
+ * It allows the user to click and drag to create a selection square on the screen, which can be used to select multiple objects
+ * in the renderer. It also allows the user to click to clear the selection square and broadcast an event to clear the selection in the renderer.
+ */
 public class SelectionMouseOwner extends MouseOwner {
     public SelectionMouseOwner() {
         super(MOwner.SELECTION);
     }
 
+    /**
+     * Clears the selection square drawn on the screen and resets the mouse position.
+     * Also broadcasts an event to clear the selection in the renderer.
+     */
     public void clearSelectionSquare() {
         selectionArea = new ScreenPoint[]{null, null};
         Static.mainFrame.repaint();
@@ -29,7 +35,7 @@ public class SelectionMouseOwner extends MouseOwner {
     public void mouseClicked(MouseEvent e) {
         if (isNotOwner()) return;
         clearSelectionSquare();
-        broadcast(EventType.X_SELECTED, new EventBroadcast<Void>(null, Static.renderer) {});
+        broadcast(EventType.X_SELECTED, new EventPayload<Void>(null, Static.renderer) {});
     }
 
     @Override
@@ -43,7 +49,7 @@ public class SelectionMouseOwner extends MouseOwner {
         if (isNotOwner()) return;
         mousePos = null;
         if (selectionArea[0] != null && selectionArea[1] != null)
-            J3DSettings.log.println("Final Selection Area: " + selectionArea[0] + " to " + selectionArea[1]);
+            Static.log.println("Final Selection Area: " + selectionArea[0] + " to " + selectionArea[1]);
     }
 
     @Override

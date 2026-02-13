@@ -11,6 +11,8 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A class that manages the key bindings for the application. It allows for easy addition and removal
@@ -20,6 +22,23 @@ public class KeyBindings {
 
     private final InputMap inputMap;
     private final ActionMap actionMap;
+
+    /**
+     * A list of prohibited key bindings that should not be added to the input and action maps. This is used to prevent
+     * common key bindings that would interfere with the application's functionality from being added by the user.
+     * <p>
+     *     These are defined by {@link com.j3d.ui.engine.EngineFrame#jMenuBar1} using accelerators.
+     * </p>
+     */
+    private ArrayList<KeyStroke> prohibited = new ArrayList<>(
+            List.of(
+                    KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK), // Copy
+                    KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK), // Paste
+                    KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK), // Cut
+                    KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK), // Undo
+                    KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK)  // Redo
+            )
+    );
 
     /** Initialises the key bindings for the application.
      * @param im the input map to use for key bindings
@@ -156,6 +175,10 @@ public class KeyBindings {
      * @param action the action to perform when the keystroke is pressed
      */
     public void addKeyBinding(KeyStroke keyStroke, String actionName, Action action) {
+        if (prohibited.contains(keyStroke)) {
+            Static.log.error("Attempted to add prohibited key binding: " + keyStroke);
+            return;
+        }
         inputMap.put(keyStroke, actionName);
         actionMap.put(actionName, action);
     }
@@ -165,6 +188,10 @@ public class KeyBindings {
      * @param keyStroke the keystroke to unbind
      */
     public void removeKeyBinding(KeyStroke keyStroke) {
+        if (prohibited.contains(keyStroke)) {
+            Static.log.error("Attempted to remove prohibited key binding: " + keyStroke);
+            return;
+        }
         String actionName = (String) inputMap.get(keyStroke);
         if (actionName != null) {
             inputMap.remove(keyStroke);

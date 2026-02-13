@@ -49,9 +49,9 @@ public abstract class EventEmitter implements EventEmitterInterface {
      * Broadcasts an event to all registered listeners.
      * @param eventType The event type.
      * @param properties Properties to pass onto the listener.
-     * @param <K> The object held by the {@link EventBroadcast}.
+     * @param <K> The object held by the {@link EventPayload}.
      */
-    public <K> void broadcast(EventType eventType, EventBroadcast<K> properties) {
+    public <K> void broadcast(EventType eventType, EventPayload<K> properties) {
         genericBroadcast(registered, eventType, properties);
     }
 
@@ -87,9 +87,9 @@ public abstract class EventEmitter implements EventEmitterInterface {
      * @param events The list of current listeners
      * @param eventType The event type.
      * @param properties Properties to pass onto the listener.
-     * @param <K> The object held by the {@link EventBroadcast}.
+     * @param <K> The object held by the {@link EventPayload}.
      */
-    public static <K> void genericBroadcast(ArrayList<EventListener> events, EventType eventType, EventBroadcast<K> properties) {
+    public static <K> void genericBroadcast(ArrayList<EventListener> events, EventType eventType, EventPayload<K> properties) {
         ArrayList<EventReactor> reactors = new ArrayList<>();
         events.forEach(event -> {
             event.onEvent(eventType, properties);

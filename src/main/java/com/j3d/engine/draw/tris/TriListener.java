@@ -1,7 +1,7 @@
 package com.j3d.engine.draw.tris;
 
 import com.j3d.Static;
-import com.j3d.engine.react.events.EventBroadcast;
+import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventListener;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.geometry.geo2d.GTri;
@@ -46,7 +46,7 @@ public class TriListener implements EventListener {
     }
 
     @Override
-    public <K> void onEvent(EventType event, EventBroadcast<K> properties) {
+    public <K> void onEvent(EventType event, EventPayload<K> properties) {
         if (event != EventType.OBJ_UPDATED)
             return;
 

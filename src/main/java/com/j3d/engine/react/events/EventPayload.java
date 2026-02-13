@@ -1,15 +1,13 @@
 package com.j3d.engine.react.events;
 
 import com.j3d.engine.Renderer;
-import com.j3d.engine.geometry.geo2d.GObject;
-
-import java.util.ArrayList;
 
 /**
- * EventBroadcast is an abstract class which is used to represent the properties that the
+ * EventPayload is an abstract class which is used to represent the properties that the
  * called event may input and or return.
+ * @param <T> The type of the emitter, used for ease of access to the emitter's properties and methods.
  */
-public abstract class EventBroadcast<T> {
+public abstract class EventPayload<T> {
     /**
      * The event initiator
      */
@@ -21,11 +19,11 @@ public abstract class EventBroadcast<T> {
     public final Renderer renderer;
 
     /**
-     * Default Constructor for EventBroadcast
+     * Default Constructor for EventPayload
      * @param e The initiator of the broadcast.
      * @param r The Renderer instance.
      */
-    public EventBroadcast(T e, Renderer r) {
+    public EventPayload(T e, Renderer r) {
         emitter = e;
         renderer = r;
     }

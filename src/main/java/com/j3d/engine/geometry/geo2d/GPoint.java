@@ -4,7 +4,7 @@ import com.j3d.J3DSettings;
 import com.j3d.Static;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.draw.ViewType;
-import com.j3d.engine.react.events.EventBroadcast;
+import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventEmitter;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo3d.Vector3;
@@ -63,7 +63,7 @@ public class GPoint extends GObject {
     /**
      * This represents an event that is broadcasted when a GPoint is updated and/or deleted.
      */
-    public static class Event extends EventBroadcast {
+    public static class Event extends EventPayload {
 
         /**
          * The new location of the GPoint

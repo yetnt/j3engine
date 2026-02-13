@@ -89,7 +89,7 @@ public class Executor {
         GPoint B = new GPoint(new Vector3(0, 10, 0));
         GPoint C = new GPoint(new Vector3(0, 0, 10));
         GTri triangl = new GTri(Color.ORANGE, A, B, C);
-        J3DSettings.log.println(triangl.getId().toString());
+        Static.log.println(triangl.getId().toString());
         return new Thing(renderer, null, "Test").addObjs(triangl, triangl.getLegA(), triangl.getLegB(), triangl.getLegC(), A, B, C);
     }
 

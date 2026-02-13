@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.cmd.commands;
 
-import com.j3d.J3DSettings;
+import com.j3d.Static;
 import com.j3d.engine.interact.cmd.Any;
 import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
@@ -41,7 +41,7 @@ public class DebugCmd extends Command {
             }
             String typeName = (args[0] == null) ? "null" : args[0].getClass().getName();
             logLabel.setText("Type: " + typeName);
-            J3DSettings.log.println("Type: " + typeName);
+            Static.log.println("Type: " + typeName);
         }
     }
 
@@ -59,7 +59,7 @@ public class DebugCmd extends Command {
                 return;
             }
             logLabel.setText(message);
-            J3DSettings.log.println(message);
+            Static.log.println(message);
         }
     }
 }

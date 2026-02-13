@@ -1,7 +1,6 @@
 package com.j3d.engine.geometry.geo2d;
 
-import com.j3d.engine.Renderer;
-import com.j3d.engine.react.events.EventBroadcast;
+import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventEmitter;
 import com.j3d.engine.react.events.EventListener;
 import com.j3d.engine.react.events.EventType;
@@ -144,7 +143,7 @@ public abstract class GObject extends EventEmitter implements EventListener {
     }
 
     @Override
-    public void onEvent(EventType event, EventBroadcast properties) {
+    public void onEvent(EventType event, EventPayload properties) {
 
     }
 }

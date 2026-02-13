@@ -1,7 +1,7 @@
 package com.j3d.engine.geometry.geo2d;
 
 import com.j3d.engine.Renderer;
-import com.j3d.engine.react.events.EventBroadcast;
+import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventEmitter;
 import com.j3d.engine.geometry.geo3d.Vector3;
 
@@ -87,7 +87,7 @@ public class GLine extends GObject {
     /**
      * Event or sum ion know ganger ✌️
      */
-    public static class Event extends EventBroadcast {
+    public static class Event extends EventPayload {
 
         public Vector3 newStart;
         public Vector3 oldStart;
@@ -95,7 +95,7 @@ public class GLine extends GObject {
         public Vector3 oldEnd;
 
         /**
-         * Constructor for EventBroadcast with a new start point
+         * Constructor for EventPayload with a new start point
          *
          * @param e The initiator of the broadcast.
          * @param r The renderer instance

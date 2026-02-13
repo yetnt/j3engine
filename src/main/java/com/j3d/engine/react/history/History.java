@@ -1,6 +1,6 @@
 package com.j3d.engine.react.history;
 
-import com.j3d.J3DSettings;
+import com.j3d.Static;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.CleanableAction;
 
@@ -36,13 +36,13 @@ public class History extends ArrayList<Action<?>> {
     public void undo() {
         if (this.isEmpty()) return;
         if (!this.getLast().isReversible()) {
-            J3DSettings.log.println("Attempt to undo: " + this.getLast().getDescription());
+            Static.log.println("Attempt to undo: " + this.getLast().getDescription());
             return;
         };
         Action<?> action = this.removeLast();
         action.undo();
         backup.add(action);
-        J3DSettings.log.println("Undo -> " + action.getDescription());
+        Static.log.println("Undo -> " + action.getDescription());
     }
 
     /**
@@ -53,7 +53,7 @@ public class History extends ArrayList<Action<?>> {
         Action<?> action = backup.removeLast();
         action.run();
         bypassAdd(action);
-        J3DSettings.log.println("Redo -> " + action.getDescription());
+        Static.log.println("Redo -> " + action.getDescription());
     }
 
     /**

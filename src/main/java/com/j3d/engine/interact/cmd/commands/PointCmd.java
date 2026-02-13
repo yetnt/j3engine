@@ -1,6 +1,5 @@
 package com.j3d.engine.interact.cmd.commands;
 
-import com.j3d.J3DSettings;
 import com.j3d.Static;
 import com.j3d.engine.geometry.geo2d.GPoint;
 import com.j3d.engine.geometry.geo3d.Thing;
@@ -27,6 +26,6 @@ public class PointCmd extends Command {
 
         new Thing(Static.renderer, null, "Point").addObjs(new GPoint(position));
         logLabel.setText("Point created at position: " + position);
-        J3DSettings.log.println("Point created at position: " + position);
+        Static.log.println("Point created at position: " + position);
     }
 }

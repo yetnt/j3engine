@@ -8,7 +8,6 @@ import com.j3d.Static;
 import com.j3d.Executor;
 import com.j3d.J3DSettings;
 import com.j3d.engine.interact.Interactable;
-import com.j3d.engine.interact.cmd.commands.selection.ScaleMouseOwner;
 import com.j3d.engine.interact.cmd.commands.selection.ScaleSelection;
 import com.j3d.engine.interact.input.KeyBindings;
 import com.j3d.engine.Logger;
@@ -23,7 +22,6 @@ import com.j3d.engine.interact.input.mouse.MouseOwner;
 import com.j3d.engine.interact.input.mouse.NoMouseOwner;
 import com.j3d.engine.interact.selection.SelectionManager;
 //import com.j3d.jaiva.Testing;
-import com.j3d.engine.interact.selection.SelectionMouseOwner;
 import com.j3d.files.FilesUtility;
 import com.j3d.files.ProjectFile;
 import com.j3d.threads.LongTask;
@@ -34,9 +32,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -106,7 +101,7 @@ public class EngineFrame extends javax.swing.JFrame {
         Static.debugPanel.setOpaque(true);
         Static.debugPanel.setBackground(Color.WHITE);
         Static.debugPanel.setVisible(false);
-        J3DSettings.log = new Logger(Static.debugPanel.logTextArea); // initialize logger with the text area
+        Static.log = new Logger(Static.debugPanel.logTextArea); // initialize logger with the text area
         layeredPane.add(Static.debugPanel, JLayeredPane.PALETTE_LAYER);
         
         Rectangle bounds = Static.mainFrame.getBounds();
@@ -411,7 +406,7 @@ public class EngineFrame extends javax.swing.JFrame {
             );
         }, Static.mainFrame);
         if (path == null) return;
-        J3DSettings.log.println(path);
+        Static.log.println(path);
         Path p = Paths.get(path);
         String fileName = p.getFileName().toString();
         String fileDir = p.getParent().toString();
@@ -445,7 +440,7 @@ public class EngineFrame extends javax.swing.JFrame {
 
             String folder = FilesUtility.folderChooser(Static.mainFrame);
 
-            J3DSettings.log.println("Picked the location " + folder + " with the file name " + fileName);
+            Static.log.println("Picked the location " + folder + " with the file name " + fileName);
 
             J3DSettings.setProject(folder, fileName);
         }

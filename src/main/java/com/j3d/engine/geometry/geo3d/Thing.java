@@ -2,7 +2,6 @@ package com.j3d.engine.geometry.geo3d;
 
 import com.j3d.J3DSettings;
 import com.j3d.Static;
-import com.j3d.engine.geometry.geo2d.GLine;
 import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.Renderer;
@@ -40,7 +39,7 @@ public class Thing implements Interactable {
     private final BiConsumer<Thing, DefaultMutableTreeNode>  onSelectCallback =
             (o, t) -> {
                 if (this.isBg || this.hidden) return;
-                J3DSettings.log.println(name + " thing was selected in the tree.");
+                Static.log.println(name + " thing was selected in the tree.");
                 Static.renderer.select(this);
                 Static.mainPanel.repaint();
             };

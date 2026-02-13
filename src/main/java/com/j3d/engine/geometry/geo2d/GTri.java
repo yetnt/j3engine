@@ -5,7 +5,7 @@ import com.j3d.Static;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.draw.tris.TriStateArea;
-import com.j3d.engine.react.events.EventBroadcast;
+import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventEmitter;
 
 import java.awt.*;
@@ -212,14 +212,14 @@ public class GTri extends GObject{
         this.hidden = hidden;
     }
 
-    public static class Event extends EventBroadcast {
+    public static class Event extends EventPayload {
 
         public GLine[] LegA = new GLine[2];
         public GLine[] LegB = new GLine[2];
         public GLine[] LegC = new GLine[2];
 
         /**
-         * Default Constructor for EventBroadcast
+         * Default Constructor for EventPayload
          *
          * @param e The initiator of the broadcast.
          * @param r The Renderer instance.
