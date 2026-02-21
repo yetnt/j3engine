@@ -5,7 +5,7 @@ import com.j3d.Static;
 import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.interact.selection.SelectionUtils;
 import com.j3d.engine.geometry.geo3d.Vector3;
-import com.j3d.engine.interact.cmd.CommandPallete;
+import com.j3d.ui.engine.CommandPallete;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

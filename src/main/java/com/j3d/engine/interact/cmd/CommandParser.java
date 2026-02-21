@@ -1,5 +1,6 @@
 package com.j3d.engine.interact.cmd;
 
+import com.j3d.ui.engine.CommandPallete;
 import com.j3d.Static;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.engine.geometry.geo2d.GObject;

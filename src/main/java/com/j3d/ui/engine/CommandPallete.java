@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package com.j3d.engine.interact.cmd;
+package com.j3d.ui.engine;
 
 /**
  *
@@ -33,8 +33,10 @@ public class CommandPallete extends javax.swing.JPanel {
         setMinimumSize(new java.awt.Dimension(690, 236));
 
         inputField.setBackground(new java.awt.Color(51, 51, 51));
+        inputField.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         inputField.setForeground(new java.awt.Color(255, 255, 255));
 
+        logLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         logLabel.setForeground(new java.awt.Color(255, 255, 255));
         logLabel.setLabelFor(inputField);
         logLabel.setText("jLabel1");
@@ -43,16 +45,16 @@ public class CommandPallete extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(logLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE)
-            .addComponent(inputField, javax.swing.GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE)
+            .addComponent(logLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE)
+            .addComponent(inputField, javax.swing.GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(logLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(inputField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(logLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(inputField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
