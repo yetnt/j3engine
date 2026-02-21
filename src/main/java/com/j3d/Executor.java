@@ -1,5 +1,6 @@
 package com.j3d;
 
+import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.Renderer;
@@ -11,6 +12,7 @@ import com.j3d.engine.react.actions.Action;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Executor is a class called by {@link EngineFrame#main(String[])} that just draws things ot the window
@@ -47,6 +49,17 @@ public class Executor {
         ));
         actions.forEach(Action::run);
         actions.forEach(Renderer.history::add);
+
+        Static.renderer.scheduleOverlap(UUID.randomUUID(), g -> {
+            // draws a dot at (0, 0) and projects it to both a Vector3 and ScreenPoint for alignment purposes
+            // Purely for testing.
+            Vector3 p = new CartesianPoint(0, 0).toVector3(Static.camera);
+
+            int circleSize = 10;
+            g.setColor(Color.BLACK);
+            ScreenPoint p2 = p.toPoint(Static.camera).toScreen(Static.renderer);
+            g.fillOval(p2.x - circleSize / 2, p2.y - circleSize / 2, circleSize, circleSize);
+        });
     }
 
     /**

@@ -39,6 +39,8 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 
 import static com.j3d.J3DSettings.jMenuBarOffsetY;
+import static com.j3d.engine.interact.input.KeyBindings.commandPaletteFocusOwner;
+
 import com.j3d.engine.draw.ViewType;
 import com.j3d.ui.util.AreYouSure;
 
@@ -339,6 +341,7 @@ public class EngineFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void resetPositionJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetPositionJMenuItemActionPerformed
+        if (commandPaletteFocusOwner(commandPallete)) return;
         Static.camera.setPosition(new Vector3(0, 0, 0));
         Static.mainFrame.repaint();
     }//GEN-LAST:event_resetPositionJMenuItemActionPerformed
@@ -354,11 +357,13 @@ public class EngineFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_redoJMenuItemActionPerformed
 
     private void resetOrientationJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetOrientationJMenuItemActionPerformed
+        if (commandPaletteFocusOwner(commandPallete)) return;
         Static.camera.setRotation(new Rotation(0, 0, 0));
         Static.mainFrame.repaint();
     }//GEN-LAST:event_resetOrientationJMenuItemActionPerformed
 
     private void resetCameraJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetCameraJMenuItemActionPerformed
+        if (commandPaletteFocusOwner(commandPallete)) return;
         Static.camera.setPosition(new Vector3(0, 0, 0));
         Static.camera.setRotation(new Rotation(0, 0, 0));
         Static.mainFrame.repaint();

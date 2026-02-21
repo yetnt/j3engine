@@ -161,7 +161,7 @@ public class Thing implements Interactable {
             }
         }
         if (!pts.isEmpty()) {
-            Vector3 sum = Vector3.reduce(pts, Vector3::add);
+            Vector3 sum = Vector3.reduceToVector3(pts, Vector3::add);
             centroid = sum.div(pts.size());
         }
         return this;
