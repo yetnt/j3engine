@@ -21,12 +21,14 @@ public class CommandsManager {
         DebugCmd debugCmd = new DebugCmd();
         ThingCmd thingCmd = new ThingCmd();
         SelectionCmd selectionCmd = new SelectionCmd();
+        LookAtCmd lookAtCmd = new LookAtCmd();
         commands.put(lineCmd.aliases, lineCmd);
         commands.put(pointCmd.aliases, pointCmd);
         commands.put(triCmd.aliases, triCmd);
         commands.put(debugCmd.aliases, debugCmd);
         commands.put(thingCmd.aliases, thingCmd);
         commands.put(selectionCmd.aliases, selectionCmd);
+        commands.put(lookAtCmd.aliases, lookAtCmd);
     }
 
     public static Command getCommand(String name) {

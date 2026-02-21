@@ -2,11 +2,11 @@ package com.j3d.engine.geometry.geo3d;
 
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
  * Represents a 3D vector with X, Y, and Z components.
@@ -22,9 +22,9 @@ public class Vector3 {
     }
 
     public Vector3() {
-        X = Double.MAX_VALUE;
-        Y = Double.MAX_VALUE;
-        Z = Double.MAX_VALUE;
+        X = 0;
+        Y = 0;
+        Z = 0;
     }
 
     public Vector3(double x, double y, double z) {
@@ -219,12 +219,29 @@ public class Vector3 {
         return dx * dx + dy * dy + dz * dz;
     }
 
-    public static Vector3 reduce(ArrayList<Vector3> vectors, BiFunction<Vector3, Vector3, Vector3> reducer) {
+    public static Vector3 reduceToVector3(ArrayList<Vector3> vectors, BiFunction<Vector3, Vector3, Vector3> reducer) {
         Vector3 result = vectors.getFirst();
         for (int i = 1; i < vectors.size(); i++) {
             result = reducer.apply(result, vectors.get(i));
         }
         return result;
+    }
+
+    /**
+     * Reduces a list of Vector3 objects
+     * @param vectors
+     * @param reducer
+     * @param initialValue
+     * @return
+     * @param <K>
+     */
+    public static <K> K reduce(ArrayList<Vector3> vectors, BiFunction<Vector3, K, K> reducer, K initialValue) {
+        K init = null;
+        if (initialValue != null) init = initialValue;
+        for (int i = 1; i < vectors.size(); i++) {
+            init = reducer.apply(vectors.get(i), init);
+        }
+        return init;
     }
 
     @Override

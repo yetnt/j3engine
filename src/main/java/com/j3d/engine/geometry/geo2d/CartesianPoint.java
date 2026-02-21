@@ -4,6 +4,8 @@ import com.j3d.J3DSettings;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.BasePoint;
 import com.j3d.engine.geometry.ScreenPoint;
+import com.j3d.engine.geometry.geo3d.Camera;
+import com.j3d.engine.geometry.geo3d.Vector3;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,11 +54,24 @@ public class CartesianPoint extends BasePoint<Double> {
         double adjustedX = x * J3DSettings.SCALE;
         double adjustedY = y * J3DSettings.SCALE;
 
-        int screenX = (int) (adjustedX + renderer.screenSize.width / 2);
-        int screenY = (int) (renderer.screenSize.height / 2 - adjustedY);
+        int screenX = (int) (adjustedX + (double) renderer.screenSize.width / 2);
+        int screenY = (int) ((double) renderer.screenSize.height / 2 - adjustedY);
 
 
-        return new ScreenPoint(screenX, screenY);
+        return new ScreenPoint(screenX - J3DSettings.OFFSET_X, screenY);
+    }
+
+    /**
+     * Converts the cartesian point to a {@link Vector3} and places it along the camera's
+     * plane.
+     * @param camera The camera instance.
+     * @return A Vector3
+     */
+    public Vector3 toVector3(Camera camera) {
+        // place point on the plane of the camera.
+        double worldX = (x / J3DSettings.SCALE) + camera.getPosition().getX();
+        double worldY = (y / J3DSettings.SCALE) + camera.getPosition().getY();
+        return new Vector3(worldX, worldY, camera.getPosition().getZ());
     }
 
     /**

@@ -319,7 +319,7 @@ public class Renderer {
      * @param Id The unique ID of the object to find.
      * @return The {@link GObject} with the matching ID, or {@code null} if no such object is found.
      */
-    public GObject findThing(String Id) {
+    public GObject findGObject(String Id) {
         for (Layer layer : layers) {
             for (Thing t : layer) {
                 for (GObject obj : t.getObjects()) {
@@ -330,7 +330,16 @@ public class Renderer {
             }
         }
         return null;
+    }
 
+    public Thing findThing(String name) {
+        for (Layer layer : layers) {
+            for (Thing t : layer) {
+                if (t.getName().equals(name))
+                    return t;
+            }
+        }
+        return null;
     }
 
     /**
@@ -472,5 +481,9 @@ public class Renderer {
 
     public void removeOverlap(UUID id) {
         overlaps.remove(id);
+    }
+
+    public void deselectAll() {
+        currentSelection.clear();
     }
 }

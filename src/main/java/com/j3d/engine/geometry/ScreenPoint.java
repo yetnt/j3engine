@@ -29,7 +29,7 @@ public class ScreenPoint extends BasePoint<Integer> {
      * @return A CartesianPoint
      */
     public CartesianPoint toPoint(Renderer renderer) {
-        double adjustedX = (x - renderer.screenSize.width / 2.0) / J3DSettings.SCALE;
+        double adjustedX = ((x + J3DSettings.OFFSET_X) - renderer.screenSize.width / 2.0) / J3DSettings.SCALE;
         double adjustedY = (renderer.screenSize.height / 2.0 - y) / J3DSettings.SCALE;
 
         return new CartesianPoint(adjustedX, adjustedY);

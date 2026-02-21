@@ -1,5 +1,6 @@
 package com.j3d;
 
+import com.j3d.engine.Renderer;
 import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.draw.tris.TriangleSortMethod;
@@ -14,6 +15,12 @@ public class J3DSettings {
      * A constant number to offset all components which get pushed down by the JMenuBar
      */
     public static final int jMenuBarOffsetY = 20;
+    /**
+     * A constant offset used within {@link CartesianPoint#toScreen(Renderer)} and
+     * {@link ScreenPoint#toPoint(Renderer)} to shift all x values {@code 200} pixels closer to the centre
+     * of the screen.
+     */
+    public static final int OFFSET_X = 200;
     /**
      * The default screen size for the Renderer.
      */

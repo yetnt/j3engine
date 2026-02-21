@@ -1,5 +1,8 @@
 package com.j3d.engine.geometry.geo3d;
 
+import com.j3d.Static;
+import com.j3d.ui.engine.EngineFrame;
+
 /**
  * Represents the virtual camera in the 3D scene.
  * It holds the position, orientation, and projection plane details
@@ -77,40 +80,34 @@ public class Camera {
         this.projectionPlane = projectionPlane;
         return this;
     }
-
-//    /**
-//     * Computes the forward direction vector of the camera based on its rotation.
-//     * This vector indicates the direction the camera is facing in 3D space.
-//     *
-//     * @return A normalized Vector3 representing the camera's forward direction.
-//     */
     public Vector3 getForward() {
-        double yaw = Math.toRadians(rotation.getYaw());     // horizontal angle
-        double pitch = Math.toRadians(rotation.getPitch()); // vertical angle
+        double yawRad = Math.toRadians(rotation.getYaw());
+        double pitchRad = Math.toRadians(rotation.getPitch());
 
-//        return new Vector3(
-//                Math.cos(pitch) * Math.sin(yaw),
-//                Math.sin(pitch),
-//                Math.cos(pitch) * Math.cos(yaw)
         return new Vector3(
-                        Math.cos(yaw) * Math.sin(pitch),
-                        Math.sin(yaw),
-                        Math.cos(yaw) * Math.cos(pitch)
-                ).normalize();
+                Math.cos(pitchRad) * Math.sin(yawRad),
+                Math.sin(pitchRad),
+                Math.cos(pitchRad) * Math.cos(yawRad)
+        ).normalize();
     }
 
-    /**
-     * Adjusts the camera's rotation to look at a specific target point in 3D space.
-     *
-     * @param target The target point to look at.
-     */
     public void lookAt(Vector3 target) {
-        Vector3 direction = target.sub(this.position).normalize();
-        double yaw = Math.toDegrees(Math.asin((direction.getY())));
-        double pitch = Math.toDegrees(Math.atan2(direction.getX(), direction.getZ()));
-        this.rotation = new Rotation(pitch, yaw, 0);
-    }
+        Vector3 dir = target.sub(this.position).normalize();
 
+        // Roll = nod yes → vertical angle
+        double rollDeg = Math.toDegrees(Math.atan2(
+                -dir.getY(),
+                Math.sqrt(dir.getX()*dir.getX() + dir.getZ()*dir.getZ())
+        ));
+
+        // Pitch = shake no → horizontal angle
+        double pitchDeg = Math.toDegrees(Math.atan2(dir.getX(), dir.getZ()));
+
+        // Yaw = twist → optional, depends on how you want to interpret spin around vertical
+        double yawDeg = 0;
+
+        this.rotation = new Rotation(pitchDeg, yawDeg, rollDeg);
+    }
 
     @Override
     public String toString() {
