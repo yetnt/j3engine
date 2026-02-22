@@ -548,68 +548,6 @@ public class EngineFrame extends javax.swing.JFrame {
                  UnsupportedLookAndFeelException e) {
             throw new RuntimeException(e);
         }
-//        f = new EngineFrame();
-//        final int menuBarOffsetY = (f.getJMenuBar().getSize().height + jMenuBarOffsetY);
-//        f.setExtendedState(JFrame.MAXIMIZED_BOTH);
-//        renderer = new Renderer(J3DSettings.screenSize);
-//        executor = new Executor(renderer);
-//        dp.run(renderer, executor, f);
-//        JLayeredPane layeredPane = f.getLayeredPane();
-//        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        f.setSize(J3DSettings.screenSize.width, J3DSettings.screenSize.height);
-//        f.setResizable(false);
-//
-//        mainPanel.setFocusable(true);
-//
-//        InputMap im = mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-//        ActionMap am = mainPanel.getActionMap();
-//        new KeyBindings(im, am, commandPallete);
-//
-//        Toolbox toolbox = new Toolbox();
-//        // Toolbox at the top and extends full width but not very tall
-//        toolbox.setBounds(0, 0 + menuBarOffsetY, J3DSettings.screenSize.width - 50, toolbox.getPreferredSize().height);
-//
-//        // add menubar to layered pane
-//        JMenuBar mb = f.getJMenuBar();
-//        if (mb != null) {
-//            layeredPane.add(mb, JLayeredPane.POPUP_LAYER);
-//        }
-//        layeredPane.add(toolbox, JLayeredPane.MODAL_LAYER); // above default layer
-//
-//        mainPanel.requestFocusInWindow();
-//        mainPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN));
-//        mainPanel.setBounds(0, 0 + menuBarOffsetY, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
-//        mainPanel.setPreferredSize(new Dimension(J3DSettings.screenSize.width, J3DSettings.screenSize.height));
-////        layeredPane.add(mainPanel, JLayeredPane.DEFAULT_LAYER);
-//
-//        dp.setBounds(20, toolbox.getPreferredSize().height + menuBarOffsetY, dp.getPreferredSize().width, dp.getPreferredSize().height); // small corner overlay
-//        dp.setOpaque(true);
-//        dp.setBackground(Color.WHITE);
-//        dp.setVisible(false);
-//        J3DSettings.log = new Logger(dp.logTextArea); // initialize logger with the text area
-//        layeredPane.add(dp, JLayeredPane.PALETTE_LAYER);
-//
-//        Rectangle bounds = f.getBounds();
-//        Dimension size = commandPallete.getPreferredSize();
-//        int x = ((bounds.width - size.width) / 2) - 60;
-//        int y = bounds.height - size.height - 200;
-//        commandPallete.setBounds(x, y, size.width, size.height);
-//
-//        commandPallete.setOpaque(true);
-//        commandPallete.setBackground(new Color(30, 30, 30, 8));
-//        commandPallete.setVisible(true);
-//        layeredPane.add(commandPallete, JLayeredPane.POPUP_LAYER);
-//
-//        commandParser = new CommandParser(commandPallete);
-//
-//        mainPanel.getRootPane().setFocusable(true);
-//        mainPanel.getRootPane().requestFocusInWindow();
-//
-////        frame.add(new EngineFrame());
-////        f.setVisible(true);
-//
-//        Cursors.init(f);
-//        Cursors.setDefault();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
