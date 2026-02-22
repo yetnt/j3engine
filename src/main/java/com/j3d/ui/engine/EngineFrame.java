@@ -201,10 +201,13 @@ public class EngineFrame extends javax.swing.JFrame {
         viewJMenu = new javax.swing.JMenu();
         viewAsNormalJMenuItem = new javax.swing.JMenuItem();
         viewAsWireframeJMenuItem = new javax.swing.JMenuItem();
-        resetPositionJMenuItem = new javax.swing.JMenuItem();
-        resetOrientationJMenuItem = new javax.swing.JMenuItem();
-        resetCameraJMenuItem = new javax.swing.JMenuItem();
         redrawJMenuItem = new javax.swing.JMenuItem();
+        resetJMenuItemDropDown = new javax.swing.JMenu();
+        resetCameraJMenuItem = new javax.swing.JMenuItem();
+        resetOrientationJMenuItem = new javax.swing.JMenuItem();
+        resetPositionJMenuItem = new javax.swing.JMenuItem();
+        exportJMenuItemDropDown = new javax.swing.JMenu();
+        exportAsPNGJMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("J3D");
@@ -295,33 +298,6 @@ public class EngineFrame extends javax.swing.JFrame {
         });
         viewJMenu.add(viewAsWireframeJMenuItem);
 
-        resetPositionJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
-        resetPositionJMenuItem.setText("Reset Position");
-        resetPositionJMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                resetPositionJMenuItemActionPerformed(evt);
-            }
-        });
-        viewJMenu.add(resetPositionJMenuItem);
-
-        resetOrientationJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
-        resetOrientationJMenuItem.setText("Reset Orientation");
-        resetOrientationJMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                resetOrientationJMenuItemActionPerformed(evt);
-            }
-        });
-        viewJMenu.add(resetOrientationJMenuItem);
-
-        resetCameraJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
-        resetCameraJMenuItem.setText("Reset Camera");
-        resetCameraJMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                resetCameraJMenuItemActionPerformed(evt);
-            }
-        });
-        viewJMenu.add(resetCameraJMenuItem);
-
         redrawJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
         redrawJMenuItem.setText("Redraw");
         redrawJMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -330,6 +306,50 @@ public class EngineFrame extends javax.swing.JFrame {
             }
         });
         viewJMenu.add(redrawJMenuItem);
+
+        resetJMenuItemDropDown.setText("Reset");
+
+        resetCameraJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
+        resetCameraJMenuItem.setText("Reset Camera");
+        resetCameraJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetCameraJMenuItemActionPerformed(evt);
+            }
+        });
+        resetJMenuItemDropDown.add(resetCameraJMenuItem);
+
+        resetOrientationJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
+        resetOrientationJMenuItem.setText("Reset Orientation");
+        resetOrientationJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetOrientationJMenuItemActionPerformed(evt);
+            }
+        });
+        resetJMenuItemDropDown.add(resetOrientationJMenuItem);
+
+        resetPositionJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
+        resetPositionJMenuItem.setText("Reset Position");
+        resetPositionJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetPositionJMenuItemActionPerformed(evt);
+            }
+        });
+        resetJMenuItemDropDown.add(resetPositionJMenuItem);
+
+        viewJMenu.add(resetJMenuItemDropDown);
+
+        exportJMenuItemDropDown.setText("Export As...");
+
+        exportAsPNGJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        exportAsPNGJMenuItem.setText("PNG");
+        exportAsPNGJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportAsPNGJMenuItemActionPerformed(evt);
+            }
+        });
+        exportJMenuItemDropDown.add(exportAsPNGJMenuItem);
+
+        viewJMenu.add(exportJMenuItemDropDown);
 
         jMenuBar1.add(viewJMenu);
 
@@ -391,7 +411,7 @@ public class EngineFrame extends javax.swing.JFrame {
 
         Static.renderer.resetScene();
 
-        String path = FilesUtility.fileChooser(jfcConfig -> {
+        File file = FilesUtility.fileChooser(jfcConfig -> {
             jfcConfig.setDialogTitle("choose a filel");
             jfcConfig.setFileSelectionMode(JFileChooser.FILES_ONLY);
             jfcConfig.setAcceptAllFileFilterUsed(false);
@@ -409,7 +429,8 @@ public class EngineFrame extends javax.swing.JFrame {
                     }
             );
         }, Static.mainFrame);
-        if (path == null) return;
+        if (file == null) return;
+        String path = file.getAbsolutePath();
         Static.log.println(path);
         Path p = Paths.get(path);
         String fileName = p.getFileName().toString();
@@ -442,7 +463,7 @@ public class EngineFrame extends javax.swing.JFrame {
             String fileName = JOptionPane.showInputDialog("Project name?");
             fileName = fileName == null ? "project1" : fileName;
 
-            String folder = FilesUtility.folderChooser(Static.mainFrame);
+            String folder = FilesUtility.folderChooser(Static.mainFrame).getAbsolutePath();
 
             Static.log.println("Picked the location " + folder + " with the file name " + fileName);
 
@@ -455,6 +476,41 @@ public class EngineFrame extends javax.swing.JFrame {
     private void newProjectJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newProjectJMenuItemActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_newProjectJMenuItemActionPerformed
+
+    private void exportAsPNGJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportAsPNGJMenuItemActionPerformed
+        File o = FilesUtility.fileChooser(
+                jfc -> {
+                    // allow folders or other PNG files to be chosen
+                    jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                    jfc.setAcceptAllFileFilterUsed(false);
+                    jfc.setFileFilter(new FileFilter() {
+                        @Override
+                        public boolean accept(File f) {
+                            return f.getName().endsWith(".png") || !f.isFile();
+                        }
+
+                        @Override
+                        public String getDescription() {
+                            return "PNG File or otherwise output directory";
+                        }
+                    });
+                },
+                Static.mainFrame
+        );
+
+        if (o == null)
+            return;
+        File file = !o.isFile() ? new File(o, "export.png") : o;
+
+        J3DPanel panel = (J3DPanel) mainPanel;
+
+        try {
+            panel.exportAs("png", file);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }//GEN-LAST:event_exportAsPNGJMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -565,6 +621,8 @@ public class EngineFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu editJMenu;
+    private javax.swing.JMenuItem exportAsPNGJMenuItem;
+    private javax.swing.JMenu exportJMenuItemDropDown;
     private javax.swing.JMenu jMenu1;
     public javax.swing.JMenuBar jMenuBar1;
     public static javax.swing.JPanel mainPanel;
@@ -574,6 +632,7 @@ public class EngineFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem redoJMenuItem;
     private javax.swing.JMenuItem redrawJMenuItem;
     private javax.swing.JMenuItem resetCameraJMenuItem;
+    private javax.swing.JMenu resetJMenuItemDropDown;
     private javax.swing.JMenuItem resetOrientationJMenuItem;
     private javax.swing.JMenuItem resetPositionJMenuItem;
     private javax.swing.JMenuItem saveProjectJMenuItem;

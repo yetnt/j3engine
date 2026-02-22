@@ -4,9 +4,12 @@ import com.j3d.Static;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.interact.selection.SelectionUI;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 import static com.j3d.J3DSettings.jMenuBarOffsetY;
 import static com.j3d.ui.engine.EngineFrame.*;
@@ -58,6 +61,29 @@ public class J3DPanel extends JPanel {
         // draw selection area ontop of all render things.
         if (selectionArea[0] != null && selectionArea[1] != null) {
             SelectionUI.run((Graphics2D)g, applySelectionAreaOffset(selectionArea), Static.renderer);
+        }
+    }
+
+    /**
+     * Exports the current panel view as an image file of the specified type.
+     * @param extension The extension of the image file to be exported.
+     * @param file The file to which the image will be exported.
+     * @throws Exception If an error occurs during the export process.
+     */
+    public void exportAs(String extension, File file) throws Exception {
+        BufferedImage image = new BufferedImage(
+                this.getWidth(),
+                this.getHeight(),
+                BufferedImage.TYPE_INT_ARGB
+        );
+
+        Graphics2D g2 = image.createGraphics();
+        this.printAll(g2);
+        g2.dispose();
+
+        switch (extension) {
+            case "png" -> ImageIO.write(image, "png", file);
+            case "jpg" -> ImageIO.write(image, "jpg", file);
         }
     }
 }

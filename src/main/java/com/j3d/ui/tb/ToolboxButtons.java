@@ -2,6 +2,8 @@ package com.j3d.ui.tb;
 
 import com.j3d.Static;
 import com.j3d.engine.DebugDump;
+import com.j3d.engine.interact.cmd.CommandsManager;
+import com.j3d.engine.interact.cmd.commands.selection.SelectionCmd;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.geometry.geo2d.GTri;
 import com.j3d.engine.geometry.geo3d.Camera;
@@ -16,6 +18,7 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ToolboxButtons {
     private static final ArrayList<JPanel> toolboxButtons = new ArrayList<>();
@@ -42,7 +45,7 @@ public class ToolboxButtons {
         // Example button registration
         register("Toggle Layers", e -> {
             Static.layerTree.setVisible(!Static.layerTree.isVisible());
-        });
+        }, "layers.png");
         // another for exmaple
         register("Toggle Throbber", e -> {
             String nString = JOptionPane.showInputDialog("Input time in ms to sleep");
@@ -107,9 +110,20 @@ public class ToolboxButtons {
             }
 
         });
+        register("Transform", e -> {
+            SelectionCmd cmd = new SelectionCmd();
+        }, "transform.png");
     }
 
-    public static void register(String label, ActionListener actionListener) {
+    public static void register(String label, ActionListener actionListener, String imageFileName) {
+        JButton l = register(label, actionListener);
+        ImageIcon unscaled = new ImageIcon(Objects.requireNonNull(ToolboxButtons.class.getResource("/art/toolbox/" + imageFileName)));
+        Image scaled = unscaled.getImage().getScaledInstance(l.getPreferredSize().width, l.getPreferredSize().height, Image.SCALE_SMOOTH);
+        l.setText(""); // Set the text to nun so that it doesnt push the picture
+        l.setIcon(new ImageIcon(scaled));
+    }
+
+    public static JButton register(String label, ActionListener actionListener) {
         JPanel buttonPanel = new javax.swing.JPanel();
         buttonPanel.setMaximumSize(new java.awt.Dimension(100, 120));
         buttonPanel.setMinimumSize(new java.awt.Dimension(120, 120));
@@ -139,6 +153,7 @@ public class ToolboxButtons {
         buttonPanel.add(label1);
 
         toolboxButtons.add(buttonPanel);
+        return btnA;
     }
 
     public static ArrayList<JPanel> getToolboxButtons() {

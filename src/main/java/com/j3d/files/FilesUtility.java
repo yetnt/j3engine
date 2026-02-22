@@ -78,19 +78,19 @@ public class FilesUtility {
      * @param chooserConfigure A consumer that configures the file chooser.
      * @return The absolute path of the selected file, or null if no file is selected.
      */
-    public static String fileChooser(Consumer<JFileChooser> chooserConfigure, JFrame frameParent) {
+    public static File fileChooser(Consumer<JFileChooser> chooserConfigure, JFrame frameParent) {
         JFileChooser chooser = new JFileChooser();
         chooserConfigure.accept(chooser);
 
         int result = chooser.showOpenDialog(frameParent);
-        return result == JFileChooser.APPROVE_OPTION ? chooser.getSelectedFile().getAbsolutePath() : null;
+        return result == JFileChooser.APPROVE_OPTION ? chooser.getSelectedFile(): null;
     }
 
     /**
      * Shows a folder chooser dialog and returns the selected folder's absolute path.
      * @return The absolute path of the selected folder, or null if no folder is selected.
      */
-    public static String folderChooser(JFrame frameParent) {
+    public static File folderChooser(JFrame frameParent) {
         return fileChooser(chooser -> {
             chooser.setDialogTitle("Select Folder Big Dawgg");
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
