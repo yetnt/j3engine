@@ -133,4 +133,8 @@ public class SelectionManager {
     public ArrayList<GObject> getSelected() {
         return selected;
     }
+
+    public void clear() {
+        selected.clear();
+    }
 }

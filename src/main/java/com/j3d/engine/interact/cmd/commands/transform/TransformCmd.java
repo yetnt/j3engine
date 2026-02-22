@@ -1,4 +1,4 @@
-package com.j3d.engine.interact.cmd.commands.selection;
+package com.j3d.engine.interact.cmd.commands.transform;
 
 import com.j3d.Static;
 import com.j3d.engine.interact.cmd.SafeJLabel;
@@ -8,11 +8,11 @@ import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventReactor;
 import com.j3d.engine.react.events.EventType;
 
-public class SelectionCmd extends Command {
+public class TransformCmd extends Command {
 
-    public SelectionCmd() {
-        super("selection", "do stuff wit selection");
-        this.aliases("sel", "s", "select").args(
+    public TransformCmd() {
+        super("transform", "do stuff wit selection");
+        this.aliases("sel", "s", "select", "trans", "t").args(
                 new RotateSelection(),
                 new TranslateSelection(),
                 new ScaleSelection()

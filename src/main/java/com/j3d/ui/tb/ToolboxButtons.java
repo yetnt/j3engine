@@ -2,8 +2,7 @@ package com.j3d.ui.tb;
 
 import com.j3d.Static;
 import com.j3d.engine.DebugDump;
-import com.j3d.engine.interact.cmd.CommandsManager;
-import com.j3d.engine.interact.cmd.commands.selection.SelectionCmd;
+import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.geometry.geo2d.GTri;
 import com.j3d.engine.geometry.geo3d.Camera;
@@ -111,7 +110,7 @@ public class ToolboxButtons {
 
         });
         register("Transform", e -> {
-            SelectionCmd cmd = new SelectionCmd();
+            TransformCmd cmd = new TransformCmd();
         }, "transform.png");
     }
 

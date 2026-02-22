@@ -8,7 +8,7 @@ import com.j3d.Static;
 import com.j3d.Executor;
 import com.j3d.J3DSettings;
 import com.j3d.engine.interact.Interactable;
-import com.j3d.engine.interact.cmd.commands.selection.ScaleSelection;
+import com.j3d.engine.interact.cmd.commands.transform.ScaleSelection;
 import com.j3d.engine.interact.input.KeyBindings;
 import com.j3d.engine.Logger;
 import com.j3d.engine.Renderer;

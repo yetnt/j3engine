@@ -1,9 +1,9 @@
-package com.j3d.engine.interact.cmd.commands.selection;
+package com.j3d.engine.interact.cmd.commands.transform;
 
 import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Subcommand;
 
-import static com.j3d.engine.interact.cmd.commands.selection.SelectionCmd.selectDispatch;
+import static com.j3d.engine.interact.cmd.commands.transform.TransformCmd.selectDispatch;
 
 public class TranslateSelection extends Subcommand {
 

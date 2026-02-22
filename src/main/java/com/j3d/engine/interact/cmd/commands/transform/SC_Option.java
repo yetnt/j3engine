@@ -1,4 +1,4 @@
-package com.j3d.engine.interact.cmd.commands.selection;
+package com.j3d.engine.interact.cmd.commands.transform;
 
 /**
  * An enum representing the different options for the selection command.

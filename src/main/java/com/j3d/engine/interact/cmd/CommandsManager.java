@@ -2,7 +2,7 @@ package com.j3d.engine.interact.cmd;
 
 import com.j3d.engine.interact.cmd.commands.*;
 import com.j3d.engine.interact.cmd.base.Command;
-import com.j3d.engine.interact.cmd.commands.selection.SelectionCmd;
+import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 import com.j3d.engine.interact.cmd.commands.thing.ThingCmd;
 
 import java.util.ArrayList;
@@ -20,14 +20,14 @@ public class CommandsManager {
         TriCmd triCmd = new TriCmd();
         DebugCmd debugCmd = new DebugCmd();
         ThingCmd thingCmd = new ThingCmd();
-        SelectionCmd selectionCmd = new SelectionCmd();
+        TransformCmd transformCmd = new TransformCmd();
         LookAtCmd lookAtCmd = new LookAtCmd();
         commands.put(lineCmd.aliases, lineCmd);
         commands.put(pointCmd.aliases, pointCmd);
         commands.put(triCmd.aliases, triCmd);
         commands.put(debugCmd.aliases, debugCmd);
         commands.put(thingCmd.aliases, thingCmd);
-        commands.put(selectionCmd.aliases, selectionCmd);
+        commands.put(transformCmd.aliases, transformCmd);
         commands.put(lookAtCmd.aliases, lookAtCmd);
     }
 
