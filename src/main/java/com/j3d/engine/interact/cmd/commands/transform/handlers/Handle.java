@@ -3,6 +3,7 @@ package com.j3d.engine.interact.cmd.commands.transform.handlers;
 import com.j3d.Static;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo3d.Vector3;
+import com.j3d.utility.Pair;
 
 import java.awt.*;
 import java.util.function.BiConsumer;
@@ -34,6 +35,26 @@ public class Handle {
 
     public Handle draw(Graphics2D g) {
         draw.accept(g, toSp());
+        {
+            Pair<Integer, Integer> selectionBoundingBox = new Pair<>(5, 5);
+            ScreenPoint p = toSp();
+            int lowerX = p.x - selectionBoundingBox.first;
+            int lowerY = p.y - selectionBoundingBox.second;
+            int upperX = p.x + selectionBoundingBox.first;
+            int upperY = p.y + selectionBoundingBox.second;
+
+            int rectHeight = upperY - lowerY;
+            int rectWidth = upperX - lowerX;
+
+            int rectCentreX = rectWidth / 2;
+            int rectCentreY = rectHeight / 2;
+
+            g.setColor(new Color(23, 12, 42, 120));
+
+            g.fillRect(rectCentreX, rectCentreY, rectWidth, rectHeight);
+
+//            g.fillRect(lowerX, lowerY, upperX, upperY);
+        }
         if (drawPreview && previewPostion != null) {
             // set 50% transparency
             Color oldColor = g.getColor();

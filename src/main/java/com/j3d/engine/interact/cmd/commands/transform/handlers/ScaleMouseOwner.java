@@ -30,7 +30,7 @@ public class ScaleMouseOwner extends TransformMouseOwner {
 
         Pair<Vector3, Double> newPos = calculateNewHandlePos(
                 camPos,
-                C.sub(camPos).normalize(),
+                camPos.sub(C).normalize(),
                 A,
                 switch (handle.handleType) {
                     case X -> new Vector3(1, 0, 0);

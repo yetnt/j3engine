@@ -275,4 +275,8 @@ public class Vector3 {
 
         return new Vector3(xPrime, yPrime, zPrime);
     }
+
+    public Vector3 scale(double d) {
+        return new Vector3(X * d, Y * d, Z * d);
+    }
 }

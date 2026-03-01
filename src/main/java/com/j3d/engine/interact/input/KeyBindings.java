@@ -2,6 +2,7 @@ package com.j3d.engine.interact.input;
 
 import com.j3d.J3DSettings;
 import com.j3d.Static;
+import com.j3d.engine.geometry.geo3d.Matrix4;
 import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.interact.selection.SelectionUtils;
 import com.j3d.engine.geometry.geo3d.Vector3;
@@ -13,6 +14,8 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.j3d.Static.camera;
 
 /**
  * A class that manages the key bindings for the application. It allows for easy addition and removal
@@ -74,7 +77,23 @@ public class KeyBindings {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (commandPaletteFocusOwner(cmdP)) return;
-                Static.camera.move(new Vector3(0, 0, J3DSettings.cameraMoveSpeed));
+//                Static.camera.move(new Vector3(0, 0, J3DSettings.cameraMoveSpeed));
+//                Static.mainFrame.repaint();
+//                Vector3 forward = Static.camera.getForward();
+//                Vector3 pos = Static.camera.getPosition();
+//
+//                Static.camera.setPosition(
+//                        pos.add(forward.mult(J3DSettings.cameraMoveSpeed))
+//                );
+//                Static.mainFrame.repaint();
+                //TODO: No work. See Camera.getForward
+                Matrix4 rot = camera.getRotation().matrix();
+                Vector3 localForward = new Vector3(0, 0, 1);
+                Vector3 worldForward = camera.getRotation().matrix().transform(localForward);
+                double speed = J3DSettings.cameraMoveSpeed;
+                camera.setPosition(camera.getPosition().add(worldForward.mult(speed)));
+                Vector3 pos = camera.getPosition();
+                camera.setPosition(pos.add(worldForward.mult(J3DSettings.cameraMoveSpeed)));
                 Static.mainFrame.repaint();
             }
         });
@@ -83,7 +102,7 @@ public class KeyBindings {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (commandPaletteFocusOwner(cmdP)) return;
-                Static.camera.move(new Vector3(0, 0, -J3DSettings.cameraMoveSpeed));
+                camera.move(new Vector3(0, 0, -J3DSettings.cameraMoveSpeed));
                 Static.mainFrame.repaint();
             }
         });
@@ -92,7 +111,7 @@ public class KeyBindings {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (commandPaletteFocusOwner(cmdP)) return;
-                Static.camera.move(new Vector3(-J3DSettings.cameraMoveSpeed, 0, 0));
+                camera.move(new Vector3(-J3DSettings.cameraMoveSpeed, 0, 0));
                 Static.mainFrame.repaint();
             }
         });
@@ -101,7 +120,7 @@ public class KeyBindings {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (commandPaletteFocusOwner(cmdP)) return;
-                Static.camera.move(new Vector3(J3DSettings.cameraMoveSpeed, 0, 0));
+                camera.move(new Vector3(J3DSettings.cameraMoveSpeed, 0, 0));
                 Static.mainFrame.repaint();
             }
         });
@@ -110,7 +129,7 @@ public class KeyBindings {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (commandPaletteFocusOwner(cmdP)) return;
-                Static.camera.move(new Vector3(0, J3DSettings.cameraMoveSpeed, 0));
+                camera.move(new Vector3(0, J3DSettings.cameraMoveSpeed, 0));
                 Static.mainFrame.repaint();
             }
         });
@@ -119,7 +138,7 @@ public class KeyBindings {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (commandPaletteFocusOwner(cmdP)) return;
-                Static.camera.move(new Vector3(0, -J3DSettings.cameraMoveSpeed, 0));
+                camera.move(new Vector3(0, -J3DSettings.cameraMoveSpeed, 0));
                 Static.mainFrame.repaint();
             }
         });

@@ -1,5 +1,7 @@
 package com.j3d.engine.geometry.geo3d;
 
+import static com.j3d.engine.geometry.geo3d.Matrix4.*;
+
 /**
  * Represents a rotation in 3D space using Tait-Bryan angles (a type of Euler angle).
  * This class explicitly stores pitch, yaw, and roll to avoid ambiguity.
@@ -43,22 +45,28 @@ public class Rotation {
         return this.roll;
     }
 
+    public Matrix4 matrix() {
+        Matrix4 matrix = rotZ(Math.toRadians(roll))  // tilt last
+            .multiply(rotX(Math.toRadians(pitch))) // look up/down
+            .multiply(rotY(Math.toRadians(yaw)));  // turn left/right
+        return matrix;
+    }
+
      public void setPitch(double pitch) { this.pitch = pitch; }
      public void setYaw(double yaw) { this.yaw = yaw; }
      public void setRoll(double roll) { this.roll = roll; }
 
     /**
      * Converts the rotation angles from degrees to radians and returns them as a Vector3.
-     * The order of components in the returned Vector3 is (roll_radians, pitch_radians, yaw_radians).
      *
      * @return A {@link Vector3} containing the roll, pitch, and yaw angles in radians.
      * @see Math#toRadians(double)
-     * @see #getRoll()
-     * @see #getPitch()
-     * @see #getYaw()
      * @see Vector3
      */
     public Vector3 toRadVector3() {
-        return new Vector3(Math.toRadians(getRoll()), Math.toRadians(getPitch()), Math.toRadians(getYaw()));
+//        return new Vector3(Math.toRadians(getRoll()), Math.toRadians(getPitch()), Math.toRadians(getYaw()));
+
+        return new Vector3(Math.toRadians(getYaw()), Math.toRadians(getPitch()), Math.toRadians(getRoll()));
     }
+
 }

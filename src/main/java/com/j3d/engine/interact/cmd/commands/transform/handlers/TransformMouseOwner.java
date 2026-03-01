@@ -142,9 +142,9 @@ public class TransformMouseOwner extends MouseOwner implements TransformContract
 
         // Return Point D: A + (axis * s)
         return new Pair<>(new Vector3(
-                handlePos.getX() + (axisDir.getX() * s),
-                handlePos.getY() + (axisDir.getY() * s),
-                handlePos.getZ() + (axisDir.getZ() * s)
+                handlePos.getX() - (axisDir.getX() * s),
+                handlePos.getY() - (axisDir.getY() * s),
+                handlePos.getZ() - (axisDir.getZ() * s)
         ), s);
     }
 }

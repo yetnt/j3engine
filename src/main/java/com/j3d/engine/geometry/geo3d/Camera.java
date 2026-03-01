@@ -80,34 +80,89 @@ public class Camera {
         this.projectionPlane = projectionPlane;
         return this;
     }
+//    public Vector3 getForward() {
+//
+//
+//        double yawRad = Math.toRadians(rotation.getYaw());
+//        double pitchRad = Math.toRadians(rotation.getPitch());
+//
+//        return new Vector3(
+//                Math.cos(pitchRad) * Math.sin(yawRad),
+//                Math.sin(pitchRad),
+//                Math.cos(pitchRad) * Math.cos(yawRad)
+//        ).normalize();
+//    }
+//    public Vector3 getForward() {
+//        double pitch = Math.toRadians(rotation.getPitch()); // left/right
+//        double roll  = Math.toRadians(rotation.getRoll());  // up/down
+//        double yaw   = Math.toRadians(rotation.getYaw());   // spin
+//
+//        // base forward using your pitch & roll
+//        double x = Math.sin(pitch) * Math.cos(roll);
+//        double y = Math.sin(roll);
+//        double z = Math.cos(pitch) * Math.cos(roll);
+//
+//        // apply yaw (twist around forward axis)
+//        double cosYaw = Math.cos(yaw);
+//        double sinYaw = Math.sin(yaw);
+//
+//        double rx = x * cosYaw - y * sinYaw;
+//        double ry = x * sinYaw + y * cosYaw;
+//
+//        return new Vector3(rx, ry, z).normalize();
+//    }
+// Forward vector (direction the camera points)
     public Vector3 getForward() {
-        double yawRad = Math.toRadians(rotation.getYaw());
-        double pitchRad = Math.toRadians(rotation.getPitch());
+//        double yawRad = Math.toRadians(this.rotation.getYaw());
+//        double pitchRad = Math.toRadians(this.rotation.getPitch());
+//        double rollRad = Math.toRadians(this.rotation.getRoll());
+//
+//        // Standard Tait-Bryan YPR rotation applied to local Z-axis (0,0,1)
+//        double x = Math.sin(yawRad) * Math.cos(pitchRad);
+//        double y = -Math.sin(pitchRad);
+//        double z = Math.cos(yawRad) * Math.cos(pitchRad);
+//
+//        return new Vector3(x, y, z).normalize();
+        //TODO: No Work, See keybinding for W
+        return rotation.matrix().transform(new Vector3(0, 0, 1));
+    }
 
-        return new Vector3(
-                Math.cos(pitchRad) * Math.sin(yawRad),
-                Math.sin(pitchRad),
-                Math.cos(pitchRad) * Math.cos(yawRad)
-        ).normalize();
+    // Right vector (local X-axis, fully respects roll)
+    public Vector3 getRight() {
+        double yawRad = Math.toRadians(this.rotation.getYaw());
+        double pitchRad = Math.toRadians(this.rotation.getPitch());
+        double rollRad = Math.toRadians(this.rotation.getRoll());
+
+        // Apply YPR rotation to local X-axis (1,0,0)
+        double x = Math.cos(yawRad) * Math.cos(rollRad) + Math.sin(yawRad) * Math.sin(pitchRad) * Math.sin(rollRad);
+        double y = Math.cos(pitchRad) * Math.sin(rollRad);
+        double z = -Math.sin(yawRad) * Math.cos(rollRad) + Math.cos(yawRad) * Math.sin(pitchRad) * Math.sin(rollRad);
+
+        return new Vector3(x, y, z).normalize();
+    }
+
+    // Up vector (local Y-axis, orthogonal to forward & right)
+    public Vector3 getUp() {
+        Vector3 forward = getForward();
+        Vector3 right = getRight();
+        return right.cross(forward).normalize(); // ensures orthogonal up
     }
 
     public void lookAt(Vector3 target) {
         Vector3 dir = target.sub(this.position).normalize();
 
-        // Roll = nod yes → vertical angle
-        double rollDeg = Math.toDegrees(Math.atan2(
-                -dir.getY(),
-                Math.sqrt(dir.getX()*dir.getX() + dir.getZ()*dir.getZ())
-        ));
+        // Yaw = rotation around vertical (y-axis), left/right
+        double yawDeg = Math.toDegrees(Math.atan2(dir.getX(), dir.getZ()));
 
-        // Pitch = shake no → horizontal angle
-        double pitchDeg = Math.toDegrees(Math.atan2(dir.getX(), dir.getZ()));
+        // Pitch = rotation up/down
+        double pitchDeg = Math.toDegrees(Math.atan2(-dir.getY(), Math.sqrt(dir.getX() * dir.getX() + dir.getZ() * dir.getZ())));
 
-        // Yaw = twist → optional, depends on how you want to interpret spin around vertical
-        double yawDeg = 0;
+        // Roll = nod, optional, usually 0 if you don't want camera tilt
+        double rollDeg = 0;
 
-        this.rotation = new Rotation(pitchDeg, yawDeg, rollDeg);
+        this.rotation = new Rotation(yawDeg, pitchDeg, rollDeg);
     }
+
 
     @Override
     public String toString() {
