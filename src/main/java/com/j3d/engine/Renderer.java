@@ -7,7 +7,7 @@ import com.j3d.engine.geometry.geo2d.*;
 import com.j3d.engine.geometry.Dimension;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.Thing;
-import com.j3d.engine.geometry.geo3d.Vector3;
+import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.selection.SelectionManager;
 import com.j3d.engine.interact.selection.SelectionQuery;
 import com.j3d.engine.interact.selection.SelectionType;

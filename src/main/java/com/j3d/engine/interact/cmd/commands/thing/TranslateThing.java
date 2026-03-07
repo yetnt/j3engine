@@ -1,7 +1,7 @@
 package com.j3d.engine.interact.cmd.commands.thing;
 
 import com.j3d.engine.geometry.geo3d.Thing;
-import com.j3d.engine.geometry.geo3d.Vector3;
+import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Subcommand;
 import com.j3d.engine.interact.cmd.base.TypedArg;

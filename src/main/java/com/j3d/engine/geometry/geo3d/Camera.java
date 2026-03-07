@@ -1,7 +1,7 @@
 package com.j3d.engine.geometry.geo3d;
 
-import com.j3d.Static;
-import com.j3d.ui.engine.EngineFrame;
+import com.j3d.engine.geometry.geo3d.matrix.Matrix4;
+import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 
 /**
  * Represents the virtual camera in the 3D scene.
@@ -80,51 +80,9 @@ public class Camera {
         this.projectionPlane = projectionPlane;
         return this;
     }
-//    public Vector3 getForward() {
-//
-//
-//        double yawRad = Math.toRadians(rotation.getYaw());
-//        double pitchRad = Math.toRadians(rotation.getPitch());
-//
-//        return new Vector3(
-//                Math.cos(pitchRad) * Math.sin(yawRad),
-//                Math.sin(pitchRad),
-//                Math.cos(pitchRad) * Math.cos(yawRad)
-//        ).normalize();
-//    }
-//    public Vector3 getForward() {
-//        double pitch = Math.toRadians(rotation.getPitch()); // left/right
-//        double roll  = Math.toRadians(rotation.getRoll());  // up/down
-//        double yaw   = Math.toRadians(rotation.getYaw());   // spin
-//
-//        // base forward using your pitch & roll
-//        double x = Math.sin(pitch) * Math.cos(roll);
-//        double y = Math.sin(roll);
-//        double z = Math.cos(pitch) * Math.cos(roll);
-//
-//        // apply yaw (twist around forward axis)
-//        double cosYaw = Math.cos(yaw);
-//        double sinYaw = Math.sin(yaw);
-//
-//        double rx = x * cosYaw - y * sinYaw;
-//        double ry = x * sinYaw + y * cosYaw;
-//
-//        return new Vector3(rx, ry, z).normalize();
-//    }
-// Forward vector (direction the camera points)
+
     public Vector3 getForward() {
-//        double yawRad = Math.toRadians(this.rotation.getYaw());
-//        double pitchRad = Math.toRadians(this.rotation.getPitch());
-//        double rollRad = Math.toRadians(this.rotation.getRoll());
-//
-//        // Standard Tait-Bryan YPR rotation applied to local Z-axis (0,0,1)
-//        double x = Math.sin(yawRad) * Math.cos(pitchRad);
-//        double y = -Math.sin(pitchRad);
-//        double z = Math.cos(yawRad) * Math.cos(pitchRad);
-//
-//        return new Vector3(x, y, z).normalize();
-        //TODO: No Work, See keybinding for W
-        return rotation.matrix().transform(new Vector3(0, 0, 1));
+        return rotation.matrix().transform(new Vector3(0, 0, 1)).normalize();
     }
 
     // Right vector (local X-axis, fully respects roll)
@@ -148,19 +106,47 @@ public class Camera {
         return right.cross(forward).normalize(); // ensures orthogonal up
     }
 
+//    public void lookAt(Vector3 target) {
+//        Vector3 dir = target.sub(this.position).normalize();
+//
+//        // Yaw = rotation around vertical (y-axis), left/right
+//        double yawDeg = Math.toDegrees(Math.atan2(dir.getX(), dir.getZ()));
+//
+//        // Pitch = rotation up/down
+//        double pitchDeg = Math.toDegrees(Math.atan2(-dir.getY(), Math.sqrt(dir.getX() * dir.getX() + dir.getZ() * dir.getZ())));
+//
+//        // Roll = nod, optional, usually 0 if you don't want camera tilt
+//        double rollDeg = 0;
+//
+//        this.rotation = new Rotation(yawDeg, pitchDeg, rollDeg);
+//    }
+
     public void lookAt(Vector3 target) {
-        Vector3 dir = target.sub(this.position).normalize();
+        Vector3 forward = target.sub(this.position).normalize();
+        Vector3 worldUp = new Vector3(0, 1, 0);
 
-        // Yaw = rotation around vertical (y-axis), left/right
-        double yawDeg = Math.toDegrees(Math.atan2(dir.getX(), dir.getZ()));
+        // Handle case where forward is parallel to worldUp
+        if (Math.abs(forward.dot(worldUp)) > 0.999) {
+            worldUp = new Vector3(0, 0, 1);
+        }
 
-        // Pitch = rotation up/down
-        double pitchDeg = Math.toDegrees(Math.atan2(-dir.getY(), Math.sqrt(dir.getX() * dir.getX() + dir.getZ() * dir.getZ())));
+        Vector3 right = worldUp.cross(forward).normalize();
+        Vector3 up = forward.cross(right).normalize();
 
-        // Roll = nod, optional, usually 0 if you don't want camera tilt
-        double rollDeg = 0;
+        // Build rotation matrix from basis vectors
+        Matrix4 rotMatrix = new Matrix4(new double[][]{
+                {right.getX(),   right.getY(),   right.getZ(),   0},
+                {up.getX(),      up.getY(),      up.getZ(),      0},
+                {forward.getX(), forward.getY(), forward.getZ(), 0},
+                {0,              0,              0,              1}
+        });
 
-        this.rotation = new Rotation(yawDeg, pitchDeg, rollDeg);
+        // Extract Tait-Bryan angles from matrix to store in Rotation
+        double pitch = Math.toDegrees(Math.asin(-rotMatrix.m[1][2]));
+        double yaw   = Math.toDegrees(Math.atan2(rotMatrix.m[0][2], rotMatrix.m[2][2]));
+        double roll  = 0;
+
+        this.rotation = new Rotation(yaw, pitch, roll);
     }
 
 

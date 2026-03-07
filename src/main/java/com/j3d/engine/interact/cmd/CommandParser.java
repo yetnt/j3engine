@@ -5,7 +5,7 @@ import com.j3d.Static;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.engine.geometry.geo2d.GObject;
 import com.j3d.engine.geometry.geo3d.Thing;
-import com.j3d.engine.geometry.geo3d.Vector3;
+import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.jaiva.utils.Find;
 import com.jaiva.utils.Pair;

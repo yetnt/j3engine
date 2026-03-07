@@ -5,7 +5,7 @@ import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.BasePoint;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo3d.Camera;
-import com.j3d.engine.geometry.geo3d.Vector3;
+import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 
 import java.util.ArrayList;
 import java.util.Arrays;

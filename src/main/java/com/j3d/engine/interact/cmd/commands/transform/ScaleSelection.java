@@ -2,7 +2,7 @@ package com.j3d.engine.interact.cmd.commands.transform;
 
 import com.j3d.Static;
 import com.j3d.engine.geometry.geo2d.GPoint;
-import com.j3d.engine.geometry.geo3d.Vector3;
+import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Subcommand;
 import com.j3d.engine.interact.cmd.commands.transform.handlers.Handle;

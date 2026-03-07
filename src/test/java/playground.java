@@ -1,28 +1,28 @@
-import com.j3d.engine.interact.cmd.CommandsManager;
-import com.j3d.engine.interact.cmd.base.Command;
-
-import javax.swing.*;
-import java.awt.*;
+import com.j3d.engine.geometry.geo3d.matrix.Matrix4;
+import com.j3d.engine.geometry.geo3d.matrix.MatrixInterface;
+import com.j3d.engine.geometry.geo3d.matrix.MatrixMath;
+import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 
 public class playground {
     public static void main(String[] args) {
-//        FileDialog dialog = new FileDialog(
-//                (Frame) null, "Open", FileDialog.LOAD
-//        );
-//        dialog.setDirectory("C:\\");
-//        dialog.setVisible(true);
-//
-//        String dir = dialog.getDirectory();
-        JFileChooser chooser = new JFileChooser();
-        chooser.setDialogTitle("Select Folder");
-        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        chooser.setAcceptAllFileFilterUsed(false);
+        Matrix4 m = new Matrix4(
+                new double[][]{
+                        {1, 0, 0, 0},
+                        {0, 1, 0, 0},
+                        {0, 0, 1, 0},
+                        {0, 0, 0, 1}
+                }
+        );
 
-        JFrame frame = new JFrame();
-        int result = chooser.showOpenDialog(frame);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            System.out.println(chooser.getSelectedFile().getAbsolutePath());
-            frame.dispose();
-        }
+        Vector3 v = new Vector3(10, 40, 2);
+        MatrixInterface m2 = MatrixMath.matrixOf(
+                new double[][]{
+                        {-4, 2, 0},
+                        {3, 4, -2},
+                        {2, -1, 4}
+                }
+        );
+        MatrixInterface f = MatrixMath.mult(v, m2);
+        System.out.println(m);
     }
 }

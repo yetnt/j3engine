@@ -2,10 +2,9 @@ package com.j3d.engine.interact.input;
 
 import com.j3d.J3DSettings;
 import com.j3d.Static;
-import com.j3d.engine.geometry.geo3d.Matrix4;
 import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.interact.selection.SelectionUtils;
-import com.j3d.engine.geometry.geo3d.Vector3;
+import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.ui.engine.CommandPallete;
 
 import javax.swing.*;
@@ -87,13 +86,8 @@ public class KeyBindings {
 //                );
 //                Static.mainFrame.repaint();
                 //TODO: No work. See Camera.getForward
-                Matrix4 rot = camera.getRotation().matrix();
-                Vector3 localForward = new Vector3(0, 0, 1);
-                Vector3 worldForward = camera.getRotation().matrix().transform(localForward);
-                double speed = J3DSettings.cameraMoveSpeed;
-                camera.setPosition(camera.getPosition().add(worldForward.mult(speed)));
-                Vector3 pos = camera.getPosition();
-                camera.setPosition(pos.add(worldForward.mult(J3DSettings.cameraMoveSpeed)));
+                Vector3 worldForward = camera.getForward();
+                camera.setPosition(camera.getPosition().add(worldForward.mult(J3DSettings.cameraMoveSpeed)));
                 Static.mainFrame.repaint();
             }
         });

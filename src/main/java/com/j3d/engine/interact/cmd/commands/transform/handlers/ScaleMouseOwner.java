@@ -3,7 +3,7 @@ package com.j3d.engine.interact.cmd.commands.transform.handlers;
 import com.j3d.Static;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
-import com.j3d.engine.geometry.geo3d.Vector3;
+import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.utility.Pair;
 

@@ -1,6 +1,9 @@
 package com.j3d.engine.geometry.geo3d;
 
-import static com.j3d.engine.geometry.geo3d.Matrix4.*;
+import com.j3d.engine.geometry.geo3d.matrix.Matrix4;
+import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+
+import static com.j3d.engine.geometry.geo3d.matrix.Matrix4.*;
 
 /**
  * Represents a rotation in 3D space using Tait-Bryan angles (a type of Euler angle).
@@ -46,10 +49,8 @@ public class Rotation {
     }
 
     public Matrix4 matrix() {
-        Matrix4 matrix = rotZ(Math.toRadians(roll))  // tilt last
-            .multiply(rotX(Math.toRadians(pitch))) // look up/down
-            .multiply(rotY(Math.toRadians(yaw)));  // turn left/right
-        return matrix;
+        return rotY(Math.toRadians(yaw)).multiply(rotZ(Math.toRadians(roll)))
+            .multiply(rotX(Math.toRadians(pitch)));
     }
 
      public void setPitch(double pitch) { this.pitch = pitch; }

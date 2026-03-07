@@ -1,10 +1,24 @@
-package com.j3d.engine.geometry.geo3d;
+package com.j3d.engine.geometry.geo3d.matrix;
 
-public final class Matrix4 {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
+/**
+ * A 4x4 Matrix.
+ */
+public final class Matrix4 implements MatrixInterface {
     public final double[][] m;
 
     public Matrix4(double[][] vs) {
         m = vs;
+    }
+
+    public static Matrix4 of(MatrixInterface m) {
+        // Assume m is a valid matrix.
+        // 1. rows and cols should be 4
+        if (m.rows() != 4 || m.cols() != 4) throw new RuntimeException("Matrix must be 4x4");
+        return new Matrix4(m.get());
     }
 
     public static Matrix4 identity() {
@@ -18,18 +32,34 @@ public final class Matrix4 {
         );
     }
 
-    public Matrix4 multiply(Matrix4 o) {
-        double[][] r = new double[4][4];
+    public static Matrix4 mNull() {
+        return new Matrix4(
+                new double[][]{
+                        {0, 0, 0, 0},
+                        {0, 0, 0, 0},
+                        {0, 0, 0, 0},
+                        {0, 0, 0, 0}
+                }
+        );
+    }
+
+    public Matrix4 multiply(Matrix4 other) {
+        // Result double array that represents a 4x4 matrix
+        double[][] result = new double[4][4];
 
         for (int row=0; row<4; row++) {
             for (int col=0; col<4; col++) {
                 for (int i=0; i<4; i++) {
-                    r[row][col] += m[row][i] * o.m[i][col];
+                    /*
+                    result[m][n] += this matrix's [m][i] * other matrix's [i][n]
+                     */
+                    result[row][col] += this.m[row][i] * other.m[i][col];
                 }
             }
         }
 
-        return new Matrix4(r);
+        // Return the result as a new matrix
+        return new Matrix4(result);
     }
 
     public Vector3 transform(Vector3 v) {
@@ -66,9 +96,9 @@ public final class Matrix4 {
                 c = Math.cos(rad), s = Math.sin(rad);
         return new Matrix4(
                 new double[][]{
-                        {c, 0, s, 0},
-                        {0, 1, 0, 0},
-                        {-s, 0, c, 0},
+                        {1, 0, 0, 0},
+                        {0, c, -s, 0},
+                        {0, s, c, 0},
                         {0, 0, 0, 1}
                 }
         );
@@ -98,5 +128,45 @@ public final class Matrix4 {
                         {0, 0, 0, 1}
                 }
         );
+    }
+
+    @Override
+    public String toString() {
+        return "Matrix4\n" + toMatrixString();
+    }
+
+    @Override
+    public int rows() {
+        return 4;
+    }
+
+    @Override
+    public int cols() {
+        return 4;
+    }
+
+    @Override
+    public double get(int row, int col) {
+        return m[row][col];
+    }
+
+    @Override
+    public void set(int row, int col, double val) {
+        m[row][col] = val;
+    }
+
+    @Override
+    public double[][] get() {
+        return m.clone();
+    }
+
+    @Override
+    public Matrix4 copy() {
+        return new Matrix4(new double[][]{
+                {m[0][0], m[0][1], m[0][2], m[0][3]},
+                {m[1][0], m[1][1], m[1][2], m[1][3]},
+                {m[2][0], m[2][1], m[2][2], m[2][3]},
+                {m[3][0], m[3][1], m[3][2], m[3][3]}
+        });
     }
 }

@@ -4,7 +4,7 @@ import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventEmitter;
 import com.j3d.engine.react.events.EventListener;
 import com.j3d.engine.react.events.EventType;
-import com.j3d.engine.geometry.geo3d.Vector3;
+import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 
 import java.awt.*;
 import java.util.*;

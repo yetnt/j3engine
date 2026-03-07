@@ -11,7 +11,7 @@ import com.j3d.engine.react.events.EventEmitter;
 import java.awt.*;
 import java.util.*;
 
-import com.j3d.engine.geometry.geo3d.Vector3;
+import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 
 /**
  * GTri represents a Triangle. What'd you expect kau.

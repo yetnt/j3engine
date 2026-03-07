@@ -2,12 +2,11 @@ package com.j3d.engine.interact.cmd.commands.transform.handlers;
 
 import com.j3d.Static;
 import com.j3d.engine.geometry.ScreenPoint;
-import com.j3d.engine.geometry.geo3d.Vector3;
+import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.utility.Pair;
 
 import java.awt.*;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class Handle {
     HandleType handleType;

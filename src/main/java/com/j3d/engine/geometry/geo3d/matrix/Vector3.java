@@ -1,8 +1,8 @@
-package com.j3d.engine.geometry.geo3d;
+package com.j3d.engine.geometry.geo3d.matrix;
 
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
+import com.j3d.engine.geometry.geo3d.Camera;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -12,7 +12,7 @@ import java.util.function.BiFunction;
  * Represents a 3D vector with X, Y, and Z components.
  */
 
-public class Vector3 {
+public class Vector3 implements MatrixInterface {
     private final double X;
     private final double Y;
     private final double Z;
@@ -25,6 +25,13 @@ public class Vector3 {
         X = 0;
         Y = 0;
         Z = 0;
+    }
+
+    public static Vector3 of(MatrixInterface m) {
+        // Assume valid matrix
+        // rows must be 1 and cols must be 3
+        if (m.rows() != 1 || m.cols() != 3) throw new RuntimeException("Matrix must be 1x3");
+        return new Vector3(m.get()[0][0], m.get()[0][1], m.get()[0][2]);
     }
 
     public Vector3(double x, double y, double z) {
@@ -155,6 +162,7 @@ public class Vector3 {
      * Creates a copy of this vector.
      * @return A new Vector3 that is a copy of this vector.
      */
+    @Override
     public Vector3 copy() {
         return new Vector3(this.X, this.Y, this.Z);
     }
@@ -166,32 +174,47 @@ public class Vector3 {
      * @return The resulting 2D {@link CartesianPoint}.
      * @see <a href="https://en.wikipedia.org/wiki/3D_projection#Mathematical_formula">3D Projection:(Perspective) Mathematical Formula</a>
      */
+//    public CartesianPoint toPoint(Camera cam) {
+//        Vector3 a = this;
+//        Vector3 c = cam.getPosition();
+//        Vector3 theta = cam.getRotation().toRadVector3();
+//        Vector3 e = cam.getProjectionPlane();
+//
+//        double x = a.getX() - c.getX();
+//        double y = a.getY() - c.getY();
+//        double z = a.getZ() - c.getZ();
+//
+//        double sinX = Math.sin(theta.getX());
+//        double sinY = Math.sin(theta.getY());
+//        double sinZ = Math.sin(theta.getZ());
+//        double cosX = Math.cos(theta.getX());
+//        double cosY = Math.cos(theta.getY());
+//        double cosZ = Math.cos(theta.getZ());
+//
+//        double dx = cosY * (sinZ * y + cosZ * x) - sinY * z;
+//        double dy = sinX * (cosY * z + sinY * (sinZ * y + cosZ * x)) + cosX * (cosZ * y - sinZ * x);
+//        double dz = cosX * (cosY * z + sinY * (sinZ * y + cosZ * x)) - sinX * (cosZ * y - sinZ * x);
+//
+//        if (dz < 1e-18) dz = 1e-6;
+//
+//        double scale = 1;
+//        double bz = scale * ((e.getZ() / dz) * dx + e.getX());
+//        double by = scale * ((e.getZ() / dz) * dy + e.getY());
+//
+//        return new CartesianPoint(bz, by);
+//    }
+
     public CartesianPoint toPoint(Camera cam) {
-        Vector3 a = this;
-        Vector3 c = cam.getPosition();
-        Vector3 theta = cam.getRotation().toRadVector3();
+        Vector3 translated = this.sub(cam.getPosition());
+
+        Vector3 d = cam.getRotation().matrix().transform(translated);
+
         Vector3 e = cam.getProjectionPlane();
 
-        double x = a.getX() - c.getX();
-        double y = a.getY() - c.getY();
-        double z = a.getZ() - c.getZ();
-
-        double sinX = Math.sin(theta.getX());
-        double sinY = Math.sin(theta.getY());
-        double sinZ = Math.sin(theta.getZ());
-        double cosX = Math.cos(theta.getX());
-        double cosY = Math.cos(theta.getY());
-        double cosZ = Math.cos(theta.getZ());
-
-        double dx = cosY * (sinZ * y + cosZ * x) - sinY * z;
-        double dy = sinX * (cosY * z + sinY * (sinZ * y + cosZ * x)) + cosX * (cosZ * y - sinZ * x);
-        double dz = cosX * (cosY * z + sinY * (sinZ * y + cosZ * x)) - sinX * (cosZ * y - sinZ * x);
-
+        double dz = d.getZ();
         if (dz < 1e-18) dz = 1e-6;
-
-        double scale = 1;
-        double bz = scale * ((e.getZ() / dz) * dx + e.getX());
-        double by = scale * ((e.getZ() / dz) * dy + e.getY());
+        double bz = (e.getZ() / dz) * d.getX() + e.getX();
+        double by = (e.getZ() / dz) * d.getY() + e.getY();
 
         return new CartesianPoint(bz, by);
     }
@@ -278,5 +301,37 @@ public class Vector3 {
 
     public Vector3 scale(double d) {
         return new Vector3(X * d, Y * d, Z * d);
+    }
+
+    @Override
+    public int rows() {
+        return 1;
+    }
+
+    @Override
+    public int cols() {
+        return 3;
+    }
+
+    @Override
+    public double get(int row, int col) {
+        return switch (col) {
+            case 0 -> X;
+            case 1 -> Y;
+            case 2 -> Z;
+            default -> 0;
+        };
+    }
+
+    @Override
+    public void set(int row, int col, double val) {
+        // Vector3 cannot be mutated.
+    }
+
+    @Override
+    public double[][] get() {
+        return new double[][] {
+                {X, Y, Z}
+        };
     }
 }

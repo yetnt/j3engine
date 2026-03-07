@@ -3,7 +3,7 @@ package com.j3d.engine.geometry.geo2d;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventEmitter;
-import com.j3d.engine.geometry.geo3d.Vector3;
+import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 
 import java.awt.*;
 import java.util.UUID;

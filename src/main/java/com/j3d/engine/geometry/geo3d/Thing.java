@@ -2,6 +2,7 @@ package com.j3d.engine.geometry.geo3d;
 
 import com.j3d.J3DSettings;
 import com.j3d.Static;
+import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.Renderer;
