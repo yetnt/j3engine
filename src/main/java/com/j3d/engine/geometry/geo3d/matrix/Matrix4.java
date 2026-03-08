@@ -1,9 +1,5 @@
 package com.j3d.engine.geometry.geo3d.matrix;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 /**
  * A 4x4 Matrix.
  */
@@ -86,45 +82,6 @@ public final class Matrix4 implements MatrixInterface {
                         {1, 0, 0, x},
                         {0, 1, 0, y},
                         {0, 0, 1, z},
-                        {0, 0, 0, 1}
-                }
-        );
-    }
-
-    public static Matrix4 rotX(double rad) {
-        double
-                c = Math.cos(rad), s = Math.sin(rad);
-        return new Matrix4(
-                new double[][]{
-                        {1, 0, 0, 0},
-                        {0, c, -s, 0},
-                        {0, s, c, 0},
-                        {0, 0, 0, 1}
-                }
-        );
-    }
-
-    public static Matrix4 rotZ(double rad) {
-        double
-                c = Math.cos(rad), s = Math.sin(rad);
-        return new Matrix4(
-                new double[][]{
-                        {c, -s, 0, 0},
-                        {s, c, 0, 0},
-                        {0, 0, 1, 0},
-                        {0, 0, 0, 1}
-                }
-        );
-    }
-
-    public static Matrix4 rotY(double rad) {
-        double
-                c = Math.cos(rad), s = Math.sin(rad);
-        return new Matrix4(
-                new double[][]{
-                        {c, 0, s, 0},
-                        {0, 1, 0, 0},
-                        {-s, 0, c, 0},
                         {0, 0, 0, 1}
                 }
         );

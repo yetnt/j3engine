@@ -17,12 +17,22 @@ public class playground {
         Vector3 v = new Vector3(10, 40, 2);
         MatrixInterface m2 = MatrixMath.matrixOf(
                 new double[][]{
-                        {-4, 2, 0},
-                        {3, 4, -2},
-                        {2, -1, 4}
+                        {-4, 2, 3},
+                        {3, 4, 3},
                 }
         );
         MatrixInterface f = MatrixMath.mult(v, m2);
-        System.out.println(m);
+        System.out.println(MatrixMath.mult(
+                m,
+                MatrixMath.matrixOf(
+                        new double[][]{
+                                {12},
+                                {34},
+                                {4},
+                                {0}
+                        }
+                )
+        ).toMatrixString());
+        System.out.println(f.toMatrixString());
     }
 }

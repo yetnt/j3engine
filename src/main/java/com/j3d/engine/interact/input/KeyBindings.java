@@ -76,18 +76,11 @@ public class KeyBindings {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (commandPaletteFocusOwner(cmdP)) return;
-//                Static.camera.move(new Vector3(0, 0, J3DSettings.cameraMoveSpeed));
-//                Static.mainFrame.repaint();
-//                Vector3 forward = Static.camera.getForward();
-//                Vector3 pos = Static.camera.getPosition();
-//
-//                Static.camera.setPosition(
-//                        pos.add(forward.mult(J3DSettings.cameraMoveSpeed))
-//                );
-//                Static.mainFrame.repaint();
-                //TODO: No work. See Camera.getForward
-                Vector3 worldForward = camera.getForward();
-                camera.setPosition(camera.getPosition().add(worldForward.mult(J3DSettings.cameraMoveSpeed)));
+                camera.setPosition(
+                        camera.getPosition().add(
+                                camera.getForward().mult(J3DSettings.cameraMoveSpeed)
+                        )
+                );
                 Static.mainFrame.repaint();
             }
         });
