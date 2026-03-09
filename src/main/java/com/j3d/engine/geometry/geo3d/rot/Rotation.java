@@ -11,7 +11,7 @@ import com.j3d.engine.geometry.geo3d.matrix.Vector3;
  * for converting vectors between world space and a local (camera) space. It acts as a factory
  * for {@link CamToWorldDirection} and {@link WorldToCamDirection} transformers.
  * <p>
- * The primary matrix generated via {@link #matrix()} is the view matrix, which transforms
+ * The primary matrix generated via {@link RotationMatrixDirection#matrix()} is the view matrix, which transforms
  * coordinates from the world space into the camera's local space.
  */
 public class Rotation {
@@ -65,20 +65,6 @@ public class Rotation {
                 Math.toRadians(yaw),
                 Math.toRadians(roll)
         );
-    }
-
-    /**
-     * Generates the combined rotation matrix for transforming from **world to camera space** (View Matrix).
-     * <p>
-     * The final transformation is a result of multiplying the individual inverse rotation matrices,
-     * typically in the order: {@code Pitch * Yaw * Roll}.
-     *
-     * @return A {@link MatrixInterface} representing the complete world-to-camera rotation.
-     */
-    public MatrixInterface matrix() {
-        // The order of multiplication (e.g., Pitch -> Yaw -> Roll) defines the rotation convention.
-        RotationMatrixDirection w2c = worldToCam();
-        return MatrixMath.mult(w2c.rotPitch(), MatrixMath.mult(w2c.rotYaw(), w2c.rotRoll()));
     }
 
     public double getYaw() {

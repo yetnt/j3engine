@@ -1,6 +1,6 @@
 package com.j3d.engine.geometry.geo3d.rot;
 
-import com.j3d.engine.geometry.geo3d.matrix.MatrixInterface;
+import com.j3d.engine.geometry.geo3d.matrix.Matrix3;
 
 /**
  * Defines the contract for generating individual rotation matrices for pitch, yaw, and roll.
@@ -16,21 +16,22 @@ public interface RotationMatrixDirection {
     /**
      * Creates a rotation matrix for pitch (rotation around the X-axis).
      *
-     * @return A {@link MatrixInterface} representing the pitch rotation.
+     * @return A {@link Matrix3} representing the pitch rotation.
      */
-    MatrixInterface rotPitch();
+    Matrix3 rotPitch();
 
     /**
      * Creates a rotation matrix for yaw (rotation around the Y-axis).
      *
-     * @return A {@link MatrixInterface} representing the yaw rotation.
+     * @return A {@link Matrix3} representing the yaw rotation.
      */
-    MatrixInterface rotYaw();
+    Matrix3 rotYaw();
 
     /**
      * Creates a rotation matrix for roll (rotation around the Z-axis).
      *
-     * @return A {@link MatrixInterface} representing the roll rotation.
+     * @return A {@link Matrix3} representing the roll rotation.
      */
-    MatrixInterface rotRoll();
+    Matrix3 rotRoll();
+    Matrix3 matrix();
 }

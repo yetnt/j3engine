@@ -1,5 +1,6 @@
 package com.j3d.engine.geometry.geo3d.rot;
 
+import com.j3d.engine.geometry.geo3d.matrix.Matrix3;
 import com.j3d.engine.geometry.geo3d.matrix.MatrixInterface;
 import com.j3d.engine.geometry.geo3d.matrix.MatrixMath;
 
@@ -40,16 +41,16 @@ public class WorldToCamDirection implements RotationMatrixDirection {
      * @return A 3x3 {@link MatrixInterface} for inverse pitch rotation.
      */
     @Override
-    public MatrixInterface rotPitch() {
+    public Matrix3 rotPitch() {
         double c = Math.cos(pitch);
         double s = Math.sin(pitch);
-        return MatrixMath.matrixOf(
+        return Matrix3.of(MatrixMath.matrixOf(
                 new double[][]{
                         {1, 0, 0},
                         {0, c, s},
                         {0, -s, c}
                 }
-        );
+        ));
     }
 
     /**
@@ -59,16 +60,16 @@ public class WorldToCamDirection implements RotationMatrixDirection {
      * @return A 3x3 {@link MatrixInterface} for inverse yaw rotation.
      */
     @Override
-    public MatrixInterface rotYaw() {
+    public Matrix3 rotYaw() {
         double c = Math.cos(yaw);
         double s = Math.sin(yaw);
-        return MatrixMath.matrixOf(
+        return Matrix3.of(MatrixMath.matrixOf(
                 new double[][]{
                         {c, 0, -s},
                         {0, 1, 0},
                         {s, 0, c}
                 }
-        );
+        ));
     }
 
     /**
@@ -78,15 +79,25 @@ public class WorldToCamDirection implements RotationMatrixDirection {
      * @return A 3x3 {@link MatrixInterface} for inverse roll rotation.
      */
     @Override
-    public MatrixInterface rotRoll() {
+    public Matrix3 rotRoll() {
         double c = Math.cos(roll);
         double s = Math.sin(roll);
-        return MatrixMath.matrixOf(
+        return Matrix3.of(MatrixMath.matrixOf(
                 new double[][]{
                         {c, s, 0},
                         {-s, c, 0},
                         {0, 0, 1}
                 }
-        );
+        ));
+    }
+
+    @Override
+    public Matrix3 matrix() {
+        return Matrix3.of(MatrixMath.mult(
+                MatrixMath.mult(
+                        rotPitch(), rotYaw()
+                ),
+                rotRoll()
+        ));
     }
 }

@@ -69,24 +69,6 @@ public final class Matrix4 implements MatrixInterface {
         return new Vector3(x, y, z);
     }
 
-    /**
-     * Creates a translation matrix from a given vector.
-     * @param v The vector to translate by.
-     * @return A new translation matrix.
-     */
-    public static Matrix4 translation(Vector3 v) {
-        double x = v.getX(), y = v.getY(), z = v.getZ();
-
-        return new Matrix4(
-                new double[][]{
-                        {1, 0, 0, x},
-                        {0, 1, 0, y},
-                        {0, 0, 1, z},
-                        {0, 0, 0, 1}
-                }
-        );
-    }
-
     @Override
     public String toString() {
         return "Matrix4\n" + toMatrixString();
@@ -105,11 +87,6 @@ public final class Matrix4 implements MatrixInterface {
     @Override
     public double get(int row, int col) {
         return m[row][col];
-    }
-
-    @Override
-    public void set(int row, int col, double val) {
-        m[row][col] = val;
     }
 
     @Override

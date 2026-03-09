@@ -23,6 +23,12 @@ public class Vector3 implements MatrixInterface {
     private final double Y;
     private final double Z;
 
+    public Vector3(double[][] m) {
+        X = m[0][0];
+        Y = m[1][0];
+        Z = m[2][0];
+    }
+
     /**
      * Checks if the vector is not set to the special "empty" value.
      *
@@ -221,7 +227,7 @@ public class Vector3 implements MatrixInterface {
 
         // Transform the point from world space to camera space
         Vector3 d = Vector3.of(MatrixMath.mult(
-                cam.getRotation().matrix(),
+                cam.getRotation().worldToCam().matrix(),
                 this.sub(c)
         ));
 
@@ -373,18 +379,6 @@ public class Vector3 implements MatrixInterface {
             case 2 -> Z;
             default -> throw new IndexOutOfBoundsException("Row index must be between 0 and 2 for a Vector3.");
         };
-    }
-
-    /**
-     * This operation is not supported. {@code Vector3} is immutable.
-     *
-     * @param row The row index.
-     * @param col The column index.
-     * @param val The new value.
-     */
-    @Override
-    public void set(int row, int col, double val) {
-        // Vector3 is immutable. This method is a no-op.
     }
 
     /**

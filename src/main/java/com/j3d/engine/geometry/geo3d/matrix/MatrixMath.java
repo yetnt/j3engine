@@ -1,5 +1,7 @@
 package com.j3d.engine.geometry.geo3d.matrix;
 
+import com.j3d.utility.Pair;
+
 /**
  * Provides a collection of static utility methods for performing mathematical operations
  * on matrices that implement the {@link MatrixInterface}. This class includes methods
@@ -53,49 +55,66 @@ public abstract class MatrixMath {
     }
 
     /**
-     * Creates a {@link MatrixInterface} wrapper around a 2D double array.
+     * Creates a {@link MatrixInterface} instance from a 2D double array.
+     * <p>
+     * This factory method serves as a bridge between raw {@code double[][]} arrays and the
+     * {@link MatrixInterface} ecosystem. It first validates the array to ensure it represents a
+     * well-formed matrix.
+     * <p>
+     * Based on the dimensions of the input array, this method will return a specialized,
+     * high-performance implementation (e.g., {@link Matrix4} for 4x4, {@link Matrix3} for 3x3)
+     * or a generic, anonymous implementation for other sizes.
      *
-     * @param m The 2D double array to wrap.
-     * @return A {@link MatrixInterface} instance backed by the given array.
-     * @throws IllegalStateException if the array is not a valid matrix structure.
-     * @implNote The returned matrix is a direct wrapper around the input array.
-     * Any modifications to the matrix will affect the original array, and vice-versa.
-     * Furthermore, the {@link MatrixInterface#copy()} method on the returned instance
-     * does *not* create a new copy but returns the same instance. This is for performance
-     * reasons in internal operations. For a proper deep copy, create a new array manually.
+     * @param m The 2D double array to create the matrix from. A deep copy of this array is created
+     *          to ensure the new matrix is independent of the original array.
+     * @return A new {@link MatrixInterface} implementation containing a copy of the provided data.
+     * @throws IllegalStateException if the array is not a valid matrix structure (e.g., jagged rows, NaN values).
+     * @implNote <strong>Data Safety:</strong> This method creates a deep copy of the input {@code m} array.
+     * This ensures that the returned matrix is completely independent of the original array. Modifications
+     * to the original array will not affect the matrix, and modifications to the matrix will not
+     * affect the original array.
+     * @implNote <strong>Mutability:</strong> The mutability of the returned matrix depends on the
+     * specific implementation returned. While {@code Matrix3} and {@code Matrix4} may be mutable,
+     * the generic fallback wrapper is <strong>read-only</strong> as it does not implement the
+     * {@code set} method.
      */
     public static MatrixInterface matrixOf(double[][] m) {
         validate(m);
-        return new MatrixInterface() {
-            @Override
-            public int rows() {
-                return m.length;
-            }
+        String size = "" + m.length + m[0].length;
+        double[][] mCopy = new double[m.length][m[0].length];
+        for (int i = 0; i < m.length; i++) {
+            System.arraycopy(m[i], 0, mCopy[i], 0, m[i].length);
+        }
+        return switch (size) {
+            case "44" -> new Matrix4(mCopy);
+            case "33" -> new Matrix3(mCopy);
+            case "31" -> new Vector3(mCopy);
+            default -> new MatrixInterface() {
+                @Override
+                public int rows() {
+                    return mCopy.length;
+                }
 
-            @Override
-            public int cols() {
-                return m[0].length;
-            }
+                @Override
+                public int cols() {
+                    return mCopy[0].length;
+                }
 
-            @Override
-            public double get(int row, int col) {
-                return m[row][col];
-            }
+                @Override
+                public double get(int row, int col) {
+                    return mCopy[row][col];
+                }
 
-            @Override
-            public void set(int row, int col, double val) {
-                m[row][col] = val;
-            }
+                @Override
+                public double[][] get() {
+                    return mCopy;
+                }
 
-            @Override
-            public double[][] get() {
-                return m;
-            }
-
-            @Override
-            public MatrixInterface copy() {
-                return this;
-            }
+                @Override
+                public MatrixInterface copy() {
+                    return matrixOf(mCopy);
+                }
+            };
         };
     }
 

@@ -31,15 +31,6 @@ public interface MatrixInterface {
     double get(int row, int col);
 
     /**
-     * Sets the value of a specific element in the matrix.
-     *
-     * @param row The row index of the element (0-based).
-     * @param col The column index of the element (0-based).
-     * @param val The new value to set.
-     */
-    void set(int row, int col, double val);
-
-    /**
      * Returns the underlying 2D array that represents the matrix data.
      *
      * @return A 2D double array containing the matrix values.
@@ -77,7 +68,7 @@ public interface MatrixInterface {
         // Top row: ┍ ... ┑
         sb.append("┍");
         for (int j = 0; j < cols(); j++) {
-            for (int k = 0; k < colWidths[j]; k++) sb.append(" ");
+            sb.append(" ".repeat(Math.max(0, colWidths[j])));
             if (j < cols() - 1) sb.append(" ");
         }
         sb.append("┑\n");
@@ -96,7 +87,7 @@ public interface MatrixInterface {
         // Bottom row: ┕ ... ┙
         sb.append("┕");
         for (int j = 0; j < cols(); j++) {
-            for (int k = 0; k < colWidths[j]; k++) sb.append(" ");
+            sb.append(" ".repeat(Math.max(0, colWidths[j])));
             if (j < cols() - 1) sb.append(" ");
         }
         sb.append("┙");
