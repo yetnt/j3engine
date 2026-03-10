@@ -5,6 +5,9 @@ target/
 /debug/
 /lib/**
 /documents/**
+/UCanAccess-5.0.1.bin.zip
+/UCanAccess-5.0.1.bin
+/database/**
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
