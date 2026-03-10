@@ -26,6 +26,9 @@ public class Cursors {
         cursors.put("selectStrict", createScaledCursor("/cursors/selectStrict.png", "selectStrict"));
         cursors.put("selectSubtract", createScaledCursor("/cursors/selectSubtract.png", "selectSubtract"));
         cursors.put("selectAdd", createScaledCursor("/cursors/selectAdd.png", "selectAdd"));
+        cursors.put("grab", createScaledCursor("/cursors/drag.png", "grab"));
+        cursors.put("grabbing", createScaledCursor("/cursors/drag-held.png", "grabbing"));
+
 
     }
 

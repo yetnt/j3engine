@@ -7,6 +7,7 @@ import com.j3d.engine.layer.Layer;
 import com.j3d.engine.geometry.geo2d.GTri;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.threads.LongTask;
+import com.j3d.ui.Cursors;
 import com.j3d.ui.J3DTheme;
 
 import javax.swing.*;
@@ -111,6 +112,7 @@ public class ToolboxButtons {
         });
         register("Transform", e -> {
             TransformCmd cmd = new TransformCmd();
+            Cursors.set("grab");
         }, "transform.png");
     }
 
