@@ -141,6 +141,7 @@ public class ToolboxButtons {
         btnA.addActionListener(actionListener);
         btnA.setBackground(J3DTheme.CHARCOAL_BLUE.color());
         btnA.setForeground(J3DTheme.ASH_GREY.color());
+        btnA.setCursor(Cursors.get("default")); // TODO: replace with pointer cursor
         buttonPanel.add(btnA);
 
         JLabel label1 = new javax.swing.JLabel();

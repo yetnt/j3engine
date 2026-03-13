@@ -28,7 +28,7 @@ public class Cursors {
         cursors.put("selectAdd", createScaledCursor("/cursors/selectAdd.png", "selectAdd"));
         cursors.put("grab", createScaledCursor("/cursors/drag.png", "grab"));
         cursors.put("grabbing", createScaledCursor("/cursors/drag-held.png", "grabbing"));
-
+//        cursors.put("pointer", createScaledCursor("/cursors/pointer.png", "pointer"));
 
     }
 
@@ -50,5 +50,9 @@ public class Cursors {
 
     public static void setDefault() {
         set("default");
+    }
+
+    public static Cursor get(String name) {
+        return cursors.getOrDefault(name, cursors.get("default"));
     }
 }
