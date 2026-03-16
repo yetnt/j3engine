@@ -25,4 +25,8 @@ public enum MOwner {
      * Owner for scaling actions
      */
     SCALE_HANDLE,
+    /**
+     * Owner for panning the camera
+     */
+    PAN,
 }
