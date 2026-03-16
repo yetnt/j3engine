@@ -15,14 +15,15 @@ Future ToDo (Important)
 1. (CURRENT) UI
 2. (DONE) implement matrix math and hence fix getForward and hence make W and other keys move along the forward vector and not the world
 3. (CURRENT) "transform" command handles (scale, rotate, translate handles, projection and math, ties into 2)
-4. A/B Testing with a hook class that asks the user if the program did the right thing. (should prolyl call Main.main())
+4. A/B Testing with a hook class that asks the user if the program did the right thing. (Should probably call Main.main())
 5. Projects Panel to load up a project
 6. Startup login panel
-7. Via Main.main() open a file directly and skip the login/signup panel. (the only way to accves the app in an unlogged in state)
+7. Via Main.main() open a file directly and skip the login/signup panel. (the only way to access the app in an unlogged-in state)
 8. Settings Frame
 9. Customizable UI Colours
 10. Macros
-11. Access DB Integration and usage (ties to 6, and 7)
+11. Access DB Integration and usage (ties to 6 and 7)
+12. "pan" command, which makes use of MouseOwner and allows panning the camera rotation.
 
 Future ToDo (optional)
 
@@ -32,11 +33,11 @@ Future ToDo (optional)
 4. [DONE] Undo/Redo
 5. import/export obj
 6. Scripting with Jaiva
-7. Jaiva made plugins(via ore closed off API)
-8. Java made plguins (via more robust API)
+7. Jaiva-made plugins(via ore closed off API)
+8. Java-made plugins (via a more robust API)
 
 Far Down Wishlist (Will probably never do)
 
-1. Optional custom built GPU shaders
+1. Optional custom-built GPU shaders
 2. Lighting and otherwise raycasting
 3. Detachable UI like FL Studio

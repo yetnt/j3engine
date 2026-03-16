@@ -8,6 +8,7 @@ target/
 /UCanAccess-5.0.1.bin.zip
 /UCanAccess-5.0.1.bin
 /database/**
+/src/main/resources/music/**
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

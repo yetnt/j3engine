@@ -12,13 +12,7 @@ public class Cursors {
     private static final Map<String, Cursor> cursors = new HashMap<>();
     private static Component defaultTarget;
 
-    public static void init(Component defaultComponent) {
-        defaultTarget = defaultComponent;
-        loadCursors();
-    }
-
-    private static void loadCursors() {
-        Toolkit toolkit = Toolkit.getDefaultToolkit();
+    static {
 
         cursors.put("default", createScaledCursor("/cursors/default.png", "default"));
 //            cursors.put("hand", Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -28,8 +22,11 @@ public class Cursors {
         cursors.put("selectAdd", createScaledCursor("/cursors/selectAdd.png", "selectAdd"));
         cursors.put("grab", createScaledCursor("/cursors/drag.png", "grab"));
         cursors.put("grabbing", createScaledCursor("/cursors/drag-held.png", "grabbing"));
-//        cursors.put("pointer", createScaledCursor("/cursors/pointer.png", "pointer"));
+        cursors.put("pointer", createScaledCursor("/cursors/pointer.png", "pointer"));
+    }
 
+    public static void init(Component defaultComponent) {
+        defaultTarget = defaultComponent;
     }
 
     private static Cursor createScaledCursor(String path, String name) {
