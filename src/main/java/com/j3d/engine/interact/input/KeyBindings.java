@@ -89,7 +89,11 @@ public class KeyBindings {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (commandPaletteFocusOwner(cmdP)) return;
-                camera.move(new Vector3(0, 0, -J3DSettings.cameraMoveSpeed));
+                camera.setPosition(
+                        camera.getPosition().sub(
+                                camera.getForward().mult(J3DSettings.cameraMoveSpeed)
+                        )
+                );
                 Static.mainFrame.repaint();
             }
         });
@@ -98,7 +102,11 @@ public class KeyBindings {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (commandPaletteFocusOwner(cmdP)) return;
-                camera.move(new Vector3(-J3DSettings.cameraMoveSpeed, 0, 0));
+                camera.setPosition(
+                        camera.getPosition().sub(
+                                camera.getRight().mult(J3DSettings.cameraMoveSpeed)
+                        )
+                );
                 Static.mainFrame.repaint();
             }
         });
@@ -107,7 +115,11 @@ public class KeyBindings {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (commandPaletteFocusOwner(cmdP)) return;
-                camera.move(new Vector3(J3DSettings.cameraMoveSpeed, 0, 0));
+                camera.setPosition(
+                        camera.getPosition().add(
+                                camera.getRight().mult(J3DSettings.cameraMoveSpeed)
+                        )
+                );
                 Static.mainFrame.repaint();
             }
         });
@@ -116,7 +128,11 @@ public class KeyBindings {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (commandPaletteFocusOwner(cmdP)) return;
-                camera.move(new Vector3(0, J3DSettings.cameraMoveSpeed, 0));
+                camera.setPosition(
+                        camera.getPosition().add(
+                                camera.getUp().mult(J3DSettings.cameraMoveSpeed)
+                        )
+                );
                 Static.mainFrame.repaint();
             }
         });
@@ -125,7 +141,11 @@ public class KeyBindings {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (commandPaletteFocusOwner(cmdP)) return;
-                camera.move(new Vector3(0, -J3DSettings.cameraMoveSpeed, 0));
+                camera.setPosition(
+                        camera.getPosition().sub(
+                                camera.getUp().mult(J3DSettings.cameraMoveSpeed)
+                        )
+                );
                 Static.mainFrame.repaint();
             }
         });

@@ -111,6 +111,32 @@ public class Camera {
         ).normalize();
     }
 
+    public Vector3 getRight() {
+        return Vector3.of(
+                MatrixMath.mult(
+                        MatrixMath.mult(
+                                rotation.camToWorld().rotYaw(),
+                                rotation.camToWorld().rotPitch()
+                        ),
+                        // The local right vector
+                        new Vector3(1, 0, 0)
+                )
+        ).normalize();
+    }
+
+    public Vector3 getUp() {
+        return Vector3.of(
+                MatrixMath.mult(
+                        MatrixMath.mult(
+                                rotation.camToWorld().rotYaw(),
+                                rotation.camToWorld().rotPitch()
+                        ),
+                        // The local up vector
+                        new Vector3(0, 1, 0)
+                )
+        ).normalize();
+    }
+
     /**
      * Orients the camera to face a specific target point in world space.
      * This method calculates the necessary pitch and yaw to align the camera's forward vector
