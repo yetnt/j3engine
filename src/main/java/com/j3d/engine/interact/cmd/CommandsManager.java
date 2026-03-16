@@ -22,6 +22,7 @@ public class CommandsManager {
         ThingCmd thingCmd = new ThingCmd();
         TransformCmd transformCmd = new TransformCmd();
         LookAtCmd lookAtCmd = new LookAtCmd();
+        TeleportCmd tpCmd = new TeleportCmd();
         commands.put(lineCmd.aliases, lineCmd);
         commands.put(pointCmd.aliases, pointCmd);
         commands.put(triCmd.aliases, triCmd);
@@ -29,6 +30,7 @@ public class CommandsManager {
         commands.put(thingCmd.aliases, thingCmd);
         commands.put(transformCmd.aliases, transformCmd);
         commands.put(lookAtCmd.aliases, lookAtCmd);
+        commands.put(tpCmd.aliases, tpCmd);
     }
 
     public static Command getCommand(String name) {
