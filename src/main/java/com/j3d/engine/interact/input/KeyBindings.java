@@ -235,7 +235,7 @@ public class KeyBindings {
      * @param actionName the name of the action to bind (used as the key in the action map)
      * @param action the action to perform when the keystroke is pressed
      */
-    public void addOneShotKeyBinding(KeyStroke keyStroke, String actionName, Action action) {
+    public KeyStroke addOneShotKeyBinding(KeyStroke keyStroke, String actionName, Action action) {
         Action oneShotAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -244,5 +244,8 @@ public class KeyBindings {
             }
         };
         addKeyBinding(keyStroke, actionName, oneShotAction);
+
+        return keyStroke;
     }
+
 }

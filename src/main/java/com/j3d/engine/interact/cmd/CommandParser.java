@@ -1,5 +1,6 @@
 package com.j3d.engine.interact.cmd;
 
+import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.ui.engine.CommandPallete;
 import com.j3d.Static;
 import com.j3d.ui.engine.EngineFrame;
@@ -25,34 +26,34 @@ public class CommandParser {
     private String accumulator = "";
     private final ArrayList<Object> arguments = new ArrayList<>();
     private boolean ignoreDocumentEvent = false;
-    private final CommandPallete cmdP;
+    public final CommandPallete commandPallete;
     private final SafeJLabel label;
 
     public void toggleInputFieldDisabled() {
-        JTextField input = cmdP.inputField;
+        JTextField input = commandPallete.inputField;
         input.setEnabled(input.isEnabled());
     }
 
     public CommandParser(CommandPallete p) {
-        this.cmdP = p;
-        this.label = new SafeJLabel(cmdP.logLabel);
-        cmdP.inputField.addActionListener(e -> {
+        this.commandPallete = p;
+        this.label = new SafeJLabel(commandPallete.logLabel);
+        commandPallete.inputField.addActionListener(e -> {
             ignoreDocumentEvent = true;
             parse();
             run();
             arguments.clear();
             accumulator = "";
-            cmdP.inputField.setText("");
+            commandPallete.inputField.setText("");
             ignoreDocumentEvent = false;
         });
-        cmdP.inputField.getDocument().addDocumentListener(new DocumentListener() {
+        commandPallete.inputField.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e) {
                 if (ignoreDocumentEvent) return;
 
                 try {
                     int offset = e.getOffset();
                     int length = e.getLength();
-                    String insertedText = cmdP.inputField.getDocument().getText(offset, length);
+                    String insertedText = commandPallete.inputField.getDocument().getText(offset, length);
 
                     for (char c : insertedText.toCharArray()) {
                         //noinspection StringConcatenationInLoop
@@ -73,7 +74,7 @@ public class CommandParser {
                     accumulator = accumulator.substring(0, accumulator.length() - 1);
                 }
 
-                if (cmdP.inputField.getText().isEmpty()) {
+                if (commandPallete.inputField.getText().isEmpty()) {
                     arguments.clear();
                     accumulator = "";
                 }
@@ -182,6 +183,14 @@ public class CommandParser {
                 EngineFrame.repaintL();
                 label.setText("Command not found: " + cmdName);
                 return;
+            }
+            if (CommandsManager.commandIsRunning()) {
+                label.setText("Command is currently running: " + cmdName);
+                Static.mainFrame.requestFocusInWindow();
+                return;
+            }
+            if (cmd instanceof StatefulCommand statefulCommand) {
+                CommandsManager.setAsCurrent(statefulCommand);
             }
             // Remove the command name from the arguments
             arguments.removeFirst();

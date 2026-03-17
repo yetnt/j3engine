@@ -8,8 +8,7 @@ import com.j3d.Static;
 import com.j3d.Executor;
 import com.j3d.J3DSettings;
 import com.j3d.engine.interact.Interactable;
-import com.j3d.engine.interact.cmd.commands.pan.PanCmd;
-import com.j3d.engine.interact.cmd.commands.pan.PanMouseOwner;
+import com.j3d.engine.interact.cmd.commands.pan.OrbitCmd;
 import com.j3d.engine.interact.cmd.commands.transform.ScaleSelection;
 import com.j3d.engine.interact.input.KeyBindings;
 import com.j3d.engine.Logger;
@@ -138,7 +137,7 @@ public class EngineFrame extends javax.swing.JFrame {
         owners.add(SelectionManager.selectionMouseOwner);
         owners.add(new NoMouseOwner());
         owners.add(ScaleSelection.scaleMouseOwner);
-        owners.add(PanCmd.panMouseOwner);
+        owners.add(OrbitCmd.orbitMouseOwner);
 
         owners.forEach(this::addMouseListener);
         owners.forEach(this::addMouseMotionListener);

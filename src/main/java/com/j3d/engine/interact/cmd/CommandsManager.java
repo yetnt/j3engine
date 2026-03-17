@@ -1,7 +1,9 @@
 package com.j3d.engine.interact.cmd;
 
+import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.commands.*;
 import com.j3d.engine.interact.cmd.base.Command;
+import com.j3d.engine.interact.cmd.commands.pan.OrbitCmd;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 import com.j3d.engine.interact.cmd.commands.thing.ThingCmd;
 
@@ -11,6 +13,20 @@ import java.util.List;
 import java.util.Map;
 
 public class CommandsManager {
+
+    public static StatefulCommand currentStatefulCommand = null;
+
+    public static void setAsCurrent(StatefulCommand c) {
+        currentStatefulCommand = c;
+    }
+
+    public static boolean isCurrentStatefulRunning(StatefulCommand c) {
+        return currentStatefulCommand == c;
+    }
+
+    public static void clearCurrent() {
+        currentStatefulCommand = null;
+    }
 
     public HashMap<ArrayList<String>, Command> commands = new HashMap<>();
 
@@ -23,6 +39,7 @@ public class CommandsManager {
         TransformCmd transformCmd = new TransformCmd();
         LookAtCmd lookAtCmd = new LookAtCmd();
         TeleportCmd tpCmd = new TeleportCmd();
+        OrbitCmd  orbitCmd = new OrbitCmd();
         commands.put(lineCmd.aliases, lineCmd);
         commands.put(pointCmd.aliases, pointCmd);
         commands.put(triCmd.aliases, triCmd);
@@ -31,6 +48,7 @@ public class CommandsManager {
         commands.put(transformCmd.aliases, transformCmd);
         commands.put(lookAtCmd.aliases, lookAtCmd);
         commands.put(tpCmd.aliases, tpCmd);
+        commands.put(orbitCmd.aliases, orbitCmd);
     }
 
     public static Command getCommand(String name) {
@@ -41,5 +59,9 @@ public class CommandsManager {
             }
         }
         return null;
+    }
+
+    public static boolean commandIsRunning() {
+        return currentStatefulCommand != null;
     }
 }

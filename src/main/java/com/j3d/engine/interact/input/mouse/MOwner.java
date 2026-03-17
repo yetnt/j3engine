@@ -26,7 +26,7 @@ public enum MOwner {
      */
     SCALE_HANDLE,
     /**
-     * Owner for panning the camera
+     * Owner for orbit the camera
      */
-    PAN,
+    ORBIT,
 }
