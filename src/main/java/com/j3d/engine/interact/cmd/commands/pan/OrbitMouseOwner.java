@@ -4,6 +4,7 @@ import com.j3d.Static;
 import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.engine.interact.input.mouse.MouseOwner;
 import com.j3d.ui.CursorManager;
+import com.j3d.ui.CursorNames;
 
 import java.awt.event.MouseEvent;
 
@@ -19,7 +20,7 @@ public class OrbitMouseOwner extends MouseOwner {
         if (isNotOwner()) return;
         startX = e.getX();
         startY = e.getY();
-        CursorManager.set("grab");
+        CursorManager.set(CursorNames.HAND_GRAB);
     }
 
     @Override
@@ -27,13 +28,13 @@ public class OrbitMouseOwner extends MouseOwner {
         if (isNotOwner()) return;
         startX = 0;
         startY = 0;
-        CursorManager.set("grab");
+        CursorManager.set(CursorNames.HAND_GRAB);
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
         if (isNotOwner()) return;
-        CursorManager.set("grabbing");
+        CursorManager.set(CursorNames.HAND_GRABBING);
 
         int dx = e.getX() - startX;
         int dy = e.getY() - startY;

@@ -15,7 +15,7 @@ public class CursorManager {
     static {
 
         cursors.put("default", createScaledCursor("/cursors/default.png", "default"));
-//            cursors.put("hand", Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+//            cursors.put("hand", CursorNames.getPredefinedCursor(CursorNames.HAND_CURSOR));
         cursors.put("selectSoft", createScaledCursor("/cursors/selectSoft.png", "selectSoft"));
         cursors.put("selectStrict", createScaledCursor("/cursors/selectStrict.png", "selectStrict"));
         cursors.put("selectSubtract", createScaledCursor("/cursors/selectSubtract.png", "selectSubtract"));
@@ -36,20 +36,20 @@ public class CursorManager {
         return Toolkit.getDefaultToolkit().createCustomCursor(scaled, new Point(0, 0), name);
     }
 
-    public static void set(String name) {
-        set(name, defaultTarget);
+    public static void set(CursorNames cursor) {
+        set(cursor, defaultTarget);
     }
 
-    public static void set(String name, Component target) {
-        Cursor cursor = cursors.getOrDefault(name, Cursor.getDefaultCursor());
+    public static void set(CursorNames c, Component target) {
+        Cursor cursor = cursors.getOrDefault(c.getValue(), Cursor.getDefaultCursor());
         if (target != null) target.setCursor(cursor);
     }
 
     public static void setDefault() {
-        set("default");
+        set(CursorNames.DEFAULT);
     }
 
-    public static Cursor get(String name) {
-        return cursors.getOrDefault(name, cursors.get("default"));
+    public static Cursor get(CursorNames c) {
+        return cursors.getOrDefault(c.getValue(), cursors.get("default"));
     }
 }

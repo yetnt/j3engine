@@ -8,6 +8,7 @@ import com.j3d.engine.geometry.geo2d.GTri;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.threads.LongTask;
 import com.j3d.ui.CursorManager;
+import com.j3d.ui.CursorNames;
 import com.j3d.ui.J3DTheme;
 
 import javax.swing.*;
@@ -112,7 +113,6 @@ public class ToolboxButtons {
         });
         register("Transform", e -> {
             TransformCmd cmd = new TransformCmd();
-            CursorManager.set("grab");
         }, "transform.png");
     }
 
@@ -141,7 +141,7 @@ public class ToolboxButtons {
         btnA.addActionListener(actionListener);
         btnA.setBackground(J3DTheme.CHARCOAL_BLUE.color());
         btnA.setForeground(J3DTheme.ASH_GREY.color());
-        btnA.setCursor(CursorManager.get("pointer"));
+        btnA.setCursor(CursorManager.get(CursorNames.HAND_POINTER));
         buttonPanel.add(btnA);
 
         JLabel label1 = new javax.swing.JLabel();

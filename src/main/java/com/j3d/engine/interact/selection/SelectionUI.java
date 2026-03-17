@@ -3,6 +3,7 @@ package com.j3d.engine.interact.selection;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.ui.CursorManager;
+import com.j3d.ui.CursorNames;
 
 import java.awt.*;
 
@@ -29,7 +30,7 @@ public class SelectionUI {
                 ADD_COLOR, SUBTRACT_COLOR, STRICT_COLOR, SOFT_COLOR));
 //        CursorManager.set(invert ? "selectSubtract" : isStrict ? "selectStrict" : "selectSoft");
         CursorManager.set(SelectionUtils.usingSelectionVariant(inferredSelection, isStrict,
-                "selectAdd", "selectSubtract", "selectStrict", "selectSoft"));
+                CursorNames.SELECT_ADD, CursorNames.SELECT_SUBTRACT, CursorNames.SELECT_STRICT, CursorNames.SELECT_SOFT));
         g.fillRect(Math.min(i.x, ii.x), Math.min(i.y, ii.y), Math.abs(i.x - ii.x), Math.abs(i.y - ii.y));
         SelectionQuery selectionQuery = new SelectionQuery(
                 i, ii,
