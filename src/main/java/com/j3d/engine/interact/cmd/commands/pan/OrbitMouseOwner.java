@@ -8,7 +8,6 @@ import com.j3d.ui.CursorNames;
 
 import java.awt.event.MouseEvent;
 
-//TODO: A bit jittery. Polish up.
 public class OrbitMouseOwner extends MouseOwner {
     private int startX, startY;
     public OrbitMouseOwner() {

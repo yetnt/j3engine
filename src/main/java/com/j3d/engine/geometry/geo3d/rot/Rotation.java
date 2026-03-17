@@ -100,4 +100,12 @@ public class Rotation {
     public Vector3 toRadVector3() {
         return new Vector3(Math.toRadians(getPitch()), Math.toRadians(getYaw()), Math.toRadians(getRoll()));
     }
+
+    /**
+     * Creates a copy of this Rotation object.
+     * @return A new Rotation object with the same pitch, yaw, and roll angles as this one.
+     */
+    public Rotation copy() {
+        return new Rotation(pitch, yaw, roll);
+    }
 }
