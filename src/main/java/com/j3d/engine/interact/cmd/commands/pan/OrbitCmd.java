@@ -7,7 +7,7 @@ import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.input.mouse.MOwner;
-import com.j3d.ui.Cursors;
+import com.j3d.ui.CursorManager;
 import com.j3d.ui.engine.EngineFrame;
 
 import java.awt.event.ActionEvent;
@@ -30,13 +30,13 @@ public class OrbitCmd extends Command implements StatefulCommand<Rotation> {
     @Override
     public void onStart() {
         orbitMouseOwner.requestOwnership();
-        Cursors.set("grab");
+        CursorManager.set("grab");
     }
 
     @Override
     public void onEnter(ActionEvent e, Rotation o) {
         EngineFrame.setMouseOwner(MOwner.SELECTION);
-        Cursors.set("default");
+        CursorManager.set("default");
         // done
     }
 
@@ -44,7 +44,7 @@ public class OrbitCmd extends Command implements StatefulCommand<Rotation> {
     public  void onEsc(ActionEvent e, Rotation o) {
         Static.camera.setRotation((Rotation) o);
         EngineFrame.setMouseOwner(MOwner.SELECTION);
-        Cursors.set("default");
+        CursorManager.set("default");
     }
 
 }

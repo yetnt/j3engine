@@ -25,7 +25,7 @@ import com.j3d.engine.interact.selection.SelectionManager;
 import com.j3d.files.FilesUtility;
 import com.j3d.files.ProjectFile;
 import com.j3d.threads.LongTask;
-import com.j3d.ui.Cursors;
+import com.j3d.ui.CursorManager;
 import com.j3d.ui.tb.Toolbox;
 //import com.jaiva.JBundler;
 import java.awt.Color;
@@ -125,8 +125,8 @@ public class EngineFrame extends javax.swing.JFrame {
 //        frame.add(new EngineFrame());
 //        f.setVisible(true);
 
-        Cursors.init(Static.mainFrame);
-        Cursors.setDefault();
+        CursorManager.init(Static.mainFrame);
+        CursorManager.setDefault();
     }
 
     /**

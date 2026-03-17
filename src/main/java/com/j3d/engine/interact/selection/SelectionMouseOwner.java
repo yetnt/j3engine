@@ -4,7 +4,7 @@ import com.j3d.Static;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.engine.interact.input.mouse.MouseOwner;
-import com.j3d.ui.Cursors;
+import com.j3d.ui.CursorManager;
 
 import java.awt.event.MouseEvent;
 
@@ -28,7 +28,7 @@ public class SelectionMouseOwner extends MouseOwner {
     public void clearSelectionSquare() {
         selectionArea = new ScreenPoint[]{null, null};
         Static.mainFrame.repaint();
-        Cursors.setDefault();
+        CursorManager.setDefault();
     }
 
     @Override

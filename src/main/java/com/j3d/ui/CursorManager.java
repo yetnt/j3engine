@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class Cursors {
+public class CursorManager {
     private static final Map<String, Cursor> cursors = new HashMap<>();
     private static Component defaultTarget;
 
