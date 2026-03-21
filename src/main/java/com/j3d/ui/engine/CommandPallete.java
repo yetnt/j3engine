@@ -28,6 +28,7 @@ public class CommandPallete extends javax.swing.JPanel {
 
         inputField = new javax.swing.JTextField();
         logLabel = new javax.swing.JLabel();
+        logLabel2 = new javax.swing.JLabel();
 
         setMaximumSize(new java.awt.Dimension(690, 236));
         setMinimumSize(new java.awt.Dimension(690, 236));
@@ -39,23 +40,33 @@ public class CommandPallete extends javax.swing.JPanel {
         logLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         logLabel.setForeground(new java.awt.Color(255, 255, 255));
         logLabel.setLabelFor(inputField);
-        logLabel.setText("jLabel1");
+
+        logLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        logLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        logLabel2.setLabelFor(inputField);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(logLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE)
             .addComponent(inputField, javax.swing.GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(logLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 748, Short.MAX_VALUE)
+                    .addComponent(logLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 748, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(1, 1, 1)
+                .addComponent(logLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(logLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(inputField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(1, 1, 1))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -63,5 +74,6 @@ public class CommandPallete extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTextField inputField;
     public javax.swing.JLabel logLabel;
+    public javax.swing.JLabel logLabel2;
     // End of variables declaration//GEN-END:variables
 }

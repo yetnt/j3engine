@@ -54,11 +54,14 @@ public class Executor {
             // draws a dot at (0, 0) and projects it to both a Vector3 and ScreenPoint for alignment purposes
             // Purely for testing.
             Vector3 p = new CartesianPoint(0, 0).toVector3(Static.camera);
+            Vector3 z = new CartesianPoint(0, 10).toVector3(Static.camera);
 
             int circleSize = 10;
             g.setColor(Color.BLACK);
             ScreenPoint p2 = p.toPoint(Static.camera).toScreen(Static.renderer);
+            ScreenPoint z2 = z.toPoint(Static.camera).toScreen(Static.renderer);
             g.fillOval(p2.x - circleSize / 2, p2.y - circleSize / 2, circleSize, circleSize);
+            g.fillOval(z2.x - circleSize / 2, z2.y - circleSize / 2, circleSize, circleSize);
         });
     }
 
