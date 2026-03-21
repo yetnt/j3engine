@@ -39,7 +39,7 @@ public class ButtonGroupSPanel extends javax.swing.JPanel implements SettingPane
                         setting.setValueNoBroadcast(e);
                     }
             );
-            jPanel1.add(btn);
+            this.add(btn);
             buttonGroup1.add(btn);
             buttons.add(btn);
         }
@@ -55,16 +55,10 @@ public class ButtonGroupSPanel extends javax.swing.JPanel implements SettingPane
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        settingLabel3 = new javax.swing.JLabel();
         radioPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
-
-        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
-
-        settingLabel3.setText("SettingLabel (hover for desc)");
-        settingLabel3.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        add(settingLabel3);
+        settingLabel3 = new javax.swing.JLabel();
 
         radioPanel.setLayout(new java.awt.BorderLayout());
 
@@ -73,7 +67,11 @@ public class ButtonGroupSPanel extends javax.swing.JPanel implements SettingPane
 
         radioPanel.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        add(radioPanel);
+        setLayout(new java.awt.GridLayout(0, 1, 0, 3));
+
+        settingLabel3.setText("SettingLabel (hover for desc)");
+        settingLabel3.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        add(settingLabel3);
     }// </editor-fold>//GEN-END:initComponents
 
 

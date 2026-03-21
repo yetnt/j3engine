@@ -26,6 +26,7 @@ import com.j3d.files.FilesUtility;
 import com.j3d.files.ProjectFile;
 import com.j3d.threads.LongTask;
 import com.j3d.ui.CursorManager;
+import com.j3d.ui.settings.SettingsFrame;
 import com.j3d.ui.tb.Toolbox;
 //import com.jaiva.JBundler;
 import java.awt.Color;
@@ -196,6 +197,7 @@ public class EngineFrame extends javax.swing.JFrame {
         saveProjectJMenuItem = new javax.swing.JMenuItem();
         openProjectMenuItem = new javax.swing.JMenuItem();
         newProjectJMenuItem = new javax.swing.JMenuItem();
+        settingsMenuItem = new javax.swing.JMenuItem();
         editJMenu = new javax.swing.JMenu();
         undoJMenuItem = new javax.swing.JMenuItem();
         redoJMenuItem = new javax.swing.JMenuItem();
@@ -239,6 +241,7 @@ public class EngineFrame extends javax.swing.JFrame {
         });
         jMenu1.add(saveProjectJMenuItem);
 
+        openProjectMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         openProjectMenuItem.setText("Open Project");
         openProjectMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -247,6 +250,7 @@ public class EngineFrame extends javax.swing.JFrame {
         });
         jMenu1.add(openProjectMenuItem);
 
+        newProjectJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         newProjectJMenuItem.setText("New Project");
         newProjectJMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -254,6 +258,15 @@ public class EngineFrame extends javax.swing.JFrame {
             }
         });
         jMenu1.add(newProjectJMenuItem);
+
+        settingsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        settingsMenuItem.setText("Settings");
+        settingsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                settingsMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu1.add(settingsMenuItem);
 
         jMenuBar1.add(jMenu1);
 
@@ -514,6 +527,13 @@ public class EngineFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_exportAsPNGJMenuItemActionPerformed
 
+    private void settingsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsMenuItemActionPerformed
+        // Open SettingsFrame JFrame on top of this frame at the centre of the screen.
+        SettingsFrame settingsFrame = new SettingsFrame();
+        settingsFrame.setLocationRelativeTo(Static.mainFrame);
+        settingsFrame.setVisible(true);
+    }//GEN-LAST:event_settingsMenuItemActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -576,6 +596,7 @@ public class EngineFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem resetOrientationJMenuItem;
     private javax.swing.JMenuItem resetPositionJMenuItem;
     private javax.swing.JMenuItem saveProjectJMenuItem;
+    private javax.swing.JMenuItem settingsMenuItem;
     private javax.swing.JMenuItem undoJMenuItem;
     private javax.swing.JMenuItem viewAsNormalJMenuItem;
     private javax.swing.JMenuItem viewAsWireframeJMenuItem;

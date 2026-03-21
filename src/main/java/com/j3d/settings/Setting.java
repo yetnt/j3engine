@@ -1,5 +1,6 @@
 package com.j3d.settings;
 
+import com.j3d.Static;
 import com.j3d.engine.react.events.EventEmitterInterface;
 import com.j3d.engine.react.events.EventListener;
 import com.j3d.engine.react.events.EventPayload;
@@ -46,6 +47,7 @@ public class Setting<T> implements SettingsChild, EventEmitterInterface {
         broadcast(EventType.SETTINGS_CODE_UPDATED,new SettingUpdatedPayload<T>(
                 this, old, value
         ));
+        Static.mainPanel.repaint();
     }
 
     public T setValueNoBroadcast(T value) {

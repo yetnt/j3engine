@@ -3,6 +3,7 @@ package com.j3d.jaiva;
 import com.j3d.J3DSettings;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
+import com.j3d.settings.Settings;
 import com.jaiva.interpreter.Primitives;
 import com.jaiva.interpreter.Scope;
 import com.jaiva.interpreter.libs.BaseLibrary;
@@ -68,7 +69,7 @@ public class Testing extends BaseLibrary {
         @Override
         public Object call(TFuncCall tFuncCall, ArrayList<Object> params, IConfig<Object> config, Scope scope) throws Exception {
             checkParams(tFuncCall, scope);
-            J3DSettings.SCALE = (int) Primitives.toPrimitive(params.getFirst(), false, config, scope);
+//            Settings.sceneProperties.scale.getValue() = (int) Primitives.toPrimitive(params.getFirst(), false, config, scope);
             return voidValue(tFuncCall.lineNumber);
         }
     }

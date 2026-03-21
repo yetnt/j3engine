@@ -9,11 +9,11 @@ import java.util.ArrayList;
 
 public class Settings implements SettingsParent {
 
-    public CameraPropertiesSettings cameraProperties = new CameraPropertiesSettings();
-    public ScenePropertiesSettings sceneProperties = new ScenePropertiesSettings();
-    public SettingsParent debugProperties;
-    public SettingsParent viewProperties;
-    public StringSetting projectFile = new StringSetting("Project File", "", "The path to the project file.");
+    public static CameraPropertiesSettings cameraProperties = new CameraPropertiesSettings();
+    public static ScenePropertiesSettings sceneProperties = new ScenePropertiesSettings();
+    public static SettingsParent debugProperties;
+    public static SettingsParent viewProperties;
+    public static StringSetting projectFile = new StringSetting("Project File", "", "The path to the project file.");
 
 
     public Settings() {

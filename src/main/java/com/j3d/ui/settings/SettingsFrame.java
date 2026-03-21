@@ -18,8 +18,7 @@ public class SettingsFrame extends javax.swing.JFrame {
      */
     public SettingsFrame() {
         initComponents();
-        Settings settings = Static.settings;
-        settings.getAllChildren().forEach(child -> {
+        Static.settings.getAllChildren().forEach(child -> {
             System.out.println("Adding + " + child);
             jPanel1.add(child.panel());
             System.out.println("Added");

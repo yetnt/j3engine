@@ -7,6 +7,7 @@ import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.matrix.MatrixMath;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.settings.Settings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,8 +53,8 @@ public class CartesianPoint extends BasePoint<Double> {
      * @return A ScreenPoint
      */
     public ScreenPoint toScreen(Renderer renderer) {
-        double adjustedX = x * J3DSettings.SCALE;
-        double adjustedY = y * J3DSettings.SCALE;
+        double adjustedX = x * Settings.sceneProperties.scale.getValue();
+        double adjustedY = y * Settings.sceneProperties.scale.getValue();
 
         int screenX = (int) (adjustedX + (double) renderer.screenSize.width / 2);
         int screenY = (int) ((double) renderer.screenSize.height / 2 - adjustedY);
@@ -70,16 +71,16 @@ public class CartesianPoint extends BasePoint<Double> {
      */
 //    public Vector3 toVector3(Camera camera) {
 //        // place point on the plane of the camera.
-//        double worldX = (x / J3DSettings.SCALE) + camera.getPosition().getX();
-//        double worldY = (y / J3DSettings.SCALE) + camera.getPosition().getY();
+//        double worldX = (x / Settings.sceneProperties.scale.getValue()) + camera.getPosition().getX();
+//        double worldY = (y / Settings.sceneProperties.scale.getValue()) + camera.getPosition().getY();
 //        return new Vector3(worldX, worldY, camera.getPosition().getZ());
 //    }
     public Vector3 toVector3(Camera camera) {
         Vector3 e = camera.getProjectionPlane();
         //TODO: When orbiting the camera left and right, the points tend to move outside of camera view.
 
-        double dx = (x / J3DSettings.SCALE) - e.getX();
-        double dy = (y / J3DSettings.SCALE) - e.getY();
+        double dx = (x / Settings.sceneProperties.scale.getValue()) - e.getX();
+        double dy = (y / Settings.sceneProperties.scale.getValue()) - e.getY();
         double dz = e.getZ();
 //        double dz = 0;
 
