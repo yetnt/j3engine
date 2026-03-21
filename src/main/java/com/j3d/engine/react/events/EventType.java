@@ -15,5 +15,6 @@ public enum EventType {
     /**
      * The object was selected.
      */
-    X_SELECTED
+    X_SELECTED,
+    SETTINGS_CODE_UPDATED
 }

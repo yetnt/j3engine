@@ -8,6 +8,7 @@ import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.input.KeyBindings;
+import com.j3d.settings.Settings;
 import com.j3d.ui.engine.DebugPanel;
 import com.j3d.ui.engine.tree.LayerTree;
 
@@ -65,4 +66,8 @@ public class Static {
      * The Logger Instance
      */
     public static Logger log;
+    /**
+     * The Settings Object
+     */
+    public static Settings settings = new Settings();
 }
