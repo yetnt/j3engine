@@ -3,12 +3,13 @@ package com.j3d.settings;
 import com.j3d.settings.classes.CameraPropertiesSettings;
 import com.j3d.settings.classes.ScenePropertiesSettings;
 import com.j3d.settings.types.StringSetting;
-import com.j3d.ui.settings.SettingsParentPanel;
+import com.j3d.ui.settings.SettingsFrame;
 
 import java.util.ArrayList;
 
 public class Settings implements SettingsParent {
-
+    
+    public static SettingsFrame settingsFrame;
     public static CameraPropertiesSettings cameraProperties = new CameraPropertiesSettings();
     public static ScenePropertiesSettings sceneProperties = new ScenePropertiesSettings();
     public static SettingsParent debugProperties;
@@ -59,7 +60,8 @@ public class Settings implements SettingsParent {
     }
 
     @Override
-    public SettingsParentPanel panel() {
-        return null; // Main Settings object, no panel.
+    public SettingsFrame panel() {
+        if (settingsFrame == null) settingsFrame = new SettingsFrame();
+        return settingsFrame;
     }
 }

@@ -1,6 +1,5 @@
 package com.j3d.settings;
 
-import com.j3d.ui.settings.SettingsParentPanel;
 
 import java.util.ArrayList;
 
@@ -15,5 +14,4 @@ public interface SettingsParent extends SettingsChild {
     ArrayList<SettingsChild> getAllChildren();
     ArrayList<SettingsParent> getChildSettingsFolder();
     ArrayList<Setting<?>> getChildSettings();
-    SettingsParentPanel panel();
 }

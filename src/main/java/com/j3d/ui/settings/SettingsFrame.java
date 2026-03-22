@@ -5,7 +5,6 @@
 package com.j3d.ui.settings;
 
 import com.j3d.Static;
-import com.j3d.settings.Settings;
 
 /**
  *
@@ -38,9 +37,10 @@ public class SettingsFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("J3D Settings Mfwethu");
         setMaximumSize(new java.awt.Dimension(752, 163));
         setMinimumSize(new java.awt.Dimension(752, 163));
+        setPreferredSize(new java.awt.Dimension(302, 600));
 
         jScrollPane1.setMinimumSize(new java.awt.Dimension(300, 300));
 

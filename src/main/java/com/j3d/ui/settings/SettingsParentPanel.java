@@ -56,7 +56,7 @@ public class SettingsParentPanel extends javax.swing.JPanel {
         settingsDescriptionLabel.setForeground(J3DTheme.ASH_GREY.color());
         settingsDescriptionLabel.setText("Settings Description");
 
-        innerSettingsPanel.setLayout(new java.awt.GridLayout(0, 1));
+        innerSettingsPanel.setLayout(new javax.swing.BoxLayout(innerSettingsPanel, javax.swing.BoxLayout.Y_AXIS));
         settingsScrollPane.setViewportView(innerSettingsPanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

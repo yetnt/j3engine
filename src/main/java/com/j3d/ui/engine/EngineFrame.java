@@ -529,7 +529,7 @@ public class EngineFrame extends javax.swing.JFrame {
 
     private void settingsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsMenuItemActionPerformed
         // Open SettingsFrame JFrame on top of this frame at the centre of the screen.
-        SettingsFrame settingsFrame = new SettingsFrame();
+        SettingsFrame settingsFrame = Static.settings.panel();
         settingsFrame.setLocationRelativeTo(Static.mainFrame);
         settingsFrame.setVisible(true);
     }//GEN-LAST:event_settingsMenuItemActionPerformed
