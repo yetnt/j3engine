@@ -4,6 +4,7 @@ import com.j3d.settings.Setting;
 import com.j3d.ui.settings.panels.NumberValueSPanel;
 
 import java.awt.*;
+import java.util.function.Function;
 
 public class IntSetting extends Setting<Integer> {
     private final int min;
@@ -33,5 +34,10 @@ public class IntSetting extends Setting<Integer> {
     @Override
     public Component panel() {
         return new NumberValueSPanel<>(this, getDefaultValue(), min, max, 1, (Integer i) -> i, (Integer i) -> i);
+    }
+
+    @Override
+    public IntSetting onSetValue(Function<Integer, Void> callback) {
+        return (IntSetting) super.onSetValue(callback);
     }
 }

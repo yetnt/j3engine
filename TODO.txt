@@ -19,15 +19,16 @@ Future ToDo (Important)
 5. Projects Panel to load up a project
 6. Startup login panel
 7. Via Main.main() open a file directly and skip the login/signup panel. (the only way to access the app in an unlogged-in state)
-8. Settings Frame
+8. [DONE] Settings Frame
 9. Customizable UI Colours
 10. Macros
 11. Access DB Integration and usage (ties to 6 and 7)
-12. "pan" command, which makes use of MouseOwner and allows panning the camera rotation.
+12. [DONE] "orbit" command, which makes use of MouseOwner and allows panning the camera rotation.
+13. Colour to Db integeration via Phase 1 documentation
 
 Future ToDo (optional)
 
-1. Spheres and curves
+1. Spheres and curves (Bezier curves and splines)
 2. [DONE] Layer/Thing hiding
 3. Textures and importing pictures
 4. [DONE] Undo/Redo

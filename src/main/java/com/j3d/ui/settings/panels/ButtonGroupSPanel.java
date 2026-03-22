@@ -33,7 +33,7 @@ public class ButtonGroupSPanel extends javax.swing.JPanel implements SettingPane
             JRadioButton btn = new JRadioButton(e.name());
             btn.setName(e.name());
             btn.setSelected(e.equals(setting.getValue()));
-            btn.addChangeListener(
+            btn.addActionListener(
                     a -> {
                         if (!btn.isSelected()) return;
                         setting.setValueNoBroadcast(e);

@@ -46,4 +46,9 @@ public class DoubleSetting extends Setting<Double> {
     public Component panel() {
         return new NumberValueSPanel<>(this, getDefaultValue(), min, max, stepSize, toInt, toDouble);
     }
+
+    @Override
+    public DoubleSetting onSetValue(Function<Double, Void> callback) {
+        return (DoubleSetting) super.onSetValue(callback);
+    }
 }

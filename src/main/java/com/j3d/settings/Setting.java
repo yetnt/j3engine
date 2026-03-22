@@ -6,9 +6,11 @@ import com.j3d.engine.react.events.EventListener;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.react.events.spec.SettingUpdatedPayload;
+import com.j3d.settings.types.EnumSetting;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.function.Function;
 
 import static com.j3d.engine.react.events.EventEmitter.*;
 
@@ -26,6 +28,7 @@ public class Setting<T> implements SettingsChild, EventEmitterInterface {
     private final T defaultValue;
     private final String name;
     private ArrayList<EventListener> registered = new ArrayList<>();
+    private Function<T, Void> callback;
 
     public Setting(String name, T value, String description) {
         this.name = name;
@@ -51,6 +54,7 @@ public class Setting<T> implements SettingsChild, EventEmitterInterface {
     }
 
     public T setValueNoBroadcast(T value) {
+        if (callback != null) callback.apply(value);
         T old = this.value;
         this.value = value;
         return old;
@@ -89,4 +93,8 @@ public class Setting<T> implements SettingsChild, EventEmitterInterface {
     }
 
 
+    public Setting onSetValue(Function<T, Void> callback) {
+        this.callback = callback;
+        return this;
+    }
 }

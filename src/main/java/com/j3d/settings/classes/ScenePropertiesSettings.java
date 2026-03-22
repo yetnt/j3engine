@@ -1,5 +1,6 @@
 package com.j3d.settings.classes;
 
+import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.draw.tris.TriangleSortMethod;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
@@ -35,7 +36,10 @@ public class ScenePropertiesSettings implements SettingsParent {
             TriangleSortMethod.CAMDISTSORT,
             "The method the renderer should make use of to sort triangles.",
             TriangleSortMethod.values()
-    );
+    ).onSetValue((TriangleSortMethod l) -> {
+        TriStateArea.setSortMethod(l);
+        return null;
+    });
 
     public ScenePropertiesSettings() {
 
