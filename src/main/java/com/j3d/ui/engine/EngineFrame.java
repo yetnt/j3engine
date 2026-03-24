@@ -26,6 +26,7 @@ import com.j3d.files.FilesUtility;
 import com.j3d.files.ProjectFile;
 import com.j3d.threads.LongTask;
 import com.j3d.ui.CursorManager;
+import com.j3d.ui.CursorNames;
 import com.j3d.ui.settings.SettingsFrame;
 import com.j3d.ui.tb.Toolbox;
 //import com.jaiva.JBundler;
@@ -530,6 +531,7 @@ public class EngineFrame extends javax.swing.JFrame {
     private void settingsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsMenuItemActionPerformed
         // Open SettingsFrame JFrame on top of this frame at the centre of the screen.
         SettingsFrame settingsFrame = Static.settings.panel();
+        CursorManager.set(CursorNames.DEFAULT, settingsFrame);
         settingsFrame.setLocationRelativeTo(Static.mainFrame);
         settingsFrame.setVisible(true);
     }//GEN-LAST:event_settingsMenuItemActionPerformed

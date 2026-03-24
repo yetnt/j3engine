@@ -1,9 +1,12 @@
 package com.j3d.settings.classes;
 
+import com.j3d.settings.SettingsChild;
 import com.j3d.settings.types.DoubleSetting;
 import com.j3d.settings.Setting;
 import com.j3d.settings.SettingsParent;
 import com.j3d.ui.settings.SettingsParentPanel;
+
+import java.util.ArrayList;
 
 public class CameraPropertiesSettings implements SettingsParent {
     public DoubleSetting fieldOfView = new DoubleSetting(
@@ -28,6 +31,17 @@ public class CameraPropertiesSettings implements SettingsParent {
             i -> i/100.0,
             0.01
     );
+    public DoubleSetting orbitSensitivity = new DoubleSetting(
+            "Orbit Sensitivity",
+            20.0,
+            "Determines how sensitive the camera's orbit control is.",
+            1.0,
+            100.0
+    ).setValues(
+            d -> (int)(d * 100),
+            i -> i/100.0,
+            0.01
+    );
 
     public CameraPropertiesSettings() {
 
@@ -44,23 +58,25 @@ public class CameraPropertiesSettings implements SettingsParent {
     }
 
     @Override
-    public java.util.ArrayList<com.j3d.settings.SettingsChild> getAllChildren() {
-        return new java.util.ArrayList<>() {{
+    public ArrayList<SettingsChild> getAllChildren() {
+        return new ArrayList<>() {{
             add(fieldOfView);
             add(movementSpeed);
+            add(orbitSensitivity);
         }};
     }
 
     @Override
-    public java.util.ArrayList<SettingsParent> getChildSettingsFolder() {
-        return new java.util.ArrayList<>();
+    public ArrayList<SettingsParent> getChildSettingsFolder() {
+        return new ArrayList<>();
     }
 
     @Override
-    public java.util.ArrayList<Setting<?>> getChildSettings() {
-        return new java.util.ArrayList<>() {{
+    public ArrayList<Setting<?>> getChildSettings() {
+        return new ArrayList<>() {{
             add(fieldOfView);
             add(movementSpeed);
+            add(orbitSensitivity);
         }};
     }
 

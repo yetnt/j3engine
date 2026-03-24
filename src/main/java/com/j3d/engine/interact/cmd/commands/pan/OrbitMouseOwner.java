@@ -3,6 +3,7 @@ package com.j3d.engine.interact.cmd.commands.pan;
 import com.j3d.Static;
 import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.engine.interact.input.mouse.MouseOwner;
+import com.j3d.settings.Settings;
 import com.j3d.ui.CursorManager;
 import com.j3d.ui.CursorNames;
 
@@ -51,7 +52,6 @@ public class OrbitMouseOwner extends MouseOwner {
     }
 
     public double scaleDifference(int d) {
-        // 20 pixels = 1 degree
-        return d / 20.0;
+        return d / Settings.cameraProperties.orbitSensitivity.getValue();
     }
 }
