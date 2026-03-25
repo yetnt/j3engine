@@ -1,6 +1,9 @@
 package com.j3d.ui;
 
 import java.awt.*;
+import java.util.HashMap;
+
+import static com.j3d.utility.db.ThemesDB.getTheme;
 
 /**
  * The Theme class contains a set of predefined color themes for the UI.
@@ -47,6 +50,8 @@ public enum J3DTheme {
      */
     BACKGROUND(new Color(0x2f3e46));
 
+    public static final HashMap<String, Color> fromDbTest = getTheme(5); // bubblegum theme
+
     J3DTheme(Color color) {
         col = color;
     };
@@ -60,7 +65,7 @@ public enum J3DTheme {
      * @return the {@link Color} instance representing this theme's color
      */
     public Color color() {
-        return col;
+        return fromDbTest.getOrDefault(name(), col);
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.j3d.files;
+package com.j3d.utility.db;
 
 import java.io.File;
 import java.sql.*;
@@ -19,4 +19,5 @@ public class DatabaseManager {
         Connection con = DriverManager.getConnection(url);
         return con;
     }
+
 }

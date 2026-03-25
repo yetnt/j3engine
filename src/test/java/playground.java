@@ -1,9 +1,13 @@
-import com.j3d.ui.J3DTheme;
+import com.j3d.utility.db.ThemesDB;
 
-import java.util.Arrays;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 public class playground {
-    public static void main(String[] args) {
-        Arrays.stream(J3DTheme.values()).map(J3DTheme::toDbFieldName).forEach(System.out::println);
+    public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        System.out.println(
+                ThemesDB.getTheme(4)
+        );
+
     }
 }
