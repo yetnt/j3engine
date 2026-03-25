@@ -343,7 +343,7 @@ public class Signup extends javax.swing.JFrame {
             String base64salt = Base64.getEncoder().encodeToString(salt);
             String name = nameJField.getText();
             String surname = surnameJField.getText();
-            String email = emailJField.getText(); // SaVeR124!
+            String email = emailJField.getText();
 
             try {
                 boolean wasRegistered = UsersDB.registerUser(
