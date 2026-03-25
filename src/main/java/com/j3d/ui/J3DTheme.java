@@ -17,7 +17,7 @@ public enum J3DTheme {
     /**
      * Secondary Text Colour.
      */
-    TEXT_SECONDARY(new Color(0xcadf00)),
+    TEXT_SECONDARY(new Color(0xc5e0c6)),
     /**
      * Even lighter colour
      * <p>
@@ -61,5 +61,26 @@ public enum J3DTheme {
      */
     public Color color() {
         return col;
+    }
+
+    /**
+     * Converts names such as TEXT_PRIMARY to textPrimary
+     * @return The converted name
+     */
+    public String toDbFieldName() {
+        String input = name();
+        StringBuilder sb = new StringBuilder();
+        boolean isFirst = false;
+        for (char c : input.toCharArray()) {
+            if (isFirst && Character.isUpperCase(c)) {
+                sb.append(c);
+                isFirst = false;
+            } else if (c == '_'){
+                isFirst = true;
+            } else {
+                sb.append(Character.toLowerCase(c));
+            }
+        }
+        return sb.toString();
     }
 }
