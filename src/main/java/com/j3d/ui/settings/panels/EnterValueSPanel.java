@@ -4,18 +4,12 @@
  */
 package com.j3d.ui.settings.panels;
 
-import static com.j3d.engine.react.events.EventEmitter.genericAttach;
-import static com.j3d.engine.react.events.EventEmitter.genericBroadcast;
-import static com.j3d.engine.react.events.EventEmitter.genericDetach;
-import static com.j3d.engine.react.events.EventEmitter.genericDetachAll;
-import com.j3d.engine.react.events.EventListener;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.react.events.spec.SettingUpdatedPayload;
-import com.j3d.settings.Setting;
 import com.j3d.settings.types.StringSetting;
+import com.j3d.ui.J3DTheme;
 
-import java.util.ArrayList;
 
 /**
  *
@@ -49,8 +43,13 @@ public class EnterValueSPanel extends javax.swing.JPanel implements SettingPanel
         settingLabel = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
 
+        setBackground(J3DTheme.DARK_SLATE_GREY.color());
+
+        settingLabel.setForeground(J3DTheme.ASH_GREY.color());
         settingLabel.setText("SettingLabel (hover for desc)");
 
+        jTextField1.setBackground(J3DTheme.DARK_SLATE_GREY.color());
+        jTextField1.setForeground(J3DTheme.ASH_GREY.color());
         jTextField1.setText("jTextField1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

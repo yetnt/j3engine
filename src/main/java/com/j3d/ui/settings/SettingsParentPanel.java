@@ -48,6 +48,8 @@ public class SettingsParentPanel extends javax.swing.JPanel {
         innerSettingsPanel = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
 
+        setBackground(J3DTheme.DARK_SLATE_GREY.color());
+
         settingsTitleLabel.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         settingsTitleLabel.setForeground(J3DTheme.ASH_GREY.color());
         settingsTitleLabel.setText("SettingsTitle");

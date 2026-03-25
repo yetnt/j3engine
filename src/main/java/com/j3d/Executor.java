@@ -100,6 +100,35 @@ public class Executor {
         );
     }
 
+    public Thing openedLetter() {
+        GPoint P = new GPoint(new Vector3(0, 40, 0));
+        GPoint Q = new GPoint(new Vector3(0, 20, 0));
+
+        GPoint S = new GPoint(new Vector3(-20, 40, 20));
+        GPoint R = new GPoint(new Vector3(-20, 20, 20));
+
+        GPoint U = new GPoint(new Vector3(20, 40, 20));
+        GPoint T = new GPoint(new Vector3(20, 20, 20));
+
+        GTri SPR = new GTri(Color.ORANGE, S, P, R);
+        GTri PRQ = new GTri(Color.ORANGE, P, R, Q);
+        GTri PQT = new GTri(Color.ORANGE, P, Q, T);
+        GTri PUT = new GTri(Color.ORANGE, P, U, T);
+
+        GTri PRT = new GTri(Color.PINK, P, R, T);
+
+        return new Thing(Static.renderer, null, "Letter")
+                .addObjs(
+                        P, Q, S, R, U, T,
+                        SPR, PRQ, PQT, PUT, PRT,
+                        SPR.getLegA(), SPR.getLegB(), SPR.getLegC(),
+                        PRQ.getLegA(), PRQ.getLegB(), PRQ.getLegC(),
+                        PQT.getLegA(), PQT.getLegB(), PQT.getLegC(),
+                        PUT.getLegA(), PUT.getLegB(), PUT.getLegC(),
+                        PRT.getLegA(), PRT.getLegB(), PRT.getLegC()
+                );
+    }
+
     public Thing test() {
         GPoint A = new GPoint(new Vector3(10, 0, 0));
         GPoint B = new GPoint(new Vector3(0, 10, 0));

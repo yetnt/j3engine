@@ -10,6 +10,7 @@ import com.j3d.engine.react.events.spec.SettingUpdatedPayload;
 import com.j3d.settings.Setting;
 import com.j3d.settings.types.DoubleSetting;
 import com.j3d.settings.types.IntSetting;
+import com.j3d.ui.J3DTheme;
 
 import javax.swing.*;
 import java.util.function.Function;
@@ -96,8 +97,18 @@ public class NumberValueSPanel<T extends Number> extends javax.swing.JPanel impl
         jSpinner1 = new javax.swing.JSpinner();
         resetButton = new javax.swing.JButton();
 
+        setBackground(J3DTheme.DARK_SLATE_GREY.color());
+
+        settingLabel1.setForeground(J3DTheme.ASH_GREY.color());
         settingLabel1.setText("SettingLabel (hover for desc)");
 
+        jSlider1.setBackground(J3DTheme.DARK_SLATE_GREY.color());
+        jSlider1.setForeground(J3DTheme.ASH_GREY.color());
+
+        jSpinner1.setOpaque(true);
+
+        resetButton.setBackground(J3DTheme.CHARCOAL_BLUE.color());
+        resetButton.setForeground(J3DTheme.ASH_GREY.color());
         resetButton.setText("Reset Value");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

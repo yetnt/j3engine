@@ -4,15 +4,10 @@
  */
 package com.j3d.ui.settings.panels;
 
-import static com.j3d.engine.react.events.EventEmitter.genericAttach;
-import static com.j3d.engine.react.events.EventEmitter.genericBroadcast;
-import static com.j3d.engine.react.events.EventEmitter.genericDetach;
-import static com.j3d.engine.react.events.EventEmitter.genericDetachAll;
-import com.j3d.engine.react.events.EventListener;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.settings.Setting;
-import java.util.ArrayList;
+import com.j3d.ui.J3DTheme;
 
 /**
  *
@@ -42,8 +37,14 @@ public class PopoutSPanel extends javax.swing.JPanel implements SettingPanel {
         settingLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
-        settingLabel4.setText("SettingLabel (hover for desc)");
+        setBackground(J3DTheme.DARK_SLATE_GREY.color());
 
+        settingLabel4.setForeground(J3DTheme.ASH_GREY.color());
+        settingLabel4.setText("SettingLabel (hover for desc)");
+        settingLabel4.setOpaque(true);
+
+        jButton1.setBackground(J3DTheme.CHARCOAL_BLUE.color());
+        jButton1.setForeground(J3DTheme.ASH_GREY.color());
         jButton1.setText("Open UI");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -4,18 +4,12 @@
  */
 package com.j3d.ui.settings.panels;
 
-import static com.j3d.engine.react.events.EventEmitter.genericAttach;
-import static com.j3d.engine.react.events.EventEmitter.genericBroadcast;
-import static com.j3d.engine.react.events.EventEmitter.genericDetach;
-import static com.j3d.engine.react.events.EventEmitter.genericDetachAll;
-import com.j3d.engine.react.events.EventListener;
+import com.j3d.ui.J3DTheme;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.react.events.spec.SettingUpdatedPayload;
-import com.j3d.settings.Setting;
 import com.j3d.settings.types.BooleanSetting;
 
-import java.util.ArrayList;
 
 /**
  *
@@ -48,6 +42,8 @@ public class BooleanValueSPanel extends javax.swing.JPanel implements SettingPan
 
         settingLabel2 = new javax.swing.JLabel();
         jCheckBox3 = new javax.swing.JCheckBox();
+
+        setBackground(J3DTheme.DARK_SLATE_GREY.color());
 
         settingLabel2.setText("SettingLabel (hover for desc)");
 
