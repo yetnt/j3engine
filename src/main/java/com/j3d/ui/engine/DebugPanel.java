@@ -86,15 +86,15 @@ public class DebugPanel extends javax.swing.JPanel {
         drawButton = new javax.swing.JButton();
         clearButton = new javax.swing.JButton();
 
-        setBackground(J3DTheme.DARK_SLATE_GREY.color());
+        setBackground(J3DTheme.UI_SURFACE.color());
         setForeground(new java.awt.Color(51, 204, 0));
 
-        jScrollPane2.setBackground(J3DTheme.DARK_SLATE_GREY.color());
+        jScrollPane2.setBackground(J3DTheme.UI_SURFACE.color());
 
-        jPanel1.setBackground(J3DTheme.DARK_SLATE_GREY.color());
+        jPanel1.setBackground(J3DTheme.UI_SURFACE.color());
 
-        randomTriBtn.setBackground(J3DTheme.CHARCOAL_BLUE.color());
-        randomTriBtn.setForeground(J3DTheme.ASH_GREY.color());
+        randomTriBtn.setBackground(J3DTheme.BACKGROUND.color());
+        randomTriBtn.setForeground(J3DTheme.TEXT_PRIMARY.color());
         randomTriBtn.setText("randomTri");
         randomTriBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -102,19 +102,19 @@ public class DebugPanel extends javax.swing.JPanel {
             }
         });
 
-        debugLabel.setForeground(J3DTheme.ASH_GREY.color());
+        debugLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
         debugLabel.setText("Debug");
 
-        drawLabel.setForeground(J3DTheme.ASH_GREY.color());
+        drawLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
         drawLabel.setText("Draw");
 
-        logTextArea.setBackground(J3DTheme.CHARCOAL_BLUE.color());
+        logTextArea.setBackground(J3DTheme.BACKGROUND.color());
         logTextArea.setColumns(20);
-        logTextArea.setForeground(J3DTheme.ASH_GREY.color());
+        logTextArea.setForeground(J3DTheme.TEXT_PRIMARY.color());
         logTextArea.setRows(5);
         jScrollPane1.setViewportView(logTextArea);
 
-        logLabel.setForeground(J3DTheme.ASH_GREY.color());
+        logLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
         logLabel.setText("Logs");
 
         sliderYaw.setMaximum(180);
@@ -144,19 +144,19 @@ public class DebugPanel extends javax.swing.JPanel {
             }
         });
 
-        camRotationLabel1.setForeground(J3DTheme.ASH_GREY.color());
+        camRotationLabel1.setForeground(J3DTheme.TEXT_PRIMARY.color());
         camRotationLabel1.setText("Cam Rotation");
 
-        YawLabel.setForeground(J3DTheme.ASH_GREY.color());
+        YawLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
         YawLabel.setText("Yaw");
 
-        PitchLabel.setForeground(J3DTheme.ASH_GREY.color());
+        PitchLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
         PitchLabel.setText("Pitch");
 
-        RollLabel.setForeground(J3DTheme.ASH_GREY.color());
+        RollLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
         RollLabel.setText("Roll");
 
-        NoneRadioButton.setForeground(J3DTheme.ASH_GREY.color());
+        NoneRadioButton.setForeground(J3DTheme.TEXT_PRIMARY.color());
         NoneRadioButton.setSelected(true);
         NoneRadioButton.setText("None");
         NoneRadioButton.addActionListener(new java.awt.event.ActionListener() {
@@ -165,10 +165,10 @@ public class DebugPanel extends javax.swing.JPanel {
             }
         });
 
-        jLabel2.setForeground(J3DTheme.ASH_GREY.color());
+        jLabel2.setForeground(J3DTheme.TEXT_PRIMARY.color());
         jLabel2.setText("Triangle Debugging Info");
 
-        showTriDistCheckBox.setForeground(J3DTheme.ASH_GREY.color());
+        showTriDistCheckBox.setForeground(J3DTheme.TEXT_PRIMARY.color());
         showTriDistCheckBox.setText("Show Triangle Distances");
         showTriDistCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -176,7 +176,7 @@ public class DebugPanel extends javax.swing.JPanel {
             }
         });
 
-        showTriDepthCheckBox.setForeground(J3DTheme.ASH_GREY.color());
+        showTriDepthCheckBox.setForeground(J3DTheme.TEXT_PRIMARY.color());
         showTriDepthCheckBox.setText("Show Triangle Depth Values");
         showTriDepthCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -184,7 +184,7 @@ public class DebugPanel extends javax.swing.JPanel {
             }
         });
 
-        showTriNormalsCheckBox.setForeground(J3DTheme.ASH_GREY.color());
+        showTriNormalsCheckBox.setForeground(J3DTheme.TEXT_PRIMARY.color());
         showTriNormalsCheckBox.setText("Show Triangle Normals");
         showTriNormalsCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -193,7 +193,7 @@ public class DebugPanel extends javax.swing.JPanel {
         });
 
         sortMethodButtonGroup.add(BucketSortRadio);
-        BucketSortRadio.setForeground(J3DTheme.ASH_GREY.color());
+        BucketSortRadio.setForeground(J3DTheme.TEXT_PRIMARY.color());
         BucketSortRadio.setText("Bucket Sort");
         BucketSortRadio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -202,7 +202,7 @@ public class DebugPanel extends javax.swing.JPanel {
         });
 
         sortMethodButtonGroup.add(CamDistSortRadio);
-        CamDistSortRadio.setForeground(J3DTheme.ASH_GREY.color());
+        CamDistSortRadio.setForeground(J3DTheme.TEXT_PRIMARY.color());
         CamDistSortRadio.setText("CamDist Sort");
         CamDistSortRadio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -210,10 +210,10 @@ public class DebugPanel extends javax.swing.JPanel {
             }
         });
 
-        jLabel1.setForeground(J3DTheme.ASH_GREY.color());
+        jLabel1.setForeground(J3DTheme.TEXT_PRIMARY.color());
         jLabel1.setText("Triangle Sorting Algorithm");
 
-        backFaceCullingCheckBox.setForeground(J3DTheme.ASH_GREY.color());
+        backFaceCullingCheckBox.setForeground(J3DTheme.TEXT_PRIMARY.color());
         backFaceCullingCheckBox.setText("Back Face Culling");
         backFaceCullingCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -221,11 +221,11 @@ public class DebugPanel extends javax.swing.JPanel {
             }
         });
 
-        jLabel3.setForeground(J3DTheme.ASH_GREY.color());
+        jLabel3.setForeground(J3DTheme.TEXT_PRIMARY.color());
         jLabel3.setText("General Toggles");
 
         sortMethodButtonGroup.add(visibleSortRadioButton);
-        visibleSortRadioButton.setForeground(J3DTheme.ASH_GREY.color());
+        visibleSortRadioButton.setForeground(J3DTheme.TEXT_PRIMARY.color());
         visibleSortRadioButton.setText("Visible Sort");
         visibleSortRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -234,7 +234,7 @@ public class DebugPanel extends javax.swing.JPanel {
         });
 
         sortMethodButtonGroup.add(camDepthSortRadioButton);
-        camDepthSortRadioButton.setForeground(J3DTheme.ASH_GREY.color());
+        camDepthSortRadioButton.setForeground(J3DTheme.TEXT_PRIMARY.color());
         camDepthSortRadioButton.setText("CamDepth Sort");
         camDepthSortRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -243,7 +243,7 @@ public class DebugPanel extends javax.swing.JPanel {
         });
 
         sortMethodButtonGroup.add(DDUUIDSortRadioButton);
-        DDUUIDSortRadioButton.setForeground(J3DTheme.ASH_GREY.color());
+        DDUUIDSortRadioButton.setForeground(J3DTheme.TEXT_PRIMARY.color());
         DDUUIDSortRadioButton.setSelected(true);
         DDUUIDSortRadioButton.setText("DDUUID");
         DDUUIDSortRadioButton.addActionListener(new java.awt.event.ActionListener() {
@@ -252,8 +252,8 @@ public class DebugPanel extends javax.swing.JPanel {
             }
         });
 
-        drawButton.setBackground(J3DTheme.CHARCOAL_BLUE.color());
-        drawButton.setForeground(J3DTheme.ASH_GREY.color());
+        drawButton.setBackground(J3DTheme.BACKGROUND.color());
+        drawButton.setForeground(J3DTheme.TEXT_PRIMARY.color());
         drawButton.setText("draw");
         drawButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -261,8 +261,8 @@ public class DebugPanel extends javax.swing.JPanel {
             }
         });
 
-        clearButton.setBackground(J3DTheme.CHARCOAL_BLUE.color());
-        clearButton.setForeground(J3DTheme.ASH_GREY.color());
+        clearButton.setBackground(J3DTheme.BACKGROUND.color());
+        clearButton.setForeground(J3DTheme.TEXT_PRIMARY.color());
         clearButton.setText("clear");
         clearButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

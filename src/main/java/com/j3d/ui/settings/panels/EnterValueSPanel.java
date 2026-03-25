@@ -43,13 +43,13 @@ public class EnterValueSPanel extends javax.swing.JPanel implements SettingPanel
         settingLabel = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
 
-        setBackground(J3DTheme.DARK_SLATE_GREY.color());
+        setBackground(J3DTheme.UI_SURFACE.color());
 
-        settingLabel.setForeground(J3DTheme.ASH_GREY.color());
+        settingLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
         settingLabel.setText("SettingLabel (hover for desc)");
 
-        jTextField1.setBackground(J3DTheme.DARK_SLATE_GREY.color());
-        jTextField1.setForeground(J3DTheme.ASH_GREY.color());
+        jTextField1.setBackground(J3DTheme.UI_SURFACE.color());
+        jTextField1.setForeground(J3DTheme.TEXT_PRIMARY.color());
         jTextField1.setText("jTextField1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

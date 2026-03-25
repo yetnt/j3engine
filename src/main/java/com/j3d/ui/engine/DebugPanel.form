@@ -7,7 +7,7 @@
   </NonVisualComponents>
   <Properties>
     <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-      <Connection code="J3DTheme.DARK_SLATE_GREY.color()" type="code"/>
+      <Connection code="J3DTheme.UI_SURFACE.color()" type="code"/>
     </Property>
     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
       <Color blue="0" green="cc" red="33" type="rgb"/>
@@ -49,7 +49,7 @@
     <Container class="javax.swing.JScrollPane" name="jScrollPane2">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="J3DTheme.DARK_SLATE_GREY.color()" type="code"/>
+          <Connection code="J3DTheme.UI_SURFACE.color()" type="code"/>
         </Property>
       </Properties>
 
@@ -58,7 +58,7 @@
         <Container class="javax.swing.JPanel" name="jPanel1">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="J3DTheme.DARK_SLATE_GREY.color()" type="code"/>
+              <Connection code="J3DTheme.UI_SURFACE.color()" type="code"/>
             </Property>
           </Properties>
 
@@ -193,10 +193,10 @@
             <Component class="javax.swing.JButton" name="randomTriBtn">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.CHARCOAL_BLUE.color()" type="code"/>
+                  <Connection code="J3DTheme.BACKGROUND.color()" type="code"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="randomTri"/>
               </Properties>
@@ -210,7 +210,7 @@
             <Component class="javax.swing.JLabel" name="debugLabel">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Debug"/>
               </Properties>
@@ -221,7 +221,7 @@
             <Component class="javax.swing.JLabel" name="drawLabel">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Draw"/>
               </Properties>
@@ -240,11 +240,11 @@
                 <Component class="javax.swing.JTextArea" name="logTextArea">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="J3DTheme.CHARCOAL_BLUE.color()" type="code"/>
+                      <Connection code="J3DTheme.BACKGROUND.color()" type="code"/>
                     </Property>
                     <Property name="columns" type="int" value="20"/>
                     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+                      <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                     </Property>
                     <Property name="rows" type="int" value="5"/>
                   </Properties>
@@ -257,7 +257,7 @@
             <Component class="javax.swing.JLabel" name="logLabel">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Logs"/>
               </Properties>
@@ -307,7 +307,7 @@
             <Component class="javax.swing.JLabel" name="camRotationLabel1">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Cam Rotation"/>
               </Properties>
@@ -318,7 +318,7 @@
             <Component class="javax.swing.JLabel" name="YawLabel">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Yaw"/>
               </Properties>
@@ -329,7 +329,7 @@
             <Component class="javax.swing.JLabel" name="PitchLabel">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Pitch"/>
               </Properties>
@@ -340,7 +340,7 @@
             <Component class="javax.swing.JLabel" name="RollLabel">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Roll"/>
               </Properties>
@@ -351,7 +351,7 @@
             <Component class="javax.swing.JRadioButton" name="NoneRadioButton">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                 </Property>
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="None"/>
@@ -369,7 +369,7 @@
             <Component class="javax.swing.JLabel" name="jLabel2">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Triangle Debugging Info"/>
               </Properties>
@@ -380,7 +380,7 @@
             <Component class="javax.swing.JCheckBox" name="showTriDistCheckBox">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Show Triangle Distances"/>
               </Properties>
@@ -394,7 +394,7 @@
             <Component class="javax.swing.JCheckBox" name="showTriDepthCheckBox">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Show Triangle Depth Values"/>
               </Properties>
@@ -408,7 +408,7 @@
             <Component class="javax.swing.JCheckBox" name="showTriNormalsCheckBox">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Show Triangle Normals"/>
               </Properties>
@@ -425,7 +425,7 @@
                   <ComponentRef name="sortMethodButtonGroup"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Bucket Sort"/>
               </Properties>
@@ -442,7 +442,7 @@
                   <ComponentRef name="sortMethodButtonGroup"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="CamDist Sort"/>
               </Properties>
@@ -456,7 +456,7 @@
             <Component class="javax.swing.JLabel" name="jLabel1">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Triangle Sorting Algorithm"/>
               </Properties>
@@ -467,7 +467,7 @@
             <Component class="javax.swing.JCheckBox" name="backFaceCullingCheckBox">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Back Face Culling"/>
               </Properties>
@@ -481,7 +481,7 @@
             <Component class="javax.swing.JLabel" name="jLabel3">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="General Toggles"/>
               </Properties>
@@ -495,7 +495,7 @@
                   <ComponentRef name="sortMethodButtonGroup"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Visible Sort"/>
               </Properties>
@@ -512,7 +512,7 @@
                   <ComponentRef name="sortMethodButtonGroup"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="CamDepth Sort"/>
               </Properties>
@@ -529,7 +529,7 @@
                   <ComponentRef name="sortMethodButtonGroup"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                 </Property>
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="DDUUID"/>
@@ -544,10 +544,10 @@
             <Component class="javax.swing.JButton" name="drawButton">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.CHARCOAL_BLUE.color()" type="code"/>
+                  <Connection code="J3DTheme.BACKGROUND.color()" type="code"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="draw"/>
               </Properties>
@@ -561,10 +561,10 @@
             <Component class="javax.swing.JButton" name="clearButton">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.CHARCOAL_BLUE.color()" type="code"/>
+                  <Connection code="J3DTheme.BACKGROUND.color()" type="code"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="clear"/>
               </Properties>

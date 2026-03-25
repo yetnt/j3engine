@@ -39,17 +39,17 @@ public class SettingsFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setTitle("J3D Settings Mfwethu");
-        setBackground(J3DTheme.DARK_SLATE_GREY.color());
+        setBackground(J3DTheme.UI_SURFACE.color());
         setMaximumSize(new java.awt.Dimension(752, 163));
         setMinimumSize(new java.awt.Dimension(752, 163));
         setPreferredSize(new java.awt.Dimension(302, 600));
 
-        jScrollPane1.setBackground(J3DTheme.DARK_SLATE_GREY.color());
-        jScrollPane1.setForeground(J3DTheme.DARK_SLATE_GREY.color());
+        jScrollPane1.setBackground(J3DTheme.UI_SURFACE.color());
+        jScrollPane1.setForeground(J3DTheme.UI_SURFACE.color());
         jScrollPane1.setMinimumSize(new java.awt.Dimension(300, 300));
 
-        jPanel1.setBackground(J3DTheme.DARK_SLATE_GREY.color());
-        jPanel1.setForeground(J3DTheme.DARK_SLATE_GREY.color());
+        jPanel1.setBackground(J3DTheme.UI_SURFACE.color());
+        jPanel1.setForeground(J3DTheme.UI_SURFACE.color());
         jPanel1.setMinimumSize(new java.awt.Dimension(0, 300));
         jPanel1.setPreferredSize(new java.awt.Dimension(300, 300));
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
@@ -57,9 +57,9 @@ public class SettingsFrame extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jLabel1.setBackground(J3DTheme.DARK_SLATE_GREY.color());
+        jLabel1.setBackground(J3DTheme.UI_SURFACE.color());
         jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 36)); // NOI18N
-        jLabel1.setForeground(J3DTheme.ASH_GREY.color());
+        jLabel1.setForeground(J3DTheme.TEXT_PRIMARY.color());
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Settings");
         jLabel1.setOpaque(true);

@@ -32,8 +32,8 @@ public class ButtonGroupSPanel extends javax.swing.JPanel implements SettingPane
 
         for (E e : setting.getValues()) {
             JRadioButton btn = new JRadioButton(e.name());
-            btn.setBackground(J3DTheme.DARK_SLATE_GREY.color());
-            btn.setForeground(J3DTheme.ASH_GREY.color());
+            btn.setBackground(J3DTheme.UI_SURFACE.color());
+            btn.setForeground(J3DTheme.TEXT_PRIMARY.color());
             btn.setName(e.name());
             btn.setSelected(e.equals(setting.getValue()));
             btn.addActionListener(
@@ -70,10 +70,10 @@ public class ButtonGroupSPanel extends javax.swing.JPanel implements SettingPane
 
         radioPanel.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        setBackground(J3DTheme.DARK_SLATE_GREY.color());
+        setBackground(J3DTheme.UI_SURFACE.color());
         setLayout(new java.awt.GridLayout(0, 1, 0, 3));
 
-        settingLabel3.setForeground(J3DTheme.ASH_GREY.color());
+        settingLabel3.setForeground(J3DTheme.TEXT_PRIMARY.color());
         settingLabel3.setText("SettingLabel (hover for desc)");
         settingLabel3.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         add(settingLabel3);

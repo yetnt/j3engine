@@ -34,10 +34,10 @@ public class Projects extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(J3DTheme.DEEP_TEAL.color());
+        jPanel1.setBackground(J3DTheme.ACCENT_SECONDARY.color());
 
         javax.swing.ImageIcon ic = new javax.swing.ImageIcon(getClass().getResource("/art/logo/J3Engine.png"));
-        jLabel1.setBackground(J3DTheme.DEEP_TEAL.color());
+        jLabel1.setBackground(J3DTheme.ACCENT_SECONDARY.color());
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(ic.getImage().getScaledInstance(400, 200, Image.SCALE_SMOOTH)));
         jLabel1.setOpaque(true);

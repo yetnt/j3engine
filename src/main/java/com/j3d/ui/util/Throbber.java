@@ -59,23 +59,23 @@ public class Throbber extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("loading.......");
-        setBackground(J3DTheme.DARK_SLATE_GREY.color());
+        setBackground(J3DTheme.UI_SURFACE.color());
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
-        jPanel1.setBackground(J3DTheme.DARK_SLATE_GREY.color());
+        jPanel1.setBackground(J3DTheme.UI_SURFACE.color());
 
         throbberLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/art/throbber/throbber200.gif"))); // NOI18N
         throbberLabel.setText("jLabel1");
         throbberLabel.setPreferredSize(new java.awt.Dimension(1024, 1024));
 
         textLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        textLabel.setForeground(J3DTheme.ASH_GREY.color());
+        textLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
         textLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         textLabel.setText("jLabel1");
 
         loadingLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        loadingLabel.setForeground(J3DTheme.ASH_GREY.color());
+        loadingLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
         loadingLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         loadingLabel.setText("Loading");
 

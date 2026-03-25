@@ -97,18 +97,18 @@ public class NumberValueSPanel<T extends Number> extends javax.swing.JPanel impl
         jSpinner1 = new javax.swing.JSpinner();
         resetButton = new javax.swing.JButton();
 
-        setBackground(J3DTheme.DARK_SLATE_GREY.color());
+        setBackground(J3DTheme.UI_SURFACE.color());
 
-        settingLabel1.setForeground(J3DTheme.ASH_GREY.color());
+        settingLabel1.setForeground(J3DTheme.TEXT_PRIMARY.color());
         settingLabel1.setText("SettingLabel (hover for desc)");
 
-        jSlider1.setBackground(J3DTheme.DARK_SLATE_GREY.color());
-        jSlider1.setForeground(J3DTheme.ASH_GREY.color());
+        jSlider1.setBackground(J3DTheme.UI_SURFACE.color());
+        jSlider1.setForeground(J3DTheme.TEXT_PRIMARY.color());
 
         jSpinner1.setOpaque(true);
 
-        resetButton.setBackground(J3DTheme.CHARCOAL_BLUE.color());
-        resetButton.setForeground(J3DTheme.ASH_GREY.color());
+        resetButton.setBackground(J3DTheme.BACKGROUND.color());
+        resetButton.setForeground(J3DTheme.TEXT_PRIMARY.color());
         resetButton.setText("Reset Value");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

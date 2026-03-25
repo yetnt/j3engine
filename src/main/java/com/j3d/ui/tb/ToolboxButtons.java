@@ -130,7 +130,7 @@ public class ToolboxButtons {
         buttonPanel.setMinimumSize(new java.awt.Dimension(120, 120));
         buttonPanel.setPreferredSize(new java.awt.Dimension(100, 120));
         buttonPanel.setLayout(new javax.swing.BoxLayout(buttonPanel, javax.swing.BoxLayout.Y_AXIS));
-        buttonPanel.setBackground(J3DTheme.DARK_SLATE_GREY.color());
+        buttonPanel.setBackground(J3DTheme.UI_SURFACE.color());
 
         JButton btnA = new javax.swing.JButton();
         btnA.setText("examplebtn");
@@ -139,8 +139,8 @@ public class ToolboxButtons {
         btnA.setMinimumSize(new java.awt.Dimension(100, 100));
         btnA.setPreferredSize(new java.awt.Dimension(100, 100));
         btnA.addActionListener(actionListener);
-        btnA.setBackground(J3DTheme.CHARCOAL_BLUE.color());
-        btnA.setForeground(J3DTheme.ASH_GREY.color());
+        btnA.setBackground(J3DTheme.BACKGROUND.color());
+        btnA.setForeground(J3DTheme.TEXT_PRIMARY.color());
         btnA.setCursor(CursorManager.get(CursorNames.HAND_POINTER));
         buttonPanel.add(btnA);
 
@@ -151,7 +151,7 @@ public class ToolboxButtons {
         label1.setMaximumSize(new java.awt.Dimension(100, 16));
         label1.setMinimumSize(new java.awt.Dimension(120, 16));
         label1.setPreferredSize(new java.awt.Dimension(120, 16));
-        label1.setForeground(J3DTheme.ASH_GREY.color());
+        label1.setForeground(J3DTheme.TEXT_PRIMARY.color());
         buttonPanel.add(label1);
 
         toolboxButtons.add(buttonPanel);

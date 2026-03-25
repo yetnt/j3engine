@@ -171,7 +171,7 @@ public class Thing implements Interactable {
     public void draw(Graphics2D graphics2D) {
         if (isBg) {
 //            graphics2D.setColor(new Color(52, 52, 52));
-            graphics2D.setColor(J3DTheme.CHARCOAL_BLUE.color());
+            graphics2D.setColor(J3DTheme.BACKGROUND.color());
             graphics2D.fillRect(0, 0, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
             Static.renderer.axis(graphics2D, Static.camera);
             return;

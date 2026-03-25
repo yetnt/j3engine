@@ -48,14 +48,14 @@ public class SettingsParentPanel extends javax.swing.JPanel {
         innerSettingsPanel = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
 
-        setBackground(J3DTheme.DARK_SLATE_GREY.color());
+        setBackground(J3DTheme.UI_SURFACE.color());
 
         settingsTitleLabel.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        settingsTitleLabel.setForeground(J3DTheme.ASH_GREY.color());
+        settingsTitleLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
         settingsTitleLabel.setText("SettingsTitle");
 
         settingsDescriptionLabel.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
-        settingsDescriptionLabel.setForeground(J3DTheme.ASH_GREY.color());
+        settingsDescriptionLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
         settingsDescriptionLabel.setText("Settings Description");
 
         innerSettingsPanel.setLayout(new javax.swing.BoxLayout(innerSettingsPanel, javax.swing.BoxLayout.Y_AXIS));

@@ -43,7 +43,7 @@ public class BooleanValueSPanel extends javax.swing.JPanel implements SettingPan
         settingLabel2 = new javax.swing.JLabel();
         jCheckBox3 = new javax.swing.JCheckBox();
 
-        setBackground(J3DTheme.DARK_SLATE_GREY.color());
+        setBackground(J3DTheme.UI_SURFACE.color());
 
         settingLabel2.setText("SettingLabel (hover for desc)");
 

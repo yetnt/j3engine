@@ -56,15 +56,15 @@ public class AreYouSure extends javax.swing.JDialog {
         setModal(true);
         setType(java.awt.Window.Type.POPUP);
 
-        jPanel1.setBackground(J3DTheme.DARK_SLATE_GREY.color());
+        jPanel1.setBackground(J3DTheme.UI_SURFACE.color());
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel1.setForeground(J3DTheme.ASH_GREY.color());
+        jLabel1.setForeground(J3DTheme.TEXT_PRIMARY.color());
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Are You Sure?");
 
-        yesToggle.setBackground(J3DTheme.CHARCOAL_BLUE.color().darker());
-        yesToggle.setForeground(J3DTheme.ASH_GREY.color());
+        yesToggle.setBackground(J3DTheme.BACKGROUND.color().darker());
+        yesToggle.setForeground(J3DTheme.TEXT_PRIMARY.color());
         yesToggle.setText("Hell Yeah");
         yesToggle.setToolTipText("Click this to follow through with the prompt.");
         yesToggle.addActionListener(new java.awt.event.ActionListener() {
@@ -73,8 +73,8 @@ public class AreYouSure extends javax.swing.JDialog {
             }
         });
 
-        noToggle.setBackground(J3DTheme.CHARCOAL_BLUE.color());
-        noToggle.setForeground(J3DTheme.ASH_GREY.color());
+        noToggle.setBackground(J3DTheme.BACKGROUND.color());
+        noToggle.setForeground(J3DTheme.TEXT_PRIMARY.color());
         noToggle.setText("Nah fam");
         noToggle.setToolTipText("Click this if you aren't sure you want to continue.");
         noToggle.addActionListener(new java.awt.event.ActionListener() {
@@ -84,7 +84,7 @@ public class AreYouSure extends javax.swing.JDialog {
         });
 
         infoJLabel.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        infoJLabel.setForeground(J3DTheme.ASH_GREY.color());
+        infoJLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
         infoJLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         infoJLabel.setText("This label needs to be changed. if you see it, it;s chaai.");
 

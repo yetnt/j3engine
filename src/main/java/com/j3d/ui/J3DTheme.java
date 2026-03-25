@@ -8,40 +8,44 @@ import java.awt.*;
 public enum J3DTheme {
 
     /**
-     * Text Colour possibly.
+     * Text Colour.
      * <p>
      *     Preview: <div style="background-color:#cad2c5; width:150px; height:50px; border:1px solid black;"></div>
      * </p>
      */
-    ASH_GREY(new Color(0xcad2c5)),
+    TEXT_PRIMARY(new Color(0xcad2c5)),
     /**
-     * Hover state
+     * Secondary Text Colour.
+     */
+    TEXT_SECONDARY(new Color(0xcadf00)),
+    /**
+     * Even lighter colour
      * <p>
      *     Preview: <div style="background-color:#84a98c; width:150px; height:50px; border:1px solid black;"></div>
      * </p>
      */
-    MUTED_TEAL(new Color(0x84a98c)),
+    ACCENT_PRIMARY(new Color(0x84a98c)),
     /**
-     * Borders for test fgields or separators. Structure.
+     * Lighter colour.
      * <p>
      *     Preview: <div style="background-color:#52796f; width:150px; height:50px; border:1px solid black;"></div>
      * </p>
      */
-    DEEP_TEAL(new Color(0x52796f)),
+    ACCENT_SECONDARY(new Color(0x52796f)),
     /**
-     * Dark enough for panel backgrounds
+     * Dark colour for button or any UI element backgrounds but not too dark
      * <p>
      *     Preview: <div style="background-color:#354f52; width:150px; height:50px; border:1px solid black;"></div>
      * </p>
      */
-    DARK_SLATE_GREY(new Color(0x354f52)),
+    UI_SURFACE(new Color(0x354f52)),
     /**
-     * Darkest shade, maybe for scene background.
+     * Darkest shade. Used for panel backgrounds and the entire scene background
      * <p>
      *     Preview: <div style="background-color:#2f3e46; width:150px; height:50px; border:1px solid black;"></div>
      * </p>
      */
-    CHARCOAL_BLUE(new Color(0x2f3e46));
+    BACKGROUND(new Color(0x2f3e46));
 
     J3DTheme(Color color) {
         col = color;

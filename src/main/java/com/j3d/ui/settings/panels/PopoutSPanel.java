@@ -37,14 +37,14 @@ public class PopoutSPanel extends javax.swing.JPanel implements SettingPanel {
         settingLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
-        setBackground(J3DTheme.DARK_SLATE_GREY.color());
+        setBackground(J3DTheme.UI_SURFACE.color());
 
-        settingLabel4.setForeground(J3DTheme.ASH_GREY.color());
+        settingLabel4.setForeground(J3DTheme.TEXT_PRIMARY.color());
         settingLabel4.setText("SettingLabel (hover for desc)");
         settingLabel4.setOpaque(true);
 
-        jButton1.setBackground(J3DTheme.CHARCOAL_BLUE.color());
-        jButton1.setForeground(J3DTheme.ASH_GREY.color());
+        jButton1.setBackground(J3DTheme.BACKGROUND.color());
+        jButton1.setForeground(J3DTheme.TEXT_PRIMARY.color());
         jButton1.setText("Open UI");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

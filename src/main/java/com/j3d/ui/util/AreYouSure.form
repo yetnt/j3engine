@@ -48,7 +48,7 @@
     <Container class="javax.swing.JPanel" name="jPanel1">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="J3DTheme.DARK_SLATE_GREY.color()" type="code"/>
+          <Connection code="J3DTheme.UI_SURFACE.color()" type="code"/>
         </Property>
       </Properties>
 
@@ -90,7 +90,7 @@
               <Font name="Segoe UI" size="36" style="1"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+              <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="Are You Sure?"/>
@@ -99,10 +99,10 @@
         <Component class="javax.swing.JToggleButton" name="yesToggle">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="J3DTheme.CHARCOAL_BLUE.color().darker()" type="code"/>
+              <Connection code="J3DTheme.BACKGROUND.color().darker()" type="code"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+              <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Hell Yeah"/>
             <Property name="toolTipText" type="java.lang.String" value="Click this to follow through with the prompt."/>
@@ -114,10 +114,10 @@
         <Component class="javax.swing.JToggleButton" name="noToggle">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="J3DTheme.CHARCOAL_BLUE.color()" type="code"/>
+              <Connection code="J3DTheme.BACKGROUND.color()" type="code"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+              <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Nah fam"/>
             <Property name="toolTipText" type="java.lang.String" value="Click this if you aren&apos;t sure you want to continue."/>
@@ -132,7 +132,7 @@
               <Font name="Segoe UI" size="12" style="3"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="J3DTheme.ASH_GREY.color()" type="code"/>
+              <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="This label needs to be changed. if you see it, it;s chaai."/>
