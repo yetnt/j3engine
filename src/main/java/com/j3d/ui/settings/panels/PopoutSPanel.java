@@ -7,7 +7,11 @@ package com.j3d.ui.settings.panels;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.settings.Setting;
+import com.j3d.settings.types.ComplexSetting;
 import com.j3d.ui.J3DTheme;
+
+import java.awt.event.ActionEvent;
+import java.util.function.Consumer;
 
 /**
  *
@@ -15,14 +19,17 @@ import com.j3d.ui.J3DTheme;
  */
 public class PopoutSPanel extends javax.swing.JPanel implements SettingPanel {
 
+    Consumer<ActionEvent> onOpen;
+
     /**
      * Creates new form PopoutSPanel
      */
-    public PopoutSPanel(Setting setting) {
+    public PopoutSPanel(ComplexSetting<?> setting, Consumer<ActionEvent> onOpen) {
         initComponents();
         setting.attach(this);
         settingLabel4.setText(setting.getName());
         this.setToolTipText(setting.getDescription());
+        this.onOpen = onOpen;
     }
 
     /**
@@ -75,7 +82,7 @@ public class PopoutSPanel extends javax.swing.JPanel implements SettingPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        onOpen.accept(evt);
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
