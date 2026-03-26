@@ -1,4 +1,4 @@
-package com.j3d.utility.db;
+package com.j3d.storage.db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

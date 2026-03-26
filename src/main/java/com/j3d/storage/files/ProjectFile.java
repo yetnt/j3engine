@@ -1,4 +1,4 @@
-package com.j3d.files;
+package com.j3d.storage.files;
 
 import com.j3d.Static;
 import com.j3d.engine.geometry.geo2d.GLine;
@@ -9,8 +9,8 @@ import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.layer.LayerList;
-import com.j3d.files.protocol.FileProtocol;
-import com.j3d.files.protocol.GenericFileProtocol;
+import com.j3d.storage.files.protocol.FileProtocol;
+import com.j3d.storage.files.protocol.GenericFileProtocol;
 import com.j3d.ui.util.Throbber;
 import com.j3d.utility.HashMultiMap;
 import com.j3d.utility.Pair;
@@ -370,9 +370,6 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
 
                 Static.log.println("Project file loaded successfully from " + path);
                 msg("Project file loaded successfully");
-                // TODO: Fix object ghost state. probably something to do with TriStateArea
-                // (TO reproduce, import a file and then change TriStateArea sort method.)
-                // TODO: Fix selection not working on imported scene.
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

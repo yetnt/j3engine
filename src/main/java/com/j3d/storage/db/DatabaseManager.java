@@ -1,10 +1,17 @@
-package com.j3d.utility.db;
+package com.j3d.storage.db;
+
+import com.j3d.Static;
 
 import java.io.File;
 import java.sql.*;
 
 public class DatabaseManager {
 
+    /**
+     * Connects to the database.
+     * @return The connection object.
+     * @throws SQLException If the connection fails.
+     */
     public static Connection connect() throws SQLException {
         // 1. Get the absolute path to your project folder automatically
         String projectPath = System.getProperty("user.dir");
@@ -15,9 +22,8 @@ public class DatabaseManager {
 
         String url = "jdbc:ucanaccess://" + dbFilePath;
 
-        System.out.println("Connected to: " + dbFilePath);
-        Connection con = DriverManager.getConnection(url);
-        return con;
+        Static.log.println("Connected to: " + dbFilePath);
+        return DriverManager.getConnection(url);
     }
 
 }

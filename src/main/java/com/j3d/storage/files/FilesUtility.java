@@ -1,7 +1,6 @@
-package com.j3d.files;
+package com.j3d.storage.files;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

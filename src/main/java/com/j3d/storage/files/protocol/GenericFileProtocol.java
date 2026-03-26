@@ -1,4 +1,4 @@
-package com.j3d.files.protocol;
+package com.j3d.storage.files.protocol;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

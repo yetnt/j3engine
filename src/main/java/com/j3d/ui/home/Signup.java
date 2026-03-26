@@ -5,7 +5,7 @@
 package com.j3d.ui.home;
 
 import com.j3d.utility.PasswordHasher;
-import com.j3d.utility.db.UsersDB;
+import com.j3d.storage.db.UsersDB;
 
 import javax.swing.*;
 import java.security.NoSuchAlgorithmException;
