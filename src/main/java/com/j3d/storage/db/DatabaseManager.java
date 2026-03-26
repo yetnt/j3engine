@@ -22,7 +22,7 @@ public class DatabaseManager {
 
         String url = "jdbc:ucanaccess://" + dbFilePath;
 
-        Static.log.println("Connected to: " + dbFilePath);
+        System.out.println("Connected to: " + dbFilePath);
         return DriverManager.getConnection(url);
     }
 

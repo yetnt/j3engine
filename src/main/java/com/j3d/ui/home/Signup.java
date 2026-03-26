@@ -4,8 +4,10 @@
  */
 package com.j3d.ui.home;
 
+import com.j3d.storage.db.Password;
+import com.j3d.storage.db.User;
+import com.j3d.utility.Pair;
 import com.j3d.utility.PasswordHasher;
-import com.j3d.storage.db.UsersDB;
 
 import javax.swing.*;
 import java.security.NoSuchAlgorithmException;
@@ -13,7 +15,6 @@ import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 
 /**
  *
@@ -340,20 +341,18 @@ public class Signup extends javax.swing.JFrame {
         try {
             byte[] salt = PasswordHasher.generateSalt();
             String hashed = PasswordHasher.hashPassword(passwordJField.getPassword(), salt);
-            String base64salt = Base64.getEncoder().encodeToString(salt);
             String name = nameJField.getText();
             String surname = surnameJField.getText();
             String email = emailJField.getText();
 
             try {
-                boolean wasRegistered = UsersDB.registerUser(
+                Pair<Boolean, User> wasRegistered = User.newOrExisting(
                         name,
                         surname,
                         email,
-                        hashed,
-                        base64salt
+                        new Password(hashed, salt)
                 );
-                if (wasRegistered) {
+                if (wasRegistered.first) {
                     JOptionPane.showMessageDialog(this, "Registered!");
                 } else {
                     JOptionPane.showMessageDialog(this, "A user with this email already exists", "Registration Failed", JOptionPane.ERROR_MESSAGE);
