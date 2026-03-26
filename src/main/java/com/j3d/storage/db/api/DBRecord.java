@@ -31,7 +31,7 @@ public interface DBRecord {
                 }
         );
         setString.deleteCharAt(setString.length() - 1);
-        String sql = "UPDATE " + getTableName() + " SET " + setString + " WHERE userId = ?";
+        String sql = "UPDATE " + getTableName() + " SET " + setString + " WHERE "+getPrimaryKey()+" = ?";
 
         try (Connection conn = DatabaseManager.connect(); PreparedStatement psmt = conn.prepareStatement(sql)) {
             AtomicInteger i = new AtomicInteger(1);
@@ -52,4 +52,6 @@ public interface DBRecord {
         }
 
     }
+
+    String getPrimaryKey();
 }

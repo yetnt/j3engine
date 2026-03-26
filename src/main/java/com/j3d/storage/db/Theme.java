@@ -42,6 +42,11 @@ public class Theme implements DBRecord {
     }
 
     @Override
+    public String getPrimaryKey() {
+        return "themeId";
+    }
+
+    @Override
     public String getTableName() {
         return "tblThemes";
     }

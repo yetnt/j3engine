@@ -37,6 +37,11 @@ public class User implements DBRecord {
     }
 
     @Override
+    public String getPrimaryKey() {
+        return "userId";
+    }
+
+    @Override
     public String getTableName() {
         return "tblUsers";
     }
