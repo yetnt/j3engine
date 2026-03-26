@@ -1,24 +1,32 @@
 package com.j3d.storage.db;
 
+import com.j3d.storage.db.api.RecordField;
+
+import java.util.Base64;
+
 /**
- * Password record
- * @param hash The hashed password
- * @param salt The salt used to hash the password
+ * Password
  */
-public record Password(String hash, byte[] salt) {
-    public String hash() {
-        return hash;
+public final class Password {
+    private final RecordField<String> hash;
+    private final RecordField<byte[]> salt;
+
+    /**
+     * @param hash The hashed password
+     * @param salt The salt used to hash the password
+     */
+    public Password(String hash, byte[] salt) {
+        this.hash = new RecordField<>("passwordHash", hash, "tblUsers");
+        this.salt = new RecordField<>("passwordSalt", salt, "tblUsers",
+                (t) -> Base64.getEncoder().encodeToString(t)
+        );
     }
 
-    public byte[] salt() {
+    public RecordField<byte[]> getSalt() {
         return salt;
     }
-    
-    public String hashFieldName() {
-        return "passwordHash";
-    }
 
-    public String saltFieldName() {
-        return "passwordSalt";
+    public RecordField<String> getHash() {
+        return hash;
     }
 }

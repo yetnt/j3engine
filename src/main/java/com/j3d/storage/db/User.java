@@ -10,8 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 public class User implements DBRecord {
 
@@ -20,7 +18,7 @@ public class User implements DBRecord {
     public final RecordField<String> firstName;
     public final RecordField<String> lastName;
     public final RecordField<String> email;
-    public final RecordField<Password> password;
+    public final Password password;
     public final ArrayList<RecordField<?>> fields = new ArrayList<>();
 
     private User(int id, int themeId, String firstName, String lastName, String email, Password password) {
@@ -29,61 +27,28 @@ public class User implements DBRecord {
         this.firstName = new RecordField<>("firstName", firstName, "tblUsers");
         this.lastName = new RecordField<>("lastName", lastName, "tblUsers");
         this.email = new RecordField<>("email", email, "tblUsers");
-        this.password = new RecordField<>("password", password, "tblUsers");
+        this.password = password;
         this.fields.add(this.themeId);
         this.fields.add(this.firstName);
         this.fields.add(this.lastName);
         this.fields.add(this.email);
-        this.fields.add(this.password);
+        this.fields.add(this.password.getHash());
+        this.fields.add(this.password.getSalt());
     }
 
-    /**
-     * Updates the record in the database.
-     */
-    public void update() {
-        ArrayList<RecordField<?>> updatedFields = fields.stream().filter(
-                RecordField::isUpdated
-        ).collect(Collectors.toCollection(ArrayList::new));
-        if (updatedFields.isEmpty()) return;
-        StringBuilder setString = new StringBuilder();
-        updatedFields.forEach(
-                f -> {
-                    if (f.getValue() instanceof Password) {
-                        setString.append(f.name).append("Hash = ?,");
-                        setString.append(f.name).append("Salt = ?,");
-                    } else {
-                        setString.append(f.name).append(" = ?,");
-                    }
-                }
-        );
-        setString.deleteCharAt(setString.length() - 1);
-        String sql = "UPDATE tblUsers SET " + setString + " WHERE userId = ?";
+    @Override
+    public String getTableName() {
+        return "tblUsers";
+    }
 
-        try (Connection conn = DatabaseManager.connect(); PreparedStatement psmt = conn.prepareStatement(sql)) {
-            AtomicInteger i = new AtomicInteger(1);
-            updatedFields.forEach(
-                    f -> {
-                        try {
-                            // record pattern below, cool as hell!!!1!
-                            if (f.getValue() instanceof Password(String hash, byte[] salt)) {
-                                psmt.setString(i.get(), hash);
-                                psmt.setString(i.get() + 1, Base64.getEncoder().encodeToString(salt));
-                                i.set(i.get() + 2);
-                            } else {
-                                psmt.setObject(i.get(), f.getValue());
-                                i.incrementAndGet();
-                            }
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-            );
-            psmt.setInt(i.get(), this.id);
-            psmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    @Override
+    public int getRecordId() {
+        return id;
+    }
 
+    @Override
+    public ArrayList<RecordField<?>> getFields() {
+        return fields;
     }
 
     /**
@@ -174,8 +139,8 @@ public class User implements DBRecord {
             pstmt.setString(1, name);
             pstmt.setString(2, surname);
             pstmt.setString(3, email);
-            pstmt.setString(4, pass.hash());
-            pstmt.setString(5, Base64.getEncoder().encodeToString(pass.salt()));
+            pstmt.setString(4, pass.getHash().getValue());
+            pstmt.setString(5, (String)pass.getSalt().getDbValue());
             pstmt.setInt(6, 1);
 
             pstmt.executeUpdate();
