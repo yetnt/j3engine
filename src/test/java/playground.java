@@ -1,3 +1,4 @@
+import com.j3d.storage.db.Theme;
 import com.j3d.storage.db.ThemesDB;
 import com.j3d.storage.db.User;
 
@@ -6,11 +7,15 @@ import java.security.spec.InvalidKeySpecException;
 
 public class playground {
     public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        User me = User.getUser(3);
-        me.firstName.setValue("Ledlel");
-        me.lastName.setValue("Poleol");
-        me.update();
-        System.out.println();
+        Theme theme = Theme.getTheme(1);
+    }
 
+    public static void fb() {
+        for (int i = 0; i < 100; i++) {
+            if (i % 3 == 0) System.out.print("Fizz");
+            if (i % 5 == 0) System.out.print("Buzz");
+            if (i % 5 != 0 && i % 3 != 0) System.out.print(i);
+            System.out.println();
+        }
     }
 }
