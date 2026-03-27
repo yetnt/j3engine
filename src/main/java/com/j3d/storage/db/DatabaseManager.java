@@ -7,6 +7,9 @@ import java.sql.*;
 
 public class DatabaseManager {
 
+    public static ThemesTable tblThemes = new ThemesTable();
+    public static UsersTable tblUsers = new UsersTable();
+
     /**
      * Connects to the database.
      * @return The connection object.

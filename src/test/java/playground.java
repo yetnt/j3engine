@@ -1,13 +1,12 @@
 import com.j3d.storage.db.Theme;
-import com.j3d.storage.db.ThemesDB;
-import com.j3d.storage.db.User;
+import com.j3d.storage.db.ThemesTable;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
 public class playground {
     public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        Theme theme = Theme.getTheme(1);
+        Theme theme = ThemesTable.getTheme(1);
     }
 
     public static void fb() {

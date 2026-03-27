@@ -6,6 +6,7 @@ package com.j3d.ui.home;
 
 import com.j3d.storage.db.Password;
 import com.j3d.storage.db.User;
+import com.j3d.storage.db.UsersTable;
 import com.j3d.utility.Pair;
 import com.j3d.utility.PasswordHasher;
 
@@ -346,7 +347,7 @@ public class Signup extends javax.swing.JFrame {
             String email = emailJField.getText();
 
             try {
-                Pair<Boolean, User> wasRegistered = User.newOrExisting(
+                Pair<Boolean, User> wasRegistered = UsersTable.newOrExisting(
                         name,
                         surname,
                         email,

@@ -5,28 +5,36 @@ import com.j3d.storage.db.api.RecordField;
 import java.util.Base64;
 
 /**
- * Password
+ * The password of a user within {@link UsersTable}.
+ * @param hash The hashed password
+ * @param salt The salt used to hash the password
+ * @apiNote While this is more used in relation to a {@link User} object. One may need to
+ *          define this class before. In that case use {@link this#directHash()} and {@link this#directSalt()} instead.
  */
-public final class Password {
-    private final RecordField<String> hash;
-    private final RecordField<byte[]> salt;
-
+public record Password(RecordField<String> hash, RecordField<byte[]> salt) {
     /**
      * @param hash The hashed password
      * @param salt The salt used to hash the password
      */
     public Password(String hash, byte[] salt) {
-        this.hash = new RecordField<>("passwordHash", hash, "tblUsers");
-        this.salt = new RecordField<>("passwordSalt", salt, "tblUsers",
-                (t) -> Base64.getEncoder().encodeToString(t)
-        );
+        this(new RecordField<>("passwordHash", hash), new RecordField<>("passwordSalt", salt,
+                (s) -> Base64.getEncoder().encodeToString(s)
+        ));
     }
 
-    public RecordField<byte[]> getSalt() {
-        return salt;
+    /**
+     * Convenience method for direct hash access.
+     * @return The hashed password
+     */
+    public String directHash() {
+        return hash.getValue();
     }
 
-    public RecordField<String> getHash() {
-        return hash;
+    /**
+     * Convenience method for direct salt access.
+     * @return The salt used to hash the password
+     */
+    public byte[] directSalt() {
+        return salt.getValue();
     }
 }

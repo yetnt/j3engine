@@ -11,17 +11,36 @@ import java.util.stream.Collectors;
 
 /**
  * A singular record within a table.
+ * @param <I> The table identity.
  */
-public interface DBRecord {
-    String getTableName();
-    int getRecordId();
-    ArrayList<RecordField<?>> getFields();
+public interface DBRecord<I extends Table> {
+
     /**
-     * Updates the record in the database.
+     * Gets the table identity.
+     * @return The table identity.
      */
-    default void update() {
+    I getTableIdentity();
+
+    /**
+     * Gets the record id. (An int because both table's primary keys are of type AutoNumber in the database)
+     * @return The record id.
+     */
+    int getRecordId();
+
+    /**
+     * Gets the fields of the record.
+     * @return The fields of the record.
+     */
+    ArrayList<RecordField<?>> getFields();
+
+    /**
+     * Saves the record to the database.
+     * @implNote This method make use of the updated fields to generate an SQL query that only
+     *           updates the affected fields.
+     */
+    default void save() {
         ArrayList<RecordField<?>> updatedFields = getFields().stream().filter(
-                RecordField::isUpdated
+                RecordField::consumeUpdated
         ).collect(Collectors.toCollection(ArrayList::new));
         if (updatedFields.isEmpty()) return;
         StringBuilder setString = new StringBuilder();
@@ -31,7 +50,7 @@ public interface DBRecord {
                 }
         );
         setString.deleteCharAt(setString.length() - 1);
-        String sql = "UPDATE " + getTableName() + " SET " + setString + " WHERE "+getPrimaryKey()+" = ?";
+        String sql = "UPDATE " + getTableIdentity().getName() + " SET " + setString + " WHERE " + getTableIdentity().getPrimaryKey() + " = ?";
 
         try (Connection conn = DatabaseManager.connect(); PreparedStatement psmt = conn.prepareStatement(sql)) {
             AtomicInteger i = new AtomicInteger(1);
@@ -53,5 +72,4 @@ public interface DBRecord {
 
     }
 
-    String getPrimaryKey();
 }
