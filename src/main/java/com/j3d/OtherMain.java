@@ -4,10 +4,31 @@
  */
 package com.j3d;
 
+import com.j3d.ui.engine.EngineFrame;
+import com.j3d.ui.home.Login;
+
+import javax.swing.*;
+
 /**
  *
  * @author ACER
  */
 public class OtherMain {
-    
+    public static void main(String[] args) {
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
+                 UnsupportedLookAndFeelException e) {
+            throw new RuntimeException(e);
+        }
+
+        Login login = new Login(
+                () -> {
+                    EngineFrame e = new EngineFrame();
+                    e.setVisible(true);
+                }
+        );
+        login.setVisible(true);
+    }
 }

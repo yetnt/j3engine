@@ -4,6 +4,7 @@
  */
 package com.j3d.ui.home;
 
+import com.j3d.settings.CoreSettings;
 import com.j3d.storage.db.Password;
 import com.j3d.storage.db.User;
 import com.j3d.storage.db.UsersTable;
@@ -25,12 +26,14 @@ public class Signup extends javax.swing.JFrame {
     
     private boolean showChar = false;
     private final char echoChar = '•';
+    private final Runnable postSignup;
 
     /**
      * Creates new form Signup
      */
-    public Signup() {
+    public Signup(Runnable postsignup) {
         initComponents();
+        this.postSignup = postsignup;
     }
 
     private boolean validPassword() {
@@ -132,7 +135,7 @@ public class Signup extends javax.swing.JFrame {
         passwordErrorJLabel = new javax.swing.JLabel();
         repeatPasswordErrorJLabel = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
@@ -358,8 +361,12 @@ public class Signup extends javax.swing.JFrame {
                 } else {
                     JOptionPane.showMessageDialog(this, "A user with this email already exists", "Registration Failed", JOptionPane.ERROR_MESSAGE);
                 }
+
+                CoreSettings.user = wasRegistered.second;
+                this.dispose();
+                postSignup.run();
             } catch (SQLException e) {
-                JOptionPane.showMessageDialog(this, "A db error occured", "err", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "A db error occurred", "err", JOptionPane.ERROR_MESSAGE);
                 throw new RuntimeException(e);
             }
 
@@ -402,7 +409,7 @@ public class Signup extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Signup().setVisible(true);
+                new Signup(() -> {}).setVisible(true);
             }
         });
     }
