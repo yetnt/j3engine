@@ -8,6 +8,8 @@ import com.j3d.settings.CoreSettings;
 import com.j3d.storage.db.Password;
 import com.j3d.storage.db.User;
 import com.j3d.storage.db.UsersTable;
+import com.j3d.ui.CursorManager;
+import com.j3d.ui.CursorNames;
 import com.j3d.utility.Pair;
 import com.j3d.utility.PasswordHasher;
 
@@ -33,6 +35,7 @@ public class Signup extends javax.swing.JFrame {
      */
     public Signup(Runnable postsignup) {
         initComponents();
+        this.setCursor(CursorManager.get(CursorNames.DEFAULT));
         this.postSignup = postsignup;
     }
 
@@ -329,6 +332,7 @@ public class Signup extends javax.swing.JFrame {
     }//GEN-LAST:event_seePasswordToggleButtonActionPerformed
 
     private void enterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterButtonActionPerformed
+        this.setCursor(CursorManager.get(CursorNames.DEFAULT));
         nameErrorJLabel.setText(
                 nameJField.getText().isEmpty() ? "You have no name?" : " "
         );
@@ -350,16 +354,19 @@ public class Signup extends javax.swing.JFrame {
             String email = emailJField.getText();
 
             try {
+                this.setCursor(CursorManager.get(CursorNames.HOURGLASS));
                 Pair<Boolean, User> wasRegistered = UsersTable.newOrExisting(
                         name,
                         surname,
                         email,
                         new Password(hashed, salt)
                 );
+                this.setCursor(CursorManager.get(CursorNames.DEFAULT));
                 if (wasRegistered.first) {
                     JOptionPane.showMessageDialog(this, "Registered!");
                 } else {
                     JOptionPane.showMessageDialog(this, "A user with this email already exists", "Registration Failed", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
 
                 CoreSettings.user = wasRegistered.second;

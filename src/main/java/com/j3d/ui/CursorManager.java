@@ -14,15 +14,29 @@ public class CursorManager {
 
     static {
 
-        cursors.put("default", createScaledCursor("/cursors/default.png", "default"));
-//            cursors.put("hand", CursorNames.getPredefinedCursor(CursorNames.HAND_CURSOR));
-        cursors.put("selectSoft", createScaledCursor("/cursors/selectSoft.png", "selectSoft"));
-        cursors.put("selectStrict", createScaledCursor("/cursors/selectStrict.png", "selectStrict"));
-        cursors.put("selectSubtract", createScaledCursor("/cursors/selectSubtract.png", "selectSubtract"));
-        cursors.put("selectAdd", createScaledCursor("/cursors/selectAdd.png", "selectAdd"));
-        cursors.put("grab", createScaledCursor("/cursors/drag.png", "grab"));
-        cursors.put("grabbing", createScaledCursor("/cursors/drag-held.png", "grabbing"));
-        cursors.put("pointer", createScaledCursor("/cursors/pointer.png", "pointer"));
+        register(CursorNames.POINTER);
+        register(CursorNames.HOURGLASS);
+        register(CursorNames.SELECT_SOFT);
+        register(CursorNames.SELECT_STRICT);
+        register(CursorNames.SELECT_SUBTRACT);
+        register(CursorNames.SELECT_ADD);
+        register(CursorNames.HAND_GRAB);
+        register(CursorNames.HAND_GRABBING);
+        register(CursorNames.HAND_POINTER);
+
+//        cursors.put("cursor-pointer", createScaledCursor("/cursors/cursor-pointer.png", "cursor-pointer"));
+//        cursors.put("hourglass", createScaledCursor("/cursors/hourglass.png", "hourglass"));
+//        cursors.put("selectSoft", createScaledCursor("/cursors/selectSoft.png", "selectSoft"));
+//        cursors.put("selectStrict", createScaledCursor("/cursors/selectStrict.png", "selectStrict"));
+//        cursors.put("selectSubtract", createScaledCursor("/cursors/selectSubtract.png", "selectSubtract"));
+//        cursors.put("selectAdd", createScaledCursor("/cursors/selectAdd.png", "selectAdd"));
+//        cursors.put("grab", createScaledCursor("/cursors/drag.png", "grab"));
+//        cursors.put("grabbing", createScaledCursor("/cursors/drag-held.png", "grabbing"));
+//        cursors.put("hand-pointer", createScaledCursor("/cursors/hand-pointer.png", "hand-pointer"));
+    }
+
+    public static void register(CursorNames cursorName) {
+        cursors.put(cursorName.getValue(), createScaledCursor("/cursors/" + cursorName.getValue() + ".png", cursorName.getValue()));
     }
 
     public static void init(Component defaultComponent) {

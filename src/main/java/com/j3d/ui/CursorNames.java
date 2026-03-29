@@ -7,11 +7,15 @@ public enum CursorNames {
     /**
      * The default cursor. This one may change
      */
-    DEFAULT("default"),
+    DEFAULT("cursor-pointer"),
     /**
      * Generic pointer cursor.
      */
-    POINTER("default"),
+    POINTER("cursor-pointer"),
+    /**
+     * The wait cursor or whateva
+     */
+    HOURGLASS("qip_2"),
     /**
      * Pointer cursor with a yellow question mark symbol
      */
@@ -31,15 +35,15 @@ public enum CursorNames {
     /**
      * Hand cursor (Splayed open hand to represent dragging)
      */
-    HAND_GRAB("grab"),
+    HAND_GRAB("drag"),
     /**
      * Hand cursor (Fist/Closed hand to represent dragging)
      */
-    HAND_GRABBING("grabbing"),
+    HAND_GRABBING("drag-held"),
     /**
      * Hand cursor (Index finger pointing at target)
      */
-    HAND_POINTER("pointer");
+    HAND_POINTER("hand-pointer");
 
     private String value;
     private CursorNames(String value) {

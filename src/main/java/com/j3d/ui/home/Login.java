@@ -7,6 +7,8 @@ package com.j3d.ui.home;
 import com.j3d.settings.CoreSettings;
 import com.j3d.storage.db.User;
 import com.j3d.storage.db.UsersTable;
+import com.j3d.ui.CursorManager;
+import com.j3d.ui.CursorNames;
 import com.j3d.utility.PasswordHasher;
 
 import java.security.NoSuchAlgorithmException;
@@ -28,6 +30,7 @@ public class Login extends javax.swing.JFrame {
      */
     public Login(Runnable postLogin) {
         initComponents();
+        this.setCursor(CursorManager.get(CursorNames.DEFAULT));
         this.postLogin = postLogin;
     }
 
@@ -200,13 +203,16 @@ public class Login extends javax.swing.JFrame {
             String email = emailJField.getText();
 
             try {
+                this.setCursor(CursorManager.get(CursorNames.HOURGLASS));
                 int id = UsersTable.userExists(email);
                 if (id == -1) {
+                    this.setCursor(CursorManager.get(CursorNames.DEFAULT));
                     JOptionPane.showMessageDialog(this, "No user with that email exists.", "User Not Found", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 User user = UsersTable.getUser(id);
                 if (user == null) {
+                    this.setCursor(CursorManager.get(CursorNames.DEFAULT));
                     JOptionPane.showMessageDialog(this, "You don't exist in the table...", "User Not Found", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
@@ -214,9 +220,12 @@ public class Login extends javax.swing.JFrame {
                 String hashed = PasswordHasher.hashPassword(passwordJField.getPassword(), salt);
 
                 if (!hashed.equals(user.password.hash().getValue())) {
+                    this.setCursor(CursorManager.get(CursorNames.DEFAULT));
                     passwordErrorJLabel.setText("Incorrect password.");
                     return;
                 }
+
+                this.setCursor(CursorManager.get(CursorNames.DEFAULT));
 
                 CoreSettings.user = user;
 
