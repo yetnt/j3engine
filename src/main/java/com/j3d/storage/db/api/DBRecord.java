@@ -16,10 +16,12 @@ import java.util.stream.Collectors;
 public interface DBRecord<I extends Table> {
 
     /**
-     * Gets the table identity.
-     * @return The table identity.
+     * Gets the table itself.
+     * @return The table.
+     * @see DatabaseManager#tblThemes
+     * @see DatabaseManager#tblUsers
      */
-    I getTableIdentity();
+    I getTable();
 
     /**
      * Gets the record id. (An int because both table's primary keys are of type AutoNumber in the database)
@@ -50,7 +52,7 @@ public interface DBRecord<I extends Table> {
                 }
         );
         setString.deleteCharAt(setString.length() - 1);
-        String sql = "UPDATE " + getTableIdentity().getName() + " SET " + setString + " WHERE " + getTableIdentity().getPrimaryKey() + " = ?";
+        String sql = "UPDATE " + getTable().getName() + " SET " + setString + " WHERE " + getTable().getPrimaryKey() + " = ?";
 
         try (Connection conn = DatabaseManager.connect(); PreparedStatement psmt = conn.prepareStatement(sql)) {
             AtomicInteger i = new AtomicInteger(1);

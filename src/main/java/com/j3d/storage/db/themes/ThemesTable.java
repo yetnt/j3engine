@@ -1,7 +1,6 @@
 package com.j3d.storage.db.themes;
 
 import com.j3d.storage.db.DatabaseManager;
-import com.j3d.storage.db.TableIdentity;
 import com.j3d.storage.db.api.Table;
 
 import java.awt.*;
@@ -13,6 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ThemesTable implements Table<Theme, CThemes> {
+
+    @Override
+    public String getName() {
+        return "tblThemes";
+    }
+
+    @Override
+    public CThemes getPrimaryKey() {
+        return CThemes.IDENTIFIER;
+    }
 
     public static Theme getTheme(int id) {
         String sql = "SELECT * FROM tblThemes WHERE themeId = ?";
@@ -71,11 +80,6 @@ public class ThemesTable implements Table<Theme, CThemes> {
                 Color.decode("#" + ((String) values[6])),   // uiSurface
                 Color.decode("#" + ((String) values[7]))    // background
         );
-    }
-
-    @Override
-    public TableIdentity getIdentity() {
-        return TableIdentity.THEMES;
     }
 
     @Override

@@ -32,7 +32,7 @@ public class User implements DBRecord<UsersTable> {
     }
 
     @Override
-    public UsersTable getTableIdentity() {
+    public UsersTable getTable() {
         return DatabaseManager.tblUsers;
     }
 
@@ -46,4 +46,8 @@ public class User implements DBRecord<UsersTable> {
         return fields;
     }
 
+    @Override
+    public String toString() {
+        return "User {" + firstName.getValue() + " " + lastName.getValue() + ", id=" + id + "}";
+    }
 }

@@ -1,7 +1,6 @@
 package com.j3d.storage.db.users;
 
 import com.j3d.storage.db.DatabaseManager;
-import com.j3d.storage.db.TableIdentity;
 import com.j3d.storage.db.api.Table;
 import com.j3d.utility.Pair;
 
@@ -14,6 +13,16 @@ import java.util.Base64;
 import java.util.List;
 
 public class UsersTable implements Table<User, CUsers> {
+
+    @Override
+    public String getName() {
+        return "tblUsers";
+    }
+
+    @Override
+    public CUsers getPrimaryKey() {
+        return CUsers.IDENTIFIER;
+    }
 
     /**
      * Finds and creates a new user object.
@@ -140,11 +149,6 @@ public class UsersTable implements Table<User, CUsers> {
                 (String) values[4],
                 new Password((String) values[5], Base64.getDecoder().decode((String)values[6]))
         );
-    }
-
-    @Override
-    public TableIdentity getIdentity() {
-        return TableIdentity.USERS;
     }
 
     @Override

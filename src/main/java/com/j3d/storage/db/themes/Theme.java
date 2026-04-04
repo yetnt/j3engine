@@ -39,7 +39,7 @@ public class Theme implements DBRecord<ThemesTable> {
     }
 
     @Override
-    public ThemesTable getTableIdentity() {
+    public ThemesTable getTable() {
         return DatabaseManager.tblThemes;
     }
 
@@ -64,4 +64,8 @@ public class Theme implements DBRecord<ThemesTable> {
         return theme;
     }
 
+    @Override
+    public String toString() {
+        return "Theme {\"" + themeName.getValue() + "\", id=" + themeId + "}";
+    }
 }

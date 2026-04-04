@@ -1,6 +1,7 @@
 import com.j3d.storage.db.*;
 import com.j3d.storage.db.api.SQLOperator;
 import com.j3d.storage.db.themes.CThemes;
+import com.j3d.storage.db.themes.Theme;
 import com.j3d.storage.db.users.CUsers;
 import com.j3d.storage.db.users.User;
 
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 
 public class playground {
     public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        ArrayList<User> users = DatabaseManager.tblUsers.findWhere(CUsers.THEME_ID, SQLOperator.EQUALS, 1);
+        ArrayList<Theme> users = DatabaseManager.tblThemes.findWhere(CThemes.THEME_NAME, SQLOperator.LIKE, "*o*");
         System.out.println(users);
     }
 
