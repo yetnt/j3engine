@@ -14,6 +14,10 @@ import javax.swing.*;
  * @author ACER
  */
 public class OtherMain {
+    public static Runnable runnable = () -> {
+        EngineFrame frame = new EngineFrame();
+        frame.setVisible(true);
+    };
     public static void main(String[] args) {
 
         try {
@@ -23,12 +27,9 @@ public class OtherMain {
             throw new RuntimeException(e);
         }
 
-        Login login = new Login(
-                () -> {
-                    EngineFrame e = new EngineFrame();
-                    e.setVisible(true);
-                }
-        );
+        // Just set the user
+
+        Login login = new Login(runnable);
         login.setVisible(true);
     }
 }

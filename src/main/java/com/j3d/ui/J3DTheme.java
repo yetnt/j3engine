@@ -3,7 +3,7 @@ package com.j3d.ui;
 import java.awt.*;
 import java.util.HashMap;
 
-import static com.j3d.storage.db.ThemesTable.getTheme;
+import static com.j3d.storage.db.themes.ThemesTable.getTheme;
 
 /**
  * The Theme class contains a set of predefined color themes for the UI.

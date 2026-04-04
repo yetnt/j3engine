@@ -1,6 +1,7 @@
 package com.j3d.storage.db;
 
-import com.j3d.Static;
+import com.j3d.storage.db.themes.ThemesTable;
+import com.j3d.storage.db.users.UsersTable;
 
 import java.io.File;
 import java.sql.*;

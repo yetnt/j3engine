@@ -1,4 +1,4 @@
-package com.j3d.storage.db;
+package com.j3d.storage.db.users;
 
 import com.j3d.storage.db.api.RecordField;
 

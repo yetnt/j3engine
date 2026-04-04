@@ -1,5 +1,6 @@
-package com.j3d.storage.db;
+package com.j3d.storage.db.themes;
 
+import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.api.DBRecord;
 import com.j3d.storage.db.api.RecordField;
 

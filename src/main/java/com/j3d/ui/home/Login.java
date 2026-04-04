@@ -5,8 +5,8 @@
 package com.j3d.ui.home;
 
 import com.j3d.settings.CoreSettings;
-import com.j3d.storage.db.User;
-import com.j3d.storage.db.UsersTable;
+import com.j3d.storage.db.users.User;
+import com.j3d.storage.db.users.UsersTable;
 import com.j3d.ui.CursorManager;
 import com.j3d.ui.CursorNames;
 import com.j3d.utility.PasswordHasher;

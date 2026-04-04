@@ -1,16 +1,19 @@
-package com.j3d.storage.db;
+package com.j3d.storage.db.users;
 
+import com.j3d.storage.db.DatabaseManager;
+import com.j3d.storage.db.TableIdentity;
 import com.j3d.storage.db.api.Table;
-import com.j3d.storage.db.api.Tables;
 import com.j3d.utility.Pair;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
-public class UsersTable implements Table {
+public class UsersTable implements Table<User, CUsers> {
 
     /**
      * Finds and creates a new user object.
@@ -95,7 +98,7 @@ public class UsersTable implements Table {
         // User does not exist, so proceed with insertion.
         String sql = "INSERT INTO tblUsers (firstName, lastName, email, passwordHash, passwordSalt, themeId) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseManager.connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             pstmt.setString(1, name);
             pstmt.setString(2, surname);
@@ -128,7 +131,26 @@ public class UsersTable implements Table {
     }
 
     @Override
-    public Tables getIdentity() {
-        return Tables.USERS;
+    public User of(Object... values) {
+        return new User(
+                (int) values[0],
+                (int) values[1],
+                (String) values[2],
+                (String) values[3],
+                (String) values[4],
+                new Password((String) values[5], Base64.getDecoder().decode((String)values[6]))
+        );
+    }
+
+    @Override
+    public TableIdentity getIdentity() {
+        return TableIdentity.USERS;
+    }
+
+    @Override
+    public ArrayList<CUsers> getColumns() {
+        return new ArrayList<>(
+                List.of(CUsers.values())
+        );
     }
 }

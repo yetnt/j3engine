@@ -1,18 +1,21 @@
-package com.j3d.storage.db.api;
+package com.j3d.storage.db;
+
+import com.j3d.storage.db.themes.CThemes;
+import com.j3d.storage.db.users.CUsers;
 
 /**
  * The tables in the database.
  */
-public enum Tables {
+public enum TableIdentity {
 
     /**
      * The users table.
      */
-    USERS("tblUsers", "userId"),
+    USERS("tblUsers", CUsers.IDENTIFIER.getValue()),
     /**
      * The themes table.
      */
-    THEMES("tblThemes", "themeId");
+    THEMES("tblThemes", CThemes.IDENTIFIER.getValue());
 
     private final String tableName;
     private final String primaryKey;
@@ -22,7 +25,7 @@ public enum Tables {
      * @param tbName The table name.
      * @param pkName The primary key name.
      */
-    Tables(String tbName, String pkName) {
+    TableIdentity(String tbName, String pkName) {
         this.tableName = tbName;
         this.primaryKey = pkName;
     }

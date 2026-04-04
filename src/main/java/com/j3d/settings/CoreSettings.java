@@ -1,6 +1,6 @@
 package com.j3d.settings;
 
-import com.j3d.storage.db.User;
+import com.j3d.storage.db.users.User;
 
 /**
  * While apart of settings, core settings are the modernied version of {@link com.j3d.J3DSettings}.

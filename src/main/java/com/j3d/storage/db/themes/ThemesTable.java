@@ -1,15 +1,18 @@
-package com.j3d.storage.db;
+package com.j3d.storage.db.themes;
 
+import com.j3d.storage.db.DatabaseManager;
+import com.j3d.storage.db.TableIdentity;
 import com.j3d.storage.db.api.Table;
-import com.j3d.storage.db.api.Tables;
 
 import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ThemesTable implements Table {
+public class ThemesTable implements Table<Theme, CThemes> {
 
     public static Theme getTheme(int id) {
         String sql = "SELECT * FROM tblThemes WHERE themeId = ?";
@@ -57,7 +60,28 @@ public class ThemesTable implements Table {
     }
 
     @Override
-    public Tables getIdentity() {
-        return Tables.THEMES;
+    public Theme of(Object... values) {
+        return new Theme(
+                (int) values[0],                                // themeId
+                (String) values[1],                             // themeName
+                Color.decode("#" + ((String) values[2])),   // textPrimary
+                Color.decode("#" + ((String) values[3])),   // textSecondary
+                Color.decode("#" + ((String) values[4])),   // accentPrimary
+                Color.decode("#" + ((String) values[5])),   // accentSecondary
+                Color.decode("#" + ((String) values[6])),   // uiSurface
+                Color.decode("#" + ((String) values[7]))    // background
+        );
+    }
+
+    @Override
+    public TableIdentity getIdentity() {
+        return TableIdentity.THEMES;
+    }
+
+    @Override
+    public ArrayList<CThemes> getColumns() {
+        return new ArrayList<>(
+                List.of(CThemes.values())
+        );
     }
 }
