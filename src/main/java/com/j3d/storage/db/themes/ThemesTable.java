@@ -1,7 +1,11 @@
 package com.j3d.storage.db.themes;
 
 import com.j3d.storage.db.DatabaseManager;
+import com.j3d.storage.db.api.SQLOperator;
 import com.j3d.storage.db.api.Table;
+import com.j3d.storage.db.api.TableColumns;
+import com.j3d.storage.db.users.CUsers;
+import com.j3d.storage.db.users.User;
 
 import java.awt.*;
 import java.sql.Connection;
@@ -23,49 +27,31 @@ public class ThemesTable implements Table<Theme, CThemes> {
         return CThemes.IDENTIFIER;
     }
 
+    /**
+     * Finds and creates a new theme object.
+     * @param id The id of the theme to find.
+     * @return The theme object or null if the theme does not exist.
+     * @see DatabaseManager#tblThemes
+     * @see Table#findById(int)
+     */
     public static Theme getTheme(int id) {
-        String sql = "SELECT * FROM tblThemes WHERE themeId = ?";
-
-        try (Connection conn = DatabaseManager.connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, id);
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return new Theme(
-                            id,
-                            rs.getString("themeName"),
-                            Color.decode("#" + rs.getString("textPrimary")),
-                            Color.decode("#" + rs.getString("textSecondary")),
-                            Color.decode("#" + rs.getString("accentPrimary")),
-                            Color.decode("#" + rs.getString("accentSecondary")),
-                            Color.decode("#" + rs.getString("uiSurface")),
-                            Color.decode("#" + rs.getString("background"))
-                    );
-                }
-            }
-            return null;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
+        return DatabaseManager.tblThemes.findById(id);
     }
 
+    /**
+     * Checks if a theme with the specified name already exists in the database.
+     * @param name The name to check.
+     * @return The id of the theme if it exists, -1 otherwise.
+     * @see DatabaseManager#tblThemes
+     * @see Table#findWhere(TableColumns, SQLOperator, Object) 
+     */
     public static int themeExists(String name) {
-        String sql = "SELECT * FROM tblThemes WHERE themeName = ?";
-        try (Connection conn = DatabaseManager.connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, name);
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("themeId");
-                }
-            }
-            return -1;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        ArrayList<Theme> themes = DatabaseManager.tblThemes.findWhere(
+                CThemes.THEME_NAME, SQLOperator.EQUALS, name
+        );
+        if (themes.isEmpty()) return -1;
+        else return themes.getFirst().getRecordId();
+        //TODO: If multiple themes exist throw new custom error. (similar todo fom tblusers)
     }
 
     @Override

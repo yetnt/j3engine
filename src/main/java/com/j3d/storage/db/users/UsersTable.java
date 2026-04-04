@@ -1,7 +1,9 @@
 package com.j3d.storage.db.users;
 
 import com.j3d.storage.db.DatabaseManager;
+import com.j3d.storage.db.api.SQLOperator;
 import com.j3d.storage.db.api.Table;
+import com.j3d.storage.db.api.TableColumns;
 import com.j3d.utility.Pair;
 
 import java.sql.Connection;
@@ -28,61 +30,28 @@ public class UsersTable implements Table<User, CUsers> {
      * Finds and creates a new user object.
      * @param id The id of the user to find.
      * @return The user object or null if the user does not exist.
+     * @see DatabaseManager#tblUsers
+     * @see Table#findById(int)
      */
     public static User getUser(int id) {
-        String sql = "SELECT * FROM tblUsers WHERE userId = ?";
-        try (Connection conn = DatabaseManager.connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, id);
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    // user exists.
-                    return new User(
-                            id,
-                            rs.getInt("themeId"),
-                            rs.getString("firstName"),
-                            rs.getString("lastName"),
-                            rs.getString("email"),
-                            new Password(
-                                    rs.getString("passwordHash"),
-                                    Base64.getDecoder().decode(rs.getString("passwordSalt"))
-                            )
-                    );
-                } else {
-                    // user does not exist.
-                    return null;
-                }
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return DatabaseManager.tblUsers.findById(id);
     }
 
     /**
      * Checks if a user with the specified email already exists in the database.
      *
      * @param email The email to check.
-     * @return true if a user with the given email exists, false otherwise.
-     * @throws SQLException if a database access error occurs.
+     * @return the id of the user if the user with the given email exists, -1 otherwise.
+     * @see DatabaseManager#tblUsers
+     * @see Table#findWhere(TableColumns, SQLOperator, Object) 
      */
-    public static int userExists(String email) throws SQLException {
-        String sql = "SELECT * FROM tblUsers WHERE email = ?";
-        try (Connection conn = DatabaseManager.connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, email);
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    // If the count is greater than 0, the user exists.
-                    return rs.getInt("userId");
-                }
-            }
-        }
-        // Default to false if something goes wrong or no result is found.
-        return -1;
+    public static int userExists(String email) {
+        ArrayList<User> users = DatabaseManager.tblUsers.findWhere(
+                CUsers.EMAIL, SQLOperator.EQUALS, email
+        );
+        if (users.isEmpty()) return -1;
+        else return users.getFirst().getRecordId();
+        //TODO: If multiple users exist throw new custom error.
     }
 
     /**
