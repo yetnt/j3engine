@@ -198,50 +198,46 @@ public class Login extends javax.swing.JFrame {
 
     private void enterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterButtonActionPerformed
 
+        passwordErrorJLabel.setText(" ");
+        String email = emailJField.getText();
+
         try {
-            passwordErrorJLabel.setText(" ");
-            String email = emailJField.getText();
-
-            try {
-                this.setCursor(CursorManager.get(CursorNames.HOURGLASS));
-                int id = UsersTable.userExists(email);
-                if (id == -1) {
-                    this.setCursor(CursorManager.get(CursorNames.DEFAULT));
-                    JOptionPane.showMessageDialog(this, "No user with that email exists.", "User Not Found", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                User user = UsersTable.getUser(id);
-                if (user == null) {
-                    this.setCursor(CursorManager.get(CursorNames.DEFAULT));
-                    JOptionPane.showMessageDialog(this, "You don't exist in the table...", "User Not Found", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                byte[] salt = user.password.directSalt();
-                String hashed = PasswordHasher.hashPassword(passwordJField.getPassword(), salt);
-
-                if (!hashed.equals(user.password.hash().getValue())) {
-                    this.setCursor(CursorManager.get(CursorNames.DEFAULT));
-                    passwordErrorJLabel.setText("Incorrect password.");
-                    return;
-                }
-
+            this.setCursor(CursorManager.get(CursorNames.HOURGLASS));
+            int id = UsersTable.userExists(email);
+            if (id == -1) {
                 this.setCursor(CursorManager.get(CursorNames.DEFAULT));
+                JOptionPane.showMessageDialog(this, "No user with that email exists.", "User Not Found", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            User user = UsersTable.getUser(id);
+            if (user == null) {
+                this.setCursor(CursorManager.get(CursorNames.DEFAULT));
+                JOptionPane.showMessageDialog(this, "You don't exist in the table...", "User Not Found", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            byte[] salt = user.password.directSalt();
+            String hashed = PasswordHasher.hashPassword(passwordJField.getPassword(), salt);
 
-                CoreSettings.user = user;
-
-                JOptionPane.showMessageDialog(this, "Welcome to J3Engine, " + user.firstName.getValue() + "!!!");
-
-                this.dispose();
-
-                postLogin.run();
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(this, "A db error occurred", "err", JOptionPane.ERROR_MESSAGE);
-                throw new RuntimeException(e);
+            if (!hashed.equals(user.password.hash().getValue())) {
+                this.setCursor(CursorManager.get(CursorNames.DEFAULT));
+                passwordErrorJLabel.setText("Incorrect password.");
+                return;
             }
 
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            this.setCursor(CursorManager.get(CursorNames.DEFAULT));
+
+            CoreSettings.user = user;
+
+            JOptionPane.showMessageDialog(this, "Welcome to J3Engine, " + user.firstName.getValue() + "!!!");
+
+            this.dispose();
+
+            postLogin.run();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "A db error occurred", "err", JOptionPane.ERROR_MESSAGE);
             throw new RuntimeException(e);
         }
+
     }//GEN-LAST:event_enterButtonActionPerformed
 
     private void signupJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupJButtonActionPerformed

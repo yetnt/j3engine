@@ -2,6 +2,7 @@ package com.j3d.engine.draw.tris.methods;
 
 import com.j3d.engine.draw.tris.SortMethod;
 import com.j3d.engine.draw.tris.TriListener;
+import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.geometry.geo2d.GTri;
 
 import java.util.ArrayList;
@@ -10,6 +11,11 @@ import java.util.ArrayList;
  * CamDepthSort is a sorting method that sorts GTri objects based on their depth values.
  * GTri objects farther from the camera are placed before those closer to the camera.
  * This is calculated by {@link GTri#calcDepth()}.
+ * @author Lehlogonolo Poole
+ * @see GTri#calcDepth()
+ * @see SortMethod
+ * @see TriListener
+ * @see TriStateArea
  */
 public class CamDepthSort extends SortMethod {
 

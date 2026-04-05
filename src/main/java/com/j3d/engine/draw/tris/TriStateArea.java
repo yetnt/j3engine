@@ -5,6 +5,8 @@ import com.j3d.engine.draw.tris.methods.CamDepthSort;
 import com.j3d.engine.draw.tris.methods.CamDistSort;
 import com.j3d.engine.draw.tris.methods.DDUUIDSort;
 import com.j3d.engine.draw.tris.methods.VisibleSort;
+import com.j3d.engine.geometry.geo2d.GLine;
+import com.j3d.engine.geometry.geo2d.GPoint;
 import com.j3d.engine.geometry.geo2d.GTri;
 
 import java.awt.*;
@@ -23,6 +25,15 @@ import java.util.ArrayList;
  *     This is mostly for testing and performance comparison purposes, as when a method is chosen,
  *     it will be used for all rendering cycles until changed.
  * </p>
+ * @author Lehlogonolo Poole
+ * @see TriListener
+ * @see GTri
+ * @see TriangleSortMethod
+ * @see SortMethod
+ * @see CamDepthSort
+ * @see CamDistSort
+ * @see DDUUIDSort
+ * @see VisibleSort
  */
 public class TriStateArea {
     /**
@@ -31,8 +42,13 @@ public class TriStateArea {
      */
     private static final ArrayList<TriListener> registered = new  ArrayList<>();
     /**
-     * A deque used for sorting GTri based on whichever method TriStateArea uses.
-     * The deque is cleared after each render cycle.
+     * A list used for sorting GTri based on whichever method TriStateArea uses.
+     * The list is cleared after each render cycle.
+     * @implNote This more references a deque but for reusability and clarity
+     * an ArrayList was used instead.
+     * This queue is not also a pure ArrayList at runtime
+     * but rather a subclass of {@link SortMethod}. Which is how the triangle
+     * sorting is done.
      */
     private static ArrayList<GTri> queue;
 
@@ -41,6 +57,10 @@ public class TriStateArea {
         setSortMethod(TriangleSortMethod.CAMDISTSORT);
     }
 
+    /**
+     * Sets the sort method for TriStateArea.
+     * @param method The TriangleSortMethod to set.
+     */
     public static void setSortMethod(TriangleSortMethod method) {
         queue = switch (method) {
             case NONE -> new ArrayList<>();
@@ -53,6 +73,15 @@ public class TriStateArea {
         };
     }
 
+    /**
+     * Registers a GTri with TriStateArea.
+     * @implSpec This method should only be called when a GTri is instantiated.
+     * This is due to the fact that it will live its entirely lifetime within
+     * TriStateArea. Therefore only {@link GTri#GTri(Color, GLine, GLine, GLine)}
+     * or the other constructor {@link GTri#GTri(Color, GPoint, GPoint, GPoint)}
+     * should ever have to call this method.
+     * @param tri The GTri to register.
+     */
     public static void register(GTri tri) {
         TriListener listener = new TriListener(tri);
         tri.attach(listener);
@@ -60,6 +89,13 @@ public class TriStateArea {
         queue.add(tri);
     }
 
+    /**
+     * Unregisters a triangle from TriStateArea
+     * @param tri The triangle to unregister.
+     * @implSpec Much like the docs within {@link TriStateArea#register(GTri)}
+     * however here only {@link GTri#deleteSelf()} may call this method or
+     * any other destructive method.
+     */
     public static void unregister(GTri tri) {
         // find listener that matches tri id
         registered.stream().filter(
@@ -69,10 +105,17 @@ public class TriStateArea {
         );
     }
 
+    /**
+     * Clears the TriStateArea queue.
+     */
     public static void clearQueue() {
         queue.clear();
     }
 
+    /**
+     * Draws all the triangles that have been sorted within the queue.
+     * @param g The Graphics2D context.
+     */
     public static void draw(Graphics2D g) {
         for  (GTri tri : queue) {
             if (tri.isHidden()) continue;
@@ -84,10 +127,17 @@ public class TriStateArea {
         }
     }
 
+    /**
+     * Adds a GTri to the queue.
+     * @param tri The GTri to add.
+     */
     public static void addToQueue(GTri tri) {
         queue.add(tri);
     }
 
+    /**
+     * Clears all registered TriListeners.
+     */
     public static void clearRegistered() {
         registered.clear();
     }

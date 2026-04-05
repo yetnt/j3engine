@@ -2,6 +2,7 @@ package com.j3d.engine.draw.tris.methods;
 
 import com.j3d.engine.draw.tris.SortMethod;
 import com.j3d.engine.draw.tris.TriListener;
+import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.geometry.geo2d.GTri;
 
 import java.util.ArrayList;
@@ -11,6 +12,13 @@ import java.util.ArrayList;
  * Where it first sorts by depth via {@link GTri#calcDepth()},
  * and then falls back to euclidean distance from the camera if two GTri objects have the same depth
  * and finally falls back to ID comparison to ensure consistent ordering.
+ * @author Lehlogonolo Poole
+ * @see CamDepthSort
+ * @see CamDistSort
+ * @see java.util.UUID
+ * @see SortMethod
+ * @see TriListener
+ * @see TriStateArea
  */
 public class DDUUIDSort extends SortMethod {
 

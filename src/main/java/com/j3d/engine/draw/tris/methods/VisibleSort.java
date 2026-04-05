@@ -2,6 +2,7 @@ package com.j3d.engine.draw.tris.methods;
 
 import com.j3d.engine.draw.tris.SortMethod;
 import com.j3d.engine.draw.tris.TriListener;
+import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.draw.tris.methods.utils.ZDepthIdBuffer;
 import com.j3d.engine.geometry.geo2d.GTri;
 
@@ -27,6 +28,11 @@ import java.util.stream.Collectors;
  * - clear() re-adds non-dirty triangles from the registered listeners.
  *
  * This implementation does NOT perform back-face culling (left for caller).
+ * @author Lehlogonolo Poole
+ * @see ZDepthIdBuffer
+ * @see TriListener
+ * @see SortMethod
+ * @see TriStateArea
  */
 public class VisibleSort extends SortMethod {
 

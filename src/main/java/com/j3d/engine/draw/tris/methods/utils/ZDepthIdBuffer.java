@@ -2,6 +2,7 @@ package com.j3d.engine.draw.tris.methods.utils;
 
 import com.j3d.J3DSettings;
 import com.j3d.Static;
+import com.j3d.engine.draw.tris.methods.VisibleSort;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.geometry.geo2d.GLine;
 import com.j3d.engine.geometry.geo2d.GObject;
@@ -20,10 +21,14 @@ import java.util.UUID;
  * at each pixel, along with its depth. This allows for fast determination of which
  * objects are visible from the camera's perspective without drawing them to the screen.
  *
- * The primary optimizations include:
- * - Integer-based triangle rasterization using edge functions.
+ * The primary optimisations include:
+ * - Integer-based triangle rasterisation using edge functions.
  * - Incremental depth calculation.
  * - Efficient collection of unique visible object IDs using a HashSet.
+ *
+ * @author Gemini IntelliJ Plugin
+ * @see VisibleSort
+ * @implSpec This was generated with gemini along with {@link VisibleSort}
  */
 public class ZDepthIdBuffer {
     private final UUID[][] buffer;
