@@ -21,7 +21,7 @@ public abstract class SortMethod extends ArrayList<GTri> {
     /**
      * A static list of registered TriListener objects.
      */
-    protected static ArrayList<TriListener> registered = new  ArrayList<>();
+    protected final ArrayList<TriListener> registered;
 
     /**
      * Constructor for SortMethod
@@ -30,6 +30,6 @@ public abstract class SortMethod extends ArrayList<GTri> {
      */
     public SortMethod(ArrayList<TriListener> registered) {
         super();
-        SortMethod.registered = registered; // Set the static registered list, since its stored by instance.
+        this.registered = registered;
     }
 }
