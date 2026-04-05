@@ -14,17 +14,29 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * CartesianPoint, not to be confused with {@link ScreenPoint}, represents a point in 2D space.
+ * CartesianPoint, not to be confused with {@link ScreenPoint}, represents
+ * a point in 2D space.
  * (On the Cartesian Plane, where (0, 0) is the centre of the window.)
  * <p>
- * ALl 2d points should be calculated in {@link CartesianPoint}, but when you want to show it on the screen, converted to a {@link ScreenPoint}
+ * All 2d points should be calculated in {@link CartesianPoint}, but when you
+ * want to show it on the screen, converted to a {@link ScreenPoint}
+ * @author Lehlogonolo Poole
+ * @see ScreenPoint
+ * @see CartesianPoint#toScreen(Renderer)
+ * @see BasePoint
+ * @see Vector3
  */
 public class CartesianPoint extends BasePoint<Double> {
 
+    /**
+     * used for comparing double values without running into
+     * floating point errors.
+     */
     private static final double EPSILON = 0.01;
 
     /**
-     * Default Constructor
+     * Default Constructor.
+     * Constructs a null CartesianPoint. This is probably a bad idea.
      */
     public CartesianPoint() {
         super(null, null);
@@ -69,12 +81,6 @@ public class CartesianPoint extends BasePoint<Double> {
      * @param camera The camera instance.
      * @return A Vector3
      */
-//    public Vector3 toVector3(Camera camera) {
-//        // place point on the plane of the camera.
-//        double worldX = (x / Settings.sceneProperties.scale.getValue()) + camera.getPosition().getX();
-//        double worldY = (y / Settings.sceneProperties.scale.getValue()) + camera.getPosition().getY();
-//        return new Vector3(worldX, worldY, camera.getPosition().getZ());
-//    }
     public Vector3 toVector3(Camera camera) {
         Vector3 e = camera.getProjectionPlane();
         //TODO: When orbiting the camera left and right, the points tend to move outside of camera view.
@@ -82,7 +88,6 @@ public class CartesianPoint extends BasePoint<Double> {
         double dx = (x / Settings.sceneProperties.scale.getValue()) - e.getX();
         double dy = (y / Settings.sceneProperties.scale.getValue()) - e.getY();
         double dz = e.getZ();
-//        double dz = 0;
 
         Vector3 camSpacePoint = new Vector3(dx, dy, dz);
 
@@ -137,13 +142,22 @@ public class CartesianPoint extends BasePoint<Double> {
         return Objects.hash(Math.round(x / EPSILON), Math.round(y / EPSILON));
     }
 
+    /**
+     * Calculates the distance between this point and another point.
+     * @param other The other point.
+     * @return The distance.
+     */
     public double distanceTo(CartesianPoint other) {
         double dx = this.x - other.x;
         double dy = this.y - other.y;
         return Math.sqrt(dx * dx + dy * dy);
     }
 
-
+    /**
+     * Calculates the distance between this point and another point without the square root.
+     * @param other The other point.
+     * @return The distance.
+     */
     public double distanceSquaredTo(CartesianPoint other) {
         double dx = this.x - other.x;
         double dy = this.y - other.y;

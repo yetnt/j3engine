@@ -2,6 +2,7 @@ package com.j3d.engine.geometry.geo3d;
 
 import com.j3d.J3DSettings;
 import com.j3d.Static;
+import com.j3d.engine.geometry.geo2d.GLine;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.layer.Layer;
@@ -16,8 +17,10 @@ import com.j3d.engine.geometry.geo2d.GTri;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.ConstructorAction;
 import com.j3d.engine.react.actions.VoidAction;
+import com.j3d.storage.files.ProjectFile;
 import com.j3d.ui.J3DTheme;
 import com.j3d.ui.engine.tree.TreeNodeIdentity;
+import com.j3d.ui.util.Throbber;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
@@ -26,7 +29,27 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 /**
- * Represents a 3D object composed of multiple 2D geometric objects (GObjects).
+ * A Thing, or more commonly in engine lingo, a mesh, is an {@link Interactable}
+ * which makes up an entire 3d object made of {@link GTri}s, {@link GPoint}s and {@link GLine}s.
+ * <p>
+ *     A Thing, can be transformed in any means necessary and is the only "object"
+ *     which the user can actually interact with. They can interact with GObjects but a Thing
+ *     is the first tangabile <i>thing</i>. (pun intended)
+ * </p>
+ * <p>
+ *     A Thing is the first user tangible object. So it naturally has to itneract with
+ *     the app in many different ways whther it be showing itself in the {@link javax.swing.JTree}
+ *     or being written to a {@link com.j3d.storage.files.ProjectFile}
+ * </p>
+ * @implSpec
+ *     As a user tangible object, most operations return an {@link Action} which
+ *     represent the transform or editing of the Thing and should be recorded to
+ *     the history by the caller method otherwise the user cannot undo and redo
+ *     said actions.
+ * @author Lehlogonolo Poole
+ * @see Interactable
+ * @see Vector3
+ * @see Action
  */
 public class Thing implements Interactable {
 
@@ -36,7 +59,14 @@ public class Thing implements Interactable {
     /** The unique identifier for this Thing. */
     private UUID id;
 
+    /**
+     * The name of this Thing.
+     */
     private String name = "Thing";
+
+    /**
+     * What the thing should do when it gets selected within the tree GUI
+     */
     private final BiConsumer<Thing, DefaultMutableTreeNode>  onSelectCallback =
             (o, t) -> {
                 if (this.isBg || this.hidden) return;
@@ -45,15 +75,21 @@ public class Thing implements Interactable {
                 Static.mainPanel.repaint();
             };
 
+    /**
+     * Gets the name of this Thing.
+     * @return The name of this Thing.
+     */
     public String getName() {
         return name;
     }
 
-    /** The list of 2D geometric objects that compose this 3D Thing. */
+    /** The master list of GObjects that compose this 3D Thing. */
     private final ArrayList<GObject> objects = new ArrayList<>();
 
+    /** The list of points that compose this 3D Thing. */
     private final List<GPoint> points = new ArrayList<>();
 
+    /** The parent layer of this Thing. */
     private Layer parent;
 
     /** A Flag set by the Thing itself to check whether its part of the background. if so it only draws the
@@ -61,12 +97,36 @@ public class Thing implements Interactable {
      */
     private boolean isBg = false;
 
+    /**
+     * Governed by {@link Interactable}, whether this Thing is hidden or not.
+     */
     private boolean hidden = false;
+    /**
+     * Governed by {@link Interactable}, whether this Thing is for deletion or not.
+     */
     private boolean forDeletion = false;
 
+    /**
+     * Required by {@link Interactable}, The Tree Node Identity object defining this Thing
+     * within the Tree GUI.
+     */
     private TreeNodeIdentity<Thing> treeNodeIdentity;
+    /**
+     * Required by {@link Interactable}, The actual tree node reference
+     * for this Thing within the Tree GUI.
+     */
     private DefaultMutableTreeNode treeNode;
 
+    /**
+     * Constructs a Thing.
+     * @implSpec This is used by {@link ProjectFile#readFile(String, String, Throbber)} during a project file read and should only be used in that case.
+     * @param name The name of the Thing defined in the file.
+     * @param id The ID of the Thing defined in the file.
+     * @param hidden Whether the Thing is hidden or not.
+     * @param l The parent layer of the Thing.
+     * @param renderer The renderer instance.
+     * @return A Thing
+     */
     public static Thing fromRaw(String name, String id, boolean hidden, Layer l, Renderer renderer) {
         Thing t = new Thing(renderer, l, name, false);
         t.setHidden(hidden);
@@ -74,6 +134,14 @@ public class Thing implements Interactable {
         return t;
     }
 
+    /**
+     * Sets this thing's unique identifier
+     * @implSpec This is intended to be used when this is created from
+     * file loading or anything where it hasnt had a UUID attached to it already.
+     * Otherwise the UUID is treated as immutable.
+     * @param uuid The new UUID
+     * @see ProjectFile#readFile(String, String, Throbber)
+     */
     private void setId(UUID uuid) {
         this.id = uuid;
     }
@@ -116,6 +184,13 @@ public class Thing implements Interactable {
         );
     }
 
+    /**
+     * Constructs a Thing.
+     * @param renderer The renderer instance.
+     * @param l The parent layer of the Thing.
+     * @param name The name of the Thing.
+     * @param invokeSwingHooks Whether to run GUI related hooks
+     */
     public Thing(Renderer renderer, Layer l, String name, boolean invokeSwingHooks) {
         l = l == null ? renderer.layers.get(1) : l;
         if (l.getIdentifier().equals(Layer.backgroundId)) {
@@ -132,6 +207,12 @@ public class Thing implements Interactable {
             invokeSwingHooks();
     }
 
+    /**
+     * Constructs a Thing and runs GUI related hooks.
+     * @param renderer The renderer instance.
+     * @param l The parent layer of the Thing.
+     * @param name The name of the Thing.
+     */
     public Thing(Renderer renderer, Layer l, String name) {
         l = l == null ? renderer.layers.get(1) : l;
         if (l.getIdentifier().equals(Layer.backgroundId)) {
@@ -168,6 +249,11 @@ public class Thing implements Interactable {
         return this;
     }
 
+    /**
+     * Draws this Thing to the screen.
+     * @param graphics2D The Graphics2D instance
+     * @implSpec This is caled by {@link Layer#draw(Graphics2D)}
+     */
     public void draw(Graphics2D graphics2D) {
         if (isBg) {
 //            graphics2D.setColor(new Color(52, 52, 52));
@@ -193,10 +279,18 @@ public class Thing implements Interactable {
         return id;
     }
 
+    /**
+     * Returns the GObjects that compose this Thing.
+     * @return The GObjects that compose this Thing.
+     */
     public ArrayList<GObject> getObjects() {
         return objects;
     }
 
+    /**
+     * Returns the centroid of this Thing.
+     * @return The centroid of this Thing.
+     */
     public Vector3 getCentroid() {
         return centroid;
     }
@@ -205,7 +299,8 @@ public class Thing implements Interactable {
      * Creates a copy of this Thing, adding its GObjects to the specified renderer and layer.
      * @param renderer The renderer to associate the new Thing with.
      * @param l The layer to add the new Thing to.
-     * @return An Action that performs the copy operation.
+     * @return An Action that performs the copy operation and itself returns the
+     * new Thing.
      */
     public Action<Thing> copy(Renderer renderer, Layer l) {
         final Thing current = this;
@@ -247,6 +342,7 @@ public class Thing implements Interactable {
     /**
      * Scales the Thing by a uniform factor around its centroid.
      * @param scale The uniform scaling factor.
+     * @return An Action which performs the scae operation.
      */
     public VoidAction scale(double scale) {
         return new VoidAction() {
@@ -284,6 +380,7 @@ public class Thing implements Interactable {
     /**
      * Scales the Thing by a vector factor around its centroid.
      * @param scale The scaling vector, where each component scales along its respective axis.
+     * @return An Action which performs the scale operation.
      */
     public VoidAction scale(Vector3 scale) {
         return new VoidAction() {
@@ -321,6 +418,7 @@ public class Thing implements Interactable {
     /**
      * Translates the Thing by a given vector.
      * @param v The translation vector.
+     * @return An Action which performs the translation operation.
      */
     public VoidAction translate(Vector3 v) {
         return new VoidAction() {
@@ -355,6 +453,12 @@ public class Thing implements Interactable {
         };
     }
 
+    /**
+     * Rotates the Thing around a given axis by a given angle.
+     * @param axis The rotation axis.
+     * @param angleDegrees The rotation angle in degrees.
+     * @return An Action which performs the rotation operation.
+     */
     public VoidAction rotate(Vector3 axis, double angleDegrees) {
         return new VoidAction() {
             private final ArrayList<Vector3> originalPositions = new ArrayList<>();
@@ -391,7 +495,7 @@ public class Thing implements Interactable {
     }
 
     /**
-     * Deletes all underlying GObjects. This overrides all history functionality
+     * @implSpec Deletes all underlying GObjects. This overrides all history functionality
      * and should never be used by a user.
      */
     @Override

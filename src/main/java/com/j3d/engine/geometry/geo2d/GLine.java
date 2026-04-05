@@ -1,9 +1,10 @@
 package com.j3d.engine.geometry.geo2d;
 
-import com.j3d.engine.Renderer;
-import com.j3d.engine.react.events.EventPayload;
-import com.j3d.engine.react.events.EventEmitter;
+import com.j3d.engine.draw.ViewType;
+import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.storage.files.ProjectFile;
+import com.j3d.ui.util.Throbber;
 
 import java.awt.*;
 import java.util.UUID;
@@ -13,6 +14,18 @@ import static com.j3d.Static.renderer;
 
 /**
  * GLine represents, you guessed it, a line.
+ * <p>
+ *     A GLine's pivot is always defined as its midpoint.
+ * </p>
+ * <p>
+ *     A GLine is drawn by a parent {@link GTri} but otherwise is stored
+ *     alongside other GObjects within a {@link Thing}. And a GLine also
+ *     draws it's relevant {@link GPoint}s
+ * </p>
+ * @author Lehlogonolo Poole
+ * @see Thing
+ * @see GPoint
+ * @see GTri
  */
 public class GLine extends GObject {
     /**
@@ -24,12 +37,27 @@ public class GLine extends GObject {
      */
     private final GPoint endPoint;
 
+    /**
+     * Constructs a GLine.
+     * @implSpec This is used by {@link ProjectFile#readFile(String, String, Throbber)} during a project file read and should only be used in that case.
+     * @param id The id of the line defined by the file
+     * @param A The first constructed GPoint reference.
+     * @param B The second constructed GPoint reference.
+     * @return A GLine
+     */
     public static GLine fromRaw(String id, GPoint A, GPoint B) {
         GLine gl = new GLine(A, B);
         gl.setId(UUID.fromString(id));
         return gl;
     }
-    
+
+    /**
+     * Draws this line to the screen.
+     * @implSpec This is only called by {@link GTri#draw(Graphics2D)}
+     * @implNote This respects {@link ViewType} and may or may not draw
+     * itself depending on the type.
+     * @param graphics2D The Graphics2D instance
+     */
     @Override
     public void draw(Graphics2D graphics2D) {
         graphics2D.setColor(col);
@@ -44,6 +72,13 @@ public class GLine extends GObject {
         endPoint.draw(graphics2D);
     }
 
+    /**
+     * Draws this line to the screen in its selected state.
+     * @implSpec This is only called by {@link GTri#drawSelected(Graphics2D)}
+     * @implNote This respects {@link ViewType} and may or may not draw
+     * itself depending on the type.
+     * @param graphics2D The Graphics2D instance
+     */
     @Override
     public void drawSelected(Graphics2D graphics2D) {
         graphics2D.setColor(col.brighter());
@@ -78,48 +113,15 @@ public class GLine extends GObject {
         setPivot(new Vector3(
                 (A.getPivot().getX() + B.getPivot().getX()) / 2,
                 (A.getPivot().getY() + B.getPivot().getY()) / 2,
-                0
+                (A.getPivot().getZ() + B.getPivot().getZ()) / 2
         ));
 
     }
 
-
     /**
-     * Event or sum ion know ganger ✌️
+     * @implNote This also deletes it's child points.
+     * @return true if the line was deleted
      */
-    public static class Event extends EventPayload {
-
-        public Vector3 newStart;
-        public Vector3 oldStart;
-        public Vector3 newEnd;
-        public Vector3 oldEnd;
-
-        /**
-         * Constructor for EventPayload with a new start point
-         *
-         * @param e The initiator of the broadcast.
-         * @param r The renderer instance
-         * @param oS old starting point
-         * @param oE old ending point
-         * @param pts The new points, pass empty if you're not updating an end point.
-         */
-        public Event(EventEmitter e, Renderer r, Vector3 oS, Vector3 oE, Vector3 ...pts) {
-            super(e, r);
-            oldStart = oS;
-            oldEnd = oE;
-            boolean flip = true;
-//            assert pts.length == 2;
-            for (Vector3 pt : pts) {
-                if (flip) {
-                    newStart = pt;
-                    flip = false;
-                } else {
-                    newEnd = pt;
-                }
-            }
-        }
-    }
-
     @Override
     public boolean deleteSelf() {
         super.deleteSelf();

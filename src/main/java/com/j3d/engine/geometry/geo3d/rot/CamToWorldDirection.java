@@ -12,6 +12,10 @@ import com.j3d.engine.geometry.geo3d.matrix.*;
  * <p>
  * The order of multiplication typically matters. For a standard Tait-Bryan rotation (yaw, pitch, roll),
  * the combined matrix would be {@code M = Yaw * Pitch * Roll}.
+ * @author Lehlogonolo Poole
+ * @see RotationMatrixDirection
+ * @see Matrix3
+ * @see MatrixMath
  */
 public class CamToWorldDirection implements RotationMatrixDirection {
     final private double pitch, yaw, roll;

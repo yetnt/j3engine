@@ -17,12 +17,22 @@ import java.util.function.BiFunction;
  * <p>
  * All vector operations (e.g., {@code add}, {@code sub}, {@code mult}) return a new
  * {@code Vector3} instance, preserving the immutability of the original.
+ * @author Lehlogonolo Poole
+ * @see MatrixInterface
+ * @see MatrixMath
+ * @see Matrix3
+ * @see CartesianPoint
  */
 public class Vector3 implements MatrixInterface {
     private final double X;
     private final double Y;
     private final double Z;
 
+    /**
+     * Constructs a new vector 3 from a 2d matrix double array
+     * @param m The 2d matrix double array
+     * @implSpec The matrix must be 3x1
+     */
     public Vector3(double[][] m) {
         X = m[0][0];
         Y = m[1][0];
@@ -55,6 +65,7 @@ public class Vector3 implements MatrixInterface {
      * @throws RuntimeException if the matrix is not 3x1.
      */
     public static Vector3 of(MatrixInterface m) {
+        //TODO: Custom Matrix Error
         if (m.rows() != 3 || m.cols() != 1) throw new RuntimeException("Matrix must be 3x1 to be converted to a Vector3");
         return new Vector3(m.get(0, 0), m.get(1, 0), m.get(2, 0));
     }
@@ -72,14 +83,23 @@ public class Vector3 implements MatrixInterface {
         Z = z;
     }
 
+    /**
+     * @return The X component of the vector.
+     */
     public double getX() {
         return X;
     }
 
+    /**
+     * @return The Y component of the vector.
+     */
     public double getY() {
         return Y;
     }
 
+    /**
+     * @return The Z component of the vector.
+     */
     public double getZ() {
         return Z;
     }

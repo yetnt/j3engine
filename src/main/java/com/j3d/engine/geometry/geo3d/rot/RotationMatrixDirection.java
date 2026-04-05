@@ -9,6 +9,7 @@ import com.j3d.engine.geometry.geo3d.matrix.Matrix3;
  * from camera space to world space or vice-versa. By separating the creation of each
  * rotation matrix, it provides fine-grained control over how transformations are constructed.
  *
+ * @author Lehlogonolo Poole
  * @see CamToWorldDirection
  * @see WorldToCamDirection
  */

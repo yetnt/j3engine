@@ -5,6 +5,10 @@ import com.j3d.engine.geometry.geo2d.CartesianPoint;
 /**
  * Base Point is a generic 2D point base class
  * @param <T> The type of the given point, which can either be an {@link Integer} or {@link Double} or any other thing that extends {@link Number}
+ * @author Lehlogonolo Poole
+ * @see CartesianPoint
+ * @see ScreenPoint
+ * @see java.awt.Point
  */
 public abstract class BasePoint<T extends Number> {
     /**

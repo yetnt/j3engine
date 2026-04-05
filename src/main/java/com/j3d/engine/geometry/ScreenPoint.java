@@ -3,6 +3,7 @@ package com.j3d.engine.geometry;
 import com.j3d.J3DSettings;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
+import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.settings.Settings;
 
 import java.awt.*;
@@ -11,7 +12,12 @@ import java.awt.*;
  * ScreenPoint, not to be confused with {@link CartesianPoint}, is a point on the actual screen (window) open.
  * Where (0, 0) is the top left corner of the window.
  * <p>
- * ALl 2d points should be calculated in {@link CartesianPoint}, but when you want to show it on the screen, converted to a {@link ScreenPoint}
+ *     All 2d points should be calculated in {@link CartesianPoint}, but when you want to show it on the screen, converted to a {@link ScreenPoint}
+ * </p>
+ * @author Lehlogonolo Poole
+ * @see CartesianPoint#toScreen(Renderer)
+ * @see Vector3
+ * @see BasePoint
  */
 public class ScreenPoint extends BasePoint<Integer> {
 

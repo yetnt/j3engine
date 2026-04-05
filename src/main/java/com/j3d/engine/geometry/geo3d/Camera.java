@@ -11,6 +11,10 @@ import com.j3d.engine.geometry.geo3d.rot.Rotation;
  * own position and orientation (rotation) in world space. It also contains the
  * projection plane, which determines the field of view and focal length for
  * the 3D-to-2D projection.
+ * @author Lehlogonolo Poole
+ * @see Rotation
+ * @see Vector3
+ * @see MatrixMath
  */
 public class Camera {
 
@@ -64,28 +68,52 @@ public class Camera {
         this.position = this.position.add(delta);
     }
 
+    /**
+     * Gets the position
+     * @return The camera's position in 3D space.
+     */
     public Vector3 getPosition() {
         return position;
     }
 
+    /**
+     * Sets the position
+     * @param position The new position for the camera.
+     */
     public Camera setPosition(Vector3 position) {
         this.position = position;
         return this;
     }
 
+    /**
+     * Gets the rotation
+     * @return The camera's orientation.
+     */
     public Rotation getRotation() {
         return rotation;
     }
 
+    /**
+     * Sets the rotation
+     * @param rotation The new rotation for the camera.
+     */
     public Camera setRotation(Rotation rotation) {
         this.rotation = rotation;
         return this;
     }
 
+    /**
+     * Gets the projection plane
+     * @return The camera's projection plane settings.
+     */
     public Vector3 getProjectionPlane() {
         return projectionPlane;
     }
 
+    /**
+     * Sets the projection plane
+     * @param projectionPlane The new projection plane settings.
+     */
     public Camera setProjectionPlane(Vector3 projectionPlane) {
         this.projectionPlane = projectionPlane;
         return this;
@@ -111,6 +139,12 @@ public class Camera {
         ).normalize();
     }
 
+    /**
+     * Calculates the camera's right-facing direction vector in world space.
+     * This is determined by transforming a local "right" vector (1, 0, 0)
+     * using the camera's current yaw and pitch. Roll is ignored.
+     * @return A normalized {@link Vector3} representing the direction the camera is pointing.
+     */
     public Vector3 getRight() {
         return Vector3.of(
                 MatrixMath.mult(
@@ -124,6 +158,12 @@ public class Camera {
         ).normalize();
     }
 
+    /**
+     * Calculates the camera's up-facing direction vector in world space.
+     * This is determined by transforming a local "up" vector (0, 1, 0)
+     * using the camera's current yaw and pitch. Roll is ignored.
+     * @return A normalized {@link Vector3} representing the direction the camera is pointing.
+     */
     public Vector3 getUp() {
         return Vector3.of(
                 MatrixMath.mult(

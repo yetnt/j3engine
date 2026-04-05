@@ -4,10 +4,12 @@ import com.j3d.J3DSettings;
 import com.j3d.Static;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.draw.ViewType;
-import com.j3d.engine.react.events.EventPayload;
-import com.j3d.engine.react.events.EventEmitter;
+import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.engine.layer.Layer;
+import com.j3d.storage.files.ProjectFile;
+import com.j3d.ui.util.Throbber;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -15,7 +17,25 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * GPoint is a class that represents a single point in 2D space.
+ * GPoint is a class that represents a single point in 3D space.
+ * <p>
+ *     Unlike other GObjects who's {@code pivot} has to be calculated to be
+ *     it's geometric centre, a GPoint's pivot is just its position.
+ * </p>
+ * <p>
+ *     While a GPoint can only be drawn by anther {@link GLine}, a {@link Thing}
+ *     stores GPoints separately as they form the core
+ *     of any transformation irrespective of whether it's part of some
+ *     other geometry. This means all transformations need to be point based
+ *     and applied to the GPoint.
+ * </p>
+ * <p>
+ *     A GPoint is also stored within {@link Renderer#points} for redundancy.
+ * </p>
+ * @see Renderer#findOrCreatePoint(Vector3, Layer)
+ * @see Thing
+ * @see GLine
+ * @see GTri
  */
 public class GPoint extends GObject {
 
@@ -27,11 +47,27 @@ public class GPoint extends GObject {
      */
     public static final int DIAMETER = 7;
 
+    /**
+     * Constructs a GPoint.
+     * @implSpec This is used by {@link ProjectFile#readFile(String, String, Throbber)} during a project file read and should only be used in that case.
+     * @param id The ID of the GPoint defined by the file
+     * @param point The position of the GPoint defined by the file
+     * @return A GPoint
+     */
     public static GPoint fromRaw(String id, Vector3 point) {
         GPoint gp = new GPoint(point);
         gp.setId(UUID.fromString(id));
         return gp;
     }
+
+    /**
+     * Draws this point to the screen.
+     * @implSpec This is only called by {@link GLine#draw(Graphics2D)}
+     * @implNote As defined by {@link ViewType}, the point may or may not
+     * be drawn. e.g. If not defined as {@link ViewType#WIREFRAME} then the point
+     * skips drawing itself.
+     * @param graphics2D The Graphics2D instance
+     */
     @Override
     public void draw(Graphics2D graphics2D) {
         Static.renderer.points.add(this);
@@ -41,6 +77,14 @@ public class GPoint extends GObject {
         graphics2D.fillOval(p.x - DIAMETER / 2, p.y - DIAMETER / 2, DIAMETER, DIAMETER);
     }
 
+    /**
+     * Draws this point to the screen in its selected state.
+     * @implSpec This is only called by {@link GLine#drawSelected(Graphics2D)}
+     * @implNote As defined by {@link ViewType}, the point may or may not
+     * be drawn. e.g. If not defined as {@link ViewType#WIREFRAME} then the point
+     * skips drawing itself.
+     * @param graphics2D The Graphics2D instance
+     */
     @Override
     public void drawSelected(Graphics2D graphics2D) {
         if (J3DSettings.getViewType() != ViewType.WIREFRAME) return;
@@ -48,43 +92,14 @@ public class GPoint extends GObject {
         ScreenPoint p = this.getPivot().toPoint(Static.camera).toScreen(Static.renderer);
         graphics2D.fillOval(p.x - (DIAMETER+1) / 2, p.y - (DIAMETER+1) / 2, (DIAMETER+1), (DIAMETER+1));
         draw(graphics2D);
-//        EngineFrame.renderer.drawText3D(graphics2D, getPivot().sub(new Vector3(1, 1, 1)), "{" + getPivot().getY() + ", " + getPivot().getX() + ", " + getPivot().getZ() + "}", EngineFrame.camera);
     }
 
     /**
      * Default Constructor
-     *
-     * @param cartesianPoint The point on the cartesian plane that this object lies on
+     * @param v3 The position of this point.
      */
-    public GPoint(Vector3 cartesianPoint) {
-        setPivot(cartesianPoint);
-    }
-
-    /**
-     * This represents an event that is broadcasted when a GPoint is updated and/or deleted.
-     */
-    public static class Event extends EventPayload {
-
-        /**
-         * The new location of the GPoint
-         */
-        public final Vector3 newCartesianPoint;
-        /**
-         * The old location of the GPoint
-         */
-        public final Vector3 oldCartesianPoint;
-
-        /**
-         * Default Constructor
-         * @param e The emitterPoint
-         * @param old The Old Cartesian Point
-         * @param cp The New Cartesian Point
-         */
-        public Event(EventEmitter e,Vector3 old, Vector3 cp, Renderer r) {
-            super(e, r);
-            oldCartesianPoint = old;
-            newCartesianPoint = cp;
-        }
+    public GPoint(Vector3 v3) {
+        setPivot(v3);
     }
 
     @Override

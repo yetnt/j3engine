@@ -2,6 +2,10 @@ package com.j3d.engine.geometry.geo3d.matrix;
 
 /**
  * A 4x4 Matrix.
+ * @deprecated Honestly, while it can be useful for putting rotations and transformations
+ * into one, its confusing for me who is still fairly new to amtrices.
+ * So it may be removed in the near future. No docs.
+ * @author Lehlogonolo Poole
  */
 public final class Matrix4 implements MatrixInterface {
     public final double[][] m;

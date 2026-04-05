@@ -5,12 +5,30 @@ import com.j3d.engine.react.events.EventEmitter;
 import com.j3d.engine.react.events.EventListener;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.storage.files.ProjectFile;
+import com.j3d.ui.util.Throbber;
 
 import java.awt.*;
 import java.util.*;
 
 /**
- * GObject is an abstract class that represents any actual tangible Geometry in the 2d space (Cartesian space) that a user can see and interact with.
+ * GObject is an abstract class that represents any actual tangible
+ * Geometry in the 3d space (Cartesian space) that a user can see and
+ * interact with. This only has 3 extenders, {@link GPoint}, {@link GLine}
+ * and {@link GTri} as these form the base objects and cannot be broken
+ * down further.
+ * <p>
+ *     Any GObject also has event listening and emitting capabilities
+ *     as an extender of {@link EventEmitter} and an implementor of
+ *     {@link EventListener}. It is up to the child classes to decide
+ *     which events it wants to listen to or emit.
+ * </p>
+ * @author Lehlogonolo Poole
+ * @see EventListener
+ * @see EventEmitter
+ * @see GPoint
+ * @see GLine
+ * @see GTri
  */
 public abstract class GObject extends EventEmitter implements EventListener {
     protected Color col = Color.BLACK;
@@ -23,15 +41,11 @@ public abstract class GObject extends EventEmitter implements EventListener {
      * A Unique UUID to identify this geometry.
      */
     private UUID Id;
-//    /**
-//     * Whether this geometry is selected or not.
-//     */
-//    public boolean isSelected = false;
 
     /**
      * Draws this geometry to the screen.
      * @param graphics2D The Graphics2D instance
-     * @implNote This is meant to be overridden by inheritors.
+     * @implSpec This is meant to be overridden by child classes.
      */
     public void draw(Graphics2D graphics2D) {
         return;
@@ -40,7 +54,7 @@ public abstract class GObject extends EventEmitter implements EventListener {
     /**
      * Draws this geometry to the screen, but in a selected state.
      * @param graphics2D The Graphics2D instance
-     * @implNote This is meant to be overridden by inheritors.
+     * @implSpec This is meant to be overridden by child classes.
      */
     public void drawSelected(Graphics2D graphics2D) {
         return;
@@ -65,6 +79,9 @@ public abstract class GObject extends EventEmitter implements EventListener {
 
     /**
      * Returns the pivot point.
+     * @implSpec Child-classes need to guarantee that this returns the
+     * exact mathematical pivot point of this object. Which if it does
+     * not define as some special point, nees to be it's centre.
      * @return a CartesianPoint
      */
     public Vector3 getPivot() {
@@ -116,7 +133,14 @@ public abstract class GObject extends EventEmitter implements EventListener {
 
     /**
      * Sets this geometry's unique identifier
+     * @implSpec This is intended to be used when a child is created from
+     * file loading or anything where it hasnt had a UUID attached to it already.
+     * Otherwise the UUID is treated as immutable.
      * @param id The new UUID
+     * @see ProjectFile#readFile(String, String, Throbber)
+     * @see GPoint#fromRaw(String, Vector3)
+     * @see GLine#fromRaw(String, GPoint, GPoint)
+     * @see GTri#fromRaw(String, Color, GLine, GLine, GLine)
      */
     public void setId(UUID id) {
         Id = id;
@@ -125,6 +149,7 @@ public abstract class GObject extends EventEmitter implements EventListener {
     /**
      * Converts this Geometry into an Array format that can be used around by Jaiva implementations
      * @return An ArrayList of the ID, and the pivot point in a 2d array.
+     * @deprecated This <i>was</i> a method related to Jaiva. Now a legacy method or soon to be removed.
      */
     public ArrayList<Object> toArray() {
         return new ArrayList<>(Arrays.asList(getId(), getPivot().toArray()));
@@ -142,6 +167,11 @@ public abstract class GObject extends EventEmitter implements EventListener {
         return Objects.hash(pivot, Id);
     }
 
+    /**
+     * @implSpec Child classes are required to override this if they want
+     * actual event capabilites. GObject overrides purely to accept the
+     * {@link EventListener} contract with no implementation.
+     */
     @Override
     public void onEvent(EventType event, EventPayload properties) {
 

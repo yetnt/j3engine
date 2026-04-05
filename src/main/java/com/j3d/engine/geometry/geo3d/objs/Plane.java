@@ -9,6 +9,7 @@ import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 
 import java.awt.*;
 
+// TODO: Implement.
 public class Plane extends Thing {
 
     public Vector3 cornerA;

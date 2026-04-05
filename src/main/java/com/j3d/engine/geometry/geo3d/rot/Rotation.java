@@ -13,6 +13,10 @@ import com.j3d.engine.geometry.geo3d.matrix.Vector3;
  * <p>
  * The primary matrix generated via {@link RotationMatrixDirection#matrix()} is the view matrix, which transforms
  * coordinates from the world space into the camera's local space.
+ * @author Lehlogonolo Poole
+ * @see CamToWorldDirection
+ * @see WorldToCamDirection
+ * @see RotationMatrixDirection
  */
 public class Rotation {
     /**
@@ -67,26 +71,50 @@ public class Rotation {
         );
     }
 
+    /**
+     * Gets the yaw
+     * @return The yaw angle in degrees.
+     */
     public double getYaw() {
         return this.yaw;
     }
 
+    /**
+     * Gets the pitch
+     * @return The pitch angle in degrees.
+     */
     public double getPitch() {
         return this.pitch;
     }
 
+    /**
+     * Gets the roll
+     * @return The roll angle in degrees.
+     */
     public double getRoll() {
         return this.roll;
     }
 
+    /**
+     * Sets the pitch
+     * @param pitch The new pitch angle in degrees.
+     */
     public void setPitch(double pitch) {
         this.pitch = pitch;
     }
 
+    /**
+     * Sets the yaw
+     * @param yaw The new yaw angle in degrees.
+     */
     public void setYaw(double yaw) {
         this.yaw = yaw;
     }
 
+    /**
+     * Sets the roll
+     * @param roll The new roll angle in degrees.
+     */
     public void setRoll(double roll) {
         this.roll = roll;
     }

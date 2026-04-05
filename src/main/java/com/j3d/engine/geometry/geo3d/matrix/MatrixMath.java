@@ -8,6 +8,13 @@ import com.j3d.utility.Pair;
  * for matrix creation, validation, addition, subtraction, and multiplication.
  * <p>
  * This is an abstract utility class and cannot be instantiated.
+ * <p>
+ *     This also has its own custom exception wrapping ArithmeticException thrown
+ *     when specifically matrix related errors occur.
+ * </p>
+ * @author Lehlogonolo Poole
+ * @see MatrixInterface
+ * @see MatrixMath.MatrixException
  */
 public abstract class MatrixMath {
 

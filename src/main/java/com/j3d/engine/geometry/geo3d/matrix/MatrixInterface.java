@@ -5,6 +5,14 @@ package com.j3d.engine.geometry.geo3d.matrix;
  * methods for accessing dimensions, getting and setting individual elements,
  * retrieving the underlying data array, and creating a copy of the matrix.
  * It also includes a default method for generating a formatted string representation.
+ * <p>
+ *     A huge thank you to Mindbourne for their AP Maths videos on matrices.
+ * </p>
+ * @author Lehlogonolo Poole
+ * @see MatrixMath
+ * @see Vector3
+ * @see Matrix3
+ * @see Matrix4
  */
 public interface MatrixInterface {
     /**

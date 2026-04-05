@@ -2,19 +2,39 @@ package com.j3d.engine.geometry.geo2d;
 
 import com.j3d.J3DSettings;
 import com.j3d.Static;
-import com.j3d.engine.Renderer;
 import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.draw.tris.TriStateArea;
-import com.j3d.engine.react.events.EventPayload;
-import com.j3d.engine.react.events.EventEmitter;
+import com.j3d.engine.geometry.geo3d.Thing;
 
 import java.awt.*;
 import java.util.*;
 
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.storage.files.ProjectFile;
+import com.j3d.ui.util.Throbber;
 
 /**
  * GTri represents a Triangle. What'd you expect kau.
+ * <p>
+ *     A GTri's pivot is set to it's geometric centre between the 3 points.
+ * </p>
+ * <p>
+ *     Unlike the other GObjects, a GTri is a bit more complicated in that
+ *     it can be defined in terms of its points or its lines. It is also
+ *     where most of the "complex" engine stuff are done like depth calculations
+ *     or normal calculations.
+ * </p>
+ * <p>
+ *     A GTri, is stored by reference like any other GObject within a {@link Thing}.
+ *     it is also stored within {@link TriStateArea} for draw ordering.
+ * </p>
+ * @implSpec If defined by the lines, the lines need to connect to each other
+ * in order or else calculations will be off.
+ * @author Lehlogonolo Poole
+ * @see TriStateArea
+ * @see Thing
+ * @see GPoint
+ * @see GLine
  */
 public class GTri extends GObject{
     /**
@@ -35,13 +55,32 @@ public class GTri extends GObject{
      */
     public Vector3 normal;
 
+    // TODO: I actually have no clue where the fuck this is used?? Uhm find this out??
     private boolean hidden = false;
 
+    /**
+     * Constructs a GTri.
+     * @implSpec This is used by {@link ProjectFile#readFile(String, String, Throbber)} during a project file read and should only be used in that case.
+     * @param id The id of the triangle defined by the file
+     * @param col The colour of the triangle defined by the file
+     * @param legA The constructed reference of the first leg
+     * @param legB The constructed reference of the second leg
+     * @param legC The constructed reference of the third leg
+     * @return A GTri
+     */
     public static GTri fromRaw(String id, Color col, GLine legA, GLine legB, GLine legC) {
         GTri gt = new GTri(col, legA, legB, legC);
         gt.setId(UUID.fromString(id));
         return gt;
     }
+
+    /**
+     * Draws this triangle to the screen.
+     * @implSpec This is only called by {@link TriStateArea#draw(Graphics2D)}
+     * @implNote This respects {@link ViewType} and may or may not draw
+     * itself depending on the type.
+     * @param graphics2D The Graphics2D instance
+     */
     @Override
     public void draw(Graphics2D graphics2D) {
         setPivot(LegA.getStart().getPivot().add(LegB.getStart().getPivot()).add(LegC.getStart().getPivot()).div(3));
@@ -67,6 +106,9 @@ public class GTri extends GObject{
         LegC.draw(graphics2D);
     }
 
+    /**
+     * Private method to draw the triangle's distance depth and normal overlays.
+     */
     private void drawDist() {
                 Static.renderer.scheduleOverlap(getId(), g -> {
                             if (J3DSettings.isShowTriDistances()) {
@@ -116,12 +158,19 @@ public class GTri extends GObject{
 
     /**
      * Calculates the Euclidean distance from the triangle's pivot to the camera position.
-     * @return
+     * @return The Euclidean distance.
      */
     public double euclideanDist() {
         return getPivot().sub(Static.camera.getPosition()).magnitude();
     }
 
+    /**
+     * Draws this triangle to the screen in its selected state.
+     * @implSpec This is only called by {@link TriStateArea#draw(Graphics2D)}
+     * @implNote This respects {@link ViewType} and may or may not draw
+     * itself depending on the type.
+     * @param graphics2D The Graphics2D instance
+     */
     @Override
     public void drawSelected(Graphics2D graphics2D) {
         setPivot(LegA.getStart().getPivot().add(LegB.getStart().getPivot()).add(LegC.getStart().getPivot()).div(3));
@@ -174,6 +223,13 @@ public class GTri extends GObject{
         drawDist();
     }
 
+    /**
+     * Constructs a new GTri from 3 lines.
+     * @param c The colour.
+     * @param A The first line.
+     * @param B The second line.
+     * @param C The third line.
+     */
     public GTri(Color c, GLine A, GLine B, GLine C) {
         super(c);
         Vector3[] points = {
@@ -212,23 +268,6 @@ public class GTri extends GObject{
         this.hidden = hidden;
     }
 
-    public static class Event extends EventPayload {
-
-        public GLine[] LegA = new GLine[2];
-        public GLine[] LegB = new GLine[2];
-        public GLine[] LegC = new GLine[2];
-
-        /**
-         * Default Constructor for EventPayload
-         *
-         * @param e The initiator of the broadcast.
-         * @param r The Renderer instance.
-         */
-        public Event(EventEmitter e, Renderer r) {
-            super(e, r);
-        }
-    }
-
     /**
      * Calculates the normal vector of the triangle given three vertices.
      * @param A The first vertex of the triangle.
@@ -241,19 +280,34 @@ public class GTri extends GObject{
         normal = AB.cross(AC).normalize();
     }
 
-
+    /**
+     * Gets Leg A
+     * @return GLine
+     */
     public GLine getLegA() {
         return LegA;
     }
 
+    /**
+     * Gets Leg B
+     * @return GLine
+     */
     public GLine getLegB() {
         return LegB;
     }
 
+    /**
+     * Gets Leg C
+     * @return GLine
+     */
     public GLine getLegC() {
         return LegC;
     }
 
+    /**
+     * Calculates the area of the triangle.
+     * @return The area.
+     */
     public double area() {
         Vector3 A = LegA.getStart().getPivot();
         Vector3 B = LegB.getStart().getPivot();
@@ -267,6 +321,10 @@ public class GTri extends GObject{
         return col.toString() + " GTri";
     }
 
+    /**
+     * @implNote This also deletes it's child lines and unregisters itself
+     * from the {@link TriStateArea}
+     */
     @Override
     public boolean deleteSelf() {
         super.deleteSelf();

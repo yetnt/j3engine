@@ -3,10 +3,15 @@ package com.j3d.engine.geometry.geo3d.matrix;
 /**
  * Represents a final, specialized 3x3 matrix.
  * <p>
- * This class provides a concrete and optimized implementation for a 3x3 matrix,
+ * This class provides a concrete and optimised implementation for a 3x3 matrix,
  * commonly used for 2D transformations (in homogeneous coordinates) or 3D rotations.
  * It implements the {@link MatrixInterface} and ensures that all instances are
  * correctly sized.
+ * @author Lehlogonolo Poole
+ * @see MatrixMath
+ * @see MatrixInterface
+ * @see Vector3
+ * @see Matrix4
  */
 public final class Matrix3 implements MatrixInterface {
     /**
