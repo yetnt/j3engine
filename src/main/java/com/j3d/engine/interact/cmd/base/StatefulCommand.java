@@ -4,6 +4,7 @@ import com.j3d.Static;
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.SafeJLabel;
+import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.selection.SelectionManager;
 
 import javax.swing.*;
@@ -64,33 +65,33 @@ public interface StatefulCommand<T> {
         onStart(o); // Fire the starting stuff
 
         // keystroke for when they hit enter
-        KeyStroke enter = Static.keybinds.addOneShotKeyBinding(
-                KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false),
-                name + "n",
-                new AbstractAction() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        onEnter(e, o);
-                        Static.mainFrame.repaint();
-                        CommandsManager.clearCurrent();
-                    }
-                }
-        );
+        J3Key enter = new J3Key(name + "n", true)
+                .setKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false))
+                .setAction(
+                        new AbstractAction() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                onEnter(e, o);
+                                Static.mainFrame.repaint();
+                                CommandsManager.clearCurrent();
+                            }
+                        });
+        Static.keybinds.registerJ3Key(enter);
 
         // keystroke for when they bail with escape
-         Static.keybinds.addOneShotKeyBinding(
-                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false),
-                name + "esc",
-                new AbstractAction() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (!CommandsManager.isCurrentStatefulRunning(t)) return;
-                        onEsc(e, o);
-                        Static.keybinds.removeKeyBinding(enter);
-                        Static.mainFrame.repaint();
-                        CommandsManager.clearCurrent();
-                    }
-                }
-        );
+        J3Key esc = new J3Key(name + "esc", true)
+                .setKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false))
+                .setAction(
+                        new AbstractAction() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                if (!CommandsManager.isCurrentStatefulRunning(t)) return;
+                                onEsc(e, o);
+                                Static.keybinds.removeJ3Key(enter.getId());
+                                Static.mainFrame.repaint();
+                                CommandsManager.clearCurrent();
+                            }
+                        });
+        Static.keybinds.registerJ3Key(esc);
     }
 }

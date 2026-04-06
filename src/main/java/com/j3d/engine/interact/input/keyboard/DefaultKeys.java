@@ -1,6 +1,7 @@
 package com.j3d.engine.interact.input.keyboard;
 
 import com.j3d.Static;
+import com.j3d.engine.interact.selection.SelectionMouseOwner;
 import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.interact.selection.SelectionUtils;
 import com.j3d.settings.Settings;
@@ -13,7 +14,17 @@ import static com.j3d.Static.camera;
 import static com.j3d.engine.interact.input.keyboard.KeyBindings.commandPaletteFocusOwner;
 import static com.j3d.ui.engine.EngineFrame.commandPallete;
 
+/**
+ * The default key binds within J3Engine.
+ * @implSpec You should probably not change the default action of these...
+ * @author Lehlogonolo Poole
+ * @see KeyBindings
+ * @see J3Key
+ */
 public enum DefaultKeys {
+    /**
+     * keystroke to directly focus into the command palette.
+     */
     FOCUS_COMMAND_PALETTE(
             new J3Key(
                     "focusCommandPalette",
@@ -26,6 +37,9 @@ public enum DefaultKeys {
                     }
             )
     ),
+    /**
+     * keystroke to escape out of the command palette's focus.
+     */
     DEFOCUS_COMMAND_PALETTE(
             new J3Key(
                     "defocusCommandPalette",
@@ -40,6 +54,9 @@ public enum DefaultKeys {
                     }
             )
     ),
+    /**
+     * keystroke to move the camera forward (along the forward vector).
+     */
     MOVE_CAM_FORWARD(
             new J3Key(
                     "moveCameraFoward",
@@ -59,6 +76,9 @@ public enum DefaultKeys {
                     }
             )
     ),
+    /**
+     * keystroke to move the camera backward (along the forward vector).
+     */
     MOVE_CAM_BACKWARD(
             new J3Key(
                     "moveCameraBackward",
@@ -78,6 +98,9 @@ public enum DefaultKeys {
                     }
             )
     ),
+    /**
+     * keystroke to move the camera left (along the right vector).
+     */
     MOVE_CAMERA_LEFT(
             new J3Key(
                     "moveCameraLeft",
@@ -97,6 +120,9 @@ public enum DefaultKeys {
                     }
             )
     ),
+    /**
+     * keystroke to move the camera right (along the right vector).
+     */
     MOVE_CAMERA_RIGHT(
             new J3Key(
                     "moveCameraRight",
@@ -116,6 +142,9 @@ public enum DefaultKeys {
                     }
             )
     ),
+    /**
+     * keystroke to move the camera up (along the up vector).
+     */
     MOVE_CAMERA_UP(
             new J3Key(
                     "moveCameraUp",
@@ -135,6 +164,9 @@ public enum DefaultKeys {
                     }
             )
     ),
+    /**
+     * keystroke to move the camera down (along the up vector).
+     */
     MOVE_CAMERA_DOWN(
             new J3Key(
                     "moveCameraDown",
@@ -154,6 +186,10 @@ public enum DefaultKeys {
                     }
             )
     ),
+    /**
+     * Paired with {@link SelectionMouseOwner} where if the user holds down I while making a selection
+     * it will switch to the subtract selection mode. This is then reset by {@link DefaultKeys#SELECT_SUBTRACT_UP}
+     */
     SELECT_SUBTRACT_DOWN(
             new J3Key(
                     "selectSubtract",
@@ -166,6 +202,10 @@ public enum DefaultKeys {
                     }
             )
     ),
+    /**
+     * Wrapper of {@link KeyBindings#clearInferredSelectionType}
+     * @see DefaultKeys#SELECT_SUBTRACT_DOWN
+     */
     SELECT_SUBTRACT_UP(
             new J3Key(
                     "selectSubtractUp",
@@ -173,6 +213,10 @@ public enum DefaultKeys {
                     KeyBindings.clearInferredSelectionType
             )
     ),
+    /**
+     * Paired with {@link SelectionMouseOwner} where if the user holds down Shift + I while making a selection
+     * it will switch to the add selection mode. This is then reset by {@link DefaultKeys#SELECT_ADD_UP}
+     */
     SELECT_ADD_DOWN(
             new J3Key(
                     "selectAdd",
@@ -185,6 +229,10 @@ public enum DefaultKeys {
                     }
             )
     ),
+    /**
+     * Wrapper of {@link KeyBindings#clearInferredSelectionType}
+     * @see DefaultKeys#SELECT_ADD_DOWN
+     */
     SELECT_ADD_UP(
             new J3Key(
                     "selectAddUp",

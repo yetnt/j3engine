@@ -4,6 +4,7 @@ import com.j3d.Static;
 import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.interact.selection.SelectionUtils;
 import com.j3d.ui.engine.CommandPallete;
+import com.j3d.ui.engine.EngineFrame;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -16,19 +17,22 @@ import java.util.UUID;
 /**
  * A class that manages the key bindings for the application. It allows for easy addition and removal
  * of key bindings, and handles the actions associated with each key binding.
+ * @implSpec This does not include accelerators defined by {@link EngineFrame}.
+ * Those are keybinds which cannot be changed and are listed within {@link KeyBindings#prohibited}
+ * @author Lehlogonolo Poole
+ * @see EngineFrame
+ * @see J3Key
+ * @see InputMap
+ * @see ActionMap
  */
 public class KeyBindings {
-
-    static AbstractAction clearInferredSelectionType = new AbstractAction() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            SelectionUI.inferredSelection = SelectionUtils.InferredSelectionType.NONE;
-        }
-    };
 
     private final InputMap inputMap;
     private final ActionMap actionMap;
 
+    /**
+     * List of registered keys.
+     */
     private ArrayList<J3Key> keys = new ArrayList<>();
 
     /**
@@ -40,33 +44,92 @@ public class KeyBindings {
      */
     private ArrayList<KeyStroke> prohibited = new ArrayList<>(
             List.of(
+                    // TODO: Programmatically go through the JMenuBar and make this list.
                     KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK), // Copy
                     KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK), // Paste
                     KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK), // Cut
                     KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK), // Undo
-                    KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK)  // Redo
+                    KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK), // Redo
+                    KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK), // Save
+                    KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK), // Open
+                    KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK), // New
+                    KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.ALT_DOWN_MASK),  // Settings
+                    KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.SHIFT_DOWN_MASK),// Redraw
+                    KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.SHIFT_DOWN_MASK),// Reset Cam
+                    KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.SHIFT_DOWN_MASK),// Reset Position
+                    KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.SHIFT_DOWN_MASK),// Reset Orientation
+                    // Export Scene as PNG
+                    KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK)
+
             )
     );
 
-    public void registerJ3Key(J3Key key) {
-        if (keys.contains(key)) return;
-        if (prohibited.contains(key.getKeyStroke())) {
-            Static.log.error("Attempted to add prohibited key binding: " + key.getKeyStroke());
-            return;
+    /** Initialises the key bindings for the application.
+     * @param im the input map to use for key bindings
+     * @param am the action map to use for key bindings
+     */
+    public KeyBindings(InputMap im, ActionMap am) {
+        inputMap = im;
+        actionMap = am;
+
+        for (DefaultKeys key : DefaultKeys.values()) {
+            rJ3Key(
+                    key.getKey()
+            );
         }
+    }
+
+
+    /**
+     * Registers a J3Key. unsafely.
+     * @implSpec This bypasses all the hecks and guard rails. Specifically for when they've already been
+     * checked or if we're in {@link #KeyBindings(InputMap, ActionMap)}
+     * where we're implementing the default trusted keys.
+     * @param key the J3Key to register
+     */
+    private void rJ3Key(J3Key key) {
         keys.add(key);
         inputMap.put(key.getKeyStroke(), key.getId());
         actionMap.put(
                 key.getId(),
-                key.isOneShot() ? new AbstractAction() {
+                new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        key.getAction().actionPerformed(e);
-                        removeJ3Key(key.getId());
+                        key.call(e);
+                        if (key.isOneShot()) removeJ3Key(key.getId());
                     }
-                } : key.getAction());
+                });
     }
 
+    /**
+     * Registers a J3Key
+     * @param key the J3Key to register
+     */
+    public void registerJ3Key(J3Key key) {
+        if (keys.contains(key)) {
+            Static.log.error("Attempted to add duplicate J3Key: " + key.getName());
+            return;
+        }
+        if (prohibited.contains(key.getKeyStroke())) {
+            Static.log.error("Attempted to add prohibited key binding: " + key.getKeyStroke());
+            return;
+        }
+        if (keys.stream().anyMatch(k -> k.getKeyStroke().equals(key.getKeyStroke()))) {
+            Static.log.error("Attempted to add duplicate key binding: " + key.getKeyStroke());
+            return;
+        }
+        if (keys.stream().anyMatch(k -> k.getName().equals(key.getName()))) {
+            Static.log.error("Attempted to add duplicate key name: " + key.getName());
+            return;
+        }
+        rJ3Key(key);
+    }
+
+    /**
+     * Removes a J3Key
+     * @param id the id of the J3Key to remove
+     * @return the J3Key that was removed
+     */
     public J3Key removeJ3Key(UUID id) {
         J3Key key = keys.stream().filter(k -> k.getId().equals(id)).findFirst().orElse(null);
         if (key == null) return null;
@@ -74,171 +137,6 @@ public class KeyBindings {
         inputMap.remove(key.getKeyStroke());
         actionMap.remove(key.getId());
         return key;
-    }
-
-    /** Initialises the key bindings for the application.
-     * @param im the input map to use for key bindings
-     * @param am the action map to use for key bindings
-     * @param cmdP the command palette to focus/defocus with key bindings
-     */
-    public KeyBindings(InputMap im, ActionMap am, CommandPallete cmdP) {
-        inputMap = im;
-        actionMap = am;
-
-        for (DefaultKeys key : DefaultKeys.values()) {
-            registerJ3Key(
-                    key.getKey()
-            );
-        }
-
-//        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, 0), "focusCommandPallete");
-//        am.put("focusCommandPallete", new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                cmdP.inputField.requestFocusInWindow();
-//            }
-//        });
-//        registerJ3Key(
-//                new J3Key(
-//                        "focusCommandPallete",
-//                        KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, 0),
-//                        new AbstractAction() {
-//                            @Override
-//                            public void actionPerformed(ActionEvent e) {
-//                                cmdP.inputField.requestFocusInWindow();
-//                            }
-//                        }
-//        );
-//
-//        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "defocusCommandPallete");
-//        am.put("defocusCommandPallete", new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                if (cmdP.inputField.isFocusOwner()) {
-//                    Static.mainFrame.requestFocusInWindow();
-//                }
-//            }
-//        });
-//
-//        // WASD and QE for camera movement
-//
-//        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), "moveCameraForward");
-//        am.put("moveCameraForward", new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                if (commandPaletteFocusOwner(cmdP)) return;
-//                double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
-//                camera.setPosition(
-//                        camera.getPosition().add(
-//                                camera.getForward().mult(mvSpeed)
-//                        )
-//                );
-//                Static.mainFrame.repaint();
-//            }
-//        });
-//        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), "moveCameraBackward");
-//        am.put("moveCameraBackward", new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                if (commandPaletteFocusOwner(cmdP)) return;
-//                double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
-//                camera.setPosition(
-//                        camera.getPosition().sub(
-//                                camera.getForward().mult(mvSpeed)
-//                        )
-//                );
-//                Static.mainFrame.repaint();
-//            }
-//        });
-//        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), "moveCameraLeft");
-//        am.put("moveCameraLeft", new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                if (commandPaletteFocusOwner(cmdP)) return;
-//                double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
-//                camera.setPosition(
-//                        camera.getPosition().sub(
-//                                camera.getRight().mult(mvSpeed)
-//                        )
-//                );
-//                Static.mainFrame.repaint();
-//            }
-//        });
-//        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0), "moveCameraRight");
-//        am.put("moveCameraRight", new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                if (commandPaletteFocusOwner(cmdP)) return;
-//                double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
-//                camera.setPosition(
-//                        camera.getPosition().add(
-//                                camera.getRight().mult(mvSpeed)
-//                        )
-//                );
-//                Static.mainFrame.repaint();
-//            }
-//        });
-//        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, 0), "moveCameraUp");
-//        am.put("moveCameraUp", new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                if (commandPaletteFocusOwner(cmdP)) return;
-//                double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
-//                camera.setPosition(
-//                        camera.getPosition().add(
-//                                camera.getUp().mult(mvSpeed)
-//                        )
-//                );
-//                Static.mainFrame.repaint();
-//            }
-//        });
-//        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_E, 0), "moveCameraDown");
-//        am.put("moveCameraDown", new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                if (commandPaletteFocusOwner(cmdP)) return;
-//                double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
-//                camera.setPosition(
-//                        camera.getPosition().sub(
-//                                camera.getUp().mult(mvSpeed)
-//                        )
-//                );
-//                Static.mainFrame.repaint();
-//            }
-//        });
-//
-//        // I selection
-//
-//        AbstractAction clearInferredSelectionType = new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                SelectionUI.inferredSelection = SelectionUtils.InferredSelectionType.NONE;
-//            }
-//        };
-//
-//        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, 0, false), "selectSubtract");
-//        am.put("selectSubtract", new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                SelectionUI.inferredSelection = SelectionUtils.InferredSelectionType.SUBTRACT;
-//            }
-//        });
-//        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, 0, true), "selectSubtractUp");
-//        am.put("selectSubtractUp", clearInferredSelectionType);
-//
-//        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.SHIFT_DOWN_MASK, false), "selectAdd");
-//        am.put("selectAdd", new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                SelectionUI.inferredSelection = SelectionUtils.InferredSelectionType.ADD;
-//            }
-//        });
-//        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.SHIFT_DOWN_MASK, true), "selectAddUp");
-//        am.put("selectAddUp", clearInferredSelectionType);
-    }
-
-    public static boolean commandPaletteFocusOwner(CommandPallete cmdP) {
-        return cmdP.inputField.isFocusOwner();
     }
 
     /** Returns the action map containing the actions bound to keys.
@@ -255,54 +153,15 @@ public class KeyBindings {
         return inputMap;
     }
 
-    /**
-     * Adds a key binding to the input and action maps.
-     * @param keyStroke the keystroke to bind
-     * @param actionName the name of the action to bind (used as the key in the action map)
-     * @param action the action to perform when the keystroke is pressed
-     */
-    public void addKeyBinding(KeyStroke keyStroke, String actionName, Action action) {
-        if (prohibited.contains(keyStroke)) {
-            Static.log.error("Attempted to add prohibited key binding: " + keyStroke);
-            return;
+    public static AbstractAction clearInferredSelectionType = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            SelectionUI.inferredSelection = SelectionUtils.InferredSelectionType.NONE;
         }
-        inputMap.put(keyStroke, actionName);
-        actionMap.put(actionName, action);
-    }
+    };
 
-    /**
-     * Removes a key binding from the input and action maps.
-     * @param keyStroke the keystroke to unbind
-     */
-    public void removeKeyBinding(KeyStroke keyStroke) {
-        if (prohibited.contains(keyStroke)) {
-            Static.log.error("Attempted to remove prohibited key binding: " + keyStroke);
-            return;
-        }
-        String actionName = (String) inputMap.get(keyStroke);
-        if (actionName != null) {
-            inputMap.remove(keyStroke);
-            actionMap.remove(actionName);
-        }
-    }
-
-    /**
-     * Adds a one-shot key binding that performs the given action and then removes itself.
-     * @param keyStroke the keystroke to bind
-     * @param actionName the name of the action to bind (used as the key in the action map)
-     * @param action the action to perform when the keystroke is pressed
-     */
-    public KeyStroke addOneShotKeyBinding(KeyStroke keyStroke, String actionName, Action action) {
-        Action oneShotAction = new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                action.actionPerformed(e);
-                removeKeyBinding(keyStroke);
-            }
-        };
-        addKeyBinding(keyStroke, actionName, oneShotAction);
-
-        return keyStroke;
+    public static boolean commandPaletteFocusOwner(CommandPallete cmdP) {
+        return cmdP.inputField.isFocusOwner();
     }
 
 }
