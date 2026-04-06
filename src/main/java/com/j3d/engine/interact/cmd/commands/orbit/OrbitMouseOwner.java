@@ -1,4 +1,4 @@
-package com.j3d.engine.interact.cmd.commands.pan;
+package com.j3d.engine.interact.cmd.commands.orbit;
 
 import com.j3d.Static;
 import com.j3d.engine.interact.input.mouse.MOwner;

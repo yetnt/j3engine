@@ -3,7 +3,7 @@ package com.j3d.engine.interact.cmd;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.commands.*;
 import com.j3d.engine.interact.cmd.base.Command;
-import com.j3d.engine.interact.cmd.commands.pan.OrbitCmd;
+import com.j3d.engine.interact.cmd.commands.orbit.OrbitCmd;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 import com.j3d.engine.interact.cmd.commands.thing.ThingCmd;
 
