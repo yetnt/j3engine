@@ -10,7 +10,7 @@ import com.j3d.J3DSettings;
 import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.interact.cmd.commands.orbit.OrbitCmd;
 import com.j3d.engine.interact.cmd.commands.transform.ScaleSelection;
-import com.j3d.engine.interact.input.KeyBindings;
+import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.engine.Logger;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.ScreenPoint;
@@ -41,7 +41,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 
 import static com.j3d.J3DSettings.jMenuBarOffsetY;
-import static com.j3d.engine.interact.input.KeyBindings.commandPaletteFocusOwner;
+import static com.j3d.engine.interact.input.keyboard.KeyBindings.commandPaletteFocusOwner;
 
 import com.j3d.engine.draw.ViewType;
 import com.j3d.ui.util.AreYouSure;
@@ -55,7 +55,7 @@ public class EngineFrame extends javax.swing.JFrame {
     private static MOwner mouseOwner = MOwner.SELECTION;
     public static ScreenPoint mousePos = null;
     public static ScreenPoint[] selectionArea = new ScreenPoint[2];
-    private static final CommandPallete commandPallete = new CommandPallete();
+    public static final CommandPallete commandPallete = new CommandPallete();
 
     public static void setMouseOwner(MOwner owner) {
         mouseOwner = owner == null ? MOwner.SELECTION : owner;
