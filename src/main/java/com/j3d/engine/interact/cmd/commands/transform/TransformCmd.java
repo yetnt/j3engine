@@ -1,8 +1,10 @@
 package com.j3d.engine.interact.cmd.commands.transform;
 
 import com.j3d.Static;
+import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
+import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.selection.SelectionManager;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventReactor;
@@ -49,25 +51,5 @@ public class TransformCmd extends Command {
         }
         SelectionManager.selectionMouseOwner.clearSelectionSquare();
         dispatchToSubcommands(subcommandNamei, logLabel, args);
-    }
-
-    /**
-     * Dispatches to the appropriate selection subcommand based on the provided option.
-     * This method is called by the subcommands to perform their specific actions.
-     *
-     * @param option The selection option indicating which action to perform (rotate, translate, scale).
-     */
-    public static void selectDispatch(SC_Option option) {
-        switch (option) {
-            case ROTATE -> {
-                // j
-            }
-            case TRANSLATE -> {
-                // a
-            }
-            case SCALE -> {
-
-            }
-        }
     }
 }

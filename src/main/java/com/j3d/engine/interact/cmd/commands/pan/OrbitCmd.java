@@ -29,7 +29,7 @@ public class OrbitCmd extends Command implements StatefulCommand<Rotation> {
     }
 
     @Override
-    public void onStart() {
+    public void onStart(Rotation o) {
         orbitMouseOwner.requestOwnership();
         CursorManager.set(CursorNames.HAND_GRAB);
     }

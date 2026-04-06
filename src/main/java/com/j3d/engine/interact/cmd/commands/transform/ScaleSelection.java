@@ -2,13 +2,18 @@ package com.j3d.engine.interact.cmd.commands.transform;
 
 import com.j3d.Static;
 import com.j3d.engine.geometry.geo2d.GPoint;
+import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.engine.interact.cmd.CommandParser;
+import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.SafeJLabel;
+import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.base.Subcommand;
 import com.j3d.engine.interact.cmd.commands.transform.handlers.Handle;
 import com.j3d.engine.interact.cmd.commands.transform.handlers.HandleType;
 import com.j3d.engine.interact.cmd.commands.transform.handlers.ScaleMouseOwner;
 import com.j3d.engine.interact.selection.SelectionManager;
+import com.j3d.ui.engine.EngineFrame;
 
 import javax.swing.*;
 
@@ -21,8 +26,9 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-public class ScaleSelection extends Subcommand {
+public class ScaleSelection extends Subcommand  implements StatefulCommand<ArrayList<GPoint>> {
 
+    private UUID overlapId;
     public static ScaleMouseOwner scaleMouseOwner = new ScaleMouseOwner();
 
     ScaleSelection() {
@@ -32,8 +38,13 @@ public class ScaleSelection extends Subcommand {
 
     @Override
     public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
-        scaleMouseOwner.requestOwnership();
-        Static.commandParser.toggleInputFieldDisabled();
+        CommandsManager.setAsCurrent(this);
+        // previous current was the parent command and since a subcommand is called
+        // by its parent and cant go through the CommandsParser.run() stack to be
+        // classified as the current stateful, the stateful command if a subcommand
+        // requires to classify itself. This is safe as its parent command was the current
+        // running command.
+
         // Simple 3 dots
         ArrayList<GPoint> points = Static.renderer.getSelected()
                 .stream()
@@ -41,13 +52,21 @@ public class ScaleSelection extends Subcommand {
                 .map(obj -> (GPoint) obj)
                 .collect(Collectors.toCollection(ArrayList::new));
 
+        run(this, "scaleCmd", points);
+    }
+
+    @Override
+    public void onStart(ArrayList<GPoint> o) {
+        scaleMouseOwner.requestOwnership();
+        System.out.println("wuzup");
+        Static.commandParser.toggleInputFieldDisabled();
 
         Vector3 sum = Vector3.reduceToVector3(
-                points.stream().map(GPoint::getPivot).collect(Collectors.toCollection(ArrayList::new))
+                o.stream().map(GPoint::getPivot).collect(Collectors.toCollection(ArrayList::new))
                 , Vector3::add);
-        Vector3 center = sum.div(points.size());
+        Vector3 center = sum.div(o.size());
         double farPosX = Vector3.reduce(
-                points.stream().map(GPoint::getPivot).collect(Collectors.toCollection(ArrayList::new)),
+                o.stream().map(GPoint::getPivot).collect(Collectors.toCollection(ArrayList::new)),
                 (v1, v2) -> {
                     if (v1.getX() > v2)
                         return v1.getX();
@@ -56,7 +75,7 @@ public class ScaleSelection extends Subcommand {
                 0d
         );
         double farPosY = Vector3.reduce(
-                points.stream().map(GPoint::getPivot).collect(Collectors.toCollection(ArrayList::new)),
+                o.stream().map(GPoint::getPivot).collect(Collectors.toCollection(ArrayList::new)),
                 (v1, v2) -> {
                     if (v1.getY() > v2)
                         return v1.getY();
@@ -65,7 +84,7 @@ public class ScaleSelection extends Subcommand {
                 0d
         );
         double farPosZ = Vector3.reduce(
-                points.stream().map(GPoint::getPivot).collect(Collectors.toCollection(ArrayList::new)),
+                o.stream().map(GPoint::getPivot).collect(Collectors.toCollection(ArrayList::new)),
                 (v1, v2) -> {
                     if (v1.getZ() > v2)
                         return v1.getZ();
@@ -100,7 +119,8 @@ public class ScaleSelection extends Subcommand {
 
         scaleMouseOwner.setHandles(new ArrayList<>(List.of(X, Y, Z)));
         Consumer<Graphics2D> drawScaleHandle = g -> {
-
+            // this draws the handles such that the user can itneract with it
+            // in real time and watch it warp and change.
             X.draw(g);
             Y.draw(g);
             Z.draw(g);
@@ -108,23 +128,28 @@ public class ScaleSelection extends Subcommand {
 
         };
 
-        UUID handleIdSelect = UUID.randomUUID();
+        overlapId = UUID.randomUUID();
 
-        Static.renderer.scheduleOverlap(handleIdSelect, drawScaleHandle);
+        Static.renderer.scheduleOverlap(overlapId, drawScaleHandle);
+    }
 
-        Static.keybinds.addOneShotKeyBinding(
-                KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
-                "confirmScale",
-                new AbstractAction() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        Static.renderer.removeOverlap(handleIdSelect);
-                        SelectionManager.selectionMouseOwner.requestOwnership();
-                        Static.commandParser.toggleInputFieldDisabled();
-                        Static.renderer.deselectAll();
-                        Static.mainFrame.repaint();
-                    }
-                }
-        );
+    private void finished() {
+        Static.renderer.removeOverlap(overlapId);
+        Static.renderer.deselectAll();
+        Static.mainFrame.repaint();
+    }
+
+    @Override
+    public void onEnter(ActionEvent e, ArrayList<GPoint> o) {
+        // later wrap as Action for the final ransform appled.
+        EngineFrame.setMouseOwner(null);
+        finished();
+    }
+
+    @Override
+    public void onEsc(ActionEvent e, ArrayList<GPoint> o) {
+        // clear transforms done.
+        EngineFrame.setMouseOwner(null);
+        finished();
     }
 }
