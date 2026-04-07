@@ -156,6 +156,20 @@ public class KeyBindings {
     }
 
     /**
+     * Recursive decent into links to check for modifier collisions
+     * @param leader The leader key
+     * @return An arraylist of the child's modifiers.
+     */
+    private ArrayList<Integer> getChildModifiers(J3Key leader) {
+        if (leader.getLink() == null) return new ArrayList<>();
+        J3Key child = leader.getLink().first;
+        return new ArrayList<>() {{
+            add(child.getKeyStroke().getModifiers());
+            addAll(getChildModifiers(child));
+        }};
+    }
+
+    /**
      * Updates the keystroke of a J3Key. If an existing J3Key with the same keystroke is found,
      * it swaps the 2 keys.
      * @param old The old keystroke of this key.
@@ -165,6 +179,11 @@ public class KeyBindings {
     public UpdatedJ3Key rebindJ3KeyKeystroke(KeyStroke old, J3Key key) {
         if (prohibited.contains(key.getKeyStroke())) {
             Static.log.error("Attempted to add prohibited key binding: " + key.getKeyStroke());
+            key.setKeyStroke(old);
+            return new UpdatedJ3Key();
+        }
+        if (getChildModifiers(key).contains(key.getKeyStroke().getModifiers())) {
+            Static.log.error("Attempted to update a leader key with a new modifier that would cause a collision with a child key.");
             key.setKeyStroke(old);
             return new UpdatedJ3Key();
         }
