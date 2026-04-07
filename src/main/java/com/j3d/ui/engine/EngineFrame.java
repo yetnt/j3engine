@@ -9,7 +9,10 @@ import com.j3d.Executor;
 import com.j3d.J3DSettings;
 import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.interact.cmd.commands.orbit.OrbitCmd;
+import com.j3d.engine.interact.cmd.commands.transform.RotateSelection;
 import com.j3d.engine.interact.cmd.commands.transform.ScaleSelection;
+import com.j3d.engine.interact.cmd.commands.transform.TranslateSelection;
+import com.j3d.engine.interact.cmd.commands.transform.mouse.TranslateMouseOwner;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.engine.Logger;
 import com.j3d.engine.Renderer;
@@ -139,6 +142,8 @@ public class EngineFrame extends javax.swing.JFrame {
         owners.add(SelectionManager.selectionMouseOwner);
         owners.add(new NoMouseOwner());
         owners.add(ScaleSelection.scaleMouseOwner);
+        owners.add(TranslateSelection.translateMouseOwner);
+        owners.add(RotateSelection.rotateMouseOwner);
         owners.add(OrbitCmd.orbitMouseOwner);
 
         owners.forEach(this::addMouseListener);

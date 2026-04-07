@@ -1,18 +1,140 @@
 package com.j3d.engine.interact.cmd.commands.transform;
 
+import com.j3d.Static;
+import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Subcommand;
+import com.j3d.engine.interact.cmd.commands.transform.handlers.HandleType;
+import com.j3d.engine.interact.cmd.commands.transform.mouse.TranslateMouseOwner;
+import com.j3d.engine.interact.input.keyboard.J3Key;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 
-public class TranslateSelection extends Subcommand {
+public class TranslateSelection extends AbstractTransform {
+
+    public static TranslateMouseOwner translateMouseOwner = new TranslateMouseOwner();
+
+    private static final double STEPS = 1;
 
     TranslateSelection() {
-        super("translate", "Translates the selection");
-        this.aliases("t", "trans").parseUsages();
-    }
+        super("translate", "Translates the selection", "translateCmd", translateMouseOwner);
+        this.aliases("t", "trans").args(
+                argSet
+        ).parseUsages();
 
-    @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
+        keys.add(
+                // Left Arrow
+                new J3Key(
+                        "translateArrowLeft",
+                        KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0),
+                        new AbstractAction() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                // this arrow is only functional when no handle is selected
+                                if (translateMouseOwner.selectedHandle != null) return;
+                                references.forEach(
+                                        gpoint ->
+                                            gpoint.setPivot(
+                                                    gpoint.getPivot().sub(new Vector3(STEPS, 0, 0))
+                                            )
+                                );
+                                Static.mainPanel.repaint();
+                            }
+                        }
+                )
+        );
 
+        keys.add(
+                // Right Arrow
+                new J3Key(
+                        "translateArrowRight",
+                        KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0),
+                        new AbstractAction() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                // this arrow is only functional when no handle is selected
+                                if (translateMouseOwner.selectedHandle != null) return;
+                                references.forEach(
+                                        gpoint ->
+                                                gpoint.setPivot(
+                                                        gpoint.getPivot().add(new Vector3(STEPS, 0, 0))
+                                                )
+                                );
+                                Static.mainPanel.repaint();
+                            }
+                        }
+                )
+        );
+
+        keys.add(
+                // Up Arrow
+                new J3Key(
+                        "translateArrowUp",
+                        KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0),
+                        new AbstractAction() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                references.forEach(
+                                        gpoint -> {
+                                            if (translateMouseOwner.selectedHandle == null) {
+                                                gpoint.setPivot(
+                                                        gpoint.getPivot().add(new Vector3(0, 0, STEPS))
+                                                );
+                                                return;
+                                            }
+
+                                            gpoint.setPivot(
+                                                    gpoint.getPivot().add(
+                                                            switch (translateMouseOwner.selectedHandle.handleType()) {
+                                                                case HandleType.X -> new Vector3(STEPS, 0, 0);
+                                                                case HandleType.Y -> new Vector3(0, STEPS, 0);
+                                                                case HandleType.Z -> new Vector3(0, 0, STEPS);
+                                                            }
+                                                    )
+                                            );
+                                        }
+                                );
+                                Static.mainPanel.repaint();
+                            }
+                        }
+                )
+        );
+
+        keys.add(
+                // Down Arrow
+                new J3Key(
+                        "translateArrowDown",
+                        KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0),
+                        new AbstractAction() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                references.forEach(
+                                        gpoint -> {
+                                            if (translateMouseOwner.selectedHandle == null) {
+                                                gpoint.setPivot(
+                                                        gpoint.getPivot().sub(new Vector3(0, 0, STEPS))
+                                                );
+                                                return;
+                                            }
+
+                                            gpoint.setPivot(
+                                                    gpoint.getPivot().sub(
+                                                            switch (translateMouseOwner.selectedHandle.handleType()) {
+                                                                case HandleType.X -> new Vector3(STEPS, 0, 0);
+                                                                case HandleType.Y -> new Vector3(0, STEPS, 0);
+                                                                case HandleType.Z -> new Vector3(0, 0, STEPS);
+                                                            }
+                                                    )
+                                            );
+                                        }
+                                );
+                                Static.mainPanel.repaint();
+                            }
+                        }
+                )
+        );
     }
 }

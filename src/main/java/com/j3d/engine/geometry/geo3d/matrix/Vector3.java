@@ -57,6 +57,18 @@ public class Vector3 implements MatrixInterface {
         Z = 0;
     }
 
+    public Vector3(boolean empty) {
+        if (empty) {
+            X = Double.MAX_VALUE;
+            Y = Double.MAX_VALUE;
+            Z = Double.MAX_VALUE;
+        } else {
+            X = 0;
+            Y = 0;
+            Z = 0;
+        }
+    }
+
     /**
      * Creates a {@code Vector3} from a 3x1 {@link MatrixInterface}.
      *
