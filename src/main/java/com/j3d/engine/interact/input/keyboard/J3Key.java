@@ -1,7 +1,10 @@
 package com.j3d.engine.interact.input.keyboard;
 
+import com.j3d.utility.Pair;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.UUID;
 
 /**
@@ -15,6 +18,14 @@ import java.util.UUID;
  * </p>
  * <p>
  *     A J3Key can also represent a one shot key where it deregisters itself after clicking.
+ * </p>
+ * <p>
+ *     A J3key can also be linked to other keys. See {@link DefaultKeys#SELECT_SUBTRACT_DOWN}
+ *     for example which is the leader of a 4 keychain link. If it's {@code I} keybind is changed,
+ *     the children will also change along with their own respective keycode.
+ *     e.g. if {@code I} changes to {@code G+SHIFT}, and it was linked to {@code I+CTRL},
+ *     that will change to the new parent's code plus the child's original modifiers {@code G+SHIFT+CTRL}.
+ *     In a chain the leader's {@link KeyEvent} is what will cascade and not a child's parent.
  * </p>
  * @see KeyBindings
  * @see J3Key
@@ -33,6 +44,11 @@ public class J3Key {
     private Action action;
     private boolean actionReplaced = false;
     private boolean oneShot = false;
+    /**
+     * If this key has a normal version and is paired with another,
+     * this stores the key object, and it's modifiers.
+     */
+    private Pair<J3Key, Integer> link;
 
     /**
      * Default J3Key constructor
@@ -56,6 +72,22 @@ public class J3Key {
         this.name = name;
         this.keyStroke = keyStroke;
         this.action = action;
+    }
+
+    /**
+     * Marks another key as the child link of this key. Such that if this key were updated, the other key is
+     * also updated.
+     * @param otherKey the other key
+     * @param otherKeyModifiers the other key's modifiers
+     * @return this key for method chaining
+     * @implSpec Avoid using key linking unless you know for certain updating this key won't misconstrue
+     * with updating its pair. E.g. a key pair {@code P} and {@code CTRL+P}, where changing {@code P}
+     * to {@code S}, will change {@code CTRL+P} to {@code CTRL+S} which is prohibited and not checked
+     * under {@link KeyBindings}. Unless really needed, avoid using pairs.
+     */
+    public J3Key linkTo(J3Key otherKey, int otherKeyModifiers) {
+        this.link = new Pair<>(otherKey, otherKeyModifiers);
+        return this;
     }
 
     /**
@@ -93,6 +125,14 @@ public class J3Key {
     }
 
     /**
+     * Returns the child link of this key.
+     * @return the child link of this key and its modifiers.
+     */
+    public Pair<J3Key, Integer> getLink() {
+        return link;
+    }
+
+    /**
      * Whether the action of this key was replaced temporarily.
      * @return whether the action of this key was replaced temporarily
      */
@@ -124,6 +164,8 @@ public class J3Key {
      * Sets the keystroke of this key
      * @param keyStroke the keystroke to bind to
      * @return this key for method chaining
+     * @implSpec This only updates the object. You need to pass through {@link KeyBindings#rebindJ3KeyKeystroke(KeyStroke, J3Key)}
+     * for the update to cascade, and if the keystroke is prohibited, te method may rollback this choice.
      */
     public J3Key setKeyStroke(KeyStroke keyStroke) {
         this.keyStroke = keyStroke;

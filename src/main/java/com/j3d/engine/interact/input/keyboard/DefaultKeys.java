@@ -189,6 +189,7 @@ public enum DefaultKeys {
     /**
      * Paired with {@link SelectionMouseOwner} where if the user holds down I while making a selection
      * it will switch to the subtract selection mode. This is then reset by {@link DefaultKeys#SELECT_SUBTRACT_UP}
+     * @implSpec This is the leader of a 4 keychain link, the first child is {@link DefaultKeys#SELECT_SUBTRACT_UP}
      */
     SELECT_SUBTRACT_DOWN(
             new J3Key(
@@ -205,6 +206,8 @@ public enum DefaultKeys {
     /**
      * Wrapper of {@link KeyBindings#clearInferredSelectionType}
      * @see DefaultKeys#SELECT_SUBTRACT_DOWN
+     * @implSpec This is the child link to {@link DefaultKeys#SELECT_SUBTRACT_DOWN}
+     *
      */
     SELECT_SUBTRACT_UP(
             new J3Key(
@@ -216,6 +219,8 @@ public enum DefaultKeys {
     /**
      * Paired with {@link SelectionMouseOwner} where if the user holds down Shift + I while making a selection
      * it will switch to the add selection mode. This is then reset by {@link DefaultKeys#SELECT_ADD_UP}
+     * @implSpec This is a child link to {@link DefaultKeys#SELECT_SUBTRACT_UP}
+     * @see DefaultKeys#SELECT_SUBTRACT_DOWN
      */
     SELECT_ADD_DOWN(
             new J3Key(
@@ -232,6 +237,9 @@ public enum DefaultKeys {
     /**
      * Wrapper of {@link KeyBindings#clearInferredSelectionType}
      * @see DefaultKeys#SELECT_ADD_DOWN
+     * @see DefaultKeys#SELECT_SUBTRACT_DOWN
+     * @implSpec This is a child link to {@link DefaultKeys#SELECT_ADD_DOWN} and is the last child in the
+     * {@link DefaultKeys#SELECT_ADD_DOWN} chain.
      */
     SELECT_ADD_UP(
             new J3Key(

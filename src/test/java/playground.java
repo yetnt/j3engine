@@ -1,3 +1,5 @@
+import com.j3d.engine.interact.input.keyboard.DefaultKeys;
+import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.storage.db.*;
 import com.j3d.storage.db.api.SQLOperator;
 import com.j3d.storage.db.themes.CThemes;
@@ -11,8 +13,7 @@ import java.util.ArrayList;
 
 public class playground {
     public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        ArrayList<Theme> users = DatabaseManager.tblThemes.findWhere(CThemes.THEME_NAME, SQLOperator.LIKE, "*o*");
-        System.out.println(users);
+        J3Key key = DefaultKeys.MOVE_CAM_FORWARD.getKey();
     }
 
     public static void fb() {

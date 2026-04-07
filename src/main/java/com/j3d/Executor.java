@@ -1,6 +1,8 @@
 package com.j3d;
 
 import com.j3d.engine.geometry.ScreenPoint;
+import com.j3d.engine.interact.input.keyboard.DefaultKeys;
+import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.Renderer;
@@ -9,7 +11,10 @@ import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.react.actions.Action;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -63,6 +68,33 @@ public class Executor {
             g.fillOval(p2.x - circleSize / 2, p2.y - circleSize / 2, circleSize, circleSize);
             g.fillOval(z2.x - circleSize / 2, z2.y - circleSize / 2, circleSize, circleSize);
         });
+
+        // How to update a keystroke ->
+        /*
+        // make the new keystroke
+        KeyStroke newkeyStroke = KeyStroke.getKeyStroke(
+
+                KeyEvent.VK_M,
+                InputEvent.CTRL_DOWN_MASK,
+                false
+        );
+        // get the key
+        DefaultKeys SELECT_SUB = DefaultKeys.SELECT_SUBTRACT_DOWN;
+        // get the old keystroke
+        KeyStroke oldkeyStroke = SELECT_SUB.getKey().getKeyStroke();
+        // update the keystroke
+        SELECT_SUB.getKey().setKeyStroke(
+                newkeyStroke
+        );
+        // rebind the keystroke
+        KeyBindings.UpdatedJ3Key updatedJ3Key = Static.keybinds.rebindJ3KeyKeystroke(
+                oldkeyStroke,
+                SELECT_SUB.getKey()
+        );
+
+        if (updatedJ3Key.keyChangeSuccess) Static.log.println("WOHOOOO KEY CHANGE SUCCESS!!!! :)))");
+
+         */
     }
 
     /**

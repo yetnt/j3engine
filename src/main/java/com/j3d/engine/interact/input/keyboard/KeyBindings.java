@@ -5,6 +5,7 @@ import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.interact.selection.SelectionUtils;
 import com.j3d.ui.engine.CommandPallete;
 import com.j3d.ui.engine.EngineFrame;
+import com.j3d.utility.Pair;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -72,6 +73,20 @@ public class KeyBindings {
         inputMap = im;
         actionMap = am;
 
+        // TODO: Wherever keybinds can be changed Enforce only SELECT_SUBTRACT_DOWN as changeable and cannot have the SHIFT_DOWN_MASK as its links use it.
+        DefaultKeys.SELECT_SUBTRACT_DOWN.getKey().linkTo(
+                DefaultKeys.SELECT_SUBTRACT_UP.getKey(),
+                0
+        );
+        DefaultKeys.SELECT_SUBTRACT_UP.getKey().linkTo(
+                DefaultKeys.SELECT_ADD_DOWN.getKey(),
+                KeyEvent.SHIFT_DOWN_MASK
+        );
+        DefaultKeys.SELECT_ADD_DOWN.getKey().linkTo(
+                DefaultKeys.SELECT_ADD_UP.getKey(),
+                KeyEvent.SHIFT_DOWN_MASK
+        );
+
         for (DefaultKeys key : DefaultKeys.values()) {
             rJ3Key(
                     key.getKey()
@@ -125,6 +140,52 @@ public class KeyBindings {
         rJ3Key(key);
     }
 
+    private void updateLinks(J3Key leader, KeyStroke newKeyStroke) {
+        if (leader.getLink() == null) return;
+        Pair<J3Key, Integer> child = leader.getLink();
+        inputMap.remove(child.first.getKeyStroke());
+        child.first.setKeyStroke(
+                KeyStroke.getKeyStroke(
+                        newKeyStroke.getKeyCode(),
+                        child.second.intValue() | newKeyStroke.getModifiers(),
+                        child.first.getKeyStroke().isOnKeyRelease()
+                )
+        );
+        inputMap.put(child.first.getKeyStroke(), child.first.getId());
+        updateLinks(child.first, newKeyStroke);
+    }
+
+    /**
+     * Updates the keystroke of a J3Key. If an existing J3Key with the same keystroke is found,
+     * it swaps the 2 keys.
+     * @param old The old keystroke of this key.
+     * @param key The key in question
+     * @return An {@link UpdatedJ3Key} object that indicates the result of the update.
+     */
+    public UpdatedJ3Key rebindJ3KeyKeystroke(KeyStroke old, J3Key key) {
+        if (prohibited.contains(key.getKeyStroke())) {
+            Static.log.error("Attempted to add prohibited key binding: " + key.getKeyStroke());
+            key.setKeyStroke(old);
+            return new UpdatedJ3Key();
+        }
+        inputMap.remove(old);
+        J3Key other = null;
+        // since there is only ever a single key which can be matched, this while executes once.
+        while (keys.stream().filter(k -> !k.getId().equals(key.getId())).anyMatch(k -> k.getKeyStroke().equals(key.getKeyStroke()))) {
+            // swap, so set that J3Key to act on this old keystroke and same for the input map.
+            J3Key dupeKey = keys.stream().filter(k -> k.getKeyStroke().equals(key.getKeyStroke())).findFirst().orElse(null);
+            if (dupeKey == null) break;
+            inputMap.remove(dupeKey.getKeyStroke());
+            dupeKey.setKeyStroke(old);
+            inputMap.put(old, dupeKey.getId());
+            other = dupeKey;
+            updateLinks(dupeKey, old);
+        }
+        inputMap.put(key.getKeyStroke(), key.getId());
+        updateLinks(key, key.getKeyStroke());
+        return new UpdatedJ3Key().success().swappedWith(other);
+    }
+
     /**
      * Removes a J3Key
      * @param id the id of the J3Key to remove
@@ -162,6 +223,58 @@ public class KeyBindings {
 
     public static boolean commandPaletteFocusOwner(CommandPallete cmdP) {
         return cmdP.inputField.isFocusOwner();
+    }
+
+    /**
+     * UpdatedJ3Key is a return object of {@link KeyBindings#rebindJ3KeyKeystroke(KeyStroke, J3Key)}
+     * which represents the result of the update.
+     * @author Lehlogonolo Poole
+     * @see KeyBindings#rebindJ3KeyKeystroke(KeyStroke, J3Key)
+     * @see J3Key
+     */
+    public static class UpdatedJ3Key {
+        /**
+         * Whether this key was swapped with an existing key of the same keystroke.
+         */
+        public boolean swapped = false;
+        /**
+         * If {@link UpdatedJ3Key#swapped} is true, this holds the J3Key of the other key.
+         * Otherwise null.
+         */
+        public J3Key otherKey = null;
+        /**
+         * Whether the keystroke was successfully changed.
+         */
+        public boolean keyChangeSuccess = false;
+
+        /**
+         * Default constructor for {@link UpdatedJ3Key}.
+         */
+        public UpdatedJ3Key() {
+        }
+
+        /**
+         * Marks the key as successfully changed.
+         * @return The UpdatedJ3Key object for chaining.
+         * @implSpec This is not for object readers to use only instantiators.
+         */
+        public UpdatedJ3Key success() {
+            this.keyChangeSuccess = true;
+            return this;
+        }
+
+        /**
+         * Marks the key as swapped with another key
+         * @param key the other key
+         * @return The UpdatedJ3Key object for chaining.
+         * @implSpec This is not for object readers to use only instantiators.
+         */
+        public UpdatedJ3Key swappedWith(J3Key key) {
+            if (key == null) return this;
+            this.swapped = true;
+            this.otherKey = key;
+            return this;
+        }
     }
 
 }
