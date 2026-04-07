@@ -8,6 +8,7 @@ import com.j3d.ui.util.Throbber;
 
 import java.awt.*;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static com.j3d.Static.camera;
 import static com.j3d.Static.renderer;
@@ -161,5 +162,13 @@ public class GLine extends GObject {
         return "GLine [ " + startPoint +
                 " -> " + endPoint +
                 " ]";
+    }
+
+    /**
+     * Creates a stream of this line's points.
+     * @return A stream of GPoints
+     */
+    public Stream<GPoint> getPointStream() {
+        return Stream.of(startPoint, endPoint);
     }
 }

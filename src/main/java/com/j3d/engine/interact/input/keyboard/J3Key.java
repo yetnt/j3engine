@@ -26,10 +26,17 @@ import java.util.UUID;
  *     e.g. if {@code I} changes to {@code G+SHIFT}, and it was linked to {@code I+CTRL},
  *     that will change to the new parent's code plus the child's original modifiers {@code G+SHIFT+CTRL}.
  *     In a chain the leader's {@link KeyEvent} is what will cascade and not a child's parent.
+ *     It is vital that if you use linking, the parent node (often referred to in these docs as the leader)
+ *     should not be identical to any other child node. See {@link KeyBindings#childModifiersClash(J3Key)}
+ *     however to summarise, a leader keyStroke's {@link KeyStroke#getModifiers()} AND {@link KeyStroke#isOnKeyRelease()}
+ *     cannot clash with any one of the children defined within the chain.
  * </p>
  * @see KeyBindings
+ * @see KeyBindings#registerJ3Key(J3Key)
+ * @see KeyBindings#childModifiersClash(J3Key) 
  * @see J3Key
  * @see KeyStroke
+ * @see KeyEvent
  * @see Action
  * @see ActionEvent
  * @see InputMap

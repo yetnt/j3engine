@@ -156,17 +156,80 @@ public class KeyBindings {
     }
 
     /**
-     * Recursive decent into links to check for modifier collisions
-     * @param leader The leader key
-     * @return An arraylist of the child's modifiers.
+     * Inspects whether the leader of a chain of keystroke's updated modifier
+     * will clash or cause a clash with any 1 child keystroke.
+     * <p>
+     *     Preamble : {@link KeyEvent} are bit masks, meaning combinations are just the bitwise OR
+     *     and two combinations such as {@code SHIFT | SHIFT} become {@code SHIFT}
+     * </p>
+     *      <p>
+     *          In essence a conflict is made when the bitwise OR of the leader's modifiers with
+     *          any child modifier is equal to the leader modifier.
+     *          <pre>{@code
+     *          (leaderMod | childMod) == leaderMod
+     *          }</pre>
+     *      </p>
+     * <p>
+     *     Say we have the following test cases, where the first keystroke is the leader and the rest are childrten.
+     *     <pre>{@code
+     *      1. (I) -> (SHIFT + I) -> (CTRL + I)
+     *      2. (P) -> (ALT + P) -> (SHIFT + P)
+     *      3. K -> (CTRL + K) -> (ALT + K)
+     *      }</pre>
+     *      And we'd like to rebind the leader of each link to {@code ALT + O}, {@code SHIFT + S} and {@code CTRL + ALT + J}
+     *      respectively. (We Only care about the SHIFT, CTRL, ALT, ALT_GRADE and META modifiers, so the letters themselves
+     *      will be ignored and replaced with a question mark to represent the letter)
+     *      <p>
+     *          In link 1 it becomes
+     *          <pre>{@code
+     *          (ALT + ?) -> (SHIFT + ALT + ?) -> (CTRL + ALT + ?)
+     *          }</pre>
+     *          No child's modifier conflicts with the leader key's modifier. This is a valid change.
+     *      </p>
+     *      <p>
+     *          In link 2
+     *          <pre>{@code
+     *          (SHIFT + ?) -> (ALT + SHIFT + ?) -> (SHIFT + SHIFT + ?)
+     *          // The 2 shifts simplify to a singular shift via bitwise OR
+     *          (SHIFT + ?) -> (ALT + SHIFT + ?) -> (SHIFT + ?)
+     *          }</pre>
+     *          Here due to the simplification, the leader conflicts with the last child. This is an invalid
+     *          case.
+     *      </p>
+     *      <p>
+     *          In link 3
+     *          <pre>{@code
+     *          (CTRL + ALT + ?) -> (CTRL + CTRl + ALT + ?) -> (ALT + CTRL + ALT + ?)
+     *          // Again the duplicate shifts OR together
+     *          (CTRL + ALT + ?) -> (CTRL + ALT + ?) -> (CTRL + ALT + ?)
+     *          }</pre>
+     *          This link, obviously also produces conflicts, accept both children conflict with the parent node.
+     *      </p>
+     * </p>
+     * And this method, simply checks for these.
+     * @implNote Multiple children can reference
+     * the same keystroke however the leader of the keychain must be unique from it's children.
+     * And its important to know that if the {@link KeyStroke#isOnKeyRelease()} is different for both keys
+     * they are classified as 2 different keys and do not trigger this method.
+     * @param leader The leader in question.
+     * @return Whether any child modifier of this key clash with said key or not.
+     * @see KeyStroke
+     * @see KeyEvent
+     * @see J3Key
      */
-    private ArrayList<Integer> getChildModifiers(J3Key leader) {
-        if (leader.getLink() == null) return new ArrayList<>();
+    public static boolean childModifiersClash(J3Key leader) {
+        if (leader.getLink() == null) return false;
+        int leaderModifier = leader.getKeyStroke().getModifiers();
+
         J3Key child = leader.getLink().first;
-        return new ArrayList<>() {{
-            add(child.getKeyStroke().getModifiers());
-            addAll(getChildModifiers(child));
-        }};
+        while (child != null) {
+            if (
+                    ((child.getKeyStroke().getModifiers() | leaderModifier) == leaderModifier)
+                    && child.getKeyStroke().isOnKeyRelease() == leader.getKeyStroke().isOnKeyRelease()
+            ) return true;
+            child = child.getLink() == null ? null : child.getLink().first;
+        }
+        return false;
     }
 
     /**
@@ -182,7 +245,7 @@ public class KeyBindings {
             key.setKeyStroke(old);
             return new UpdatedJ3Key();
         }
-        if (getChildModifiers(key).contains(key.getKeyStroke().getModifiers())) {
+        if (childModifiersClash(key)) {
             Static.log.error("Attempted to update a leader key with a new modifier that would cause a collision with a child key.");
             key.setKeyStroke(old);
             return new UpdatedJ3Key();

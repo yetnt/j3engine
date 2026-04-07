@@ -8,6 +8,7 @@ import com.j3d.engine.geometry.geo3d.Thing;
 
 import java.awt.*;
 import java.util.*;
+import java.util.stream.Stream;
 
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.storage.files.ProjectFile;
@@ -334,5 +335,13 @@ public class GTri extends GObject{
         TriStateArea.unregister(this);
         Static.renderer.removeOverlap(getId());
         return true;
+    }
+
+    /**
+     * Creates a stream of this triangle's edges.
+     * @return A stream of GLines
+     */
+    public Stream<GLine> getLegStream() {
+        return Stream.of(LegA, LegB, LegC);
     }
 }

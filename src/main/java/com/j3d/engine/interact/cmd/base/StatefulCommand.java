@@ -4,6 +4,7 @@ import com.j3d.Static;
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.SafeJLabel;
+import com.j3d.engine.interact.input.keyboard.DefaultKeys;
 import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.selection.SelectionManager;
 
@@ -79,19 +80,20 @@ public interface StatefulCommand<T> {
         Static.keybinds.registerJ3Key(enter);
 
         // keystroke for when they bail with escape
-        J3Key esc = new J3Key(name + "esc", true)
-                .setKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false))
-                .setAction(
-                        new AbstractAction() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                if (!CommandsManager.isCurrentStatefulRunning(t)) return;
-                                onEsc(e, o);
-                                Static.keybinds.removeJ3Key(enter.getId());
-                                Static.mainFrame.repaint();
-                                CommandsManager.clearCurrent();
-                            }
-                        });
-        Static.keybinds.registerJ3Key(esc);
+        // Escape is already binded to something so it cant be a oneshot in practice
+        // but we can replace it and immediately set it back to normal!
+        DefaultKeys.DEFOCUS_COMMAND_PALETTE.getKey().replaceAction(
+                new AbstractAction() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (!CommandsManager.isCurrentStatefulRunning(t)) return;
+                        onEsc(e, o);
+                        Static.keybinds.removeJ3Key(enter.getId());
+                        Static.mainFrame.repaint();
+                        CommandsManager.clearCurrent();
+                        DefaultKeys.DEFOCUS_COMMAND_PALETTE.getKey().resetAction();
+                    }
+                }
+        );
     }
 }
