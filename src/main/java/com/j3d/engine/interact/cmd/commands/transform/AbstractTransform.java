@@ -18,7 +18,9 @@ import com.j3d.engine.interact.cmd.commands.transform.mouse.TransformMouseOwner;
 import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.input.keyboard.OtherKeys;
 import com.j3d.engine.react.actions.VoidAction;
+import com.j3d.ui.J3DTheme;
 import com.j3d.ui.engine.EngineFrame;
+import com.j3d.utility.JLabelRichText;
 
 import javax.swing.*;
 import java.awt.*;
@@ -186,17 +188,24 @@ public class AbstractTransform extends Subcommand implements StatefulCommand<Voi
                     "[a-z]"
                     , String.valueOf(getName().charAt(0)).toUpperCase()
             );
+            String stepsTitle = (switch (this) {
+                case RotateSelection r -> "Angle";
+                case ScaleSelection s -> "Scale";
+                case TranslateSelection t -> "Distance";
+                default -> throw new IllegalStateException("Unexpected value: " + this);
+            });
             label.setText(
-                    capitalizedName + " " + (faceMode ? "faces" : "points") + " using arrow keys and handles. | "
-                    +
-                            (switch (this) {
-                                case RotateSelection r -> "Angle";
-                                case ScaleSelection s -> "Scale";
-                                case TranslateSelection t -> "Distance";
-                                default -> throw new IllegalStateException("Unexpected value: " + this);
-                            })
-                            + ": " + getCurrentStepSize() +
-                            (this instanceof RotateSelection ? '°' : "units")
+                    SafeJLabel.EMPH + " " + SafeJLabel.EMPH + " using arrow keys and handles. | "
+                    + SafeJLabel.EMPH + SafeJLabel.EMPH + " (Click "+SafeJLabel.EMPH+" to change)",
+                    capitalizedName,
+                    new JLabelRichText(faceMode ? "faces" : "points")
+                            .font(J3DTheme.TEXT_SECONDARY.color().darker(), "6"),
+                    stepsTitle + ": ",
+                    new JLabelRichText(Double.toString(getCurrentStepSize()) +
+                            (this instanceof RotateSelection ? '°' : " units")
+                    )
+                            .font(J3DTheme.TEXT_SECONDARY.color().brighter(), "6"),
+                    "[R]"
             );
         };
 

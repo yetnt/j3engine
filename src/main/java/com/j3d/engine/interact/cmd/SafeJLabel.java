@@ -1,9 +1,15 @@
 package com.j3d.engine.interact.cmd;
 
 import com.j3d.Static;
+import com.j3d.ui.J3DTheme;
 import com.j3d.ui.engine.CommandPallete;
+import com.j3d.utility.JLabelRichText;
 
 import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * A SafeJLabel is just a wrapper around 2 or soon more labels which when calling setText calls
@@ -29,6 +35,44 @@ public class SafeJLabel {
                 Static.mainFrame.repaint();
             }
         });
+    }
+
+    public void error(String text) {
+        setText(
+                JLabelRichText.htmlOf(
+                        new JLabelRichText(text).font(Color.RED)
+                )
+        );
+    }
+
+    public static String EMPH = "%EMPH%";
+
+    public void error(String text, Object... emphasize) {
+        ArrayList<JLabelRichText> emphasized = Arrays.stream(emphasize).map(
+                t -> new JLabelRichText(t.toString()).underline().italic().font(new Color(65, 22, 22))
+        ).collect(Collectors.toCollection(ArrayList::new));
+        String html = JLabelRichText.htmlOf(new JLabelRichText(text).font(Color.RED).bold().paragraph());
+        for (JLabelRichText emph : emphasized) {
+            html = html.replaceFirst(
+                    EMPH,
+                    emph.toString()
+            );
+        }
+        setText(html);
+    }
+
+    public void setText(String text, Object... emphasize) {
+        ArrayList<JLabelRichText> emphasized = Arrays.stream(emphasize).map(
+                t -> new JLabelRichText(t.toString()).underline().italic().font(J3DTheme.TEXT_PRIMARY.color())
+        ).collect(Collectors.toCollection(ArrayList::new));
+        String html = JLabelRichText.htmlOf(new JLabelRichText(text).font(J3DTheme.TEXT_SECONDARY.color()).bold().paragraph());
+        for (JLabelRichText emph : emphasized) {
+            html = html.replaceFirst(
+                    EMPH,
+                    emph.toString()
+            );
+        }
+        setText(html);
     }
 
     public void setLower(String text) {

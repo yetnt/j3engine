@@ -7,6 +7,8 @@ import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.input.keyboard.DefaultKeys;
 import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.selection.SelectionManager;
+import com.j3d.ui.J3DTheme;
+import com.j3d.utility.JLabelRichText;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -65,7 +67,10 @@ public interface StatefulCommand<T> {
         SelectionManager.selectionMouseOwner.clearSelectionSquare();
 
         label.setLower(
-                "hit ENTER to confirm command, otherwise escape using ESC"
+                JLabelRichText.htmlOf(
+                        new JLabelRichText("hit ENTER to confirm command, otherwise escape using ESC")
+                                .bold().italic().font(J3DTheme.TEXT_PRIMARY.color())
+                )
         );
 
         Static.mainFrame.requestFocusInWindow(); // get out of the command window focus. very important

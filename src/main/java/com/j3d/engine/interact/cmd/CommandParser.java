@@ -1,6 +1,8 @@
 package com.j3d.engine.interact.cmd;
 
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
+import com.j3d.engine.interact.cmd.base.TaggedArg;
+import com.j3d.engine.interact.cmd.base.TaggedArgValue;
 import com.j3d.ui.engine.CommandPallete;
 import com.j3d.Static;
 import com.j3d.ui.engine.EngineFrame;
@@ -220,9 +222,7 @@ public class CommandParser {
                         commandPallete.inputField.getText() + d + " "
                 );
             }
-            default -> {
-                throw new RuntimeException("Unknown argument type: " + obj.getClass().getName());
-            }
+            default -> throw new RuntimeException("Unknown argument type: " + obj.getClass().getName());
         }
         ignoreDocumentEvent = false;
     }
@@ -257,7 +257,7 @@ public class CommandParser {
             // try to find a Thing with the given UUID
             Thing t = Static.renderer.findThingByUUID(uuid);
             if (t == null) {
-                label.setText("No object or thing found with UUID: " + uuid);
+                label.error("No object or thing found with UUID: " + SafeJLabel.EMPH, uuid);
             } else {
                 arguments.add(t);
             }
@@ -275,6 +275,8 @@ public class CommandParser {
         Tuple2<ArrayList<Pair<Integer>>, ArrayList<Tuple2<Integer, Character>>> bp =
                 Find.bracePairs(accumulator);
         ArrayList<Pair<Integer>> sp = Find.quotationPairs(accumulator);
+        if (accumulator.contains(":(") && sp.isEmpty())
+            return true; // Vector3 object within TaggedArg
         return (bp.first.isEmpty() && accumulator.charAt(0) == '(') ||
                 (sp.isEmpty() && accumulator.charAt(0) == '"');
 //        return (c != ')' && accumalator.charAt(0) == '(') || (c != '"' && accumalator.charAt(0) == '"');
@@ -310,12 +312,12 @@ public class CommandParser {
                 try {
                     parsedNums.add(Double.parseDouble(num.trim()));
                 } catch (NumberFormatException e) {
-                    label.setText("Invalid number format: " + num);
+                    label.error("Invalid number format: " + SafeJLabel.EMPH, num);
                     return;
                 }
             }
             if (parsedNums.size() != 3) {
-                label.setText("Invalid number of values in Vector3. Expected 3, got " + parsedNums.size());
+                label.error("Invalid number of values in Vector3. Expected "+SafeJLabel.EMPH+" got "+SafeJLabel.EMPH ,3, parsedNums.size());
                 return;
             }
             arguments.add(new Vector3(parsedNums.getFirst(), parsedNums.get(1), parsedNums.getLast()));
@@ -337,8 +339,14 @@ public class CommandParser {
                 argAddUUID(uuid);
             } catch (IllegalArgumentException e) {
                 parseAsNumber(accumulator, acc -> {
-                    // TODO: Implement Tagged argument parsing.
-                    arguments.add(acc.trim());
+                    // if numbers fail, check if this is a tagged arg
+                    TaggedArgValue<?> v = TaggedArg.parse(acc, label);
+                    if (v.isErr()) return;
+                    if (v.isEmpty()) {
+                        arguments.add(acc.trim()); // something like an extra arg, just put it.
+                        return;
+                    }
+                    arguments.add(v);
                 });
             }
         }
@@ -382,11 +390,11 @@ public class CommandParser {
                 return;
             if (cmd == null) {
                 EngineFrame.repaintL();
-                label.setText("Command not found: " + cmdName);
+                label.error("Command not found: " + SafeJLabel.EMPH, cmdName);
                 return;
             }
             if (CommandsManager.commandIsRunning()) {
-                label.setText("Command is currently running: " + cmdName);
+                label.error("Command is currently running: " + SafeJLabel.EMPH, cmdName);
                 Static.mainFrame.requestFocusInWindow();
                 return;
             }
@@ -397,7 +405,7 @@ public class CommandParser {
             arguments.removeFirst();
             cmd.run(label,cmdName, arguments.toArray());
         } else {
-            label.setText("Invalid command name.");
+            label.error("Invalid command name.");
         }
         EngineFrame.repaintL();
 //        EngineFrame.f.repaint(); // Repaint the frame to reflect any changes.

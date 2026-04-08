@@ -5,6 +5,7 @@ import com.j3d.engine.interact.cmd.Any;
 import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.Subcommand;
+import com.j3d.engine.interact.cmd.base.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.TypedArg;
 
 public class DebugCmd extends Command {
@@ -39,7 +40,10 @@ public class DebugCmd extends Command {
                 logLabel.setText("Invalid arguments. Usage: typeof <input>");
                 return;
             }
-            String typeName = (args[0] == null) ? "null" : args[0].getClass().getName();
+            String typeName = (args[0] == null) ? "null" : args[0].getClass().getSimpleName();
+            if (args[0] instanceof TaggedArgValue<?> g)
+                typeName = typeName + "<" + g.type.getSimpleName() + ">";
+
             logLabel.setText("Type: " + typeName);
             Static.log.println("Type: " + typeName);
         }

@@ -6,14 +6,22 @@ import com.j3d.storage.db.themes.CThemes;
 import com.j3d.storage.db.themes.Theme;
 import com.j3d.storage.db.users.CUsers;
 import com.j3d.storage.db.users.User;
+import com.j3d.utility.JLabelRichText;
 
+import java.awt.*;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 
 public class playground {
     public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        J3Key key = DefaultKeys.MOVE_CAM_FORWARD.getKey();
+        String str = JLabelRichText.htmlOf(
+                JLabelRichText.paragraphWrap(new JLabelRichText("My ").underline(),
+                new JLabelRichText("Cool ").bold(),
+                new JLabelRichText("Rich Text").font(Color.RED))
+        );
+
+        System.out.println(str);
     }
 
     public static void fb() {

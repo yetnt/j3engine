@@ -11,7 +11,9 @@ import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.settings.Settings;
 import com.j3d.ui.CursorManager;
 import com.j3d.ui.CursorNames;
+import com.j3d.ui.J3DTheme;
 import com.j3d.ui.engine.EngineFrame;
+import com.j3d.utility.JLabelRichText;
 
 import java.awt.event.ActionEvent;
 
@@ -35,8 +37,12 @@ public class OrbitCmd extends Command implements StatefulCommand<Rotation> {
         orbitMouseOwner.requestOwnership();
         CursorManager.set(CursorNames.HAND_GRAB);
         label.setText(
-                "Use the mouse to orbit the camera around. | Sensitivity: "
-                        + Settings.cameraProperties.orbitSensitivity.getValue() + " units per mouse drag"
+                "Use the mouse to orbit the camera around. | "+SafeJLabel.EMPH+": "
+                        + SafeJLabel.EMPH + SafeJLabel.EMPH,
+                "Sensitivity",
+                new JLabelRichText(Settings.cameraProperties.orbitSensitivity.getValue().toString())
+                        .font(J3DTheme.TEXT_SECONDARY.color().brighter(), "8"),
+                " units per mouse drag"
         );
     }
 
