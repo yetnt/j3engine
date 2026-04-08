@@ -18,10 +18,11 @@ public class RotateSelection extends AbstractTransform {
     public static RotateMouseOwner rotateMouseOwner = new RotateMouseOwner();
     private Vector3 axis = new Vector3(true);
 
-    public static final double degrees = 45 / 2.0;
-
     RotateSelection() {
-        super("rotate", "Rotates the selection", "rotCmd", rotateMouseOwner);
+        super(
+                "rotate", "Rotates the selection",
+                "rotCmd", rotateMouseOwner,
+                new double[]{45 / 2.0, 45, 90, 1});
         this.aliases("rot", "r").args(
                 argSet,
                 new TypedArg("arbitraryAxis", "An arbitrary axis to rotate around.", true, Vector3.class)
@@ -81,7 +82,7 @@ public class RotateSelection extends AbstractTransform {
                                             gPoint.setPivot(
                                                     center.add((gPoint.getPivot().sub(center)).rotateAroundAxis(
                                                             a,
-                                                            degrees
+                                                            getCurrentStepSize()
                                                     )
                                                 )
                                             );
@@ -115,7 +116,7 @@ public class RotateSelection extends AbstractTransform {
                                             gPoint.setPivot(
                                                     center.add((gPoint.getPivot().sub(center)).rotateAroundAxis(
                                                             a,
-                                                            -degrees
+                                                            -getCurrentStepSize()
                                                     ))
                                             );
                                         }

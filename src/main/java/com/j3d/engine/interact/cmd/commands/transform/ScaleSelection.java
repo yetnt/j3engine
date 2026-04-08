@@ -19,7 +19,11 @@ public class ScaleSelection extends AbstractTransform {
     public static ScaleMouseOwner scaleMouseOwner = new ScaleMouseOwner();
 
     ScaleSelection() {
-        super("scale", "Scales the selection", "scaleCmd", scaleMouseOwner);
+        super(
+                "scale", "Scales the selection",
+                "scaleCmd", scaleMouseOwner,
+                // for scale since this doesnt scale up linearly, we define a set of multipliers/divisors
+                new double[]{1.1, 1.3, 2, 1.01});
         this.aliases("s", "size").args(
                 argSet
         ).parseUsages();
@@ -29,7 +33,6 @@ public class ScaleSelection extends AbstractTransform {
                         new AbstractAction() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                double scale = 1.5;
 
                                 Vector3 scaleAxis = scaleMouseOwner.selectedHandle == null ? new Vector3(true) :
                                 switch (scaleMouseOwner.selectedHandle.handleType()) {
@@ -44,12 +47,12 @@ public class ScaleSelection extends AbstractTransform {
                                             if (scaleAxis.isNotEmpty())
                                                 gpoint.setPivot(
                                                         gpoint.getPivot().add(
-                                                                scaleAxis.mult(scale)
+                                                                scaleAxis.mult(getCurrentStepSize())
                                                         )
                                                 );
                                             else
                                                 gpoint.setPivot(
-                                                        center.add(gpoint.getPivot().sub(center).mult(scale))
+                                                        center.add(gpoint.getPivot().sub(center).mult(getCurrentStepSize()))
                                                 );
                                         }
                                 );

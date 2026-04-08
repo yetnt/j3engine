@@ -16,13 +16,16 @@ import com.j3d.engine.interact.cmd.commands.transform.handlers.Handle;
 import com.j3d.engine.interact.cmd.commands.transform.handlers.HandleType;
 import com.j3d.engine.interact.cmd.commands.transform.mouse.TransformMouseOwner;
 import com.j3d.engine.interact.input.keyboard.J3Key;
+import com.j3d.engine.interact.input.keyboard.OtherKeys;
 import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.ui.engine.EngineFrame;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -44,23 +47,40 @@ public class AbstractTransform extends Subcommand implements StatefulCommand<Voi
                     "t", "f" // Triangles/faces
             );
     protected String eventName;
+    protected boolean faceMode = true;
+    protected double[] gearTrain;
+    protected int currentIndex = 0;
+    protected J3Key gear = new J3Key(
+            "transformGearKey",
+            OtherKeys.TRANSFORM_CHANGE_STEP_SIZE.getKeyStroke(),
+            new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    currentIndex = (currentIndex + 1) % gearTrain.length;
+                }
+            }
+    );
 
-    public AbstractTransform(String commmandName, String commandDesc, String eventName, TransformMouseOwner mouseOwner) {
-        super(commmandName, commandDesc);
+    public AbstractTransform(String commandName, String commandDesc, String eventName, TransformMouseOwner mouseOwner, double[] gearTrain) {
+        super(commandName, commandDesc);
         this.mouseOwner = mouseOwner;
         this.eventName = eventName;
+        this.gearTrain = gearTrain;
     }
 
+    public double getCurrentStepSize() {
+        return gearTrain[currentIndex];
+    }
 
     @Override
     public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
         CommandsManager.setAsCurrent(this);
 
-        boolean faceMode = true;
         if (args.length > 0 && !(args[0] instanceof String)) {
             Static.log.println("Second argument has to be a string!");
             return;
         }
+        keys.add(gear);
         if (args.length > 0 && argSet.isValid((String)args[0])) {
             String arg = (String)args[0];
             faceMode = arg.equals("f") || arg.equals("v");
@@ -82,14 +102,12 @@ public class AbstractTransform extends Subcommand implements StatefulCommand<Voi
                         .collect(Collectors.toCollection(ArrayList::new));
 
         originalPointPos = references.stream().map(GObject::getPivot).collect(Collectors.toCollection(ArrayList::new));
-        run(this, eventName, null);
+        run(this, eventName, null, logLabel);
     }
 
     @Override
-    public void onStart(Void o) {
+    public void onStart(Void object, SafeJLabel label) {
         mouseOwner.requestOwnership();
-        System.out.println("wuzup");
-        Static.commandParser.toggleInputFieldDisabled();
 
         keys.forEach(
                 key -> Static.keybinds.registerJ3Key(key)
@@ -164,7 +182,22 @@ public class AbstractTransform extends Subcommand implements StatefulCommand<Voi
             Y.draw(g);
             Z.draw(g);
             g.setColor(Color.WHITE);
-
+            String capitalizedName = getName().replaceFirst(
+                    "[a-z]"
+                    , String.valueOf(getName().charAt(0)).toUpperCase()
+            );
+            label.setText(
+                    capitalizedName + " " + (faceMode ? "faces" : "points") + " using arrow keys and handles. | "
+                    +
+                            (switch (this) {
+                                case RotateSelection r -> "Angle";
+                                case ScaleSelection s -> "Scale";
+                                case TranslateSelection t -> "Distance";
+                                default -> throw new IllegalStateException("Unexpected value: " + this);
+                            })
+                            + ": " + getCurrentStepSize() +
+                            (this instanceof RotateSelection ? '°' : "units")
+            );
         };
 
         overlapId = UUID.randomUUID();
@@ -172,18 +205,19 @@ public class AbstractTransform extends Subcommand implements StatefulCommand<Voi
         Static.renderer.scheduleOverlap(overlapId, drawScaleHandle);
     }
 
-    private void finished() {
+    private void finished(SafeJLabel lbl) {
         keys.forEach(
                 key -> Static.keybinds.removeJ3Key(key.getId())
         );
         Static.renderer.removeOverlap(overlapId);
+        lbl.clear();
         Static.renderer.deselectAll();
         Static.mainFrame.repaint();
     }
 
 
     @Override
-    public void onEnter(ActionEvent e, Void o) {
+    public void onEnter(ActionEvent e, Void object, SafeJLabel label) {
         // later wrap as Action for the final ransform appled.
         EngineFrame.setMouseOwner(null);
         ArrayList<Vector3> newPositions = references.stream().map(GObject::getPivot).collect(Collectors.toCollection(ArrayList::new));
@@ -211,14 +245,14 @@ public class AbstractTransform extends Subcommand implements StatefulCommand<Voi
                     }
                 }
         );
-        finished();
+        finished(label);
     }
 
     @Override
-    public void onEsc(ActionEvent e, Void o) {
+    public void onEsc(ActionEvent e, Void object, SafeJLabel label) {
         // clear transforms done.
         EngineFrame.setMouseOwner(null);
         for (GPoint p : references) p.setPivot(originalPointPos.get(references.indexOf(p)));
-        finished();
+        finished(label);
     }
 }

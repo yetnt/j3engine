@@ -5,10 +5,15 @@ import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
+import com.j3d.engine.interact.cmd.base.Subcommand;
 import com.j3d.engine.interact.selection.SelectionManager;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventReactor;
 import com.j3d.engine.react.events.EventType;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class TransformCmd extends Command {
 
@@ -35,7 +40,15 @@ public class TransformCmd extends Command {
     public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
         // There has to be at least 2 arguments, the subcommand and its argument(s)
         if (args.length < 1 || !(args[0] instanceof String subcommandNamei)) {
-            logLabel.setText("Invalid arguments. Usage: selection <subcommand> ...");
+            logLabel.setText("Invalid arguments. Usage: "+aliasUsed+" <subcommand> ...");
+            return;
+        }
+        if (this.args.stream()
+                .map(o->(Command)o)
+                .flatMap(Command::aliasStream)
+                .noneMatch(alias -> alias.equals(subcommandNamei))
+        ) {
+            logLabel.setText("Invalid subcommand. Usage: "+aliasUsed+" [\"translate\", \"rotate\", \"scale\"] ...");
             return;
         }
         Static.mainFrame.requestFocusInWindow(); // Remove focus from the command pallete

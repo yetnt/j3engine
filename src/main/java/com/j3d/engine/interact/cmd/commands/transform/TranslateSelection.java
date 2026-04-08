@@ -17,11 +17,12 @@ public class TranslateSelection extends AbstractTransform {
 
     public static TranslateMouseOwner translateMouseOwner = new TranslateMouseOwner();
 
-    private static final double STEPS = 1;
-
     TranslateSelection() {
-        super("translate", "Translates the selection", "translateCmd", translateMouseOwner);
-        this.aliases("t", "trans").args(
+        super(
+                "translate", "Translates the selection",
+                "translateCmd", translateMouseOwner,
+                new double[]{1, 5, 20, 0.1});
+        this.aliases("t", "trans","move","mv").args(
                 argSet
         ).parseUsages();
 
@@ -38,7 +39,7 @@ public class TranslateSelection extends AbstractTransform {
                                 references.forEach(
                                         gpoint ->
                                             gpoint.setPivot(
-                                                    gpoint.getPivot().sub(new Vector3(STEPS, 0, 0))
+                                                    gpoint.getPivot().sub(new Vector3(getCurrentStepSize(), 0, 0))
                                             )
                                 );
                                 Static.mainPanel.repaint();
@@ -60,7 +61,7 @@ public class TranslateSelection extends AbstractTransform {
                                 references.forEach(
                                         gpoint ->
                                                 gpoint.setPivot(
-                                                        gpoint.getPivot().add(new Vector3(STEPS, 0, 0))
+                                                        gpoint.getPivot().add(new Vector3(getCurrentStepSize(), 0, 0))
                                                 )
                                 );
                                 Static.mainPanel.repaint();
@@ -81,7 +82,7 @@ public class TranslateSelection extends AbstractTransform {
                                         gpoint -> {
                                             if (translateMouseOwner.selectedHandle == null) {
                                                 gpoint.setPivot(
-                                                        gpoint.getPivot().add(new Vector3(0, 0, STEPS))
+                                                        gpoint.getPivot().add(new Vector3(0, 0, getCurrentStepSize()))
                                                 );
                                                 return;
                                             }
@@ -89,9 +90,9 @@ public class TranslateSelection extends AbstractTransform {
                                             gpoint.setPivot(
                                                     gpoint.getPivot().add(
                                                             switch (translateMouseOwner.selectedHandle.handleType()) {
-                                                                case HandleType.X -> new Vector3(STEPS, 0, 0);
-                                                                case HandleType.Y -> new Vector3(0, STEPS, 0);
-                                                                case HandleType.Z -> new Vector3(0, 0, STEPS);
+                                                                case HandleType.X -> new Vector3(getCurrentStepSize(), 0, 0);
+                                                                case HandleType.Y -> new Vector3(0, getCurrentStepSize(), 0);
+                                                                case HandleType.Z -> new Vector3(0, 0, getCurrentStepSize());
                                                             }
                                                     )
                                             );
@@ -115,7 +116,7 @@ public class TranslateSelection extends AbstractTransform {
                                         gpoint -> {
                                             if (translateMouseOwner.selectedHandle == null) {
                                                 gpoint.setPivot(
-                                                        gpoint.getPivot().sub(new Vector3(0, 0, STEPS))
+                                                        gpoint.getPivot().sub(new Vector3(0, 0, getCurrentStepSize()))
                                                 );
                                                 return;
                                             }
@@ -123,9 +124,9 @@ public class TranslateSelection extends AbstractTransform {
                                             gpoint.setPivot(
                                                     gpoint.getPivot().sub(
                                                             switch (translateMouseOwner.selectedHandle.handleType()) {
-                                                                case HandleType.X -> new Vector3(STEPS, 0, 0);
-                                                                case HandleType.Y -> new Vector3(0, STEPS, 0);
-                                                                case HandleType.Z -> new Vector3(0, 0, STEPS);
+                                                                case HandleType.X -> new Vector3(getCurrentStepSize(), 0, 0);
+                                                                case HandleType.Y -> new Vector3(0, getCurrentStepSize(), 0);
+                                                                case HandleType.Z -> new Vector3(0, 0, getCurrentStepSize());
                                                             }
                                                     )
                                             );

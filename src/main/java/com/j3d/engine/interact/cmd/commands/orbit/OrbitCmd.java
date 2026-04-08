@@ -1,5 +1,6 @@
 package com.j3d.engine.interact.cmd.commands.orbit;
 
+import com.j3d.J3DSettings;
 import com.j3d.Static;
 import com.j3d.engine.geometry.geo3d.rot.Rotation;
 import com.j3d.engine.interact.cmd.CommandsManager;
@@ -7,6 +8,7 @@ import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.input.mouse.MOwner;
+import com.j3d.settings.Settings;
 import com.j3d.ui.CursorManager;
 import com.j3d.ui.CursorNames;
 import com.j3d.ui.engine.EngineFrame;
@@ -25,27 +27,33 @@ public class OrbitCmd extends Command implements StatefulCommand<Rotation> {
     public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
         if (!CommandsManager.isCurrentStatefulRunning(this)) return;
 
-        run(this, "orbitCmd", Static.camera.getRotation().copy());
+        run(this, "orbitCmd", Static.camera.getRotation().copy(), logLabel);
     }
 
     @Override
-    public void onStart(Rotation o) {
+    public void onStart(Rotation object, SafeJLabel label) {
         orbitMouseOwner.requestOwnership();
         CursorManager.set(CursorNames.HAND_GRAB);
+        label.setText(
+                "Use the mouse to orbit the camera around. | Sensitivity: "
+                        + Settings.cameraProperties.orbitSensitivity.getValue() + " units per mouse drag"
+        );
     }
 
     @Override
-    public void onEnter(ActionEvent e, Rotation o) {
-        EngineFrame.setMouseOwner(MOwner.SELECTION);
+    public void onEnter(ActionEvent e, Rotation object, SafeJLabel label) {
+        EngineFrame.setMouseOwner(null);
         CursorManager.setDefault();
+        label.clear();
         // done
     }
 
     @Override
-    public  void onEsc(ActionEvent e, Rotation o) {
-        Static.camera.setRotation((Rotation) o);
+    public  void onEsc(ActionEvent e, Rotation object, SafeJLabel label) {
+        Static.camera.setRotation((Rotation) object);
         EngineFrame.setMouseOwner(MOwner.SELECTION);
         CursorManager.setDefault();
+        label.clear();
     }
 
 }
