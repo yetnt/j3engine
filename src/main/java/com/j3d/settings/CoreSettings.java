@@ -1,5 +1,6 @@
 package com.j3d.settings;
 
+import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.users.User;
 
 /**
@@ -8,4 +9,7 @@ import com.j3d.storage.db.users.User;
  */
 public abstract class CoreSettings {
     public static User user;
+    static {
+        user = DatabaseManager.tblUsers.findById(3);
+    }
 }

@@ -1,5 +1,7 @@
 package com.j3d.ui;
 
+import com.j3d.settings.CoreSettings;
+
 import java.awt.*;
 import java.util.HashMap;
 
@@ -50,7 +52,7 @@ public enum J3DTheme {
      */
     BACKGROUND(new Color(0x2f3e46));
 
-    public static final HashMap<String, Color> fromDbTest = getTheme(4).toColorHashMap(); // bubblegum theme
+    public static final HashMap<String, Color> fromDbTest = getTheme(CoreSettings.user.themeId.getValue()).toColorHashMap(); // bubblegum theme
 
     J3DTheme(Color color) {
         col = color;
