@@ -3,6 +3,7 @@ package com.j3d.engine.interact.cmd.base;
 import com.j3d.engine.interact.cmd.SafeJLabel;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class Command {
     public ArrayList<String> aliases = new ArrayList<>();
@@ -68,6 +69,14 @@ public class Command {
                 return;
             }
         }
+    }
+
+    /**
+     * Returns a stream of all the aliases of the command. (Including it's own name)
+     * @return A stream of all the aliases of the command.
+     */
+    public Stream<String> aliasStream() {
+        return aliases.stream();
     }
 
     /**

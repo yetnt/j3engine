@@ -426,4 +426,12 @@ public class Vector3 implements MatrixInterface {
                 {Z}
         };
     }
+
+    /**
+     * Converts this Vector3 to command palette syntax
+     * @return the string version of this vector3.
+     */
+    public String toCommandPaletteString() {
+        return String.format("(%f, %f, %f)", X, Y, Z);
+    }
 }

@@ -6,6 +6,8 @@ import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.rot.Rotation;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandParser;
+import com.j3d.engine.interact.cmd.CommandsManager;
+import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.settings.Settings;
 import com.j3d.ui.engine.DebugPanel;
@@ -69,4 +71,5 @@ public class Static {
      * The Settings Object
      */
     public static Settings settings = new Settings();
+    public static CommandsManager commandManager = new CommandsManager();
 }
