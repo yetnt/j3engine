@@ -4,6 +4,8 @@ import com.j3d.J3DSettings;
 import com.j3d.Static;
 import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.draw.tris.TriStateArea;
+import com.j3d.engine.geometry.geo2d.constraints.CObject;
+import com.j3d.engine.geometry.geo2d.constraints.CTri;
 import com.j3d.engine.geometry.geo3d.Thing;
 
 import java.awt.*;
@@ -222,6 +224,7 @@ public class GTri extends GObject{
 
         TriStateArea.register(this);
         drawDist();
+        toConstraintObject();
     }
 
     /**
@@ -259,6 +262,7 @@ public class GTri extends GObject{
         calcNormal(A.getStart().getPivot(), B.getStart().getPivot(), C.getStart().getPivot());
         TriStateArea.register(this);
         drawDist();
+        toConstraintObject();
     }
 
     public boolean isHidden() {
@@ -343,5 +347,13 @@ public class GTri extends GObject{
      */
     public Stream<GLine> getLegStream() {
         return Stream.of(LegA, LegB, LegC);
+    }
+
+    @Override
+    public CTri toConstraintObject() {
+        if (constraintObject == null) {
+            constraintObject = new CTri(this);
+        }
+        return (CTri) constraintObject;
     }
 }

@@ -4,6 +4,10 @@ import com.j3d.J3DSettings;
 import com.j3d.Static;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.draw.ViewType;
+import com.j3d.engine.geometry.geo2d.HasParent;
+import com.j3d.engine.geometry.geo2d.constraints.CLine;
+import com.j3d.engine.geometry.geo2d.constraints.CObject;
+import com.j3d.engine.geometry.geo2d.constraints.CPoint;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
@@ -12,7 +16,6 @@ import com.j3d.storage.files.ProjectFile;
 import com.j3d.ui.util.Throbber;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -37,7 +40,7 @@ import java.util.UUID;
  * @see GLine
  * @see GTri
  */
-public class GPoint extends GObject {
+public class GPoint extends GObject implements HasParent<GLine> {
 
     /**
      * The diameter of the point when drawn on screen.
@@ -46,6 +49,7 @@ public class GPoint extends GObject {
      * </p>
      */
     public static final int DIAMETER = 7;
+    private GLine parent;
 
     /**
      * Constructs a GPoint.
@@ -100,6 +104,7 @@ public class GPoint extends GObject {
      */
     public GPoint(Vector3 v3) {
         setPivot(v3);
+        toConstraintObject();
     }
 
     @Override
@@ -107,13 +112,6 @@ public class GPoint extends GObject {
         super.deleteSelf();
         Static.renderer.points.remove(this);
         return true;
-    }
-
-    @Override
-    public ArrayList<Object> toArray() {
-        ArrayList<Object> arr =  super.toArray();
-        arr.addFirst("GPOINT");
-        return arr;
     }
 
     @Override
@@ -126,5 +124,31 @@ public class GPoint extends GObject {
     @Override
     public String toString() {
         return "GPoint {" + getPivot().getX() + ", " + getPivot().getY() +  ", " + getPivot().getZ() + "}";
+    }
+
+    @Override
+    public CPoint toConstraintObject() {
+        if (constraintObject == null) {
+            constraintObject = new CPoint(this);
+        }
+        return (CPoint) constraintObject;
+    }
+
+    @Override
+    public GLine getParent() {
+        return parent;
+    }
+
+    @Override
+    public void setParent(GLine parent) {
+        this.parent = parent;
+        toConstraintObject().setParent(
+                parent.toConstraintObject()
+        );
+    }
+
+    @Override
+    public boolean hasParent() {
+        return parent != null;
     }
 }

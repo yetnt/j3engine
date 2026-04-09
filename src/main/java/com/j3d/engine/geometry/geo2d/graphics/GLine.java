@@ -1,6 +1,9 @@
 package com.j3d.engine.geometry.geo2d.graphics;
 
 import com.j3d.engine.draw.ViewType;
+import com.j3d.engine.geometry.geo2d.HasParent;
+import com.j3d.engine.geometry.geo2d.constraints.CLine;
+import com.j3d.engine.geometry.geo2d.constraints.CObject;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.storage.files.ProjectFile;
@@ -28,7 +31,7 @@ import static com.j3d.Static.renderer;
  * @see GPoint
  * @see GTri
  */
-public class GLine extends GObject {
+public class GLine extends GObject implements HasParent<GTri> {
     /**
      * The startpoint of this line
      */
@@ -37,6 +40,7 @@ public class GLine extends GObject {
      * The endPoint of this line.
      */
     private final GPoint endPoint;
+    private GTri parent;
 
     /**
      * Constructs a GLine.
@@ -111,12 +115,8 @@ public class GLine extends GObject {
         endPoint = B;
 
         // set the pivot to the midpoint of the line
-        setPivot(new Vector3(
-                (A.getPivot().getX() + B.getPivot().getX()) / 2,
-                (A.getPivot().getY() + B.getPivot().getY()) / 2,
-                (A.getPivot().getZ() + B.getPivot().getZ()) / 2
-        ));
-
+        setPivot(A.getPivot().add(B.getPivot()).div(2));
+        toConstraintObject();
     }
 
     /**
@@ -170,5 +170,28 @@ public class GLine extends GObject {
      */
     public Stream<GPoint> getPointStream() {
         return Stream.of(startPoint, endPoint);
+    }
+
+    @Override
+    public CLine toConstraintObject() {
+        if (constraintObject == null) {
+            constraintObject = new CLine(this);
+        }
+        return (CLine) constraintObject;
+    }
+
+    @Override
+    public GTri getParent() {
+        return parent;
+    }
+
+    @Override
+    public void setParent(GTri parent) {
+        this.parent = parent;
+    }
+
+    @Override
+    public boolean hasParent() {
+        return parent != null;
     }
 }

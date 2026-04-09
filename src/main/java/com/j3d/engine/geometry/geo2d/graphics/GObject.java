@@ -1,5 +1,7 @@
 package com.j3d.engine.geometry.geo2d.graphics;
 
+import com.j3d.engine.geometry.geo2d.BaseObject;
+import com.j3d.engine.geometry.geo2d.constraints.CObject;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventEmitter;
 import com.j3d.engine.react.events.EventListener;
@@ -12,7 +14,7 @@ import java.awt.*;
 import java.util.*;
 
 /**
- * GObject is an abstract class that represents any actual tangible
+ * Graphics Object is an abstract class that represents any actual tangible
  * Geometry in the 3d space (Cartesian space) that a user can see and
  * interact with. This only has 3 extenders, {@link GPoint}, {@link GLine}
  * and {@link GTri} as these form the base objects and cannot be broken
@@ -30,7 +32,7 @@ import java.util.*;
  * @see GLine
  * @see GTri
  */
-public abstract class GObject extends EventEmitter implements EventListener {
+public abstract class GObject extends EventEmitter implements BaseObject, EventListener {
     protected Color col = Color.BLACK;
     /**
      * The pivot point of this geometry. Unless a {@link GPoint} where this represents the actual location
@@ -41,6 +43,7 @@ public abstract class GObject extends EventEmitter implements EventListener {
      * A Unique UUID to identify this geometry.
      */
     private UUID Id;
+    protected CObject constraintObject;
 
     /**
      * Draws this geometry to the screen.
@@ -77,82 +80,42 @@ public abstract class GObject extends EventEmitter implements EventListener {
         col = colour;
     }
 
-    /**
-     * Returns the pivot point.
-     * @implSpec Child-classes need to guarantee that this returns the
-     * exact mathematical pivot point of this object. Which if it does
-     * not define as some special point, nees to be it's centre.
-     * @return a CartesianPoint
-     */
+    @Override
     public Vector3 getPivot() {
         return pivot;
     }
 
-    /**
-     * Deletes itself
-     * @return true if the object was deleted
-     * @implNote This is meant to be overriden by inheritors.
-     */
+    @Override
     public boolean deleteSelf() {
         this.detachAll();
         return false;
     }
 
-    /**
-     * Sets the pivot point.
-     * @param pivot The new pivot point.
-     */
     public void setPivot(Vector3 pivot) {
         this.pivot = pivot;
+        toConstraintObject().setPivot(pivot);
     }
 
-
-    /**
-     * Sets the colour
-     * @param colour The new colour
-     */
+    @Override
     public void setColour(Color colour) {
         col = colour;
+        toConstraintObject().setColour(colour);
     }
 
-    /**
-     * Returns this geometry's color
-     * @return The Color
-     */
+    @Override
     public Color getColour() {
         return col;
     }
 
-    /**
-     * Returns this geometry's unique identifier
-     * @return The UUID
-     */
+    @Override
     public UUID getId() {
         return Id;
     }
 
-    /**
-     * Sets this geometry's unique identifier
-     * @implSpec This is intended to be used when a child is created from
-     * file loading or anything where it hasnt had a UUID attached to it already.
-     * Otherwise the UUID is treated as immutable.
-     * @param id The new UUID
-     * @see ProjectFile#readFile(String, String, Throbber)
-     * @see GPoint#fromRaw(String, Vector3)
-     * @see GLine#fromRaw(String, GPoint, GPoint)
-     * @see GTri#fromRaw(String, Color, GLine, GLine, GLine)
-     */
+    @Override
     public void setId(UUID id) {
         Id = id;
-    }
-
-    /**
-     * Converts this Geometry into an Array format that can be used around by Jaiva implementations
-     * @return An ArrayList of the ID, and the pivot point in a 2d array.
-     * @deprecated This <i>was</i> a method related to Jaiva. Now a legacy method or soon to be removed.
-     */
-    public ArrayList<Object> toArray() {
-        return new ArrayList<>(Arrays.asList(getId(), getPivot().toArray()));
+        toConstraintObject().setId(id);
     }
 
     @Override
@@ -175,5 +138,16 @@ public abstract class GObject extends EventEmitter implements EventListener {
     @Override
     public void onEvent(EventType event, EventPayload properties) {
 
+    }
+
+    public void detachConstraint() {
+        constraintObject = null;
+    }
+
+    public CObject toConstraintObject() {
+        if (constraintObject == null) {
+            constraintObject = new CObject(this);
+        }
+        return constraintObject;
     }
 }
