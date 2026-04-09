@@ -90,4 +90,8 @@ public enum J3DTheme {
         }
         return sb.toString();
     }
+
+    public Color defaultCol() {
+        return col;
+    }
 }

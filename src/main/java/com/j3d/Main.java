@@ -4,9 +4,12 @@
  */
 package com.j3d;
 
+import com.j3d.threads.FakeLongTask;
 import com.j3d.ui.engine.EngineFrame;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import com.j3d.ui.engine.J3EngineLogo;
+import com.j3d.ui.engine.J3Splash;
+
+import javax.swing.*;
 
 /**
  *
@@ -73,15 +76,30 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void openEngineButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openEngineButtonActionPerformed
-
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
                  UnsupportedLookAndFeelException e) {
             throw new RuntimeException(e);
         }
-        EngineFrame e = new EngineFrame();
-        e.setVisible(true);
+        J3Splash splash = new J3Splash();
+        FakeLongTask flt = new FakeLongTask(() -> {
+            splash.setVisible(true);
+        }, () -> {}, () -> {
+            EngineFrame e = new EngineFrame();
+            e.setResizable(true);
+            e.setVisible(true);
+            Timer t = new Timer(3000, ae -> {
+                splash.dispose();
+            });
+            t.setRepeats(false);
+            t.start();
+        }, 9.3);
+        try {
+            flt.run();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         this.dispose();
     }//GEN-LAST:event_openEngineButtonActionPerformed
 

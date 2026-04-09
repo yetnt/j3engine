@@ -7,12 +7,12 @@ package com.j3d.ui.engine;
 import com.j3d.Static;
 import com.j3d.Executor;
 import com.j3d.J3DSettings;
+import com.j3d.engine.geometry.Dim;
 import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.interact.cmd.commands.orbit.OrbitCmd;
 import com.j3d.engine.interact.cmd.commands.transform.RotateSelection;
 import com.j3d.engine.interact.cmd.commands.transform.ScaleSelection;
 import com.j3d.engine.interact.cmd.commands.transform.TranslateSelection;
-import com.j3d.engine.interact.cmd.commands.transform.mouse.TranslateMouseOwner;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.engine.Logger;
 import com.j3d.engine.Renderer;
@@ -36,6 +36,8 @@ import com.j3d.ui.tb.Toolbox;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -130,6 +132,45 @@ public class EngineFrame extends javax.swing.JFrame {
 //        frame.add(new EngineFrame());
 //        f.setVisible(true);
 
+
+        Static.mainFrame.addComponentListener(new ComponentListener() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                J3DSettings.screenSize = new Dim(Static.mainFrame.getSize());
+                Static.renderer.screenSize = J3DSettings.screenSize;
+                toolbox.setBounds(0, menuBarOffsetY, J3DSettings.screenSize.width - 10, toolbox.getPreferredSize().height);
+                Static.mainPanel.setBounds(0, menuBarOffsetY, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
+                Static.debugPanel.setBounds(20, toolbox.getPreferredSize().height + menuBarOffsetY, Static.debugPanel.getPreferredSize().width, Static.debugPanel.getPreferredSize().height); // small corner overlay
+
+                Static.layerTree.setBounds(
+                        J3DSettings.screenSize.width - 260 -(Static.layerTree.getPreferredSize().width),
+                        toolbox.getPreferredSize().height + menuBarOffsetY,
+                        Static.layerTree.getPreferredSize().width,
+                        Static.layerTree.getPreferredSize().height);
+
+                Rectangle bounds = Static.mainFrame.getBounds();
+                Dimension size = commandPallete.getPreferredSize();
+                int x = ((bounds.width - size.width) / 2) - 10;
+                int y = bounds.height - size.height - 50;
+                commandPallete.setBounds(x, y, size.width, size.height);
+
+                Static.mainFrame.repaint(); // repaint the frame
+                Static.mainPanel.repaint(); // repaint the panel too.
+            }
+
+            @Override
+            public void componentMoved(ComponentEvent e) {
+            }
+
+            @Override
+            public void componentShown(ComponentEvent e) {
+            }
+
+            @Override
+            public void componentHidden(ComponentEvent e) {
+            }
+        });
+
         CursorManager.init(Static.mainFrame);
         CursorManager.setDefault();
     }
@@ -221,7 +262,7 @@ public class EngineFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("J3D");
-        setMinimumSize(new java.awt.Dimension(1800, 1000));
+        setMinimumSize(new java.awt.Dimension(1024, 768));
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);

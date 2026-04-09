@@ -5,6 +5,7 @@ import com.j3d.engine.interact.selection.SelectionMouseOwner;
 import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.interact.selection.SelectionUtils;
 import com.j3d.settings.Settings;
+import com.j3d.ui.engine.CommandPallete;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -22,6 +23,7 @@ import static com.j3d.ui.engine.EngineFrame.commandPallete;
  * @see J3Key
  */
 public enum DefaultKeys {
+
     /**
      * keystroke to directly focus into the command palette.
      */
@@ -32,6 +34,7 @@ public enum DefaultKeys {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
+                            if (Static.commandParser.commandPallete.isDisabled()) return;
                             commandPallete.inputField.requestFocusInWindow();
                         }
                     }
@@ -48,6 +51,7 @@ public enum DefaultKeys {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             if (commandPallete.inputField.isFocusOwner()) {
+                                if (Static.commandParser.commandPallete.isDisabled()) return;
                                 Static.mainFrame.requestFocusInWindow();
                             }
                         }
@@ -246,6 +250,21 @@ public enum DefaultKeys {
                     "selectAddUp",
                     KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.SHIFT_DOWN_MASK, true),
                     KeyBindings.clearInferredSelectionType
+            )
+    ),
+    HIDECMDP(
+            new J3Key(
+                    "hideCommandPalleteKey",
+                    KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0),
+                    new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            Static.commandParser.commandPallete.setDisabled(
+                                    !Static.commandParser.commandPallete.isDisabled()
+                            );
+                            Static.mainFrame.repaint();
+                        }
+                    }
             )
     );
 

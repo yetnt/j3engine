@@ -4,7 +4,7 @@ import com.j3d.Static;
 import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.*;
-import com.j3d.engine.geometry.Dimension;
+import com.j3d.engine.geometry.Dim;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
@@ -29,7 +29,7 @@ public class Renderer {
     /**
      * The dimensions of the window.
      */
-    public Dimension screenSize;
+    public Dim screenSize;
     /**
      * An Array of Layers
      */
@@ -57,7 +57,7 @@ public class Renderer {
      * Default Constructor
      * @param dim The dimensions of the screen
      */
-    public Renderer(Dimension dim) {
+    public Renderer(Dim dim) {
         screenSize = dim;
         Layer bg = new Layer(Layer.backgroundId);
         layers.add(bg); // the default layer

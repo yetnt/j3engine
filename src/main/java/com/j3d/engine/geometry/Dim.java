@@ -1,7 +1,7 @@
 package com.j3d.engine.geometry;
 
 /**
- * Dimension, like {@link BasePoint} is a 2 dimensional class, however holding width and height
+ * Dim, like {@link BasePoint} is a 2 dimensional class, however holding width and height
  * instead of an X and Y value.
  * <p>
  *     This could just as well be {@link java.awt.Dimension} but come on now wheres
@@ -10,7 +10,7 @@ package com.j3d.engine.geometry;
  * @author Lehlogonolo Poole
  * @see java.awt.Dimension
  */
-public class Dimension {
+public class Dim {
     /**
      * The width of this dimension.
      */
@@ -25,7 +25,7 @@ public class Dimension {
      * @param width Given width
      * @param height Given height.
      */
-    public Dimension(int width, int height) {
+    public Dim(int width, int height) {
         this.width = width;
         this.height = height;
     }
@@ -34,7 +34,7 @@ public class Dimension {
      * Constructor using {@link java.awt.Dimension}
      * @param preferredSize Given {@link java.awt.Dimension}
      */
-    public Dimension(java.awt.Dimension preferredSize) {
+    public Dim(java.awt.Dimension preferredSize) {
         this.width = preferredSize.width;
         this.height = preferredSize.height;
     }

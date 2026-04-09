@@ -4,7 +4,7 @@ import com.j3d.engine.Renderer;
 import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.draw.tris.TriangleSortMethod;
-import com.j3d.engine.geometry.Dimension;
+import com.j3d.engine.geometry.Dim;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
 import com.j3d.settings.Settings;
@@ -25,7 +25,7 @@ public class J3DSettings {
     /**
      * The default screen size for the Renderer.
      */
-    public static Dimension screenSize = new Dimension(1800, 1000);
+    public static Dim screenSize = new Dim(1800, 1000);
     /**
      * Flag to determine if back-face culling is used during rendering.
      */

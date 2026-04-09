@@ -191,7 +191,7 @@
     <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="title" type="java.lang.String" value="J3D"/>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[1800, 1000]"/>
+      <Dimension value="[1024, 768]"/>
     </Property>
   </Properties>
   <SyntheticProperties>

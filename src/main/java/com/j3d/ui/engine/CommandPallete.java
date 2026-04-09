@@ -17,6 +17,17 @@ public class CommandPallete extends javax.swing.JPanel {
         initComponents();
     }
 
+    private boolean disabled = false;
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+        this.setVisible(!disabled);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
