@@ -2,8 +2,8 @@ package com.j3d.engine.layer;
 
 import com.j3d.Static;
 import com.j3d.engine.Renderer;
-import com.j3d.engine.geometry.geo2d.GObject;
-import com.j3d.engine.geometry.geo2d.GTri;
+import com.j3d.engine.geometry.geo2d.graphics.GObject;
+import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.react.actions.DirtyAction;

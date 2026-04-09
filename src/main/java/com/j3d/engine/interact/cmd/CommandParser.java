@@ -6,7 +6,7 @@ import com.j3d.engine.interact.cmd.base.TaggedArgValue;
 import com.j3d.ui.engine.CommandPallete;
 import com.j3d.Static;
 import com.j3d.ui.engine.EngineFrame;
-import com.j3d.engine.geometry.geo2d.GObject;
+import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.base.Command;

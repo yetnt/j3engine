@@ -1,8 +1,8 @@
 package com.j3d.engine.draw;
 
-import com.j3d.engine.geometry.geo2d.GLine;
-import com.j3d.engine.geometry.geo2d.GPoint;
-import com.j3d.engine.geometry.geo2d.GTri;
+import com.j3d.engine.geometry.geo2d.graphics.GLine;
+import com.j3d.engine.geometry.geo2d.graphics.GPoint;
+import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.ui.engine.EngineFrame;
 
 import java.awt.*;

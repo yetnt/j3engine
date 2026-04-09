@@ -2,7 +2,7 @@ package com.j3d.engine.react.events.spec;
 
 import com.j3d.engine.Renderer;
 import com.j3d.engine.react.events.EventPayload;
-import com.j3d.engine.geometry.geo2d.GTri;
+import com.j3d.engine.geometry.geo2d.graphics.GTri;
 
 /**
  * TriUpdatedBroadcast is an EventPayload that is used to represent the properties

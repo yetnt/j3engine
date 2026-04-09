@@ -2,10 +2,10 @@ package com.j3d.engine.interact.selection;
 
 import com.j3d.Static;
 import com.j3d.engine.geometry.ScreenPoint;
-import com.j3d.engine.geometry.geo2d.GLine;
-import com.j3d.engine.geometry.geo2d.GObject;
-import com.j3d.engine.geometry.geo2d.GPoint;
-import com.j3d.engine.geometry.geo2d.GTri;
+import com.j3d.engine.geometry.geo2d.graphics.GLine;
+import com.j3d.engine.geometry.geo2d.graphics.GObject;
+import com.j3d.engine.geometry.geo2d.graphics.GPoint;
+import com.j3d.engine.geometry.geo2d.graphics.GTri;
 
 import java.awt.*;
 

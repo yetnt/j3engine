@@ -1,4 +1,4 @@
-package com.j3d.engine.geometry.geo2d;
+package com.j3d.engine.geometry.geo2d.graphics;
 
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventEmitter;

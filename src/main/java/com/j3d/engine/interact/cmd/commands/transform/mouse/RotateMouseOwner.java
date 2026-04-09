@@ -1,8 +1,7 @@
 package com.j3d.engine.interact.cmd.commands.transform.mouse;
 
 import com.j3d.Static;
-import com.j3d.engine.Renderer;
-import com.j3d.engine.geometry.geo2d.GPoint;
+import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.commands.transform.handlers.Handle;
 import com.j3d.engine.interact.input.mouse.MOwner;

@@ -6,7 +6,7 @@ import com.j3d.engine.draw.tris.methods.CamDistSort;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventListener;
 import com.j3d.engine.react.events.EventType;
-import com.j3d.engine.geometry.geo2d.GTri;
+import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 

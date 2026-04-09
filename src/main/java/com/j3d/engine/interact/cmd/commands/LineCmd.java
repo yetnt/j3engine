@@ -1,8 +1,8 @@
 package com.j3d.engine.interact.cmd.commands;
 
 import com.j3d.Static;
-import com.j3d.engine.geometry.geo2d.GLine;
-import com.j3d.engine.geometry.geo2d.GPoint;
+import com.j3d.engine.geometry.geo2d.graphics.GLine;
+import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.SafeJLabel;

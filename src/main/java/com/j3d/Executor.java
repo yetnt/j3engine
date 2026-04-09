@@ -1,8 +1,8 @@
 package com.j3d;
 
 import com.j3d.engine.geometry.ScreenPoint;
-import com.j3d.engine.interact.input.keyboard.DefaultKeys;
-import com.j3d.engine.interact.input.keyboard.KeyBindings;
+import com.j3d.engine.geometry.geo2d.graphics.GPoint;
+import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.Renderer;
@@ -11,10 +11,7 @@ import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.react.actions.Action;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;

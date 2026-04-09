@@ -1,4 +1,4 @@
-package com.j3d.engine.geometry.geo2d;
+package com.j3d.engine.geometry.geo2d.graphics;
 
 import com.j3d.J3DSettings;
 import com.j3d.Static;

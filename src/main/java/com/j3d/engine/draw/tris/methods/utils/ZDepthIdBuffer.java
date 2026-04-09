@@ -4,10 +4,10 @@ import com.j3d.J3DSettings;
 import com.j3d.Static;
 import com.j3d.engine.draw.tris.methods.VisibleSort;
 import com.j3d.engine.layer.Layer;
-import com.j3d.engine.geometry.geo2d.GLine;
-import com.j3d.engine.geometry.geo2d.GObject;
-import com.j3d.engine.geometry.geo2d.GPoint;
-import com.j3d.engine.geometry.geo2d.GTri;
+import com.j3d.engine.geometry.geo2d.graphics.GLine;
+import com.j3d.engine.geometry.geo2d.graphics.GObject;
+import com.j3d.engine.geometry.geo2d.graphics.GPoint;
+import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.Thing;
 
 import java.awt.Point;

@@ -1,7 +1,7 @@
 package com.j3d.engine.interact.selection;
 
 import com.j3d.engine.layer.Layer;
-import com.j3d.engine.geometry.geo2d.GObject;
+import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo3d.Thing;
 
 import java.util.ArrayList;

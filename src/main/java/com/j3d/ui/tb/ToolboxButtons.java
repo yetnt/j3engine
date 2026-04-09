@@ -4,7 +4,7 @@ import com.j3d.Static;
 import com.j3d.engine.DebugDump;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 import com.j3d.engine.layer.Layer;
-import com.j3d.engine.geometry.geo2d.GTri;
+import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.threads.LongTask;
 import com.j3d.ui.CursorManager;

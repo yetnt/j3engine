@@ -5,9 +5,9 @@ import com.j3d.engine.draw.tris.methods.CamDepthSort;
 import com.j3d.engine.draw.tris.methods.CamDistSort;
 import com.j3d.engine.draw.tris.methods.DDUUIDSort;
 import com.j3d.engine.draw.tris.methods.VisibleSort;
-import com.j3d.engine.geometry.geo2d.GLine;
-import com.j3d.engine.geometry.geo2d.GPoint;
-import com.j3d.engine.geometry.geo2d.GTri;
+import com.j3d.engine.geometry.geo2d.graphics.GLine;
+import com.j3d.engine.geometry.geo2d.graphics.GPoint;
+import com.j3d.engine.geometry.geo2d.graphics.GTri;
 
 import java.awt.*;
 import java.util.ArrayList;

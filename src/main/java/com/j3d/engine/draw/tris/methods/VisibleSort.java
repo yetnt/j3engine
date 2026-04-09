@@ -4,7 +4,7 @@ import com.j3d.engine.draw.tris.SortMethod;
 import com.j3d.engine.draw.tris.TriListener;
 import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.draw.tris.methods.utils.ZDepthIdBuffer;
-import com.j3d.engine.geometry.geo2d.GTri;
+import com.j3d.engine.geometry.geo2d.graphics.GTri;
 
 import java.util.*;
 import java.util.stream.Collectors;

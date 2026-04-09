@@ -1,6 +1,6 @@
 package com.j3d.engine.draw.tris;
 
-import com.j3d.engine.geometry.geo2d.GTri;
+import com.j3d.engine.geometry.geo2d.graphics.GTri;
 
 import java.util.ArrayList;
 
