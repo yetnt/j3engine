@@ -25,6 +25,30 @@ import java.util.Map;
  *     <pre> command type:"some String" x:10.5 </pre>
  * </p>
  * <p>
+ *     Also unlike other tags, TaggedArg is not an argument you define within a command but is given
+ *     to all commands in a separate taggedArgs list. Unique to normal arguments.
+ *     This also means that tag args can appear anywhere in between normal arguments however they
+ *     get stripped away into their own list. leaving the normal arguments in place.
+ *     <p>
+ *         This means
+ *         <pre>{@code
+ *         point at x:4 10 y:5
+ *         }</pre>
+ *         and
+ *         <pre>{@code
+ *         point y:5 at x:4 10
+ *         }</pre>
+ *         both compute to
+ *         <pre>{@code
+ *         Command name = "point"
+ *         Arguments = ["at", 10]
+ *         TaggedArgs = [x:4, y:5]
+ *         }</pre>
+ *         As long as the order of the other arguments is respected, the tagged arguments can be present
+ *         anywhere that isnt before the command name.
+ *     </p>
+ * </p>
+ * <p>
  *     The accepted tags and their types are as follows:
  *     <ul>
  *         <li>{@code type: String}: Any type primitive such as "point" "vector3" "line" ...etc</li>
@@ -42,7 +66,7 @@ import java.util.Map;
  *</p>
  *
  */
-public class TaggedArg extends TypedArg {
+public class TaggedArg {
     public static final HashMap<String, TaggedArgValue<?>> acceptedTags = new HashMap<>();
     static {
         acceptedTags.put("type", new TaggedArgValue<String>(String.class).setName("type"));
@@ -56,10 +80,6 @@ public class TaggedArg extends TypedArg {
         acceptedTags.put("behindCam", new TaggedArgValue<Boolean>(Boolean.class).setName("behindCam"));
         acceptedTags.put("rand", new TaggedArgValue<Boolean>(Boolean.class).setName("rand"));
         acceptedTags.put("v", new TaggedArgValue<Vector3>(Vector3.class).setName("v"));
-    }
-
-    public TaggedArg(String argName, String description, boolean optional) {
-        super(argName, description, optional, TaggedArgValue.class);
     }
 
     public static TaggedArgValue<?> parse(String accumulator, SafeJLabel label) {

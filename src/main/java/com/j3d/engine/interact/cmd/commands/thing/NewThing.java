@@ -4,8 +4,11 @@ import com.j3d.Static;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Subcommand;
+import com.j3d.engine.interact.cmd.base.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.TypedArg;
 import com.j3d.engine.layer.Layer;
+
+import java.util.ArrayList;
 
 public class NewThing extends Subcommand {
 
@@ -18,7 +21,7 @@ public class NewThing extends Subcommand {
     }
 
     @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
+    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         if (args.length >= 1 && !(args[0] instanceof String)) {
             logLabel.setText("Invalid arguments. Usage:" + returnUsagesWhere(aliasUsed, String.class, String.class)[0]);
             return;

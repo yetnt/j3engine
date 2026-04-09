@@ -9,6 +9,7 @@ import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.ArgSet;
 import com.j3d.engine.interact.cmd.base.Subcommand;
+import com.j3d.engine.interact.cmd.base.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.TypedArg;
 
 import java.util.ArrayList;
@@ -29,20 +30,20 @@ class ManageThing extends Subcommand {
 
         this.usages.put(
                 new ArrayList<>(List.of(String.class, Thing.class, GTri.class)),
-                "[add|remove] <Thing> <triangle>"
+                "[add|remove] <Thing> <triangle> ...key:value"
         );
         this.usages.put(
                 new ArrayList<>(List.of(String.class, Thing.class, GLine.class)),
-                "[add|remove] <Thing> <line>"
+                "[add|remove] <Thing> <line> ...key:value"
         );
         this.usages.put(
                 new ArrayList<>(List.of(String.class, Thing.class, GPoint.class)),
-                "[add|remove] <Thing> <point>"
+                "[add|remove] <Thing> <point> ...key:value"
         );
     }
 
     @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
+    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         if (args.length != 3 || !(args[0] instanceof String action) || !(args[1] instanceof Thing t) ||
                 !(args[2] instanceof GTri || args[2] instanceof GLine || args[2] instanceof GPoint)) {
             logLabel.setText("Invalid arguments. Usage:" + returnUsagesWhere(aliasUsed, String.class, Thing.class, GTri.class, GLine.class, GPoint.class)[0]);

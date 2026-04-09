@@ -8,6 +8,8 @@ import com.j3d.engine.interact.cmd.base.Subcommand;
 import com.j3d.engine.interact.cmd.base.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.TypedArg;
 
+import java.util.ArrayList;
+
 public class DebugCmd extends Command {
     public DebugCmd() {
         super("debug", "Toggle debug mode");
@@ -18,13 +20,13 @@ public class DebugCmd extends Command {
     }
 
     @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
+    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         // There has to be at least 2 arguments, the subcommand and its argument(s)
         if (args.length < 1 || !(args[0] instanceof String subcommandName)) {
             logLabel.setText("Invalid arguments. Usage: debug <subcommand> ...");
             return;
         }
-        dispatchToSubcommands(subcommandName, logLabel, args);
+        dispatchToSubcommands(subcommandName, logLabel, args, taggedArgs);
     }
 
     public static class TypeOf extends Subcommand {
@@ -35,13 +37,14 @@ public class DebugCmd extends Command {
                 ).parseUsages();
         }
         @Override
-        public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
-            if (args.length != 1) {
+        public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+            if (args.length != 1 && taggedArgs.isEmpty()) {
                 logLabel.setText("Invalid arguments. Usage: typeof <input>");
                 return;
             }
-            String typeName = (args[0] == null) ? "null" : args[0].getClass().getSimpleName();
-            if (args[0] instanceof TaggedArgValue<?> g)
+            Object input = args.length == 1 ? args[0] : taggedArgs.getFirst();
+            String typeName = input.getClass().getSimpleName();
+            if (input instanceof TaggedArgValue<?> g)
                 typeName = typeName + "<" + g.type.getSimpleName() + ">";
 
             logLabel.setText("Type: " + typeName);
@@ -57,7 +60,7 @@ public class DebugCmd extends Command {
                 ).parseUsages();
         }
         @Override
-        public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
+        public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
             if (args.length != 1 || !(args[0] instanceof String message)) {
                 logLabel.setText("Invalid arguments. Usage: echo <message: String>");
                 return;

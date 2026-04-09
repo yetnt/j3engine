@@ -10,6 +10,7 @@ public class Command {
     public String description;
     public String usage = "This will be auto-generated.";
     public ArrayList<Argument> args = new ArrayList<>();
+    private boolean variadicTaggedArgs = true;
 
     /**
      * A map to hold different usages based on argument types.
@@ -45,27 +46,31 @@ public class Command {
 
     /**
      * The method to be overridden by subclasses to implement command functionality.
-     * @param logLabel The JLabel to display log messages.
-     * @param aliasUsed The alias of the command that was used to invoke it.
-     * @param args The arguments passed to the command.
+     *
+     * @param logLabel   The JLabel to display log messages.
+     * @param aliasUsed  The alias of the command that was used to invoke it.
+     * @param args       The arguments passed to the command.
+     * @param taggedArgs Tagged arguments passed to the command.
      */
-    public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
+    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         // To be overridden by subclasses
     }
 
     /**
      * Dispatches the command to the appropriate subcommand based on the first argument.
+     *
      * @param subcommandName The name of the subcommand to dispatch to.
-     * @param args The raw arguments passed to the main command, including the subcommand name as the first argument.
+     * @param args           The raw arguments passed to the main command, including the subcommand name as the first argument.
+     * @param taggedArgs
      */
-    protected void dispatchToSubcommands(String subcommandName, SafeJLabel logLabel, Object... args) {
+    protected void dispatchToSubcommands(String subcommandName, SafeJLabel logLabel, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         for (Argument arg : this.args) {
             if (!(arg instanceof Subcommand subcommand)) continue;
             if (subcommand.aliases.contains(subcommandName.toLowerCase())) {
                 Object[] subArgs = new Object[args.length - 1];
                 String alias = (String) args[0];
                 System.arraycopy(args, 1, subArgs, 0, args.length - 1);
-                subcommand.run(logLabel, alias, subArgs);
+                subcommand.run(logLabel, alias, subArgs, taggedArgs);
                 return;
             }
         }
@@ -93,8 +98,7 @@ public class Command {
         // This method is going to be long as hell I can already feel it.
         // For each returned usage, don't prefix the command name, just the arguments.
         // So later the suggestions can prefix the command name or the given alias for said command.
-        ArrayList<ArrayList<Class>> typeAccumulator = new ArrayList<>(
-        );
+        ArrayList<ArrayList<Class>> typeAccumulator = new ArrayList<>();
         ArrayList<StringBuilder> usageAccumulator = new ArrayList<>();
         for (Argument arg : args) {
             if (arg instanceof Subcommand sub) {
@@ -104,7 +108,7 @@ public class Command {
                     ArrayList<Class> key = new ArrayList<>();
                     key.addFirst(String.class); // The first argument is always the subcommand name
                     key.addAll(entry.getKey());
-                    String value = " " + sub.aliases.getFirst() + " " + entry.getValue();
+                    String value = sub.aliases.getFirst() + " " + entry.getValue();
                     usages.put(key, value);
                 }
                 continue; // If a command has subcommands, it can't have anything else. So exit early.
@@ -145,22 +149,24 @@ public class Command {
                         default -> throw new IllegalStateException("Unexpected value: " + cls.getSimpleName());
                     }
                 }
-            } else if (arg instanceof TaggedArg tagArg) {
-                // probably the simplest one, A tagged arg is always a... tag.
-                // However, we need to add this arg to every usage within the accumulator and typeAccumulator
-                // If the accumulators are empty, we need to add a new entry.
-                if (typeAccumulator.isEmpty()) {
-                    typeAccumulator.add(new ArrayList<>(List.of(TaggedArg.class)));
-                    usageAccumulator.add(new StringBuilder("{tag} "));
-                } else {
-                    for (ArrayList<Class> clsList : typeAccumulator) {
-                        clsList.add(TaggedArg.class);
-                    }
-                    for (StringBuilder usage : usageAccumulator) {
-                        usage.append("{tag").append(tagArg.isOptional() ? "?" : "").append("} ");
-                    }
-                }
-            } else if (arg instanceof ArgSet setArg) {
+            }
+//            else if (arg instanceof TaggedArg tagArg) {
+////                // probably the simplest one, A tagged arg is always a... tag.
+////                // However, we need to add this arg to every usage within the accumulator and typeAccumulator
+////                // If the accumulators are empty, we need to add a new entry.
+////                if (typeAccumulator.isEmpty()) {
+////                    typeAccumulator.add(new ArrayList<>(List.of(TaggedArg.class)));
+////                    usageAccumulator.add(new StringBuilder("{tag} "));
+////                } else {
+////                    for (ArrayList<Class> clsList : typeAccumulator) {
+////                        clsList.add(TaggedArg.class);
+////                    }
+////                    for (StringBuilder usage : usageAccumulator) {
+////                        usage.append("{tag").append(tagArg.isOptional() ? "?" : "").append("} ");
+////                    }
+////                }
+//            }
+            else if (arg instanceof ArgSet setArg) {
                 // Another simple one, An ArgSet is always a set of predefined strings.
                 // However, we need to add this arg to every usage within the accumulator and typeAccumulator
                 // If the accumulators are empty, we need to add a new entry.
@@ -183,7 +189,8 @@ public class Command {
         // Now we need to combine the typeAccumulator and usageAccumulator into the usages map.
         for (int i = 0; i < typeAccumulator.size(); i++) {
             ArrayList<Class> key = typeAccumulator.get(i);
-            String value = usageAccumulator.get(i).toString().trim();
+            String value = usageAccumulator.get(i).toString().trim()
+                    + (variadicTaggedArgs ? " ...key:value" : "");
             usages.put(key, value);
         }
 

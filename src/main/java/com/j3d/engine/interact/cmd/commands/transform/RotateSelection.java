@@ -3,7 +3,7 @@ package com.j3d.engine.interact.cmd.commands.transform;
 import com.j3d.Static;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.SafeJLabel;
-import com.j3d.engine.interact.cmd.base.Subcommand;
+import com.j3d.engine.interact.cmd.base.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.TypedArg;
 import com.j3d.engine.interact.cmd.commands.transform.handlers.HandleType;
 import com.j3d.engine.interact.cmd.commands.transform.mouse.RotateMouseOwner;
@@ -12,6 +12,7 @@ import com.j3d.engine.interact.input.keyboard.J3Key;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 public class RotateSelection extends AbstractTransform {
 
@@ -129,9 +130,9 @@ public class RotateSelection extends AbstractTransform {
     }
 
     @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
+    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         if (args.length > 1 && args[1] instanceof Vector3 a)
             axis = a.normalize();
-        super.run(logLabel, aliasUsed, args);
+        super.run(logLabel, aliasUsed, args, taggedArgs);
     }
 }

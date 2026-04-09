@@ -53,6 +53,10 @@ public class CommandParser {
      * or other types produced by argument parsing.
      */
     private final ArrayList<Object> arguments = new ArrayList<>();
+    /**
+     * Collected tagged argument values for the current command invocation.
+     */
+    private final ArrayList<TaggedArgValue<?>> taggedArguments = new ArrayList<>();
 
     /**
      * When true, document events coming from the input field are ignored. This is used
@@ -346,7 +350,7 @@ public class CommandParser {
                         arguments.add(acc.trim()); // something like an extra arg, just put it.
                         return;
                     }
-                    arguments.add(v);
+                    taggedArguments.add(v);
                 });
             }
         }
@@ -403,7 +407,7 @@ public class CommandParser {
             }
             // Remove the command name from the arguments
             arguments.removeFirst();
-            cmd.run(label,cmdName, arguments.toArray());
+            cmd.run(label,cmdName, arguments.toArray(), taggedArguments);
         } else {
             label.error("Invalid command name.");
         }

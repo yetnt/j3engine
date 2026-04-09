@@ -7,6 +7,7 @@ import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
+import com.j3d.engine.interact.cmd.base.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.TypedArg;
 
 import java.util.ArrayList;
@@ -26,15 +27,15 @@ public class LineCmd extends Command {
         // Custom Usage Args parsing because the args have to be of the same type.
 
         usages.put(
-                new ArrayList<>(List.of(Vector3.class, Vector3.class)), " (vector3) (vector3)"
+                new ArrayList<>(List.of(Vector3.class, Vector3.class)), "(vector3) (vector3) ...key:value"
         );
         usages.put(
-                new ArrayList<>(List.of(GPoint.class, GPoint.class)), " <point> <point>"
+                new ArrayList<>(List.of(GPoint.class, GPoint.class)), "<point> <point> ...key:value"
         );
     }
 
     @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
+    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         if (args.length != 2) {
             logLabel.setText("Invalid number of arguments. Usage:" + returnUsagesWhere(aliasUsed, Vector3.class)[0] + " or " + returnUsagesWhere(aliasUsed, GPoint.class)[0]);
             return;

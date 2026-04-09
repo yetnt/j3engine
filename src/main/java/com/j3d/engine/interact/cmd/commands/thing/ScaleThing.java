@@ -5,6 +5,7 @@ import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Subcommand;
+import com.j3d.engine.interact.cmd.base.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.TypedArg;
 import com.j3d.engine.react.actions.VoidAction;
 
@@ -21,16 +22,16 @@ class ScaleThing extends Subcommand {
 
         this.usages.put(
                 new ArrayList<>(List.of(Thing.class, Double.class)),
-                "<Thing> (number)"
+                "<Thing> (number) ...key:value"
         );
         this.usages.put(
                 new ArrayList<>(List.of(Thing.class, Vector3.class)),
-                "<Thing> (vector3)"
+                "<Thing> (vector3) ...key:value"
         );
     }
 
     @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
+    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         if (args.length != 2 || !(args[0] instanceof Thing t)) {
             logLabel.setText("Invalid arguments. Usage:" + returnUsagesWhere(aliasUsed, Thing.class, Double.class)[0] + " or " + returnUsagesWhere(aliasUsed, Thing.class, Vector3.class)[0]);
             return;

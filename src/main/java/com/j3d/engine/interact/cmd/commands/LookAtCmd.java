@@ -5,7 +5,10 @@ import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
+import com.j3d.engine.interact.cmd.base.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.TypedArg;
+
+import java.util.ArrayList;
 
 public class LookAtCmd extends Command {
     public LookAtCmd() {
@@ -16,7 +19,7 @@ public class LookAtCmd extends Command {
     }
 
     @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
+    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         if (args.length != 1 || (!(args[0] instanceof String) && !(args[0] instanceof Vector3))) {
             logLabel.setText("Invalid arguments. Usage: lookat <thing: String>");
             return;

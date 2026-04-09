@@ -1,12 +1,12 @@
 package com.j3d.engine.interact.cmd.commands.orbit;
 
-import com.j3d.J3DSettings;
 import com.j3d.Static;
 import com.j3d.engine.geometry.geo3d.rot.Rotation;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
+import com.j3d.engine.interact.cmd.base.TaggedArgValue;
 import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.settings.Settings;
 import com.j3d.ui.CursorManager;
@@ -16,6 +16,7 @@ import com.j3d.ui.engine.EngineFrame;
 import com.j3d.utility.JLabelRichText;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 public class OrbitCmd extends Command implements StatefulCommand<Rotation> {
     public static OrbitMouseOwner orbitMouseOwner = new OrbitMouseOwner();
@@ -26,7 +27,7 @@ public class OrbitCmd extends Command implements StatefulCommand<Rotation> {
     }
 
     @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
+    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         if (!CommandsManager.isCurrentStatefulRunning(this)) return;
 
         run(this, "orbitCmd", Static.camera.getRotation().copy(), logLabel);

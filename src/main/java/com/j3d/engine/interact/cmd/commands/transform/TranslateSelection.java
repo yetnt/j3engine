@@ -22,7 +22,7 @@ public class TranslateSelection extends AbstractTransform {
                 "translate", "Translates the selection",
                 "translateCmd", translateMouseOwner,
                 new double[]{1, 5, 20, 0.1});
-        this.aliases("t", "trans","move","mv").args(
+        this.aliases("t", "trans","move","mv", "m").args(
                 argSet
         ).parseUsages();
 

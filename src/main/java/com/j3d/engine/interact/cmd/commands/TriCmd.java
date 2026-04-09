@@ -8,9 +8,11 @@ import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
+import com.j3d.engine.interact.cmd.base.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.TypedArg;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class TriCmd extends Command {
     public TriCmd() {
@@ -26,18 +28,18 @@ public class TriCmd extends Command {
         // Custom Usage Args parsing because the args have to be of the same type.
 
         usages.put(
-                new java.util.ArrayList<>(java.util.List.of(Vector3.class, Vector3.class, Vector3.class, Color.class)), " (vector3) (vector3) (vector3) #color?#"
+                new java.util.ArrayList<>(java.util.List.of(Vector3.class, Vector3.class, Vector3.class, Color.class)), "(vector3) (vector3) (vector3) #color?# ...key:value"
         );
         usages.put(
-                new java.util.ArrayList<>(java.util.List.of(GPoint.class, GPoint.class, GPoint.class, Color.class)), " <point> <point> <point> #color?#"
+                new java.util.ArrayList<>(java.util.List.of(GPoint.class, GPoint.class, GPoint.class, Color.class)), "<point> <point> <point> #color?# ...key:value"
         );
         usages.put(
-                new java.util.ArrayList<>(java.util.List.of(GLine.class, GLine.class, GLine.class, Color.class)), " <line> <line> <line> #color?#"
+                new java.util.ArrayList<>(java.util.List.of(GLine.class, GLine.class, GLine.class, Color.class)), "<line> <line> <line> #color?# ...key:value"
         );
     }
 
     @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
+    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         if (args.length != 3 && args.length != 4) {
             logLabel.setText("Invalid number of arguments. Usage:" + returnUsagesWhere(aliasUsed, Vector3.class)[0] + " or " + returnUsagesWhere(aliasUsed, GPoint.class)[0] + " or " + returnUsagesWhere(aliasUsed, GLine.class)[0]);
             return;

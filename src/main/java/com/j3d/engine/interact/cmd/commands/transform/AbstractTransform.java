@@ -12,6 +12,7 @@ import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.ArgSet;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.base.Subcommand;
+import com.j3d.engine.interact.cmd.base.TaggedArgValue;
 import com.j3d.engine.interact.cmd.commands.transform.handlers.Handle;
 import com.j3d.engine.interact.cmd.commands.transform.handlers.HandleType;
 import com.j3d.engine.interact.cmd.commands.transform.mouse.TransformMouseOwner;
@@ -27,7 +28,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -75,7 +75,7 @@ public class AbstractTransform extends Subcommand implements StatefulCommand<Voi
     }
 
     @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
+    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         CommandsManager.setAsCurrent(this);
 
         if (args.length > 0 && !(args[0] instanceof String)) {

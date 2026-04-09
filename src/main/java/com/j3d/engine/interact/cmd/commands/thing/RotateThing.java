@@ -6,8 +6,11 @@ import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.ArgSet;
 import com.j3d.engine.interact.cmd.base.Subcommand;
+import com.j3d.engine.interact.cmd.base.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.TypedArg;
 import com.j3d.engine.react.actions.VoidAction;
+
+import java.util.ArrayList;
 
 class RotateThing extends Subcommand {
     private final ArgSet axisSet = new ArgSet("axis", "The axis to rotate around", false, "x", "y", "z", "c");
@@ -22,7 +25,7 @@ class RotateThing extends Subcommand {
     }
 
     @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object... args) {
+    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         if (args.length != 3 || !(args[0] instanceof Thing t) || !(args[1] instanceof String axis) || !(args[2] instanceof Double v)) {
             logLabel.setText("Invalid arguments. Usage:" + returnUsagesWhere(aliasUsed, Thing.class, String.class, Double.class)[0]);
             return;
