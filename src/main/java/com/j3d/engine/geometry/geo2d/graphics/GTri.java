@@ -4,6 +4,7 @@ import com.j3d.J3DSettings;
 import com.j3d.Static;
 import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.draw.tris.TriStateArea;
+import com.j3d.engine.geometry.constraints.ConstraintManager;
 import com.j3d.engine.geometry.geo2d.constraints.CTri;
 import com.j3d.engine.geometry.geo3d.Thing;
 
@@ -63,6 +64,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
     // TODO: I actually have no clue where the fuck this is used?? Uhm find this out??
     private boolean hidden = false;
+    protected ConstraintManager<GTri> constraints;
 
     /**
      * Constructs a GTri.
@@ -378,6 +380,11 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
      */
     public Stream<GLine> getLegStream() {
         return Stream.of(LegA, LegB, LegC);
+    }
+
+    @Override
+    public ConstraintManager<GTri> getConstraints() {
+        return constraints;
     }
 
     @Override

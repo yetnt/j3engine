@@ -4,6 +4,7 @@ import com.j3d.J3DSettings;
 import com.j3d.Static;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.draw.ViewType;
+import com.j3d.engine.geometry.constraints.ConstraintManager;
 import com.j3d.engine.geometry.geo2d.HasParents;
 import com.j3d.engine.geometry.geo2d.constraints.CPoint;
 import com.j3d.engine.geometry.geo3d.Thing;
@@ -52,6 +53,7 @@ public class GPoint extends GObject implements HasParents<GLine> {
      */
     public static final int DIAMETER = 7;
     private HashSet<GLine> parents = new HashSet<>();
+    protected ConstraintManager<GPoint> constraints;
 
     /**
      * Constructs a GPoint.
@@ -132,6 +134,11 @@ public class GPoint extends GObject implements HasParents<GLine> {
     @Override
     public String toString() {
         return "GPoint {" + getPivot().getX() + ", " + getPivot().getY() +  ", " + getPivot().getZ() + "}";
+    }
+
+    @Override
+    public ConstraintManager<GPoint> getConstraints() {
+        return constraints;
     }
 
     @Override

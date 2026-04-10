@@ -1,5 +1,6 @@
 package com.j3d.engine.geometry.geo2d.graphics;
 
+import com.j3d.engine.geometry.constraints.ConstraintManager;
 import com.j3d.engine.geometry.geo2d.BaseObject;
 import com.j3d.engine.geometry.geo2d.constraints.CObject;
 import com.j3d.engine.react.events.EventPayload;
@@ -149,5 +150,9 @@ public abstract class GObject extends EventEmitter implements BaseObject, EventL
             constraintObject = new CObject(this);
         }
         return constraintObject;
+    }
+
+    public ConstraintManager<?> getConstraints() {
+        return null;
     }
 }

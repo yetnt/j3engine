@@ -1,6 +1,7 @@
 package com.j3d.engine.geometry.geo2d.graphics;
 
 import com.j3d.engine.draw.ViewType;
+import com.j3d.engine.geometry.constraints.ConstraintManager;
 import com.j3d.engine.geometry.geo2d.HasParents;
 import com.j3d.engine.geometry.geo2d.constraints.CLine;
 import com.j3d.engine.geometry.geo3d.Thing;
@@ -45,6 +46,7 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
      */
     private final GPoint endPoint;
     private HashSet<GTri> parents = new HashSet<>();
+    protected ConstraintManager<GLine> constraints;
 
     /**
      * Constructs a GLine.
@@ -191,6 +193,12 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
         }
         return (CLine) constraintObject;
     }
+
+    @Override
+    public ConstraintManager<GLine> getConstraints() {
+        return constraints;
+    }
+
 
     @Override
     public HashSet<GTri> getParents() {

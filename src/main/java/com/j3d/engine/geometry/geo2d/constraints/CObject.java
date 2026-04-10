@@ -58,6 +58,11 @@ public class CObject implements BaseObject, ConstraintMirror {
     }
 
     @Override
+    public void dispose() {
+        deleteSelf();
+    }
+
+    @Override
     public void setId(UUID id) {
         Id = id;
     }

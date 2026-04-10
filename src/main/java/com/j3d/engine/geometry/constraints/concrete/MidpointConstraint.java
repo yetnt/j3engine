@@ -1,20 +1,25 @@
-package com.j3d.engine.geometry.constraints;
+package com.j3d.engine.geometry.constraints.concrete;
 
-import com.j3d.engine.geometry.geo2d.constraints.CObject;
+import com.j3d.engine.geometry.constraints.ConstraintIntent;
+import com.j3d.engine.geometry.constraints.ConstraintMirror;
+import com.j3d.engine.geometry.constraints.ConstraintOn;
 import com.j3d.engine.geometry.geo2d.constraints.CPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
-import com.j3d.utility.Pair;
+import com.j3d.engine.react.events.EventListener;
+import com.j3d.engine.react.events.EventPayload;
+import com.j3d.engine.react.events.EventType;
 
 import java.util.HashMap;
+import java.util.Set;
 import java.util.UUID;
 
-public class MidpointConstraint implements Constraint {
+public class MidpointConstraint implements ConstraintOn<GPoint> {
 
-    private Runnable applier;
-    private GPoint parent;
-    private GLine line;
+    private final Runnable applier;
+    private final GPoint parent;
+    private final GLine line;
 
     public MidpointConstraint(GPoint parent, GLine line) {
         this.parent = parent;
@@ -22,8 +27,21 @@ public class MidpointConstraint implements Constraint {
         this.applier = () -> {
             parent.setPivot(line.getPivot());
         };
+        MidpointConstraintEventListener mdpl = new MidpointConstraintEventListener(applier);
 
-        // TODO: Event listener where applier is applied to midpoint when one of the edges changes,
+        line.getStart().attach(mdpl);
+        line.getEnd().attach(mdpl);
+
+    }
+
+    @Override
+    public String name() {
+        return "Midpoint Constraint";
+    }
+
+    @Override
+    public String description() {
+        return "Enforces that the given point stays at the geometric centre of a line.";
     }
 
     @Override
@@ -35,7 +53,7 @@ public class MidpointConstraint implements Constraint {
     public boolean satisfiesConstraint(ConstraintIntent intent) {
         intent.consume(); // apply the proposed change
         HashMap<UUID, ConstraintMirror> changedObjects = intent.map();
-
+        changedObjects.values().forEach(ConstraintMirror::dispose);
 
         CPoint changedParent =
                 changedObjects.get(parent.getId()) ==  null
@@ -71,5 +89,22 @@ public class MidpointConstraint implements Constraint {
     @Override
     public Runnable getConstraintApplier() {
         return applier;
+    }
+
+    @Override
+    public Set<Class<?>> incompatibleWith() {
+        return Set.of(FixedPointConstraint.class);
+    }
+
+    public static class MidpointConstraintEventListener implements EventListener {
+        private final Runnable applier;
+        public MidpointConstraintEventListener(Runnable applier) {
+            this.applier = applier;
+        }
+        @Override
+        public <K> void onEvent(EventType event, EventPayload<K> properties) {
+            if (event == EventType.GPOINT_RECALC_PIVOT)
+                applier.run();
+        }
     }
 }
