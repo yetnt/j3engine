@@ -1,12 +1,9 @@
 package com.j3d.settings;
 
-import com.j3d.Static;
 import com.j3d.settings.classes.CameraPropertiesSettings;
 import com.j3d.settings.classes.ScenePropertiesSettings;
-import com.j3d.settings.types.ComplexSetting;
 import com.j3d.settings.types.StringSetting;
 import com.j3d.ui.settings.SettingsFrame;
-import com.j3d.ui.util.AreYouSure;
 
 import java.util.ArrayList;
 

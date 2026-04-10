@@ -22,7 +22,7 @@ public class ScenePropertiesSettings implements SettingsParent {
      */
     public DoubleSetting scale = new DoubleSetting(
             "Axis Scale Factor",
-            10.0,
+            43.0,
             "Factor to scale each 3d point's projected 2d axis.",
             1.0,
             100.0

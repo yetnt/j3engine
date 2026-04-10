@@ -120,6 +120,28 @@ public class Renderer {
         graphics.setColor(Color.BLACK);
     }
 
+    public void axisGrid(Graphics2D g, Camera camera) {
+        double axisLength = camera.getPosition().magnitude() * 0.9;
+        int amt = ((int) camera.getPosition().magnitude());
+        ArrayList<Integer> nums = new ArrayList<>();
+
+        for (int i = -100; i < amt; i+=10) {
+            g.setColor(J3DTheme.TEXT_PRIMARY.color());
+
+            this.drawLine3D(g,
+                    new Vector3(i, 0, axisLength),
+                    new Vector3(i, 0, Math.clamp(-axisLength, camera.getPosition().getZ(), axisLength)),
+                    camera);
+
+            this.drawLine3D(g,
+                    new Vector3(axisLength, 0, i),
+                    new Vector3(-axisLength, 0, i),
+                    camera);
+        }
+
+    }
+
+
     /**
      * Draws the 3D Cartesian axes (X, Y, Z) in the scene, relative to the camera's position.
      * The length of the axes is scaled based on the camera's distance from the origin.
@@ -129,7 +151,7 @@ public class Renderer {
     public void axis(Graphics2D g, Camera camera) {
         double axisLength = camera.getPosition().magnitude() * 0.9;
         Vector3 origin = new Vector3(0, 0, 0);
-        Vector3 offset = new Vector3(0, 0, 0); // avoids collapse
+        Vector3 offset = new Vector3(0, 0, 0);
         ArrayList<Double> nums = new ArrayList<>(List.of(-1.0, 1.0));
         for (double i = 2.0; i < Math.clamp(Math.floor(axisLength), 0, 20); i++) {
             nums.add(i);

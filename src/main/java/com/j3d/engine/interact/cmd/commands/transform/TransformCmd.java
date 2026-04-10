@@ -1,7 +1,7 @@
 package com.j3d.engine.interact.cmd.commands.transform;
 
 import com.j3d.Static;
-import com.j3d.engine.interact.cmd.SafeJLabel;
+import com.j3d.ui.util.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.TaggedArgValue;
 import com.j3d.engine.interact.selection.SelectionManager;

@@ -1,6 +1,7 @@
-package com.j3d.engine.interact.cmd;
+package com.j3d.ui.util;
 
 import com.j3d.Static;
+import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.ui.J3DTheme;
 import com.j3d.ui.engine.CommandPallete;
 import com.j3d.utility.JLabelRichText;

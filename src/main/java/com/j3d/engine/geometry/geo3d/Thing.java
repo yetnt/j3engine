@@ -20,7 +20,7 @@ import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.storage.files.ProjectFile;
 import com.j3d.ui.J3DTheme;
 import com.j3d.ui.engine.tree.TreeNodeIdentity;
-import com.j3d.ui.util.Throbber;
+import com.j3d.ui.dialog.Throbber;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
@@ -261,6 +261,7 @@ public class Thing implements Interactable {
             graphics2D.setColor(J3DTheme.BACKGROUND.color());
             graphics2D.fillRect(0, 0, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
             Static.renderer.axis(graphics2D, Static.camera);
+            Static.renderer.axisGrid(graphics2D, Static.camera);
             return;
         }
 

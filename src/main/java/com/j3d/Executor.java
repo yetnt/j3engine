@@ -76,6 +76,7 @@ public class Executor {
 
     public void usual() {
         Thing cub = cube();
+        Static.camera.lookAt(cub.getCentroid());
         Thing tris = threeTris();
         ArrayList<Action<?>> actions = new ArrayList<>(List.of(
                 cub.rotate(new Vector3(0, 0, 1), 45),

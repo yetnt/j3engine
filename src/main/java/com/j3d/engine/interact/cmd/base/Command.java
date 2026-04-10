@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.cmd.base;
 
-import com.j3d.engine.interact.cmd.SafeJLabel;
+import com.j3d.ui.util.SafeJLabel;
 
 import java.util.*;
 import java.util.stream.Stream;

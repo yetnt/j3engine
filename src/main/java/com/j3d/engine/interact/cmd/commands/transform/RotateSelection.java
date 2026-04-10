@@ -1,19 +1,14 @@
 package com.j3d.engine.interact.cmd.commands.transform;
 
-import com.j3d.Static;
 import com.j3d.engine.geometry.geo2d.BaseObject;
 import com.j3d.engine.geometry.geo2d.constraints.CPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
-import com.j3d.engine.interact.cmd.SafeJLabel;
+import com.j3d.ui.util.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.TypedArg;
 import com.j3d.engine.interact.cmd.commands.transform.handlers.HandleType;
 import com.j3d.engine.interact.cmd.commands.transform.mouse.RotateMouseOwner;
-import com.j3d.engine.interact.input.keyboard.J3Key;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.function.Supplier;
 

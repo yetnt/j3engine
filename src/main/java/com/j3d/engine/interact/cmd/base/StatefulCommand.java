@@ -3,7 +3,7 @@ package com.j3d.engine.interact.cmd.base;
 import com.j3d.Static;
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.CommandsManager;
-import com.j3d.engine.interact.cmd.SafeJLabel;
+import com.j3d.ui.util.SafeJLabel;
 import com.j3d.engine.interact.input.keyboard.DefaultKeys;
 import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.selection.SelectionManager;

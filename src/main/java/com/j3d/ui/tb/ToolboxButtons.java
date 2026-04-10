@@ -10,6 +10,7 @@ import com.j3d.threads.LongTask;
 import com.j3d.ui.CursorManager;
 import com.j3d.ui.CursorNames;
 import com.j3d.ui.J3DTheme;
+import com.j3d.ui.engine.FloatingPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -114,6 +115,22 @@ public class ToolboxButtons {
         register("Transform", e -> {
             TransformCmd cmd = new TransformCmd();
         }, "transform.png");
+
+        JLabel label1 = new javax.swing.JLabel();
+        label1.setFont(new java.awt.Font("Tahoma", Font.BOLD, 12)); // NOI18N
+        label1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        label1.setText("yo");
+        label1.setMaximumSize(new java.awt.Dimension(100, 16));
+        label1.setMinimumSize(new java.awt.Dimension(120, 16));
+        label1.setPreferredSize(new java.awt.Dimension(120, 16));
+        label1.setForeground(J3DTheme.TEXT_PRIMARY.color());
+
+        FloatingPanel fp = new FloatingPanel("HIII", label1);
+
+        register("UI elem", e -> {
+            if (fp.isHidden()) fp.showThis();
+            else fp.hideThis();
+        });
     }
 
     public static void register(String label, ActionListener actionListener, String imageFileName) {

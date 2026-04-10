@@ -38,6 +38,8 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -49,7 +51,8 @@ import static com.j3d.J3DSettings.jMenuBarOffsetY;
 import static com.j3d.engine.interact.input.keyboard.KeyBindings.commandPaletteFocusOwner;
 
 import com.j3d.engine.draw.ViewType;
-import com.j3d.ui.util.AreYouSure;
+import com.j3d.ui.dialog.AreYouSure;
+import com.j3d.ui.util.HoverJLabel;
 
 /**
  *
@@ -68,6 +71,26 @@ public class EngineFrame extends javax.swing.JFrame {
     public static MOwner getMouseOwner() {
         return mouseOwner;
     }
+
+    public static void addFloater(FloatingPanel p) {
+        p.setBounds(50, 100, p.getPreferredSize().width, p.getPreferredSize().height);
+        p.setVisible(true);
+        Static.mainFrame.getLayeredPane().add(p, JLayeredPane.POPUP_LAYER);
+        Static.mainFrame.revalidate();
+        Static.mainFrame.repaint();
+    }
+
+    public static void bringForward(FloatingPanel p) {
+        Static.mainFrame.getLayeredPane().moveToFront(p);
+        Static.mainFrame.revalidate();
+        Static.mainFrame.repaint();
+    }
+
+    public static void removeFloater(FloatingPanel p) {
+        Static.mainFrame.getLayeredPane().remove(p);
+        Static.mainFrame.revalidate();
+        Static.mainFrame.repaint();
+    }
     
     public void complete() {
         Static.mainFrame = this;
@@ -76,7 +99,12 @@ public class EngineFrame extends javax.swing.JFrame {
         Static.renderer = new Renderer(J3DSettings.screenSize);
         Static.executor = new Executor(Static.renderer);
         Static.debugPanel.run(Static.renderer, Static.executor, Static.mainFrame);
+        HoverJLabelPanel lbl = new HoverJLabelPanel();
+        lbl.setBounds(0 ,0, lbl.getPreferredSize().width, lbl.getPreferredSize().height);
         JLayeredPane layeredPane = Static.mainFrame.getLayeredPane();
+        layeredPane.add(lbl, JLayeredPane.DRAG_LAYER);
+        lbl.setVisible(true);
+        Static.hoverLabel = new HoverJLabel(lbl.getLabel());
         Static.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Static.mainFrame.setSize(J3DSettings.screenSize.width, J3DSettings.screenSize.height);
         Static.mainFrame.setResizable(false);
@@ -173,6 +201,26 @@ public class EngineFrame extends javax.swing.JFrame {
 
         CursorManager.init(Static.mainFrame);
         CursorManager.setDefault();
+
+        this.addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+//                lbl.setLocation(e.getPoint());
+                int y = bounds.height - size.height - 200;
+                if (e.getY() > y - 20) return;
+                lbl.setBounds(e.getX(), e.getY(), lbl.getPreferredSize().width, lbl.getPreferredSize().height);
+                layeredPane.revalidate();
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+//                lbl.setLocation(e.getPoint());
+                int y = bounds.height - size.height - 200;
+                if (e.getY() > y - 20) return;
+                lbl.setBounds(e.getX(), e.getY(), lbl.getPreferredSize().width, lbl.getPreferredSize().height);
+                layeredPane.revalidate();
+            }
+        });
     }
 
     /**

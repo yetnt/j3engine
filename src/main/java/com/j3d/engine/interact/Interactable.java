@@ -1,9 +1,9 @@
 package com.j3d.engine.interact;
 
-import com.j3d.engine.layer.Layer;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.CleanableAction;
 import com.j3d.engine.react.actions.DirtyVoidAction;
+import com.j3d.ui.dialog.Throbber;
 import com.j3d.ui.engine.tree.TreeNodeIdentity;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -91,7 +91,7 @@ public interface Interactable {
      * create an object outside the EDT thread.
      * <p>
      *     A use case (the current use case) would be when an Interactable is loaded
-     *     from disk to memory and the {@link com.j3d.ui.util.Throbber} dialog is
+     *     from disk to memory and the {@link Throbber} dialog is
      *     blocking the EDT thread. After the throbber has finished, you may call invokeSwingHooks safely
      *     rather than fighting with a blocked EDT thread.
      * </p>

@@ -3,7 +3,7 @@ package com.j3d.engine.interact.cmd.commands.orbit;
 import com.j3d.Static;
 import com.j3d.engine.geometry.geo3d.rot.Rotation;
 import com.j3d.engine.interact.cmd.CommandsManager;
-import com.j3d.engine.interact.cmd.SafeJLabel;
+import com.j3d.ui.util.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.base.TaggedArgValue;

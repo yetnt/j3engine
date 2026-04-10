@@ -1,10 +1,9 @@
 package com.j3d.threads;
 
 import com.j3d.Static;
-import com.j3d.ui.util.Throbber;
+import com.j3d.ui.dialog.Throbber;
 
 import javax.swing.*;
-import java.util.ArrayList;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;

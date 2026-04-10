@@ -2,7 +2,7 @@ package com.j3d.engine.interact.cmd.commands;
 
 import com.j3d.Static;
 import com.j3d.engine.interact.cmd.Any;
-import com.j3d.engine.interact.cmd.SafeJLabel;
+import com.j3d.ui.util.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.Subcommand;
 import com.j3d.engine.interact.cmd.base.TaggedArgValue;

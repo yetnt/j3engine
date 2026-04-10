@@ -8,8 +8,6 @@ import com.j3d.engine.react.events.EventEmitter;
 import com.j3d.engine.react.events.EventListener;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
-import com.j3d.storage.files.ProjectFile;
-import com.j3d.ui.util.Throbber;
 
 import java.awt.*;
 import java.util.*;

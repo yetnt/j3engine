@@ -5,7 +5,7 @@ import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.storage.files.ProjectFile;
-import com.j3d.ui.util.Throbber;
+import com.j3d.ui.dialog.Throbber;
 
 import java.awt.*;
 import java.util.UUID;

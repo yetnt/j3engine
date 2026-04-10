@@ -1,6 +1,6 @@
 package com.j3d.storage.files.protocol;
 
-import com.j3d.ui.util.Throbber;
+import com.j3d.ui.dialog.Throbber;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

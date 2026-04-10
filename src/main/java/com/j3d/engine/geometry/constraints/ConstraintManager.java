@@ -1,6 +1,7 @@
 package com.j3d.engine.geometry.constraints;
 
-import com.j3d.engine.interact.cmd.SafeJLabel;
+import com.j3d.Static;
+import com.j3d.ui.util.SafeJLabel;
 import com.j3d.utility.SetDeque;
 
 import java.util.stream.Stream;
@@ -91,7 +92,7 @@ public class ConstraintManager<T> {
         for (ConstraintOn<T> constraint : constraints) {
             boolean accepted = constraint.satisfiesConstraint(intent);
             if (!accepted) {
-                lbl.error(
+                Static.hoverLabel.error(
                         constraint.getParent().getClass().getSimpleName()
                                 + " Constraint | "
                                 + errStartText, constraint.name());

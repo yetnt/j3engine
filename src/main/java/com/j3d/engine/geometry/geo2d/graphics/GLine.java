@@ -11,10 +11,9 @@ import com.j3d.engine.react.events.IdempotentEventListener;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.storage.files.ProjectFile;
-import com.j3d.ui.util.Throbber;
+import com.j3d.ui.dialog.Throbber;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.UUID;
 import java.util.stream.Stream;

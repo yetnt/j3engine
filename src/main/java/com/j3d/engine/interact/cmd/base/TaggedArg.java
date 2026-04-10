@@ -1,8 +1,7 @@
 package com.j3d.engine.interact.cmd.base;
 
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
-import com.j3d.engine.interact.cmd.CommandParser;
-import com.j3d.engine.interact.cmd.SafeJLabel;
+import com.j3d.ui.util.SafeJLabel;
 import com.jaiva.utils.Find;
 import com.jaiva.utils.Pair;
 import com.jaiva.utils.Tuple2;
@@ -10,7 +9,6 @@ import com.jaiva.utils.Tuple2;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * TaggedArg is an argument that expects a single key-value pair.

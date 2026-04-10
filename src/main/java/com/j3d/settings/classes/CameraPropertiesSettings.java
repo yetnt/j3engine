@@ -1,5 +1,7 @@
 package com.j3d.settings.classes;
 
+import com.j3d.Static;
+import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.settings.SettingsChild;
 import com.j3d.settings.types.DoubleSetting;
 import com.j3d.settings.Setting;
@@ -33,7 +35,7 @@ public class CameraPropertiesSettings implements SettingsParent {
     );
     public DoubleSetting orbitSensitivity = new DoubleSetting(
             "Orbit Sensitivity",
-            20.0,
+            61.56,
             "Determines how sensitive the camera's orbit control is.",
             1.0,
             100.0
@@ -42,6 +44,20 @@ public class CameraPropertiesSettings implements SettingsParent {
             i -> i/100.0,
             0.01
     );
+    public DoubleSetting focalLength = new DoubleSetting(
+            "Focal Length",
+            37.0,
+            "The focal length of the camera, affecting perspective distortion.",
+            1.0,
+            200.0
+    ).setValues(
+            d -> (int)(d * 100),
+            i -> i/100.0,
+            0.01
+    ).onSetValue((Double d) -> {
+        Static.camera.setProjectionPlane(new Vector3(0, 0, d));
+        return null;
+    });
 
     public CameraPropertiesSettings() {
 
@@ -63,6 +79,7 @@ public class CameraPropertiesSettings implements SettingsParent {
             add(fieldOfView);
             add(movementSpeed);
             add(orbitSensitivity);
+            add(focalLength);
         }};
     }
 
@@ -77,6 +94,7 @@ public class CameraPropertiesSettings implements SettingsParent {
             add(fieldOfView);
             add(movementSpeed);
             add(orbitSensitivity);
+            add(focalLength);
         }};
     }
 

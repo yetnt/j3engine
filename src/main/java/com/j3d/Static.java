@@ -12,6 +12,7 @@ import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.settings.Settings;
 import com.j3d.ui.engine.DebugPanel;
 import com.j3d.ui.engine.tree.LayerTree;
+import com.j3d.ui.util.HoverJLabel;
 
 import javax.swing.*;
 
@@ -40,9 +41,8 @@ public class Static {
      * The Camera Instance.
      */
     public static Camera camera = new Camera()
-            .setPosition(new Vector3(20, 20, -20))
-            .setRotation(new Rotation(0, 0, 0))
-            .setProjectionPlane(new Vector3(0, 0, 50));
+            .setPosition(new Vector3(20, 50, -90))
+            .setProjectionPlane(new Vector3(0, 0, Settings.cameraProperties.focalLength.getValue()));
     /**
      * The Debug Panel
      */
@@ -72,4 +72,5 @@ public class Static {
      */
     public static Settings settings = new Settings();
     public static CommandsManager commandManager = new CommandsManager();
+    public static HoverJLabel hoverLabel;
 }

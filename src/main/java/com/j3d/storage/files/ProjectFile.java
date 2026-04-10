@@ -11,7 +11,7 @@ import com.j3d.engine.layer.Layer;
 import com.j3d.engine.layer.LayerList;
 import com.j3d.storage.files.protocol.FileProtocol;
 import com.j3d.storage.files.protocol.GenericFileProtocol;
-import com.j3d.ui.util.Throbber;
+import com.j3d.ui.dialog.Throbber;
 import com.j3d.utility.HashMultiMap;
 import com.j3d.utility.Pair;
 

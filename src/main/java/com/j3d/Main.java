@@ -6,7 +6,6 @@ package com.j3d;
 
 import com.j3d.threads.FakeLongTask;
 import com.j3d.ui.engine.EngineFrame;
-import com.j3d.ui.engine.J3EngineLogo;
 import com.j3d.ui.engine.J3Splash;
 
 import javax.swing.*;

@@ -9,7 +9,7 @@ import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandsManager;
-import com.j3d.engine.interact.cmd.SafeJLabel;
+import com.j3d.ui.util.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.ArgSet;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.base.Subcommand;
