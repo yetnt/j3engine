@@ -47,7 +47,7 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
      */
     private final GPoint endPoint;
     private HashSet<GTri> parents = new HashSet<>();
-    protected ConstraintManager<GLine> constraints;
+    protected ConstraintManager<GLine> constraints = new ConstraintManager<>();
 
     /**
      * Constructs a GLine.

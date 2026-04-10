@@ -1,6 +1,8 @@
 package com.j3d.engine.interact.cmd.commands.transform;
 
 import com.j3d.Static;
+import com.j3d.engine.geometry.geo2d.BaseObject;
+import com.j3d.engine.geometry.geo2d.constraints.CPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.TaggedArgValue;
@@ -13,6 +15,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.function.Supplier;
 
 public class RotateSelection extends AbstractTransform {
 
@@ -29,103 +32,34 @@ public class RotateSelection extends AbstractTransform {
                 new TypedArg("arbitraryAxis", "An arbitrary axis to rotate around.", true, Vector3.class)
         ).parseUsages();
 
-        keys.add(
-                // Right key
-                new J3Key(
-                        "rotateRight",
-                        KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0),
-                        new AbstractAction() {
+        Supplier<Vector3> supplier = () -> axis.isNotEmpty() ? axis :
+                rotateMouseOwner.selectedHandle == null ? new Vector3(0, 1, 0) :
+                        switch (rotateMouseOwner.selectedHandle.handleType()) {
+                            case HandleType.X -> new Vector3(1, 0, 0);
+                            case HandleType.Y -> new Vector3(0, 1, 0);
+                            case HandleType.Z -> new Vector3(0, 0, 1);
+                        };
 
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                if (axis.isNotEmpty()) return;
-                                Static.mainPanel.repaint();
-                            }
-                        }
-                )
+        setUpKey(
+                supplier,
+                ignored -> false,
+                axis -> references.forEach(gPoint -> rotateUpKey(axis, gPoint)),
+                (axis, m) ->
+                        m.values().stream()
+                                .filter(i -> i instanceof CPoint)
+                                .map(i -> (CPoint)i)
+                                .forEach(gPoint -> rotateUpKey(axis, gPoint))
         );
 
-        keys.add(
-                // Left key
-                new J3Key(
-                        "rotateLeft",
-                        KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0),
-                        new AbstractAction() {
-
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                if (axis.isNotEmpty()) return;
-                                Static.mainPanel.repaint();
-                            }
-                        }
-                )
-        );
-
-        keys.add(
-                // Up key
-                new J3Key(
-                        "rotateUp",
-                        KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0),
-                        new AbstractAction() {
-
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                Vector3 a =
-                                        axis.isNotEmpty() ? axis :
-                                                rotateMouseOwner.selectedHandle == null ? new Vector3(0, 1, 0) :
-                                        switch (rotateMouseOwner.selectedHandle.handleType()) {
-                                            case HandleType.X -> new Vector3(1, 0, 0);
-                                            case HandleType.Y -> new Vector3(0, 1, 0);
-                                            case HandleType.Z -> new Vector3(0, 0, 1);
-                                        };
-                                references.forEach(
-                                        gPoint -> {
-                                            gPoint.setPivot(
-                                                    center.add((gPoint.getPivot().sub(center)).rotateAroundAxis(
-                                                            a,
-                                                            getCurrentStepSize()
-                                                    )
-                                                )
-                                            );
-                                        }
-                                );
-                                Static.mainPanel.repaint();
-                            }
-                        }
-                )
-        );
-
-        keys.add(
-                // Down key
-                new J3Key(
-                        "rotateDown",
-                        KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0),
-                        new AbstractAction() {
-
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                Vector3 a =
-                                        axis.isNotEmpty() ? axis :
-                                                rotateMouseOwner.selectedHandle == null ? new Vector3(0, 1, 0) :
-                                                        switch (rotateMouseOwner.selectedHandle.handleType()) {
-                                                            case HandleType.X -> new Vector3(1, 0, 0);
-                                                            case HandleType.Y -> new Vector3(0, 1, 0);
-                                                            case HandleType.Z -> new Vector3(0, 0, 1);
-                                                        };
-                                references.forEach(
-                                        gPoint -> {
-                                            gPoint.setPivot(
-                                                    center.add((gPoint.getPivot().sub(center)).rotateAroundAxis(
-                                                            a,
-                                                            -getCurrentStepSize()
-                                                    ))
-                                            );
-                                        }
-                                );
-                                Static.mainPanel.repaint();
-                            }
-                        }
-                )
+        setDownKey(
+                supplier,
+                ignored -> false,
+                axis -> references.forEach(gPoint -> rotateDownKey(axis, gPoint)),
+                (axis, m) ->
+                        m.values().stream()
+                                .filter(i -> i instanceof CPoint)
+                                .map(i -> (CPoint)i)
+                                .forEach(gPoint -> rotateDownKey(axis, gPoint))
         );
     }
 
@@ -134,5 +68,25 @@ public class RotateSelection extends AbstractTransform {
         if (args.length > 1 && args[1] instanceof Vector3 a)
             axis = a.normalize();
         super.run(logLabel, aliasUsed, args, taggedArgs);
+    }
+
+    public void rotateUpKey(Vector3 a, BaseObject gPoint) {
+        gPoint.setPivot(
+                center.add((gPoint.getPivot().sub(center)).rotateAroundAxis(
+                                a,
+                                getCurrentStepSize()
+                        )
+                )
+        );
+    }
+
+    public void rotateDownKey(Vector3 a, BaseObject gPoint) {
+        gPoint.setPivot(
+                center.add((gPoint.getPivot().sub(center)).rotateAroundAxis(
+                                a,
+                                -getCurrentStepSize()
+                        )
+                )
+        );
     }
 }

@@ -64,7 +64,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
     // TODO: I actually have no clue where the fuck this is used?? Uhm find this out??
     private boolean hidden = false;
-    protected ConstraintManager<GTri> constraints;
+    protected ConstraintManager<GTri> constraints = new ConstraintManager<>();
 
     /**
      * Constructs a GTri.

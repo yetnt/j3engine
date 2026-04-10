@@ -53,7 +53,7 @@ public class GPoint extends GObject implements HasParents<GLine> {
      */
     public static final int DIAMETER = 7;
     private HashSet<GLine> parents = new HashSet<>();
-    protected ConstraintManager<GPoint> constraints;
+    protected ConstraintManager<GPoint> constraints = new ConstraintManager<>();
 
     /**
      * Constructs a GPoint.

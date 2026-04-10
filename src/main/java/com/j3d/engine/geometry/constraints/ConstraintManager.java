@@ -1,5 +1,6 @@
 package com.j3d.engine.geometry.constraints;
 
+import com.j3d.engine.interact.cmd.SafeJLabel;
 import com.j3d.utility.SetDeque;
 
 import java.util.stream.Stream;
@@ -84,5 +85,19 @@ public class ConstraintManager<T> {
         return constraints.stream()
                 .flatMap(existingConstraint -> existingConstraint.incompatibleWith().stream())
                 .anyMatch(incompatible -> incompatible.isInstance(newConstraint));
+    }
+
+    public boolean allSatisfied(SafeJLabel lbl, String errStartText, ConstraintIntent intent) {
+        for (ConstraintOn<T> constraint : constraints) {
+            boolean accepted = constraint.satisfiesConstraint(intent);
+            if (!accepted) {
+                lbl.error(
+                        constraint.getParent().getClass().getSimpleName()
+                                + " Constraint | "
+                                + errStartText, constraint.name());
+                return false;
+            }
+        }
+        return true;
     }
 }

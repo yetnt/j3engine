@@ -1,9 +1,12 @@
 package com.j3d;
 
 import com.j3d.engine.geometry.ScreenPoint;
+import com.j3d.engine.geometry.constraints.concrete.MidpointConstraint;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
+import com.j3d.engine.interact.input.keyboard.DefaultKeys;
+import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.Renderer;
@@ -12,7 +15,10 @@ import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.react.actions.Action;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -41,14 +47,36 @@ public class Executor {
      */
     public void run(Graphics2D graphics2D) {
         Static.renderer.layers.add(layer);
+
+         usual();
+
+//        someLine();
+    }
+
+    public Thing someLine() {
+        GPoint A = new GPoint(new Vector3(10, 0, 0));
+        GPoint B = new GPoint(new Vector3(30, 0, 0));
+        GPoint C = new GPoint(new Vector3(-10, 10, 0));
+        // D will be the midpt between A and B
+        GPoint D = new GPoint(new Vector3(0, 0, 0));
+
+        GLine line = new GLine(A, B);
+        GLine line2 = new GLine(C, D);
+
+        MidpointConstraint mdpc = new MidpointConstraint(D, line);
+        D.getConstraints().addConstraint(
+                mdpc
+        );
+        mdpc.applyConstraint();
+
+        return new Thing(Static.renderer, layer, "constrainted")
+                .addObjs(A, B, C, D, line, line2);
+    }
+
+
+    public void usual() {
         Thing cub = cube();
         Thing tris = threeTris();
-        Thing ln = someLine(
-                tris.objectsStream()
-                        .filter(o -> o instanceof GPoint)
-                        .map(o -> (GPoint)o)
-                        .findFirst().get()
-        );
         ArrayList<Action<?>> actions = new ArrayList<>(List.of(
                 cub.rotate(new Vector3(0, 0, 1), 45),
                 cub.translate(new Vector3(4, 2, 3)),
@@ -58,12 +86,13 @@ public class Executor {
         ));
         actions.forEach(Action::run);
         actions.forEach(Renderer.history::add);
+    }
+
+    public void updatekeystrokeexample() {
 
         // How to update a keystroke ->
-        /*
         // make the new keystroke
         KeyStroke newkeyStroke = KeyStroke.getKeyStroke(
-
                 KeyEvent.VK_M,
                 InputEvent.CTRL_DOWN_MASK,
                 false
@@ -83,14 +112,6 @@ public class Executor {
         );
 
         if (updatedJ3Key.keyChangeSuccess) Static.log.println("WOHOOOO KEY CHANGE SUCCESS!!!! :)))");
-
-         */
-    }
-
-    public Thing someLine(GPoint B) {
-        GPoint A = new GPoint(new Vector3(10, 30, 500));
-        return new Thing(Static.renderer, layer, "a linnnnnne")
-                .addObjs(A, B, new GLine(A, B));
     }
 
     /**
