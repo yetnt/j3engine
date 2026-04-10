@@ -4,18 +4,20 @@ import com.j3d.J3DSettings;
 import com.j3d.Static;
 import com.j3d.engine.Renderer;
 import com.j3d.engine.draw.ViewType;
-import com.j3d.engine.geometry.geo2d.HasParent;
-import com.j3d.engine.geometry.geo2d.constraints.CLine;
-import com.j3d.engine.geometry.geo2d.constraints.CObject;
+import com.j3d.engine.geometry.geo2d.HasParents;
 import com.j3d.engine.geometry.geo2d.constraints.CPoint;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.layer.Layer;
+import com.j3d.engine.react.events.EventPayload;
+import com.j3d.engine.react.events.EventType;
 import com.j3d.storage.files.ProjectFile;
 import com.j3d.ui.util.Throbber;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -40,7 +42,7 @@ import java.util.UUID;
  * @see GLine
  * @see GTri
  */
-public class GPoint extends GObject implements HasParent<GLine> {
+public class GPoint extends GObject implements HasParents<GLine> {
 
     /**
      * The diameter of the point when drawn on screen.
@@ -49,7 +51,7 @@ public class GPoint extends GObject implements HasParent<GLine> {
      * </p>
      */
     public static final int DIAMETER = 7;
-    private GLine parent;
+    private HashSet<GLine> parents = new HashSet<>();
 
     /**
      * Constructs a GPoint.
@@ -79,6 +81,12 @@ public class GPoint extends GObject implements HasParent<GLine> {
         graphics2D.setColor(col);
         ScreenPoint p = this.getPivot().toPoint(Static.camera).toScreen(Static.renderer);
         graphics2D.fillOval(p.x - DIAMETER / 2, p.y - DIAMETER / 2, DIAMETER, DIAMETER);
+    }
+
+    @Override
+    public void setPivot(Vector3 pivot) {
+        super.setPivot(pivot);
+        this.broadcast(EventType.GPOINT_RECALC_PIVOT, new GPointMovedEvent(this, Static.renderer));
     }
 
     /**
@@ -135,20 +143,30 @@ public class GPoint extends GObject implements HasParent<GLine> {
     }
 
     @Override
-    public GLine getParent() {
-        return parent;
+    public HashSet<GLine> getParents() {
+        return parents;
     }
 
     @Override
-    public void setParent(GLine parent) {
-        this.parent = parent;
-        toConstraintObject().setParent(
+    public void addParent(GLine parent) {
+        boolean su = parents.add(parent);
+        if (su) toConstraintObject().addParent(
                 parent.toConstraintObject()
         );
     }
 
     @Override
-    public boolean hasParent() {
-        return parent != null;
+    public void removeParent(GLine parent) {
+        boolean su = parents.remove(parent);
+        if (su) toConstraintObject().removeParent(
+                parent.toConstraintObject()
+        );
     }
+
+    public static class GPointMovedEvent extends EventPayload<GPoint> {
+        public GPointMovedEvent(GPoint e, Renderer r) {
+            super(e, r);
+        }
+    }
+
 }

@@ -1,6 +1,5 @@
 package com.j3d.engine.geometry.geo2d.constraints;
 
-import com.j3d.engine.geometry.constraints.Constraint;
 import com.j3d.engine.geometry.constraints.ConstraintMirror;
 import com.j3d.engine.geometry.geo2d.BaseObject;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;

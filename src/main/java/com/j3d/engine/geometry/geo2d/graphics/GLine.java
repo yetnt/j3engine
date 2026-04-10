@@ -1,15 +1,19 @@
 package com.j3d.engine.geometry.geo2d.graphics;
 
 import com.j3d.engine.draw.ViewType;
-import com.j3d.engine.geometry.geo2d.HasParent;
+import com.j3d.engine.geometry.geo2d.HasParents;
 import com.j3d.engine.geometry.geo2d.constraints.CLine;
-import com.j3d.engine.geometry.geo2d.constraints.CObject;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.engine.react.events.IdempotentEventListener;
+import com.j3d.engine.react.events.EventPayload;
+import com.j3d.engine.react.events.EventType;
 import com.j3d.storage.files.ProjectFile;
 import com.j3d.ui.util.Throbber;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -31,7 +35,7 @@ import static com.j3d.Static.renderer;
  * @see GPoint
  * @see GTri
  */
-public class GLine extends GObject implements HasParent<GTri> {
+public class GLine extends GObject implements HasParents<GTri>, IdempotentEventListener<GPoint.GPointMovedEvent, Vector3> {
     /**
      * The startpoint of this line
      */
@@ -40,7 +44,7 @@ public class GLine extends GObject implements HasParent<GTri> {
      * The endPoint of this line.
      */
     private final GPoint endPoint;
-    private GTri parent;
+    private HashSet<GTri> parents = new HashSet<>();
 
     /**
      * Constructs a GLine.
@@ -117,6 +121,9 @@ public class GLine extends GObject implements HasParent<GTri> {
         // set the pivot to the midpoint of the line
         setPivot(A.getPivot().add(B.getPivot()).div(2));
         toConstraintObject();
+
+        A.attach(this);
+        B.attach(this);
     }
 
     /**
@@ -125,9 +132,14 @@ public class GLine extends GObject implements HasParent<GTri> {
      */
     @Override
     public boolean deleteSelf() {
+        // TODO: If a line is deleted but it was parented, triangles loose integrity (and calling delete on it is unsafe as it refernces this currently deleted line.)
         super.deleteSelf();
-        this.startPoint.deleteSelf();
-        this.endPoint.deleteSelf();
+        getPointStream().forEach(
+                p -> {
+                    p.removeParent(this);
+                    if (!p.hasParent()) p.deleteSelf();
+                }
+        );
         return true;
     }
 
@@ -181,17 +193,40 @@ public class GLine extends GObject implements HasParent<GTri> {
     }
 
     @Override
-    public GTri getParent() {
-        return parent;
+    public HashSet<GTri> getParents() {
+        return parents;
     }
 
     @Override
-    public void setParent(GTri parent) {
-        this.parent = parent;
+    public void addParent(GTri parent) {
+        boolean su = parents.add(parent);
+        if (su) toConstraintObject().addParent(
+                parent.toConstraintObject()
+        );
     }
 
     @Override
-    public boolean hasParent() {
-        return parent != null;
+    public void removeParent(GTri parent) {
+        boolean su = parents.remove(parent);
+        if (su) toConstraintObject().removeParent(
+                parent.toConstraintObject()
+        );
+    }
+
+    @Override
+    public void onEvent(EventType event, EventPayload properties) {
+        if (event == EventType.GPOINT_RECALC_PIVOT && properties instanceof GPoint.GPointMovedEvent p)
+            handlePossibleDuplicates(event, p);
+    }
+
+    @Override
+    public Vector3 getDupeObjectToCheck() {
+        return getPivot();
+    }
+
+    @Override
+    public void handlePossibleDuplicates(EventType type, GPoint.GPointMovedEvent payload) {
+        Vector3 piv = getStart().getPivot().add(getEnd().getPivot()).div(2);
+        if (!piv.equals(getDupeObjectToCheck()))  setPivot(piv);
     }
 }

@@ -16,5 +16,6 @@ public enum EventType {
      * The object was selected.
      */
     X_SELECTED,
-    SETTINGS_CODE_UPDATED
+    SETTINGS_CODE_UPDATED,
+    GPOINT_RECALC_PIVOT
 }

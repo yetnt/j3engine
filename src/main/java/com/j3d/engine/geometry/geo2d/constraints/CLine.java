@@ -1,22 +1,24 @@
 package com.j3d.engine.geometry.geo2d.constraints;
 
-import com.j3d.engine.geometry.geo2d.HasParent;
+import com.j3d.engine.geometry.geo2d.HasParents;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
-import com.j3d.engine.geometry.geo2d.graphics.GPoint;
+import com.j3d.engine.geometry.geo2d.graphics.GTri;
 
+import java.util.HashSet;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class CLine extends CObject implements HasParent<CTri> {
+public class CLine extends CObject implements HasParents<CTri> {
 
     public final CPoint startPoint;
     public final CPoint endPoint;
-    private CTri parent;
+    private HashSet<CTri> parents = new HashSet<>();
 
     public CLine(GLine line) {
         super(line);
         startPoint = line.getStart().toConstraintObject();
         endPoint = line.getEnd().toConstraintObject();
-        parent = line.getParent().toConstraintObject();
+        parents = line.getParents().stream().map(GTri::toConstraintObject).collect(Collectors.toCollection(HashSet::new));
     }
 
     public CPoint getEnd() {
@@ -38,17 +40,17 @@ public class CLine extends CObject implements HasParent<CTri> {
     }
 
     @Override
-    public CTri getParent() {
-        return parent;
+    public HashSet<CTri> getParents() {
+        return parents;
     }
 
     @Override
-    public void setParent(CTri parent) {
-        this.parent = parent;
+    public void addParent(CTri parent) {
+        parents.add(parent);
     }
 
     @Override
-    public boolean hasParent() {
-        return parent != null;
+    public void removeParent(CTri parent) {
+        parents.remove(parent);
     }
 }

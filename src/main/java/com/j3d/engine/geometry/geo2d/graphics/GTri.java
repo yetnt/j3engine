@@ -4,15 +4,18 @@ import com.j3d.J3DSettings;
 import com.j3d.Static;
 import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.draw.tris.TriStateArea;
-import com.j3d.engine.geometry.geo2d.constraints.CObject;
 import com.j3d.engine.geometry.geo2d.constraints.CTri;
 import com.j3d.engine.geometry.geo3d.Thing;
 
 import java.awt.*;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.engine.react.events.IdempotentEventListener;
+import com.j3d.engine.react.events.EventPayload;
+import com.j3d.engine.react.events.EventType;
 import com.j3d.storage.files.ProjectFile;
 import com.j3d.ui.util.Throbber;
 
@@ -39,7 +42,7 @@ import com.j3d.ui.util.Throbber;
  * @see GPoint
  * @see GLine
  */
-public class GTri extends GObject{
+public class GTri extends GObject implements IdempotentEventListener<GPoint.GPointMovedEvent, Vector3> {
     /**
      * Leg A, connected to Leg B and Leg C
      */
@@ -218,6 +221,18 @@ public class GTri extends GObject{
         LegB = new GLine(B, C);
         LegC = new GLine(C, A);
 
+        LegA.addParent(this);
+        LegB.addParent(this);
+        LegC.addParent(this);
+
+        A.addParents(LegC, LegA);
+        B.addParents(LegA, LegB);
+        C.addParents(LegB, LegC);
+
+        A.attach(this);
+        B.attach(this);
+        C.attach(this);
+
         setPivot(A.getPivot().add(B.getPivot()).add(C.getPivot()).div(3));
 
         calcNormal(A.getPivot(), B.getPivot(), C.getPivot());
@@ -229,6 +244,8 @@ public class GTri extends GObject{
 
     /**
      * Constructs a new GTri from 3 lines.
+     * @implSpec The lines have to connect in a counterclockwise order or clockwise order.
+     * In that, 2 lines cannot have the same start point or end points.
      * @param c The colour.
      * @param A The first line.
      * @param B The second line.
@@ -236,29 +253,40 @@ public class GTri extends GObject{
      */
     public GTri(Color c, GLine A, GLine B, GLine C) {
         super(c);
-        Vector3[] points = {
-                A.getStart().getPivot(), A.getEnd().getPivot(),
-                B.getStart().getPivot(), B.getEnd().getPivot(),
-                C.getStart().getPivot(), C.getEnd().getPivot()
+        GPoint[] points = {
+                A.getStart(), A.getEnd(),
+                B.getStart(), B.getEnd(),
+                C.getStart(), C.getEnd()
         };
 
         // Count how many times each unique point appears
         Map<Vector3, Integer> pointCount = new HashMap<>();
-        for (Vector3 p : points) {
-            pointCount.merge(p, 1, Integer::sum);
-        }
+        for (Vector3 p : Arrays.stream(points).map(GObject::getPivot).toList()) pointCount.merge(p, 1, Integer::sum);
 
         // A valid triangle should have exactly 3 unique points, each appearing twice
         if (pointCount.size() != 3 || pointCount.values().stream().anyMatch(count -> count != 2)) {
             throw new IllegalArgumentException("Lines do not form a closed triangle.");
         }
 
+        // The points have to appear in sequential order. In that the start of a line cannot share another start
+        // of another line in a triangle.
+        GPoint[] starts = {points[0], points[2], points[4]};
+        if (Arrays.stream(starts).collect(Collectors.toSet()).size() < 3)
+            throw new IllegalArgumentException("Lines aren't sequential");
+
         LegA = A;
         LegB = B;
         LegC = C;
 
-        setPivot(A.getStart().getPivot().add(B.getStart().getPivot()).add(C.getStart().getPivot()).div(3));
+        LegA.addParent(this);
+        LegB.addParent(this);
+        LegC.addParent(this);
 
+        Arrays.stream(points).collect(Collectors.toSet()).forEach(
+                p -> p.attach(this)
+        );
+
+        setPivot(A.getStart().getPivot().add(B.getStart().getPivot()).add(C.getStart().getPivot()).div(3));
         calcNormal(A.getStart().getPivot(), B.getStart().getPivot(), C.getStart().getPivot());
         TriStateArea.register(this);
         drawDist();
@@ -327,15 +355,18 @@ public class GTri extends GObject{
     }
 
     /**
-     * @implNote This also deletes it's child lines and unregisters itself
+     * @implNote This also deletes it's child lines (if they arent parented to anything else) and unregisters itself
      * from the {@link TriStateArea}
      */
     @Override
     public boolean deleteSelf() {
         super.deleteSelf();
-        LegA.deleteSelf();
-        LegB.deleteSelf();
-        LegC.deleteSelf();
+        getLegStream().forEach(
+                line -> {
+                    line.removeParent(this);
+                    if (!line.hasParent()) line.deleteSelf();
+                }
+        );
         TriStateArea.unregister(this);
         Static.renderer.removeOverlap(getId());
         return true;
@@ -355,5 +386,25 @@ public class GTri extends GObject{
             constraintObject = new CTri(this);
         }
         return (CTri) constraintObject;
+    }
+
+    @Override
+    public void onEvent(EventType event, EventPayload properties) {
+        if (event == EventType.GPOINT_RECALC_PIVOT && properties instanceof GPoint.GPointMovedEvent p)
+            handlePossibleDuplicates(event, p);
+    }
+
+    @Override
+    public Vector3 getDupeObjectToCheck() {
+        return getPivot();
+    }
+
+    @Override
+    public void handlePossibleDuplicates(EventType type, GPoint.GPointMovedEvent payload) {
+        Vector3 piv = getLegA().getStart().getPivot().add(getLegB().getStart().getPivot()).add(getLegC().getStart().getPivot()).div(3);
+        if (!piv.equals(getDupeObjectToCheck())) {
+            setPivot(piv);
+            calcNormal(getLegA().getStart().getPivot(), getLegB().getStart().getPivot(), getLegC().getStart().getPivot());
+        }
     }
 }

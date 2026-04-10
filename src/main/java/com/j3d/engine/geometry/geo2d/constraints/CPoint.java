@@ -1,29 +1,34 @@
 package com.j3d.engine.geometry.geo2d.constraints;
 
-import com.j3d.engine.geometry.geo2d.HasParent;
+import com.j3d.engine.geometry.geo2d.HasParents;
+import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
-import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.engine.geometry.geo2d.graphics.GTri;
 
-public class CPoint extends CObject implements HasParent<CLine> {
-    private CLine parent;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.stream.Collectors;
+
+public class CPoint extends CObject implements HasParents<CLine> {
+    private HashSet<CLine> parents;
 
     public CPoint(GPoint p) {
         super(p);
-        parent = p.getParent().toConstraintObject();
+        parents = p.getParents().stream().map(GLine::toConstraintObject).collect(Collectors.toCollection(HashSet::new));
     }
 
     @Override
-    public CLine getParent() {
-        return parent;
+    public HashSet<CLine> getParents() {
+        return parents;
     }
 
     @Override
-    public void setParent(CLine parent) {
-        this.parent = parent;
+    public void addParent(CLine parent) {
+        parents.add(parent);
     }
 
     @Override
-    public boolean hasParent() {
-        return parent != null;
+    public void removeParent(CLine parent) {
+        parents.remove(parent);
     }
 }
