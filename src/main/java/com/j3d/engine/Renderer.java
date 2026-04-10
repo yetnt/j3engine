@@ -40,6 +40,7 @@ public class Renderer {
     public LayerList layers = new LayerList();
 
     public ArrayDeque<GPoint> points = new ArrayDeque<>();
+    private HashSet<HasParents<? extends GObject>> unparented = new HashSet<>();
 
     /**
      * The current selection made by the user.
@@ -489,5 +490,17 @@ public class Renderer {
 
     public void deselectAll() {
         currentSelection.clear();
+    }
+
+    public HashSet<HasParents<? extends GObject>> getUnparented() {
+        return unparented;
+    }
+
+    public void hasNoParent(HasParents<? extends GObject> g) {
+        unparented.add(g);
+    }
+
+    public void hasParent(HasParents<? extends GObject> gObject) {
+        unparented.remove(gObject);
     }
 }

@@ -27,6 +27,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.stream.Stream;
 
 /**
  * A Thing, or more commonly in engine lingo, a mesh, is an {@link Interactable}
@@ -617,5 +618,9 @@ public class Thing implements Interactable {
                 return "Thing:Delete";
             }
         };
+    }
+
+    public Stream<GObject> objectsStream() {
+        return objects.stream();
     }
 }

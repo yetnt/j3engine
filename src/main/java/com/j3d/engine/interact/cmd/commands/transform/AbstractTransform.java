@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AbstractTransform extends Subcommand implements StatefulCommand<Void> {
 
@@ -87,6 +88,12 @@ public class AbstractTransform extends Subcommand implements StatefulCommand<Voi
             String arg = (String)args[0];
             faceMode = arg.equals("f") || arg.equals("v");
         }
+
+        Stream<GTri> tris = Static.renderer.getSelected().stream()
+                .filter(obj -> obj instanceof GTri)
+                .map(obj -> (GTri) obj);
+
+        if (tris.findAny().isEmpty()) faceMode = false;
 
         // Simple 3 dots
         references =

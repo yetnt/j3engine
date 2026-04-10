@@ -51,4 +51,8 @@ public class FakeLongTask {
         t.setRepeats(false);
         t.start();
     }
+
+    public void iAmImpatient() {
+        onEDT.run();
+    }
 }

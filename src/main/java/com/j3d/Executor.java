@@ -1,6 +1,7 @@
 package com.j3d;
 
 import com.j3d.engine.geometry.ScreenPoint;
+import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.ui.engine.EngineFrame;
@@ -42,6 +43,12 @@ public class Executor {
         Static.renderer.layers.add(layer);
         Thing cub = cube();
         Thing tris = threeTris();
+        Thing ln = someLine(
+                tris.objectsStream()
+                        .filter(o -> o instanceof GPoint)
+                        .map(o -> (GPoint)o)
+                        .findFirst().get()
+        );
         ArrayList<Action<?>> actions = new ArrayList<>(List.of(
                 cub.rotate(new Vector3(0, 0, 1), 45),
                 cub.translate(new Vector3(4, 2, 3)),
@@ -51,20 +58,6 @@ public class Executor {
         ));
         actions.forEach(Action::run);
         actions.forEach(Renderer.history::add);
-
-        Static.renderer.scheduleOverlap(UUID.randomUUID(), g -> {
-            // draws a dot at (0, 0) and projects it to both a Vector3 and ScreenPoint for alignment purposes
-            // Purely for testing.
-            Vector3 p = new CartesianPoint(0, 0).toVector3(Static.camera);
-            Vector3 z = new CartesianPoint(0, 10).toVector3(Static.camera);
-
-            int circleSize = 10;
-            g.setColor(Color.BLACK);
-            ScreenPoint p2 = p.toPoint(Static.camera).toScreen(Static.renderer);
-            ScreenPoint z2 = z.toPoint(Static.camera).toScreen(Static.renderer);
-            g.fillOval(p2.x - circleSize / 2, p2.y - circleSize / 2, circleSize, circleSize);
-            g.fillOval(z2.x - circleSize / 2, z2.y - circleSize / 2, circleSize, circleSize);
-        });
 
         // How to update a keystroke ->
         /*
@@ -92,6 +85,12 @@ public class Executor {
         if (updatedJ3Key.keyChangeSuccess) Static.log.println("WOHOOOO KEY CHANGE SUCCESS!!!! :)))");
 
          */
+    }
+
+    public Thing someLine(GPoint B) {
+        GPoint A = new GPoint(new Vector3(10, 30, 500));
+        return new Thing(Static.renderer, layer, "a linnnnnne")
+                .addObjs(A, B, new GLine(A, B));
     }
 
     /**

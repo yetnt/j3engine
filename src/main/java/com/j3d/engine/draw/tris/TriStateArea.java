@@ -5,12 +5,17 @@ import com.j3d.engine.draw.tris.methods.CamDepthSort;
 import com.j3d.engine.draw.tris.methods.CamDistSort;
 import com.j3d.engine.draw.tris.methods.DDUUIDSort;
 import com.j3d.engine.draw.tris.methods.VisibleSort;
+import com.j3d.engine.geometry.geo2d.HasParents;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
+import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
+import com.j3d.engine.geometry.geo3d.Thing;
+import com.j3d.engine.layer.Layer;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * TriStateArea is a static class that manages all GTri objects in the scene
@@ -117,6 +122,20 @@ public class TriStateArea {
      * @param g The Graphics2D context.
      */
     public static void draw(Graphics2D g) {
+        ArrayList<GObject> unparented = Static.renderer.getUnparented().stream()
+                .map(o -> (GObject) o)
+                .collect(Collectors.toCollection(ArrayList::new));
+        unparented.forEach(
+                u -> {
+                    // draw these fools first since we cant use TriStateArea methods for sorting.
+                    // upper todo for optimizaiton but this may stay.
+                    if (Static.renderer.getSelected().contains(u)) {
+                        u.drawSelected(g);
+                    } else {
+                        u.draw(g);
+                    }
+                }
+        );
         for  (GTri tri : queue) {
             if (tri.isHidden()) continue;
             if (Static.renderer.getSelected().contains(tri)) {

@@ -1,5 +1,6 @@
 package com.j3d.engine.geometry.geo2d.graphics;
 
+import com.j3d.Static;
 import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.geometry.constraints.ConstraintManager;
 import com.j3d.engine.geometry.geo2d.HasParents;
@@ -126,6 +127,7 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
 
         A.attach(this);
         B.attach(this);
+        Static.renderer.hasNoParent(this);
     }
 
     /**
@@ -211,6 +213,7 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
         if (su) toConstraintObject().addParent(
                 parent.toConstraintObject()
         );
+        Static.renderer.hasParent(this);
     }
 
     @Override
@@ -219,6 +222,7 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
         if (su) toConstraintObject().removeParent(
                 parent.toConstraintObject()
         );
+        Static.renderer.hasNoParent(this);
     }
 
     @Override

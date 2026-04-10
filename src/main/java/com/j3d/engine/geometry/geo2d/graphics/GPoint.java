@@ -79,7 +79,7 @@ public class GPoint extends GObject implements HasParents<GLine> {
     @Override
     public void draw(Graphics2D graphics2D) {
         Static.renderer.points.add(this);
-        if (J3DSettings.getViewType() != ViewType.WIREFRAME) return;
+        if (J3DSettings.getViewType() != ViewType.WIREFRAME && hasParent()) return;
         graphics2D.setColor(col);
         ScreenPoint p = this.getPivot().toPoint(Static.camera).toScreen(Static.renderer);
         graphics2D.fillOval(p.x - DIAMETER / 2, p.y - DIAMETER / 2, DIAMETER, DIAMETER);
@@ -101,7 +101,7 @@ public class GPoint extends GObject implements HasParents<GLine> {
      */
     @Override
     public void drawSelected(Graphics2D graphics2D) {
-        if (J3DSettings.getViewType() != ViewType.WIREFRAME) return;
+        if (J3DSettings.getViewType() != ViewType.WIREFRAME && hasParent()) return;
         graphics2D.setColor(Color.WHITE);
         ScreenPoint p = this.getPivot().toPoint(Static.camera).toScreen(Static.renderer);
         graphics2D.fillOval(p.x - (DIAMETER+1) / 2, p.y - (DIAMETER+1) / 2, (DIAMETER+1), (DIAMETER+1));
@@ -115,6 +115,7 @@ public class GPoint extends GObject implements HasParents<GLine> {
     public GPoint(Vector3 v3) {
         setPivot(v3);
         toConstraintObject();
+        Static.renderer.hasNoParent(this);
     }
 
     @Override
@@ -160,6 +161,7 @@ public class GPoint extends GObject implements HasParents<GLine> {
         if (su) toConstraintObject().addParent(
                 parent.toConstraintObject()
         );
+        Static.renderer.hasParent(this);
     }
 
     @Override
@@ -168,6 +170,7 @@ public class GPoint extends GObject implements HasParents<GLine> {
         if (su) toConstraintObject().removeParent(
                 parent.toConstraintObject()
         );
+        Static.renderer.hasNoParent(this);
     }
 
     public static class GPointMovedEvent extends EventPayload<GPoint> {
