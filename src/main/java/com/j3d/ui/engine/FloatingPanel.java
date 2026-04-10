@@ -8,6 +8,7 @@ import com.j3d.Static;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.function.Consumer;
 
 /**
  *
@@ -23,10 +24,13 @@ public class FloatingPanel extends javax.swing.JPanel {
     /**
      * Creates new form FloatingPanel
      */
-    public FloatingPanel(String name, Component c) {
+    public FloatingPanel(String name, Component c, Consumer<Component> consumer) {
         this.name = name;
         initComponents();
+        c.setBounds(0, 0, c.getPreferredSize().width, c.getPreferredSize().height);
+        consumer.accept(c);
         addComponentToPanel(c);
+        this.revalidate();
         EngineFrame.addFloater(this);
         this.setVisible(true);
     }
@@ -40,7 +44,7 @@ public class FloatingPanel extends javax.swing.JPanel {
             frame.setMaximumSize(this.getMaximumSize());
             frame.setPreferredSize(this.getPreferredSize());
             frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-            frame.setUndecorated(true);
+//            frame.setUndecorated(true);
             EngineFrame.removeFloater(this);
             Static.mainFrame.revalidate();
             frame.add(this);
@@ -60,7 +64,7 @@ public class FloatingPanel extends javax.swing.JPanel {
             frame = null;
             EngineFrame.addFloater(this);
             EngineFrame.bringForward(this);
-            this.setVisible(isHidden);
+            this.setVisible(true);
             Static.mainFrame.revalidate();
         }
     }

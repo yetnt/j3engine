@@ -146,7 +146,7 @@ public class LayerTree extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
+    public javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JTree listJTree;
     // End of variables declaration//GEN-END:variables
 }

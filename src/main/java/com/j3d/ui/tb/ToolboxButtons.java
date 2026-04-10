@@ -11,6 +11,7 @@ import com.j3d.ui.CursorManager;
 import com.j3d.ui.CursorNames;
 import com.j3d.ui.J3DTheme;
 import com.j3d.ui.engine.FloatingPanel;
+import com.j3d.ui.engine.tree.LayerTree;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,8 +46,20 @@ public class ToolboxButtons {
             Static.debugPanel.setVisible(!Static.debugPanel.isVisible());
         });
         // Example button registration
+        FloatingPanel fpl = new FloatingPanel(
+                "Layer Tree", Static.layerTree,
+                (c) -> {
+                    // TODO: Not showing up?????
+                    if (!(c instanceof LayerTree lt)) return;
+                    lt.listJTree.setBounds(0, 0, c.getPreferredSize().width, c.getPreferredSize().height);
+                    lt.jScrollPane1.setBounds(0, 0, c.getPreferredSize().width, c.getPreferredSize().height);
+                    lt.setVisible(true);
+                    lt.jScrollPane1.setVisible(true);
+                    lt.listJTree.setVisible(true);
+                });
         register("Toggle Layers", e -> {
-            Static.layerTree.setVisible(!Static.layerTree.isVisible());
+            if (fpl.isHidden()) fpl.showThis();
+            else fpl.hideThis();
         }, "layers.png");
         // another for exmaple
         register("Toggle Throbber", e -> {
@@ -116,16 +129,18 @@ public class ToolboxButtons {
             TransformCmd cmd = new TransformCmd();
         }, "transform.png");
 
-        JLabel label1 = new javax.swing.JLabel();
-        label1.setFont(new java.awt.Font("Tahoma", Font.BOLD, 12)); // NOI18N
-        label1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        label1.setText("yo");
-        label1.setMaximumSize(new java.awt.Dimension(100, 16));
-        label1.setMinimumSize(new java.awt.Dimension(120, 16));
-        label1.setPreferredSize(new java.awt.Dimension(120, 16));
-        label1.setForeground(J3DTheme.TEXT_PRIMARY.color());
-
-        FloatingPanel fp = new FloatingPanel("HIII", label1);
+        FloatingPanel fp = new FloatingPanel("HIII", new javax.swing.JLabel(), (o) -> {
+            if (!(o instanceof JLabel lbl)) return;
+            lbl.setFont(new java.awt.Font("Tahoma", Font.BOLD, 12)); // NOI18N
+            lbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            lbl.setText("yo");
+            lbl.setMaximumSize(new java.awt.Dimension(100, 16));
+            lbl.setMinimumSize(new java.awt.Dimension(120, 16));
+            lbl.setPreferredSize(new java.awt.Dimension(120, 16));
+            lbl.setForeground(J3DTheme.BACKGROUND.color());
+            lbl.setBounds(0, 0, lbl.getPreferredSize().width, lbl.getPreferredSize().height);
+            lbl.setVisible(true);
+        });
 
         register("UI elem", e -> {
             if (fp.isHidden()) fp.showThis();
