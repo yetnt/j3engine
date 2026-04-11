@@ -10,6 +10,7 @@ import com.jaiva.utils.Tuple2;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * A utility class for parsing and managing "tagged arguments" within the command system.
@@ -66,7 +67,7 @@ public class TaggedArgUtil {
         acceptedTags.put("type", new TaggedArgValue<String>(String.class).setName("type"));
         acceptedTags.put("layer", new TaggedArgValue<String>(String.class).setName("layer"));
         acceptedTags.put("thing", new TaggedArgValue<String>(String.class).setName("thing"));
-        acceptedTags.put("id", new TaggedArgValue<String>(String.class).setName("id"));
+        acceptedTags.put("id", new TaggedArgValue<UUID>(UUID.class).setName("id"));
         acceptedTags.put("x", new TaggedArgValue<Double>(Double.class).setName("x"));
         acceptedTags.put("y", new TaggedArgValue<Double>(Double.class).setName("y"));
         acceptedTags.put("z", new TaggedArgValue<Double>(Double.class).setName("z"));
@@ -74,10 +75,12 @@ public class TaggedArgUtil {
         acceptedTags.put("behindCam", new TaggedArgValue<Boolean>(Boolean.class).setName("behindCam"));
         acceptedTags.put("rand", new TaggedArgValue<Boolean>(Boolean.class).setName("rand"));
         acceptedTags.put("v", new TaggedArgValue<Vector3>(Vector3.class).setName("v"));
+        acceptedTags.put("a", new TaggedArgValue<Vector3>(Vector3.class).setName("a"));
+        acceptedTags.put("b", new TaggedArgValue<Vector3>(Vector3.class).setName("b"));
         acceptedTags.put("lessThan", new TaggedArgValue<Double>(Double.class).setName("lessThan"));
         acceptedTags.put("greaterThan", new TaggedArgValue<Double>(Double.class).setName("greaterThan"));
-        acceptedTags.put("equal", new TaggedArgValue<Double>(Double.class).setName("equal"));
-        acceptedTags.put("notEqual", new TaggedArgValue<Double>(Double.class).setName("notEqual"));
+        acceptedTags.put("equalTo", new TaggedArgValue<Double>(Double.class).setName("equal"));
+        acceptedTags.put("notEqualTo", new TaggedArgValue<Double>(Double.class).setName("notEqual"));
     }
 
     /**
@@ -142,8 +145,12 @@ public class TaggedArgUtil {
                         case "yebo", "yes", "y", "true", "t" -> valueObject = true;
                         case "aowa", "no", "n", "false", "f" -> valueObject = false;
                         default -> {
-                            label.setText("Invalid tagged argument value: " + value + " (If text, wrap in quotes.)");
-                            return taggedArgValue.error();
+                            try {
+                                valueObject = UUID.fromString(value);
+                            } catch (IllegalArgumentException l) {
+                                label.setText("Invalid tagged argument value: " + value + " (If text, wrap in quotes.)");
+                                return taggedArgValue.error();
+                            }
                         }
                     }
                 }

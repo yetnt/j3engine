@@ -71,19 +71,71 @@ public class J3DPanel extends JPanel {
      * @throws Exception If an error occurs during the export process.
      */
     public void exportAs(String extension, File file) throws Exception {
+        int scale = 2; // increase to 3 for even sharper output
+
         BufferedImage image = new BufferedImage(
-                this.getWidth(),
-                this.getHeight(),
+                this.getWidth() * scale,
+                this.getHeight() * scale,
                 BufferedImage.TYPE_INT_ARGB
         );
 
         Graphics2D g2 = image.createGraphics();
+
+        // --- High quality rendering ---
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+
+        // scale up rendering space
+        g2.scale(scale, scale);
+
+        // render Swing component
         this.printAll(g2);
+
         g2.dispose();
 
-        switch (extension) {
-            case "png" -> ImageIO.write(image, "png", file);
-            case "jpg" -> ImageIO.write(image, "jpg", file);
+        switch (extension.toLowerCase()) {
+            case "png" -> {
+                ImageIO.write(image, "png", file);
+            }
+
+            case "jpg", "jpeg" -> {
+                // JPEG does not support alpha, so flatten it
+                BufferedImage rgbImage = new BufferedImage(
+                        image.getWidth(),
+                        image.getHeight(),
+                        BufferedImage.TYPE_INT_RGB
+                );
+
+                Graphics2D g = rgbImage.createGraphics();
+                g.setColor(Color.WHITE); // background fill for transparency
+                g.fillRect(0, 0, rgbImage.getWidth(), rgbImage.getHeight());
+
+                g.drawImage(image, 0, 0, null);
+                g.dispose();
+
+                ImageIO.write(rgbImage, "jpg", file);
+            }
+
+            default -> throw new IllegalArgumentException("Unsupported format: " + extension);
         }
     }
+//    public void exportAs(String extension, File file) throws Exception {
+//        BufferedImage image = new BufferedImage(
+//                this.getWidth(),
+//                this.getHeight(),
+//                BufferedImage.TYPE_INT_ARGB
+//        );
+//
+//        Graphics2D g2 = image.createGraphics();
+//        this.printAll(g2);
+//        g2.dispose();
+//
+//        switch (extension) {
+//            case "png" -> ImageIO.write(image, "png", file);
+//            case "jpg" -> ImageIO.write(image, "jpg", file);
+//        }
+//    }
 }

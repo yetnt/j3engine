@@ -73,4 +73,8 @@ public class ArgSet implements Argument {
     public boolean isOptional() {
         return isOptional;
     }
+
+    public String toUseString() {
+        return "[" + String.join("|", allowedValues) + (isOptional ? "?" : "") + "]";
+    }
 }

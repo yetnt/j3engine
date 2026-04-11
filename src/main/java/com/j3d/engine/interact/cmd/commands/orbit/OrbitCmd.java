@@ -37,6 +37,7 @@ public class OrbitCmd extends Command implements StatefulCommand<Rotation> {
     public void onStart(Rotation object, SafeJLabel label) {
         orbitMouseOwner.requestOwnership();
         CursorManager.set(CursorNames.HAND_GRAB);
+        Static.mainPanel.repaint();
         label.setText(
                 "Use the mouse to orbit the camera around. | "+SafeJLabel.EMPH+": "
                         + SafeJLabel.EMPH + SafeJLabel.EMPH,

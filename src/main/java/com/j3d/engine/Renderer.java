@@ -126,7 +126,15 @@ public class Renderer {
         ArrayList<Integer> nums = new ArrayList<>();
 
         for (int i = -100; i < amt; i+=10) {
-            g.setColor(J3DTheme.TEXT_PRIMARY.color());
+            Color col = new Color(
+                    J3DTheme.TEXT_PRIMARY.color().getRed(),
+                    J3DTheme.TEXT_PRIMARY.color().getGreen(),
+                    J3DTheme.TEXT_PRIMARY.color().getBlue(),
+                    100
+            );
+            g.setColor(col);
+            g.setStroke(new BasicStroke(2));
+
 
             this.drawLine3D(g,
                     new Vector3(i, 0, axisLength),
@@ -171,7 +179,7 @@ public class Renderer {
         });
 
 //        g.setColor(Color.GREEN);
-        this.drawLine3D(g, origin.add(offset).sub(new Vector3(0, 2, 0)),
+        this.drawLine3D(g, origin.add(offset).sub(new Vector3(0, 30, 0)),
                 origin.add(new Vector3(0, axisLength, 0)),
                 camera);
         this.drawText3D(g, origin.add(new Vector3(0, axisLength+5, 0)), "Y", camera);
@@ -502,6 +510,9 @@ public class Renderer {
         TriStateArea.clearRegistered();
         layers.clear();
         points.clear();
+        overlaps.clear();
+        currentSelection.clear();
+        unparented.clear();
         history.clear(); // also clears backup.
         Static.mainPanel.repaint();
     }

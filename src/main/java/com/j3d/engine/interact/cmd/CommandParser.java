@@ -118,6 +118,7 @@ public class CommandParser {
             parse();
             run();
             arguments.clear();
+            taggedArguments.clear();
             accumulator = "";
             commandPallete.inputField.setText("");
             ignoreDocumentEvent = false;
@@ -153,6 +154,7 @@ public class CommandParser {
 
                 if (commandPallete.inputField.getText().isEmpty()) {
                     arguments.clear();
+                    taggedArguments.clear();
                     accumulator = "";
                 }
             }
@@ -409,6 +411,7 @@ public class CommandParser {
             // Remove the command name from the arguments
             arguments.removeFirst();
             cmd.run(label,cmdName, arguments.toArray(), taggedArguments);
+            taggedArguments.clear();
         } else {
             label.error("Invalid command name.");
         }

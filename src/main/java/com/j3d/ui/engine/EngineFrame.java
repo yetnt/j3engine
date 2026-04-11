@@ -44,6 +44,8 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 
@@ -73,7 +75,9 @@ public class EngineFrame extends javax.swing.JFrame {
     }
 
     public static void addFloater(FloatingPanel p) {
-        p.setBounds(50, 100, p.getPreferredSize().width, p.getPreferredSize().height);
+        // random value between 41 and 5
+        int x = ThreadLocalRandom.current().nextInt(10, Static.renderer.screenSize.width);
+        p.setBounds(x, 200, p.getPreferredSize().width, p.getPreferredSize().height);
         p.setVisible(true);
         Static.mainFrame.getLayeredPane().add(p, JLayeredPane.POPUP_LAYER);
         Static.mainFrame.revalidate();

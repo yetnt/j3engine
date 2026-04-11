@@ -93,11 +93,12 @@ public class CommandsManager {
         LookAtCmd lookAtCmd = new LookAtCmd();
         TeleportCmd tpCmd = new TeleportCmd();
         OrbitCmd  orbitCmd = new OrbitCmd();
+        EngineCmd engineCmd = new EngineCmd();
 
         ArrayList<Command> commands = new ArrayList<>(
                 List.of(
                         debugCmd, transformCmd, lookAtCmd,
-                        tpCmd, orbitCmd
+                        tpCmd, orbitCmd, engineCmd
                 )
         );
 
