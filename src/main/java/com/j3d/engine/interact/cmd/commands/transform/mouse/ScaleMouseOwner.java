@@ -1,10 +1,22 @@
 package com.j3d.engine.interact.cmd.commands.transform.mouse;
 
+import com.j3d.engine.interact.cmd.commands.transform.ScaleSelection;
 import com.j3d.engine.interact.cmd.commands.transform.handlers.Handle;
 import com.j3d.engine.interact.input.mouse.MOwner;
+import com.j3d.engine.interact.input.mouse.MouseOwner;
 
 import java.awt.event.MouseEvent;
 
+/**
+ * A mouse owner that handles the logic for scaling selected objects when a user
+ * drags a transformation handle.
+ * <p>
+ * This class is used exclusively by the {@link ScaleSelection} command.
+ * @author Lehlogonolo Poole
+ * @see MOwner#SCALE_HANDLE
+ * @see TransformMouseOwner
+ * @see ScaleSelection
+ */
 public class ScaleMouseOwner extends TransformMouseOwner {
 
     public Handle handle;

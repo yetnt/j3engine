@@ -1,6 +1,7 @@
 package com.j3d.engine.interact.cmd.base;
 
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.ui.util.SafeJLabel;
 import com.jaiva.utils.Find;
 import com.jaiva.utils.Pair;
@@ -11,60 +12,55 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * TaggedArg is an argument that expects a single key-value pair.
- * Each tag has a predefined type, and the accepted tags are defined in the acceptedTags map.
- * This class implements the Argument interface.
+ * A utility class for parsing and managing "tagged arguments" within the command system.
  * <p>
- *     Unlike other arguments, where arguments are defined by their type (e.g., String, Integer),
- *     TaggedArg uses a set of predefined tags, each associated with a specific type.
- *     A user can specify one or more of these tags when using a command that accepts TaggedArg.
- *     For example, a command might accept a TaggedArg with tags "type" (String) and "x" (Double).
- *     The user would then provide values for these tags when invoking the command:
- *     <pre> command type:"some String" x:10.5 </pre>
+ *      Tagged arguments are a special type of key-value pair (e.g., {@code x:10.5}, {@code type:"point"})
+ *      that provide optional, out-of-order parameters to commands. This class defines the globally
+ *      accepted tags and provides the logic to parse them from a raw string.
  * </p>
- * <p>
- *     Also unlike other tags, TaggedArg is not an argument you define within a command but is given
- *     to all commands in a separate taggedArgs list. Unique to normal arguments.
- *     This also means that tag args can appear anywhere in between normal arguments however they
- *     get stripped away into their own list. leaving the normal arguments in place.
- *     <p>
- *         This means
- *         <pre>{@code
- *         point at x:4 10 y:5
- *         }</pre>
- *         and
- *         <pre>{@code
- *         point y:5 at x:4 10
- *         }</pre>
- *         both compute to
- *         <pre>{@code
- *         Command name = "point"
- *         Arguments = ["at", 10]
- *         TaggedArgs = [x:4, y:5]
- *         }</pre>
- *         As long as the order of the other arguments is respected, the tagged arguments can be present
- *         anywhere that isnt before the command name.
- *     </p>
- * </p>
- * <p>
- *     The accepted tags and their types are as follows:
- *     <ul>
- *         <li>{@code type: String}: Any type primitive such as "point" "vector3" "line" ...etc</li>
- *         <li>{@code layer: String}: The layer the object belongs to, e.g., "default", "background", "foreground"</li>
- *         <li>{@code thing: String}: The thing's ID the object is associated with. </li>
- *         <li>{@code id: String}: A unique identifier for the object, e.g., "object123"</li>
- *         <li>{@code x: Double}: The x-coordinate of the object in 3D space</li>
- *         <li>{@code y: Double}: The y-coordinate of the object in 3D space</li>
- *         <li>{@code z: Double}: The z-coordinate of the object in 3D space</li>
- *         <li>{@code custom: String}: A custom tag for any additional information</li>
- *         <li>{@code behindCam: Boolean}: Whether the object is behind the camera (true/false)</li>
- *         <li>{@code rand: Boolean}: Idk what it does. It's random. Set it to true and find out (true/false)</li>
- *         <li>{@code v: Vector3}: A Vector3 string converted to object e.g. (0, 0, 1) </li>
- *    </ul>
- *</p>
  *
+ * <h3>The Role of Tagged Arguments</h3>
+ * Unlike standard positional arguments, tagged arguments are not defined as part of a
+ * command's formal argument list. Instead, the {@link CommandParser} identifies and extracts
+ * them from the user's input string, providing them to the command in a separate collection.
+ * <p>
+ *      This means tagged arguments can appear anywhere in the command string after the command name,
+ *      interspersed with normal arguments, without affecting the order of the normal arguments.
+ *      For example, the following two inputs are parsed identically:
+ * </p>
+ * <pre>{@code
+ * > point at x:4 10 y:5
+ * > point y:5 at x:4 10
+ *
+ * // Both result in:
+ * Command: "point"
+ * Arguments: ["at", 10]
+ * TaggedArgs: [x:4, y:5]
+ * }</pre>
+ * By default, all commands can accept a variadic number of tagged arguments, though a command's
+ * specific {@code run} method determines which ones it actually uses.
+ *
+ * <h3>Accepted Tags</h3>
+ * This utility defines a static map of all valid tags and their expected data types:
+ * <ul>
+ *     <li>{@code type: String} - e.g., "point", "line"</li>
+ *     <li>{@code layer: String} - e.g., "default", "background"</li>
+ *     <li>{@code x, y, z: Double} - Coordinates</li>
+ *     <li>{@code v: Vector3} - e.g., (0, 0, 1)</li>
+ *     <li>...and others for IDs, booleans, and comparisons.</li>
+ * </ul>
+ *
+ * @author Lehlogonolo Poole
+ * @see Command
+ * @see Argument
+ * @see TaggedArgValue
+ * @see CommandParser
+ * @see Command#run(SafeJLabel, String, Object[], ArrayList)
  */
-public class TaggedArg {
+public class TaggedArgUtil {
+    /**
+     * A map defining all globally accepted tags and their corresponding typed {@link TaggedArgValue} shells.
+     */
     public static final HashMap<String, TaggedArgValue<?>> acceptedTags = new HashMap<>();
     static {
         acceptedTags.put("type", new TaggedArgValue<String>(String.class).setName("type"));
@@ -78,8 +74,24 @@ public class TaggedArg {
         acceptedTags.put("behindCam", new TaggedArgValue<Boolean>(Boolean.class).setName("behindCam"));
         acceptedTags.put("rand", new TaggedArgValue<Boolean>(Boolean.class).setName("rand"));
         acceptedTags.put("v", new TaggedArgValue<Vector3>(Vector3.class).setName("v"));
+        acceptedTags.put("lessThan", new TaggedArgValue<Double>(Double.class).setName("lessThan"));
+        acceptedTags.put("greaterThan", new TaggedArgValue<Double>(Double.class).setName("greaterThan"));
+        acceptedTags.put("equal", new TaggedArgValue<Double>(Double.class).setName("equal"));
+        acceptedTags.put("notEqual", new TaggedArgValue<Double>(Double.class).setName("notEqual"));
     }
 
+    /**
+     * Parses a single string segment to identify and create a tagged argument.
+     * <p>
+     * This method attempts to parse a string in the format "key:value" or "key=value".
+     * It validates the key against the {@link #acceptedTags} map and attempts to parse
+     * the value into the expected type (e.g., number, boolean, quoted string, Vector3).
+     *
+     * @param accumulator The raw string segment to parse.
+     * @param label       A {@link SafeJLabel} for providing user feedback on parsing errors.
+     * @return A populated {@link TaggedArgValue} instance. If parsing fails, the instance
+     *         will be marked as an error or empty.
+     */
     public static TaggedArgValue<?> parse(String accumulator, SafeJLabel label) {
         accumulator = accumulator.trim();
         TaggedArgValue<Void> taggedArgValue = new TaggedArgValue<>(null);

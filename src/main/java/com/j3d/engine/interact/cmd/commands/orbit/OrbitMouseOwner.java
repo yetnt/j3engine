@@ -9,8 +9,19 @@ import com.j3d.ui.CursorNames;
 
 import java.awt.event.MouseEvent;
 
+/**
+ * A mouse owner that handles camera orbiting logic. When active, dragging the mouse
+ * will rotate the scene camera's pitch and yaw.
+ * <p>
+ * This class is used exclusively by the {@link OrbitCmd} command.
+ * @author Lehlogonolo Poole
+ * @see MOwner#ORBIT
+ * @see MouseOwner
+ * @see OrbitCmd
+ */
 public class OrbitMouseOwner extends MouseOwner {
     private int startX, startY;
+
     public OrbitMouseOwner() {
         super(MOwner.ORBIT);
     }

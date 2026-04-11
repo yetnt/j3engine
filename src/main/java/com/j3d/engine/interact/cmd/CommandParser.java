@@ -1,7 +1,7 @@
 package com.j3d.engine.interact.cmd;
 
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
-import com.j3d.engine.interact.cmd.base.TaggedArg;
+import com.j3d.engine.interact.cmd.base.TaggedArgUtil;
 import com.j3d.engine.interact.cmd.base.TaggedArgValue;
 import com.j3d.ui.engine.CommandPallete;
 import com.j3d.Static;
@@ -281,7 +281,7 @@ public class CommandParser {
                 Find.bracePairs(accumulator);
         ArrayList<Pair<Integer>> sp = Find.quotationPairs(accumulator);
         if (accumulator.contains(":(") && sp.isEmpty())
-            return true; // Vector3 object within TaggedArg
+            return true; // Vector3 object within TaggedArgUtil
         return (bp.first.isEmpty() && accumulator.charAt(0) == '(') ||
                 (sp.isEmpty() && accumulator.charAt(0) == '"');
 //        return (c != ')' && accumalator.charAt(0) == '(') || (c != '"' && accumalator.charAt(0) == '"');
@@ -345,7 +345,7 @@ public class CommandParser {
             } catch (IllegalArgumentException e) {
                 parseAsNumber(accumulator, acc -> {
                     // if numbers fail, check if this is a tagged arg
-                    TaggedArgValue<?> v = TaggedArg.parse(acc, label);
+                    TaggedArgValue<?> v = TaggedArgUtil.parse(acc, label);
                     if (v.isErr()) return;
                     if (v.isEmpty()) {
                         arguments.add(acc.trim()); // something like an extra arg, just put it.

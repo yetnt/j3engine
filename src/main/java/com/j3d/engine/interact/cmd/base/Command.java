@@ -1,15 +1,45 @@
 package com.j3d.engine.interact.cmd.base;
 
+import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.ui.util.SafeJLabel;
 
 import java.util.*;
 import java.util.stream.Stream;
 
+/**
+ * A {@code Command} encapsulates all the information needed to define and execute
+ * a user-callable action. This includes its name, aliases, description, and a
+ * structured list of accepted {@link Argument}s.
+ * <p>
+ * Key responsibilities of this class include:
+ * <ul>
+ *     <li>Defining the command's identity and structure.</li>
+ *     <li>Providing a {@link #run} method for subclasses to implement their specific logic.</li>
+ *     <li>Supporting a hierarchy of commands through subcommand dispatching.</li>
+ *     <li>A sophisticated mechanism ({@link #parseUsages}) to automatically generate
+ *         detailed usage strings based on its arguments, which is crucial for
+ *         providing dynamic help and command suggestions to the user.</li>
+ * </ul>
+ *
+ * @author Lehlogonolo Poole
+ * @see Argument
+ * @see Subcommand
+ * @see CommandsManager
+ */
 public class Command {
+    /**
+     * A list of all names this command can be called by, including the primary name.
+     */
     public ArrayList<String> aliases = new ArrayList<>();
+    /**
+     * A user-friendly description of what the command does.
+     */
     public String description;
     public String usage = "This will be auto-generated.";
     public ArrayList<Argument> args = new ArrayList<>();
+    /**
+     * A flag indicating whether this command accepts a variable number of tagged arguments (e.g., key:value pairs).
+     */
     private boolean variadicTaggedArgs = true;
 
     /**
@@ -29,16 +59,34 @@ public class Command {
      */
     protected HashMap<ArrayList<Class>, String> usages = new HashMap<>();
 
+    /**
+     * Constructs a new Command.
+     *
+     * @param name The primary name of the command. This will also be its first alias.
+     * @param d    A user-friendly description of the command.
+     */
     public Command(String name, String d) {
         aliases.add(name);
         description = d;
     }
 
+    /**
+     * Adds one or more aliases to this command.
+     *
+     * @param a A varargs array of alias strings.
+     * @return This Command instance for method chaining.
+     */
     public Command aliases(String... a) {
         aliases.addAll(Arrays.asList(a));
         return this;
     }
 
+    /**
+     * Adds one or more arguments to this command's definition.
+     *
+     * @param a A varargs array of {@link Argument} objects.
+     * @return This Command instance for method chaining.
+     */
     public Command args(Argument... a) {
         args.addAll(Arrays.asList(a));
         return this;
@@ -88,10 +136,9 @@ public class Command {
      * Parses the usages of the command based on its arguments.
      * This method populates the usages map with all possible usages of the command,
      * taking into account subcommands and typed arguments.
-     * <p>
+     * @implSpec
      *     If an inheriting class does some special shenanigans with it's arguments.
      *     It should handle the parsing itself.
-     * </p>
      * @return The Command instance with populated usages.
      */
     public Command parseUsages() {
@@ -150,21 +197,8 @@ public class Command {
                     }
                 }
             }
-//            else if (arg instanceof TaggedArg tagArg) {
-////                // probably the simplest one, A tagged arg is always a... tag.
-////                // However, we need to add this arg to every usage within the accumulator and typeAccumulator
-////                // If the accumulators are empty, we need to add a new entry.
-////                if (typeAccumulator.isEmpty()) {
-////                    typeAccumulator.add(new ArrayList<>(List.of(TaggedArg.class)));
-////                    usageAccumulator.add(new StringBuilder("{tag} "));
-////                } else {
-////                    for (ArrayList<Class> clsList : typeAccumulator) {
-////                        clsList.add(TaggedArg.class);
-////                    }
-////                    for (StringBuilder usage : usageAccumulator) {
-////                        usage.append("{tag").append(tagArg.isOptional() ? "?" : "").append("} ");
-////                    }
-////                }
+//            else if (arg instanceof TaggedArgUtil tagArg) {
+            // All commands by default tag a variadic amount of tagged args
 //            }
             else if (arg instanceof ArgSet setArg) {
                 // Another simple one, An ArgSet is always a set of predefined strings.
@@ -197,6 +231,12 @@ public class Command {
         return this;
     }
 
+    /**
+     * Retrieves the map of all parsed usages for this command.
+     * The key is a list of argument types, and the value is the corresponding usage string.
+     *
+     * @return A {@link HashMap} containing all possible usage patterns.
+     */
     public HashMap<ArrayList<Class>, String> getUsages() {
         return usages;
     }

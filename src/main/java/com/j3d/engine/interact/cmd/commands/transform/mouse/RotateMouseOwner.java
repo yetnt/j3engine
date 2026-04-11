@@ -3,6 +3,7 @@ package com.j3d.engine.interact.cmd.commands.transform.mouse;
 import com.j3d.Static;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.engine.interact.cmd.commands.transform.RotateSelection;
 import com.j3d.engine.interact.cmd.commands.transform.handlers.Handle;
 import com.j3d.engine.interact.input.mouse.MOwner;
 
@@ -11,6 +12,17 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+/**
+ * A mouse owner that handles the logic for rotating selected objects when a user
+ * drags a transformation handle. It also adds extra visual details to the handles
+ * to indicate the rotation axis.
+ * <p>
+ * This class is used exclusively by the {@link RotateSelection} command.
+ * @author Lehlogonolo Poole
+ * @see MOwner#ROTATE_HANDLE
+ * @see TransformMouseOwner
+ * @see RotateSelection
+ */
 public class RotateMouseOwner extends TransformMouseOwner {
 
     public Handle handle;

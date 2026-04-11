@@ -6,7 +6,6 @@ import com.j3d.engine.interact.cmd.commands.*;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.commands.orbit.OrbitCmd;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
-import com.j3d.engine.interact.cmd.commands.thing.ThingCmd;
 import com.j3d.ui.engine.CommandPallete;
 
 import java.util.ArrayList;
@@ -89,11 +88,7 @@ public class CommandsManager {
      * command construction is expensive.
      */
     public CommandsManager() {
-        LineCmd lineCmd = new LineCmd();
-        PointCmd pointCmd = new PointCmd();
-        TriCmd triCmd = new TriCmd();
         DebugCmd debugCmd = new DebugCmd();
-        ThingCmd thingCmd = new ThingCmd();
         TransformCmd transformCmd = new TransformCmd();
         LookAtCmd lookAtCmd = new LookAtCmd();
         TeleportCmd tpCmd = new TeleportCmd();
@@ -101,7 +96,7 @@ public class CommandsManager {
 
         ArrayList<Command> commands = new ArrayList<>(
                 List.of(
-                        lineCmd, pointCmd, triCmd, debugCmd, thingCmd, transformCmd, lookAtCmd,
+                        debugCmd, transformCmd, lookAtCmd,
                         tpCmd, orbitCmd
                 )
         );

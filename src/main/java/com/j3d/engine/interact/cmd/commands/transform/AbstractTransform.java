@@ -14,11 +14,8 @@ import com.j3d.engine.interact.cmd.commands.transform.handlers.Handle;
 import com.j3d.engine.interact.cmd.commands.transform.handlers.HandleType;
 import com.j3d.engine.interact.cmd.commands.transform.mouse.TransformMouseOwner;
 import com.j3d.engine.interact.input.keyboard.J3Key;
-import com.j3d.engine.interact.input.keyboard.OtherKeys;
 import com.j3d.engine.react.actions.VoidAction;
-import com.j3d.ui.J3DTheme;
 import com.j3d.ui.engine.EngineFrame;
-import com.j3d.utility.JLabelRichText;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,18 +24,48 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class AbstractTransform extends Subcommand implements KeyedStatefulCommand {
+/**
+ * An abstract base class that provides the core framework for all stateful transformation
+ * commands (Translate, Rotate, Scale).
+ * <p>
+ * This class implements the {@link KeyedStatefulCommand} interface and handles the
+ * complex, shared logic required to enter a "transform mode." This includes:
+ * <ul>
+ *     <li>Collecting the selected objects (references) to be transformed.</li>
+ *     <li>Storing their original positions for undo/cancel functionality.</li>
+ *     <li>Spawning and managing the 3D interactive handles (gizmos).</li>
+ *     <li>Registering and unregistering temporary keybindings (arrow keys, gear key).</li>
+ *     <li>Drawing the UI overlay with command-specific information.</li>
+ *     <li>Handling the final commit (Enter) or cancellation (Escape) of the transformation.</li>
+ * </ul>
+ * Subclasses like {@link TranslateSelection} extend this class to define the specific
+ * actions that happen when the user interacts with the handles or presses the arrow keys.
+ *
+ * @author Lehlogonolo Poole
+ * @see KeyedStatefulCommand
+ * @see TransformCmd
+ * @see TranslateSelection
+ * @see ScaleSelection
+ * @see RotateSelection
+ */
+public abstract class AbstractTransform extends Subcommand implements KeyedStatefulCommand {
 
+    /** A unique ID for the UI overlay drawn by the renderer during the transform state. */
     protected UUID overlapId;
+    /** The mouse owner responsible for handling direct interaction with the 3D handles. */
     private final TransformMouseOwner mouseOwner;
+    /** A list of temporary keybindings (e.g., arrow keys) active during this state. */
     protected ArrayList<J3Key> keys = new ArrayList<>();
+    /** A snapshot of the original positions of all points being transformed, for undo purposes. */
     protected ArrayList<Vector3> originalPointPos = new ArrayList<>();
+    /** The list of actual {@link GPoint} objects that are being manipulated. */
     protected ArrayList<GPoint> references = new ArrayList<>();
+    /** The calculated center of the current selection. */
     protected Vector3 center;
+    /** The argument set for choosing between point/face selection mode. */
     protected ArgSet argSet =
             new ArgSet(
                     "mode",
@@ -47,33 +74,48 @@ public class AbstractTransform extends Subcommand implements KeyedStatefulComman
                     "p", "v", // Points/vertices
                     "t", "f" // Triangles/faces
             );
+    /** The name of the event associated with this stateful command. */
     protected String eventName;
+    /** A flag indicating if the transformation should operate on whole faces (tris) or individual points. */
     protected boolean faceMode = true;
+    /** An array of step sizes (e.g., 1, 5, 20) that the user can cycle through. */
     protected double[] gearTrain;
+    /** The index of the currently active step size in the gearTrain. */
     protected int currentIndex = 0;
-    protected J3Key gear = new J3Key(
-            "transformGearKey",
-            OtherKeys.TRANSFORM_CHANGE_STEP_SIZE.getKeyStroke(),
-            new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    currentIndex = (currentIndex + 1) % gearTrain.length;
-                }
-            }
-    );
+    /** The keybinding used to cycle through the gearTrain step sizes. */
+    protected J3Key gear;
+    /** The label used for providing feedback to the user. */
     protected SafeJLabel label;
 
+    /**
+     * Constructs the abstract base for a transformation command.
+     *
+     * @param commandName The primary name of the command (e.g., "translate").
+     * @param commandDesc A user-friendly description of the command.
+     * @param eventName   The name of the stateful event to run.
+     * @param mouseOwner  The specific mouse owner that will handle handle interaction.
+     * @param gearTrain   An array of step sizes for the command's "gear" system.
+     */
     public AbstractTransform(String commandName, String commandDesc, String eventName, TransformMouseOwner mouseOwner, double[] gearTrain) {
         super(commandName, commandDesc);
         this.mouseOwner = mouseOwner;
         this.eventName = eventName;
         this.gearTrain = gearTrain;
+        this.gear = newGearKey(commandName);
     }
 
+    /**
+     * Gets the currently active step size from the gear train.
+     * @return The current step size.
+     */
     public double getCurrentStepSize() {
         return gearTrain[currentIndex];
     }
 
+    /**
+     * The main entry point for the command. It gathers the selected objects and
+     * initiates the stateful transformation mode.
+     */
     @Override
     public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         CommandsManager.setAsCurrent(this);
@@ -114,49 +156,19 @@ public class AbstractTransform extends Subcommand implements KeyedStatefulComman
         run(this, eventName, null, logLabel);
     }
 
+    /**
+     * Called when the transformation state begins. This method sets up the interactive environment.
+     */
     @Override
     public void onStart(Void object, SafeJLabel label) {
         mouseOwner.requestOwnership();
-
-        keys.forEach(
-                key -> Static.keybinds.registerJ3Key(key)
-        );
+        keys.forEach(key -> Static.keybinds.registerJ3Key(key));
 
         center = Vector3.reduceToVector3(
                 references.stream().map(GPoint::getPivot).collect(Collectors.toCollection(ArrayList::new))
                 , Vector3::add).div(references.size());
-        double farPosX = Vector3.reduce(
-                references.stream().map(GPoint::getPivot).collect(Collectors.toCollection(ArrayList::new)),
-                (v1, v2) -> {
-                    if (v1.getX() > v2)
-                        return v1.getX();
-                    return v2;
-                },
-                0d
-        );
-        double farPosY = Vector3.reduce(
-                references.stream().map(GPoint::getPivot).collect(Collectors.toCollection(ArrayList::new)),
-                (v1, v2) -> {
-                    if (v1.getY() > v2)
-                        return v1.getY();
-                    return v2;
-                },
-                0d
-        );
-        double farPosZ = Vector3.reduce(
-                references.stream().map(GPoint::getPivot).collect(Collectors.toCollection(ArrayList::new)),
-                (v1, v2) -> {
-                    if (v1.getZ() > v2)
-                        return v1.getZ();
-                    return v2;
-                },
-                0d
-        );
 
-        // Draw 3 circles
-        // a blue one at x=0, y=4, z=0
-        // a red one at x=4, y=0, z=0
-        // a green one at x=0, y=0, z=4
+        // Create and configure the X, Y, Z handles
         final int size = 10;
         Handle X = new Handle(
                 HandleType.X, center.add(new Vector3(10, 0, 0)),
@@ -178,9 +190,9 @@ public class AbstractTransform extends Subcommand implements KeyedStatefulComman
                 });
 
         mouseOwner.setHandles(new ArrayList<>(List.of(X, Y, Z)), references);
+
+        // Define the drawing logic for the UI overlay
         Consumer<Graphics2D> drawScaleHandle = g -> {
-            // this draws the handles such that the user can itneract with it
-            // in real time and watch it warp and change.
             center = Vector3.reduceToVector3(
                     references.stream().map(GPoint::getPivot).collect(Collectors.toCollection(ArrayList::new))
                     , Vector3::add).div(references.size());
@@ -191,30 +203,6 @@ public class AbstractTransform extends Subcommand implements KeyedStatefulComman
             Y.draw(g);
             Z.draw(g);
             g.setColor(Color.WHITE);
-            String capitalizedName = getName().replaceFirst(
-                    "[a-z]"
-                    , String.valueOf(getName().charAt(0)).toUpperCase()
-            );
-            String stepsTitle = (switch (this) {
-                case RotateSelection r -> "Angle";
-                case ScaleSelection s -> "Scale";
-                case TranslateSelection t -> "Distance";
-                default -> throw new IllegalStateException("Unexpected value: " + this);
-            });
-            label.setText(
-                    SafeJLabel.EMPH + " " + SafeJLabel.EMPH + " using arrow keys and handles. | "
-                    + SafeJLabel.EMPH + SafeJLabel.EMPH + " (Click "+SafeJLabel.EMPH+" to change)",
-                    capitalizedName,
-                    new JLabelRichText(faceMode ? "faces" : "points")
-                            .font(J3DTheme.TEXT_SECONDARY.color().darker(), "6"),
-                    stepsTitle + ": ",
-                    new JLabelRichText(Double.toString(getCurrentStepSize()) +
-                            (this instanceof ScaleSelection s ? "/" + Double.toString(s.getInverseStepSize()) : "") +
-                            (this instanceof RotateSelection ? '°' : " units")
-                    )
-                            .font(J3DTheme.TEXT_SECONDARY.color().brighter(), "6"),
-                    "[R]"
-            );
         };
 
         overlapId = UUID.randomUUID();
@@ -222,22 +210,25 @@ public class AbstractTransform extends Subcommand implements KeyedStatefulComman
         Static.renderer.scheduleOverlap(overlapId, drawScaleHandle);
     }
 
+    /**
+     * Cleans up the stateful command environment after it has finished.
+     */
     private void finished(SafeJLabel lbl) {
-        keys.forEach(
-                key -> Static.keybinds.removeJ3Key(key.getId())
-        );
+        keys.forEach(key -> Static.keybinds.removeJ3Key(key.getId()));
         Static.renderer.removeOverlap(overlapId);
         lbl.clear();
         Static.renderer.deselectAll();
         Static.mainFrame.repaint();
     }
 
-
+    /**
+     * Called when the user presses Enter, committing the transformation.
+     */
     @Override
     public void onEnter(ActionEvent e, Void object, SafeJLabel label) {
-        // later wrap as Action for the final ransform applied.
         EngineFrame.setMouseOwner(null);
         ArrayList<Vector3> newPositions = references.stream().map(GObject::getPivot).collect(Collectors.toCollection(ArrayList::new));
+        // Add the transformation to the undo/redo history
         Renderer.history.add(
                 new VoidAction() {
                     @Override
@@ -245,70 +236,42 @@ public class AbstractTransform extends Subcommand implements KeyedStatefulComman
                         references.forEach(p -> p.setPivot(newPositions.get(references.indexOf(p))));
                         return null;
                     }
-
                     @Override
                     public void undo() {
                         references.forEach(p -> p.setPivot(originalPointPos.get(references.indexOf(p))));
                     }
-
                     @Override
-                    public boolean isReversible() {
-                        return true;
-                    }
-
+                    public boolean isReversible() { return true; }
                     @Override
-                    public String getDescription() {
-                        return "TransformSelection:"+getName();
-                    }
+                    public String getDescription() { return "TransformSelection:" + getName(); }
                 }
         );
         finished(label);
     }
 
+    /**
+     * Called when the user presses Escape, canceling the transformation and reverting all changes.
+     */
     @Override
     public void onEsc(ActionEvent e, Void object, SafeJLabel label) {
-        // clear transforms done.
         EngineFrame.setMouseOwner(null);
         for (GPoint p : references) p.setPivot(originalPointPos.get(references.indexOf(p)));
         finished(label);
     }
 
-    public Supplier<SafeJLabel> getLabel() {
-        return () -> label;
-    }
-
+    // Implementation of KeyedStatefulCommand interface methods
     @Override
-    public ArrayList<J3Key> getKeys() {
-        return keys;
-    }
-
+    public ArrayList<J3Key> getKeys() { return keys; }
     @Override
-    public String selfName() {
-        return getName();
-    }
-
+    public String selfName() { return getName(); }
     @Override
-    public ArrayList<Vector3> getOriginalPointPositions() {
-        return originalPointPos;
-    }
-
+    public ArrayList<Vector3> getOriginalPointPositions() { return originalPointPos; }
     @Override
-    public ArrayList<GPoint> getReferences() {
-        return references;
-    }
-
+    public ArrayList<GPoint> getReferences() { return references; }
     @Override
-    public double[] getGearTrain() {
-        return gearTrain;
-    }
-
+    public double[] getGearTrain() { return gearTrain; }
     @Override
-    public int getGearIndex() {
-        return currentIndex;
-    }
-
+    public int getGearIndex() { return currentIndex; }
     @Override
-    public void setGearIndex(int index) {
-        currentIndex = index;
-    }
+    public void setGearIndex(int index) { currentIndex = index; }
 }
