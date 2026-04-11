@@ -94,12 +94,12 @@ public class Main extends javax.swing.JFrame {
             t.setRepeats(false);
             t.start();
         }, 9.3);
-        flt.iAmImpatient();
-//        try {
-//            flt.run();
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
+//        flt.iAmImpatient();
+        try {
+            flt.run();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         this.dispose();
     }//GEN-LAST:event_openEngineButtonActionPerformed
 

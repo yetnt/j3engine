@@ -88,7 +88,7 @@ public class ConstraintManager<T> {
                 .anyMatch(incompatible -> incompatible.isInstance(newConstraint));
     }
 
-    public boolean allSatisfied(SafeJLabel lbl, String errStartText, ConstraintIntent intent) {
+    public boolean allSatisfied(String errStartText, ConstraintIntent intent) {
         for (ConstraintOn<T> constraint : constraints) {
             boolean accepted = constraint.satisfiesConstraint(intent);
             if (!accepted) {

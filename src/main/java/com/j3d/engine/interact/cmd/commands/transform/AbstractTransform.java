@@ -2,18 +2,14 @@ package com.j3d.engine.interact.cmd.commands.transform;
 
 import com.j3d.Static;
 import com.j3d.engine.Renderer;
-import com.j3d.engine.geometry.constraints.*;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandsManager;
+import com.j3d.engine.interact.cmd.base.*;
 import com.j3d.ui.util.SafeJLabel;
-import com.j3d.engine.interact.cmd.base.ArgSet;
-import com.j3d.engine.interact.cmd.base.StatefulCommand;
-import com.j3d.engine.interact.cmd.base.Subcommand;
-import com.j3d.engine.interact.cmd.base.TaggedArgValue;
 import com.j3d.engine.interact.cmd.commands.transform.handlers.Handle;
 import com.j3d.engine.interact.cmd.commands.transform.handlers.HandleType;
 import com.j3d.engine.interact.cmd.commands.transform.mouse.TransformMouseOwner;
@@ -27,19 +23,15 @@ import com.j3d.utility.JLabelRichText;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class AbstractTransform extends Subcommand implements StatefulCommand<Void> {
+public class AbstractTransform extends Subcommand implements KeyedStatefulCommand {
 
     protected UUID overlapId;
     private final TransformMouseOwner mouseOwner;
@@ -281,94 +273,42 @@ public class AbstractTransform extends Subcommand implements StatefulCommand<Voi
         finished(label);
     }
 
-    public static String UP = "upArrowKey";
-    public static String DOWN = "downArrowKey";
-    public static String LEFT = "leftArrowKey";
-    public static String RIGHT = "rightArrowKey";
-
-    /**
-     * Configures and registers a {@link J3Key} for a specific transformation direction (e.g., Up, Down, Left, Right).
-     * This method encapsulates the complex logic of applying a transformation while
-     * integrating the constraint validation system.
-     *
-     * @param key        A string identifier for the key (e.g., {@link #UP}, {@link #DOWN}).
-     * @param lbl        A {@link SafeJLabel} used for providing user feedback, especially
-     *                   when a proposed transformation fails due to a constraint violation.
-     * @param earlyExit  If this function returns true, the action is aborted.
-     * @param shared     A {@link Supplier} that provides a shared variable (of type {@code T})
-     *                   representing the magnitude or specific value of the transformation. This
-     *                   value is used by both the constraint checker and the actual application
-     *                   of the transform.
-     * @param application A {@link Consumer} that applies the transformation to the actual
-     *                    {@link GObject}s. This consumer is only executed if all constraints are satisfied.
-     * @param biConsumer  A {@link BiConsumer} that applies the transformation to the
-     *                    {@link ConstraintMirror} objects within a {@link ConstraintIntent}.
-     *                    This is the "what-if" function used by the constraint system to check
-     *                    if the proposed transform breaks any rules without modifying the original objects.
-     * @param <T>        The type of the shared variable representing the transformation value.
-     * @implSpec This method is not intended for direct use. Instead, specialized setter methods
-     *           (e.g., {@code setUpKey()}, {@code setDownKey()}) should be implemented in
-     *           subclasses, making use of the static key constants defined in {@link AbstractTransform}.
-     */
-    protected <T> void setKey(String key, Supplier<SafeJLabel> lbl, Function<T, Boolean> earlyExit, Supplier<T> shared, Consumer<T> application, BiConsumer<T, HashMap<UUID, ConstraintMirror>> biConsumer) {
-        keys.add(
-                new J3Key(
-                        key + getName(),
-                        KeyStroke.getKeyStroke(
-                                switch (key) {
-                                    case "upArrowKey" -> KeyEvent.VK_UP;
-                                    case "downArrowKey" -> KeyEvent.VK_DOWN;
-                                    case "leftArrowKey" -> KeyEvent.VK_LEFT;
-                                    case "rightArrowKey" -> KeyEvent.VK_RIGHT;
-                                    default -> throw new IllegalStateException("Unexpected value: " + key);
-                                }
-                                , 0),
-                        new AbstractAction() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                T sharedVar = shared.get();
-                                if (earlyExit.apply(sharedVar)) return;
-                                ArrayList<ConstraintMirror> c = ConstraintUtils.converter(
-                                        references.stream().map(o -> (GObject)o).collect(Collectors.toCollection(ArrayList::new))
-                                );
-                                ConstraintIntent intent = new ConstraintIntent(c,
-                                        (mp) -> biConsumer.accept(sharedVar, mp)
-                                );
-                                for (GPoint ref : references) {
-                                    boolean allConstr = ref.getConstraints().allSatisfied(
-                                            lbl.get(),
-                                            "Cannot transform object due to " + SafeJLabel.EMPH,
-                                            intent
-                                    );
-                                    if (!allConstr) return; // method above sent user UX
-                                }
-                                // if we make it here, apply evberything as normal.
-                                application.accept(sharedVar);
-                                references.stream()
-                                        .map(GPoint::getConstraints)
-                                        .flatMap(ConstraintManager::constraintStream)
-                                        .forEach(ConstraintOn::applyConstraint);
-                                Static.mainPanel.repaint();
-                            }
-                        }
-                )
-        );
-    }
-
     public Supplier<SafeJLabel> getLabel() {
         return () -> label;
     }
 
-    protected <T> void setUpKey(Supplier<T> shared, Function<T, Boolean> earlyExit, Consumer<T> application, BiConsumer<T, HashMap<UUID, ConstraintMirror>> biConsumer) {
-        setKey(UP, getLabel(), earlyExit, shared, application, biConsumer);
+    @Override
+    public ArrayList<J3Key> getKeys() {
+        return keys;
     }
-    protected <T> void setDownKey(Supplier<T> shared, Function<T, Boolean> earlyExit, Consumer<T> application, BiConsumer<T, HashMap<UUID, ConstraintMirror>> biConsumer) {
-        setKey(DOWN, getLabel(), earlyExit, shared, application, biConsumer);
+
+    @Override
+    public String selfName() {
+        return getName();
     }
-    protected <T> void setLeftKey(Supplier<T> shared, Function<T, Boolean> earlyExit, Consumer<T> application, BiConsumer<T, HashMap<UUID, ConstraintMirror>> biConsumer) {
-        setKey(LEFT, getLabel(), earlyExit, shared, application, biConsumer);
+
+    @Override
+    public ArrayList<Vector3> getOriginalPointPositions() {
+        return originalPointPos;
     }
-    protected <T> void setRightKey(Supplier<T> shared, Function<T, Boolean> earlyExit, Consumer<T> application, BiConsumer<T, HashMap<UUID, ConstraintMirror>> biConsumer) {
-        setKey(RIGHT, getLabel(), earlyExit, shared, application, biConsumer);
+
+    @Override
+    public ArrayList<GPoint> getReferences() {
+        return references;
+    }
+
+    @Override
+    public double[] getGearTrain() {
+        return gearTrain;
+    }
+
+    @Override
+    public int getGearIndex() {
+        return currentIndex;
+    }
+
+    @Override
+    public void setGearIndex(int index) {
+        currentIndex = index;
     }
 }

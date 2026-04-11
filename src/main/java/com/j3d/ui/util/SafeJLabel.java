@@ -86,7 +86,7 @@ public class SafeJLabel {
         });
     }
 
-    public void clearHigher() {
+    public void clearLower() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -96,7 +96,7 @@ public class SafeJLabel {
         });
     }
 
-    public void clearLower() {
+    public void clearHigher() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {

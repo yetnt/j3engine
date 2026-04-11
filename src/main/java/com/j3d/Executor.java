@@ -48,9 +48,9 @@ public class Executor {
     public void run(Graphics2D graphics2D) {
         Static.renderer.layers.add(layer);
 
-         usual();
+//         usual();
 
-//        someLine();
+        someLine();
     }
 
     public Thing someLine() {

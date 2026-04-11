@@ -25,4 +25,8 @@ public class HoverJLabel {
     public void error(String text, Object... emphasize) {
         sjl.error(text, emphasize);
     }
+
+    public void clear() {
+        sjl.clearHigher();
+    }
 }

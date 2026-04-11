@@ -89,6 +89,7 @@ public interface StatefulCommand<T> {
                                 Static.mainFrame.repaint();
                                 Static.commandParser.enable();
                                 CommandsManager.clearCurrent();
+                                Static.hoverLabel.clear();
                             }
                         });
         Static.keybinds.registerJ3Key(enter);
@@ -106,6 +107,7 @@ public interface StatefulCommand<T> {
                         Static.mainFrame.repaint();
                         Static.commandParser.enable();
                         CommandsManager.clearCurrent();
+                        Static.hoverLabel.clear();
                         DefaultKeys.DEFOCUS_COMMAND_PALETTE.getKey().resetAction();
                     }
                 }
