@@ -37,6 +37,7 @@ public class J3Splash extends javax.swing.JFrame {
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\ACER\\Documents\\code\\Jaiva3dEngine\\src\\main\\resources\\art\\logo\\Adobe Express - 0001-0193.gif")); // NOI18N
+        jLabel1.setOpaque(true);
         getContentPane().add(jLabel1);
 
         pack();

@@ -9,6 +9,7 @@ import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.base.*;
+import com.j3d.ui.J3DTheme;
 import com.j3d.ui.util.SafeJLabel;
 import com.j3d.engine.interact.cmd.commands.transform.handlers.Handle;
 import com.j3d.engine.interact.cmd.commands.transform.handlers.HandleType;
@@ -16,6 +17,7 @@ import com.j3d.engine.interact.cmd.commands.transform.mouse.TransformMouseOwner;
 import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.ui.engine.EngineFrame;
+import com.j3d.utility.JLabelRichText;
 
 import javax.swing.*;
 import java.awt.*;
@@ -203,6 +205,30 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
             Y.draw(g);
             Z.draw(g);
             g.setColor(Color.WHITE);
+            String capitalizedName = getName().replaceFirst(
+                    "[a-z]"
+                    , String.valueOf(getName().charAt(0)).toUpperCase()
+            );
+            String stepsTitle = (switch (this) {
+                case RotateSelection ignored -> "Angle";
+                case ScaleSelection ignored -> "Scale";
+                case TranslateSelection ignored -> "Distance";
+                default -> throw new IllegalStateException("Unexpected value: " + this);
+            });
+            label.setText(
+                    SafeJLabel.EMPH + " " + SafeJLabel.EMPH + " using arrow keys and handles. | "
+                            + SafeJLabel.EMPH + SafeJLabel.EMPH + " (Click "+SafeJLabel.EMPH+" to change)",
+                    capitalizedName,
+                    new JLabelRichText(faceMode ? "faces" : "points")
+                            .font(J3DTheme.TEXT_SECONDARY.color().darker(), "6"),
+                    stepsTitle + ": ",
+                    new JLabelRichText(Double.toString(getCurrentStepSize()) +
+                            (this instanceof ScaleSelection s ? "/" + Double.toString(s.getInverseStepSize()) : "") +
+                            (this instanceof RotateSelection ? '°' : " units")
+                    )
+                            .font(J3DTheme.TEXT_SECONDARY.color().brighter(), "6"),
+                    "[R]"
+            );
         };
 
         overlapId = UUID.randomUUID();

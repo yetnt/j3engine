@@ -35,7 +35,7 @@ public class TransformMouseOwner extends MouseOwner {
     /** The type of the currently selected handle, or null if no handle is selected. */
     public HandleType selectedHandleType;
     /** The screen-space bounding box (as a radius) for detecting clicks on a handle. */
-    public Pair<Integer, Integer> selectionBoundingBox = new Pair<>(20, 20);
+    public Pair<Integer, Integer> selectionBoundingBox = new Pair<>(80, 80);
     /** A generic distance variable, often used by subclasses to track drag distance. */
     public int distance = 0;
     /** A direct reference to the currently selected handle object, or null. */

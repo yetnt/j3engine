@@ -56,6 +56,7 @@ public class CameraPropertiesSettings implements SettingsParent {
             0.01
     ).onSetValue((Double d) -> {
         Static.camera.setProjectionPlane(new Vector3(0, 0, d));
+        Static.mainPanel.repaint();
         return null;
     });
 
