@@ -2,6 +2,7 @@ package com.j3d.storage.files;
 
 import com.j3d.Static;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
+import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.Thing;
@@ -21,7 +22,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -119,51 +123,51 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                     }
                 });
 
-                ArrayList<Pair<Thing, GPoint>> points = new ArrayList<>();
-                ArrayList<Pair<Thing, GLine>> lines = new ArrayList<>();
-                ArrayList<Pair<Thing, GTri>> tris = new ArrayList<>();
+                ArrayList<Pair<UUID, GPoint>> points = new ArrayList<>();
+                ArrayList<Pair<UUID, GLine>> lines = new ArrayList<>();
+                ArrayList<Pair<UUID, GTri>> tris = new ArrayList<>();
 
                 layers.stream()
                         .flatMap(Layer::stream).forEach(thing -> {
                             thing.getObjects().forEach(obj -> {
                                 if (obj instanceof GPoint gp) {
-                                    points.add(new Pair<>(thing, gp));
+                                    points.add(new Pair<>(thing.getId(), gp));
                                 } else if (obj instanceof GLine gl) {
-                                    lines.add(new Pair<>(thing, gl));
+                                    lines.add(new Pair<>(thing.getId(), gl));
                                 } else if (obj instanceof GTri gt) {
-                                    tris.add(new Pair<>(thing, gt));
+                                    tris.add(new Pair<>(thing.getId(), gt));
                                 }
                             });
                         });
 
                 // Write points
                 dos.writeInt(points.size()); // Write number of points
-                for (Pair<Thing, GPoint> pair : points) {
+                for (Pair<UUID, GPoint> pair : points) {
                     GPoint gp = pair.second;
-                    Thing parent = pair.first;
+                    UUID parent = pair.first;
                     dos.writeUTF(gp.getId().toString()); // Write Point UUID
-                    dos.writeUTF(parent.getId().toString()); // Write Parent Thing UUID
+                    dos.writeUTF(parent.toString()); // Write Parent Thing UUID
                     dos.writeDouble(gp.getPivot().getX()); // Write X Coordinate
                     dos.writeDouble(gp.getPivot().getY()); // Write Y Coordinate
                     dos.writeDouble(gp.getPivot().getZ()); // Write Z Coordinate
                 }
                 // Write lines
                 dos.writeInt(lines.size());
-                for (Pair<Thing, GLine> pair : lines) {
+                for (Pair<UUID, GLine> pair : lines) {
                     GLine gl = pair.second;
-                    Thing parent = pair.first;
+                    UUID parent = pair.first;
                     dos.writeUTF(gl.getId().toString());
-                    dos.writeUTF(parent.getId().toString());
+                    dos.writeUTF(parent.toString());
                     dos.writeUTF(gl.getStart().getId().toString());
                     dos.writeUTF(gl.getEnd().getId().toString());
                 }
                 // Write triangles
                 dos.writeInt(tris.size());
-                for (Pair<Thing, GTri> pair : tris) {
+                for (Pair<UUID, GTri> pair : tris) {
                     GTri gt = pair.second;
-                    Thing parent = pair.first;
+                    UUID parent = pair.first;
                     dos.writeUTF(gt.getId().toString());
-                    dos.writeUTF(parent.getId().toString());
+                    dos.writeUTF(parent.toString());
                     // write colour
                     dos.writeInt(gt.getColour().getRed());
                     dos.writeInt(gt.getColour().getGreen());
@@ -348,6 +352,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                         msg("\t\tName: " + thingName);
                         boolean thingHidden = dis.readBoolean();
                         msg("\t\tHidden: " + thingHidden);
+                        // todo unparented stuff's thing jsut dont get added when loading the what file.
                         Thing thing = Thing.fromRaw(thingName, thingUUID, thingHidden, l, Static.renderer)
                                 .addObjs(
                                         pointsParentsMap.getValues(thingUUID).toArray(new GPoint[0])

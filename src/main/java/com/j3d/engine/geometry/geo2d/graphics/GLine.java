@@ -125,7 +125,9 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
         toConstraintObject();
 
         A.attach(this);
+        A.addParent(this);
         B.attach(this);
+        B.addParent(this);
         Static.renderer.hasNoParent(this);
     }
 
