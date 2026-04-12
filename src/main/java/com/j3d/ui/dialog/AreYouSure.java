@@ -4,6 +4,7 @@
  */
 package com.j3d.ui.dialog;
 
+import com.j3d.Static;
 import com.j3d.ui.J3DTheme;
 
 import java.awt.*;
@@ -53,6 +54,7 @@ public class AreYouSure extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Are you for real rn");
         setAlwaysOnTop(true);
+        setIconImage(Static.logo());
         setModal(true);
         setType(java.awt.Window.Type.POPUP);
 

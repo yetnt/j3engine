@@ -4,6 +4,7 @@
  */
 package com.j3d.ui.home;
 
+import com.j3d.Static;
 import com.j3d.settings.CoreSettings;
 import com.j3d.storage.db.users.User;
 import com.j3d.storage.db.users.UsersTable;
@@ -11,9 +12,6 @@ import com.j3d.ui.CursorManager;
 import com.j3d.ui.CursorNames;
 import com.j3d.utility.PasswordHasher;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
@@ -58,6 +56,7 @@ public class Login extends javax.swing.JFrame {
         signupJButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setIconImage(Static.logo());
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N

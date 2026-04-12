@@ -44,7 +44,6 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -314,6 +313,7 @@ public class EngineFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("J3D");
+        setIconImage(Static.logo());
         setMinimumSize(new java.awt.Dimension(1024, 768));
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);

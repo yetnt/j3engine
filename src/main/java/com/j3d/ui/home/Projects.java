@@ -4,6 +4,7 @@
  */
 package com.j3d.ui.home;
 
+import com.j3d.Static;
 import com.j3d.ui.J3DTheme;
 import java.awt.Image;
 
@@ -33,6 +34,7 @@ public class Projects extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(Static.logo());
 
         jPanel1.setBackground(J3DTheme.ACCENT_SECONDARY.color());
 

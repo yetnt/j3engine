@@ -4,6 +4,7 @@
  */
 package com.j3d.ui.dialog;
 
+import com.j3d.Static;
 import com.j3d.ui.J3DTheme;
 import javax.swing.SwingUtilities;
 
@@ -61,6 +62,7 @@ public class Throbber extends javax.swing.JDialog {
         setTitle("loading.......");
         setBackground(J3DTheme.UI_SURFACE.color());
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setIconImage(Static.logo());
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
         jPanel1.setBackground(J3DTheme.UI_SURFACE.color());

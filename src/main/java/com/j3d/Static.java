@@ -15,6 +15,9 @@ import com.j3d.ui.engine.tree.LayerTree;
 import com.j3d.ui.util.HoverJLabel;
 
 import javax.swing.*;
+import java.awt.*;
+import java.net.URL;
+import java.util.Objects;
 
 /**
  * Static is a class which holds static references to important instances in the engine, such as the Renderer, Executor, Main Frame, Camera, etc.
@@ -73,4 +76,15 @@ public class Static {
     public static Settings settings = new Settings();
     public static CommandsManager commandManager = new CommandsManager();
     public static HoverJLabel hoverLabel;
+
+    /** Returns an ImageIcon, or null if the path was invalid. */
+    public static Image logo() {
+        URL imgURL = Static.class.getResource("/art/logo/J3Dicon.png");
+        if (imgURL != null) {
+            return new ImageIcon(imgURL).getImage();
+        } else {
+            System.err.println("Couldn't find file.");
+            return null;
+        }
+    }
 }

@@ -4,6 +4,7 @@
  */
 package com.j3d.ui.home;
 
+import com.j3d.Static;
 import com.j3d.settings.CoreSettings;
 import com.j3d.storage.db.users.Password;
 import com.j3d.storage.db.users.User;
@@ -139,6 +140,7 @@ public class Signup extends javax.swing.JFrame {
         repeatPasswordErrorJLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setIconImage(Static.logo());
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
