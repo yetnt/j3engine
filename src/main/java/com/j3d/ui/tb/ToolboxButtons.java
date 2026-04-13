@@ -45,7 +45,7 @@ public class ToolboxButtons {
         }));
         register("Toggle Debug", e -> {
             // Toggle debug mode
-            Static.debugPanel.setVisible(!Static.debugPanel.isVisible());
+            Static.debugPanel.toggleHidden();
         });
         // Example button registration
         FloatingPanel fpl = new FloatingPanel(

@@ -29,7 +29,7 @@ public class DebugPanel extends javax.swing.JPanel {
     public Executor executor = null;
     public Renderer renderer = null;
     public Frame frame = null;
-
+    public FloatingPanel floatingPanel = new FloatingPanel("Debug Panel");
 
     /**
      * Creates new form NewJPanel
@@ -42,7 +42,11 @@ public class DebugPanel extends javax.swing.JPanel {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        floatingPanel.finish(this, (c) -> {});
+    }
 
+    public void toggleHidden() {
+        floatingPanel.toggleHidden();
     }
 
     /**
@@ -88,8 +92,12 @@ public class DebugPanel extends javax.swing.JPanel {
 
         setBackground(J3DTheme.UI_SURFACE.color());
         setForeground(new java.awt.Color(51, 204, 0));
+        setMaximumSize(new java.awt.Dimension(301, 261));
+        setMinimumSize(new java.awt.Dimension(301, 261));
 
         jScrollPane2.setBackground(J3DTheme.UI_SURFACE.color());
+        jScrollPane2.setMaximumSize(new java.awt.Dimension(279, 698));
+        jScrollPane2.setMinimumSize(new java.awt.Dimension(279, 16));
 
         jPanel1.setBackground(J3DTheme.UI_SURFACE.color());
 

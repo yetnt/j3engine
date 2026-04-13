@@ -20,32 +20,38 @@ public class FloatingPanel extends javax.swing.JPanel {
 
     private JFrame frame = null;
     private String name;
-    private boolean isPopped = false;
-    private boolean isHidden = false;
+    private boolean isDocked = false;
+    private boolean isHidden = true;
     private boolean moving = false;
     private MouseMotionListener msl;
     private Point lastLocation = new Point(120, 240);
 
-    /**
-     * Creates new form FloatingPanel
-     */
-    public FloatingPanel(String name, Component c, Consumer<Component> consumer) {
+    public FloatingPanel(String name) {
         this.name = name;
         initComponents();
+    }
+
+    public void addComponentToPanel(Component c) {
+        propertiesPanel.setLayout(new BorderLayout());
+        propertiesPanel.add(c, BorderLayout.CENTER);
+        this.setBounds(0, 0, c.getPreferredSize().width, c.getPreferredSize().height);
+        propertiesPanel.setBounds(0, 0, c.getPreferredSize().width, c.getPreferredSize().height);
         c.setBounds(0, 0, c.getPreferredSize().width, c.getPreferredSize().height);
+        c.setVisible(true);
+        this.revalidate();
+        this.repaint();
+    }
+
+    public void finish(Component c, Consumer<Component> consumer) {
         consumer.accept(c);
         addComponentToPanel(c);
-        this.revalidate();
-        EngineFrame.addFloater(this);
-        this.setVisible(true);
+//        c.revalidate();
+//        c.repaint();
         JPanel panel = this;
         msl = new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                Point newP = new Point(e.getX() - panel.getSize().width + 5, e.getY() - 35);
-                panel.setLocation(newP);
-                Static.mainFrame.repaint();
-                lastLocation = newP;
+                // not required.
             }
 
             @Override
@@ -56,18 +62,28 @@ public class FloatingPanel extends javax.swing.JPanel {
                 lastLocation = newP;
             }
         };
+        EngineFrame.addFloaterAt(this, lastLocation);
     }
 
-    public JFrame popOut() {
-        if (frame == null && !isPopped) {
-            isPopped = true;
+    /**
+     * Creates new form FloatingPanel
+     */
+    public FloatingPanel(String name, Component c, Consumer<Component> consumer) {
+        this.name = name;
+        initComponents();
+        finish(c, consumer);
+    }
+
+    public JFrame dock() {
+        if (frame == null && !isDocked) {
+            isDocked = true;
             isHidden = false;
             frame = new JFrame(name);
             frame.setMinimumSize(this.getMinimumSize());
             frame.setMaximumSize(this.getMaximumSize());
             frame.setPreferredSize(this.getPreferredSize());
             frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-            stickButton.setVisible(false);
+            attachButton.setVisible(false);
             EngineFrame.removeFloater(this);
             Static.mainFrame.revalidate();
             frame.add(this);
@@ -79,13 +95,13 @@ public class FloatingPanel extends javax.swing.JPanel {
         return frame;
     }
 
-    public void popIn() {
-        if (frame != null && isPopped) {
-            isPopped = false;
+    public void returnToFrame() {
+        if (frame != null && isDocked) {
+            isDocked = false;
             frame.setVisible(false);
             frame.dispose();
             frame = null;
-            stickButton.setVisible(true);
+            attachButton.setVisible(true);
             EngineFrame.addFloaterAt(this, lastLocation);
             EngineFrame.bringForward(this);
             this.setVisible(true);
@@ -97,18 +113,18 @@ public class FloatingPanel extends javax.swing.JPanel {
         return isHidden;
     }
 
-    public boolean isPopped() {
-        return isPopped;
+    public boolean isDocked() {
+        return isDocked;
     }
 
     public void showThis() {
-        if (isPopped)frame.setVisible(true);
+        if (isDocked)frame.setVisible(true);
         else this.setVisible(true);
         isHidden = false;
     }
 
     public void hideThis() {
-        if (isPopped) frame.setVisible(false);
+        if (isDocked) frame.setVisible(false);
         else {
             if (moving) {
                 Static.hoverLabel.error("  Finish moving the panel first.");
@@ -119,8 +135,9 @@ public class FloatingPanel extends javax.swing.JPanel {
         isHidden = true;
     }
 
-    public void addComponentToPanel(Component c) {
-        propertiesPanel.add(c);
+    public void toggleHidden() {
+        if (isHidden) showThis();
+        else hideThis();
     }
 
     /**
@@ -133,9 +150,9 @@ public class FloatingPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         btnsPanel = new javax.swing.JPanel();
-        popButton = new javax.swing.JButton();
+        dockButton = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
-        stickButton = new javax.swing.JButton();
+        attachButton = new javax.swing.JButton();
         propertiesPanel = new javax.swing.JPanel();
 
         setMaximumSize(new java.awt.Dimension(862, 580));
@@ -144,22 +161,22 @@ public class FloatingPanel extends javax.swing.JPanel {
         btnsPanel.setMaximumSize(new java.awt.Dimension(350, 23));
         btnsPanel.setLayout(new javax.swing.BoxLayout(btnsPanel, javax.swing.BoxLayout.LINE_AXIS));
 
-        popButton.setText("pop");
-        popButton.addActionListener(new java.awt.event.ActionListener() {
+        dockButton.setText("dock");
+        dockButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                popButtonActionPerformed(evt);
+                dockButtonActionPerformed(evt);
             }
         });
-        btnsPanel.add(popButton);
+        btnsPanel.add(dockButton);
         btnsPanel.add(jSeparator1);
 
-        stickButton.setText("stick");
-        stickButton.addActionListener(new java.awt.event.ActionListener() {
+        attachButton.setText("attach");
+        attachButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stickButtonActionPerformed(evt);
+                attachButtonActionPerformed(evt);
             }
         });
-        btnsPanel.add(stickButton);
+        btnsPanel.add(attachButton);
 
         add(btnsPanel, java.awt.BorderLayout.PAGE_START);
 
@@ -177,32 +194,33 @@ public class FloatingPanel extends javax.swing.JPanel {
         add(propertiesPanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void stickButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stickButtonActionPerformed
-        if (!isPopped) {
-            if (moving) {
+    private void attachButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attachButtonActionPerformed
+        if (!isDocked) {
+            if (!moving) {
+                Static.mainFrame.addMouseMotionListener(msl);
+                moving = true;
+                attachButton.setText("(detach)");
+            } else {
                 Static.mainFrame.removeMouseMotionListener(msl);
                 moving = false;
                 this.setLocation(lastLocation);
-            }
-            else {
-                Static.mainFrame.addMouseMotionListener(msl);
-                moving = true;
+                attachButton.setText("attach");
             }
         }
         Static.hoverLabel.clear();
-    }//GEN-LAST:event_stickButtonActionPerformed
+    }//GEN-LAST:event_attachButtonActionPerformed
 
-    private void popButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popButtonActionPerformed
-        if (isPopped) popIn();
-        else popOut();
-    }//GEN-LAST:event_popButtonActionPerformed
+    private void dockButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dockButtonActionPerformed
+        if (isDocked) returnToFrame();
+        else dock();
+    }//GEN-LAST:event_dockButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton attachButton;
     private javax.swing.JPanel btnsPanel;
+    private javax.swing.JButton dockButton;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JButton popButton;
     private javax.swing.JPanel propertiesPanel;
-    private javax.swing.JButton stickButton;
     // End of variables declaration//GEN-END:variables
 }

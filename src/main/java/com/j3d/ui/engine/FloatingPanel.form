@@ -35,22 +35,22 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JButton" name="popButton">
+        <Component class="javax.swing.JButton" name="dockButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="pop"/>
+            <Property name="text" type="java.lang.String" value="dock"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="popButtonActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dockButtonActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JSeparator" name="jSeparator1">
         </Component>
-        <Component class="javax.swing.JButton" name="stickButton">
+        <Component class="javax.swing.JButton" name="attachButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="stick"/>
+            <Property name="text" type="java.lang.String" value="attach"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stickButtonActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="attachButtonActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

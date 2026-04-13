@@ -43,6 +43,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.BiConsumer;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 
@@ -71,18 +72,18 @@ public class EngineFrame extends javax.swing.JFrame {
         return mouseOwner;
     }
 
-    public static void addFloater(FloatingPanel p) {
-        // random value between 41 and 5
-        int x = ThreadLocalRandom.current().nextInt(10, Static.renderer.screenSize.width - 200);
-        addFloaterAt(p, new Point(x, 200));
-    }
+    public static ArrayList<Runnable> floats = new ArrayList<>();
 
     public static void addFloaterAt(FloatingPanel p, Point lastLocation) {
-        p.setBounds(lastLocation.x, lastLocation.y, p.getPreferredSize().width, p.getPreferredSize().height);
-        p.setVisible(true);
-        Static.mainFrame.getLayeredPane().add(p, JLayeredPane.POPUP_LAYER);
-        Static.mainFrame.revalidate();
-        Static.mainFrame.repaint();
+        Runnable r = () -> {
+            if (p.isHidden()) p.hideThis();
+            p.setBounds(lastLocation.x, lastLocation.y, p.getPreferredSize().width, p.getPreferredSize().height);
+            Static.mainFrame.getLayeredPane().add(p, JLayeredPane.POPUP_LAYER);
+            Static.mainFrame.revalidate();
+            Static.mainFrame.repaint();
+        };
+        if (run) floats.add(r);
+        else r.run();
     }
 
     public static void bringForward(FloatingPanel p) {
@@ -131,21 +132,16 @@ public class EngineFrame extends javax.swing.JFrame {
         Static.mainPanel.setBounds(0, menuBarOffsetY, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
         Static.mainPanel.setPreferredSize(new Dimension(J3DSettings.screenSize.width, J3DSettings.screenSize.height));
 
-        Static.layerTree.setBounds(
-                J3DSettings.screenSize.width - 260 -(Static.layerTree.getPreferredSize().width),
-                toolbox.getPreferredSize().height + menuBarOffsetY,
-                Static.layerTree.getPreferredSize().width,
-                Static.layerTree.getPreferredSize().height);
-        layeredPane.add(Static.layerTree, JLayeredPane.POPUP_LAYER);
-        Static.layerTree.setVisible(false);
+//        Static.layerTree.setBounds(
+//                J3DSettings.screenSize.width - 260 -(Static.layerTree.getPreferredSize().width),
+//                toolbox.getPreferredSize().height + menuBarOffsetY,
+//                Static.layerTree.getPreferredSize().width,
+//                Static.layerTree.getPreferredSize().height);
+//        layeredPane.add(Static.layerTree, JLayeredPane.POPUP_LAYER);
+//        Static.layerTree.setVisible(false);
 
-        Static.debugPanel.setBounds(20, toolbox.getPreferredSize().height + menuBarOffsetY, Static.debugPanel.getPreferredSize().width, Static.debugPanel.getPreferredSize().height); // small corner overlay
-        Static.debugPanel.setOpaque(true);
-        Static.debugPanel.setBackground(Color.WHITE);
-        Static.debugPanel.setVisible(false);
         Static.log = new Logger(Static.debugPanel.logTextArea); // initialize logger with the text area
-        layeredPane.add(Static.debugPanel, JLayeredPane.PALETTE_LAYER);
-        
+
         Rectangle bounds = Static.mainFrame.getBounds();
         Dimension size = commandPallete.getPreferredSize();
         int x = ((bounds.width - size.width) / 2) - 60;
@@ -162,10 +158,6 @@ public class EngineFrame extends javax.swing.JFrame {
         Static.mainPanel.getRootPane().setFocusable(true);
         Static.mainPanel.getRootPane().requestFocusInWindow();
 
-//        frame.add(new EngineFrame());
-//        f.setVisible(true);
-
-
         Static.mainFrame.addComponentListener(new ComponentListener() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -173,13 +165,12 @@ public class EngineFrame extends javax.swing.JFrame {
                 Static.renderer.screenSize = J3DSettings.screenSize;
                 toolbox.setBounds(0, menuBarOffsetY, J3DSettings.screenSize.width - 10, toolbox.getPreferredSize().height);
                 Static.mainPanel.setBounds(0, menuBarOffsetY, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
-                Static.debugPanel.setBounds(20, toolbox.getPreferredSize().height + menuBarOffsetY, Static.debugPanel.getPreferredSize().width, Static.debugPanel.getPreferredSize().height); // small corner overlay
 
-                Static.layerTree.setBounds(
-                        J3DSettings.screenSize.width - 260 -(Static.layerTree.getPreferredSize().width),
-                        toolbox.getPreferredSize().height + menuBarOffsetY,
-                        Static.layerTree.getPreferredSize().width,
-                        Static.layerTree.getPreferredSize().height);
+//                Static.layerTree.setBounds(
+//                        J3DSettings.screenSize.width - 260 -(Static.layerTree.getPreferredSize().width),
+//                        toolbox.getPreferredSize().height + menuBarOffsetY,
+//                        Static.layerTree.getPreferredSize().width,
+//                        Static.layerTree.getPreferredSize().height);
 
                 Rectangle bounds = Static.mainFrame.getBounds();
                 Dimension size = commandPallete.getPreferredSize();
@@ -207,6 +198,8 @@ public class EngineFrame extends javax.swing.JFrame {
         CursorManager.init(Static.mainFrame);
         CursorManager.setDefault();
 
+        floats.forEach(Runnable::run);
+
         this.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
@@ -232,6 +225,12 @@ public class EngineFrame extends javax.swing.JFrame {
      * Creates new form Main2
      */
     public EngineFrame() {
+        try {
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            SwingUtilities.updateComponentTreeUI(this); // 'this' refers to the frame
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         ArrayList<MouseOwner> owners = new ArrayList<>();
         owners.add(SelectionManager.selectionMouseOwner);
         owners.add(new NoMouseOwner());
