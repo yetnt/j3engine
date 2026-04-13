@@ -2,6 +2,8 @@ package com.j3d.ui.tb;
 
 import com.j3d.Static;
 import com.j3d.engine.DebugDump;
+import com.j3d.engine.interact.cmd.CommandParser;
+import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
@@ -146,6 +148,14 @@ public class ToolboxButtons {
             if (fp.isHidden()) fp.showThis();
             else fp.hideThis();
         });
+
+        register("Orbit", e -> {
+            Static.commandParser.runCommand(
+                    CommandsManager.getCommand("orbit"),
+                    "orbit",
+                    new ArrayList<>(),
+                    new ArrayList<>());
+        }, "orbit.png");
     }
 
     public static void register(String label, ActionListener actionListener, String imageFileName) {

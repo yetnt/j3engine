@@ -235,6 +235,9 @@ public class Thing implements Interactable {
      * @param gObjects The GObjects to add.
      */
     public Thing addObjs(GObject ...gObjects) {
+        if (gObjects.length == 0) {
+            System.out.println("bug biyvh");
+        }
         Collections.addAll(objects, gObjects);
         ArrayList<Vector3> pts = new ArrayList<>();
         for (GObject ob : gObjects) {

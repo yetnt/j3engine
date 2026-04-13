@@ -129,4 +129,8 @@ public class CommandsManager {
     public static boolean commandIsRunning() {
         return currentStatefulCommand != null;
     }
+
+    public static String getCurrentCommandName() {
+        return ((Command)currentStatefulCommand).aliases.getFirst();
+    }
 }

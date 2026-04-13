@@ -358,9 +358,11 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                                         pointsParentsMap.getValues(thingUUID).toArray(new GPoint[0])
                                 )
                                 .addObjs(
+                                        linesParentsMap.isEmpty() ? new GLine[0] :
                                         linesParentsMap.getValues(thingUUID).toArray(new GLine[0])
                                 )
                                 .addObjs(
+                                        trisParentsMap.isEmpty() ? new GTri[0] :
                                         trisParentsMap.getValues(thingUUID).toArray(new GTri[0])
                                 );
                         interactables.add(thing);

@@ -8,6 +8,8 @@ import com.j3d.Static;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.util.function.Consumer;
 
 /**
@@ -20,6 +22,9 @@ public class FloatingPanel extends javax.swing.JPanel {
     private String name;
     private boolean isPopped = false;
     private boolean isHidden = false;
+    private boolean moving = false;
+    private MouseMotionListener msl;
+    private Point lastLocation = new Point(120, 240);
 
     /**
      * Creates new form FloatingPanel
@@ -33,6 +38,24 @@ public class FloatingPanel extends javax.swing.JPanel {
         this.revalidate();
         EngineFrame.addFloater(this);
         this.setVisible(true);
+        JPanel panel = this;
+        msl = new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                Point newP = new Point(e.getX() - panel.getSize().width + 5, e.getY() - 35);
+                panel.setLocation(newP);
+                Static.mainFrame.repaint();
+                lastLocation = newP;
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                Point newP = new Point(e.getX() - panel.getSize().width + 5, e.getY() - 35);
+                panel.setLocation(newP);
+                Static.mainFrame.repaint();
+                lastLocation = newP;
+            }
+        };
     }
 
     public JFrame popOut() {
@@ -44,7 +67,7 @@ public class FloatingPanel extends javax.swing.JPanel {
             frame.setMaximumSize(this.getMaximumSize());
             frame.setPreferredSize(this.getPreferredSize());
             frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-//            frame.setUndecorated(true);
+            stickButton.setVisible(false);
             EngineFrame.removeFloater(this);
             Static.mainFrame.revalidate();
             frame.add(this);
@@ -62,7 +85,8 @@ public class FloatingPanel extends javax.swing.JPanel {
             frame.setVisible(false);
             frame.dispose();
             frame = null;
-            EngineFrame.addFloater(this);
+            stickButton.setVisible(true);
+            EngineFrame.addFloaterAt(this, lastLocation);
             EngineFrame.bringForward(this);
             this.setVisible(true);
             Static.mainFrame.revalidate();
@@ -85,7 +109,13 @@ public class FloatingPanel extends javax.swing.JPanel {
 
     public void hideThis() {
         if (isPopped) frame.setVisible(false);
-        else this.setVisible(false);
+        else {
+            if (moving) {
+                Static.hoverLabel.error("  Finish moving the panel first.");
+                return;
+            }
+            this.setVisible(false);
+        }
         isHidden = true;
     }
 
@@ -105,7 +135,7 @@ public class FloatingPanel extends javax.swing.JPanel {
         btnsPanel = new javax.swing.JPanel();
         popButton = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
-        closeButton = new javax.swing.JButton();
+        stickButton = new javax.swing.JButton();
         propertiesPanel = new javax.swing.JPanel();
 
         setMaximumSize(new java.awt.Dimension(862, 580));
@@ -123,13 +153,13 @@ public class FloatingPanel extends javax.swing.JPanel {
         btnsPanel.add(popButton);
         btnsPanel.add(jSeparator1);
 
-        closeButton.setText("close");
-        closeButton.addActionListener(new java.awt.event.ActionListener() {
+        stickButton.setText("stick");
+        stickButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                closeButtonActionPerformed(evt);
+                stickButtonActionPerformed(evt);
             }
         });
-        btnsPanel.add(closeButton);
+        btnsPanel.add(stickButton);
 
         add(btnsPanel, java.awt.BorderLayout.PAGE_START);
 
@@ -147,14 +177,20 @@ public class FloatingPanel extends javax.swing.JPanel {
         add(propertiesPanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
-        if (isPopped) {
-            frame.setVisible(false);
-        } else {
-            this.setVisible(false);
+    private void stickButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stickButtonActionPerformed
+        if (!isPopped) {
+            if (moving) {
+                Static.mainFrame.removeMouseMotionListener(msl);
+                moving = false;
+                this.setLocation(lastLocation);
+            }
+            else {
+                Static.mainFrame.addMouseMotionListener(msl);
+                moving = true;
+            }
         }
-        isHidden = true;
-    }//GEN-LAST:event_closeButtonActionPerformed
+        Static.hoverLabel.clear();
+    }//GEN-LAST:event_stickButtonActionPerformed
 
     private void popButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popButtonActionPerformed
         if (isPopped) popIn();
@@ -164,9 +200,9 @@ public class FloatingPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel btnsPanel;
-    private javax.swing.JButton closeButton;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton popButton;
     private javax.swing.JPanel propertiesPanel;
+    private javax.swing.JButton stickButton;
     // End of variables declaration//GEN-END:variables
 }

@@ -45,12 +45,12 @@
         </Component>
         <Component class="javax.swing.JSeparator" name="jSeparator1">
         </Component>
-        <Component class="javax.swing.JButton" name="closeButton">
+        <Component class="javax.swing.JButton" name="stickButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="close"/>
+            <Property name="text" type="java.lang.String" value="stick"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="closeButtonActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stickButtonActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

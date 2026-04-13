@@ -400,23 +400,28 @@ public class CommandParser {
                 label.error("Command not found: " + SafeJLabel.EMPH, cmdName);
                 return;
             }
-            if (CommandsManager.commandIsRunning()) {
-                label.error("Command is currently running: " + SafeJLabel.EMPH, cmdName);
-                Static.mainFrame.requestFocusInWindow();
-                return;
-            }
-            if (cmd instanceof StatefulCommand statefulCommand) {
-                CommandsManager.setAsCurrent(statefulCommand);
-            }
-            // Remove the command name from the arguments
             arguments.removeFirst();
-            cmd.run(label,cmdName, arguments.toArray(), taggedArguments);
+            if (!runCommand(cmd, cmdName, arguments, taggedArguments)) return;
             taggedArguments.clear();
         } else {
             label.error("Invalid command name.");
         }
         EngineFrame.repaintL();
 //        EngineFrame.f.repaint(); // Repaint the frame to reflect any changes.
+    }
+
+    public boolean runCommand(Command cmd, String cmdName, ArrayList<Object> arguments, ArrayList<TaggedArgValue<?>> taggedArguments) {
+        if (CommandsManager.commandIsRunning()) {
+            Static.hoverLabel.error("Command is currently running: " + SafeJLabel.EMPH, CommandsManager.getCurrentCommandName());
+            Static.mainFrame.requestFocusInWindow();
+            return false;
+        }
+        if (cmd instanceof StatefulCommand statefulCommand)
+            CommandsManager.setAsCurrent(statefulCommand);
+
+        cmd.run(label, cmdName, arguments.toArray(), taggedArguments);
+        Static.hoverLabel.clear();
+        return true;
     }
 
     /**

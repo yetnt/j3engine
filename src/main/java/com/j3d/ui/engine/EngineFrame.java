@@ -33,9 +33,7 @@ import com.j3d.ui.CursorNames;
 import com.j3d.ui.settings.SettingsFrame;
 import com.j3d.ui.tb.Toolbox;
 //import com.jaiva.JBundler;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
@@ -75,8 +73,12 @@ public class EngineFrame extends javax.swing.JFrame {
 
     public static void addFloater(FloatingPanel p) {
         // random value between 41 and 5
-        int x = ThreadLocalRandom.current().nextInt(10, Static.renderer.screenSize.width);
-        p.setBounds(x, 200, p.getPreferredSize().width, p.getPreferredSize().height);
+        int x = ThreadLocalRandom.current().nextInt(10, Static.renderer.screenSize.width - 200);
+        addFloaterAt(p, new Point(x, 200));
+    }
+
+    public static void addFloaterAt(FloatingPanel p, Point lastLocation) {
+        p.setBounds(lastLocation.x, lastLocation.y, p.getPreferredSize().width, p.getPreferredSize().height);
         p.setVisible(true);
         Static.mainFrame.getLayeredPane().add(p, JLayeredPane.POPUP_LAYER);
         Static.mainFrame.revalidate();
@@ -94,7 +96,7 @@ public class EngineFrame extends javax.swing.JFrame {
         Static.mainFrame.revalidate();
         Static.mainFrame.repaint();
     }
-    
+
     public void complete() {
         Static.mainFrame = this;
         final int menuBarOffsetY = (Static.mainFrame.getJMenuBar().getSize().height + jMenuBarOffsetY);
