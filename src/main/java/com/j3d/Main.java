@@ -34,41 +34,76 @@ public class Main extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         openEngineButton = new javax.swing.JToggleButton();
+        openEngineQuick = new javax.swing.JToggleButton();
+        openEngineLogin = new javax.swing.JToggleButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
-        jLabel1.setText("J3D");
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel1.setText("(to be removed)");
 
-        openEngineButton.setText("open engine");
+        openEngineButton.setText("open engine (splash)");
         openEngineButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openEngineButtonActionPerformed(evt);
             }
         });
 
+        openEngineQuick.setText("open engine (quickly)");
+        openEngineQuick.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openEngineQuickActionPerformed(evt);
+            }
+        });
+
+        openEngineLogin.setText("open engine (login)");
+        openEngineLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openEngineLoginActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
+        jLabel2.setText("J3D (Test StartUp)");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(152, 152, 152)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(143, 143, 143)
-                        .addComponent(openEngineButton)))
-                .addContainerGap(161, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE)
+                .addComponent(openEngineLogin)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(openEngineButton)
+                .addGap(18, 18, 18)
+                .addComponent(openEngineQuick)
+                .addGap(70, 70, 70))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(213, 213, 213)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(91, 91, 91)
+                    .addComponent(jLabel2)
+                    .addContainerGap(103, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47)
-                .addComponent(openEngineButton)
-                .addContainerGap(106, Short.MAX_VALUE))
+                .addGap(182, 182, 182)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(openEngineButton)
+                    .addComponent(openEngineQuick)
+                    .addComponent(openEngineLogin))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(46, 46, 46)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(165, Short.MAX_VALUE)))
         );
 
         pack();
@@ -94,14 +129,31 @@ public class Main extends javax.swing.JFrame {
             t.setRepeats(false);
             t.start();
         }, 9.3);
-        flt.iAmImpatient();
-//        try {
-//            flt.run();
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
+        try {
+            flt.run();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         this.dispose();
     }//GEN-LAST:event_openEngineButtonActionPerformed
+
+    private void openEngineQuickActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openEngineQuickActionPerformed
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
+                 UnsupportedLookAndFeelException e) {
+            throw new RuntimeException(e);
+        }
+        EngineFrame e = new EngineFrame();
+        e.setResizable(true);
+        e.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_openEngineQuickActionPerformed
+
+    private void openEngineLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openEngineLoginActionPerformed
+        OtherMain.run();
+        this.dispose();
+    }//GEN-LAST:event_openEngineLoginActionPerformed
 
     /**
      * @param args the command line arguments
@@ -146,6 +198,9 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JToggleButton openEngineButton;
+    private javax.swing.JToggleButton openEngineLogin;
+    private javax.swing.JToggleButton openEngineQuick;
     // End of variables declaration//GEN-END:variables
 }

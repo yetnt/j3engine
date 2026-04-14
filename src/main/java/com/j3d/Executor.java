@@ -14,6 +14,7 @@ import com.j3d.engine.geometry.geo2d.*;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.react.actions.Action;
+import com.j3d.utility.Pair;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,12 +49,26 @@ public class Executor {
     public void run(Graphics2D graphics2D) {
         Static.renderer.layers.add(layer);
 
-//         usual();
+        Thing cub = cube();
+        Static.camera.lookAt(cub.getCentroid());
+        Thing tris = threeTris();
 
-        someLine();
+        Pair<Thing, MidpointConstraint> line = someLine();
+        ArrayList<Action<?>> actions = new ArrayList<>(List.of(
+                cub.rotate(new Vector3(0, 0, 1), 45),
+                cub.translate(new Vector3(4, 2, 3)),
+                cub.scale(0.4),
+                tris.translate(new Vector3(14, 0, 0)),
+                cub.rotate(new Vector3(2, 3, 1), 2),
+                line.first.translate(new Vector3(80, -10, 0))
+        ));
+        actions.forEach(Action::run);
+        actions.forEach(Renderer.history::add);
+        line.second.applyConstraint();
+
     }
 
-    public Thing someLine() {
+    public Pair<Thing, MidpointConstraint> someLine() {
         GPoint A = new GPoint(new Vector3(10, 0, 0));
         GPoint B = new GPoint(new Vector3(30, 0, 0));
         GPoint C = new GPoint(new Vector3(-10, 10, 0));
@@ -69,24 +84,8 @@ public class Executor {
         );
         mdpc.applyConstraint();
 
-        return new Thing(Static.renderer, layer, "constrainted")
-                .addObjs(A, B, C, D, line, line2);
-    }
-
-
-    public void usual() {
-        Thing cub = cube();
-        Static.camera.lookAt(cub.getCentroid());
-        Thing tris = threeTris();
-        ArrayList<Action<?>> actions = new ArrayList<>(List.of(
-                cub.rotate(new Vector3(0, 0, 1), 45),
-                cub.translate(new Vector3(4, 2, 3)),
-                cub.scale(0.4),
-                tris.translate(new Vector3(14, 0, 0)),
-                cub.rotate(new Vector3(2, 3, 1), 2)
-        ));
-        actions.forEach(Action::run);
-        actions.forEach(Renderer.history::add);
+        return new Pair<>(new Thing(Static.renderer, layer, "constrainted")
+                .addObjs(A, B, C, D, line, line2), mdpc);
     }
 
     public void updatekeystrokeexample() {

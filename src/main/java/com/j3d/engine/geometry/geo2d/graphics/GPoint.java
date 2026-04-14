@@ -103,7 +103,10 @@ public class GPoint extends GObject implements HasParents<GLine> {
      */
     @Override
     public void drawSelected(Graphics2D graphics2D) {
-        if (J3DSettings.getViewType() != ViewType.WIREFRAME && hasParent()) return;
+        if (J3DSettings.getViewType() != ViewType.WIREFRAME)
+            if (hasParent() && getParents().stream().findAny().get().hasParent()) {
+                return;
+            }
         graphics2D.setColor(Color.WHITE);
         ScreenPoint p = this.getPivot().toPoint(Static.camera).toScreen(Static.renderer);
         graphics2D.fillOval(p.x - (DIAMETER+1) / 2, p.y - (DIAMETER+1) / 2, (DIAMETER+1), (DIAMETER+1));

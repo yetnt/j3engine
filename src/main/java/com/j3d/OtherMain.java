@@ -28,6 +28,10 @@ public class OtherMain {
         }
 
         // Just set the user
+        run();
+    }
+
+    public static void run() {
 
         Login login = new Login(runnable);
         login.setVisible(true);
