@@ -3,11 +3,11 @@ package com.j3d.engine.interact.cmd.commands.orbit;
 import com.j3d.Static;
 import com.j3d.engine.geometry.geo3d.rot.Rotation;
 import com.j3d.engine.interact.cmd.CommandsManager;
+import com.j3d.engine.layer.Layer;
 import com.j3d.ui.util.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.base.TaggedArgValue;
-import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.settings.Settings;
 import com.j3d.ui.CursorManager;
 import com.j3d.ui.CursorNames;
@@ -21,7 +21,7 @@ import java.util.UUID;
 
 public class OrbitCmd extends Command implements StatefulCommand<Rotation> {
     public static OrbitMouseOwner orbitMouseOwner = new OrbitMouseOwner();
-    public UUID overlapId = UUID.randomUUID();
+    public UUID orbitCmdUUID = UUID.randomUUID();
 
     public OrbitCmd() {
         super("orbit", "Orbits the camera around someting");
@@ -40,7 +40,7 @@ public class OrbitCmd extends Command implements StatefulCommand<Rotation> {
         orbitMouseOwner.requestOwnership();
         CursorManager.set(CursorNames.HAND_GRAB);
         Static.mainPanel.repaint();
-        Static.renderer.scheduleOverlap(overlapId, c -> label.setText(
+        Static.renderer.scheduleOverlap(orbitCmdUUID, c -> label.setText(
                 "Use the mouse to orbit the camera around. | "+SafeJLabel.EMPH+": "
                         + SafeJLabel.EMPH + SafeJLabel.EMPH,
                 "Sensitivity",
@@ -48,24 +48,36 @@ public class OrbitCmd extends Command implements StatefulCommand<Rotation> {
                         .font(J3DTheme.TEXT_SECONDARY.color().brighter(), "8"),
                 " units per mouse drag"
         ));
+        // todo: null pointer exception fix
+        Static.renderer.layers.stream()
+                .flatMap(Layer::stream)
+                .filter(t -> t.getIdentity() != null)
+                .forEach(t -> t.getIdentity().add(orbitCmdUUID, (t2, d) -> {
+                    Static.camera.lookAt(t2.getCentroid());
+                }));
+    }
+
+    public void cleanup(SafeJLabel label) {
+        EngineFrame.setMouseOwner(null);
+        CursorManager.setDefault();
+        Static.renderer.removeOverlap(orbitCmdUUID);
+        label.clear();
+        CommandsManager.clearCurrent();
+        Static.renderer.layers.stream()
+                .flatMap(Layer::stream)
+                .forEach(t -> t.getIdentity().remove(orbitCmdUUID));
     }
 
     @Override
     public void onEnter(ActionEvent e, Rotation object, SafeJLabel label) {
-        EngineFrame.setMouseOwner(null);
-        CursorManager.setDefault();
-        Static.renderer.removeOverlap(overlapId);
-        label.clear();
+        cleanup(label);
         // done
     }
 
     @Override
     public  void onEsc(ActionEvent e, Rotation object, SafeJLabel label) {
         Static.camera.setRotation((Rotation) object);
-        EngineFrame.setMouseOwner(MOwner.SELECTION);
-        CursorManager.setDefault();
-        Static.renderer.removeOverlap(overlapId);
-        label.clear();
+        cleanup(label);
     }
 
 }

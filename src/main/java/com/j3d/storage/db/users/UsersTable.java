@@ -92,7 +92,7 @@ public class UsersTable implements Table<User, CUsers> {
                     // Registration was successful.
                     return new Pair<>(true,
                             new User(
-                                    rs.getInt("userId"),
+                                    rs.getInt(1),
                                     1,
                                     name,
                                     surname,
