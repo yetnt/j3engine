@@ -48,10 +48,8 @@ public class OrbitCmd extends Command implements StatefulCommand<Rotation> {
                         .font(J3DTheme.TEXT_SECONDARY.color().brighter(), "8"),
                 " units per mouse drag"
         ));
-        // todo: null pointer exception fix
         Static.renderer.layers.stream()
-                .flatMap(Layer::stream)
-                .filter(t -> t.getIdentity() != null)
+                .flatMap(Layer::usableLayersStream)
                 .forEach(t -> t.getIdentity().add(orbitCmdUUID, (t2, d) -> {
                     Static.camera.lookAt(t2.getCentroid());
                 }));
@@ -64,7 +62,7 @@ public class OrbitCmd extends Command implements StatefulCommand<Rotation> {
         label.clear();
         CommandsManager.clearCurrent();
         Static.renderer.layers.stream()
-                .flatMap(Layer::stream)
+                .flatMap(Layer::usableLayersStream)
                 .forEach(t -> t.getIdentity().remove(orbitCmdUUID));
     }
 

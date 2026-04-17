@@ -16,6 +16,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.stream.Stream;
 
 /**
  * A {@code Layer} is a fundamental concept in the rendering pipeline, representing a
@@ -67,6 +68,10 @@ public class Layer extends ArrayList<Thing> implements Interactable {
         Layer layer = new Layer(id, false);
         layer.setHidden(hidden);
         return layer;
+    }
+
+    public Stream<Thing> usableLayersStream() {
+        return stream().filter(t -> t.getIdentity() != null);
     }
 
     @Override
