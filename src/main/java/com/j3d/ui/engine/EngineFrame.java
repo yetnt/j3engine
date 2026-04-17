@@ -15,7 +15,7 @@ import com.j3d.engine.interact.cmd.commands.transform.ScaleSelection;
 import com.j3d.engine.interact.cmd.commands.transform.TranslateSelection;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.engine.Logger;
-import com.j3d.engine.Renderer;
+import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo3d.rot.Rotation;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
@@ -42,8 +42,6 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.BiConsumer;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 
@@ -102,9 +100,9 @@ public class EngineFrame extends javax.swing.JFrame {
         Static.mainFrame = this;
         final int menuBarOffsetY = (Static.mainFrame.getJMenuBar().getSize().height + jMenuBarOffsetY);
         Static.mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        Static.renderer = new Renderer(J3DSettings.screenSize);
-        Static.executor = new Executor(Static.renderer);
-        Static.debugPanel.run(Static.renderer, Static.executor, Static.mainFrame);
+        Static.sceneManager = new SceneManager(J3DSettings.screenSize);
+        Static.executor = new Executor(Static.sceneManager);
+        Static.debugPanel.run(Static.sceneManager, Static.executor, Static.mainFrame);
         HoverJLabelPanel lbl = new HoverJLabelPanel();
         lbl.setBounds(0 ,0, lbl.getPreferredSize().width, lbl.getPreferredSize().height);
         JLayeredPane layeredPane = Static.mainFrame.getLayeredPane();
@@ -162,7 +160,7 @@ public class EngineFrame extends javax.swing.JFrame {
             @Override
             public void componentResized(ComponentEvent e) {
                 J3DSettings.screenSize = new Dim(Static.mainFrame.getSize());
-                Static.renderer.screenSize = J3DSettings.screenSize;
+                Static.sceneManager.screenSize = J3DSettings.screenSize;
                 toolbox.setBounds(0, menuBarOffsetY, J3DSettings.screenSize.width - 10, toolbox.getPreferredSize().height);
                 Static.mainPanel.setBounds(0, menuBarOffsetY, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
 
@@ -248,9 +246,9 @@ public class EngineFrame extends javax.swing.JFrame {
 //    /**
 //     * Initializes (if not already initialized) the Jaiva Instance by inputting the input file and passing {@link Testing} class
 //     * @param g The graphics
-//     * @param r The Renderer Instance.
+//     * @param r The SceneManager Instance.
 //     */
-//    private void initBundler(Graphics g, Renderer r) {
+//    private void initBundler(Graphics g, SceneManager r) {
 //        if (jBundler == null) {
 //            try {
 //                jBundler = new JBundler("C:\\Users\\ACER\\Documents\\code\\Jaiva3dEngine\\src\\main\\resources\\file.jiv", Testing.class);
@@ -264,7 +262,7 @@ public class EngineFrame extends javax.swing.JFrame {
 
     /**
      * Repaints the debug panel, command pallete, and main frame on the Event Dispatch Thread.
-     * This should only be called from non-EDT threads. e.g. from the Renderer thread.
+     * This should only be called from non-EDT threads. e.g. from the SceneManager thread.
      */
     public static void repaintL() {
         SwingUtilities.invokeLater(() -> {
@@ -481,12 +479,12 @@ public class EngineFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_resetPositionJMenuItemActionPerformed
 
     private void undoJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoJMenuItemActionPerformed
-        Renderer.history.undo();
+        SceneManager.history.undo();
         Static.mainFrame.repaint();
     }//GEN-LAST:event_undoJMenuItemActionPerformed
 
     private void redoJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoJMenuItemActionPerformed
-        Renderer.history.redo();
+        SceneManager.history.redo();
         Static.mainFrame.repaint();
     }//GEN-LAST:event_redoJMenuItemActionPerformed
 
@@ -524,7 +522,7 @@ public class EngineFrame extends javax.swing.JFrame {
 
         if (!ays.canProceed()) return;
 
-        Static.renderer.resetScene();
+        Static.sceneManager.resetScene();
 
         File file = FilesUtility.fileChooser(jfcConfig -> {
             jfcConfig.setDialogTitle("choose a filel");
@@ -585,7 +583,7 @@ public class EngineFrame extends javax.swing.JFrame {
             J3DSettings.setProject(folder, fileName);
         }
 
-        new ProjectFile().writeFile(J3DSettings.getProject().first, J3DSettings.getProject().second + ".j3p", Static.renderer.layers);
+        new ProjectFile().writeFile(J3DSettings.getProject().first, J3DSettings.getProject().second + ".j3p", Static.sceneManager.layers);
     }//GEN-LAST:event_saveProjectJMenuItemActionPerformed
 
     private void newProjectJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newProjectJMenuItemActionPerformed

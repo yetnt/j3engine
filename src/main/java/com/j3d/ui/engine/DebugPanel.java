@@ -7,8 +7,8 @@ package com.j3d.ui.engine;
 import com.j3d.Executor;
 import com.j3d.J3DSettings;
 import com.j3d.Static;
+import com.j3d.engine.SceneManager;
 import com.j3d.engine.layer.Layer;
-import com.j3d.engine.Renderer;
 import com.j3d.engine.draw.tris.TriangleSortMethod;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
@@ -27,7 +27,7 @@ import java.util.Random;
 public class DebugPanel extends javax.swing.JPanel {
 
     public Executor executor = null;
-    public Renderer renderer = null;
+    public SceneManager sceneManager = null;
     public Frame frame = null;
     public FloatingPanel floatingPanel = new FloatingPanel("Debug Panel");
 
@@ -531,7 +531,7 @@ public class DebugPanel extends javax.swing.JPanel {
             gps[0], gps[1], gps[2]
         );
 
-        Thing g = new Thing(renderer, null, "Random Tri").addObjs(t, gps[0], gps[1], gps[2]);
+        Thing g = new Thing(sceneManager, null, "Random Tri").addObjs(t, gps[0], gps[1], gps[2]);
 
         Static.log.println("Added random tri " + t.getId() + " to layer " + g);
         frame.repaint();
@@ -542,14 +542,14 @@ public class DebugPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_drawButtonActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        renderer.layers.forEach(frame -> {
+        sceneManager.layers.forEach(frame -> {
             if (!frame.getIdentifier().equals(Layer.backgroundId)) frame.clear();
         });
         frame.repaint();
     }//GEN-LAST:event_clearButtonActionPerformed
 
-    public void run(Renderer r, Executor e, Frame f) {
-        renderer = r;
+    public void run(SceneManager r, Executor e, Frame f) {
+        sceneManager = r;
         executor = e;
         frame = f;
     }

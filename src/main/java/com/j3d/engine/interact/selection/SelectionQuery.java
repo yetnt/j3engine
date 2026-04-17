@@ -92,12 +92,12 @@ public class SelectionQuery extends Rectangle {
      * @return true if the selection has the point. False otherwise.
      */
     public boolean has(GPoint point) {
-        return contains(point.getPivot().toPoint(Static.camera).toScreen(Static.renderer).toSwingPoint());
+        return contains(point.getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).toSwingPoint());
     }
 
     public boolean intersectsWith(GLine line) {
-        ScreenPoint A = line.getStart().getPivot().toPoint(Static.camera).toScreen(Static.renderer);
-        ScreenPoint B = line.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.renderer);
+        ScreenPoint A = line.getStart().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager);
+        ScreenPoint B = line.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager);
 
         ScreenPoint rectA = points[0];
         ScreenPoint rectB = new ScreenPoint(points[0].x, points[1].y);

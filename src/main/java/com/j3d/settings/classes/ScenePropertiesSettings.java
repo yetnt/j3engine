@@ -34,7 +34,7 @@ public class ScenePropertiesSettings implements SettingsParent {
     public EnumSetting<TriangleSortMethod> triangleSortMethod = new EnumSetting<>(
             "Triangle Sort Method",
             TriangleSortMethod.CAMDISTSORT,
-            "The method the renderer should make use of to sort triangles.",
+            "The method the sceneManager should make use of to sort triangles.",
             TriangleSortMethod.values()
     ).onSetValue((TriangleSortMethod l) -> {
         TriStateArea.setSortMethod(l);

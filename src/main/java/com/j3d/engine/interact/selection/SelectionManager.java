@@ -7,14 +7,14 @@ import com.j3d.engine.geometry.geo3d.Thing;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
-import static com.j3d.Static.renderer;
+import static com.j3d.Static.sceneManager;
 
 /**
  * Manages the selection of GObjects within a collection of Layers and Things.
  * Provides functionality to filter and retrieve selected objects based on various criteria.
  * <p>
- *     The renderer should hold one instance of this class to manage the current selection state.
- *     The renderer can also create a new instance of this class, but only for
+ *     The sceneManager should hold one instance of this class to manage the current selection state.
+ *     The sceneManager can also create a new instance of this class, but only for
  *     {@link SelectionType#INCLUDE} where other objects are added to the existing selection or
  *     {@link SelectionType#EXCLUDE} where objects are removed from the existing selection.
  * </p>
@@ -42,7 +42,7 @@ public class SelectionManager {
                             if (selectionQuery.has(obj, true)) selected.add(obj);
                         }
                         case SUBTRACT -> {
-                            boolean wasSelected = renderer.getSelected().contains(obj);
+                            boolean wasSelected = sceneManager.getSelected().contains(obj);
                             boolean inBox = selectionQuery.has(obj, true);
 
                             if (wasSelected && !inBox)
@@ -50,10 +50,10 @@ public class SelectionManager {
                         }
                         case ADD -> {
                             // pre-add the current selected objects.
-                            renderer.getSelected().stream()
+                            sceneManager.getSelected().stream()
                                     .filter(o -> !selected.contains(o))
                                     .forEach(selected::add);
-                            boolean wasSelected = renderer.getSelected().contains(obj);
+                            boolean wasSelected = sceneManager.getSelected().contains(obj);
                             boolean inBox = selectionQuery.has(obj, true);
 
                             if (!wasSelected && inBox)

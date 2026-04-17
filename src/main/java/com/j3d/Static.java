@@ -1,7 +1,7 @@
 package com.j3d;
 
 import com.j3d.engine.Logger;
-import com.j3d.engine.Renderer;
+import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandParser;
@@ -15,10 +15,9 @@ import com.j3d.ui.util.HoverJLabel;
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
-import java.util.Objects;
 
 /**
- * Static is a class which holds static references to important instances in the engine, such as the Renderer, Executor, Main Frame, Camera, etc.
+ * Static is a class which holds static references to important instances in the engine, such as the SceneManager, Executor, Main Frame, Camera, etc.
  * <p>
  *     This is used to allow for easy access to these instances from anywhere in the code, without having to pass them around
  * </p>
@@ -26,9 +25,9 @@ import java.util.Objects;
 public class Static {
     //    public static JBundler jBundler = null;
     /**
-     * The Renderer Instance.
+     * The SceneManager Instance.
      */
-    public static Renderer renderer = null;
+    public static SceneManager sceneManager = null;
     /**
      * The Executor Instance.
      */

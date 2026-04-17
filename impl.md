@@ -27,7 +27,7 @@ classDiagram
     Vector3 ..> CartesianPoint: converts to
     class ScreenPoint {
         Constructor(X: integer, Y: integer)
-        +toPoint(renderer: Renderer) CartesianPoint
+        +toPoint(sceneManager: Renderer) CartesianPoint
     }
     class CartesianPoint {
         -EPSILON: number = 0.01$
@@ -36,7 +36,7 @@ classDiagram
         +isNotEmpty() boolean
         +distanceTo(other: CartesianPoint) number
         +distanceSquaredTo(other: CartesianPoint) number
-        +toScreen(renderer: Renderer) ScreenPoint
+        +toScreen(sceneManager: Renderer) ScreenPoint
         +hashCode() integer
         +equals(obj: Object) boolean
         +toString() string
@@ -115,7 +115,7 @@ classDiagram
     note for Main "The Main class."
     
     class Executor {
-        -renderer: Renderer
+        -sceneManager: Renderer
         Constructor(r: Renderer)
         +run()
     }
@@ -164,15 +164,15 @@ classDiagram
         +getId() string
     }
     class GPoint {
-        -drawPoint(renderer : Renderer, cartesianPoint : CartesianPoint)
-        Constructor(renderer : Renderer, cartesianPoint : CartesianPoint)
-        +update(renderer : Renderer, cartesianPoint : CartesianPoint)
+        -drawPoint(sceneManager : Renderer, cartesianPoint : CartesianPoint)
+        Constructor(sceneManager : Renderer, cartesianPoint : CartesianPoint)
+        +update(sceneManager : Renderer, cartesianPoint : CartesianPoint)
         +equals(obj : Object) boolean
     }
     class GLine {
         -startPoint: CartesianPoint
         -endPoint : CartesianPoint
-        Constructor(renderer : Renderer, startPoint : GPoint, endPoint : GPoint)
+        Constructor(sceneManager : Renderer, startPoint : GPoint, endPoint : GPoint)
         +setEndPoint(end : CartesianPoint)
         +setStartPoint(start : CartesianPoint)
         +getEndPoint() CartesianPoint
@@ -183,8 +183,8 @@ classDiagram
         -LegA : GLine
         -LegB : GLine
         -LegC : GLine
-        Constructor(renderer : Renderer, A : GPoint, B : GPoint, C : GPoint)
-        Constructor(renderer : Renderer, A : GLine, B : GLine, C : GLine)
+        Constructor(sceneManager : Renderer, A : GPoint, B : GPoint, C : GPoint)
+        Constructor(sceneManager : Renderer, A : GLine, B : GLine, C : GLine)
         +getLegA() GLine
         +getLegB() GLine
         +getLegC() GLine
@@ -281,7 +281,7 @@ classDiagram
     class EventBroadcast {
         <<abstract>>
         +emitter: EventEmitter
-        +renderer: Renderer
+        +sceneManager: Renderer
         Constructor(e: EventEmitter, r: Renderer)
     }
     class EventType {

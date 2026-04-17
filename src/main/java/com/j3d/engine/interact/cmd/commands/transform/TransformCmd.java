@@ -33,7 +33,7 @@ public class TransformCmd extends Command {
     private final EventReactor listener = new EventReactor() {
         @Override
         public <K> void onEvent(EventType event, EventPayload<K> properties) {
-            if (Static.renderer.getSelected().isEmpty()) return;
+            if (Static.sceneManager.getSelected().isEmpty()) return;
             dispatchToSubcommands(subcommandName, logLabel, _args, _taggedArgs);
         }
     };
@@ -57,7 +57,7 @@ public class TransformCmd extends Command {
         this.logLabel = logLabel;
         this._args = args;
         this._taggedArgs = taggedArgs;
-        if (Static.renderer.getSelected().isEmpty()) {
+        if (Static.sceneManager.getSelected().isEmpty()) {
             logLabel.setText("Make a selection then left click to continue this command.");
             SelectionManager.selectionMouseOwner.attach(
                     listener

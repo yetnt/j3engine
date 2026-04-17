@@ -40,7 +40,7 @@ public class OrbitCmd extends Command implements StatefulCommand<Rotation> {
         orbitMouseOwner.requestOwnership();
         CursorManager.set(CursorNames.HAND_GRAB);
         Static.mainPanel.repaint();
-        Static.renderer.scheduleOverlap(orbitCmdUUID, c -> label.setText(
+        Static.sceneManager.scheduleOverlap(orbitCmdUUID, c -> label.setText(
                 "Use the mouse to orbit the camera around. | "+SafeJLabel.EMPH+": "
                         + SafeJLabel.EMPH + SafeJLabel.EMPH,
                 "Sensitivity",
@@ -48,7 +48,7 @@ public class OrbitCmd extends Command implements StatefulCommand<Rotation> {
                         .font(J3DTheme.TEXT_SECONDARY.color().brighter(), "8"),
                 " units per mouse drag"
         ));
-        Static.renderer.layers.stream()
+        Static.sceneManager.layers.stream()
                 .flatMap(Layer::usableLayersStream)
                 .forEach(t -> t.getIdentity().add(orbitCmdUUID, (t2, d) -> {
                     Static.camera.lookAt(t2.getCentroid());
@@ -58,10 +58,10 @@ public class OrbitCmd extends Command implements StatefulCommand<Rotation> {
     public void cleanup(SafeJLabel label) {
         EngineFrame.setMouseOwner(null);
         CursorManager.setDefault();
-        Static.renderer.removeOverlap(orbitCmdUUID);
+        Static.sceneManager.removeOverlap(orbitCmdUUID);
         label.clear();
         CommandsManager.clearCurrent();
-        Static.renderer.layers.stream()
+        Static.sceneManager.layers.stream()
                 .flatMap(Layer::usableLayersStream)
                 .forEach(t -> t.getIdentity().remove(orbitCmdUUID));
     }

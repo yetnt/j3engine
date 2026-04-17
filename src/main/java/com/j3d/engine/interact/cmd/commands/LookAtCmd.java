@@ -26,7 +26,7 @@ public class LookAtCmd extends Command {
         }
 
         if (args[0] instanceof String thing) {
-            Thing t = Static.renderer.findThing(thing);
+            Thing t = Static.sceneManager.findThing(thing);
             if (t == null) {
                 logLabel.setText("No thing found with the name " + thing);
                 return;

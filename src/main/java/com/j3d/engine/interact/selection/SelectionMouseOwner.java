@@ -12,9 +12,9 @@ import static com.j3d.ui.engine.EngineFrame.*;
 import com.j3d.engine.react.events.*;
 
 /**
- * SelectionMouseOwner is a MouseOwner which is responsible for handling mouse events related to selection in the renderer.
+ * SelectionMouseOwner is a MouseOwner which is responsible for handling mouse events related to selection in the sceneManager.
  * It allows the user to click and drag to create a selection square on the screen, which can be used to select multiple objects
- * in the renderer. It also allows the user to click to clear the selection square and broadcast an event to clear the selection in the renderer.
+ * in the sceneManager. It also allows the user to click to clear the selection square and broadcast an event to clear the selection in the sceneManager.
  */
 public class SelectionMouseOwner extends MouseOwner {
     public SelectionMouseOwner() {
@@ -23,7 +23,7 @@ public class SelectionMouseOwner extends MouseOwner {
 
     /**
      * Clears the selection square drawn on the screen and resets the mouse position.
-     * Also broadcasts an event to clear the selection in the renderer.
+     * Also broadcasts an event to clear the selection in the sceneManager.
      */
     public void clearSelectionSquare() {
         selectionArea = new ScreenPoint[]{null, null};
@@ -35,7 +35,7 @@ public class SelectionMouseOwner extends MouseOwner {
     public void mouseClicked(MouseEvent e) {
         if (isNotOwner()) return;
         clearSelectionSquare();
-        broadcast(EventType.X_SELECTED, new EventPayload<Void>(null, Static.renderer) {});
+        broadcast(EventType.X_SELECTED, new EventPayload<Void>(null, Static.sceneManager) {});
     }
 
     @Override

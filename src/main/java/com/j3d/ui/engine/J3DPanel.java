@@ -53,14 +53,14 @@ public class J3DPanel extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
         if (run) {
-//            renderer.axis((Graphics2D) g, camera);
+//            sceneManager.axis((Graphics2D) g, camera);
             Static.executor.run((Graphics2D) g);
             run = false;
         }
-        Static.renderer.draw((Graphics2D) g, Static.camera);
+        Static.sceneManager.draw((Graphics2D) g, Static.camera);
         // draw selection area ontop of all render things.
         if (selectionArea[0] != null && selectionArea[1] != null) {
-            SelectionUI.run((Graphics2D)g, applySelectionAreaOffset(selectionArea), Static.renderer);
+            SelectionUI.run((Graphics2D)g, applySelectionAreaOffset(selectionArea), Static.sceneManager);
         }
     }
 

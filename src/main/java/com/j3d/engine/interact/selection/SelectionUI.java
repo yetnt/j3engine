@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.selection;
 
-import com.j3d.engine.Renderer;
+import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.ui.CursorManager;
 import com.j3d.ui.CursorNames;
@@ -21,7 +21,7 @@ public class SelectionUI {
      */
     public static SelectionUtils.InferredSelectionType inferredSelection = SelectionUtils.InferredSelectionType.NONE;
 
-    public static void run(Graphics2D g, ScreenPoint[] selectionArea, Renderer renderer) {
+    public static void run(Graphics2D g, ScreenPoint[] selectionArea, SceneManager sceneManager) {
         boolean isStrict = isStrict(selectionArea); // If the user dragged upwards, it's strict, otherwise it's soft.
         ScreenPoint i = selectionArea[0];
         ScreenPoint ii = selectionArea[1];
@@ -37,7 +37,7 @@ public class SelectionUI {
                 SelectionUtils.usingSelectionVariant(inferredSelection, isStrict,
                         SelectionType.ADD, SelectionType.SUBTRACT, SelectionType.BOUNDS_STRICT, SelectionType.BOUNDS_SOFT)
         );
-        SelectionManager m = renderer.select(selectionQuery);
+        SelectionManager m = sceneManager.select(selectionQuery);
         log.println("Selected " + m.getSelected().size() + " objects.");
     }
 

@@ -2,7 +2,7 @@ package com.j3d.engine.geometry.geo2d.graphics;
 
 import com.j3d.J3DSettings;
 import com.j3d.Static;
-import com.j3d.engine.Renderer;
+import com.j3d.engine.SceneManager;
 import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.geometry.constraints.ConstraintManager;
 import com.j3d.engine.geometry.geo2d.HasParents;
@@ -35,9 +35,9 @@ import java.util.UUID;
  *     and applied to the GPoint.
  * </p>
  * <p>
- *     A GPoint is also stored within {@link Renderer#points} for redundancy.
+ *     A GPoint is also stored within {@link SceneManager#points} for redundancy.
  * </p>
- * @see Renderer#findOrCreatePoint(Vector3, Layer)
+ * @see SceneManager#findOrCreatePoint(Vector3, Layer)
  * @see Thing
  * @see GLine
  * @see GTri
@@ -77,20 +77,20 @@ public class GPoint extends GObject implements HasParents<GLine> {
      */
     @Override
     public void draw(Graphics2D graphics2D) {
-        Static.renderer.points.add(this);
+        Static.sceneManager.points.add(this);
         if (J3DSettings.getViewType() != ViewType.WIREFRAME)
             if (hasParent() && getParents().stream().findAny().get().hasParent()) {
                 return;
             }
         graphics2D.setColor(col);
-        ScreenPoint p = this.getPivot().toPoint(Static.camera).toScreen(Static.renderer);
+        ScreenPoint p = this.getPivot().toPoint(Static.camera).toScreen(Static.sceneManager);
         graphics2D.fillOval(p.x - DIAMETER / 2, p.y - DIAMETER / 2, DIAMETER, DIAMETER);
     }
 
     @Override
     public void setPivot(Vector3 pivot) {
         super.setPivot(pivot);
-        this.broadcast(EventType.GPOINT_RECALC_PIVOT, new GPointMovedEvent(this, Static.renderer));
+        this.broadcast(EventType.GPOINT_RECALC_PIVOT, new GPointMovedEvent(this, Static.sceneManager));
     }
 
     /**
@@ -108,7 +108,7 @@ public class GPoint extends GObject implements HasParents<GLine> {
                 return;
             }
         graphics2D.setColor(Color.WHITE);
-        ScreenPoint p = this.getPivot().toPoint(Static.camera).toScreen(Static.renderer);
+        ScreenPoint p = this.getPivot().toPoint(Static.camera).toScreen(Static.sceneManager);
         graphics2D.fillOval(p.x - (DIAMETER+1) / 2, p.y - (DIAMETER+1) / 2, (DIAMETER+1), (DIAMETER+1));
         draw(graphics2D);
     }
@@ -120,13 +120,13 @@ public class GPoint extends GObject implements HasParents<GLine> {
     public GPoint(Vector3 v3) {
         setPivot(v3);
         toConstraintObject();
-        Static.renderer.hasNoParent(this);
+        Static.sceneManager.hasNoParent(this);
     }
 
     @Override
     public boolean deleteSelf() {
         super.deleteSelf();
-        Static.renderer.points.remove(this);
+        Static.sceneManager.points.remove(this);
         return true;
     }
 
@@ -166,7 +166,7 @@ public class GPoint extends GObject implements HasParents<GLine> {
         if (su) toConstraintObject().addParent(
                 parent.toConstraintObject()
         );
-        Static.renderer.hasParent(this);
+        Static.sceneManager.hasParent(this);
     }
 
     @Override
@@ -175,11 +175,11 @@ public class GPoint extends GObject implements HasParents<GLine> {
         if (su) toConstraintObject().removeParent(
                 parent.toConstraintObject()
         );
-        Static.renderer.hasNoParent(this);
+        Static.sceneManager.hasNoParent(this);
     }
 
     public static class GPointMovedEvent extends EventPayload<GPoint> {
-        public GPointMovedEvent(GPoint e, Renderer r) {
+        public GPointMovedEvent(GPoint e, SceneManager r) {
             super(e, r);
         }
     }

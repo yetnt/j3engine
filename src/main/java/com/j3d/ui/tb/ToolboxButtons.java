@@ -2,7 +2,6 @@ package com.j3d.ui.tb;
 
 import com.j3d.Static;
 import com.j3d.engine.DebugDump;
-import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 import com.j3d.engine.layer.Layer;
@@ -92,7 +91,7 @@ public class ToolboxButtons {
             long current = System.currentTimeMillis();
             Camera cam = Static.camera;
 
-            for (Layer l : Static.renderer.layers) {
+            for (Layer l : Static.sceneManager.layers) {
                 l.forEach(thing -> {
                     thing.getObjects().stream()
                             .filter(GTri.class::isInstance)

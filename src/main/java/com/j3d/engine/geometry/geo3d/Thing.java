@@ -2,11 +2,11 @@ package com.j3d.engine.geometry.geo3d;
 
 import com.j3d.J3DSettings;
 import com.j3d.Static;
+import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.layer.Layer;
-import com.j3d.engine.Renderer;
 import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.react.actions.DirtyVoidAction;
 import com.j3d.engine.react.events.EventType;
@@ -72,7 +72,7 @@ public class Thing implements Interactable {
             (o, t) -> {
                 if (this.isBg || this.hidden) return;
                 Static.log.println(name + " thing was selected in the tree.");
-                Static.renderer.select(this);
+                Static.sceneManager.select(this);
                 Static.mainPanel.repaint();
             };
 
@@ -125,11 +125,11 @@ public class Thing implements Interactable {
      * @param id The ID of the Thing defined in the file.
      * @param hidden Whether the Thing is hidden or not.
      * @param l The parent layer of the Thing.
-     * @param renderer The renderer instance.
+     * @param sceneManager The sceneManager instance.
      * @return A Thing
      */
-    public static Thing fromRaw(String name, String id, boolean hidden, Layer l, Renderer renderer) {
-        Thing t = new Thing(renderer, l, name, false);
+    public static Thing fromRaw(String name, String id, boolean hidden, Layer l, SceneManager sceneManager) {
+        Thing t = new Thing(sceneManager, l, name, false);
         t.setHidden(hidden);
         t.setId(UUID.fromString(id));
         return t;
@@ -153,7 +153,7 @@ public class Thing implements Interactable {
                 name, this, onSelectCallback
         );
         treeNode = Static.layerTree.addNode(parent.getTreeNode(), treeNodeIdentity);
-        Renderer.history.add(
+        SceneManager.history.add(
                 new ConstructorAction() {
                     @Override
                     public void cleanup() throws Exception {
@@ -187,13 +187,13 @@ public class Thing implements Interactable {
 
     /**
      * Constructs a Thing.
-     * @param renderer The renderer instance.
+     * @param sceneManager The sceneManager instance.
      * @param l The parent layer of the Thing.
      * @param name The name of the Thing.
      * @param invokeSwingHooks Whether to run GUI related hooks
      */
-    public Thing(Renderer renderer, Layer l, String name, boolean invokeSwingHooks) {
-        l = l == null ? renderer.layers.get(1) : l;
+    public Thing(SceneManager sceneManager, Layer l, String name, boolean invokeSwingHooks) {
+        l = l == null ? sceneManager.layers.get(1) : l;
         if (l.getIdentifier().equals(Layer.backgroundId)) {
             isBg = true;
         }
@@ -210,12 +210,12 @@ public class Thing implements Interactable {
 
     /**
      * Constructs a Thing and runs GUI related hooks.
-     * @param renderer The renderer instance.
+     * @param sceneManager The sceneManager instance.
      * @param l The parent layer of the Thing.
      * @param name The name of the Thing.
      */
-    public Thing(Renderer renderer, Layer l, String name) {
-        l = l == null ? renderer.layers.get(1) : l;
+    public Thing(SceneManager sceneManager, Layer l, String name) {
+        l = l == null ? sceneManager.layers.get(1) : l;
         if (l.getIdentifier().equals(Layer.backgroundId)) {
             isBg = true;
         }
@@ -263,8 +263,8 @@ public class Thing implements Interactable {
 //            graphics2D.setColor(new Color(52, 52, 52));
             graphics2D.setColor(J3DTheme.BACKGROUND.color());
             graphics2D.fillRect(0, 0, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
-            Static.renderer.axis(graphics2D, Static.camera);
-            Static.renderer.axisGrid(graphics2D, Static.camera);
+            Static.sceneManager.axis(graphics2D, Static.camera);
+            Static.sceneManager.axisGrid(graphics2D, Static.camera);
             return;
         }
 
@@ -301,26 +301,26 @@ public class Thing implements Interactable {
     }
 
     /**
-     * Creates a copy of this Thing, adding its GObjects to the specified renderer and layer.
-     * @param renderer The renderer to associate the new Thing with.
+     * Creates a copy of this Thing, adding its GObjects to the specified sceneManager and layer.
+     * @param sceneManager The sceneManager to associate the new Thing with.
      * @param l The layer to add the new Thing to.
      * @return An Action that performs the copy operation and itself returns the
      * new Thing.
      */
-    public Action<Thing> copy(Renderer renderer, Layer l) {
+    public Action<Thing> copy(SceneManager sceneManager, Layer l) {
         final Thing current = this;
         return new Action<Thing>() {
             private Thing newThing;
 
             @Override
             public Thing run() {
-                newThing = new Thing(renderer, l, current.name + " copy").addObjs(objects.toArray(GObject[]::new));
+                newThing = new Thing(sceneManager, l, current.name + " copy").addObjs(objects.toArray(GObject[]::new));
                 return newThing;
             }
 
             @Override
             public void undo() {
-                renderer.removeThing(newThing);
+                sceneManager.removeThing(newThing);
             }
 
             @Override
@@ -340,7 +340,7 @@ public class Thing implements Interactable {
      */
     private void notifyTris() {
         for (GTri tri : objects.stream().filter(o -> o instanceof GTri).map(o -> (GTri) o).toList()) {
-            tri.broadcast(EventType.OBJ_UPDATED, new TriUpdatedBroadcast(tri, Static.renderer));
+            tri.broadcast(EventType.OBJ_UPDATED, new TriUpdatedBroadcast(tri, Static.sceneManager));
         }
     }
 
@@ -594,7 +594,7 @@ public class Thing implements Interactable {
         return new DirtyVoidAction() {
             @Override
             public void cleanup() throws Exception {
-                 Static.renderer.removeThing(t);
+                 Static.sceneManager.removeThing(t);
                  t.instantDelete();
             }
 

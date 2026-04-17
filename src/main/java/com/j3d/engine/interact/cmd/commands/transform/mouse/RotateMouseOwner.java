@@ -66,7 +66,7 @@ public class RotateMouseOwner extends TransformMouseOwner {
                             }
                         }
                         Vector3 B = center.add((A.sub(center)).rotateAroundAxis(axis, 180));
-                        Static.renderer.drawLine3D(g, A, B, Static.camera);
+                        Static.sceneManager.drawLine3D(g, A, B, Static.camera);
                         g.setColor(Color.WHITE);
                     }
                     );

@@ -1,6 +1,6 @@
 package com.j3d.engine.react.events.spec;
 
-import com.j3d.engine.Renderer;
+import com.j3d.engine.SceneManager;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 
@@ -13,9 +13,9 @@ public class TriUpdatedBroadcast extends EventPayload<GTri> {
      * Default Constructor for EventPayload
      *
      * @param e The initiator of the broadcast.
-     * @param r The Renderer instance.
+     * @param r The SceneManager instance.
      */
-    public TriUpdatedBroadcast(GTri e, Renderer r) {
+    public TriUpdatedBroadcast(GTri e, SceneManager r) {
         super(e, r);
     }
 }

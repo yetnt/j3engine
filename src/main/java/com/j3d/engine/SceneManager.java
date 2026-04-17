@@ -26,10 +26,10 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * Renderer is the class. The main class that handles the rendering of 3D objects onto a 2D screen.
+ * SceneManager is the class. The main class that handles the rendering of 3D objects onto a 2D screen.
  * @see Graphics2D
  */
-public class Renderer {
+public class SceneManager {
     /**
      * The dimensions of the window.
      */
@@ -62,7 +62,7 @@ public class Renderer {
      * Default Constructor
      * @param dim The dimensions of the screen
      */
-    public Renderer(Dim dim) {
+    public SceneManager(Dim dim) {
         screenSize = dim;
         Layer bg = new Layer(Layer.backgroundId);
         layers.add(bg); // the default layer
@@ -487,7 +487,7 @@ public class Renderer {
 
     /**
      * Resets the entire scene by clearing all layers, selections, and unregistering all triangles from the {@link TriStateArea}.
-     * This effectively returns the renderer to an empty state, ready for a new project or scene.
+     * This effectively returns the sceneManager to an empty state, ready for a new project or scene.
      */
     public void resetScene() {
         getSelected().clear();

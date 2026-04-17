@@ -82,7 +82,7 @@ public class DebugCmd extends Command {
         }
         @Override
         public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
-            List<GObject> objects = Static.renderer.layers
+            List<GObject> objects = Static.sceneManager.layers
                     .stream()
                     .flatMap(Layer::stream)
                     .flatMap(Thing::objectsStream)

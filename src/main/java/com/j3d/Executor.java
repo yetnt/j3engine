@@ -1,6 +1,5 @@
 package com.j3d;
 
-import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.constraints.concrete.MidpointConstraint;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
@@ -9,8 +8,7 @@ import com.j3d.engine.interact.input.keyboard.DefaultKeys;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.engine.layer.Layer;
-import com.j3d.engine.Renderer;
-import com.j3d.engine.geometry.geo2d.*;
+import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.react.actions.Action;
@@ -22,32 +20,31 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Executor is a class called by {@link EngineFrame#main(String[])} that just draws things ot the window
  */
 public class Executor {
     /**
-     * The renderer instance.
+     * The sceneManager instance.
      */
-    private final Renderer renderer;
+    private final SceneManager sceneManager;
 
     private final Layer layer = new Layer("exec");
 
     /**
      * Default Constructor
-     * @param r The Renderer Instance.
+     * @param r The SceneManager Instance.
      */
-    public Executor(Renderer r) {
-        renderer = r;
+    public Executor(SceneManager r) {
+        sceneManager = r;
     }
 
     /**
      * Runs the executor.
      */
     public void run(Graphics2D graphics2D) {
-        Static.renderer.layers.add(layer);
+        Static.sceneManager.layers.add(layer);
 
         Thing cub = cube();
         Static.camera.lookAt(cub.getCentroid());
@@ -63,7 +60,7 @@ public class Executor {
                 line.first.translate(new Vector3(80, -10, 0))
         ));
         actions.forEach(Action::run);
-        actions.forEach(Renderer.history::add);
+        actions.forEach(SceneManager.history::add);
         line.second.applyConstraint();
 
     }
@@ -84,7 +81,7 @@ public class Executor {
         );
         mdpc.applyConstraint();
 
-        return new Pair<>(new Thing(Static.renderer, layer, "constrainted")
+        return new Pair<>(new Thing(Static.sceneManager, layer, "constrainted")
                 .addObjs(A, B, C, D, line, line2), mdpc);
     }
 
@@ -139,7 +136,7 @@ public class Executor {
         tris.add(tri2);
         tris.add(tri3);
 
-        return new Thing(renderer, layer, "Three Tris").addObjs(tri1, tri2, tri3,
+        return new Thing(sceneManager, layer, "Three Tris").addObjs(tri1, tri2, tri3,
                 tri1.getLegA(), tri1.getLegB(), tri1.getLegC(),
                 tri2.getLegA(), tri2.getLegB(), tri2.getLegC(),
                 tri3.getLegA(), tri3.getLegB(), tri3.getLegC(),
@@ -166,7 +163,7 @@ public class Executor {
 
         GTri PRT = new GTri(Color.PINK, P, R, T);
 
-        return new Thing(Static.renderer, null, "Letter")
+        return new Thing(Static.sceneManager, null, "Letter")
                 .addObjs(
                         P, Q, S, R, U, T,
                         SPR, PRQ, PQT, PUT, PRT,
@@ -184,7 +181,7 @@ public class Executor {
         GPoint C = new GPoint(new Vector3(0, 0, 10));
         GTri triangl = new GTri(Color.ORANGE, A, B, C);
         Static.log.println(triangl.getId().toString());
-        return new Thing(renderer, null, "Test").addObjs(triangl, triangl.getLegA(), triangl.getLegB(), triangl.getLegC(), A, B, C);
+        return new Thing(sceneManager, null, "Test").addObjs(triangl, triangl.getLegA(), triangl.getLegB(), triangl.getLegC(), A, B, C);
     }
 
     public Thing cube() {
@@ -209,7 +206,7 @@ public class Executor {
         GTri face6tri1 = new GTri(Color.YELLOW, D, F, B);
         GTri face6tri2 = new GTri(Color.YELLOW.darker(), F, B, G);
 
-        return new Thing(renderer, layer, "Cube").addObjs(
+        return new Thing(sceneManager, layer, "Cube").addObjs(
                 A, B, C, D, E, F, G, H, face1tri1, face1tri2, face2tri1, face2tri2, face3tri1, face3tri2, face4tri1, face4tri2,
                 face5tri1, face5tri2, face6tri1, face6tri2,
                 face1tri1.getLegA(), face1tri1.getLegB(), face1tri1.getLegC(),

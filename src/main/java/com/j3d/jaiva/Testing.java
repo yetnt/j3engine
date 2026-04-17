@@ -1,9 +1,7 @@
 package com.j3d.jaiva;
 
-import com.j3d.J3DSettings;
-import com.j3d.engine.Renderer;
+import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
-import com.j3d.settings.Settings;
 import com.jaiva.interpreter.Primitives;
 import com.jaiva.interpreter.Scope;
 import com.jaiva.interpreter.libs.BaseLibrary;
@@ -18,7 +16,7 @@ import com.jaiva.tokenizer.tokens.specific.TFunction;
 import java.util.ArrayList;
 
 public class Testing extends BaseLibrary {
-    public Testing(IConfig<Renderer> config) {
+    public Testing(IConfig<SceneManager> config) {
         super(LibraryType.LIB, "j3d-core");
 
 //        vfs.put("circ", new FCirc());
@@ -38,7 +36,7 @@ public class Testing extends BaseLibrary {
 //
 //        @Override
 //        public Object call(TFuncCall tFuncCall, ArrayList<Object> params, IConfig<Object> config, Scope scope) throws Exception {
-//            ((Renderer)config.object).draw();
+//            ((SceneManager)config.object).draw();
 //            return voidValue(tFuncCall.lineNumber);
 //        }
 //    }
@@ -55,7 +53,7 @@ public class Testing extends BaseLibrary {
 //            int x = (int) Primitives.toPrimitive(params.getFirst(), false, config, scope);
 //            int y = (int) Primitives.toPrimitive(params.get(1), false, config, scope);
 //            int radius = (int) Primitives.toPrimitive(params.getLast(), false, config, scope);
-//            Renderer.circ(new CartesianPoint(x, y), radius);
+//            SceneManager.circ(new CartesianPoint(x, y), radius);
 //            return voidValue(tFuncCall.lineNumber);
 //        }
 //    }
@@ -92,7 +90,7 @@ public class Testing extends BaseLibrary {
             if (!(arrB instanceof ArrayList<?>))
                 throw new RuntimeException("point 2 was not given!");
             CartesianPoint B = CartesianPoint.fromList((ArrayList<Integer>) arrB);
-//            GLine line = ((Renderer)config.object).line(A, B);
+//            GLine line = ((SceneManager)config.object).line(A, B);
 //            return line.toArray();
             return arrA;
         }
@@ -114,7 +112,7 @@ public class Testing extends BaseLibrary {
             Object objY = Primitives.toPrimitive(params.getLast(), false, config, scope);
             if (!(objY instanceof Integer) && !(objY instanceof Double))
                 throw new RuntimeException("y coordinate is not a number");
-//            ((Renderer)config.object).point(new CartesianPoint(
+//            ((SceneManager)config.object).point(new CartesianPoint(
 //                    objX instanceof Integer ? (int)objX : (double)objX,
 //                    objY instanceof Integer ? (int)objY : (double)objY));
             return new ArrayList<>(java.util.Arrays.asList(objX, objY));
@@ -131,7 +129,7 @@ public class Testing extends BaseLibrary {
         @Override
         public Object call(TFuncCall tFuncCall, ArrayList<Object> params, IConfig<Object> config, Scope scope) throws Exception {
             checkParams(tFuncCall, scope);
-//            ((Renderer)config.object).axis();
+//            ((SceneManager)config.object).axis();
             return voidValue(tFuncCall.lineNumber);
         }
     }

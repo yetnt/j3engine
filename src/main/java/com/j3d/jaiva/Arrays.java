@@ -1,6 +1,6 @@
 package com.j3d.jaiva;
 
-import com.j3d.engine.Renderer;
+import com.j3d.engine.SceneManager;
 import com.jaiva.interpreter.Primitives;
 import com.jaiva.interpreter.Scope;
 import com.jaiva.interpreter.libs.BaseLibrary;
@@ -14,7 +14,7 @@ import com.jaiva.tokenizer.tokens.specific.TFunction;
 import java.util.ArrayList;
 
 public class Arrays extends BaseLibrary {
-    public Arrays(IConfig<Renderer> config) {
+    public Arrays(IConfig<SceneManager> config) {
         super(LibraryType.CONTAINER);
 
         vfs.put("aOf", new FArray());

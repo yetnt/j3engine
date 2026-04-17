@@ -1,7 +1,7 @@
 package com.j3d.engine.geometry.geo2d;
 
 import com.j3d.J3DSettings;
-import com.j3d.engine.Renderer;
+import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.BasePoint;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo3d.Camera;
@@ -22,7 +22,7 @@ import java.util.Objects;
  * want to show it on the screen, converted to a {@link ScreenPoint}
  * @author Lehlogonolo Poole
  * @see ScreenPoint
- * @see CartesianPoint#toScreen(Renderer)
+ * @see CartesianPoint#toScreen(SceneManager)
  * @see BasePoint
  * @see Vector3
  */
@@ -61,15 +61,15 @@ public class CartesianPoint extends BasePoint<Double> {
 
     /**
      * Converts the Cartesian Point to a {@link ScreenPoint} such that it can be viewed on the user's window.
-     * @param renderer The renderer instance.
+     * @param sceneManager The sceneManager instance.
      * @return A ScreenPoint
      */
-    public ScreenPoint toScreen(Renderer renderer) {
+    public ScreenPoint toScreen(SceneManager sceneManager) {
         double adjustedX = x * Settings.sceneProperties.scale.getValue();
         double adjustedY = y * Settings.sceneProperties.scale.getValue();
 
-        int screenX = (int) (adjustedX + (double) renderer.screenSize.width / 2);
-        int screenY = (int) ((double) renderer.screenSize.height / 2 - adjustedY);
+        int screenX = (int) (adjustedX + (double) sceneManager.screenSize.width / 2);
+        int screenY = (int) ((double) sceneManager.screenSize.height / 2 - adjustedY);
 
 
         return new ScreenPoint(screenX - J3DSettings.OFFSET_X, screenY);

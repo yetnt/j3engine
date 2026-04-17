@@ -259,10 +259,10 @@ public class CommandParser {
      * @param uuid The UUID of the GObject or Thing to find.
      */
     public void argAddUUID(UUID uuid) {
-        GObject g = Static.renderer.findObjectByUUID(uuid);
+        GObject g = Static.sceneManager.findObjectByUUID(uuid);
         if (g == null) {
             // try to find a Thing with the given UUID
-            Thing t = Static.renderer.findThingByUUID(uuid);
+            Thing t = Static.sceneManager.findThingByUUID(uuid);
             if (t == null) {
                 label.error("No object or thing found with UUID: " + SafeJLabel.EMPH, uuid);
             } else {

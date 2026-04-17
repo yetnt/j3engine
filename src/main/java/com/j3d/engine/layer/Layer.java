@@ -1,7 +1,7 @@
 package com.j3d.engine.layer;
 
 import com.j3d.Static;
-import com.j3d.engine.Renderer;
+import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.Thing;
@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 /**
  * A {@code Layer} is a fundamental concept in the rendering pipeline, representing a
  * collection of {@link Thing} instances that are rendered together. The
- * {@link Renderer} processes these layers in a specific order, drawing the
+ * {@link SceneManager} processes these layers in a specific order, drawing the
  * contents of each layer to the screen. By organizing {@code Thing}s into
  * layers, you can control their stacking order and visibility.
  * <p>
@@ -39,7 +39,7 @@ import java.util.stream.Stream;
  *     </li>
  * </ul>
  *
- * @see Renderer
+ * @see SceneManager
  * @see GObject
  * @see ArrayDeque
  */
@@ -79,7 +79,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
         treeNodeIdentity = new TreeNodeIdentity<>(
                 identifier, this, onSelectCallback);
         treeNode = Static.layerTree.addNode(null, treeNodeIdentity);
-        Renderer.history.add(
+        SceneManager.history.add(
                 new ConstructorAction() {
                     @Override
                     public void cleanup() {
@@ -145,7 +145,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
                 "LAYER-0", this, onSelectCallback
         );
         treeNode = Static.layerTree.addNode(null, treeNodeIdentity);
-        Renderer.history.add(
+        SceneManager.history.add(
                 new ConstructorAction() {
                     @Override
                     public void cleanup() {
@@ -236,7 +236,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
 
     @Override
     public void instantDelete() {
-        Static.renderer.layers.remove(this);
+        Static.sceneManager.layers.remove(this);
         for (Thing t : this) {
             t.instantDelete();
         }

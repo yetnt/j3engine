@@ -7,7 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 
 /**
- * MouseOwner is a class which represents an entity that can own the mouse input in the renderer. It extends MouseAdapter
+ * MouseOwner is a class which represents an entity that can own the mouse input in the sceneManager. It extends MouseAdapter
  * to allow it to handle mouse events and implements EventEmitterInterface
  * to allow it to broadcast events to registered listeners.
  */
@@ -17,7 +17,7 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
      */
     protected ArrayList<EventListener> registered = new ArrayList<>();
     /**
-     * The owner of the mouse input, used to determine if the current MouseOwner is the owner of the mouse input in the renderer.
+     * The owner of the mouse input, used to determine if the current MouseOwner is the owner of the mouse input in the sceneManager.
      */
     private final MOwner owner;
 
@@ -30,7 +30,7 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
     }
 
     /**
-     * Requests ownership of the mouse input in the renderer.
+     * Requests ownership of the mouse input in the sceneManager.
      * This will set the mouse owner in the EngineFrame to this MouseOwner's owner.
      */
     public void requestOwnership() {
@@ -38,10 +38,10 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
     }
 
     /**
-     * Checks if this MouseOwner is not the owner of the mouse input in the renderer.
-     * @return True if this MouseOwner is not the owner of the mouse input in the renderer, false otherwise.
+     * Checks if this MouseOwner is not the owner of the mouse input in the sceneManager.
+     * @return True if this MouseOwner is not the owner of the mouse input in the sceneManager, false otherwise.
      * @implNote This is flipped from the more intuitive isOwner() method to allow for easier use in mouse event methods,
-     *           where we want to return early if this MouseOwner is not the owner of the mouse input in the renderer.
+     *           where we want to return early if this MouseOwner is not the owner of the mouse input in the sceneManager.
      */
     protected boolean isNotOwner() {
         return EngineFrame.getMouseOwner() != owner;

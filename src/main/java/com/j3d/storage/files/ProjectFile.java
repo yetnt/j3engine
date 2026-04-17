@@ -2,7 +2,6 @@ package com.j3d.storage.files;
 
 import com.j3d.Static;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
-import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.Thing;
@@ -22,10 +21,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -234,7 +230,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
         final HashMultiMap<String, GTri> trisParentsMap = new HashMultiMap<>();
         final HashMap<String, GTri> trisMap = new HashMap<>();
 
-        Static.renderer.layers.removeIf(l -> !Objects.equals(l.getIdentifier(), Layer.backgroundId));
+        Static.sceneManager.layers.removeIf(l -> !Objects.equals(l.getIdentifier(), Layer.backgroundId));
 
         IOSupplier<DataInputStream> fileReader = dis -> {
             try {
@@ -353,7 +349,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                         boolean thingHidden = dis.readBoolean();
                         msg("\t\tHidden: " + thingHidden);
                         // todo unparented stuff's thing jsut dont get added when loading the what file.
-                        Thing thing = Thing.fromRaw(thingName, thingUUID, thingHidden, l, Static.renderer)
+                        Thing thing = Thing.fromRaw(thingName, thingUUID, thingHidden, l, Static.sceneManager)
                                 .addObjs(
                                         pointsParentsMap.getValues(thingUUID).toArray(new GPoint[0])
                                 )
@@ -373,7 +369,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
 
                 throbber.setTaskTitle("Finalizing");
 
-                Static.renderer.layers.addAll(layerOrder);
+                Static.sceneManager.layers.addAll(layerOrder);
 
                 Static.log.println("Project file loaded successfully from " + path);
                 msg("Project file loaded successfully");

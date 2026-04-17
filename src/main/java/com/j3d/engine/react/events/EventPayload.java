@@ -1,6 +1,6 @@
 package com.j3d.engine.react.events;
 
-import com.j3d.engine.Renderer;
+import com.j3d.engine.SceneManager;
 
 /**
  * EventPayload is an abstract class which is used to represent the properties that the
@@ -14,17 +14,17 @@ public abstract class EventPayload<T> {
     public final T emitter;
 
     /**
-     * The Renderer instance.
+     * The SceneManager instance.
      */
-    public final Renderer renderer;
+    public final SceneManager sceneManager;
 
     /**
      * Default Constructor for EventPayload
      * @param e The initiator of the broadcast.
-     * @param r The Renderer instance.
+     * @param r The SceneManager instance.
      */
-    public EventPayload(T e, Renderer r) {
+    public EventPayload(T e, SceneManager r) {
         emitter = e;
-        renderer = r;
+        sceneManager = r;
     }
 }

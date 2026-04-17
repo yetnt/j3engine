@@ -1,7 +1,7 @@
 package com.j3d.engine.geometry.geo3d.objs;
 
+import com.j3d.engine.SceneManager;
 import com.j3d.engine.layer.Layer;
-import com.j3d.engine.Renderer;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.Thing;
@@ -17,8 +17,8 @@ public class Plane extends Thing {
     public Vector3 cornerC;
     public Vector3 cornerD;
 
-    public Plane(Renderer renderer, Layer l, Vector3 a, Vector3 b, Vector3 c, Vector3 d) {
-        super(renderer, l, "Plane");
+    public Plane(SceneManager sceneManager, Layer l, Vector3 a, Vector3 b, Vector3 c, Vector3 d) {
+        super(sceneManager, l, "Plane");
         // Create GTri 1 from cornerA to cornerB to cornerC
         // Create GTri 2 from cornerB to cornerC to cornerD
         GPoint pointB = new GPoint(b);

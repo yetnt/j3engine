@@ -1,7 +1,7 @@
 package com.j3d.engine.interact.cmd.commands.transform;
 
 import com.j3d.Static;
-import com.j3d.engine.Renderer;
+import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
@@ -19,7 +19,6 @@ import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.utility.JLabelRichText;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -55,7 +54,7 @@ import java.util.stream.Stream;
  */
 public abstract class AbstractTransform extends Subcommand implements KeyedStatefulCommand {
 
-    /** A unique ID for the UI overlay drawn by the renderer during the transform state. */
+    /** A unique ID for the UI overlay drawn by the sceneManager during the transform state. */
     protected UUID overlapId;
     /** The mouse owner responsible for handling direct interaction with the 3D handles. */
     private final TransformMouseOwner mouseOwner;
@@ -133,7 +132,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
             faceMode = arg.equals("f") || arg.equals("v");
         }
 
-        Stream<GTri> tris = Static.renderer.getSelected().stream()
+        Stream<GTri> tris = Static.sceneManager.getSelected().stream()
                 .filter(obj -> obj instanceof GTri)
                 .map(obj -> (GTri) obj);
 
@@ -142,13 +141,13 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
         // Simple 3 dots
         references =
                 faceMode ?
-                        new ArrayList<>(Static.renderer.getSelected().stream()
+                        new ArrayList<>(Static.sceneManager.getSelected().stream()
                                 .filter(obj -> obj instanceof GTri)
                                 .map(obj -> (GTri) obj)
                                 .flatMap(GTri::getLegStream)
                                 .flatMap(GLine::getPointStream)
                                 .collect(Collectors.toSet()))
-                        : Static.renderer.getSelected()
+                        : Static.sceneManager.getSelected()
                         .stream()
                         .filter(obj -> obj instanceof GPoint)
                         .map(obj -> (GPoint) obj)
@@ -233,7 +232,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
 
         overlapId = UUID.randomUUID();
 
-        Static.renderer.scheduleOverlap(overlapId, drawScaleHandle);
+        Static.sceneManager.scheduleOverlap(overlapId, drawScaleHandle);
     }
 
     /**
@@ -241,9 +240,9 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
      */
     private void finished(SafeJLabel lbl) {
         keys.forEach(key -> Static.keybinds.removeJ3Key(key.getId()));
-        Static.renderer.removeOverlap(overlapId);
+        Static.sceneManager.removeOverlap(overlapId);
         lbl.clear();
-        Static.renderer.deselectAll();
+        Static.sceneManager.deselectAll();
         Static.mainFrame.repaint();
     }
 
@@ -255,7 +254,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
         EngineFrame.setMouseOwner(null);
         ArrayList<Vector3> newPositions = references.stream().map(GObject::getPivot).collect(Collectors.toCollection(ArrayList::new));
         // Add the transformation to the undo/redo history
-        Renderer.history.add(
+        SceneManager.history.add(
                 new VoidAction() {
                     @Override
                     public Void run() {

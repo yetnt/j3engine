@@ -5,13 +5,10 @@ import com.j3d.engine.draw.tris.methods.CamDepthSort;
 import com.j3d.engine.draw.tris.methods.CamDistSort;
 import com.j3d.engine.draw.tris.methods.DDUUIDSort;
 import com.j3d.engine.draw.tris.methods.VisibleSort;
-import com.j3d.engine.geometry.geo2d.HasParents;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
-import com.j3d.engine.geometry.geo3d.Thing;
-import com.j3d.engine.layer.Layer;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -26,7 +23,7 @@ import java.util.stream.Collectors;
  * sorting GTri in the future.
  * <p>
  *     The inner package "methods" contains the different sorting methods that TriStateArea can use.
- *     It's configured by the Renderer (or debug settings) to choose which method to use for sorting GTri objects.
+ *     It's configured by the SceneManager (or debug settings) to choose which method to use for sorting GTri objects.
  *     This is mostly for testing and performance comparison purposes, as when a method is chosen,
  *     it will be used for all rendering cycles until changed.
  * </p>
@@ -122,14 +119,14 @@ public class TriStateArea {
      * @param g The Graphics2D context.
      */
     public static void draw(Graphics2D g) {
-        ArrayList<GObject> unparented = Static.renderer.getUnparented().stream()
+        ArrayList<GObject> unparented = Static.sceneManager.getUnparented().stream()
                 .map(o -> (GObject) o)
                 .collect(Collectors.toCollection(ArrayList::new));
         unparented.forEach(
                 u -> {
                     // draw these fools first since we cant use TriStateArea methods for sorting.
                     // upper todo for optimizaiton but this may stay.
-                    if (Static.renderer.getSelected().contains(u)) {
+                    if (Static.sceneManager.getSelected().contains(u)) {
                         u.drawSelected(g);
                     } else {
                         u.draw(g);
@@ -138,7 +135,7 @@ public class TriStateArea {
         );
         for  (GTri tri : queue) {
             if (tri.isHidden()) continue;
-            if (Static.renderer.getSelected().contains(tri)) {
+            if (Static.sceneManager.getSelected().contains(tri)) {
                 tri.drawSelected(g);
             } else {
                 tri.draw(g);

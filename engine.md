@@ -70,7 +70,7 @@ classDiagram
       +x: int
       +y: int
       Constructor(x: int, y: int)
-      +toPoint(renderer: Renderer) CartesianPoint
+      +toPoint(sceneManager: Renderer) CartesianPoint
       +toSwingPoint() java.awt.Point
       +toString() string
     }
