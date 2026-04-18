@@ -1,0 +1,78 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.j3d;
+
+import com.j3d.threads.FakeLongTask;
+import com.j3d.ui.engine.EngineFrame;
+import com.j3d.ui.engine.J3Splash;
+import com.j3d.ui.home.Login;
+import com.j3d.ui.home.Projects;
+
+import javax.swing.*;
+import java.io.File;
+
+/**
+ *
+ * @author ACER
+ */
+public class Startup {
+    public static Runnable runnable = () -> {
+        Projects frame = new Projects();
+        frame.setVisible(true);
+    };
+    public static void main(String[] args) {
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
+                 UnsupportedLookAndFeelException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Just set the user
+        run();
+    }
+
+    public static void run() {
+
+        Login login = new Login(runnable);
+        login.setVisible(true);
+    }
+
+    public static void engine(File file) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
+                 UnsupportedLookAndFeelException e) {
+            throw new RuntimeException(e);
+        }
+        FakeLongTask flt = getFakeLongTask(file);
+        flt.iAmImpatient();
+//        try {
+//            flt.run();
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+    }
+
+    private static FakeLongTask getFakeLongTask(File file) {
+        J3Splash splash = new J3Splash();
+        FakeLongTask flt = new FakeLongTask(() -> {
+            splash.setVisible(true);
+        }, () -> {}, () -> {
+            EngineFrame e = file != null ?
+                    new EngineFrame(file)
+                    : new EngineFrame(true);
+            e.setResizable(true);
+            e.setVisible(true);
+            Timer t = new Timer(3000, ae -> {
+                splash.dispose();
+            });
+            t.setRepeats(false);
+            t.start();
+        }, 9.3);
+        return flt;
+    }
+}

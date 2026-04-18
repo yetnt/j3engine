@@ -212,6 +212,7 @@ public class EngineFrame extends javax.swing.JFrame {
 
     public EngineFrame(File file) {
         this(false);
+        this.setVisible(true);
 
         String path = file.getAbsolutePath();
         Static.log.println(path);

@@ -151,7 +151,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_openEngineQuickActionPerformed
 
     private void openEngineLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openEngineLoginActionPerformed
-        OtherMain.run();
+        Startup.run();
         this.dispose();
     }//GEN-LAST:event_openEngineLoginActionPerformed
 

@@ -5,6 +5,16 @@
 package com.j3d.ui.home;
 
 import com.j3d.Static;
+import com.j3d.storage.files.util.ProjectImagePair;
+import com.j3d.utility.ImageUtils;
+
+import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -12,11 +22,67 @@ import com.j3d.Static;
  */
 public class Projects extends javax.swing.JFrame {
 
+    HashSet<ProjectButton> pinned = new HashSet<>();
+
     /**
      * Creates new form Projects
      */
     public Projects() {
         initComponents();
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                Static.engineFiles.pinned.writeProjs(
+                        pinned.stream()
+                                .map(ProjectButton::getIdentity)
+                                .collect(Collectors.toCollection(HashSet::new))
+                );
+            }
+        });
+    }
+
+    public ImageIcon scaleImage(File image) {
+        return ImageUtils.createCroppedIcon2(image, 37, 16, 4);
+//        return new ImageIcon(ImageUtils
+//                .createCroppedIcon(image, 37, 16, 10)
+//                .getImage()
+//                .getScaledInstance(37, 16, Image.SCALE_SMOOTH));
+    }
+
+    public void genericLoad(ArrayList<ProjectImagePair> projs, JPanel targetPanel, boolean pin) {
+            for (ProjectImagePair proj : projs) {
+                File image = proj.getProjectImage();
+                File project = proj.getProjectFile();
+                ProjectButton pb = new ProjectButton(proj, scaleImage(image), project.getName(), this, targetPanel);
+                if (pin) {
+                    pb.setPinned(true);
+                    pinned.add(pb);
+                }
+                if (!targetPanel.equals(pinnedProjectsPanel)) {
+                    ArrayList<ProjectButton> copy = pinned.stream().filter(
+                            p -> ProjectImagePair.isCopy(p.identity, proj)
+                    ).collect(Collectors.toCollection(ArrayList::new));
+                    if (!copy.isEmpty()) {
+                        pb.setDuplicate(copy.getFirst());
+                    }
+                }
+                targetPanel.add(pb);
+                targetPanel.add(pb.filler());
+            }
+    }
+
+    public void loadRecentProjects() {
+        ArrayList<ProjectImagePair> projs = Static.engineFiles.recents.readRecents();
+        genericLoad(projs, recentProjectsPanel, false);
+    }
+
+    public void loadPinnedProjects() {
+        ArrayList<ProjectImagePair> projs = Static.engineFiles.pinned.readPinned();
+        genericLoad(projs, pinnedProjectsPanel, true);
+    }
+
+    public void loadStarterProjects() {
+
     }
 
     /**
@@ -32,11 +98,11 @@ public class Projects extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         scrollpanepanel = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jPanel3 = new javax.swing.JPanel();
+        pinnedProjectsPanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jPanel1 = new javax.swing.JPanel();
+        starterProjectsPanel = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jPanel2 = new javax.swing.JPanel();
+        recentProjectsPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -52,23 +118,13 @@ public class Projects extends javax.swing.JFrame {
         scrollpanepanel.setLayout(new java.awt.GridBagLayout());
 
         jScrollPane3.setMaximumSize(new java.awt.Dimension(327, 300));
-        jScrollPane3.setPreferredSize(new java.awt.Dimension(120, 60));
+        jScrollPane3.setPreferredSize(new java.awt.Dimension(120, 20));
 
-        jPanel3.setMaximumSize(new java.awt.Dimension(327, 300));
-        jPanel3.setPreferredSize(new java.awt.Dimension(120, 60));
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 900, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 226, Short.MAX_VALUE)
-        );
-
-        jScrollPane3.setViewportView(jPanel3);
+        pinnedProjectsPanel.setMaximumSize(new java.awt.Dimension(327, 300));
+        pinnedProjectsPanel.setMinimumSize(new java.awt.Dimension(120, 20));
+        pinnedProjectsPanel.setPreferredSize(new java.awt.Dimension(120, 20));
+        pinnedProjectsPanel.setLayout(new javax.swing.BoxLayout(pinnedProjectsPanel, javax.swing.BoxLayout.LINE_AXIS));
+        jScrollPane3.setViewportView(pinnedProjectsPanel);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -83,23 +139,13 @@ public class Projects extends javax.swing.JFrame {
         scrollpanepanel.add(jScrollPane3, gridBagConstraints);
 
         jScrollPane2.setMaximumSize(new java.awt.Dimension(327, 300));
-        jScrollPane2.setPreferredSize(new java.awt.Dimension(120, 60));
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(120, 20));
 
-        jPanel1.setMaximumSize(new java.awt.Dimension(327, 300));
-        jPanel1.setPreferredSize(new java.awt.Dimension(120, 60));
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 900, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 228, Short.MAX_VALUE)
-        );
-
-        jScrollPane2.setViewportView(jPanel1);
+        starterProjectsPanel.setMaximumSize(new java.awt.Dimension(327, 300));
+        starterProjectsPanel.setMinimumSize(new java.awt.Dimension(120, 20));
+        starterProjectsPanel.setPreferredSize(new java.awt.Dimension(120, 20));
+        starterProjectsPanel.setLayout(new javax.swing.BoxLayout(starterProjectsPanel, javax.swing.BoxLayout.LINE_AXIS));
+        jScrollPane2.setViewportView(starterProjectsPanel);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -114,23 +160,13 @@ public class Projects extends javax.swing.JFrame {
         scrollpanepanel.add(jScrollPane2, gridBagConstraints);
 
         jScrollPane4.setMaximumSize(new java.awt.Dimension(327, 300));
-        jScrollPane4.setPreferredSize(new java.awt.Dimension(120, 60));
+        jScrollPane4.setPreferredSize(new java.awt.Dimension(120, 20));
 
-        jPanel2.setMaximumSize(new java.awt.Dimension(327, 300));
-        jPanel2.setPreferredSize(new java.awt.Dimension(120, 60));
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 898, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 224, Short.MAX_VALUE)
-        );
-
-        jScrollPane4.setViewportView(jPanel2);
+        recentProjectsPanel.setMaximumSize(new java.awt.Dimension(327, 300));
+        recentProjectsPanel.setMinimumSize(new java.awt.Dimension(120, 20));
+        recentProjectsPanel.setPreferredSize(new java.awt.Dimension(120, 20));
+        recentProjectsPanel.setLayout(new javax.swing.BoxLayout(recentProjectsPanel, javax.swing.BoxLayout.LINE_AXIS));
+        jScrollPane4.setViewportView(recentProjectsPanel);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -145,7 +181,7 @@ public class Projects extends javax.swing.JFrame {
         scrollpanepanel.add(jScrollPane4, gridBagConstraints);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
-        jLabel1.setText("()");
+        jLabel1.setText("Pinned Projects");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
@@ -177,6 +213,9 @@ public class Projects extends javax.swing.JFrame {
         jScrollPane1.setViewportView(scrollpanepanel);
 
         getContentPane().add(jScrollPane1);
+        loadPinnedProjects();
+        loadRecentProjects();
+        loadStarterProjects();
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -196,7 +235,7 @@ public class Projects extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -231,13 +270,13 @@ public class Projects extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    public javax.swing.JPanel pinnedProjectsPanel;
+    public javax.swing.JPanel recentProjectsPanel;
     private javax.swing.JPanel scrollpanepanel;
+    public javax.swing.JPanel starterProjectsPanel;
     // End of variables declaration//GEN-END:variables
 }

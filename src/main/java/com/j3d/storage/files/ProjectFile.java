@@ -352,17 +352,17 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                         msg("\t\tName: " + thingName);
                         boolean thingHidden = dis.readBoolean();
                         msg("\t\tHidden: " + thingHidden);
-                        // todo unparented stuff's thing jsut dont get added when loading the what file.
-                        Thing thing = Thing.fromRaw(thingName, thingUUID, thingHidden, l, Static.sceneManager)
-                                .addObjs(
+
+                        Thing thing = Thing.fromRaw(thingName, thingUUID, thingHidden, l, Static.sceneManager);
+                        thing.addObjs(
                                         pointsParentsMap.getValues(thingUUID).toArray(new GPoint[0])
-                                )
-                                .addObjs(
-                                        linesParentsMap.isEmpty() ? new GLine[0] :
+                                );
+                        thing.addObjs(
+                                        linesParentsMap.getValues(thingUUID) == null ? new GLine[0] :
                                         linesParentsMap.getValues(thingUUID).toArray(new GLine[0])
-                                )
-                                .addObjs(
-                                        trisParentsMap.isEmpty() ? new GTri[0] :
+                                );
+                        thing.addObjs(
+                                        trisParentsMap.getValues(thingUUID) == null ? new GTri[0] :
                                         trisParentsMap.getValues(thingUUID).toArray(new GTri[0])
                                 );
                         interactables.add(thing);
@@ -383,6 +383,8 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
             return null;
         };
         FilesUtility.readBinary(path, name, fileReader);
+        CoreSettings.hasSaved = true;
+        Static.engineFiles.recents.writeProj(new File(path).toPath().resolve(name).toFile());
 //        success.add(true);
         return (T) interactables;
     }
