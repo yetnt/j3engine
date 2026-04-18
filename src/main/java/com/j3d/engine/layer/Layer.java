@@ -10,6 +10,7 @@ import com.j3d.engine.react.actions.DirtyAction;
 import com.j3d.engine.react.actions.DirtyVoidAction;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.ConstructorAction;
+import com.j3d.settings.CoreSettings;
 import com.j3d.ui.engine.tree.TreeNodeIdentity;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -183,6 +184,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
     public DirtyAction<Layer> squashWith(Layer otherlayer) {
         final Layer current = this;
         final Layer other = otherlayer;
+        toggleSaved();
         return new DirtyAction<>() {
             @Override
             public void cleanup() throws Exception {
@@ -279,6 +281,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
     @Override
     public Action<Boolean> toggleVisibility() {
         final Layer l = this;
+        toggleSaved();
         return new Action<>() {
             final boolean oldState = l.hidden;
             @Override
@@ -318,6 +321,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
     @Override
     public DirtyVoidAction deleteLater() {
         final Layer l = this;
+        toggleSaved();
         return new DirtyVoidAction() {
             @Override
             public void cleanup() throws Exception {

@@ -9,6 +9,7 @@ import com.j3d.storage.db.users.User;
  */
 public abstract class CoreSettings {
     public static User user;
+    public static boolean hasSaved = false;
     static {
         user = DatabaseManager.tblUsers.findById(3);
     }

@@ -13,6 +13,7 @@ import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
+import com.j3d.settings.CoreSettings;
 import com.j3d.storage.files.ProjectFile;
 import com.j3d.ui.dialog.Throbber;
 

@@ -25,6 +25,7 @@ import com.j3d.engine.interact.input.mouse.MouseOwner;
 import com.j3d.engine.interact.input.mouse.NoMouseOwner;
 import com.j3d.engine.interact.selection.SelectionManager;
 //import com.j3d.jaiva.Testing;
+import com.j3d.settings.CoreSettings;
 import com.j3d.storage.files.FilesUtility;
 import com.j3d.storage.files.ProjectFile;
 import com.j3d.threads.LongTask;
@@ -34,10 +35,7 @@ import com.j3d.ui.settings.SettingsFrame;
 import com.j3d.ui.tb.Toolbox;
 //import com.jaiva.JBundler;
 import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -241,6 +239,21 @@ public class EngineFrame extends javax.swing.JFrame {
         owners.forEach(this::addMouseMotionListener);
         initComponents();
         complete();
+
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                boolean saved = CoreSettings.hasSaved;
+                if (saved) {
+                    Static.mainFrame.dispose();
+                    return;
+                }
+                AreYouSure ays = new AreYouSure(Static.mainFrame, true, "You have not saved this project. Progress will be lost.");
+                ays.setVisible(true);
+                if (ays.canProceed()) Static.mainFrame.dispose();
+            }
+        });
     }
 
 //    /**
@@ -310,7 +323,7 @@ public class EngineFrame extends javax.swing.JFrame {
         exportJMenuItemDropDown = new javax.swing.JMenu();
         exportAsPNGJMenuItem = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("J3D");
         setIconImage(Static.logo());
         setMinimumSize(new java.awt.Dimension(1024, 768));

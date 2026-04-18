@@ -3,6 +3,7 @@ package com.j3d.engine.interact;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.CleanableAction;
 import com.j3d.engine.react.actions.DirtyVoidAction;
+import com.j3d.settings.CoreSettings;
 import com.j3d.ui.dialog.Throbber;
 import com.j3d.ui.engine.tree.TreeNodeIdentity;
 
@@ -55,6 +56,10 @@ public interface Interactable {
      * @return An action that deletes the object.
      */
     DirtyVoidAction deleteLater();
+
+    default void toggleSaved() {
+        CoreSettings.hasSaved = false;
+    };
 
     /**
      * An internal delete method which all implementors should

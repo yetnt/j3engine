@@ -153,6 +153,7 @@ public class Thing implements Interactable {
                 name, this, onSelectCallback
         );
         treeNode = Static.layerTree.addNode(parent.getTreeNode(), treeNodeIdentity);
+        toggleSaved();
         SceneManager.history.add(
                 new ConstructorAction() {
                     @Override
@@ -193,6 +194,7 @@ public class Thing implements Interactable {
      * @param invokeSwingHooks Whether to run GUI related hooks
      */
     public Thing(SceneManager sceneManager, Layer l, String name, boolean invokeSwingHooks) {
+        toggleSaved();
         l = l == null ? sceneManager.layers.get(1) : l;
         if (l.getIdentifier().equals(Layer.backgroundId)) {
             isBg = true;
@@ -215,6 +217,7 @@ public class Thing implements Interactable {
      * @param name The name of the Thing.
      */
     public Thing(SceneManager sceneManager, Layer l, String name) {
+        toggleSaved();
         l = l == null ? sceneManager.layers.get(1) : l;
         if (l.getIdentifier().equals(Layer.backgroundId)) {
             isBg = true;
@@ -235,6 +238,7 @@ public class Thing implements Interactable {
      * @param gObjects The GObjects to add.
      */
     public Thing addObjs(GObject ...gObjects) {
+        toggleSaved();
         if (gObjects.length == 0) {
             System.out.println("bug biyvh");
         }
@@ -308,6 +312,7 @@ public class Thing implements Interactable {
      * new Thing.
      */
     public Action<Thing> copy(SceneManager sceneManager, Layer l) {
+        toggleSaved();
         final Thing current = this;
         return new Action<Thing>() {
             private Thing newThing;
@@ -350,6 +355,7 @@ public class Thing implements Interactable {
      * @return An Action which performs the scae operation.
      */
     public VoidAction scale(double scale) {
+        toggleSaved();
         return new VoidAction() {
             private final ArrayList<Vector3> originalPositions = new ArrayList<>();
             @Override
@@ -388,6 +394,7 @@ public class Thing implements Interactable {
      * @return An Action which performs the scale operation.
      */
     public VoidAction scale(Vector3 scale) {
+        toggleSaved();
         return new VoidAction() {
             private final ArrayList<Vector3> originalPositions = new ArrayList<>();
             @Override
@@ -426,6 +433,7 @@ public class Thing implements Interactable {
      * @return An Action which performs the translation operation.
      */
     public VoidAction translate(Vector3 v) {
+        toggleSaved();
         return new VoidAction() {
             private final ArrayList<Vector3> originalPositions = new ArrayList<>();
             @Override
@@ -465,6 +473,7 @@ public class Thing implements Interactable {
      * @return An Action which performs the rotation operation.
      */
     public VoidAction rotate(Vector3 axis, double angleDegrees) {
+        toggleSaved();
         return new VoidAction() {
             private final ArrayList<Vector3> originalPositions = new ArrayList<>();
             @Override
@@ -559,6 +568,7 @@ public class Thing implements Interactable {
 
     @Override
     public Action<Boolean> toggleVisibility() {
+        toggleSaved();
         final Thing t = this;
         return new Action<Boolean>() {
             final boolean oldState = t.hidden;
@@ -589,6 +599,7 @@ public class Thing implements Interactable {
 
     @Override
     public DirtyVoidAction deleteLater() {
+        toggleSaved();
         final Thing t = this;
         final DefaultMutableTreeNode parentLayerNode = (DefaultMutableTreeNode) treeNode.getParent();
         return new DirtyVoidAction() {

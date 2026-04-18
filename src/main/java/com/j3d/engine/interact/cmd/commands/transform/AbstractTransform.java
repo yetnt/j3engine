@@ -9,6 +9,7 @@ import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.base.*;
+import com.j3d.settings.CoreSettings;
 import com.j3d.ui.J3DTheme;
 import com.j3d.ui.util.SafeJLabel;
 import com.j3d.engine.interact.cmd.commands.transform.handlers.Handle;
@@ -252,6 +253,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
     @Override
     public void onEnter(ActionEvent e, Void object, SafeJLabel label) {
         EngineFrame.setMouseOwner(null);
+        toggleSaved();
         ArrayList<Vector3> newPositions = references.stream().map(GObject::getPivot).collect(Collectors.toCollection(ArrayList::new));
         // Add the transformation to the undo/redo history
         SceneManager.history.add(
@@ -272,6 +274,10 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
                 }
         );
         finished(label);
+    }
+
+    private void toggleSaved() {
+        CoreSettings.hasSaved = false;
     }
 
     /**

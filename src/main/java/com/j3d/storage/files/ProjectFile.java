@@ -9,6 +9,7 @@ import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.layer.LayerList;
+import com.j3d.settings.CoreSettings;
 import com.j3d.storage.files.protocol.FileProtocol;
 import com.j3d.storage.files.protocol.GenericFileProtocol;
 import com.j3d.ui.dialog.Throbber;
@@ -203,6 +204,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
         };
 
         FilesUtility.writeBinary(path, name, fileWriter);
+        CoreSettings.hasSaved = true;
     }
 
     private static void msg(String message) {
