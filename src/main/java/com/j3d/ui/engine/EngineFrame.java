@@ -94,12 +94,13 @@ public class EngineFrame extends javax.swing.JFrame {
         Static.mainFrame.repaint();
     }
 
-    public void complete() {
+    public void complete(boolean runExecutor) {
         Static.mainFrame = this;
         final int menuBarOffsetY = (Static.mainFrame.getJMenuBar().getSize().height + jMenuBarOffsetY);
         Static.mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         Static.sceneManager = new SceneManager(J3DSettings.screenSize);
-        Static.executor = new Executor(Static.sceneManager);
+        if (runExecutor)
+            Static.executor = new Executor(Static.sceneManager);
         Static.debugPanel.run(Static.sceneManager, Static.executor, Static.mainFrame);
         HoverJLabelPanel lbl = new HoverJLabelPanel();
         lbl.setBounds(0 ,0, lbl.getPreferredSize().width, lbl.getPreferredSize().height);
@@ -127,14 +128,6 @@ public class EngineFrame extends javax.swing.JFrame {
         Static.mainPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN));
         Static.mainPanel.setBounds(0, menuBarOffsetY, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
         Static.mainPanel.setPreferredSize(new Dimension(J3DSettings.screenSize.width, J3DSettings.screenSize.height));
-
-//        Static.layerTree.setBounds(
-//                J3DSettings.screenSize.width - 260 -(Static.layerTree.getPreferredSize().width),
-//                toolbox.getPreferredSize().height + menuBarOffsetY,
-//                Static.layerTree.getPreferredSize().width,
-//                Static.layerTree.getPreferredSize().height);
-//        layeredPane.add(Static.layerTree, JLayeredPane.POPUP_LAYER);
-//        Static.layerTree.setVisible(false);
 
         Static.log = new Logger(Static.debugPanel.logTextArea); // initialize logger with the text area
 
@@ -217,10 +210,41 @@ public class EngineFrame extends javax.swing.JFrame {
         });
     }
 
+    public EngineFrame(File file) {
+        this(false);
+
+        String path = file.getAbsolutePath();
+        Static.log.println(path);
+        Path p = Paths.get(path);
+        String fileName = p.getFileName().toString();
+        String fileDir = p.getParent().toString();
+
+        J3DSettings.setProject(fileDir, fileName);
+
+        LongTask<ArrayList<Interactable>> t = new LongTask<>(
+                ta -> {
+                    ArrayList<Interactable> a = null;
+                    try {
+                        a = new ProjectFile()
+                                .readFile(fileDir, fileName, ta);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                    System.out.println(a.size());
+                    return a;
+                },
+                (tb, i) -> {
+                    i.forEach(Interactable::invokeSwingHooks);
+                }
+        );
+
+        t.run();
+    }
+
     /**
      * Creates new form Main2
      */
-    public EngineFrame() {
+    public EngineFrame(boolean runExecutor) {
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
             SwingUtilities.updateComponentTreeUI(this); // 'this' refers to the frame
@@ -238,7 +262,7 @@ public class EngineFrame extends javax.swing.JFrame {
         owners.forEach(this::addMouseListener);
         owners.forEach(this::addMouseMotionListener);
         initComponents();
-        complete();
+        complete(runExecutor);
 
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new WindowAdapter() {

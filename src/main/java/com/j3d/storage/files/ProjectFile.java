@@ -19,6 +19,7 @@ import com.j3d.utility.Pair;
 import java.awt.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
@@ -205,6 +206,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
 
         FilesUtility.writeBinary(path, name, fileWriter);
         CoreSettings.hasSaved = true;
+        Static.engineFiles.recents.writeProj(new File(path).toPath().resolve(name).toFile());
     }
 
     private static void msg(String message) {

@@ -8,6 +8,7 @@ import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.settings.Settings;
+import com.j3d.storage.files.engine.EngineFiles;
 import com.j3d.ui.engine.DebugPanel;
 import com.j3d.ui.engine.tree.LayerTree;
 import com.j3d.ui.util.HoverJLabel;
@@ -84,4 +85,6 @@ public class Static {
             return null;
         }
     }
+
+    public static EngineFiles engineFiles = new EngineFiles();
 }

@@ -120,7 +120,7 @@ public class Main extends javax.swing.JFrame {
         FakeLongTask flt = new FakeLongTask(() -> {
             splash.setVisible(true);
         }, () -> {}, () -> {
-            EngineFrame e = new EngineFrame();
+            EngineFrame e = new EngineFrame(true);
             e.setResizable(true);
             e.setVisible(true);
             Timer t = new Timer(3000, ae -> {
@@ -144,7 +144,7 @@ public class Main extends javax.swing.JFrame {
                  UnsupportedLookAndFeelException e) {
             throw new RuntimeException(e);
         }
-        EngineFrame e = new EngineFrame();
+        EngineFrame e = new EngineFrame(true);
         e.setResizable(true);
         e.setVisible(true);
         this.dispose();

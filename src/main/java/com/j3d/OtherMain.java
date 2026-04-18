@@ -15,7 +15,7 @@ import javax.swing.*;
  */
 public class OtherMain {
     public static Runnable runnable = () -> {
-        EngineFrame frame = new EngineFrame();
+        EngineFrame frame = new EngineFrame(true);
         frame.setVisible(true);
     };
     public static void main(String[] args) {
