@@ -6,14 +6,14 @@ package com.j3d.ui.home;
 
 import com.j3d.Startup;
 import com.j3d.storage.files.util.ProjectImagePair;
+import com.j3d.ui.CursorManager;
+import com.j3d.ui.CursorNames;
+import com.j3d.ui.J3DTheme;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  *
@@ -37,6 +37,7 @@ public class ProjectButton extends javax.swing.JPanel {
         projectImageLabel.setIcon(icon);
         projectImageLabel.setText("");
         projectName.setText(pn);
+        projectImageLabel.setCursor(CursorManager.get(CursorNames.HAND_POINTER));
         this.setToolTipText(pn);
         identity = projectFile;
         this.parentFrame = parentFrame;
@@ -94,10 +95,14 @@ public class ProjectButton extends javax.swing.JPanel {
         projectName = new javax.swing.JLabel();
         projectImageLabel = new javax.swing.JLabel();
 
+        setBackground(J3DTheme.UI_SURFACE.color());
         setMaximumSize(new java.awt.Dimension(174, 174));
         setMinimumSize(new java.awt.Dimension(174, 174));
         setPreferredSize(new java.awt.Dimension(174, 174));
 
+        togglePinned.setBackground(J3DTheme.BACKGROUND.color());
+        togglePinned.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        togglePinned.setForeground(J3DTheme.TEXT_PRIMARY.color());
         togglePinned.setText("Pin Project");
         togglePinned.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -105,11 +110,14 @@ public class ProjectButton extends javax.swing.JPanel {
             }
         });
 
+        projectName.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
         projectName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         projectName.setText("jLabel4");
 
+        projectImageLabel.setBackground(J3DTheme.ACCENT_SECONDARY.color());
         projectImageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         projectImageLabel.setText("jLabel4");
+        projectImageLabel.setOpaque(true);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

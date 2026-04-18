@@ -54,6 +54,11 @@
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
         <Container class="javax.swing.JPanel" name="scrollpanepanel">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="J3DTheme.UI_SURFACE.color()" type="code"/>
+            </Property>
+          </Properties>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
           <SubComponents>
@@ -76,6 +81,9 @@
               <SubComponents>
                 <Container class="javax.swing.JPanel" name="pinnedProjectsPanel">
                   <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="J3DTheme.UI_SURFACE.color()" type="code"/>
+                    </Property>
                     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[327, 300]"/>
                     </Property>
@@ -113,6 +121,9 @@
               <SubComponents>
                 <Container class="javax.swing.JPanel" name="starterProjectsPanel">
                   <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="J3DTheme.UI_SURFACE.color()" type="code"/>
+                    </Property>
                     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[327, 300]"/>
                     </Property>
@@ -150,6 +161,9 @@
               <SubComponents>
                 <Container class="javax.swing.JPanel" name="recentProjectsPanel">
                   <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="J3DTheme.UI_SURFACE.color()" type="code"/>
+                    </Property>
                     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[327, 300]"/>
                     </Property>
@@ -173,6 +187,9 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="18" style="3"/>
                 </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Pinned Projects"/>
               </Properties>
               <Constraints>
@@ -186,6 +203,9 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="18" style="3"/>
                 </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Starter Projects"/>
               </Properties>
               <Constraints>
@@ -198,6 +218,9 @@
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="18" style="3"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Recent Projects"/>
               </Properties>

@@ -37,6 +37,12 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="dockButton">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="J3DTheme.BACKGROUND.color()" type="code"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="dock"/>
           </Properties>
           <Events>
@@ -44,9 +50,20 @@
           </Events>
         </Component>
         <Component class="javax.swing.JSeparator" name="jSeparator1">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="J3DTheme.UI_SURFACE.color()" type="code"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="attachButton">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="J3DTheme.BACKGROUND.color()" type="code"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="attach"/>
           </Properties>
           <Events>

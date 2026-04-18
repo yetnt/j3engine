@@ -5,6 +5,7 @@
 package com.j3d.ui.engine;
 
 import com.j3d.Static;
+import com.j3d.ui.J3DTheme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -161,6 +162,8 @@ public class FloatingPanel extends javax.swing.JPanel {
         btnsPanel.setMaximumSize(new java.awt.Dimension(350, 23));
         btnsPanel.setLayout(new javax.swing.BoxLayout(btnsPanel, javax.swing.BoxLayout.LINE_AXIS));
 
+        dockButton.setBackground(J3DTheme.BACKGROUND.color());
+        dockButton.setForeground(J3DTheme.TEXT_PRIMARY.color());
         dockButton.setText("dock");
         dockButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -168,8 +171,12 @@ public class FloatingPanel extends javax.swing.JPanel {
             }
         });
         btnsPanel.add(dockButton);
+
+        jSeparator1.setBackground(J3DTheme.UI_SURFACE.color());
         btnsPanel.add(jSeparator1);
 
+        attachButton.setBackground(J3DTheme.BACKGROUND.color());
+        attachButton.setForeground(J3DTheme.TEXT_PRIMARY.color());
         attachButton.setText("attach");
         attachButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

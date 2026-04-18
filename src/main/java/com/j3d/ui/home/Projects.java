@@ -4,8 +4,10 @@
  */
 package com.j3d.ui.home;
 
+import com.j3d.Startup;
 import com.j3d.Static;
 import com.j3d.storage.files.util.ProjectImagePair;
+import com.j3d.ui.J3DTheme;
 import com.j3d.utility.ImageUtils;
 
 import javax.swing.*;
@@ -43,10 +45,6 @@ public class Projects extends javax.swing.JFrame {
 
     public ImageIcon scaleImage(File image) {
         return ImageUtils.createCroppedIcon2(image, 37, 16, 4);
-//        return new ImageIcon(ImageUtils
-//                .createCroppedIcon(image, 37, 16, 10)
-//                .getImage()
-//                .getScaledInstance(37, 16, Image.SCALE_SMOOTH));
     }
 
     public void genericLoad(ArrayList<ProjectImagePair> projs, JPanel targetPanel, boolean pin) {
@@ -82,7 +80,18 @@ public class Projects extends javax.swing.JFrame {
     }
 
     public void loadStarterProjects() {
-
+        StaticProjectButton freshProject = new StaticProjectButton("Fresh Project", e -> {
+            Startup.engine(false);
+            dispose();
+        });
+        StaticProjectButton debugScene = new StaticProjectButton("Debug Project", e -> {
+            Startup.engine(true);
+            dispose();
+        });
+        starterProjectsPanel.add(freshProject);
+        starterProjectsPanel.add(freshProject.filler());
+        starterProjectsPanel.add(debugScene);
+        starterProjectsPanel.add(debugScene.filler());
     }
 
     /**
@@ -115,11 +124,13 @@ public class Projects extends javax.swing.JFrame {
         setMaximumSize(new java.awt.Dimension(16, 2147483647));
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
+        scrollpanepanel.setBackground(J3DTheme.UI_SURFACE.color());
         scrollpanepanel.setLayout(new java.awt.GridBagLayout());
 
         jScrollPane3.setMaximumSize(new java.awt.Dimension(327, 300));
         jScrollPane3.setPreferredSize(new java.awt.Dimension(120, 20));
 
+        pinnedProjectsPanel.setBackground(J3DTheme.UI_SURFACE.color());
         pinnedProjectsPanel.setMaximumSize(new java.awt.Dimension(327, 300));
         pinnedProjectsPanel.setMinimumSize(new java.awt.Dimension(120, 20));
         pinnedProjectsPanel.setPreferredSize(new java.awt.Dimension(120, 20));
@@ -141,6 +152,7 @@ public class Projects extends javax.swing.JFrame {
         jScrollPane2.setMaximumSize(new java.awt.Dimension(327, 300));
         jScrollPane2.setPreferredSize(new java.awt.Dimension(120, 20));
 
+        starterProjectsPanel.setBackground(J3DTheme.UI_SURFACE.color());
         starterProjectsPanel.setMaximumSize(new java.awt.Dimension(327, 300));
         starterProjectsPanel.setMinimumSize(new java.awt.Dimension(120, 20));
         starterProjectsPanel.setPreferredSize(new java.awt.Dimension(120, 20));
@@ -162,6 +174,7 @@ public class Projects extends javax.swing.JFrame {
         jScrollPane4.setMaximumSize(new java.awt.Dimension(327, 300));
         jScrollPane4.setPreferredSize(new java.awt.Dimension(120, 20));
 
+        recentProjectsPanel.setBackground(J3DTheme.UI_SURFACE.color());
         recentProjectsPanel.setMaximumSize(new java.awt.Dimension(327, 300));
         recentProjectsPanel.setMinimumSize(new java.awt.Dimension(120, 20));
         recentProjectsPanel.setPreferredSize(new java.awt.Dimension(120, 20));
@@ -181,6 +194,7 @@ public class Projects extends javax.swing.JFrame {
         scrollpanepanel.add(jScrollPane4, gridBagConstraints);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        jLabel1.setForeground(J3DTheme.TEXT_PRIMARY.color());
         jLabel1.setText("Pinned Projects");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -191,6 +205,7 @@ public class Projects extends javax.swing.JFrame {
         scrollpanepanel.add(jLabel1, gridBagConstraints);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        jLabel2.setForeground(J3DTheme.TEXT_PRIMARY.color());
         jLabel2.setText("Starter Projects");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -201,6 +216,7 @@ public class Projects extends javax.swing.JFrame {
         scrollpanepanel.add(jLabel2, gridBagConstraints);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        jLabel3.setForeground(J3DTheme.TEXT_PRIMARY.color());
         jLabel3.setText("Recent Projects");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
