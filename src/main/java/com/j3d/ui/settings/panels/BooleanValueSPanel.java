@@ -45,8 +45,10 @@ public class BooleanValueSPanel extends javax.swing.JPanel implements SettingPan
 
         setBackground(J3DTheme.UI_SURFACE.color());
 
+        settingLabel2.setForeground(J3DTheme.TEXT_PRIMARY.color());
         settingLabel2.setText("SettingLabel (hover for desc)");
 
+        jCheckBox3.setForeground(J3DTheme.TEXT_PRIMARY.color());
         jCheckBox3.setText("Enabled");
         jCheckBox3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -60,10 +62,10 @@ public class BooleanValueSPanel extends javax.swing.JPanel implements SettingPan
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(settingLabel2)
-                .addGap(18, 18, 18)
-                .addComponent(jCheckBox3, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
-                .addGap(19, 19, 19))
+                .addComponent(settingLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jCheckBox3)
+                .addContainerGap(394, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -72,7 +74,7 @@ public class BooleanValueSPanel extends javax.swing.JPanel implements SettingPan
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(settingLabel2)
                     .addComponent(jCheckBox3))
-                .addGap(0, 13, Short.MAX_VALUE))
+                .addGap(0, 8, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

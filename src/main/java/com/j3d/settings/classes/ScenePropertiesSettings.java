@@ -7,6 +7,7 @@ import com.j3d.engine.geometry.geo2d.CartesianPoint;
 import com.j3d.settings.Setting;
 import com.j3d.settings.SettingsChild;
 import com.j3d.settings.SettingsParent;
+import com.j3d.settings.types.BooleanSetting;
 import com.j3d.settings.types.DoubleSetting;
 import com.j3d.settings.types.EnumSetting;
 import com.j3d.ui.settings.SettingsParentPanel;
@@ -40,6 +41,11 @@ public class ScenePropertiesSettings implements SettingsParent {
         TriStateArea.setSortMethod(l);
         return null;
     });
+    public BooleanSetting useBackFaceCulling = new BooleanSetting(
+            "Use Back Face Culling",
+            false,
+            "Draw method should use back face culling optimization"
+    );
 
     public ScenePropertiesSettings() {
 
@@ -58,6 +64,7 @@ public class ScenePropertiesSettings implements SettingsParent {
     @Override
     public ArrayList<Setting<?>> getChildSettings() {
         return new ArrayList<>() {{
+            add(useBackFaceCulling);
             add(scale);
             add(triangleSortMethod);
         }};
@@ -71,6 +78,7 @@ public class ScenePropertiesSettings implements SettingsParent {
     @Override
     public ArrayList<SettingsChild> getAllChildren() {
         return new ArrayList<>() {{
+            add(useBackFaceCulling);
             add(scale);
             add(triangleSortMethod);
         }};

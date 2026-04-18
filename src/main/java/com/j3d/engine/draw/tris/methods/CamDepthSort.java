@@ -25,6 +25,7 @@ public class CamDepthSort extends SortMethod {
 
     @Override
     public boolean add(GTri gTri) {
+        if (backFaceCulled(gTri)) return false;
         if (this.contains(gTri)) {
             sort();
             return false;

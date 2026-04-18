@@ -138,7 +138,11 @@ public class SceneManager {
 
             this.drawLine3D(g,
                     new Vector3(i, 0, axisLength),
-                    new Vector3(i, 0, Math.clamp(-axisLength, camera.getPosition().getZ(), axisLength)),
+                    new Vector3(i, 0,
+                            camera.getPosition().getZ() < 0 ?
+                                    Math.clamp(-axisLength, camera.getPosition().getZ(), axisLength) :
+                                    Math.clamp(camera.getPosition().getZ() - 100, 0, axisLength)
+                            ),
                     camera);
 
             this.drawLine3D(g,
