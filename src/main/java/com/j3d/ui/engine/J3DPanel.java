@@ -72,6 +72,8 @@ public class J3DPanel extends JPanel {
      * @throws Exception If an error occurs during the export process.
      */
     public void exportAs(String extension, File file) throws Exception {
+        file.mkdirs();
+
         int scale = 2; // increase to 3 for even sharper output
 
         BufferedImage image = new BufferedImage(
