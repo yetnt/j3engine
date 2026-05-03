@@ -13,15 +13,15 @@ public class Logger {
     // Prefix for error log messages
     private static final String ERROR_PREFIX = "!![J3D-ERR] ";
     // The JTextArea where log messages will be displayed (if provided)
-    private JTextArea logArea;
+    private JTextArea logArea = null;
 
     /**
      * Constructs a Logger instance with the specified JTextArea.
-     *
-     * @param logArea The JTextArea where log messages will be displayed.
-     *                If null, messages will only be printed to the console.
      */
-    public Logger(JTextArea logArea) {
+    public Logger() {
+    }
+
+    public void setLogArea(JTextArea logArea) {
         this.logArea = logArea;
     }
 

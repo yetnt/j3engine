@@ -67,7 +67,7 @@ public class Static {
     /**
      * The Logger Instance
      */
-    public static Logger log;
+    public static Logger log = new Logger();
     /**
      * The Settings Object
      */

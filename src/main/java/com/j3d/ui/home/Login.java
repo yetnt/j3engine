@@ -6,6 +6,9 @@ package com.j3d.ui.home;
 
 import com.j3d.Static;
 import com.j3d.settings.CoreSettings;
+import com.j3d.storage.db.DatabaseManager;
+import com.j3d.storage.db.api.SQLOperator;
+import com.j3d.storage.db.users.CUsers;
 import com.j3d.storage.db.users.User;
 import com.j3d.storage.db.users.UsersTable;
 import com.j3d.ui.CursorManager;
@@ -13,6 +16,7 @@ import com.j3d.ui.CursorNames;
 import com.j3d.utility.PasswordHasher;
 
 import javax.swing.JOptionPane;
+import java.util.ArrayList;
 
 /**
  *
@@ -23,6 +27,7 @@ public class Login extends javax.swing.JFrame {
     private boolean showChar = false;
     private final char echoChar = '•';
     private final Runnable postLogin;
+    private int attempts = 0;
     /**
      * Creates new form Login
      */
@@ -54,6 +59,7 @@ public class Login extends javax.swing.JFrame {
         emailErrorJLabel = new javax.swing.JLabel();
         passwordErrorJLabel = new javax.swing.JLabel();
         signupJButton = new javax.swing.JButton();
+        forgotButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setIconImage(Static.logo());
@@ -128,6 +134,14 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        forgotButton.setText("Forgot Password?");
+        forgotButton.setEnabled(false);
+        forgotButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                forgotButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -151,7 +165,8 @@ public class Login extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 116, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(signupJButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(enterButton, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE))
+                            .addComponent(enterButton, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+                            .addComponent(forgotButton, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE))
                         .addGap(0, 114, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -172,9 +187,11 @@ public class Login extends javax.swing.JFrame {
                         .addComponent(passwordJLabel)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(passwordErrorJLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addComponent(forgotButton)
+                .addGap(18, 18, 18)
                 .addComponent(enterButton)
-                .addGap(28, 28, 28)
+                .addGap(18, 18, 18)
                 .addComponent(signupJButton)
                 .addContainerGap(43, Short.MAX_VALUE))
         );
@@ -199,24 +216,26 @@ public class Login extends javax.swing.JFrame {
 
         try {
             this.setCursor(CursorManager.get(CursorNames.HOURGLASS));
-            int id = UsersTable.userExists(email);
-            if (id == -1) {
+            ArrayList<User> queryResult = DatabaseManager.tblUsers.findWhere(
+                    CUsers.EMAIL,
+                    SQLOperator.EQUALS,
+                    email
+            );
+            if (queryResult.isEmpty()) {
                 this.setCursor(CursorManager.get(CursorNames.DEFAULT));
                 JOptionPane.showMessageDialog(this, "No user with that email exists.", "User Not Found", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            User user = UsersTable.getUser(id);
-            if (user == null) {
-                this.setCursor(CursorManager.get(CursorNames.DEFAULT));
-                JOptionPane.showMessageDialog(this, "You don't exist in the table...", "User Not Found", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
+            User user = queryResult.getFirst();
             byte[] salt = user.password.directSalt();
             String hashed = PasswordHasher.hashPassword(passwordJField.getPassword(), salt);
 
             if (!hashed.equals(user.password.hash().getValue())) {
                 this.setCursor(CursorManager.get(CursorNames.DEFAULT));
                 passwordErrorJLabel.setText("Incorrect password.");
+                attempts++;
+                if (attempts >= 2)
+                    forgotButton.setEnabled(true);
                 return;
             }
 
@@ -241,6 +260,12 @@ public class Login extends javax.swing.JFrame {
         signup.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_signupJButtonActionPerformed
+
+    private void forgotButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forgotButtonActionPerformed
+        this.dispose();
+        ForgotPassword forgotPassword = new ForgotPassword(emailJField.getText(), postLogin);
+        forgotPassword.setVisible(true);
+    }//GEN-LAST:event_forgotButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -284,6 +309,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JTextField emailJField;
     private javax.swing.JLabel emailJLabel;
     private javax.swing.JButton enterButton;
+    private javax.swing.JButton forgotButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

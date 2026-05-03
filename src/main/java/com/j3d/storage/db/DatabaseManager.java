@@ -1,5 +1,7 @@
 package com.j3d.storage.db;
 
+import com.j3d.Static;
+import com.j3d.engine.Logger;
 import com.j3d.storage.db.themes.ThemesTable;
 import com.j3d.storage.db.users.UsersTable;
 
@@ -16,7 +18,7 @@ public class DatabaseManager {
      * @return The connection object.
      * @throws SQLException If the connection fails.
      */
-    public static Connection connect() throws SQLException {
+    public static Connection connect(ConnectionReason cr) throws SQLException {
         // 1. Get the absolute path to your project folder automatically
         String projectPath = System.getProperty("user.dir");
 
@@ -27,6 +29,10 @@ public class DatabaseManager {
         String url = "jdbc:ucanaccess://" + dbFilePath;
 
         System.out.println("Connected to: " + dbFilePath);
+        if (Static.log == null)
+            Static.log = new Logger();
+
+        Static.log.println("[DB] Connected. " + cr);
         return DriverManager.getConnection(url);
     }
 

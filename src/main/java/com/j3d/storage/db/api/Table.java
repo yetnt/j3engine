@@ -1,5 +1,6 @@
 package com.j3d.storage.db.api;
 
+import com.j3d.storage.db.ConnectionReason;
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.themes.ThemesTable;
 import com.j3d.storage.db.users.UsersTable;
@@ -61,7 +62,12 @@ public interface Table<T extends DBRecord<?>, C extends TableColumns> {
 
         String sql = "SELECT * FROM " +  getName() + " WHERE " + columnName.getValue() + " " + op.getValue() + " ?";
 
-        try (Connection con = DatabaseManager.connect(); PreparedStatement psmt = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        ConnectionReason cr = new ConnectionReason(
+                this,
+                ConnectionReason.Reason.QUERY.setSqlString(sql)
+        );
+
+        try (Connection con = DatabaseManager.connect(cr); PreparedStatement psmt = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             switch (value) {
                 case Integer i -> psmt.setInt(1, i);

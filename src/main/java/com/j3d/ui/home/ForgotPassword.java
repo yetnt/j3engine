@@ -4,17 +4,40 @@
  */
 package com.j3d.ui.home;
 
+import com.j3d.Startup;
+import com.j3d.storage.db.DatabaseManager;
+import com.j3d.storage.db.api.SQLOperator;
+import com.j3d.storage.db.users.CUsers;
+import com.j3d.storage.db.users.User;
+import com.j3d.utility.PasswordHasher;
+
+import javax.swing.*;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.ArrayList;
+
 /**
  *
  * @author ACER
  */
 public class ForgotPassword extends javax.swing.JFrame {
 
+    private final Runnable postPasswordChange;
+    private boolean showChar = false;
+    private final char echoChar = '•';
+
     /**
      * Creates new form ForgotPassword
      */
-    public ForgotPassword() {
+    public ForgotPassword(Runnable postPasswordChange) {
         initComponents();
+        this.postPasswordChange = postPasswordChange;
+    }
+
+    public ForgotPassword(String email, Runnable postPasswordChange) {
+        initComponents();
+        emailTextField.setText(email);
+        this.postPasswordChange = postPasswordChange;
     }
 
     /**
@@ -26,18 +49,19 @@ public class ForgotPassword extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel2 = new javax.swing.JLabel();
+        mainLabel = new javax.swing.JLabel();
         applyChange = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jLabel4 = new javax.swing.JLabel();
+        emailLabel = new javax.swing.JLabel();
+        passwordLabel = new javax.swing.JLabel();
+        emailTextField = new javax.swing.JTextField();
+        newPasswordField = new javax.swing.JPasswordField();
+        jordyLabel = new javax.swing.JLabel();
+        seePasswordToggleButton = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
-        jLabel2.setText("hai you forgot?");
+        mainLabel.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        mainLabel.setText("hai you forgot?");
 
         applyChange.setText("Apply");
         applyChange.addActionListener(new java.awt.event.ActionListener() {
@@ -46,15 +70,21 @@ public class ForgotPassword extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Email");
+        emailLabel.setText("Email");
 
-        jLabel3.setText("New Password");
+        passwordLabel.setText("New Password");
 
-        jTextField1.setText("jTextField1");
+        jordyLabel.setIcon(new javax.swing.ImageIcon("C:\\Users\\ACER\\Documents\\code\\Jaiva3dEngine\\src\\main\\resources\\images\\jordy-folk.gif")); // NOI18N
 
-        jPasswordField1.setText("jPasswordField1");
-
-        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\ACER\\Documents\\code\\Jaiva3dEngine\\src\\main\\resources\\images\\jordy-folk.gif")); // NOI18N
+        seePasswordToggleButton.setText("👁");
+        seePasswordToggleButton.setMaximumSize(new java.awt.Dimension(25, 20));
+        seePasswordToggleButton.setMinimumSize(new java.awt.Dimension(20, 20));
+        seePasswordToggleButton.setPreferredSize(new java.awt.Dimension(25, 20));
+        seePasswordToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                seePasswordToggleButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -65,36 +95,39 @@ public class ForgotPassword extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(120, 120, 120)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(mainLabel)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(emailLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel2)
+                                .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(passwordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(newPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(seePasswordToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(257, 257, 257)
                         .addComponent(applyChange)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)))
+                        .addComponent(jordyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(55, 55, 55)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(mainLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(emailLabel)
+                    .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(passwordLabel)
+                    .addComponent(newPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(seePasswordToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(36, 36, 36)
@@ -102,7 +135,7 @@ public class ForgotPassword extends javax.swing.JFrame {
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(jordyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
@@ -110,8 +143,52 @@ public class ForgotPassword extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void applyChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyChangeActionPerformed
-        // TODO add your handling code here:
+        String email = emailTextField.getText();
+        char[] password = newPasswordField.getPassword();
+        if (email.isEmpty() || password.length == 0) {
+            return;
+        }
+
+        ArrayList<User> u = DatabaseManager.tblUsers.findWhere(CUsers.EMAIL, SQLOperator.EQUALS, email);
+        if (u.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "No user with that email exists.",
+                    "J3D Popup",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+        User user = u.getFirst();
+
+        try {
+            byte[] salt = user.password.salt().getValue();
+            String hashedPassword = PasswordHasher.hashPassword(password, salt);
+
+            user.password.hash().setValue(hashedPassword);
+            user.save();
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            throw new RuntimeException(e);
+        }
+
+        JOptionPane.showMessageDialog(
+                null,
+                "Password changed successfully!",
+                "J3D Popup",
+                JOptionPane.INFORMATION_MESSAGE
+        );
+
+        this.dispose();
+        Startup.run(postPasswordChange);
+
     }//GEN-LAST:event_applyChangeActionPerformed
+
+    private void seePasswordToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seePasswordToggleButtonActionPerformed
+        showChar = !showChar;
+        newPasswordField.setEchoChar(
+            showChar ? (char)0 : echoChar
+        );
+    }//GEN-LAST:event_seePasswordToggleButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -143,18 +220,21 @@ public class ForgotPassword extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ForgotPassword().setVisible(true);
+                new ForgotPassword(
+                        () -> {}
+                ).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton applyChange;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel emailLabel;
+    private javax.swing.JTextField emailTextField;
+    private javax.swing.JLabel jordyLabel;
+    private javax.swing.JLabel mainLabel;
+    private javax.swing.JPasswordField newPasswordField;
+    private javax.swing.JLabel passwordLabel;
+    private javax.swing.JToggleButton seePasswordToggleButton;
     // End of variables declaration//GEN-END:variables
 }

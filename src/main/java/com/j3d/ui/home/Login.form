@@ -107,6 +107,7 @@
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="signupJButton" max="32767" attributes="0"/>
                               <Component id="enterButton" pref="126" max="32767" attributes="0"/>
+                              <Component id="forgotButton" alignment="0" pref="126" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace min="0" pref="114" max="32767" attributes="0"/>
                       </Group>
@@ -135,9 +136,11 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="passwordErrorJLabel" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="80" max="32767" attributes="0"/>
+                  <EmptySpace pref="49" max="32767" attributes="0"/>
+                  <Component id="forgotButton" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="enterButton" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="signupJButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace pref="43" max="32767" attributes="0"/>
               </Group>
@@ -218,6 +221,15 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="signupJButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="forgotButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Forgot Password?"/>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="forgotButtonActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

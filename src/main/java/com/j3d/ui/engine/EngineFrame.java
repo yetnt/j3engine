@@ -129,7 +129,7 @@ public class EngineFrame extends javax.swing.JFrame {
         Static.mainPanel.setBounds(0, menuBarOffsetY, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
         Static.mainPanel.setPreferredSize(new Dimension(J3DSettings.screenSize.width, J3DSettings.screenSize.height));
 
-        Static.log = new Logger(Static.debugPanel.logTextArea); // initialize logger with the text area
+        Static.log.setLogArea(Static.debugPanel.logTextArea); // initialize logger with the text area
 
         Rectangle bounds = Static.mainFrame.getBounds();
         Dimension size = commandPallete.getPreferredSize();

@@ -36,7 +36,11 @@ public class Startup {
     }
 
     public static void run() {
+        Login login = new Login(runnable);
+        login.setVisible(true);
+    }
 
+    public static void run(Runnable runnable) {
         Login login = new Login(runnable);
         login.setVisible(true);
     }

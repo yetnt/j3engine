@@ -1,5 +1,6 @@
 package com.j3d.storage.db.users;
 
+import com.j3d.storage.db.ConnectionReason;
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.api.SQLOperator;
 import com.j3d.storage.db.api.Table;
@@ -75,7 +76,13 @@ public class UsersTable implements Table<User, CUsers> {
 
         // User does not exist, so proceed with insertion.
         String sql = "INSERT INTO tblUsers (firstName, lastName, email, passwordHash, passwordSalt, themeId) VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection conn = DatabaseManager.connect();
+
+        ConnectionReason cr = new ConnectionReason(
+                DatabaseManager.tblUsers,
+                ConnectionReason.Reason.INSERT.setSqlString(sql)
+        );
+
+        try (Connection conn = DatabaseManager.connect(cr);
              PreparedStatement pstmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             pstmt.setString(1, name);

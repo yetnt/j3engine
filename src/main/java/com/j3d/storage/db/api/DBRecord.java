@@ -1,5 +1,6 @@
 package com.j3d.storage.db.api;
 
+import com.j3d.storage.db.ConnectionReason;
 import com.j3d.storage.db.DatabaseManager;
 
 import java.sql.Connection;
@@ -52,9 +53,14 @@ public interface DBRecord<I extends Table> {
                 }
         );
         setString.deleteCharAt(setString.length() - 1);
-        String sql = "UPDATE " + getTable().getName() + " SET " + setString + " WHERE " + getTable().getPrimaryKey() + " = ?";
+        String sql = "UPDATE " + getTable().getName() + " SET " + setString + " WHERE " + getTable().getPrimaryKey().getValue() + " = ?";
 
-        try (Connection conn = DatabaseManager.connect(); PreparedStatement psmt = conn.prepareStatement(sql)) {
+        ConnectionReason cr = new ConnectionReason(
+                getTable(),
+                ConnectionReason.Reason.UPDATE.setSqlString(sql)
+        );
+
+        try (Connection conn = DatabaseManager.connect(cr); PreparedStatement psmt = conn.prepareStatement(sql)) {
             AtomicInteger i = new AtomicInteger(1);
             updatedFields.forEach(
                     f -> {
