@@ -6,9 +6,11 @@ package com.j3d.ui.home;
 
 import com.j3d.Startup;
 import com.j3d.Static;
+import com.j3d.settings.CoreSettings;
 import com.j3d.storage.files.util.ProjectImagePair;
 import com.j3d.ui.J3DTheme;
 import com.j3d.utility.ImageUtils;
+import com.j3d.utility.JLabelRichText;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
@@ -31,6 +33,13 @@ public class Projects extends javax.swing.JFrame {
      */
     public Projects() {
         initComponents();
+        jLabel4.setText(
+                JLabelRichText.htmlOf(
+                        new JLabelRichText("Welcome "),
+                        new JLabelRichText(CoreSettings.user.firstName.getValue()).italic(),
+                        new JLabelRichText("!")
+                )
+        );
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
@@ -104,7 +113,7 @@ public class Projects extends javax.swing.JFrame {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jPanel1 = new javax.swing.JPanel();
+        welcomePanelLabels = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -132,29 +141,29 @@ public class Projects extends javax.swing.JFrame {
 
         jLabel5.setText("Create a project or a starter project to get started");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(57, 57, 57)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout welcomePanelLabelsLayout = new javax.swing.GroupLayout(welcomePanelLabels);
+        welcomePanelLabels.setLayout(welcomePanelLabelsLayout);
+        welcomePanelLabelsLayout.setHorizontalGroup(
+            welcomePanelLabelsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, welcomePanelLabelsLayout.createSequentialGroup()
+                .addContainerGap(264, Short.MAX_VALUE)
+                .addGroup(welcomePanelLabelsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(welcomePanelLabelsLayout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addComponent(jLabel5))
                     .addComponent(jLabel4))
-                .addGap(52, 52, 52))
+                .addContainerGap(259, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        welcomePanelLabelsLayout.setVerticalGroup(
+            welcomePanelLabelsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(welcomePanelLabelsLayout.createSequentialGroup()
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
                 .addContainerGap())
         );
 
-        getContentPane().add(jPanel1);
+        getContentPane().add(welcomePanelLabels);
 
         scrollpanepanel.setBackground(J3DTheme.UI_SURFACE.color());
         scrollpanepanel.setLayout(new java.awt.GridBagLayout());
@@ -321,7 +330,6 @@ public class Projects extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -330,5 +338,6 @@ public class Projects extends javax.swing.JFrame {
     public javax.swing.JPanel recentProjectsPanel;
     private javax.swing.JPanel scrollpanepanel;
     public javax.swing.JPanel starterProjectsPanel;
+    private javax.swing.JPanel welcomePanelLabels;
     // End of variables declaration//GEN-END:variables
 }

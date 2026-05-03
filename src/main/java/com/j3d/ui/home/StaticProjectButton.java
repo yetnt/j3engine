@@ -71,11 +71,13 @@ public class StaticProjectButton extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(174, 174));
 
         projectName.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        projectName.setForeground(J3DTheme.TEXT_PRIMARY.color());
         projectName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         projectName.setText("jLabel4");
 
         projectImageLabel.setBackground(J3DTheme.ACCENT_SECONDARY.color());
         projectImageLabel.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        projectImageLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
         projectImageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         projectImageLabel.setText("jLabel4");
         projectImageLabel.setOpaque(true);

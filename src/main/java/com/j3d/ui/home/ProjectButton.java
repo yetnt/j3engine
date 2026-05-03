@@ -111,6 +111,7 @@ public class ProjectButton extends javax.swing.JPanel {
         });
 
         projectName.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        projectName.setForeground(J3DTheme.TEXT_PRIMARY.color());
         projectName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         projectName.setText("jLabel4");
 

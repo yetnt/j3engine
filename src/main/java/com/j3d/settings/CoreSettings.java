@@ -11,6 +11,6 @@ public abstract class CoreSettings {
     public static User user;
     public static boolean hasSaved = false;
     static {
-        user = DatabaseManager.tblUsers.findById(3);
+        user = DatabaseManager.tblUsers.findById(1);
     }
 }

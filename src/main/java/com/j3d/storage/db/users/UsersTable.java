@@ -113,9 +113,9 @@ public class UsersTable implements Table<User, CUsers> {
         return new User(
                 (int) values[0],
                 (int) values[1],
-                (String) values[2],
                 (String) values[3],
                 (String) values[4],
+                (String) values[2],
                 new Password((String) values[5], Base64.getDecoder().decode((String)values[6]))
         );
     }
