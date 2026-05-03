@@ -1,6 +1,6 @@
 package com.j3d.storage.files.protocol;
 
-import com.j3d.ui.dialog.Throbber;
+import com.j3d.ui.dialog.Spinner;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -35,11 +35,11 @@ public interface FileProtocol {
      * a direct inverse of the corresponding {@link #writeFile(String, String, ArrayList)} method.
      * @param path The path to the file to be read.
      * @param name The name of the file to be read.
-     * @param throbber The Throbber instance
+     * @param throbber The Spinner instance
      * @return The content of the file as an object of type T.
      * @param <T> The type of the object to be returned.
      */
-    <T extends ArrayList> T readFile(String path, String name, Throbber throbber) throws Exception;
+    <T extends ArrayList> T readFile(String path, String name, Spinner throbber) throws Exception;
     /**
      * Writes the provided data to a file at the specified path. This should be
      * a direct inverse of the corresponding {@link #readFile(String, String, Throbber)} method.

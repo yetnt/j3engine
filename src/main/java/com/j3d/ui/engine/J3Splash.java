@@ -43,6 +43,7 @@ public class J3Splash extends javax.swing.JFrame {
         getContentPane().add(jLabel1);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**

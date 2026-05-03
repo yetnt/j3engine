@@ -133,6 +133,7 @@ public class AreYouSure extends javax.swing.JDialog {
         getAccessibleContext().setAccessibleDescription("");
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void yesToggleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yesToggleActionPerformed

@@ -12,7 +12,7 @@ import com.j3d.engine.layer.LayerList;
 import com.j3d.settings.CoreSettings;
 import com.j3d.storage.files.protocol.FileProtocol;
 import com.j3d.storage.files.protocol.GenericFileProtocol;
-import com.j3d.ui.dialog.Throbber;
+import com.j3d.ui.dialog.Spinner;
 import com.j3d.utility.HashMultiMap;
 import com.j3d.utility.Pair;
 
@@ -221,7 +221,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
      * @param <T> The type of ArrayList to be returned.
      */
     @Override
-    public <T extends ArrayList> T readFile(String path, String name, Throbber throbber) throws Exception {
+    public <T extends ArrayList> T readFile(String path, String name, Spinner throbber) throws Exception {
         final ArrayList<Interactable> interactables =  new ArrayList<>();
         ArrayList<Boolean> success = new ArrayList<>(1);
 

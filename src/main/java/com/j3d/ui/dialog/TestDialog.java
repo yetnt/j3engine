@@ -60,6 +60,7 @@ public class TestDialog extends javax.swing.JDialog {
         getContentPane().add(jPanel1);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**

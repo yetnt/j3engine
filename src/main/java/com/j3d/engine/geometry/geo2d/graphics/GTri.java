@@ -18,7 +18,7 @@ import com.j3d.engine.react.events.IdempotentEventListener;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.storage.files.ProjectFile;
-import com.j3d.ui.dialog.Throbber;
+import com.j3d.ui.dialog.Spinner;
 
 /**
  * GTri represents a Triangle. What'd you expect kau.

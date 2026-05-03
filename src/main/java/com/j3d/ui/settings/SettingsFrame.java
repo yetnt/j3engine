@@ -67,6 +67,7 @@ public class SettingsFrame extends javax.swing.JFrame {
         getContentPane().add(jLabel1, java.awt.BorderLayout.NORTH);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**

@@ -20,7 +20,7 @@ import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.storage.files.ProjectFile;
 import com.j3d.ui.J3DTheme;
 import com.j3d.ui.engine.tree.TreeNodeIdentity;
-import com.j3d.ui.dialog.Throbber;
+import com.j3d.ui.dialog.Spinner;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
