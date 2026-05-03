@@ -122,19 +122,19 @@ public class KeyBindings {
      */
     public void registerJ3Key(J3Key key) {
         if (keys.contains(key)) {
-            Static.log.error("Attempted to add duplicate J3Key: " + key.getName());
+            Static.getLog().error("Attempted to add duplicate J3Key: " + key.getName());
             return;
         }
         if (prohibited.contains(key.getKeyStroke())) {
-            Static.log.error("Attempted to add prohibited key binding: " + key.getKeyStroke());
+            Static.getLog().error("Attempted to add prohibited key binding: " + key.getKeyStroke());
             return;
         }
         if (keys.stream().anyMatch(k -> k.getKeyStroke().equals(key.getKeyStroke()))) {
-            Static.log.error("Attempted to add duplicate key binding: " + key.getKeyStroke());
+            Static.getLog().error("Attempted to add duplicate key binding: " + key.getKeyStroke());
             return;
         }
         if (keys.stream().anyMatch(k -> k.getName().equals(key.getName()))) {
-            Static.log.error("Attempted to add duplicate key name: " + key.getName());
+            Static.getLog().error("Attempted to add duplicate key name: " + key.getName());
             return;
         }
         rJ3Key(key);
@@ -241,12 +241,12 @@ public class KeyBindings {
      */
     public UpdatedJ3Key rebindJ3KeyKeystroke(KeyStroke old, J3Key key) {
         if (prohibited.contains(key.getKeyStroke())) {
-            Static.log.error("Attempted to add prohibited key binding: " + key.getKeyStroke());
+            Static.getLog().error("Attempted to add prohibited key binding: " + key.getKeyStroke());
             key.setKeyStroke(old);
             return new UpdatedJ3Key();
         }
         if (childModifiersClash(key)) {
-            Static.log.error("Attempted to update a leader key with a new modifier that would cause a collision with a child key.");
+            Static.getLog().error("Attempted to update a leader key with a new modifier that would cause a collision with a child key.");
             key.setKeyStroke(old);
             return new UpdatedJ3Key();
         }

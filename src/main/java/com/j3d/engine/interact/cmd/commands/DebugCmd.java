@@ -53,7 +53,7 @@ public class DebugCmd extends Command {
                 typeName = typeName + "<" + g.type.getSimpleName() + ">";
 
             logLabel.setText("Type: " + typeName);
-            Static.log.println("Type: " + typeName);
+            Static.getLog().println("Type: " + typeName);
         }
     }
 
@@ -71,7 +71,7 @@ public class DebugCmd extends Command {
                 return;
             }
             logLabel.setText(message);
-            Static.log.println(message);
+            Static.getLog().println(message);
         }
     }
 
@@ -126,7 +126,7 @@ public class DebugCmd extends Command {
 
             logLabel.setText(content);
             ClipboardUtil.copyToClipboard(content);
-            Static.log.println(content);
+            Static.getLog().println(content);
         }
 
     }

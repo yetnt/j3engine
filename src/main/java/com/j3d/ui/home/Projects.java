@@ -43,7 +43,7 @@ public class Projects extends javax.swing.JFrame {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                Static.engineFiles.pinned.writeProjs(
+                Static.getEngineFiles().pinned.writeProjs(
                         pinned.stream()
                                 .map(ProjectButton::getIdentity)
                                 .collect(Collectors.toCollection(HashSet::new))
@@ -79,12 +79,12 @@ public class Projects extends javax.swing.JFrame {
     }
 
     public void loadRecentProjects() {
-        ArrayList<ProjectImagePair> projs = Static.engineFiles.recents.readRecents();
+        ArrayList<ProjectImagePair> projs = Static.getEngineFiles().recents.readRecents();
         genericLoad(projs, recentProjectsPanel, false);
     }
 
     public void loadPinnedProjects() {
-        ArrayList<ProjectImagePair> projs = Static.engineFiles.pinned.readPinned();
+        ArrayList<ProjectImagePair> projs = Static.getEngineFiles().pinned.readPinned();
         genericLoad(projs, pinnedProjectsPanel, true);
     }
 

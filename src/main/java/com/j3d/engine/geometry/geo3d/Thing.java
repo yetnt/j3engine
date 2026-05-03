@@ -71,7 +71,7 @@ public class Thing implements Interactable {
     private final BiConsumer<Thing, DefaultMutableTreeNode>  onSelectCallback =
             (o, t) -> {
                 if (this.isBg || this.hidden) return;
-                Static.log.println(name + " thing was selected in the tree.");
+                Static.getLog().println(name + " thing was selected in the tree.");
                 Static.sceneManager.select(this);
                 Static.mainPanel.repaint();
             };

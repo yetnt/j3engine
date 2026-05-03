@@ -49,7 +49,7 @@ public class SelectionMouseOwner extends MouseOwner {
         if (isNotOwner()) return;
         mousePos = null;
         if (selectionArea[0] != null && selectionArea[1] != null)
-            Static.log.println("Final Selection Area: " + selectionArea[0] + " to " + selectionArea[1]);
+            Static.getLog().println("Final Selection Area: " + selectionArea[0] + " to " + selectionArea[1]);
     }
 
     @Override

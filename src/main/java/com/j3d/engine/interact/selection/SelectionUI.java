@@ -7,7 +7,7 @@ import com.j3d.ui.CursorNames;
 
 import java.awt.*;
 
-import static com.j3d.Static.log;
+import static com.j3d.Static.getLog;
 
 public class SelectionUI {
     private static final Color STRICT_COLOR = new Color(0, 255, 0, 26);
@@ -38,7 +38,7 @@ public class SelectionUI {
                         SelectionType.ADD, SelectionType.SUBTRACT, SelectionType.BOUNDS_STRICT, SelectionType.BOUNDS_SOFT)
         );
         SelectionManager m = sceneManager.select(selectionQuery);
-        log.println("Selected " + m.getSelected().size() + " objects.");
+        getLog().println("Selected " + m.getSelected().size() + " objects.");
     }
 
     public static boolean isStrict(ScreenPoint [] selectionArea) {

@@ -50,7 +50,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
 
     public static final String backgroundId = "BACKG";
     private final BiConsumer<Layer, DefaultMutableTreeNode> onSelectCallback = (o, t) -> {
-        Static.log.println("Layer " + o.getIdentifier() + " was selected in the tree.");
+        Static.getLog().println("Layer " + o.getIdentifier() + " was selected in the tree.");
     };
 
     private boolean hidden = false;

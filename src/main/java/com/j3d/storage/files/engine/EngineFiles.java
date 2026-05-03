@@ -7,6 +7,7 @@ public class EngineFiles {
     public static File engineFolder = Path.of(System.getProperty("user.home"), "J3Engine").toFile();
     public RecentProjectsFile recents;
     public PinnedProjectsFile pinned;
+    public LogFile logFile;
 
     public EngineFiles() {
         if (!engineFolder.exists()) {
@@ -14,5 +15,6 @@ public class EngineFiles {
         }
         recents = new RecentProjectsFile();
         pinned = new PinnedProjectsFile();
+        logFile = new LogFile();
     }
 }

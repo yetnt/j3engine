@@ -124,7 +124,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
         this.label = logLabel;
 
         if (args.length > 0 && !(args[0] instanceof String)) {
-            Static.log.println("Second argument has to be a string!");
+            Static.getLog().println("Second argument has to be a string!");
             return;
         }
         keys.add(gear);

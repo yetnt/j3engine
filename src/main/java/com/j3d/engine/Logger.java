@@ -1,11 +1,18 @@
 package com.j3d.engine;
 
+import com.j3d.Static;
+
 import javax.swing.*;
+import java.time.format.DateTimeFormatter;
 
 /**
- * The `Logger` class provides a simple logging utility.
- * It supports logging messages to both the console and a `JTextArea` component.
+ * The Logger class provides a simple logging utility.
+ * It supports logging messages to both the console and the {@link com.j3d.ui.engine.DebugPanel#logTextArea}
  * This class includes methods for standard logging, error logging, and clearing the log area.
+ * @author Lehlogonolo Poole
+ * @see com.j3d.storage.files.engine.EngineFiles#logFile
+ * @see com.j3d.ui.engine.DebugPanel#logTextArea
+ * @see Static
  */
 public class Logger {
     // Prefix for standard log messages
@@ -31,7 +38,7 @@ public class Logger {
      * @return The current timestamp as a string.
      */
     private String getTimestamp() {
-        return "<" + java.time.LocalTime.now().withNano(0) + ">";
+        return "<" + java.time.LocalTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME) + ">";
     }
 
     /**
@@ -43,6 +50,7 @@ public class Logger {
      */
     public void println(String message) {
         String logMessage = PREFIX + message + "\n";
+        Static.getEngineFiles().logFile.writeLn(getTimestamp() + " " + PREFIX + message);
         System.out.print(logMessage);
         if (logArea != null) {
             logArea.append(logMessage + getTimestamp() + "\n");
@@ -59,6 +67,7 @@ public class Logger {
      */
     public void error(String message) {
         String errorMessage = ERROR_PREFIX + message + "\n";
+        Static.getEngineFiles().logFile.writeLn(getTimestamp() + " " + ERROR_PREFIX + message);
         System.err.print(errorMessage);
         if (logArea != null) {
             logArea.append(errorMessage + getTimestamp() + "\n");

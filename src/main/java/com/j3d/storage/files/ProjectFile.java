@@ -206,11 +206,11 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
 
         FilesUtility.writeBinary(path, name, fileWriter);
         CoreSettings.hasSaved = true;
-        Static.engineFiles.recents.writeProj(new File(path).toPath().resolve(name).toFile());
+        Static.getEngineFiles().recents.writeProj(new File(path).toPath().resolve(name).toFile());
     }
 
     private static void msg(String message) {
-        Static.log.println(message);
+        Static.getLog().println(message);
     }
 
     /**
@@ -375,7 +375,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
 
                 Static.sceneManager.layers.addAll(layerOrder);
 
-                Static.log.println("Project file loaded successfully from " + path);
+                Static.getLog().println("Project file loaded successfully from " + path);
                 msg("Project file loaded successfully");
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -384,7 +384,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
         };
         FilesUtility.readBinary(path, name, fileReader);
         CoreSettings.hasSaved = true;
-        Static.engineFiles.recents.writeProj(new File(path).toPath().resolve(name).toFile());
+        Static.getEngineFiles().recents.writeProj(new File(path).toPath().resolve(name).toFile());
 //        success.add(true);
         return (T) interactables;
     }

@@ -129,7 +129,7 @@ public class EngineFrame extends javax.swing.JFrame {
         Static.mainPanel.setBounds(0, menuBarOffsetY, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
         Static.mainPanel.setPreferredSize(new Dimension(J3DSettings.screenSize.width, J3DSettings.screenSize.height));
 
-        Static.log.setLogArea(Static.debugPanel.logTextArea); // initialize logger with the text area
+        Static.getLog().setLogArea(Static.debugPanel.logTextArea); // initialize logger with the text area
 
         Rectangle bounds = Static.mainFrame.getBounds();
         Dimension size = commandPallete.getPreferredSize();
@@ -215,7 +215,7 @@ public class EngineFrame extends javax.swing.JFrame {
         this.setVisible(true);
 
         String path = file.getAbsolutePath();
-        Static.log.println(path);
+        Static.getLog().println(path);
         Path p = Paths.get(path);
         String fileName = p.getFileName().toString();
         String fileDir = p.getParent().toString();
@@ -582,7 +582,7 @@ public class EngineFrame extends javax.swing.JFrame {
         }, Static.mainFrame);
         if (file == null) return;
         String path = file.getAbsolutePath();
-        Static.log.println(path);
+        Static.getLog().println(path);
         Path p = Paths.get(path);
         String fileName = p.getFileName().toString();
         String fileDir = p.getParent().toString();
@@ -616,7 +616,7 @@ public class EngineFrame extends javax.swing.JFrame {
 
             String folder = FilesUtility.folderChooser(Static.mainFrame).getAbsolutePath();
 
-            Static.log.println("Picked the location " + folder + " with the file name " + fileName);
+            Static.getLog().println("Picked the location " + folder + " with the file name " + fileName);
 
             J3DSettings.setProject(folder, fileName);
         }

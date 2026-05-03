@@ -444,7 +444,7 @@ public class DebugPanel extends javax.swing.JPanel {
 
     private void BucketSortRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BucketSortRadioActionPerformed
         if (BucketSortRadio.isSelected()) {
-            Static.log.println("Bucket Sort not implemented yet. Defaulting to CamDist Sort.");
+            Static.getLog().println("Bucket Sort not implemented yet. Defaulting to CamDist Sort.");
             J3DSettings.setTriangleSortMethod(TriangleSortMethod.CAMDISTSORT);
             frame.repaint();
         }
@@ -533,7 +533,7 @@ public class DebugPanel extends javax.swing.JPanel {
 
         Thing g = new Thing(sceneManager, null, "Random Tri").addObjs(t, gps[0], gps[1], gps[2]);
 
-        Static.log.println("Added random tri " + t.getId() + " to layer " + g);
+        Static.getLog().println("Added random tri " + t.getId() + " to layer " + g);
         frame.repaint();
     }//GEN-LAST:event_randomTriBtnActionPerformed
 

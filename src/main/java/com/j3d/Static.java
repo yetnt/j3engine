@@ -24,7 +24,6 @@ import java.net.URL;
  * </p>
  */
 public class Static {
-    //    public static JBundler jBundler = null;
     /**
      * The SceneManager Instance.
      */
@@ -67,13 +66,24 @@ public class Static {
     /**
      * The Logger Instance
      */
-    public static Logger log = new Logger();
+    private static Logger log;
+    public static Logger getLog() {
+        if (log == null)
+            log = new Logger();
+        return log;
+    }
     /**
      * The Settings Object
      */
     public static Settings settings = new Settings();
     public static CommandsManager commandManager = new CommandsManager();
     public static HoverJLabel hoverLabel;
+    private static EngineFiles engineFiles;
+    public static EngineFiles getEngineFiles() {
+        if (engineFiles == null)
+            engineFiles = new EngineFiles();
+        return engineFiles;
+    }
 
     /** Returns an ImageIcon, or null if the path was invalid. */
     public static Image logo() {
@@ -86,5 +96,6 @@ public class Static {
         }
     }
 
-    public static EngineFiles engineFiles = new EngineFiles();
+    public static void none() {
+    }
 }

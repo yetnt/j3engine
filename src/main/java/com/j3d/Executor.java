@@ -108,7 +108,7 @@ public class Executor {
                 SELECT_SUB.getKey()
         );
 
-        if (updatedJ3Key.keyChangeSuccess) Static.log.println("WOHOOOO KEY CHANGE SUCCESS!!!! :)))");
+        if (updatedJ3Key.keyChangeSuccess) Static.getLog().println("WOHOOOO KEY CHANGE SUCCESS!!!! :)))");
     }
 
     /**
@@ -180,7 +180,7 @@ public class Executor {
         GPoint B = new GPoint(new Vector3(0, 10, 0));
         GPoint C = new GPoint(new Vector3(0, 0, 10));
         GTri triangl = new GTri(Color.ORANGE, A, B, C);
-        Static.log.println(triangl.getId().toString());
+        Static.getLog().println(triangl.getId().toString());
         return new Thing(sceneManager, null, "Test").addObjs(triangl, triangl.getLegA(), triangl.getLegB(), triangl.getLegC(), A, B, C);
     }
 
