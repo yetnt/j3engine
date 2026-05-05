@@ -41,9 +41,7 @@ public class SettingsFrame extends javax.swing.JFrame {
         setTitle("J3D Settings Mfwethu");
         setBackground(J3DTheme.UI_SURFACE.color());
         setIconImage(Static.logo());
-        setMaximumSize(new java.awt.Dimension(752, 163));
         setMinimumSize(new java.awt.Dimension(752, 163));
-        setPreferredSize(new java.awt.Dimension(302, 600));
 
         jScrollPane1.setBackground(J3DTheme.UI_SURFACE.color());
         jScrollPane1.setForeground(J3DTheme.UI_SURFACE.color());
@@ -62,7 +60,7 @@ public class SettingsFrame extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 36)); // NOI18N
         jLabel1.setForeground(J3DTheme.TEXT_PRIMARY.color());
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Settings");
+        jLabel1.setText("Preferences");
         jLabel1.setOpaque(true);
         getContentPane().add(jLabel1, java.awt.BorderLayout.NORTH);
 

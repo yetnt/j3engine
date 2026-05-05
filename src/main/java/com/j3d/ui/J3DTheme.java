@@ -1,6 +1,7 @@
 package com.j3d.ui;
 
 import com.j3d.settings.CoreSettings;
+import com.j3d.storage.db.DatabaseManager;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -18,48 +19,43 @@ public enum J3DTheme {
      *     Preview: <div style="background-color:#cad2c5; width:150px; height:50px; border:1px solid black;"></div>
      * </p>
      */
-    TEXT_PRIMARY(new Color(0xcad2c5)),
+    TEXT_PRIMARY,
     /**
      * Secondary Text Colour.
      */
-    TEXT_SECONDARY(new Color(0xc5e0c6)),
+    TEXT_SECONDARY,
     /**
      * Even lighter colour
      * <p>
      *     Preview: <div style="background-color:#84a98c; width:150px; height:50px; border:1px solid black;"></div>
      * </p>
      */
-    ACCENT_PRIMARY(new Color(0x84a98c)),
+    ACCENT_PRIMARY,
     /**
      * Lighter colour.
      * <p>
      *     Preview: <div style="background-color:#52796f; width:150px; height:50px; border:1px solid black;"></div>
      * </p>
      */
-    ACCENT_SECONDARY(new Color(0x52796f)),
+    ACCENT_SECONDARY,
     /**
      * Dark colour for button or any UI element backgrounds but not too dark
      * <p>
      *     Preview: <div style="background-color:#354f52; width:150px; height:50px; border:1px solid black;"></div>
      * </p>
      */
-    UI_SURFACE(new Color(0x354f52)),
+    UI_SURFACE,
     /**
      * Darkest shade. Used for panel backgrounds and the entire scene background
      * <p>
      *     Preview: <div style="background-color:#2f3e46; width:150px; height:50px; border:1px solid black;"></div>
      * </p>
      */
-    BACKGROUND(new Color(0x2f3e46));
+    BACKGROUND;
 
-    public static final HashMap<String, Color> fromDbTest = getTheme(CoreSettings.user.themeId.getValue()).toColorHashMap(); // bubblegum theme
-
-    J3DTheme(Color color) {
-        col = color;
-    };
-
-    final Color col;
-
+    J3DTheme() {
+        J3DTheme.loadTheme(1);
+    }
 
     /**
      * Return the color associated with this theme.
@@ -67,7 +63,7 @@ public enum J3DTheme {
      * @return the {@link Color} instance representing this theme's color
      */
     public Color color() {
-        return fromDbTest.getOrDefault(toDbFieldName(), col);
+        return colorMap.getOrDefault(toDbFieldName(), new Color(0xffffff));
     }
 
     /**
@@ -92,6 +88,27 @@ public enum J3DTheme {
     }
 
     public Color defaultCol() {
-        return col;
+        return new Color(0xffffff);
+    }
+
+    private static volatile HashMap<String, Color> colorMap = new HashMap<>();
+    private static int currentLoadedTheme = 1;
+    public static int getCurrentLoadedThemeId() {
+        return currentLoadedTheme;
+    }
+
+    public static Color colorFromMap(J3DTheme key, HashMap<String, Color> c) {
+        return c.getOrDefault(key.toDbFieldName(), key.color());
+    }
+
+    public static void loadTheme(int id) {
+        colorMap = DatabaseManager.tblThemes.themes.stream().filter(
+                t -> t.themeId == id // Default theme. Magic number though.
+        ).findFirst().get().toColorHashMap();
+        currentLoadedTheme = id;
+    }
+
+    static {
+        loadTheme(1);
     }
 }

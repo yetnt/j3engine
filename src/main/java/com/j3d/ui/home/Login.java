@@ -13,6 +13,7 @@ import com.j3d.storage.db.users.User;
 import com.j3d.storage.db.users.UsersTable;
 import com.j3d.ui.CursorManager;
 import com.j3d.ui.CursorNames;
+import com.j3d.ui.J3DTheme;
 import com.j3d.utility.PasswordHasher;
 
 import javax.swing.JOptionPane;
@@ -244,6 +245,8 @@ public class Login extends javax.swing.JFrame {
             CoreSettings.user = user;
 
             JOptionPane.showMessageDialog(this, "Welcome to J3Engine, " + user.firstName.getValue() + "!!!");
+
+            J3DTheme.loadTheme(user.themeId.getValue());
 
             this.dispose();
 

@@ -7,7 +7,7 @@ A (Work-In-Progress) 3D Graphics Engine written in Java from scratch using only
 the Java Standard Library and [Swing](https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/package-summary.html)'s 
 2D drawing capabilities.
 
-This is a project for my 2026 Matric Practical Assessment Task in Information Technology.
+This is a project for my 2026 Matric Practical Assessment Task in IT.
 
 ## Installation & Run
 
@@ -40,6 +40,7 @@ mvn exec:java -Dexec.mainClass="j3engine.Main"
 - Command Line Interface
 - GUI (wrapper around CLI) using Swing
 - Real time rendering*
+- Object serialization into project files
 - And more to come!
 
 > Real time rendering means there is not a "rendering loop" like in most 3D engines.

@@ -17,6 +17,9 @@ import java.util.List;
 
 public class ThemesTable implements Table<Theme, CThemes> {
 
+    public final ArrayList<Theme> themes =
+            this.findWhere(CThemes.IDENTIFIER, SQLOperator.GREATER_THAN, 0);
+
     @Override
     public String getName() {
         return "tblThemes";
