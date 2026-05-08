@@ -5,11 +5,15 @@
 package com.j3d.ui.settings.popouts;
 
 import com.j3d.Static;
+import com.j3d.engine.interact.cmd.CommandParser;
+import com.j3d.engine.interact.cmd.CommandsManager;
+import com.j3d.engine.interact.cmd.commands.EngineCmd;
 import com.j3d.settings.CoreSettings;
 import com.j3d.settings.Settings;
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.themes.Theme;
 import com.j3d.ui.J3DTheme;
+import com.j3d.ui.engine.CommandPallete;
 
 import javax.swing.*;
 import java.awt.*;
@@ -106,6 +110,8 @@ public class ThemeChanger extends javax.swing.JFrame {
         innerPanel = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
         enterThemeChange = new javax.swing.JButton();
+        changeAndClose = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(J3DTheme.UI_SURFACE.color());
@@ -237,22 +243,41 @@ public class ThemeChanger extends javax.swing.JFrame {
             }
         });
 
+        changeAndClose.setText("Change and close engine");
+        changeAndClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changeAndCloseActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        jLabel4.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        jLabel4.setText("(Theme changes are only applied on app startup or when a new frame is made)");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(44, 44, 44)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(drawPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(44, 44, 44)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(buttons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(drawPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(119, 119, 119)
+                        .addComponent(enterThemeChange)
+                        .addGap(82, 82, 82)
+                        .addComponent(changeAndClose)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(218, 218, 218)
-                .addComponent(enterThemeChange)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(47, 47, 47))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -266,9 +291,13 @@ public class ThemeChanger extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(drawPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
-                .addComponent(enterThemeChange)
-                .addGap(49, 49, 49))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(enterThemeChange)
+                    .addComponent(changeAndClose))
+                .addGap(30, 30, 30))
         );
 
         getContentPane().add(jPanel1);
@@ -286,9 +315,6 @@ public class ThemeChanger extends javax.swing.JFrame {
 
         Static.settings.panel().dispose();
 
-        Static.mainFrame.repaint();
-        Static.mainFrame.revalidate();
-
         this.dispose();
         Settings.themeChanger = null;
     }//GEN-LAST:event_enterThemeChangeActionPerformed
@@ -296,6 +322,16 @@ public class ThemeChanger extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void changeAndCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeAndCloseActionPerformed
+        enterThemeChangeActionPerformed(evt);
+        CommandsManager.getCommand("engine").run(
+                Static.commandParser.safeJLabel(),
+                "engine",
+                new Object[]{"exit"},
+                null
+        );
+    }//GEN-LAST:event_changeAndCloseActionPerformed
 
     /**
      * @param args the command line arguments
@@ -334,6 +370,7 @@ public class ThemeChanger extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel buttons;
+    private javax.swing.JButton changeAndClose;
     private javax.swing.JPanel drawPanel;
     private javax.swing.JButton enterThemeChange;
     private javax.swing.JPanel innerPanel;
@@ -342,6 +379,7 @@ public class ThemeChanger extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;

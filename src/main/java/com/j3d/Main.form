@@ -23,19 +23,22 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <EmptySpace pref="50" max="32767" attributes="0"/>
-              <Component id="openEngineLogin" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="openEngineButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="openEngineQuick" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
-          </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="213" max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace pref="44" max="32767" attributes="0"/>
+              <Component id="openEngineLogin" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="loginAslehl" max="32767" attributes="0"/>
+                  <Component id="openEngineButton" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="openEngineQuick" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
           </Group>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
@@ -55,14 +58,16 @@
                   <Component id="openEngineQuick" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="openEngineLogin" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="45" max="32767" attributes="0"/>
+              <Component id="loginAslehl" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" pref="98" max="-2" attributes="0"/>
           </Group>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
                   <Component id="jLabel2" min="-2" pref="98" max="-2" attributes="0"/>
-                  <EmptySpace pref="165" max="32767" attributes="0"/>
+                  <EmptySpace pref="233" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -108,6 +113,14 @@
         </Property>
         <Property name="text" type="java.lang.String" value="J3D (Test StartUp)"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="loginAslehl">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Login As Lehlogonolo"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loginAslehlActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

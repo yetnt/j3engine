@@ -111,7 +111,6 @@ public class Projects extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         welcomePanelLabels = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -124,9 +123,17 @@ public class Projects extends javax.swing.JFrame {
         starterProjectsPanel = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         recentProjectsPanel = new javax.swing.JPanel();
+        startLabelPanel = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        pinnedLabelPanel = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        recentLabelPanel = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jSeparator2 = new javax.swing.JSeparator();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -136,9 +143,13 @@ public class Projects extends javax.swing.JFrame {
         setMaximumSize(new java.awt.Dimension(16, 2147483647));
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.Y_AXIS));
 
+        welcomePanelLabels.setBackground(J3DTheme.UI_SURFACE.color());
+
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel4.setForeground(J3DTheme.TEXT_PRIMARY.color());
         jLabel4.setText("Weclome Name!");
 
+        jLabel5.setForeground(J3DTheme.TEXT_PRIMARY.color());
         jLabel5.setText("Create a project or a starter project to get started");
 
         javax.swing.GroupLayout welcomePanelLabelsLayout = new javax.swing.GroupLayout(welcomePanelLabels);
@@ -166,7 +177,6 @@ public class Projects extends javax.swing.JFrame {
         getContentPane().add(welcomePanelLabels);
 
         scrollpanepanel.setBackground(J3DTheme.UI_SURFACE.color());
-        scrollpanepanel.setLayout(new java.awt.GridBagLayout());
 
         jScrollPane3.setMaximumSize(new java.awt.Dimension(327, 300));
         jScrollPane3.setPreferredSize(new java.awt.Dimension(120, 20));
@@ -178,18 +188,6 @@ public class Projects extends javax.swing.JFrame {
         pinnedProjectsPanel.setLayout(new javax.swing.BoxLayout(pinnedProjectsPanel, javax.swing.BoxLayout.LINE_AXIS));
         jScrollPane3.setViewportView(pinnedProjectsPanel);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 782;
-        gridBagConstraints.ipady = 168;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(12, 6, 12, 6);
-        scrollpanepanel.add(jScrollPane3, gridBagConstraints);
-
         jScrollPane2.setMaximumSize(new java.awt.Dimension(327, 300));
         jScrollPane2.setPreferredSize(new java.awt.Dimension(120, 20));
 
@@ -199,18 +197,6 @@ public class Projects extends javax.swing.JFrame {
         starterProjectsPanel.setPreferredSize(new java.awt.Dimension(120, 20));
         starterProjectsPanel.setLayout(new javax.swing.BoxLayout(starterProjectsPanel, javax.swing.BoxLayout.LINE_AXIS));
         jScrollPane2.setViewportView(starterProjectsPanel);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 782;
-        gridBagConstraints.ipady = 170;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(12, 6, 0, 6);
-        scrollpanepanel.add(jScrollPane2, gridBagConstraints);
 
         jScrollPane4.setMaximumSize(new java.awt.Dimension(327, 300));
         jScrollPane4.setPreferredSize(new java.awt.Dimension(120, 20));
@@ -222,50 +208,149 @@ public class Projects extends javax.swing.JFrame {
         recentProjectsPanel.setLayout(new javax.swing.BoxLayout(recentProjectsPanel, javax.swing.BoxLayout.LINE_AXIS));
         jScrollPane4.setViewportView(recentProjectsPanel);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 780;
-        gridBagConstraints.ipady = 166;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(12, 6, 0, 0);
-        scrollpanepanel.add(jScrollPane4, gridBagConstraints);
+        startLabelPanel.setBackground(J3DTheme.UI_SURFACE.color());
+        startLabelPanel.setPreferredSize(new java.awt.Dimension(400, 25));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
-        jLabel1.setForeground(J3DTheme.TEXT_PRIMARY.color());
-        jLabel1.setText("Pinned Projects");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.ipadx = 195;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(7, 6, 0, 0);
-        scrollpanepanel.add(jLabel1, gridBagConstraints);
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        jLabel7.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        jLabel7.setText("Get Started");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
-        jLabel2.setForeground(J3DTheme.TEXT_PRIMARY.color());
-        jLabel2.setText("Get Started");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipadx = 78;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 0);
-        scrollpanepanel.add(jLabel2, gridBagConstraints);
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel1.setForeground(J3DTheme.TEXT_SECONDARY.color());
+        jLabel1.setText("Start the tutorial or create a fresh new project.");
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
-        jLabel3.setForeground(J3DTheme.TEXT_PRIMARY.color());
-        jLabel3.setText("Recent Projects");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.ipadx = 79;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 0);
-        scrollpanepanel.add(jLabel3, gridBagConstraints);
+        javax.swing.GroupLayout startLabelPanelLayout = new javax.swing.GroupLayout(startLabelPanel);
+        startLabelPanel.setLayout(startLabelPanelLayout);
+        startLabelPanelLayout.setHorizontalGroup(
+            startLabelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(startLabelPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        startLabelPanelLayout.setVerticalGroup(
+            startLabelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, startLabelPanelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(startLabelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel1)))
+        );
+
+        pinnedLabelPanel.setBackground(J3DTheme.UI_SURFACE.color());
+        pinnedLabelPanel.setPreferredSize(new java.awt.Dimension(400, 25));
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        jLabel6.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        jLabel6.setText("Pinned Projects");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setForeground(J3DTheme.TEXT_SECONDARY.color());
+        jLabel3.setText("Any projects you've pinned will persists here. Regardless of if it's in the revents already.");
+
+        javax.swing.GroupLayout pinnedLabelPanelLayout = new javax.swing.GroupLayout(pinnedLabelPanel);
+        pinnedLabelPanel.setLayout(pinnedLabelPanelLayout);
+        pinnedLabelPanelLayout.setHorizontalGroup(
+            pinnedLabelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pinnedLabelPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(212, Short.MAX_VALUE))
+        );
+        pinnedLabelPanelLayout.setVerticalGroup(
+            pinnedLabelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pinnedLabelPanelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(pinnedLabelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+
+        recentLabelPanel.setBackground(J3DTheme.UI_SURFACE.color());
+        recentLabelPanel.setPreferredSize(new java.awt.Dimension(400, 25));
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        jLabel8.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        jLabel8.setText("Recent Projects");
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setForeground(J3DTheme.TEXT_SECONDARY.color());
+        jLabel2.setText("View all your recently saved projects. (Up to 20 maximum before discarding happens.)");
+
+        javax.swing.GroupLayout recentLabelPanelLayout = new javax.swing.GroupLayout(recentLabelPanel);
+        recentLabelPanel.setLayout(recentLabelPanelLayout);
+        recentLabelPanelLayout.setHorizontalGroup(
+            recentLabelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(recentLabelPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        recentLabelPanelLayout.setVerticalGroup(
+            recentLabelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, recentLabelPanelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(recentLabelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+
+        jSeparator1.setForeground(J3DTheme.ACCENT_SECONDARY.color());
+        jSeparator1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+
+        jSeparator2.setForeground(J3DTheme.ACCENT_SECONDARY.color());
+        jSeparator2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+
+        javax.swing.GroupLayout scrollpanepanelLayout = new javax.swing.GroupLayout(scrollpanepanel);
+        scrollpanepanel.setLayout(scrollpanepanelLayout);
+        scrollpanepanelLayout.setHorizontalGroup(
+            scrollpanepanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(scrollpanepanelLayout.createSequentialGroup()
+                .addGroup(scrollpanepanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(scrollpanepanelLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(scrollpanepanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pinnedLabelPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 965, Short.MAX_VALUE)
+                            .addComponent(startLabelPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 965, Short.MAX_VALUE)
+                            .addComponent(recentLabelPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 965, Short.MAX_VALUE)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(scrollpanepanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jSeparator1)))
+                .addGap(7, 7, 7))
+            .addGroup(scrollpanepanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSeparator2)
+                .addContainerGap())
+        );
+        scrollpanepanelLayout.setVerticalGroup(
+            scrollpanepanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(scrollpanepanelLayout.createSequentialGroup()
+                .addComponent(startLabelPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(recentLabelPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pinnedLabelPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
         jScrollPane1.setViewportView(scrollpanepanel);
 
@@ -327,6 +412,9 @@ public class Projects extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -334,9 +422,14 @@ public class Projects extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JPanel pinnedLabelPanel;
     public javax.swing.JPanel pinnedProjectsPanel;
+    private javax.swing.JPanel recentLabelPanel;
     public javax.swing.JPanel recentProjectsPanel;
     private javax.swing.JPanel scrollpanepanel;
+    private javax.swing.JPanel startLabelPanel;
     public javax.swing.JPanel starterProjectsPanel;
     private javax.swing.JPanel welcomePanelLabels;
     // End of variables declaration//GEN-END:variables

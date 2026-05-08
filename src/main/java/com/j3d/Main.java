@@ -4,6 +4,8 @@
  */
 package com.j3d;
 
+import com.j3d.settings.CoreSettings;
+import com.j3d.storage.db.DatabaseManager;
 import com.j3d.threads.FakeLongTask;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.ui.engine.J3Splash;
@@ -37,6 +39,7 @@ public class Main extends javax.swing.JFrame {
         openEngineQuick = new javax.swing.JToggleButton();
         openEngineLogin = new javax.swing.JToggleButton();
         jLabel2 = new javax.swing.JLabel();
+        loginAslehl = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -67,22 +70,31 @@ public class Main extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
         jLabel2.setText("J3D (Test StartUp)");
 
+        loginAslehl.setText("Login As Lehlogonolo");
+        loginAslehl.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginAslehlActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(50, Short.MAX_VALUE)
-                .addComponent(openEngineLogin)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(openEngineButton)
-                .addGap(18, 18, 18)
-                .addComponent(openEngineQuick)
-                .addGap(70, 70, 70))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(213, 213, 213)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(44, Short.MAX_VALUE)
+                .addComponent(openEngineLogin)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(loginAslehl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(openEngineButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(openEngineQuick)
+                .addGap(70, 70, 70))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(91, 91, 91)
@@ -97,13 +109,15 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(openEngineButton)
                     .addComponent(openEngineQuick)
                     .addComponent(openEngineLogin))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addComponent(loginAslehl)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(46, 46, 46)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(165, Short.MAX_VALUE)))
+                    .addContainerGap(233, Short.MAX_VALUE)))
         );
 
         pack();
@@ -156,6 +170,12 @@ public class Main extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_openEngineLoginActionPerformed
 
+    private void loginAslehlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginAslehlActionPerformed
+        CoreSettings.user = DatabaseManager.tblUsers.findById(3);
+        this.dispose();
+        Startup.runnable.run();
+    }//GEN-LAST:event_loginAslehlActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -201,6 +221,7 @@ public class Main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JButton loginAslehl;
     private javax.swing.JToggleButton openEngineButton;
     private javax.swing.JToggleButton openEngineLogin;
     private javax.swing.JToggleButton openEngineQuick;

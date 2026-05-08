@@ -482,4 +482,8 @@ public class CommandParser {
             }
         }
     }
+
+    public SafeJLabel safeJLabel() {
+        return label;
+    }
 }
