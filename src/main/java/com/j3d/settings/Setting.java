@@ -92,6 +92,11 @@ public class Setting<T> implements SettingsChild, EventEmitterInterface {
         genericBroadcast(registered, eventType, properties);
     }
 
+    @Override
+    public boolean isAttached(EventListener e) {
+        return registered.contains(e);
+    }
+
 
     public Setting onSetValue(Function<T, Void> callback) {
         this.callback = callback;

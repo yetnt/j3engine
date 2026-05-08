@@ -3,9 +3,14 @@ package com.j3d.engine.interact.cmd.base.conditions;
 import com.j3d.Static;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.PreCommandExecution;
+import com.j3d.engine.interact.input.keyboard.DefaultKeys;
+import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.selection.SelectionManager;
 import com.j3d.engine.react.events.*;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.function.Supplier;
 
 public class SelectionPreCondition implements PreCommandExecution {
@@ -25,9 +30,22 @@ public class SelectionPreCondition implements PreCommandExecution {
         failListener = new EventReactor() {
             @Override
             public <K> void onEvent(EventType event, EventPayload<K> properties) {
-                // do nothing on fail.
+                getEventEmitterToAttachTo().detach(passListener); // in case it never ran.
             }
         };
+        AbstractAction quit =
+                new AbstractAction() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        failListener.onEvent(null, null);
+                        DefaultKeys.DEFOCUS_COMMAND_PALETTE.getKey().resetAction();
+                    }
+                };
+        J3Key key = new J3Key("quitEnter", true).setKeyStroke(
+                KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0)
+        ).setAction(quit);
+        Static.keybinds.registerJ3Key(key);
+        DefaultKeys.DEFOCUS_COMMAND_PALETTE.getKey().replaceAction(quit);
     }
 
     @Override

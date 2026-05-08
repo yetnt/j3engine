@@ -1,8 +1,8 @@
 package com.j3d.engine.interact.cmd;
 
-import com.j3d.engine.interact.cmd.base.Argument;
+import com.j3d.engine.interact.cmd.args.Argument;
 import com.j3d.engine.interact.cmd.base.Command;
-import com.j3d.engine.interact.cmd.base.TypedArg;
+import com.j3d.engine.interact.cmd.args.TypedArg;
 import com.j3d.ui.engine.CommandPallete;
 
 /**

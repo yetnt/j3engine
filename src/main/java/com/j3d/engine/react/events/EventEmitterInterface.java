@@ -26,4 +26,11 @@ public interface EventEmitterInterface {
      * @param properties Properties to pass onto the listener.
      */
     <K> void broadcast(EventType eventType, EventPayload<K> properties);
+
+    /**
+     * Checks if the given event listener is attached to this event emitter.
+     * @param e The event listener to check.
+     * @return True if the event listener is attached, false otherwise.
+     */
+    boolean isAttached(EventListener e);
 }

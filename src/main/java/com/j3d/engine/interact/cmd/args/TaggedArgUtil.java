@@ -1,7 +1,8 @@
-package com.j3d.engine.interact.cmd.base;
+package com.j3d.engine.interact.cmd.args;
 
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandParser;
+import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.ui.util.SafeJLabel;
 import com.jaiva.utils.Find;
 import com.jaiva.utils.Pair;

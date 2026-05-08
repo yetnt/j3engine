@@ -1,4 +1,6 @@
-package com.j3d.engine.interact.cmd.base;
+package com.j3d.engine.interact.cmd.args;
+
+import com.j3d.engine.interact.cmd.base.Command;
 
 import java.util.ArrayList;
 import java.util.Arrays;

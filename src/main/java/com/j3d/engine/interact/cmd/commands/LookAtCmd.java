@@ -1,13 +1,12 @@
 package com.j3d.engine.interact.cmd.commands;
 
 import com.j3d.Static;
-import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.ui.util.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
-import com.j3d.engine.interact.cmd.base.TaggedArgValue;
-import com.j3d.engine.interact.cmd.base.TypedArg;
+import com.j3d.engine.interact.cmd.args.TaggedArgValue;
+import com.j3d.engine.interact.cmd.args.TypedArg;
 
 import java.util.ArrayList;
 

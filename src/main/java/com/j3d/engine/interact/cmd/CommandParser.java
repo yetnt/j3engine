@@ -1,8 +1,8 @@
 package com.j3d.engine.interact.cmd;
 
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
-import com.j3d.engine.interact.cmd.base.TaggedArgUtil;
-import com.j3d.engine.interact.cmd.base.TaggedArgValue;
+import com.j3d.engine.interact.cmd.args.TaggedArgUtil;
+import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.ui.engine.CommandPallete;
 import com.j3d.Static;
 import com.j3d.ui.engine.EngineFrame;

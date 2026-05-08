@@ -105,4 +105,8 @@ public abstract class EventEmitter implements EventEmitterInterface {
         reactors.clear();
     }
 
+    @Override
+    public boolean isAttached(EventListener e) {
+        return registered.contains(e);
+    }
 }

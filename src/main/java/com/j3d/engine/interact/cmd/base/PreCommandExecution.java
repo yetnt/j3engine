@@ -13,11 +13,18 @@ public interface PreCommandExecution {
     EventEmitterInterface getEventEmitterToAttachTo();
     String getLogText();
     Supplier<Boolean> getCondition();
-    default void execute(SafeJLabel logLabel) {
+    default boolean execute(SafeJLabel logLabel) {
         if (!getCondition().get()) {
             logLabel.setText(getLogText());
-            getEventEmitterToAttachTo().attach(getPassListener());
-            getEventEmitterToAttachTo().attach(getFailListener());
+            if (!getEventEmitterToAttachTo().isAttached(getPassListener()))
+                getEventEmitterToAttachTo().attach(getPassListener());
+            if (!getEventEmitterToAttachTo().isAttached(getFailListener()))
+                getEventEmitterToAttachTo().attach(getFailListener());
+            return false;
+        }
+        else {
+            getPassListener().onEvent(null, null);
+            return true;
         }
     }
 }

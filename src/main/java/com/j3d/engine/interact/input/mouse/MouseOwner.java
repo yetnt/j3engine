@@ -66,4 +66,9 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
     public <K> void broadcast(EventType eventType, EventPayload<K> properties) {
         EventEmitter.genericBroadcast(registered, eventType, properties);
     }
+
+    @Override
+    public boolean isAttached(EventListener e) {
+        return registered.contains(e);
+    }
 }

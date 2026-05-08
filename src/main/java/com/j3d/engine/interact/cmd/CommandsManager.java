@@ -1,6 +1,7 @@
 package com.j3d.engine.interact.cmd;
 
 import com.j3d.Static;
+import com.j3d.engine.interact.cmd.base.SemiStatefulCommand;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.commands.*;
 import com.j3d.engine.interact.cmd.base.Command;
@@ -17,7 +18,7 @@ import java.util.Map;
  * CommandsManager is responsible for creating and storing available command instances
  * and providing lookup utilities for retrieving commands by their aliases.
  *
- * <p>It also manages a single global reference to the currently running {@link StatefulCommand}
+ * <p>It also manages a single global reference to the currently running {@link SemiStatefulCommand}
  * (if any). This class mixes two responsibilities:
  * - holding the registry of available commands (instance field {@link #commands})
  * - tracking the currently active stateful command (static {@link #currentStatefulCommand}).
@@ -40,14 +41,14 @@ public class CommandsManager {
      * - null: no stateful command is currently running
      * - non-null: reference to the active {@link StatefulCommand}
      */
-    public static StatefulCommand<?> currentStatefulCommand = null;
+    public static SemiStatefulCommand currentStatefulCommand = null;
 
     /**
      * Mark the supplied {@code StatefulCommand} as the currently active one.
      *
      * @param c the {@link StatefulCommand} to set as current; may be null to clear
      */
-    public static void setAsCurrent(StatefulCommand<?> c) {
+    public static void setAsCurrent(SemiStatefulCommand c) {
         currentStatefulCommand = c;
     }
 
@@ -57,7 +58,7 @@ public class CommandsManager {
      * @param c the {@link StatefulCommand} instance to check
      * @return {@code true} if {@code currentStatefulCommand} == {@code c}, {@code false} otherwise
      */
-    public static boolean isCurrentStatefulRunning(StatefulCommand<?> c) {
+    public static boolean isCurrentStatefulRunning(SemiStatefulCommand c) {
         return currentStatefulCommand == c;
     }
 

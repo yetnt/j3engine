@@ -7,7 +7,7 @@ import com.j3d.engine.layer.Layer;
 import com.j3d.ui.util.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
-import com.j3d.engine.interact.cmd.base.TaggedArgValue;
+import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.settings.Settings;
 import com.j3d.ui.CursorManager;
 import com.j3d.ui.CursorNames;

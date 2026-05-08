@@ -23,14 +23,14 @@ import java.awt.event.KeyEvent;
  * as in registering which stateful command is running and disallowing other commands to run,
  * subcommands which are defined as stateful by design don't parse through that method. Therefore
  * in order to stay consistent with only 1 single stateful command running, the command itself within its
- * {@link Command#run(SafeJLabel, String, Object[], java.util.ArrayList)} is required to call {@link CommandsManager#setAsCurrent(StatefulCommand)}
+ * {@link Command#run(SafeJLabel, String, Object[], java.util.ArrayList)} is required to call {@link CommandsManager#setAsCurrent(SemiStatefulCommand)}
  * so it sets itself. if this is not done {@link StatefulCommand#run(StatefulCommand, String, Object, SafeJLabel)} will exit early.
  * @param <T> The type of object that the command operates on.
  * @author Lehlogonolo Poole
  * @see CommandParser#run()
- * @see CommandsManager#setAsCurrent(StatefulCommand)
+ * @see CommandsManager#setAsCurrent(SemiStatefulCommand)
  */
-public interface StatefulCommand<T> {
+public interface StatefulCommand<T> extends SemiStatefulCommand {
     /**
      * Called when the command is first started.
      * @param object The object that the command operates on.

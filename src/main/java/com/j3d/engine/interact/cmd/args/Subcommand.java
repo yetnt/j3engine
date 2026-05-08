@@ -1,4 +1,6 @@
-package com.j3d.engine.interact.cmd.base;
+package com.j3d.engine.interact.cmd.args;
+
+import com.j3d.engine.interact.cmd.base.Command;
 
 /**
  * Represents a command that is nested within another command, acting as both a
