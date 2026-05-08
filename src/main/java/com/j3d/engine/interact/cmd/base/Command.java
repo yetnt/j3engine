@@ -1,5 +1,6 @@
 package com.j3d.engine.interact.cmd.base;
 
+import com.j3d.Static;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.ui.util.SafeJLabel;
 
@@ -102,6 +103,10 @@ public class Command {
      */
     public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         // To be overridden by subclasses
+        Static.getLog().println(
+                (this instanceof Subcommand ? "Subcommand" : "Command") +
+                " invoked: \"" + aliasUsed + "\" ("+aliases.getFirst()+"), " + "with an args length of " + args.length + " and " + taggedArgs.size() + " tagged arguments."
+        );
     }
 
     /**

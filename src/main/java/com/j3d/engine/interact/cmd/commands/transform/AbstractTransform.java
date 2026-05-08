@@ -120,6 +120,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
      */
     @Override
     public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+        super.run(logLabel, aliasUsed, args, taggedArgs);
         CommandsManager.setAsCurrent(this);
         this.label = logLabel;
 

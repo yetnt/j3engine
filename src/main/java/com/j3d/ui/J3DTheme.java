@@ -54,7 +54,7 @@ public enum J3DTheme {
     BACKGROUND;
 
     J3DTheme() {
-        J3DTheme.loadTheme(1);
+//        J3DTheme.loadTheme(1);
     }
 
     /**

@@ -19,7 +19,7 @@ public class EngineCmd extends Command {
 
     @Override
     public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
-        // There has to be at least 2 arguments, the subcommand and its argument(s)
+        super.run(logLabel, aliasUsed, args, taggedArgs);
         if (args.length < 1 || !(args[0] instanceof String subcommandName)) {
             logLabel.setText("Invalid arguments. Usage: debug <subcommand> ...");
             return;
@@ -30,11 +30,12 @@ public class EngineCmd extends Command {
     public static class ExitCmd extends Subcommand {
         public ExitCmd() {
             super("exit", "Exits the program.");
-            aliases("quit", "done", "bye").parseUsages();
+            aliases("quit", "done", "bye", "close", "x").parseUsages();
         }
 
         @Override
         public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+            super.run(logLabel, aliasUsed, args, taggedArgs);
             AreYouSure ays = new AreYouSure(Static.mainFrame, true, "This will save nothing. Its a hard exit.");
             ays.setVisible(true);
             if (ays.canProceed())

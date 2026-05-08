@@ -30,6 +30,7 @@ public class OrbitCmd extends Command implements StatefulCommand<Rotation> {
 
     @Override
     public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+        super.run(logLabel, aliasUsed, args, taggedArgs);
         if (!CommandsManager.isCurrentStatefulRunning(this)) return;
 
         run(this, "orbitCmd", Static.camera.getRotation().copy(), logLabel);

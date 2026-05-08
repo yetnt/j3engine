@@ -8,6 +8,8 @@ import com.j3d.ui.CursorManager;
 
 import java.awt.event.MouseEvent;
 
+import static com.j3d.Static.getLog;
+import static com.j3d.Static.sceneManager;
 import static com.j3d.ui.engine.EngineFrame.*;
 import com.j3d.engine.react.events.*;
 
@@ -48,8 +50,10 @@ public class SelectionMouseOwner extends MouseOwner {
     public void mouseReleased(MouseEvent e) {
         if (isNotOwner()) return;
         mousePos = null;
-        if (selectionArea[0] != null && selectionArea[1] != null)
+        if (selectionArea[0] != null && selectionArea[1] != null) {
             Static.getLog().println("Final Selection Area: " + selectionArea[0] + " to " + selectionArea[1]);
+            getLog().println("Selected " + sceneManager.getSelected().size() + " objects.");
+        }
     }
 
     @Override

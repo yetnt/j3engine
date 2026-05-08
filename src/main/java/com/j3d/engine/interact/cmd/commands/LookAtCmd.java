@@ -1,6 +1,7 @@
 package com.j3d.engine.interact.cmd.commands;
 
 import com.j3d.Static;
+import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.ui.util.SafeJLabel;
@@ -14,14 +15,16 @@ public class LookAtCmd extends Command {
     public LookAtCmd() {
         super("lookAt", "Makes the camera look at an object");
         this.aliases("la", "look", "lookat").args(
-                new TypedArg("thing", "the name of the thing to look at or otherwise coordinates.", false, String.class, Vector3.class)
+                new TypedArg("thing", "the name or UUID of the thing to look at or otherwise coordinates.", false,
+                        String.class, Vector3.class, Thing.class)
         ).parseUsages();
     }
 
     @Override
     public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+        super.run(logLabel, aliasUsed, args, taggedArgs);
         if (args.length != 1 || (!(args[0] instanceof String) && !(args[0] instanceof Vector3))) {
-            logLabel.setText("Invalid arguments. Usage: lookat <thing: String>");
+            logLabel.setText("Invalid arguments. Usage: lookat <thing: String|Vector3|UUID>");
             return;
         }
 
@@ -33,8 +36,12 @@ public class LookAtCmd extends Command {
             }
 
             Static.camera.lookAt(t.getCentroid());
-        } else {
+        } else if (args[0] instanceof Vector3) {
             Static.camera.lookAt((Vector3) args[0]);
+        } else {
+            Static.camera.lookAt(
+                    Static.sceneManager.findThing((String) args[0]).getCentroid()
+            );
         }
     }
 }

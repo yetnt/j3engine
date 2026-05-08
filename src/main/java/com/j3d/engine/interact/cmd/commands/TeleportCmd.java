@@ -19,6 +19,7 @@ public class TeleportCmd extends Command {
 
     @Override
     public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+        super.run(logLabel, aliasUsed, args, taggedArgs);
         if (args.length != 1 || !(args[0] instanceof Vector3 v3)) {
             logLabel.setText("Invalid arguments. Usage: teleport <location: (Vector3)>");
             return;

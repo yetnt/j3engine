@@ -38,7 +38,6 @@ public class SelectionUI {
                         SelectionType.ADD, SelectionType.SUBTRACT, SelectionType.BOUNDS_STRICT, SelectionType.BOUNDS_SOFT)
         );
         SelectionManager m = sceneManager.select(selectionQuery);
-        getLog().println("Selected " + m.getSelected().size() + " objects.");
     }
 
     public static boolean isStrict(ScreenPoint [] selectionArea) {

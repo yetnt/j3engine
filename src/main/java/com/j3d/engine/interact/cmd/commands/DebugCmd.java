@@ -26,9 +26,9 @@ public class DebugCmd extends Command {
 
     @Override
     public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
-        // There has to be at least 2 arguments, the subcommand and its argument(s)
+        super.run(logLabel, aliasUsed, args, taggedArgs);
         if (args.length < 1 || !(args[0] instanceof String subcommandName)) {
-            logLabel.setText("Invalid arguments. Usage: debug <subcommand> ...");
+            logLabel.setText("Invalid arguments. Usage: debug <typeof|echo|id|cam> ...");
             return;
         }
         dispatchToSubcommands(subcommandName, logLabel, args, taggedArgs);
@@ -43,6 +43,7 @@ public class DebugCmd extends Command {
         }
         @Override
         public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+            super.run(logLabel, aliasUsed, args, taggedArgs);
             if (args.length != 1 && taggedArgs.isEmpty()) {
                 logLabel.setText("Invalid arguments. Usage: typeof <input>");
                 return;
@@ -66,6 +67,7 @@ public class DebugCmd extends Command {
         }
         @Override
         public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+            super.run(logLabel, aliasUsed, args, taggedArgs);
             if (args.length != 1 || !(args[0] instanceof String message)) {
                 logLabel.setText("Invalid arguments. Usage: echo <message: String>");
                 return;
@@ -82,6 +84,7 @@ public class DebugCmd extends Command {
         }
         @Override
         public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+            super.run(logLabel, aliasUsed, args, taggedArgs);
             List<GObject> objects = Static.sceneManager.layers
                     .stream()
                     .flatMap(Layer::stream)
@@ -106,6 +109,7 @@ public class DebugCmd extends Command {
 
         @Override
         public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+            super.run(logLabel, aliasUsed, args, taggedArgs);
             if (args.length > 0 && !(args[0] instanceof String)) {
                 logLabel.setText("Invalid arguments. Usage: debug "+aliasUsed+" "+argSet.toUseString());
                 return;

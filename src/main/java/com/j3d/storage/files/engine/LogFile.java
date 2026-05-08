@@ -25,7 +25,7 @@ public class LogFile {
             file.getParentFile().mkdirs();
 
         try {
-            pw = new PrintWriter(new FileWriter(file));
+            pw = new PrintWriter(new FileWriter(file), true);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

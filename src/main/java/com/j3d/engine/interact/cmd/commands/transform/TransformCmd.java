@@ -39,7 +39,7 @@ public class TransformCmd extends Command {
     };
 
     public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
-        // There has to be at least 2 arguments, the subcommand and its argument(s)
+        super.run(logLabel, aliasUsed, args, taggedArgs);
         if (args.length < 1 || !(args[0] instanceof String subcommandNamei)) {
             logLabel.setText("Invalid arguments. Usage: "+aliasUsed+" <subcommand> ...");
             return;
