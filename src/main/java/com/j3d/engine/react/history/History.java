@@ -18,6 +18,8 @@ public class History extends ArrayList<Action<?>> {
      */
     private final Backup backup = new Backup();
 
+    public static final String logHead = "[HISTORY] ";
+
     /**
      * Serial version UID for serialization.
      */
@@ -36,13 +38,13 @@ public class History extends ArrayList<Action<?>> {
     public void undo() {
         if (this.isEmpty()) return;
         if (!this.getLast().isReversible()) {
-            Static.getLog().println("Attempt to undo: " + this.getLast().getDescription());
+            Static.getLog().println(logHead + "Attempt to undo: " + this.getLast().getDescription());
             return;
         };
         Action<?> action = this.removeLast();
         action.undo();
         backup.add(action);
-        Static.getLog().println("Undo -> " + action.getDescription());
+        Static.getLog().println(logHead + "Undo -> " + action.getDescription());
     }
 
     /**
@@ -53,7 +55,7 @@ public class History extends ArrayList<Action<?>> {
         Action<?> action = backup.removeLast();
         action.run();
         bypassAdd(action);
-        Static.getLog().println("Redo -> " + action.getDescription());
+        Static.getLog().println(logHead + "Redo -> " + action.getDescription());
     }
 
     /**
@@ -69,9 +71,11 @@ public class History extends ArrayList<Action<?>> {
     public boolean add(Action<?> action) {
         if (this.size() >= MAX_HISTORY_SIZE) {
             Action<?> a = this.remove(0);
+            Static.getLog().println(logHead + "History head removed -> " + a.getDescription());
             if (a instanceof CleanableAction cl) {
                 try {
                     cl.cleanup();
+                    Static.getLog().println(logHead + "Cleaned up (as a result of being too old) -> " + a.getDescription());
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -79,6 +83,9 @@ public class History extends ArrayList<Action<?>> {
         }
 
         backup.clear();
+        Static.getLog().println(logHead + "Add ["+
+                (action.isReversible() ? "R" : "!R")
+                +"] -> " + action.getDescription());
         return super.add(action);
     }
 

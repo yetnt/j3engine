@@ -1,5 +1,6 @@
 package com.j3d.engine.react.history;
 
+import com.j3d.Static;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.CleanableAction;
 
@@ -21,6 +22,7 @@ public class Backup extends ArrayList<Action<?>> {
             if (a instanceof CleanableAction cl)
                 try {
                     cl.cleanup();
+                    Static.getLog().println(History.logHead + "Cleaned up (as a result of the backup being cleared) -> " + a.getDescription());
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
