@@ -50,7 +50,6 @@
           <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
         </Property>
         <Property name="text" type="java.lang.String" value="SettingLabel (hover for desc)"/>
-        <Property name="opaque" type="boolean" value="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jButton1">

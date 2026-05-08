@@ -41,7 +41,7 @@ public class SettingsFrame extends javax.swing.JFrame {
         setTitle("J3D Settings Mfwethu");
         setBackground(J3DTheme.UI_SURFACE.color());
         setIconImage(Static.logo());
-        setMinimumSize(new java.awt.Dimension(752, 163));
+        setMinimumSize(new java.awt.Dimension(752, 580));
 
         jScrollPane1.setBackground(J3DTheme.UI_SURFACE.color());
         jScrollPane1.setForeground(J3DTheme.UI_SURFACE.color());

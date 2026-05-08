@@ -22,7 +22,7 @@ public class Settings implements SettingsParent {
     public static ComplexSetting<?> changeTheme = new ComplexSetting<>(
             "Change Theme",
             J3DTheme.BACKGROUND,
-            "",
+            "Change your theme (only applies on app restart)",
             e -> {
                 if (themeChanger == null) {
                     themeChanger = new ThemeChanger();

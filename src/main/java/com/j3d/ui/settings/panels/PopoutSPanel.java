@@ -6,7 +6,6 @@ package com.j3d.ui.settings.panels;
 
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
-import com.j3d.settings.Setting;
 import com.j3d.settings.types.ComplexSetting;
 import com.j3d.ui.J3DTheme;
 
@@ -48,7 +47,6 @@ public class PopoutSPanel extends javax.swing.JPanel implements SettingPanel {
 
         settingLabel4.setForeground(J3DTheme.TEXT_PRIMARY.color());
         settingLabel4.setText("SettingLabel (hover for desc)");
-        settingLabel4.setOpaque(true);
 
         jButton1.setBackground(J3DTheme.BACKGROUND.color());
         jButton1.setForeground(J3DTheme.TEXT_PRIMARY.color());
