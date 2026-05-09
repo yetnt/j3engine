@@ -1,5 +1,6 @@
 package com.j3d.engine.interact.selection;
 
+import com.j3d.engine.SceneManager;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo3d.Thing;
@@ -12,15 +13,21 @@ import static com.j3d.Static.sceneManager;
 /**
  * Manages the selection of GObjects within a collection of Layers and Things.
  * Provides functionality to filter and retrieve selected objects based on various criteria.
- * <p>
- *     The sceneManager should hold one instance of this class to manage the current selection state.
+ * @implSpec
+ *     The {@link SceneManager} should hold one instance of this class to manage the current selection state.
  *     The sceneManager can also create a new instance of this class, but only for
  *     {@link SelectionType#INCLUDE} where other objects are added to the existing selection or
  *     {@link SelectionType#EXCLUDE} where objects are removed from the existing selection.
- * </p>
+ * @see SelectionMouseOwner
+ * @see SelectionUI
+ * @see SelectionUtils
+ * @see SelectionQuery
+ * @see SelectionType
+ * @see SceneManager
+ * @author Lehlogonolo Poole
  */
 public class SelectionManager {
-    private ArrayList<GObject> selected = new ArrayList<>();
+    private final ArrayList<GObject> selected = new ArrayList<>();
     public static SelectionMouseOwner selectionMouseOwner = new SelectionMouseOwner();
 
     /**

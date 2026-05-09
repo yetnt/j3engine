@@ -136,4 +136,9 @@ public class Rotation {
     public Rotation copy() {
         return new Rotation(pitch, yaw, roll);
     }
+
+    public String toLogString() {
+        // format: [y:XX.XX, p:XX.XX r:XX.XX]
+        return String.format("[Y:%.2f, P:%.2f R:%.2f]", yaw, pitch, roll);
+    }
 }

@@ -4,7 +4,7 @@ import com.j3d.Static;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.commands.transform.RotateSelection;
-import com.j3d.engine.interact.cmd.commands.transform.handlers.Handle;
+import com.j3d.engine.interact.cmd.commands.transform.handles.Handle;
 import com.j3d.engine.interact.input.mouse.MOwner;
 
 import java.awt.*;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  * @see TransformMouseOwner
  * @see RotateSelection
  */
-public class RotateMouseOwner extends TransformMouseOwner {
+public class  RotateMouseOwner extends TransformMouseOwner {
 
     public Handle handle;
 

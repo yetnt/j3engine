@@ -1,6 +1,7 @@
 package com.j3d.engine.interact.cmd.commands.transform;
 
 import com.j3d.Static;
+import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.base.SemiStatefulCommand;
 import com.j3d.engine.interact.cmd.base.conditions.SelectionPreCondition;
@@ -12,11 +13,35 @@ import com.j3d.engine.interact.selection.SelectionManager;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A very complicated command which is a dispatcher for its specific transform subcommands.
+ * <p>
+ *     This command, before dispatching to it's 3 possible subcommands requires that a selection be made
+ *     first (enforced by {@link SelectionPreCondition}, making the command {@link SemiStatefulCommand}
+ *     as after a selection is made it's "stateful" label is released.
+ * </p>
+ * <p>
+ *     The command does nothing more but setup inital state. The logic lies within the subcommands.
+ *     {@link RotateSelection}, {@link TranslateSelection} and {@link ScaleSelection}
+ * </p>
+ * <p>
+ *     Aliases: {@code sel}, {@code s}, {@code selection}, {@code trans}, {@code t}, {@code tr}
+ * </p>
+ * @see SelectionPreCondition
+ * @see SemiStatefulCommand
+ * @see RotateSelection
+ * @see TranslateSelection
+ * @see ScaleSelection
+ * @see CommandsManager
+ * @see CommandParser
+ * @see Command
+ * @author Lehlogonolo Poole
+ */
 public class TransformCmd extends Command implements SemiStatefulCommand {
 
     public TransformCmd() {
         super("transform", "do stuff wit selection");
-        this.aliases("sel", "s", "select", "trans", "t").args(
+        this.aliases("sel", "s", "trans", "t", "tr").args(
                 new RotateSelection(),
                 new TranslateSelection(),
                 new ScaleSelection()
@@ -32,6 +57,7 @@ public class TransformCmd extends Command implements SemiStatefulCommand {
     private Object[] _args;
     private ArrayList<TaggedArgValue<?>> _taggedArgs;
 
+    @Override
     public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(logLabel, aliasUsed, args, taggedArgs);
         if (args.length < 1 || !(args[0] instanceof String subcommandNamei)) {

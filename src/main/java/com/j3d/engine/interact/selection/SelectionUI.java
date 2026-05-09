@@ -9,6 +9,17 @@ import java.awt.*;
 
 import static com.j3d.Static.getLog;
 
+/**
+ * SelectionUI is a utility class for rendering the selection rectangle on the screen and determining the type of selection based on user input.
+ * It provides methods to draw the selection rectangle with appropriate colours and cursors, and to infer the selection type (strict, soft, add, subtract)
+ * based on the mouse drag direction and keyboard modifiers.
+ * @see SelectionManager
+ * @see SelectionQuery
+ * @see SelectionType
+ * @see SelectionMouseOwner
+ * @see SelectionUtils
+ * @author Lehlogonolo Poole
+ */
 public class SelectionUI {
     private static final Color STRICT_COLOR = new Color(0, 255, 0, 26);
     private static final Color SOFT_COLOR = new Color(255, 255, 0, 26);

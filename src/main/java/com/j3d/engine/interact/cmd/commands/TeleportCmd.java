@@ -9,6 +9,27 @@ import com.j3d.engine.interact.cmd.args.TypedArg;
 
 import java.util.ArrayList;
 
+/**
+ * A command which teleports the camera to a given {@link Vector3}
+ * <p>
+ *     Provides a required {@link TypedArg} which accepts a {@link Vector3} (representing a point in 3D space)
+ * </p>
+ * <p>
+ *     Aliases: {@code teleport}, {@code tp}, {@code goto}, {@code gt}
+ * </p>
+ * <p>
+ *     Typical Usage:
+ *     <pre>{@code
+ *     teleport (10, 20, 30) - Teleports the camera to the point (10, 20, 30)
+ *     tp (0, 0, 0)          - Teleports the camera to the origin
+ *     goto (1, 2, 3)        - Teleports the camera to the point (1, 2, 3)
+ *     }</pre>
+ * </p>
+ * @see Command
+ * @see TypedArg
+ * @see Vector3
+ * @author Lehlogonolo Poole
+ */
 public class TeleportCmd extends Command {
     public TeleportCmd() {
         super("teleport", "Teleports the camera to the given coordinates");

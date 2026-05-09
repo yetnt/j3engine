@@ -62,6 +62,11 @@ public class OrbitMouseOwner extends MouseOwner {
         Static.mainPanel.repaint();
     }
 
+    /**
+     * Scales the raw mouse movement difference by the orbit sensitivity setting.
+     * @param d The raw mouse movement difference.
+     * @return The scaled movement difference.
+     */
     public double scaleDifference(int d) {
         return d / Settings.cameraProperties.orbitSensitivity.getValue();
     }

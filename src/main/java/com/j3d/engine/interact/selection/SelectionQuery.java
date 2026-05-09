@@ -13,10 +13,23 @@ import java.awt.*;
  * A SelectionQuery represents a selection made by the user.
  * It is represented as a rectangle defined by two ScreenPoints (the corners).
  * It can be used to check whether certain GObjects are within the selection.
+ * @see SelectionType
+ * @see SelectionManager
+ * @see SelectionMouseOwner
+ * @see SelectionUI
+ * @see SelectionUtils
+ * @author Lehlogonolo Poole
  */
 public class SelectionQuery extends Rectangle {
     public SelectionType type;
     public ScreenPoint[] points = new ScreenPoint[2];
+
+    /**
+     * Constructs a SelectionQuery object with the given screen points and selection type.
+     * @param i The first screen point.
+     * @param ii The second screen point.
+     * @param t The type of selection.
+     */
     public SelectionQuery(ScreenPoint i, ScreenPoint ii, SelectionType t) {
         super(Math.min(i.x, ii.x), Math.min(i.y, ii.y), Math.abs(i.x - ii.x), Math.abs(i.y - ii.y));
         points[0] = i;

@@ -5,6 +5,8 @@ import com.j3d.engine.interact.cmd.base.SemiStatefulCommand;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.commands.*;
 import com.j3d.engine.interact.cmd.base.Command;
+import com.j3d.engine.interact.cmd.commands.debug.DebugCmd;
+import com.j3d.engine.interact.cmd.commands.engine.EngineCmd;
 import com.j3d.engine.interact.cmd.commands.orbit.OrbitCmd;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 import com.j3d.ui.engine.CommandPallete;
@@ -12,7 +14,6 @@ import com.j3d.ui.engine.CommandPallete;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * CommandsManager is responsible for creating and storing available command instances
@@ -20,7 +21,7 @@ import java.util.Map;
  *
  * <p>It also manages a single global reference to the currently running {@link SemiStatefulCommand}
  * (if any). This class mixes two responsibilities:
- * - holding the registry of available commands (instance field {@link #commands})
+ * - holding the registry of available commands (instance field {@link #commandsAliasMap})
  * - tracking the currently active stateful command (static {@link #currentStatefulCommand}).
  *
  * @author Lehlogonolo Poole
@@ -79,34 +80,25 @@ public class CommandsManager {
      * is iterated and each alias is registered pointing to the same command instance. This
      * allows fast O(1) alias lookups via {@link #getCommand(String)}.
      */
-    public HashMap<String, Command> commands = new HashMap<>();
+    public HashMap<String, Command> commandsAliasMap = new HashMap<>();
 
     /**
-     * Constructs a CommandsManager and populates the {@link #commands} map with the known command instances.
+     * All commands that the engine supports.
+     */
+    public static final Commands commands = new Commands();
+
+    /**
+     * Constructs a CommandsManager and populates the {@link #commandsAliasMap} map with the known command instances.
      *
      * @implSpec Because concrete command instances are constructed here, creating a new {@code CommandsManager}
      * constructs all commands. Avoid creating many ephemeral {@code CommandsManager} instances if
      * command construction is expensive.
      */
     public CommandsManager() {
-        DebugCmd debugCmd = new DebugCmd();
-        TransformCmd transformCmd = new TransformCmd();
-        LookAtCmd lookAtCmd = new LookAtCmd();
-        TeleportCmd tpCmd = new TeleportCmd();
-        OrbitCmd  orbitCmd = new OrbitCmd();
-        EngineCmd engineCmd = new EngineCmd();
-
-        ArrayList<Command> commands = new ArrayList<>(
-                List.of(
-                        debugCmd, transformCmd, lookAtCmd,
-                        tpCmd, orbitCmd, engineCmd
-                )
-        );
-
-        commands.forEach(
+        commands.getCommands().forEach(
                 c ->
                     c.aliasStream().forEach(
-                            a -> this.commands.put(a, c)
+                            a -> this.commandsAliasMap.put(a, c)
                     )
         );
     }
@@ -116,10 +108,10 @@ public class CommandsManager {
      *
      * @param name alias to look up (case-sensitive)
      * @return the {@link Command} registered for {@code name}, or {@code null} if none found
-     * @see #commands
+     * @see #commandsAliasMap
      */
     public static Command getCommand(String name) {
-        return Static.commandManager.commands.getOrDefault(name, null);
+        return Static.commandManager.commandsAliasMap.getOrDefault(name, null);
     }
 
     /**

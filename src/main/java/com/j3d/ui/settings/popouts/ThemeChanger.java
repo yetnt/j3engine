@@ -5,18 +5,17 @@
 package com.j3d.ui.settings.popouts;
 
 import com.j3d.Static;
-import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.CommandsManager;
-import com.j3d.engine.interact.cmd.commands.EngineCmd;
 import com.j3d.settings.CoreSettings;
 import com.j3d.settings.Settings;
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.themes.Theme;
 import com.j3d.ui.J3DTheme;
-import com.j3d.ui.engine.CommandPallete;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 /**
@@ -325,12 +324,11 @@ public class ThemeChanger extends javax.swing.JFrame {
 
     private void changeAndCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeAndCloseActionPerformed
         enterThemeChangeActionPerformed(evt);
-        CommandsManager.getCommand("engine").run(
-                Static.commandParser.safeJLabel(),
+        Static.commandParser.runCommand(
+                CommandsManager.commands.engine,
                 "engine",
-                new Object[]{"exit"},
-                null
-        );
+                new ArrayList<>(Collections.singleton("exit")),
+                new ArrayList<>());
     }//GEN-LAST:event_changeAndCloseActionPerformed
 
     /**

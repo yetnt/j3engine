@@ -2,6 +2,9 @@ package com.j3d.engine.interact.selection;
 
 /**
  * Standard utility functions to use for or in relation to selecting.
+ * @see SelectionUtils.InferredSelectionType
+ * @see SelectionUtils#usingSelectionVariant(SelectionUtils.InferredSelectionType, boolean, Object, Object, Object, Object)
+ * @author Lehlogonolo Poole
  */
 public abstract class SelectionUtils {
 

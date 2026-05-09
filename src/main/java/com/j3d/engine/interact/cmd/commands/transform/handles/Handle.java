@@ -1,4 +1,4 @@
-package com.j3d.engine.interact.cmd.commands.transform.handlers;
+package com.j3d.engine.interact.cmd.commands.transform.handles;
 
 import com.j3d.Static;
 import com.j3d.engine.geometry.ScreenPoint;

@@ -1,9 +1,8 @@
 package com.j3d.engine.interact.cmd.commands.transform.mouse;
 
 import com.j3d.engine.interact.cmd.commands.transform.ScaleSelection;
-import com.j3d.engine.interact.cmd.commands.transform.handlers.Handle;
+import com.j3d.engine.interact.cmd.commands.transform.handles.Handle;
 import com.j3d.engine.interact.input.mouse.MOwner;
-import com.j3d.engine.interact.input.mouse.MouseOwner;
 
 import java.awt.event.MouseEvent;
 

@@ -7,9 +7,13 @@ import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 
 /**
- * MouseOwner is a class which represents an entity that can own the mouse input in the sceneManager. It extends MouseAdapter
- * to allow it to handle mouse events and implements EventEmitterInterface
+ * MouseOwner is a class which represents an entity that can own the mouse input in the sceneManager. It extends {@link MouseAdapter}
+ * to allow it to handle mouse events and implements {@link EventEmitterInterface}
  * to allow it to broadcast events to registered listeners.
+ * @see MouseAdapter
+ * @see EventEmitterInterface
+ * @see EngineFrame
+ * @author Lehlogonolo Poole
  */
 public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
     /**

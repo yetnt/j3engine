@@ -15,8 +15,8 @@ import com.j3d.engine.interact.cmd.base.*;
 import com.j3d.settings.CoreSettings;
 import com.j3d.ui.J3DTheme;
 import com.j3d.ui.util.SafeJLabel;
-import com.j3d.engine.interact.cmd.commands.transform.handlers.Handle;
-import com.j3d.engine.interact.cmd.commands.transform.handlers.HandleType;
+import com.j3d.engine.interact.cmd.commands.transform.handles.Handle;
+import com.j3d.engine.interact.cmd.commands.transform.handles.HandleType;
 import com.j3d.engine.interact.cmd.commands.transform.mouse.TransformMouseOwner;
 import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.react.actions.VoidAction;
@@ -48,9 +48,21 @@ import java.util.stream.Stream;
  * </ul>
  * Subclasses like {@link TranslateSelection} extend this class to define the specific
  * actions that happen when the user interacts with the handles or presses the arrow keys.
+ * <p>
+ *     Any command implementing this will inherit the need to take in a single optional
+ *     {@link ArgSet} called {@code mode} ({@code "f"}, {@code "t"}, {@code "v"}, {@code "p"}).
+ *     By default, is set to face-mode ({@code "f"} or {@code "t"}). The difference being within
+ *     face-mode, the command will filter the selection only for {@link GTri} and take the points of
+ *     each triangle as the points to transform. meaning if you had selected only a single point who
+ *     is parented to some triangle, all the points in the triangle are part of the transformation
+ *     selection as they share the same triangle up to hierarchy. To avoid this, use point-mode
+ *     ({@code "p"}, {@code "v"}).
+ * </p>
  *
  * @author Lehlogonolo Poole
  * @see KeyedStatefulCommand
+ * @see Subcommand
+ * @see TransformMouseOwner
  * @see TransformCmd
  * @see TranslateSelection
  * @see ScaleSelection

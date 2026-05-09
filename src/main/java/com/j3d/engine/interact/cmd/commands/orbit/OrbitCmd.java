@@ -16,15 +16,38 @@ import com.j3d.ui.engine.EngineFrame;
 import com.j3d.utility.JLabelRichText;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.UUID;
 
+/**
+ * A no-args stateful command which orbits the camera around (itself) using {@link OrbitMouseOwner} to enable dragging
+ * capabilities.
+ * <p>
+ *     As a {@link StatefulCommand}, {@code orbit} registers {@link KeyEvent#VK_ENTER} to finalise the rotation change
+ *     and {@link KeyEvent#VK_ESCAPE} to abort the rotation change.
+ * </p>
+ * <p>
+ *     Aliases: {@code orbit}, {@code rot}, {@code o}
+ * </p>
+ * @see OrbitMouseOwner
+ * @see StatefulCommand
+ * @see CommandsManager
+ * @see Command
+ * @author Lehlogonolo Poole
+ */
 public class OrbitCmd extends Command implements StatefulCommand<Rotation> {
+    /**
+     * The mouse owner for {@link OrbitCmd} to function
+     */
     public static OrbitMouseOwner orbitMouseOwner = new OrbitMouseOwner();
+    /**
+     * The UUID which the orbit command uses to identify stuff registered by it. i.e. events or keybinds
+     */
     public UUID orbitCmdUUID = UUID.randomUUID();
 
     public OrbitCmd() {
-        super("orbit", "Orbits the camera around someting");
+        super("orbit", "Orbits the camera around itself");
         this.aliases("o", "rot").parseUsages();
     }
 
@@ -70,6 +93,9 @@ public class OrbitCmd extends Command implements StatefulCommand<Rotation> {
     @Override
     public void onEnter(ActionEvent e, Rotation object, SafeJLabel label) {
         cleanup(label);
+        Static.getLog().println(
+                "Camera was rotated from: " + object.toLogString() + " to " + Static.camera.getRotation().toLogString()
+        );
         // done
     }
 

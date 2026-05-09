@@ -148,13 +148,11 @@ public class ToolboxButtons {
             else fp.hideThis();
         });
 
-        register("Orbit", e -> {
-            Static.commandParser.runCommand(
-                    CommandsManager.getCommand("orbit"),
-                    "orbit",
-                    new ArrayList<>(),
-                    new ArrayList<>());
-        }, "orbit.png");
+        register("Orbit", e -> Static.commandParser.runCommand(
+                CommandsManager.commands.orbit,
+                "orbit",
+                new ArrayList<>(),
+                new ArrayList<>()), "orbit.png");
     }
 
     public static void register(String label, ActionListener actionListener, String imageFileName) {

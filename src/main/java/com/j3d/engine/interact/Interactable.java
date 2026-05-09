@@ -1,16 +1,37 @@
 package com.j3d.engine.interact;
 
+import com.j3d.Static;
+import com.j3d.engine.geometry.geo3d.Thing;
+import com.j3d.engine.layer.Layer;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.CleanableAction;
 import com.j3d.engine.react.actions.DirtyVoidAction;
+import com.j3d.engine.react.history.History;
 import com.j3d.settings.CoreSettings;
+import com.j3d.storage.files.ProjectFile;
 import com.j3d.ui.dialog.Spinner;
+import com.j3d.ui.engine.tree.LayerTree;
 import com.j3d.ui.engine.tree.TreeNodeIdentity;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.util.function.BiConsumer;
 
 /**
+ * Any class implementing Interactable accepts the label of being the very first user tangible layer of
+ * data or collection that can:
+ * <ul>
+ *     <li>Play within {@link Static#layerTree}</li>
+ *     <li>Be hidden and deleted via the {@link History} using {@link Action}s</li>
+ *     <li>Be serialized by {@link ProjectFile} and reconstructed off the EDT thread via {@link #invokeSwingHooks()}</li>
+ * </ul>
+ * @see LayerTree
+ * @see History
+ * @see Action
+ * @see ProjectFile
+ * @see Thing
+ * @see Layer
+ * @see #invokeSwingHooks()
+ * @author Lehlogonolo Poole
  */
 public interface Interactable {
     /**
