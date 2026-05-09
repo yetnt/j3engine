@@ -96,7 +96,7 @@ public abstract class EventEmitter implements EventEmitterInterface {
                 "[EVENTEMITTER] " + properties.emitter.getClass().getSimpleName() + " : " + eventType.toString() + " to " + events.size() + " listeners"
         );
         ArrayList<EventReactor> reactors = new ArrayList<>();
-        events.forEach(event -> {
+        new ArrayList<>(events).forEach(event -> {
             event.onEvent(eventType, properties);
             if (event instanceof EventReactor er)
                 reactors.add(er);

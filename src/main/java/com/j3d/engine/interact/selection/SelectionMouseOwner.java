@@ -37,7 +37,8 @@ public class SelectionMouseOwner extends MouseOwner {
     public void mouseClicked(MouseEvent e) {
         if (isNotOwner()) return;
         clearSelectionSquare();
-        broadcast(EventType.X_SELECTED, new EventPayload<Void>(null, Static.sceneManager) {});
+        broadcast(EventType.X_SELECTED, new EventPayload<>(this, Static.sceneManager) {
+        });
     }
 
     @Override

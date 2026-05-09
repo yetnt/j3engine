@@ -3,14 +3,12 @@ package com.j3d.engine.interact.cmd.commands.transform;
 import com.j3d.Static;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.base.SemiStatefulCommand;
-import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.base.conditions.SelectionPreCondition;
 import com.j3d.ui.util.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.selection.SelectionManager;
 
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,8 +50,13 @@ public class TransformCmd extends Command implements SemiStatefulCommand {
         selectionPreCondition = new SelectionPreCondition(
                 () -> {
                     CommandsManager.clearCurrent();
+                    selectionPreCondition.finaliseCleanup();
                     SelectionManager.selectionMouseOwner.clearSelectionSquare();
                     dispatchToSubcommands(subcommandName, logLabel, _args, _taggedArgs);
+                },
+                () -> {
+                    CommandsManager.clearCurrent();
+                    SelectionManager.selectionMouseOwner.clearSelectionSquare();
                 }
         );
         Static.mainFrame.requestFocusInWindow(); // Remove focus from the command pallete
@@ -61,14 +64,8 @@ public class TransformCmd extends Command implements SemiStatefulCommand {
         this.logLabel = logLabel;
         this._args = args;
         this._taggedArgs = taggedArgs;
-//        if (Static.sceneManager.getSelected().isEmpty()) {
-//            logLabel.setText("Make a selection then left click to continue this command.");
-//            SelectionManager.selectionMouseOwner.attach(
-//                    listener
-//            );
-//            return;
-//        }
-//TODO: check if works
-        selectionPreCondition.execute(logLabel);
+        if (selectionPreCondition.execute(logLabel)) {
+            selectionPreCondition.finaliseCleanup();
+        }
     }
 }
