@@ -2,7 +2,7 @@ package com.j3d.engine.interact.cmd.args;
 
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.base.Command;
-import com.j3d.ui.engine.CommandPallete;
+import com.j3d.ui.engine.CommandPalette;
 
 import java.util.ArrayList;
 
@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * @see Argument
  * @see Command
  * @see TypedArg
- * @see CommandPallete
+ * @see CommandPalette
  * @see CommandParser
  */
 public class ArgSet implements Argument {

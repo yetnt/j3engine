@@ -3,7 +3,7 @@ package com.j3d.engine.interact.cmd;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgUtil;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
-import com.j3d.ui.engine.CommandPallete;
+import com.j3d.ui.engine.CommandPalette;
 import com.j3d.Static;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
@@ -26,7 +26,7 @@ import java.util.function.Consumer;
 import static com.j3d.engine.interact.cmd.CommandsManager.getCommand;
 
 /**
- * Parses text input from a {@link CommandPallete} input field and converts it into
+ * Parses text input from a {@link CommandPalette} input field and converts it into
  * command invocations. The parser maintains an argument accumulator while the user
  * types and converts typed tokens into appropriate argument objects (strings, quoted
  * text, numeric vectors, colours, UUID-referenced objects, etc.). Once a full command
@@ -38,7 +38,7 @@ import static com.j3d.engine.interact.cmd.CommandsManager.getCommand;
  * input field.
  *
  * @author Lehlogonolo Poole
- * @see CommandPallete
+ * @see CommandPalette
  * @see CommandsManager
  */
 public class CommandParser {
@@ -67,7 +67,7 @@ public class CommandParser {
     /**
      * The UI command palette that supplies input and receives feedback from this parser.
      */
-    public final CommandPallete commandPallete;
+    public final CommandPalette commandPalette;
     /**
      * Helper label wrapper used to show parsing/execution messages to the user.
      */
@@ -83,9 +83,9 @@ public class CommandParser {
      * This makes the input field editable and darkens its background to indicate focus/availability.
      */
     public void enable() {
-        commandPallete.inputField.setEnabled(true);
-        commandPallete.inputField.setBackground(
-                commandPallete.inputField.getBackground().darker().darker()
+        commandPalette.inputField.setEnabled(true);
+        commandPalette.inputField.setBackground(
+                commandPalette.inputField.getBackground().darker().darker()
         );
     }
 
@@ -95,42 +95,42 @@ public class CommandParser {
      * This prevents user input and brightens the field background to indicate it is inactive.
      */
     public void disable() {
-        commandPallete.inputField.setEnabled(false);
-        commandPallete.inputField.setBackground(
-                commandPallete.inputField.getBackground().brighter().brighter()
+        commandPalette.inputField.setEnabled(false);
+        commandPalette.inputField.setBackground(
+                commandPalette.inputField.getBackground().brighter().brighter()
         );
     }
 
     /**
-     * Create a new {@code CommandParser} bound to the given {@link CommandPallete}.
+     * Create a new {@code CommandParser} bound to the given {@link CommandPalette}.
      * <p>
      * The constructor wires action and document listeners to the palette's input field
      * to accumulate typed characters, split tokens, and trigger parsing and execution
      * when the user submits a command.
      *
-     * @param p the {@link CommandPallete} instance this parser should use for input and output
+     * @param p the {@link CommandPalette} instance this parser should use for input and output
      */
-    public CommandParser(CommandPallete p) {
-        this.commandPallete = p;
-        this.label = new SafeJLabel(commandPallete.logLabel, commandPallete.logLabel2);
-        commandPallete.inputField.addActionListener(e -> {
+    public CommandParser(CommandPalette p) {
+        this.commandPalette = p;
+        this.label = new SafeJLabel(commandPalette.logLabel, commandPalette.logLabel2);
+        commandPalette.inputField.addActionListener(e -> {
             ignoreDocumentEvent = true;
             parse();
             run();
             arguments.clear();
             taggedArguments.clear();
             accumulator = "";
-            commandPallete.inputField.setText("");
+            commandPalette.inputField.setText("");
             ignoreDocumentEvent = false;
         });
-        commandPallete.inputField.getDocument().addDocumentListener(new DocumentListener() {
+        commandPalette.inputField.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e) {
                 if (ignoreDocumentEvent) return;
 
                 try {
                     int offset = e.getOffset();
                     int length = e.getLength();
-                    String insertedText = commandPallete.inputField.getDocument().getText(offset, length);
+                    String insertedText = commandPalette.inputField.getDocument().getText(offset, length);
 
                     for (char c : insertedText.toCharArray()) {
                         //noinspection StringConcatenationInLoop
@@ -152,7 +152,7 @@ public class CommandParser {
                     accumulator = accumulator.substring(0, accumulator.length() - 1);
                 }
 
-                if (commandPallete.inputField.getText().isEmpty()) {
+                if (commandPalette.inputField.getText().isEmpty()) {
                     arguments.clear();
                     taggedArguments.clear();
                     accumulator = "";
@@ -174,7 +174,7 @@ public class CommandParser {
      *
      * <p>The method supports multiple argument types (Vector3, GObject, Thing,
      * Color, String, Integer, Double). When invoked it will add the object to
-     * {@link #arguments} and update the {@link #commandPallete} input field with
+     * {@link #arguments} and update the {@link #commandPalette} input field with
      * a command-compatible textual form of the argument. During the update the
      * {@link #ignoreDocumentEvent} flag is set to prevent the document listener
      * from processing the programmatic change.
@@ -189,44 +189,44 @@ public class CommandParser {
         switch (obj) {
             case Vector3 v -> {
                 arguments.add(v);
-                commandPallete.inputField.setText(
-                        commandPallete.inputField.getText() + v.toCommandPaletteString() + " "
+                commandPalette.inputField.setText(
+                        commandPalette.inputField.getText() + v.toCommandPaletteString() + " "
                 );
             }
             case GObject g -> {
                 arguments.add(g);
-                commandPallete.inputField.setText(
-                        commandPallete.inputField.getText() + g.getId() + " "
+                commandPalette.inputField.setText(
+                        commandPalette.inputField.getText() + g.getId() + " "
                 );
             }
             case Thing t -> {
                 arguments.add(t);
-                commandPallete.inputField.setText(
-                        commandPallete.inputField.getText() + t.getId() + " "
+                commandPalette.inputField.setText(
+                        commandPalette.inputField.getText() + t.getId() + " "
                 );
             }
             case Color c -> {
                 arguments.add(c);
-                commandPallete.inputField.setText(
-                        commandPallete.inputField.getText() + colourToCommandPaletteString(c) + " "
+                commandPalette.inputField.setText(
+                        commandPalette.inputField.getText() + colourToCommandPaletteString(c) + " "
                 );
             }
             case String s -> {
                 arguments.add(s);
-                commandPallete.inputField.setText(
-                        commandPallete.inputField.getText() + "\"" + s + "\" "
+                commandPalette.inputField.setText(
+                        commandPalette.inputField.getText() + "\"" + s + "\" "
                 );
             }
             case Integer i -> {
                 arguments.add(i);
-                commandPallete.inputField.setText(
-                        commandPallete.inputField.getText() + i + " "
+                commandPalette.inputField.setText(
+                        commandPalette.inputField.getText() + i + " "
                 );
             }
             case Double d -> {
                 arguments.add(d);
-                commandPallete.inputField.setText(
-                        commandPallete.inputField.getText() + d + " "
+                commandPalette.inputField.setText(
+                        commandPalette.inputField.getText() + d + " "
                 );
             }
             default -> throw new RuntimeException("Unknown argument type: " + obj.getClass().getName());
@@ -345,7 +345,7 @@ public class CommandParser {
                 // Find the GObject with the given UUID
                 argAddUUID(uuid);
             } catch (IllegalArgumentException e) {
-                parseAsNumber(accumulator, acc -> {
+                parseAsNumberOrBool(accumulator, acc -> {
                     // if numbers fail, check if this is a tagged arg
                     TaggedArgValue<?> v = TaggedArgUtil.parse(acc, label);
                     if (v.isErr()) return;
@@ -369,14 +369,23 @@ public class CommandParser {
      * @param accumulator the token to parse
      * @param otherwise a fallback consumer called when the token is not numeric
      */
-    private void parseAsNumber(String accumulator, Consumer<String> otherwise) {
+    private void parseAsNumberOrBool(String accumulator, Consumer<String> otherwise) {
         try {
             arguments.add(Integer.parseInt(accumulator.trim()));
         } catch (NumberFormatException e) {
             try {
                 arguments.add(Double.parseDouble(accumulator.trim()));
             } catch (NumberFormatException f) {
-                otherwise.accept(accumulator);
+                try {
+                    String acc = accumulator.trim().toLowerCase();
+                    arguments.add(switch (acc) {
+                        case "yes", "yebo", "true" -> true;
+                        case "no", "aowa", "false" -> false;
+                        default -> throw new IllegalArgumentException("rah");
+                    });
+                } catch (IllegalArgumentException ex) {
+                    otherwise.accept(accumulator);
+                }
             }
         }
     }

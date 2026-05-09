@@ -40,6 +40,7 @@ public class ThemeChanger extends javax.swing.JFrame {
         buttons.revalidate();
         this.revalidate();
         this.repaint();
+        Static.getLog().uiPrintLn("ThemeChanger completed building");
     }
 
     private JRadioButton radio(String title, int id) {

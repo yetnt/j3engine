@@ -1,5 +1,6 @@
 package com.j3d.engine.interact.cmd;
 
+import com.j3d.Static;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.commands.LookAtCmd;
 import com.j3d.engine.interact.cmd.commands.TeleportCmd;
@@ -34,7 +35,14 @@ public class Commands {
      * Default (empty) constructor
      */
     public Commands() {
-
+        Static.getLog().cmdPrintln("Commands populated with " + getCommands().size() + " commands.");
+        Static.getLog().cmdPrintln(
+                "(" + getCommands()
+                        .stream()
+                        .map((c) -> c.aliases.getFirst())
+                        .reduce((a, b) -> a + ", " + b)
+                + ")"
+        );
     }
 
     /**

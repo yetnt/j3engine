@@ -38,6 +38,7 @@ public class Signup extends javax.swing.JFrame {
         initComponents();
         this.setCursor(CursorManager.get(CursorNames.DEFAULT));
         this.postSignup = postsignup;
+        Static.getLog().uiPrintLn("Signup completed building");
     }
 
     private boolean validPassword() {

@@ -3,7 +3,7 @@ package com.j3d.engine.interact.cmd;
 import com.j3d.engine.interact.cmd.args.Argument;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.args.TypedArg;
-import com.j3d.ui.engine.CommandPallete;
+import com.j3d.ui.engine.CommandPalette;
 
 /**
  * A marker interface representing a generic type.
@@ -13,7 +13,7 @@ import com.j3d.ui.engine.CommandPallete;
  * @see TypedArg
  * @see Argument
  * @see Command
- * @see CommandPallete
+ * @see CommandPalette
  * @see CommandParser
  */
 public interface Any {

@@ -4,17 +4,20 @@
  */
 package com.j3d.ui.engine;
 
+import com.j3d.Static;
+
 /**
  *
  * @author ACER
  */
-public class CommandPallete extends javax.swing.JPanel {
+public class CommandPalette extends javax.swing.JPanel {
 
     /**
-     * Creates new form CommandPallete
+     * Creates new form CommandPalette
      */
-    public CommandPallete() {
+    public CommandPalette() {
         initComponents();
+        Static.getLog().uiPrintLn("CommandPalette completed building");
     }
 
     private boolean disabled = false;

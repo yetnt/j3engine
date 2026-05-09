@@ -50,6 +50,7 @@ public class Projects extends javax.swing.JFrame {
                 );
             }
         });
+        Static.getLog().uiPrintLn("Projects completed building");
     }
 
     public ImageIcon scaleImage(File image) {

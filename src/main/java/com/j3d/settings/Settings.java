@@ -5,15 +5,14 @@ import com.j3d.settings.classes.ScenePropertiesSettings;
 import com.j3d.settings.types.ComplexSetting;
 import com.j3d.settings.types.StringSetting;
 import com.j3d.ui.J3DTheme;
-import com.j3d.ui.settings.SettingsFrame;
-import com.j3d.ui.settings.panels.PopoutSPanel;
+import com.j3d.ui.settings.PreferencesFrame;
 import com.j3d.ui.settings.popouts.ThemeChanger;
 
 import java.util.ArrayList;
 
 public class Settings implements SettingsParent {
     
-    public static SettingsFrame settingsFrame;
+    public static PreferencesFrame preferencesFrame;
     public static CameraPropertiesSettings cameraProperties = new CameraPropertiesSettings();
     public static ScenePropertiesSettings sceneProperties = new ScenePropertiesSettings();
     public static SettingsParent debugProperties;
@@ -77,8 +76,8 @@ public class Settings implements SettingsParent {
     }
 
     @Override
-    public SettingsFrame panel() {
-        if (settingsFrame == null) settingsFrame = new SettingsFrame();
-        return settingsFrame;
+    public PreferencesFrame panel() {
+        if (preferencesFrame == null) preferencesFrame = new PreferencesFrame();
+        return preferencesFrame;
     }
 }

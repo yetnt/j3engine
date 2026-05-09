@@ -3,7 +3,7 @@ package com.j3d.engine.interact.input.keyboard;
 import com.j3d.Static;
 import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.interact.selection.SelectionUtils;
-import com.j3d.ui.engine.CommandPallete;
+import com.j3d.ui.engine.CommandPalette;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.utility.Pair;
 
@@ -303,7 +303,7 @@ public class KeyBindings {
         }
     };
 
-    public static boolean commandPaletteFocusOwner(CommandPallete cmdP) {
+    public static boolean commandPaletteFocusOwner(CommandPalette cmdP) {
         return cmdP.inputField.isFocusOwner();
     }
 

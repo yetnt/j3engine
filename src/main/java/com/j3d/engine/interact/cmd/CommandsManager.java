@@ -3,17 +3,10 @@ package com.j3d.engine.interact.cmd;
 import com.j3d.Static;
 import com.j3d.engine.interact.cmd.base.SemiStatefulCommand;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
-import com.j3d.engine.interact.cmd.commands.*;
 import com.j3d.engine.interact.cmd.base.Command;
-import com.j3d.engine.interact.cmd.commands.debug.DebugCmd;
-import com.j3d.engine.interact.cmd.commands.engine.EngineCmd;
-import com.j3d.engine.interact.cmd.commands.orbit.OrbitCmd;
-import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
-import com.j3d.ui.engine.CommandPallete;
+import com.j3d.ui.engine.CommandPalette;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * CommandsManager is responsible for creating and storing available command instances
@@ -27,7 +20,7 @@ import java.util.List;
  * @author Lehlogonolo Poole
  * @see StatefulCommand
  * @see CommandParser
- * @see CommandPallete
+ * @see CommandPalette
  */
 public class CommandsManager {
 

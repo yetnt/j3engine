@@ -125,6 +125,7 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void openEngineButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openEngineButtonActionPerformed
+        Static.getLog().stPrintln("Splash Screen Engine Access");
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
@@ -153,6 +154,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_openEngineButtonActionPerformed
 
     private void openEngineQuickActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openEngineQuickActionPerformed
+        Static.getLog().stPrintln("Direct Engine Access");
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
@@ -166,11 +168,13 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_openEngineQuickActionPerformed
 
     private void openEngineLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openEngineLoginActionPerformed
+        Static.getLog().stPrintln("Default Path (Login)");
         Startup.run();
         this.dispose();
     }//GEN-LAST:event_openEngineLoginActionPerformed
 
     private void loginAslehlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginAslehlActionPerformed
+        Static.getLog().stPrintln("Projects Path (LoginAsLehlogonolo)");
         CoreSettings.user = DatabaseManager.tblUsers.findById(3);
         this.dispose();
         Startup.runnable.run();

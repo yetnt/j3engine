@@ -11,18 +11,19 @@ import com.j3d.ui.J3DTheme;
  *
  * @author ACER
  */
-public class SettingsFrame extends javax.swing.JFrame {
+public class PreferencesFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form SettingsFrame
+     * Creates new form PreferencesFrame
      */
-    public SettingsFrame() {
+    public PreferencesFrame() {
         initComponents();
         Static.settings.getAllChildren().forEach(child -> {
             System.out.println("Adding + " + child);
             jPanel1.add(child.panel());
             System.out.println("Added");
         });
+        Static.getLog().uiPrintLn("PreferencesFrame completed building");
     }
 
     /**
@@ -85,20 +86,20 @@ public class SettingsFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SettingsFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PreferencesFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SettingsFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PreferencesFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SettingsFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PreferencesFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SettingsFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PreferencesFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SettingsFrame().setVisible(true);
+                new PreferencesFrame().setVisible(true);
             }
         });
     }

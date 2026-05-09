@@ -5,7 +5,6 @@ import com.j3d.engine.interact.selection.SelectionMouseOwner;
 import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.interact.selection.SelectionUtils;
 import com.j3d.settings.Settings;
-import com.j3d.ui.engine.CommandPallete;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -13,7 +12,7 @@ import java.awt.event.KeyEvent;
 
 import static com.j3d.Static.camera;
 import static com.j3d.engine.interact.input.keyboard.KeyBindings.commandPaletteFocusOwner;
-import static com.j3d.ui.engine.EngineFrame.commandPallete;
+import static com.j3d.ui.engine.EngineFrame.COMMAND_PALETTE;
 
 /**
  * The default key binds within J3Engine.
@@ -34,8 +33,8 @@ public enum DefaultKeys {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (Static.commandParser.commandPallete.isDisabled()) return;
-                            commandPallete.inputField.requestFocusInWindow();
+                            if (Static.commandParser.commandPalette.isDisabled()) return;
+                            COMMAND_PALETTE.inputField.requestFocusInWindow();
                         }
                     }
             )
@@ -50,8 +49,8 @@ public enum DefaultKeys {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (commandPallete.inputField.isFocusOwner()) {
-                                if (Static.commandParser.commandPallete.isDisabled()) return;
+                            if (COMMAND_PALETTE.inputField.isFocusOwner()) {
+                                if (Static.commandParser.commandPalette.isDisabled()) return;
                                 Static.mainFrame.requestFocusInWindow();
                             }
                         }
@@ -68,7 +67,7 @@ public enum DefaultKeys {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (commandPaletteFocusOwner(commandPallete)) return;
+                            if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
                             camera.setPosition(
                                     camera.getPosition().add(
@@ -90,7 +89,7 @@ public enum DefaultKeys {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (commandPaletteFocusOwner(commandPallete)) return;
+                            if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
                             camera.setPosition(
                                     camera.getPosition().sub(
@@ -112,7 +111,7 @@ public enum DefaultKeys {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (commandPaletteFocusOwner(commandPallete)) return;
+                            if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
                             camera.setPosition(
                                     camera.getPosition().sub(
@@ -134,7 +133,7 @@ public enum DefaultKeys {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (commandPaletteFocusOwner(commandPallete)) return;
+                            if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
                             camera.setPosition(
                                     camera.getPosition().add(
@@ -156,7 +155,7 @@ public enum DefaultKeys {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (commandPaletteFocusOwner(commandPallete)) return;
+                            if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
                             camera.setPosition(
                                     camera.getPosition().add(
@@ -178,7 +177,7 @@ public enum DefaultKeys {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (commandPaletteFocusOwner(commandPallete)) return;
+                            if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
                             camera.setPosition(
                                     camera.getPosition().sub(
@@ -259,8 +258,8 @@ public enum DefaultKeys {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            Static.commandParser.commandPallete.setDisabled(
-                                    !Static.commandParser.commandPallete.isDisabled()
+                            Static.commandParser.commandPalette.setDisabled(
+                                    !Static.commandParser.commandPalette.isDisabled()
                             );
                             Static.mainFrame.repaint();
                         }

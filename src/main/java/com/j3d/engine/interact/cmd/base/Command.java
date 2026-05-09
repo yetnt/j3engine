@@ -104,7 +104,7 @@ public class Command {
      */
     public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         // To be overridden by subclasses
-        Static.getLog().println(
+        Static.getLog().cmdPrintln(
                 (this instanceof Subcommand ? "Subcommand" : "Command") +
                 " invoked: \"" + aliasUsed + "\" ("+aliases.getFirst()+"), " + "with an args length of " + args.length + " and " + taggedArgs.size() + " tagged arguments."
         );
@@ -199,6 +199,7 @@ public class Command {
                         case "String" -> usageAccumulatorEntry.append("(string").append(tArg.isOptional() ? "?" : "").append(") ");
                         case "Double" -> usageAccumulatorEntry.append("(number").append(tArg.isOptional() ? "?" : "").append(") ");
                         case "Any" -> usageAccumulatorEntry.append("<any").append(tArg.isOptional() ? "?" : "").append("> ");
+                        case "Boolean" -> usageAccumulatorEntry.append("(boolean").append(tArg.isOptional() ? "?" : "").append(") ");
                         default -> throw new IllegalStateException("Unexpected value: " + cls.getSimpleName());
                     }
                 }

@@ -36,6 +36,7 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         this.setCursor(CursorManager.get(CursorNames.DEFAULT));
         this.postLogin = postLogin;
+        Static.getLog().uiPrintLn("Login completed building");
     }
 
     /**

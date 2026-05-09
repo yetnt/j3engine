@@ -14,7 +14,6 @@ import com.j3d.engine.interact.cmd.commands.transform.RotateSelection;
 import com.j3d.engine.interact.cmd.commands.transform.ScaleSelection;
 import com.j3d.engine.interact.cmd.commands.transform.TranslateSelection;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
-import com.j3d.engine.Logger;
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo3d.rot.Rotation;
@@ -31,7 +30,7 @@ import com.j3d.storage.files.ProjectFile;
 import com.j3d.threads.LongTask;
 import com.j3d.ui.CursorManager;
 import com.j3d.ui.CursorNames;
-import com.j3d.ui.settings.SettingsFrame;
+import com.j3d.ui.settings.PreferencesFrame;
 import com.j3d.ui.tb.Toolbox;
 //import com.jaiva.JBundler;
 import java.awt.*;
@@ -59,7 +58,7 @@ public class EngineFrame extends javax.swing.JFrame {
     private static MOwner mouseOwner = MOwner.SELECTION;
     public static ScreenPoint mousePos = null;
     public static ScreenPoint[] selectionArea = new ScreenPoint[2];
-    public static final CommandPallete commandPallete = new CommandPallete();
+    public static final CommandPalette COMMAND_PALETTE = new CommandPalette();
 
     public static void setMouseOwner(MOwner owner) {
         mouseOwner = owner == null ? MOwner.SELECTION : owner;
@@ -132,17 +131,17 @@ public class EngineFrame extends javax.swing.JFrame {
         Static.getLog().setLogArea(Static.debugPanel.logTextArea); // initialize logger with the text area
 
         Rectangle bounds = Static.mainFrame.getBounds();
-        Dimension size = commandPallete.getPreferredSize();
+        Dimension size = COMMAND_PALETTE.getPreferredSize();
         int x = ((bounds.width - size.width) / 2) - 60;
         int y = bounds.height - size.height - 200;
-        commandPallete.setBounds(x, y, size.width, size.height);
+        COMMAND_PALETTE.setBounds(x, y, size.width, size.height);
 
-        commandPallete.setOpaque(true);
-        commandPallete.setBackground(new Color(30, 30, 30, 8));
-        commandPallete.setVisible(true);
-        layeredPane.add(commandPallete, JLayeredPane.POPUP_LAYER);
+        COMMAND_PALETTE.setOpaque(true);
+        COMMAND_PALETTE.setBackground(new Color(30, 30, 30, 8));
+        COMMAND_PALETTE.setVisible(true);
+        layeredPane.add(COMMAND_PALETTE, JLayeredPane.POPUP_LAYER);
 
-        Static.commandParser = new CommandParser(commandPallete);
+        Static.commandParser = new CommandParser(COMMAND_PALETTE);
 
         Static.mainPanel.getRootPane().setFocusable(true);
         Static.mainPanel.getRootPane().requestFocusInWindow();
@@ -162,10 +161,10 @@ public class EngineFrame extends javax.swing.JFrame {
 //                        Static.layerTree.getPreferredSize().height);
 
                 Rectangle bounds = Static.mainFrame.getBounds();
-                Dimension size = commandPallete.getPreferredSize();
+                Dimension size = COMMAND_PALETTE.getPreferredSize();
                 int x = ((bounds.width - size.width) / 2) - 10;
                 int y = bounds.height - size.height - 50;
-                commandPallete.setBounds(x, y, size.width, size.height);
+                COMMAND_PALETTE.setBounds(x, y, size.width, size.height);
 
                 Static.mainFrame.repaint(); // repaint the frame
                 Static.mainPanel.repaint(); // repaint the panel too.
@@ -208,6 +207,7 @@ public class EngineFrame extends javax.swing.JFrame {
                 layeredPane.revalidate();
             }
         });
+        Static.getLog().uiPrintLn("EngineFrame completed building");
     }
 
     public EngineFrame(File file) {
@@ -308,8 +308,8 @@ public class EngineFrame extends javax.swing.JFrame {
                 Static.debugPanel.revalidate();
                 Static.debugPanel.repaint();
             }
-            commandPallete.revalidate();
-            commandPallete.repaint();
+            COMMAND_PALETTE.revalidate();
+            COMMAND_PALETTE.repaint();
             if (Static.mainFrame != null) {
                 Static.mainFrame.revalidate();
                 Static.mainFrame.repaint();
@@ -511,7 +511,7 @@ public class EngineFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void resetPositionJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetPositionJMenuItemActionPerformed
-        if (commandPaletteFocusOwner(commandPallete)) return;
+        if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
         Static.camera.setPosition(new Vector3(0, 0, 0));
         Static.mainFrame.repaint();
     }//GEN-LAST:event_resetPositionJMenuItemActionPerformed
@@ -527,13 +527,13 @@ public class EngineFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_redoJMenuItemActionPerformed
 
     private void resetOrientationJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetOrientationJMenuItemActionPerformed
-        if (commandPaletteFocusOwner(commandPallete)) return;
+        if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
         Static.camera.setRotation(new Rotation(0, 0, 0));
         Static.mainFrame.repaint();
     }//GEN-LAST:event_resetOrientationJMenuItemActionPerformed
 
     private void resetCameraJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetCameraJMenuItemActionPerformed
-        if (commandPaletteFocusOwner(commandPallete)) return;
+        if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
         Static.camera.setPosition(new Vector3(0, 0, 0));
         Static.camera.setRotation(new Rotation(0, 0, 0));
         Static.mainFrame.repaint();
@@ -664,11 +664,11 @@ public class EngineFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_exportAsPNGJMenuItemActionPerformed
 
     private void settingsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsMenuItemActionPerformed
-        // Open SettingsFrame JFrame on top of this frame at the centre of the screen.
-        SettingsFrame settingsFrame = Static.settings.panel();
-        CursorManager.set(CursorNames.DEFAULT, settingsFrame);
-        settingsFrame.setLocationRelativeTo(Static.mainFrame);
-        settingsFrame.setVisible(true);
+        // Open PreferencesFrame JFrame on top of this frame at the centre of the screen.
+        PreferencesFrame preferencesFrame = Static.settings.panel();
+        CursorManager.set(CursorNames.DEFAULT, preferencesFrame);
+        preferencesFrame.setLocationRelativeTo(Static.mainFrame);
+        preferencesFrame.setVisible(true);
     }//GEN-LAST:event_settingsMenuItemActionPerformed
 
     /**

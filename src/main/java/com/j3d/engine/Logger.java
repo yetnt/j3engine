@@ -58,6 +58,18 @@ public class Logger {
         }
     }
 
+    public void uiPrintLn(String message) {
+        println("[UI] " + message);
+    }
+
+    public void cmdPrintln(String s) {
+        println("[CMD] " + s);
+    }
+
+    public void stPrintln(String s) {
+        println("[START-UP] Quick Access Panel was used to open via: " + s);
+    }
+
     /**
      * Logs an error message. The message is prefixed with {@code [J3D-ERR]} and
      * printed to the error console. If a JTextArea is provided, the message

@@ -3,7 +3,7 @@ package com.j3d.ui.util;
 import com.j3d.Static;
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.ui.J3DTheme;
-import com.j3d.ui.engine.CommandPallete;
+import com.j3d.ui.engine.CommandPalette;
 import com.j3d.utility.JLabelRichText;
 
 import javax.swing.*;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * {@link SwingUtilities#invokeLater(Runnable)}
  * @author Lehlogonolo Poole
  * @see CommandParser
- * @see CommandPallete
+ * @see CommandPalette
  */
 public class SafeJLabel {
     private JLabel label;
