@@ -4,7 +4,7 @@ target/
 !**/src/test/**/target/
 /debug/
 /lib/**
-/documents/**
+/documents/*.docx
 /UCanAccess-5.0.1.bin.zip
 /UCanAccess-5.0.1.bin
 /database/**
