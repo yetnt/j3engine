@@ -1,25 +1,27 @@
-package com.j3d.engine;
+package com.j3d.storage.files.engine;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 public class DebugDump {
 
-    private static final Path ROOT = Paths.get("debug", "dump");
+    private final Path ROOT =  EngineFiles.engineFolder.toPath()
+            .resolve("dump");
 
-    static {
-        try {
-            Files.createDirectories(ROOT);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    public DebugDump() {
+        if (!Files.exists(ROOT)) {
+            try {
+                Files.createDirectories(ROOT);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
-    public static void dump(String name, String content) throws IOException {
+    public void dump(String name, String content) throws IOException {
         Files.writeString(
                 ROOT.resolve(name),
                 content,
@@ -28,13 +30,13 @@ public class DebugDump {
         );
     }
 
-    public static PrintWriter writer(String name) throws IOException {
+    public PrintWriter writer(String name) throws IOException {
         return new PrintWriter(
                 Files.newBufferedWriter(
                         ROOT.resolve(name),
                         StandardOpenOption.CREATE,
                         StandardOpenOption.TRUNCATE_EXISTING
-                )
+                ), true
         );
     }
 }

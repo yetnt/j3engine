@@ -1,12 +1,13 @@
 package com.j3d.ui.tb;
 
 import com.j3d.Static;
-import com.j3d.engine.DebugDump;
+import com.j3d.storage.files.engine.DebugDump;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.Camera;
+import com.j3d.storage.files.engine.EngineFiles;
 import com.j3d.threads.LongTask;
 import com.j3d.ui.CursorManager;
 import com.j3d.ui.CursorNames;
@@ -27,21 +28,7 @@ import java.util.Objects;
 public class ToolboxButtons {
     private static final ArrayList<JPanel> toolboxButtons = new ArrayList<>();
 
-    private static final PrintWriter out;
-
     static {
-        try {
-            out = DebugDump.writer(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss")) + ".csv");
-
-            out.println("time,cx,cy,cz,cpitch,cyaw,croll,layerID,layerVisible,thingName,thingID,triID,tridist,trix,triy,triz,trinx,triny,trinz,tricol,triVisible");
-            out.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            out.flush();
-            out.close();
-        }));
         register("Toggle Debug", e -> {
             // Toggle debug mode
             Static.debugPanel.toggleHidden();
@@ -90,39 +77,44 @@ public class ToolboxButtons {
         register("Dump to Debug", e -> {
             long current = System.currentTimeMillis();
             Camera cam = Static.camera;
+            try (PrintWriter out = Static.getEngineFiles().debugDump.writer(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss")) + ".csv")) {
+                out.println("time,cx,cy,cz,cpitch,cyaw,croll,layerID,layerVisible,thingName,thingID,triID,tridist,trix,triy,triz,trinx,triny,trinz,tricol,triVisible");
 
-            for (Layer l : Static.sceneManager.layers) {
-                l.forEach(thing -> {
-                    thing.getObjects().stream()
-                            .filter(GTri.class::isInstance)
-                            .map(GTri.class::cast)
-                            .forEach(tri -> {
-                                String sb = current + "," +
-                                        cam.getPosition().getX() + "," +
-                                        cam.getPosition().getY() + "," +
-                                        cam.getPosition().getZ() + "," +
-                                        cam.getRotation().getPitch() + "," +
-                                        cam.getRotation().getYaw() + "," +
-                                        cam.getRotation().getRoll() + "," +
-                                        l.getIdentifier() + "," +
-                                        !l.isHidden() + "," +
-                                        thing.getName() + "," +
-                                        thing.getId() + "," +
-                                        tri.getId() + "," +
-                                        tri.euclideanDist() + "," +
-                                        tri.getPivot().getX() + "," +
-                                        tri.getPivot().getY() + "," +
-                                        tri.getPivot().getZ() + "," +
-                                        tri.normal.getX() + "," +
-                                        tri.normal.getY() + "," +
-                                        tri.normal.getZ() + "," +
-                                        String.format("#%02X%02X%02X", tri.getColour().getRed(), tri.getColour().getGreen(), tri.getColour().getBlue()) + "," +
-                                        !tri.isHidden();
+                Static.sceneManager.layers.forEach(
+                        l -> l.forEach(thing -> thing.getObjects().stream()
+                                .filter(GTri.class::isInstance)
+                                .map(GTri.class::cast)
+                                .forEach(tri -> {
+                                    String sb = current + "," +
+                                            cam.getPosition().getX() + "," +
+                                            cam.getPosition().getY() + "," +
+                                            cam.getPosition().getZ() + "," +
+                                            cam.getRotation().getPitch() + "," +
+                                            cam.getRotation().getYaw() + "," +
+                                            cam.getRotation().getRoll() + "," +
+                                            l.getIdentifier() + "," +
+                                            !l.isHidden() + "," +
+                                            thing.getName() + "," +
+                                            thing.getId() + "," +
+                                            tri.getId() + "," +
+                                            tri.euclideanDist() + "," +
+                                            tri.getPivot().getX() + "," +
+                                            tri.getPivot().getY() + "," +
+                                            tri.getPivot().getZ() + "," +
+                                            tri.normal.getX() + "," +
+                                            tri.normal.getY() + "," +
+                                            tri.normal.getZ() + "," +
+                                            String.format("#%02X%02X%02X", tri.getColour().getRed(), tri.getColour().getGreen(), tri.getColour().getBlue()) + "," +
+                                            !tri.isHidden();
 
-                                out.println(sb);
-                                out.flush();
-                            });
-                });
+                                            out.println(sb);
+                                            out.flush();
+                                }
+                                )
+                        )
+                );
+            } catch (RuntimeException | IOException ex) {
+                throw new RuntimeException(ex);
             }
 
         });

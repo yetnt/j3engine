@@ -8,6 +8,8 @@ public class EngineFiles {
     public RecentProjectsFile recents;
     public PinnedProjectsFile pinned;
     public LogFile logFile;
+    public DebugDump debugDump;
+
 
     public EngineFiles() {
         if (!engineFolder.exists()) {
@@ -16,5 +18,6 @@ public class EngineFiles {
         recents = new RecentProjectsFile();
         pinned = new PinnedProjectsFile();
         logFile = new LogFile();
+        debugDump = new DebugDump();
     }
 }
