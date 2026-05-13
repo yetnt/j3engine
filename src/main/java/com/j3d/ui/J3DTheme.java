@@ -92,7 +92,7 @@ public enum J3DTheme {
     }
 
     private static volatile HashMap<String, Color> colorMap = new HashMap<>();
-    private static int currentLoadedTheme = CoreSettings.user.themeId.getValue();
+    private static int currentLoadedTheme = 1; // default
     public static int getCurrentLoadedThemeId() {
         return currentLoadedTheme;
     }

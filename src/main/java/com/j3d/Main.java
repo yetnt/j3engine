@@ -6,7 +6,9 @@ package com.j3d;
 
 import com.j3d.settings.CoreSettings;
 import com.j3d.storage.db.DatabaseManager;
+import com.j3d.storage.db.users.User;
 import com.j3d.threads.FakeLongTask;
+import com.j3d.ui.J3DTheme;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.ui.engine.J3Splash;
 
@@ -175,7 +177,9 @@ public class Main extends javax.swing.JFrame {
 
     private void loginAslehlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginAslehlActionPerformed
         Static.getLog().stPrintln("Projects Path (LoginAsLehlogonolo)");
-        CoreSettings.user = DatabaseManager.tblUsers.findById(3);
+        User user = DatabaseManager.tblUsers.findById(3);
+        CoreSettings.user = user;
+        J3DTheme.loadTheme(user.themeId.getValue());
         this.dispose();
         Startup.runnable.run();
     }//GEN-LAST:event_loginAslehlActionPerformed

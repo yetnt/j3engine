@@ -11,6 +11,7 @@ import com.j3d.storage.db.users.User;
 import com.j3d.storage.db.users.UsersTable;
 import com.j3d.ui.CursorManager;
 import com.j3d.ui.CursorNames;
+import com.j3d.ui.J3DTheme;
 import com.j3d.utility.Pair;
 import com.j3d.utility.PasswordHasher;
 
@@ -120,10 +121,8 @@ public class Signup extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        engineImageShowcasePanel = new javax.swing.JPanel();
-        imageLbl1 = new javax.swing.JLabel();
-        imageLbl2 = new javax.swing.JLabel();
-        imageLbl3 = new javax.swing.JLabel();
+        newJPanel1 = new com.j3d.ui.home.ShowcasePanel();
+        jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel2 = new javax.swing.JPanel();
         nameJField = new javax.swing.JTextField();
@@ -145,61 +144,50 @@ public class Signup extends javax.swing.JFrame {
         repeatPasswordErrorJLabel = new javax.swing.JLabel();
         loginButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("J3Engine Signup");
         setIconImage(Static.logo());
+        setResizable(false);
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
+        jPanel1.setBackground(J3DTheme.BACKGROUND.color());
+
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
-        jLabel1.setText("J3Engine");
+        jLabel1.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("J3Engine (J3D)");
 
-        imageLbl1.setText("jLabel2");
-
-        imageLbl2.setText("jLabel2");
-
-        imageLbl3.setText("jLabel2");
-
-        javax.swing.GroupLayout engineImageShowcasePanelLayout = new javax.swing.GroupLayout(engineImageShowcasePanel);
-        engineImageShowcasePanel.setLayout(engineImageShowcasePanelLayout);
-        engineImageShowcasePanelLayout.setHorizontalGroup(
-            engineImageShowcasePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(engineImageShowcasePanelLayout.createSequentialGroup()
-                .addGap(3, 3, 3)
-                .addComponent(imageLbl1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(imageLbl2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
-                .addComponent(imageLbl3, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        engineImageShowcasePanelLayout.setVerticalGroup(
-            engineImageShowcasePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, engineImageShowcasePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(engineImageShowcasePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(imageLbl1, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
-                    .addComponent(imageLbl2, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
-                    .addComponent(imageLbl3, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE))
-                .addContainerGap())
-        );
+        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\ACER\\Documents\\code\\Jaiva3dEngine\\src\\main\\resources\\art\\logo\\J3DiconSmall.png")); // NOI18N
+        jLabel2.setMaximumSize(new java.awt.Dimension(150, 150));
+        jLabel2.setMinimumSize(new java.awt.Dimension(150, 150));
+        jLabel2.setPreferredSize(new java.awt.Dimension(150, 150));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(engineImageShowcasePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 9, Short.MAX_VALUE)
+                .addComponent(newJPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(107, Short.MAX_VALUE)
+                .addContainerGap(31, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                .addComponent(engineImageShowcasePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(110, Short.MAX_VALUE))
+                .addComponent(newJPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37))
         );
 
         getContentPane().add(jPanel1);
@@ -212,6 +200,11 @@ public class Signup extends javax.swing.JFrame {
         jSeparator1.setPreferredSize(new java.awt.Dimension(10, 10));
         getContentPane().add(jSeparator1);
 
+        jPanel2.setBackground(J3DTheme.UI_SURFACE.color());
+
+        nameJField.setBackground(J3DTheme.BACKGROUND.color());
+        nameJField.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        nameJField.setForeground(J3DTheme.TEXT_PRIMARY.color());
         nameJField.setToolTipText("");
         nameJField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -219,25 +212,51 @@ public class Signup extends javax.swing.JFrame {
             }
         });
 
+        surnameJField.setBackground(J3DTheme.BACKGROUND.color());
+        surnameJField.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        surnameJField.setForeground(J3DTheme.TEXT_PRIMARY.color());
+
+        emailJField.setBackground(J3DTheme.BACKGROUND.color());
+        emailJField.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        emailJField.setForeground(J3DTheme.TEXT_PRIMARY.color());
+
+        nameJLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        nameJLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
         nameJLabel.setLabelFor(nameJField);
         nameJLabel.setText("Name");
 
+        surnameJLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        surnameJLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
         surnameJLabel.setLabelFor(surnameJField);
         surnameJLabel.setText("Surname");
 
+        emailJLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        emailJLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
         emailJLabel.setLabelFor(emailJField);
         emailJLabel.setText("Email");
 
+        passwordJLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        passwordJLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
         passwordJLabel.setLabelFor(passwordJField);
         passwordJLabel.setText("Password");
 
+        repeatPasswordJLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        repeatPasswordJLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
         repeatPasswordJLabel.setLabelFor(repeatPasswordJField);
         repeatPasswordJLabel.setText("Repeat Password");
 
+        passwordJField.setBackground(J3DTheme.BACKGROUND.color());
+        passwordJField.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        passwordJField.setForeground(J3DTheme.TEXT_PRIMARY.color());
         passwordJField.setEchoChar(echoChar);
 
+        repeatPasswordJField.setBackground(J3DTheme.BACKGROUND.color());
+        repeatPasswordJField.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        repeatPasswordJField.setForeground(J3DTheme.TEXT_PRIMARY.color());
         repeatPasswordJField.setEchoChar(echoChar);
 
+        seePasswordToggleButton.setBackground(J3DTheme.BACKGROUND.color());
+        seePasswordToggleButton.setForeground(J3DTheme.TEXT_PRIMARY.color());
         seePasswordToggleButton.setText("👁");
         seePasswordToggleButton.setMaximumSize(new java.awt.Dimension(25, 20));
         seePasswordToggleButton.setMinimumSize(new java.awt.Dimension(20, 20));
@@ -248,6 +267,9 @@ public class Signup extends javax.swing.JFrame {
             }
         });
 
+        enterButton.setBackground(J3DTheme.BACKGROUND.color());
+        enterButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        enterButton.setForeground(J3DTheme.TEXT_PRIMARY.color());
         enterButton.setText("Asambe!");
         enterButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -277,6 +299,9 @@ public class Signup extends javax.swing.JFrame {
         repeatPasswordErrorJLabel.setForeground(new java.awt.Color(255, 0, 0));
         repeatPasswordErrorJLabel.setText(" ");
 
+        loginButton.setBackground(J3DTheme.BACKGROUND.color());
+        loginButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        loginButton.setForeground(J3DTheme.TEXT_PRIMARY.color());
         loginButton.setText("Login Instead");
         loginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -304,18 +329,15 @@ public class Signup extends javax.swing.JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(repeatPasswordJField, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(passwordJField)
                                     .addComponent(emailJField, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
                                     .addComponent(surnameJField, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
-                                    .addComponent(nameJField)
-                                    .addComponent(nameErrorJLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(surnameErrorJLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(emailErrorJLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(seePasswordToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(repeatPasswordJField, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(nameJField))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(seePasswordToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -323,11 +345,18 @@ public class Signup extends javax.swing.JFrame {
                     .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(enterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(nameErrorJLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(surnameErrorJLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(emailErrorJLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(57, 57, 57))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(78, Short.MAX_VALUE)
+                .addContainerGap(79, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nameJField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(nameJLabel))
@@ -346,8 +375,8 @@ public class Signup extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(emailErrorJLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(seePasswordToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(seePasswordToggleButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(passwordJField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(passwordJLabel)))
@@ -359,11 +388,11 @@ public class Signup extends javax.swing.JFrame {
                     .addComponent(repeatPasswordJField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(repeatPasswordErrorJLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addComponent(enterButton)
                 .addGap(27, 27, 27)
                 .addComponent(loginButton)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel2);
@@ -482,12 +511,9 @@ public class Signup extends javax.swing.JFrame {
     private javax.swing.JLabel emailErrorJLabel;
     private javax.swing.JTextField emailJField;
     private javax.swing.JLabel emailJLabel;
-    private javax.swing.JPanel engineImageShowcasePanel;
     private javax.swing.JButton enterButton;
-    private javax.swing.JLabel imageLbl1;
-    private javax.swing.JLabel imageLbl2;
-    private javax.swing.JLabel imageLbl3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator1;
@@ -495,6 +521,7 @@ public class Signup extends javax.swing.JFrame {
     private javax.swing.JLabel nameErrorJLabel;
     private javax.swing.JTextField nameJField;
     private javax.swing.JLabel nameJLabel;
+    private com.j3d.ui.home.ShowcasePanel newJPanel1;
     private javax.swing.JLabel passwordErrorJLabel;
     private javax.swing.JPasswordField passwordJField;
     private javax.swing.JLabel passwordJLabel;

@@ -1,4 +1,12 @@
-d
+
+
+a = "something#somethiunhg2#everything"
+
+String[] toks = a.split("#");
+
+["something", "somethiunhg2", "everything"]
+
+toks[0]
 
 
 e([round node])

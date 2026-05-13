@@ -15,6 +15,5 @@ public class ToggleVisCmd extends Subcommand {
     @Override
     public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(logLabel, aliasUsed, args, taggedArgs);
-
     }
 }
