@@ -128,6 +128,7 @@ public class ThemeChanger extends javax.swing.JFrame {
         buttons.setLayout(new java.awt.GridLayout(0, 1));
 
         drawPanel.setBackground(colorOf(J3DTheme.UI_SURFACE));
+        drawPanel.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), javax.swing.BorderFactory.createEtchedBorder()));
         drawPanel.setMaximumSize(new java.awt.Dimension(264, 333));
         drawPanel.setLayout(new java.awt.GridBagLayout());
 
@@ -236,6 +237,9 @@ public class ThemeChanger extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         drawPanel.add(jPanel4, gridBagConstraints);
 
+        enterThemeChange.setBackground(J3DTheme.BACKGROUND.color());
+        enterThemeChange.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        enterThemeChange.setForeground(J3DTheme.TEXT_PRIMARY.color());
         enterThemeChange.setText("Change Theme");
         enterThemeChange.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -243,6 +247,9 @@ public class ThemeChanger extends javax.swing.JFrame {
             }
         });
 
+        changeAndClose.setBackground(J3DTheme.BACKGROUND.color());
+        changeAndClose.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        changeAndClose.setForeground(J3DTheme.TEXT_PRIMARY.color());
         changeAndClose.setText("Change and close engine");
         changeAndClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -291,7 +298,7 @@ public class ThemeChanger extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(drawPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)

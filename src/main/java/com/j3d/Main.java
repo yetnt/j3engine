@@ -24,6 +24,7 @@ public class Main extends javax.swing.JFrame {
      * Creates new form Main
      */
     public Main() {
+        J3DTheme.loadTheme(J3DTheme.getCurrentLoadedThemeId());
         initComponents();
     }
 

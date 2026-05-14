@@ -400,6 +400,8 @@ public class CommandParser {
      */
     public void run() {
         label.clear();
+        if (arguments.isEmpty())
+            return;
         if (arguments.getFirst() instanceof String cmdName) {;
             Command cmd = getCommand(cmdName);
             if (arguments.isEmpty())
