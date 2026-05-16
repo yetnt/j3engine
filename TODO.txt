@@ -6,7 +6,7 @@ TO-DO: (Refactoring draw and ordering ipeline)
 4. [DONE] Update GTri to draw lines itself and updatesd Gline to draw points itself. Essentialy GTri.draw calls GLine.draw and calls GPoint.draw.
 5. implement bucket sorting
 6. [DONE] try z depth buffer too
-7. Backface culling (for each method)
+7. [DONE] Backface culling (for each method)
 8. [DONE] Debug radio buttons to toggle backface culling on or off
 9. [DONE] compare.
 
@@ -16,13 +16,13 @@ Future ToDo (Important)
 2. (DONE) implement matrix math and hence fix getForward and hence make W and other keys move along the forward vector and not the world
 3. (CURRENT) "transform" command handles (scale, rotate, translate handles, projection and math, ties into 2)
 4. A/B Testing with a hook class that asks the user if the program did the right thing. (Should probably call Main.main())
-5. Projects Panel to load up a project
-6. Startup login panel
+5. [DONE] Projects Panel to load up a project
+6. [DONE] Startup login panel
 7. Via Main.main() open a file directly and skip the login/signup panel. (the only way to access the app in an unlogged-in state)
 8. [DONE] Settings Frame
 9. Customizable UI Colours
 10. Macros
-11. Access DB Integration and usage (ties to 6 and 7)
+11. [DONE] Access DB Integration and usage (ties to 6 and 7)
 12. [DONE] "orbit" command, which makes use of MouseOwner and allows panning the camera rotation.
 13. Colour to Db integeration via Phase 1 documentation
 

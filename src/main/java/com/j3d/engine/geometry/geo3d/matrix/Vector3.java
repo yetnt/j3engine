@@ -39,13 +39,18 @@ public class Vector3 implements MatrixInterface {
         Z = m[2][0];
     }
 
+
     /**
-     * Checks if the vector is not set to the special "empty" value.
+     * Constructs a vector with the specified x, y, and z components.
      *
-     * @return {@code true} if the vector holds meaningful data, {@code false} otherwise.
+     * @param x The X component.
+     * @param y The Y component.
+     * @param z The Z component.
      */
-    public boolean isNotEmpty() {
-        return X != Double.MAX_VALUE || Y != Double.MAX_VALUE || Z != Double.MAX_VALUE;
+    public Vector3(double x, double y, double z) {
+        X = x;
+        Y = y;
+        Z = z;
     }
 
     /**
@@ -70,6 +75,16 @@ public class Vector3 implements MatrixInterface {
     }
 
     /**
+     * Checks if the vector is not set to the special "empty" value.
+     *
+     * @return {@code true} if the vector holds meaningful data, {@code false} otherwise.
+     */
+    public boolean isNotEmpty() {
+        return X != Double.MAX_VALUE || Y != Double.MAX_VALUE || Z != Double.MAX_VALUE;
+    }
+
+
+    /**
      * Creates a {@code Vector3} from a 3x1 {@link MatrixInterface}.
      *
      * @param m The matrix to convert. Must have 3 rows and 1 column.
@@ -80,19 +95,6 @@ public class Vector3 implements MatrixInterface {
         //TODO: Custom Matrix Error
         if (m.rows() != 3 || m.cols() != 1) throw new RuntimeException("Matrix must be 3x1 to be converted to a Vector3");
         return new Vector3(m.get(0, 0), m.get(1, 0), m.get(2, 0));
-    }
-
-    /**
-     * Constructs a vector with the specified x, y, and z components.
-     *
-     * @param x The X component.
-     * @param y The Y component.
-     * @param z The Z component.
-     */
-    public Vector3(double x, double y, double z) {
-        X = x;
-        Y = y;
-        Z = z;
     }
 
     /**

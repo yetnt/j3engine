@@ -1,0 +1,174 @@
+
+classDiagram
+
+    direction BT
+
+    namespace geo2d {
+    class HasParents {
+    <<interface>>
+    }
+
+    class GObject {
+    -col Color
+    -pivot Vector3
+    -Id UUID
+    #constraintObject CObject
+    +draw(graphics2D: Graphics2D)
+    +drawSelected(graphics2D: Graphics2D)
+    +Constructor()
+    +Constructor(colour: Color)
+    +getPivot() Vector3
+    +deleteSelf() boolean
+    +setPivot(pivot: Vector3)
+    +setColour(colour: Color)
+    +getColour() Color
+    +getId() UUID
+    +setId(id: UUID)
+    +equals(obj: Object) boolean
+    +hashCode() int
+    +onEvent(event: EventType, properties: EventPayload)
+    +detachConstraint()
+    +toConstraintObject() CObject
+    }
+
+    class GPoint {
+    +DIAMETER integer = 7$
+    -parents HashSet~GLine~
+    +fromRaw(id: string, point: Vector3)$ GPoint
+    +Constructor(v3: Vector3)
+    +equals(obj: Object) boolean
+    +toString() string
+    +toConstraintObject() CPoint
+    +getParents() HashSet~GLine~
+    +addParent(parent: GLine)
+    +removeParent(parent: GLine)
+    }
+
+    class GLine {
+    -startPoint GPoint
+    -endPoint GPoint
+    -parents HashSet~GTri~
+    +fromRaw(id: string, A: GPoint, B: GPoint)$ GLine
+    +Constructor(A: GPoint, B: GPoint)
+    +getEnd() GPoint
+    +getStart() GPoint
+    +length() real
+    +toString() string
+    +getPointStream() Stream~GPoint~
+    +toConstraintObject() CLine
+    +getDupeObjectToCheck() Vector3
+    +handlePossibleDuplicates(type: EventType, payload: GPoint.GPointMovedEvent)
+    }
+
+    class GTri {
+    -LegA GLine
+    -LegB GLine
+    -LegC GLine
+    +normal Vector3
+    -hidden boolean
+    +fromRaw(id: string, col: Color, legA: GLine, legB: GLine, legC: GLine)$ GTri
+    -drawDist()
+    +calcDepth() real
+    +euclideanDist() real
+    +drawSelected(graphics2D: Graphics2D)
+    +Constructor(c: Color, A: GPoint, B: GPoint, C: GPoint)
+    +Constructor(c: Color, A: GLine, B: GLine, C: GLine)
+    +isHidden() boolean
+    +setHidden(hidden: boolean)
+    +calcNormal(A: Vector3, B: Vector3, C: Vector3)
+    +getLegA() GLine
+    +getLegB() GLine
+    +getLegC() GLine
+    +area() real
+    +toString() string
+    +getLegStream() Stream~GLine~
+    +toConstraintObject() CTri
+    +getDupeObjectToCheck() Vector3
+    +handlePossibleDuplicates(type: EventType, payload: GPoint.GPointMovedEvent)
+    }
+        }
+
+    namespace events {
+    class IdempotentEventListener
+    class EventListener
+    }
+
+    namespace geo3d {
+    class Thing {
+    -centroid Vector3
+    -id UUID
+    -name string = "Thing"
+    -onSelectCallback BiConsumer~Thing,DefaultMutableTreeNode~
+    -objects ArrayList~GObject~
+    -points List~GPoint~
+    -parent Layer
+    -isBg boolean
+    -hidden boolean
+    -forDeletion boolean
+    -treeNodeIdentity TreeNodeIdentity~Thing~
+    -treeNode DefaultMutableTreeNode
+    +fromRaw(name: string, id: string, hidden: boolean, l: Layer, sceneManager: SceneManager)$ Thing
+    -setId(uuid: UUID)
+    +invokeSwingHooks()
+    +Constructor(sceneManager: SceneManager, l: Layer, name: string, invokeSwingHooks: boolean)
+    +Constructor(sceneManager: SceneManager, l: Layer, name: string)
+    +addObjs(gObjects: GObject...) Thing
+    +draw(graphics2D: Graphics2D)
+    +getId() UUID
+    +getObjects() ArrayList~GObject~
+    +getCentroid() Vector3
+    +copy(sceneManager: SceneManager, l: Layer) Action~Thing~
+    -notifyTris()
+    +scale(scale: real) VoidAction
+    +scale(scale: Vector3) VoidAction
+    +translate(v: Vector3) VoidAction
+    +rotate(axis: Vector3, angleDegrees: real) VoidAction
+    +instantDelete()
+    +getIdentity() TreeNodeIdentity~Thing~
+    +getTreeNode() DefaultMutableTreeNode
+    +getOnSelect() BiConsumer~Interactable,DefaultMutableTreeNode~
+    +isHidden() boolean
+    +setHidden(hidden: boolean)
+    +isForDeletion() boolean
+    +setForDeletion(forDeletion: boolean)
+    +toggleVisibility() Action~boolean~
+    +deleteLater() DirtyVoidAction
+    +objectsStream() Stream~GObject~
+    +getName() string
+            }
+        }
+
+    namespace interact {
+    class Interactable {
+    <<interface>>
+    }
+        }
+
+    %%    note for EventListener "Can be registered to listen to an event from some object implementing EventListenerInterface"
+    %%
+    %%    note for IdempotentEventListener "An EventListener with the goal to run once by checking if a value was already changed"
+    %%
+    %%    note for Interactable "Any first user-tangible object. This can participate with the layer tree and has other special properties."
+    %%
+    %%    note for BaseObject "Provides the base properties that a core abstract geometry class requires"
+    %%
+    %%    note for HasParents "An interface for keeping track of the 'parent' this node is attached to."
+
+    GPoint --|> GObject
+    GLine --|> GObject
+    GTri --|> GObject
+
+    GObject --> EventListener
+    GObject --|> BaseObject
+
+    GPoint --> HasParents
+    GLine --> HasParents
+    GLine --> IdempotentEventListener
+    GTri --> IdempotentEventListener
+
+    Thing --|> Interactable
+
+    GLine --* "2" GPoint : Holds a reference of (Composition)
+    GTri --* "3" GLine : Holds a reference of (Composition)
+
+    Thing --* "0..n" GObject : Holds many references of (Composition)

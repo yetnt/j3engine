@@ -1,0 +1,137 @@
+classDiagram
+
+    direction BT
+
+    namespace geo3d {
+        class MatrixInterface {
+            <<interface>>
+            +rows() integer
+            +cols() integer
+            +get(row: integer, col: integer) double
+            +get() double[][]
+            +copy() MatrixInterface
+            +toMatrixString() string
+        }
+
+        class MatrixMath {
+            #validate(m: double[][])$
+            +matrixOf(m: double[][])$ MatrixInterface
+            +equalsRowsEqualCols(m1: MatrixInterface, m2: MatrixInterface)$ boolean
+            +add(m1: MatrixInterface, m2: MatrixInterface)$ MatrixInterface
+            +sub(m1: MatrixInterface, m2: MatrixInterface)$ MatrixInterface
+            +mult(m1: MatrixInterface, m2: MatrixInterface)$ MatrixInterface
+        }
+
+        class Vector3 {
+            -X real
+            -Y real
+            -Z real
+            +of(m: MatrixInterface)$ Vector3
+            +Constructor(m: double[][])
+            +Constructor(x: real, y: real, z: real)
+            +Constructor()
+            +Constructor(empty: boolean)
+            +isNotEmpty() boolean
+            +getX() real
+            +getY() real
+            +getZ() real
+            +dot(v: Vector3) real
+            +normalize() Vector3
+            +add(v: Vector3) Vector3
+            +magnitude() real
+            +mult(scalar: real) Vector3
+            +mult(B: Vector3) Vector3
+            +div(scalar: real) Vector3
+            +cross(B: Vector3) Vector3
+            +sub(B: Vector3) Vector3
+            +distance(B: Vector3) real
+            +random(low: Vector3, high: Vector3)$ Vector3
+            +copy() Vector3
+            +toPoint(cam: Camera) CartesianPoint
+            +distanceSquaredTo(mousePos: CartesianPoint) real
+            +reduce(vectors: ArrayList~Vector3~, reducer: BiFunction<Vector3, K, K>, initialValue: ~K~)$ ~K~
+            +reduceToVector3(vectors: ArrayList~Vector3~, reducer: BiFunction<Vector3, Vector3, Vector3>)$ Vector3
+            +rotateAroundAxis(axis: Vector3, angleDegrees: real) Vector3
+            +scale(d: real) Vector3
+            +toCommandPaletteString() string
+            +equals(obj: Object) boolean
+            +hashCode() int
+            +toString() string
+        }
+
+        class Matrix3 {
+            -data: double[][]
+            +Constructor(data: double[][])
+            +identity()$ Matrix3
+            +of(m: MatrixInterface)$ Matrix3
+            +transform(v: Vector3) Vector3
+        }
+    }
+
+
+    class BasePoint~T extends Number~ {
+        +x: T
+        +y: T
+        +Constructor(xcord: T, ycord: T)
+        +areCollinear(p1: CartesianPoint, p2: CartesianPoint, p3: CartesianPoint)$ boolean
+    }
+
+    namespace geo2d {
+        class CartesianPoint {
+            -EPSILON: double = 0.01
+            +Constructor()
+            +Constructor(X: double, Y: double)
+            +isNotEmpty() boolean
+            +toScreen(sceneManager: SceneManager) ScreenPoint
+            +toVector3(camera: Camera) Vector3
+            +fromList(arr: ArrayList~? extends Number~)$ CartesianPoint
+            +toArray() ArrayList~Double~
+            +distanceTo(other: CartesianPoint) double
+            +distanceSquaredTo(other: CartesianPoint) double
+            +equals(obj: Object) boolean
+            +hashCode() int
+            +toString() string
+        }
+    }
+
+    namespace rot {
+        class Rotation {
+            -pitch: real
+            -yaw: real
+            -roll: real
+            +Constructor(pitch: real, yaw: real, roll: real)
+            +worldToCam() CamToWorldDirection
+            +camToWorld() WorldToCamDirection
+            +getYaw() real
+            +getPitch() real
+            +getRoll() real
+            +setPitch(pitch: real)
+            +setYaw(yaw: real)
+            +setRoll(roll: real)
+            +toRadVector3() Vector3
+            +copy() Rotation
+            +toLogString() string
+        }
+    }
+
+    class ScreenPoint {
+        +Constructor(X: int, Y: int)
+        +toPoint(sceneManager: SceneManager) CartesianPoint
+        +toSwingPoint() java.awt.Point
+        +toString() string
+    }
+
+
+    Vector3 --|> MatrixInterface : Implements (as a 3x1 column matrix)
+
+    Matrix3 --|> MatrixInterface : Implements (as a 3x3 matrix)
+
+    CartesianPoint --|> BasePoint
+
+    ScreenPoint --|> BasePoint
+
+    Vector3 --> CartesianPoint : Convert via 3d Projection to
+
+    CartesianPoint --> ScreenPoint : Converts via screen offsets to
+
+    note for Rotation "Used by the camera class to store rotation properties."

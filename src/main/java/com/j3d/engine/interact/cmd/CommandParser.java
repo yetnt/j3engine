@@ -229,6 +229,12 @@ public class CommandParser {
                         commandPalette.inputField.getText() + d + " "
                 );
             }
+            case Boolean b -> {
+                arguments.add(b);
+                commandPalette.inputField.setText(
+                        commandPalette.inputField.getText() + (b ? "true" : "false") + " "
+                );
+            }
             default -> throw new RuntimeException("Unknown argument type: " + obj.getClass().getName());
         }
         ignoreDocumentEvent = false;
