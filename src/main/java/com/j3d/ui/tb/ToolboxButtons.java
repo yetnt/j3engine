@@ -57,7 +57,7 @@ public class ToolboxButtons {
             LongTask<Void> task = new LongTask<>(
                     t -> {
                         int max = 10;
-                        t.progressStart("Doing", max);
+                        t.progressStart("Doing stuff", max);
                         try {
                             for (int i = 0; i < max; i++) {
                                 Thread.sleep(n);
