@@ -1,0 +1,35 @@
+classDiagram
+
+    direction LR
+
+    namespace debug {
+        class DebugCmd
+
+        class EchoCmd
+        class TypeOf
+        class RandomUUIDCmd
+        class CameraInfoCmd
+    }
+
+    namespace cmd {
+        class Command
+        class Subcommand
+        class TypedArg
+        class ArgSet
+    }
+
+    DebugCmd --|> Command
+    EchoCmd --|> Subcommand
+    TypeOf --|> Subcommand
+    RandomUUIDCmd --|> Subcommand
+    CameraInfoCmd --|> Subcommand
+
+    EchoCmd *-- DebugCmd
+    TypeOf *-- DebugCmd
+    RandomUUIDCmd *-- DebugCmd
+    CameraInfoCmd *-- DebugCmd
+
+    TypeOf --* "1" TypedArg
+    EchoCmd --* "1" TypedArg
+    CameraInfoCmd --* "1" ArgSet
+

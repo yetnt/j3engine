@@ -1,0 +1,81 @@
+classDiagram
+
+    direction LR
+
+    note for Table "has generic type &ltT extends DBRecord&lt?&gt, C extends TableColumns&gt"
+
+    namespace db {
+        class Table {
+            <<interface>>
+        }
+
+        class DBRecord~T extends Table~ {
+            <<interface>>
+        }
+
+        class RecordField~T~ {
+        }
+
+        class TableColumns {
+            <<interface>>
+        }
+    }
+
+    namespace users {
+        class UsersTable {
+            +getUser(id: integer) User$
+            +userExists(email: string) integer$
+            +newOrExisting(name: string, surname: string, email: string, pass: Password) Pair<boolean, User>$
+            +of(values: Object[]) User
+            +getColumns() ArrayList~CUsers~
+            +Constructor()
+        }
+
+        class CUsers {
+            <<enumeration>>
+            IDENTIFIER = "userId"
+            THEME_ID = "themeId"
+            EMAIL = "email"
+            FIRST_NAME = "firstName"
+            LAST_NAME = "lastName"
+            PASSWORD_HASH = "passwordHash"
+            PASSWORD_SALT = "passwordSalt"
+
+            -value: string
+            +Constructor(value: string)
+            +getValue() string
+        }
+
+    %%        class Password {
+    %%            <<record>>
+    %% commented out as it cluttered the class diagram
+    %%            +hash: RecordField~string~
+    %%            +salt: RecordField~byte[]~
+    %%            +Constructor(hash: string, salt: byte[])
+    %%            +directHash() string
+    %%            +directSalt() byte[]
+    %%        }
+
+        class User {
+            +id: integer
+            +themeId: RecordField<integer>
+            +firstName: RecordField<string>
+            +lastName: RecordField<string>
+            +email: RecordField<string>
+            +password: Password
+            +fields: ArrayList~RecordField~?~~
+            +Constructor(id: integer, themeId: integer, firstName: string, lastName: string, email: string, password: Password)
+            +getTable() UsersTable
+            +getRecordId() integer
+            +getFields() ArrayList~RecordField~?~~
+            +toString() string
+        }
+    }
+
+    UsersTable --|> Table : Implements Table&ltUser, CUsers&gt
+    CUsers --|> TableColumns
+    UsersTable --* "1" CUsers
+    User --* "1" Password
+    User --|> DBRecord~UsersTable~
+    UsersTable --* "1..n" User
+    User --* "6" RecordField

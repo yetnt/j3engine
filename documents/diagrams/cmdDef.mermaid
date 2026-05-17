@@ -1,0 +1,81 @@
+classDiagram
+
+    direction LR
+
+    class Command {
+        -aliases: ArrayList~string~
+        -description: string
+        -usage: string
+        -args: ArrayList~Argument~
+        -variadicTaggedArgs: boolean
+        #usages: HashMap~ArrayList~Class~, String~
+        +Constructor(name: string, d: string)
+        +aliases(a: string[]) Command
+        +args(a: string[]) Command
+        +run(logLabel: SafeJLabel, aliasUsed: string, args: Object[], taggedArgs: ArrayList~TaggedArgValue~?~)
+        #dispatchToSubcommands(subcommandName: string, logLabel: SafeJLabel, args: Object[], taggedArgs: ArrayList~TaggedArgValue~?~)
+        +aliasStream() Stream~string~
+        +parseUsages() Command
+        +getUsages() HashMap~ArrayList~Class~,string~
+        +returnUsagesWhere(alias: string, types: Class[]) string[]
+    }
+
+    namespace arguments {
+        class Argument {
+            <<interface>>
+            +getName()
+            +getDescription()
+            +isOptional()
+        }
+        class ArgSet {
+            -ArrayList~string~ allowedValues
+            -name: string
+            -description: string
+            -isOptional: boolean
+            +Constructor(name: string, description: string, isOptional: boolean, allowedValues: string[])
+            +getAllowedValues() ArraYList~string~
+            +isValid(value: string) boolean
+            +toUseString() string
+        }
+        class TypedArg {
+            -type: ArrayList~Class~
+            -name: string
+            -description: string
+            -optional: boolean
+            +Constructor(name: string, description: string, optional: boolean, type: Class~?~[])
+            +getType() ArrayList~Class~
+        }
+        class Subcommand {
+            +Constructor(name: string, description: string)
+        }
+        class TaggedArgValue~T~ {
+            +taggedArgName: string
+            +value: T
+            +type: Class~?~
+            -isEmpty: boolean
+            -err: boolean
+            -Constructor(v: T)
+            +Constructor(type: Class~?~)
+            +setName(name: string) TaggedArgValue~T~
+            +error() TaggedArgValue~T~
+            +setType(clazz: Class~?~) TaggedArgValue~T~
+            +copy(val: Object, label: SafeJLabel) TaggedArgValue~?~
+            +isEmpty() boolean
+            +isErr() boolean
+            +toString() string
+        }
+        class TaggedArgUtil {
+            +acceptedTags: HashMap~string,TaggedArgValue~?~~$
+            +parse(accumulator, label) TaggedArgValue~?~$
+        }
+    }
+
+    Subcommand --|> Command
+
+    Subcommand --> Argument : can act as
+    TypedArg --> Argument
+    ArgSet --> Argument
+
+    Command --* Argument : holds a collection of expected
+
+    TaggedArgUtil --* TaggedArgValue : holds a master list of valid

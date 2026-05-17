@@ -1,0 +1,44 @@
+classDiagram
+
+    note for Table "has generic type &ltT extends DBRecord&lt?&gt, C extends TableColumns&gt"
+    namespace db {
+        class Table {
+            <<interface>>
+            +getName() string
+            +getColumns() ArrayList~C~
+            +getPrimaryKey() C
+            +of(values: Object[]) T
+            +findWhere(columnName: C, op: SQLOperator, value: Object) ArrayList~T~
+            +findById(id: int) T
+        }
+
+        class DBRecord~T extends Table~ {
+            <<interface>>
+            +getRecordId() int
+            +getFields() ArrayList~RecordField~?~~
+            +save()
+            +getTable() T
+        }
+
+        class RecordField~T~ {
+            +name: string
+            -value: T
+            -updated: boolean
+            -converter: Function~T, string~
+            +Constructor(name: string, value: T)
+            +Constructor(name: string, value: T, converter: Function~T, String~)
+            +getValue() T
+            +getDbValue() Object
+            +consumeUpdated() boolean
+            +setValue(value: T)
+        }
+
+        class TableColumns {
+            <<interface>>
+            +getValue() string
+        }
+    }
+
+    Table "1" <--> "1..n" DBRecord : holds references to each other
+    Table --> "1..n" TableColumns : tables depend on having columns
+    RecordField "1..n" *--  DBRecord : records can have multiple fields

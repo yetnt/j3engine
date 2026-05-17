@@ -1,0 +1,63 @@
+classDiagram
+
+    direction BT
+
+    namespace cmd {
+
+        class Commands {
+            +debug: DebugCmd
+            +transform: TransformCmd
+            +lookAt: LookAtCmd
+            +teleport: TeleportCmd
+            +orbit: OrbitCmd
+            +engine: EngineCmd
+            +Constructor()
+            +getCommands() ArrayList~Command~
+        }
+
+        class CommandParser {
+            -accumulator: string
+            -arguments: ArrayList~Object~
+            -taggedArguments: ArrayList~TaggedArgValue~
+            -ignoreDocumentEvent: boolean
+            +commandPalette: CommandPalette
+            -label: SafeJLabel
+            -argumentClosed: boolean
+            +enable()
+            +disable()
+            +Constructor(p: CommandPalette)
+            +addArgument(obj: Object)
+            +colourToCommandPaletteString(col: Color) string
+            +argAddUUID(uuid: UUID)
+            -inBrace(c: char) boolean
+            -parse()
+            -parseAsNumberOrBool(accumulator: string, otherwise: Consumer~String~)
+            +run()
+            +runCommand(cmd: Command, cmdName: string, arguments: ArrayList~Object~, taggedArguments: ArrayList~TaggedArgValue~) boolean
+            -parseColor(input: string) Color
+            +safeJLabel() SafeJLabel
+        }
+
+        class CommandsManager {
+            +commandsAliasMap: HashMap~String,Command~
+            +commands: Commands$
+            +currentStatefulCommand: SemiStatefulCommand$
+            +setAsCurrent(c: SemiStatefulCommand)$
+            +isCurrentStatefulRunning(c: SemiStatefulCommand) boolean$
+            +clearCurrent()$
+            +CommandsManager()
+            +getCommand(name: string) Command$
+            +commandIsRunning() boolean$
+            +getCurrentCommandName() string$
+        }
+
+        class Command
+    }
+
+    class CommandPalette
+
+
+    note for CommandPalette "This is the UI class"
+    Commands --* Command : Holds the master reference to all
+    CommandsManager --* "1" Commands : Holds a single reference to
+    CommandPalette "1" <--> "1" CommandParser : Tightly coupled bidirectional association
