@@ -20,7 +20,6 @@ import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.storage.files.ProjectFile;
 import com.j3d.ui.J3DTheme;
 import com.j3d.ui.engine.tree.TreeNodeIdentity;
-import com.j3d.ui.dialog.Spinner;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
@@ -196,7 +195,7 @@ public class Thing implements Interactable {
     public Thing(SceneManager sceneManager, Layer l, String name, boolean invokeSwingHooks) {
         toggleSaved();
         l = l == null ? sceneManager.layers.get(1) : l;
-        if (l.getIdentifier().equals(Layer.backgroundId)) {
+        if (l.getIdentifier().equals(Layer.BACKGROUND_ID)) {
             isBg = true;
         }
         l.add(this);
@@ -219,7 +218,7 @@ public class Thing implements Interactable {
     public Thing(SceneManager sceneManager, Layer l, String name) {
         toggleSaved();
         l = l == null ? sceneManager.layers.get(1) : l;
-        if (l.getIdentifier().equals(Layer.backgroundId)) {
+        if (l.getIdentifier().equals(Layer.BACKGROUND_ID)) {
             isBg = true;
         }
         l.add(this);

@@ -543,7 +543,7 @@ public class DebugPanel extends javax.swing.JPanel {
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
         sceneManager.layers.forEach(frame -> {
-            if (!frame.getIdentifier().equals(Layer.backgroundId)) frame.clear();
+            if (!frame.getIdentifier().equals(Layer.BACKGROUND_ID)) frame.clear();
         });
         frame.repaint();
     }//GEN-LAST:event_clearButtonActionPerformed

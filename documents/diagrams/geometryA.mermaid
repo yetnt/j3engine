@@ -93,56 +93,6 @@ classDiagram
     class EventListener
     }
 
-    namespace geo3d {
-    class Thing {
-    -centroid Vector3
-    -id UUID
-    -name string = "Thing"
-    -onSelectCallback BiConsumer~Thing,DefaultMutableTreeNode~
-    -objects ArrayList~GObject~
-    -points List~GPoint~
-    -parent Layer
-    -isBg boolean
-    -hidden boolean
-    -forDeletion boolean
-    -treeNodeIdentity TreeNodeIdentity~Thing~
-    -treeNode DefaultMutableTreeNode
-    +fromRaw(name: string, id: string, hidden: boolean, l: Layer, sceneManager: SceneManager)$ Thing
-    -setId(uuid: UUID)
-    +invokeSwingHooks()
-    +Constructor(sceneManager: SceneManager, l: Layer, name: string, invokeSwingHooks: boolean)
-    +Constructor(sceneManager: SceneManager, l: Layer, name: string)
-    +addObjs(gObjects: GObject...) Thing
-    +draw(graphics2D: Graphics2D)
-    +getId() UUID
-    +getObjects() ArrayList~GObject~
-    +getCentroid() Vector3
-    +copy(sceneManager: SceneManager, l: Layer) Action~Thing~
-    -notifyTris()
-    +scale(scale: real) VoidAction
-    +scale(scale: Vector3) VoidAction
-    +translate(v: Vector3) VoidAction
-    +rotate(axis: Vector3, angleDegrees: real) VoidAction
-    +instantDelete()
-    +getIdentity() TreeNodeIdentity~Thing~
-    +getTreeNode() DefaultMutableTreeNode
-    +getOnSelect() BiConsumer~Interactable,DefaultMutableTreeNode~
-    +isHidden() boolean
-    +setHidden(hidden: boolean)
-    +isForDeletion() boolean
-    +setForDeletion(forDeletion: boolean)
-    +toggleVisibility() Action~boolean~
-    +deleteLater() DirtyVoidAction
-    +objectsStream() Stream~GObject~
-    +getName() string
-            }
-        }
-
-    namespace interact {
-    class Interactable {
-    <<interface>>
-    }
-        }
 
     %%    note for EventListener "Can be registered to listen to an event from some object implementing EventListenerInterface"
     %%
@@ -165,8 +115,6 @@ classDiagram
     GLine --> HasParents
     GLine --> IdempotentEventListener
     GTri --> IdempotentEventListener
-
-    Thing --|> Interactable
 
     GLine --* "2" GPoint : Holds a reference of (Composition)
     GTri --* "3" GLine : Holds a reference of (Composition)

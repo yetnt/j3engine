@@ -1,0 +1,80 @@
+classDiagram
+
+
+    namespace geo3d {
+        class Thing {
+            -centroid Vector3
+            -id UUID
+            -name string = "Thing"
+            -onSelectCallback BiConsumer~Thing,DefaultMutableTreeNode~
+            -objects ArrayList~GObject~
+            -points List~GPoint~
+            -parent Layer
+            -isBg boolean
+            -hidden boolean
+            -forDeletion boolean
+            -treeNodeIdentity TreeNodeIdentity~Thing~
+            -treeNode DefaultMutableTreeNode
+            +fromRaw(name: string, id: string, hidden: boolean, l: Layer, sceneManager: SceneManager)$ Thing
+            -setId(uuid: UUID)
+            +Constructor(sceneManager: SceneManager, l: Layer, name: string, invokeSwingHooks: boolean)
+            +Constructor(sceneManager: SceneManager, l: Layer, name: string)
+            +addObjs(gObjects: GObject...) Thing
+            +draw(graphics2D: Graphics2D)
+            +getId() UUID
+            +getObjects() ArrayList~GObject~
+            +getCentroid() Vector3
+            +copy(sceneManager: SceneManager, l: Layer) Action~Thing~
+            -notifyTris()
+            +scale(scale: real) VoidAction
+            +scale(scale: Vector3) VoidAction
+            +translate(v: Vector3) VoidAction
+            +rotate(axis: Vector3, angleDegrees: real) VoidAction
+            +objectsStream() Stream~GObject~
+            +getName() string
+        }
+    }
+
+    namespace interact {
+        class Interactable {
+            <<interface>>
+            +isHidden() boolean
+            +setHidden(hidden: boolean)
+            +isForDeletion() boolean
+            +setForDeletion(forDeletion: boolean)
+            +toggleVisibility() Action~Boolean~
+            +deleteLater() DirtyVoidAction
+            +toggleSaved()
+            +instantDelete()
+            +getIdentity() TreeNodeIdentity~? extends Interactable~
+            +getTreeNode() DefaultMutableTreeNode
+            +getOnSelect() BiConsumer~? extends Interactable,DefaultMutableTreeNode~
+            +invokeSwingHooks()
+        }
+    }
+
+    namespace layers {
+        class Layer {
+            -identifier string
+            +BACKGROUND_ID string = "BACKG"$
+            -onSelect BiConsumer~Layer,DefaultMutableTreeNode~
+            -hidden boolean
+            -forDeletion boolean
+            -treeNodeIdentity TreeNodeIdentity~Layer~
+            -treeNode DefaultMutableTreeNode
+            +fromRaw(id: string, hidden: boolean) Layer$
+            +Constructor(id: string, invokeSwingHooks: boolean)
+            +Constructor(id: String)
+            +Constructor()
+            +getIdentifier() string
+            +squashWith(otherlayer: Layer) DirtyAction~Layer~
+            +draw(graphics2d: Graphics2d)
+            +usableLayersStream() Stream~Thing~
+            +toString() string
+        }
+    }
+
+    Thing --> Interactable
+    Layer --> Interactable
+
+    Layer --* "0..n" Thing : Holds multiple

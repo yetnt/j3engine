@@ -10,7 +10,6 @@ import com.j3d.engine.react.actions.DirtyAction;
 import com.j3d.engine.react.actions.DirtyVoidAction;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.ConstructorAction;
-import com.j3d.settings.CoreSettings;
 import com.j3d.ui.engine.tree.TreeNodeIdentity;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -48,7 +47,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
 
     private final String identifier;
 
-    public static final String backgroundId = "BACKG";
+    public static final String BACKGROUND_ID = "BACKG";
     private final BiConsumer<Layer, DefaultMutableTreeNode> onSelectCallback = (o, t) -> {
         Static.getLog().println("Layer " + o.getIdentifier() + " was selected in the tree.");
     };
@@ -119,7 +118,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
     public Layer(String id, boolean invokeSwingHooks) {
         identifier = id;
         final String idFinal = id;
-        if (id.equals(backgroundId))
+        if (id.equals(BACKGROUND_ID))
             return; // Do not follow through.
         if (invokeSwingHooks)
             invokeSwingHooks();
@@ -132,7 +131,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
     public Layer(String id) {
         identifier = id;
         final String idFinal = id;
-        if (id.equals(backgroundId))
+        if (id.equals(BACKGROUND_ID))
             return; // Do not follow through.
         invokeSwingHooks();
     }
@@ -228,7 +227,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
      * @param graphics2D The {@code Graphics2D} context used for drawing.
      */
     public void draw(Graphics2D graphics2D) {
-        if (!getIdentifier().equals(backgroundId))
+        if (!getIdentifier().equals(BACKGROUND_ID))
             sort(Comparator.comparingDouble(t -> t.getCentroid().distance(Static.camera.getPosition())));
         if (isHidden() || isForDeletion()) return;
         for (Thing o : this.reversed()) {

@@ -94,26 +94,6 @@ classDiagram
         }
     }
 
-    namespace rot {
-        class Rotation {
-            -pitch: real
-            -yaw: real
-            -roll: real
-            +Constructor(pitch: real, yaw: real, roll: real)
-            +worldToCam() CamToWorldDirection
-            +camToWorld() WorldToCamDirection
-            +getYaw() real
-            +getPitch() real
-            +getRoll() real
-            +setPitch(pitch: real)
-            +setYaw(yaw: real)
-            +setRoll(roll: real)
-            +toRadVector3() Vector3
-            +copy() Rotation
-            +toLogString() string
-        }
-    }
-
     class ScreenPoint {
         +Constructor(X: int, Y: int)
         +toPoint(sceneManager: SceneManager) CartesianPoint
@@ -134,4 +114,4 @@ classDiagram
 
     CartesianPoint --> ScreenPoint : Converts via screen offsets to
 
-    note for Rotation "Used by the camera class to store rotation properties."
+%%    note for Rotation "Used by the camera class to store rotation properties."

@@ -234,7 +234,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
         final HashMultiMap<String, GTri> trisParentsMap = new HashMultiMap<>();
         final HashMap<String, GTri> trisMap = new HashMap<>();
 
-        Static.sceneManager.layers.removeIf(l -> !Objects.equals(l.getIdentifier(), Layer.backgroundId));
+        Static.sceneManager.layers.removeIf(l -> !Objects.equals(l.getIdentifier(), Layer.BACKGROUND_ID));
 
         IOSupplier<DataInputStream> fileReader = dis -> {
             try {

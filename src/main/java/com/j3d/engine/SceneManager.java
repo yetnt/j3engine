@@ -64,7 +64,7 @@ public class SceneManager {
      */
     public SceneManager(Dim dim) {
         screenSize = dim;
-        Layer bg = new Layer(Layer.backgroundId);
+        Layer bg = new Layer(Layer.BACKGROUND_ID);
         layers.add(bg); // the default layer
         bg.add(new Thing(this, bg, "bg"));
         layers.add(new Layer()); // testing layer.
