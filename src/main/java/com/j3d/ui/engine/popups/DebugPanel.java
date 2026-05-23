@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package com.j3d.ui.engine;
+package com.j3d.ui.engine.popups;
 
 import com.j3d.Executor;
 import com.j3d.J3DSettings;
@@ -15,6 +15,7 @@ import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.ui.J3DTheme;
+import com.j3d.ui.engine.FloatingPanel;
 
 import javax.swing.*;
 import java.awt.*;

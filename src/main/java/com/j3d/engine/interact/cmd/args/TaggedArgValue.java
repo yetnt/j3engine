@@ -27,7 +27,7 @@ public class TaggedArgValue<T> {
     private boolean isEmpty = true;
     private boolean err = false;
 
-    private TaggedArgValue(T v) {
+    public TaggedArgValue(T v) {
         value = v;
     }
 

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package com.j3d.ui.engine.tree;
+package com.j3d.ui.engine.popups.tree;
 
 import java.util.Arrays;
 import java.util.Objects;

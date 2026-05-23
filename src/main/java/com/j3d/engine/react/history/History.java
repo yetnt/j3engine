@@ -3,6 +3,7 @@ package com.j3d.engine.react.history;
 import com.j3d.Static;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.CleanableAction;
+import com.j3d.ui.engine.popups.HistoryPanel;
 
 import java.io.Serial;
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ public class History extends ArrayList<Action<?>> {
 
     public static final String logHead = "[HISTORY] ";
 
+    public static HistoryPanel panel;
+
     /**
      * Serial version UID for serialization.
      */
@@ -30,6 +33,7 @@ public class History extends ArrayList<Action<?>> {
 
     public History() {
         super();
+        panel = new HistoryPanel();
     }
 
     /**
@@ -45,6 +49,7 @@ public class History extends ArrayList<Action<?>> {
         action.undo();
         backup.add(action);
         Static.getLog().println(logHead + "Undo -> " + action.getDescription());
+        updateHistory();
     }
 
     /**
@@ -56,6 +61,7 @@ public class History extends ArrayList<Action<?>> {
         action.run();
         bypassAdd(action);
         Static.getLog().println(logHead + "Redo -> " + action.getDescription());
+        updateHistory();
     }
 
     /**
@@ -86,6 +92,7 @@ public class History extends ArrayList<Action<?>> {
         Static.getLog().println(logHead + "Add ["+
                 (action.isReversible() ? "R" : "!R")
                 +"] -> " + action.getDescription());
+        updateHistory();
         return super.add(action);
     }
 
@@ -93,5 +100,14 @@ public class History extends ArrayList<Action<?>> {
     public void clear() {
         super.clear();
         backup.clear();
+    }
+
+    private void updateHistory() {
+        panel.actionsPanel.removeAll();
+        panel.repaint();
+        this.forEach(a -> panel.addPanel(a.getPanel(), false));
+        backup.forEach(a -> panel.addPanel(a.getPanel(), true));
+        panel.repaint();
+        // TODO: Make backup show different and also history is 1 action behind for some odd reaosn.
     }
 }

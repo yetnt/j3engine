@@ -10,10 +10,11 @@ import com.j3d.engine.react.actions.DirtyAction;
 import com.j3d.engine.react.actions.DirtyVoidAction;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.ConstructorAction;
-import com.j3d.ui.engine.tree.TreeNodeIdentity;
+import com.j3d.ui.engine.popups.tree.TreeNodeIdentity;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
@@ -106,6 +107,11 @@ public class Layer extends ArrayList<Thing> implements Interactable {
                     public String getDescription() {
                         return "Construct:Layer-" + identifier;
                     }
+
+                    @Override
+                    public LocalTime getTime() {
+                        return LocalTime.now();
+                    }
                 }
         );
     }
@@ -159,6 +165,11 @@ public class Layer extends ArrayList<Thing> implements Interactable {
                     @Override
                     public String getDescription() {
                         return "Construct:Layer-Default";
+                    }
+
+                    @Override
+                    public LocalTime getTime() {
+                        return LocalTime.now();
                     }
                 }
         );
@@ -214,6 +225,11 @@ public class Layer extends ArrayList<Thing> implements Interactable {
             @Override
             public String getDescription() {
                 return "Layer-"+ current.getIdentifier() + ":SquashWith-" + other.getIdentifier();
+            }
+
+            @Override
+            public LocalTime getTime() {
+                return LocalTime.now();
             }
         };
     }
@@ -314,6 +330,11 @@ public class Layer extends ArrayList<Thing> implements Interactable {
             public String getDescription() {
                 return "Layer:VisibilityToggle";
             }
+
+            @Override
+            public LocalTime getTime() {
+                return LocalTime.now();
+            }
         };
     }
 
@@ -348,6 +369,11 @@ public class Layer extends ArrayList<Thing> implements Interactable {
             @Override
             public String getDescription() {
                 return "Layer:Delete";
+            }
+
+            @Override
+            public LocalTime getTime() {
+                return LocalTime.now();
             }
         };
     }

@@ -10,8 +10,8 @@ import com.j3d.engine.react.history.History;
 import com.j3d.settings.CoreSettings;
 import com.j3d.storage.files.ProjectFile;
 import com.j3d.ui.dialog.Spinner;
-import com.j3d.ui.engine.tree.LayerTree;
-import com.j3d.ui.engine.tree.TreeNodeIdentity;
+import com.j3d.ui.engine.popups.tree.LayerTree;
+import com.j3d.ui.engine.popups.tree.TreeNodeIdentity;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.util.function.BiConsumer;
@@ -94,13 +94,13 @@ public interface Interactable {
     void instantDelete();
 
     /**
-     * Returns the {@link TreeNodeIdentity} for the given object to use within the {@link com.j3d.ui.engine.tree.LayerTree}
+     * Returns the {@link TreeNodeIdentity} for the given object to use within the {@link com.j3d.ui.engine.popups.tree.LayerTree}
      * @return The identity
      */
     TreeNodeIdentity<? extends Interactable> getIdentity();
 
     /**
-     * The actual tree node for the representation of this object within {@link com.j3d.ui.engine.tree.LayerTree}
+     * The actual tree node for the representation of this object within {@link com.j3d.ui.engine.popups.tree.LayerTree}
      * @return The tree node
      */
     DefaultMutableTreeNode getTreeNode();

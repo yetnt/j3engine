@@ -9,9 +9,9 @@ import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.settings.Settings;
 import com.j3d.storage.files.engine.EngineFiles;
-import com.j3d.ui.engine.DebugPanel;
+import com.j3d.ui.engine.popups.DebugPanel;
 import com.j3d.ui.engine.EngineFrame;
-import com.j3d.ui.engine.tree.LayerTree;
+import com.j3d.ui.engine.popups.tree.LayerTree;
 import com.j3d.ui.util.HoverJLabel;
 
 import javax.swing.*;

@@ -26,6 +26,7 @@ import com.j3d.utility.generators.JLabelRichText;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -292,6 +293,11 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
                     public boolean isReversible() { return true; }
                     @Override
                     public String getDescription() { return "TransformSelection:" + getName(); }
+
+                    @Override
+                    public LocalTime getTime() {
+                        return LocalTime.now();
+                    }
                 }
         );
         finished(label);

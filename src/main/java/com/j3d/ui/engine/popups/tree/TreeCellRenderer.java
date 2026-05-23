@@ -1,4 +1,4 @@
-package com.j3d.ui.engine.tree;
+package com.j3d.ui.engine.popups.tree;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;

@@ -1,5 +1,10 @@
 package com.j3d.engine.react.actions;
 
+import com.j3d.ui.engine.popups.ActionPanel;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 /**
  * Represents an action that can be executed and potentially undone.
  * Implementations of the interface provide the logic for executing and undoing the action themselves.
@@ -26,4 +31,10 @@ public interface Action<T> {
      * @return A string describing the action.
      */
     String getDescription();
+
+    LocalTime getTime();
+
+    default ActionPanel getPanel() {
+        return new ActionPanel(this);
+    }
 }

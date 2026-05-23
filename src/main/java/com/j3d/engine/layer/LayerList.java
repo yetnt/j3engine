@@ -2,6 +2,7 @@ package com.j3d.engine.layer;
 
 import com.j3d.engine.react.actions.VoidAction;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,6 +82,11 @@ public class LayerList extends ArrayList<Layer> {
             public String getDescription() {
                 return "Layers:Swap";
             }
+
+            @Override
+            public LocalTime getTime() {
+                return LocalTime.now();
+            }
         };
     }
 
@@ -141,6 +147,11 @@ public class LayerList extends ArrayList<Layer> {
             @Override
             public String getDescription() {
                 return "";
+            }
+
+            @Override
+            public LocalTime getTime() {
+                return LocalTime.now();
             }
         };
     }

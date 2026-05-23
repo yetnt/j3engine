@@ -1,16 +1,18 @@
 package com.j3d.ui.engine.tb;
 
 import com.j3d.Static;
+import com.j3d.engine.SceneManager;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.Camera;
+import com.j3d.engine.react.history.History;
 import com.j3d.threads.LongTask;
 import com.j3d.ui.CursorManager;
 import com.j3d.ui.CursorNames;
 import com.j3d.ui.J3DTheme;
 import com.j3d.ui.engine.FloatingPanel;
-import com.j3d.ui.engine.tree.LayerTree;
+import com.j3d.ui.engine.popups.tree.LayerTree;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,7 +43,6 @@ public class ToolboxButtons {
         FloatingPanel fpl = new FloatingPanel(
                 "Layer Tree", Static.layerTree,
                 (c) -> {
-                    // TODO: Not showing up?????
                     if (!(c instanceof LayerTree lt)) return;
                     lt.listJTree.setBounds(0, 0, c.getPreferredSize().width, c.getPreferredSize().height);
                     lt.jScrollPane1.setBounds(0, 0, c.getPreferredSize().width, c.getPreferredSize().height);
@@ -166,6 +167,16 @@ public class ToolboxButtons {
                 "orbit",
                 new ArrayList<>(),
                 new ArrayList<>()), "orbit.png");
+
+        FloatingPanel history = new FloatingPanel("history", History.panel, (o) -> {
+            if (!(o instanceof JPanel p)) return;
+            p.setBounds(0, 0, p.getPreferredSize().width, p.getPreferredSize().height);
+            p.setVisible(true);
+        });
+        register("History", e -> {
+            if (history.isHidden()) history.showThis();
+            else history.hideThis();
+        });
     }
 
     public static void registerComplex(String label, Subbox sub, String imageFileName) {

@@ -6,6 +6,8 @@ import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.Interactable;
+import com.j3d.engine.interact.cmd.CommandsManager;
+import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.react.actions.DirtyVoidAction;
@@ -19,10 +21,12 @@ import com.j3d.engine.react.actions.ConstructorAction;
 import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.storage.files.ProjectFile;
 import com.j3d.ui.J3DTheme;
-import com.j3d.ui.engine.tree.TreeNodeIdentity;
+import com.j3d.ui.dialog.Spinner;
+import com.j3d.ui.engine.popups.tree.TreeNodeIdentity;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -119,7 +123,7 @@ public class Thing implements Interactable {
 
     /**
      * Constructs a Thing.
-     * @implSpec This is used by {@link ProjectFile#readFile(String, String, Throbber)} during a project file read and should only be used in that case.
+     * @implSpec This is used by {@link ProjectFile#readFile(String, String, Spinner)} during a project file read and should only be used in that case.
      * @param name The name of the Thing defined in the file.
      * @param id The ID of the Thing defined in the file.
      * @param hidden Whether the Thing is hidden or not.
@@ -140,7 +144,7 @@ public class Thing implements Interactable {
      * file loading or anything where it hasnt had a UUID attached to it already.
      * Otherwise the UUID is treated as immutable.
      * @param uuid The new UUID
-     * @see ProjectFile#readFile(String, String, Throbber)
+     * @see ProjectFile#readFile(String, String, Spinner)
      */
     private void setId(UUID uuid) {
         this.id = uuid;
@@ -180,6 +184,11 @@ public class Thing implements Interactable {
                     @Override
                     public String getDescription() {
                         return "Construct:Thing";
+                    }
+
+                    @Override
+                    public LocalTime getTime() {
+                        return LocalTime.now();
                     }
                 }
         );
@@ -336,6 +345,11 @@ public class Thing implements Interactable {
             public String getDescription() {
                 return "Thing:Copy";
             }
+
+            @Override
+            public LocalTime getTime() {
+                return LocalTime.now();
+            }
         };
     }
 
@@ -384,6 +398,11 @@ public class Thing implements Interactable {
             public String getDescription() {
                 return "Thing:ScaleUniform";
             }
+
+            @Override
+            public LocalTime getTime() {
+                return LocalTime.now();
+            }
         };
     }
 
@@ -423,6 +442,11 @@ public class Thing implements Interactable {
             public String getDescription() {
                 return "Thing:ScaleVector";
             }
+
+            @Override
+            public LocalTime getTime() {
+                return LocalTime.now();
+            }
         };
     }
 
@@ -461,6 +485,11 @@ public class Thing implements Interactable {
             @Override
             public String getDescription() {
                 return "Thing:ScaleVector";
+            }
+
+            @Override
+            public LocalTime getTime() {
+                return LocalTime.now();
             }
         };
     }
@@ -503,6 +532,11 @@ public class Thing implements Interactable {
             @Override
             public String getDescription() {
                 return "Thing:Rotate";
+            }
+
+            @Override
+            public LocalTime getTime() {
+                return LocalTime.now();
             }
         };
     }
@@ -593,6 +627,11 @@ public class Thing implements Interactable {
             public String getDescription() {
                 return "Thing:VisibilityToggle";
             }
+
+            @Override
+            public LocalTime getTime() {
+                return LocalTime.now();
+            }
         };
     }
 
@@ -630,6 +669,11 @@ public class Thing implements Interactable {
             @Override
             public String getDescription() {
                 return "Thing:Delete";
+            }
+
+            @Override
+            public LocalTime getTime() {
+                return LocalTime.now();
             }
         };
     }
