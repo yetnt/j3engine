@@ -13,6 +13,7 @@ import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.*;
 import com.j3d.settings.CoreSettings;
+import com.j3d.settings.Settings;
 import com.j3d.ui.J3DTheme;
 import com.j3d.ui.util.SafeJLabel;
 import com.j3d.engine.interact.cmd.commands.transform.handles.Handle;
@@ -180,28 +181,29 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
     @Override
     public void onStart(Void object, SafeJLabel label) {
         mouseOwner.requestOwnership();
-        keys.forEach(key -> Static.keybinds.registerJ3Key(key));
+        keys.forEach(Static.keybinds::registerJ3Key);
 
         center = Vector3.reduceToVector3(
                 references.stream().map(GPoint::getPivot).collect(Collectors.toCollection(ArrayList::new))
                 , Vector3::add).div(references.size());
 
         // Create and configure the X, Y, Z handles
-        final int size = 10;
+        final int size = Settings.editorProperties.handleSize.getValue();
+        final double dist = Settings.editorProperties.handleDist.getValue();
         Handle X = new Handle(
-                HandleType.X, center.add(new Vector3(10, 0, 0)),
+                HandleType.X, center.add(new Vector3(dist, 0, 0)),
                 (gr, p) -> {
                     gr.setColor(Color.RED);
                     gr.fillOval(p.x - size / 2, p.y - size / 2, size, size);
                 });
         Handle Y = new Handle(
-                HandleType.Y, center.add(new Vector3(0, 10, 0)),
+                HandleType.Y, center.add(new Vector3(0, dist, 0)),
                 (gr, p) -> {
                     gr.setColor(Color.BLUE);
                     gr.fillOval(p.x - size / 2, p.y - size / 2, size, size);
                 });
         Handle Z = new Handle(
-                HandleType.Z, center.add(new Vector3(0, 0, 10)),
+                HandleType.Z, center.add(new Vector3(0, 0, dist)),
                 (gr, p) -> {
                     gr.setColor(Color.GREEN);
                     gr.fillOval(p.x - size / 2, p.y - size / 2, size, size);
@@ -211,12 +213,13 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
 
         // Define the drawing logic for the UI overlay
         Consumer<Graphics2D> drawScaleHandle = g -> {
+            final double dist2 = Settings.editorProperties.handleDist.getValue();
             center = Vector3.reduceToVector3(
                     references.stream().map(GPoint::getPivot).collect(Collectors.toCollection(ArrayList::new))
                     , Vector3::add).div(references.size());
-            X.setPos(center.add(new Vector3(10, 0, 0)));
-            Y.setPos(center.add(new Vector3(0, 10, 0)));
-            Z.setPos(center.add(new Vector3(0, 0, 10)));
+            X.setPos(center.add(new Vector3(dist2, 0, 0)));
+            Y.setPos(center.add(new Vector3(0, dist2, 0)));
+            Z.setPos(center.add(new Vector3(0, 0, dist2)));
             X.draw(g);
             Y.draw(g);
             Z.draw(g);
@@ -256,7 +259,9 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
      * Cleans up the stateful command environment after it has finished.
      */
     private void finished(SafeJLabel lbl) {
-        keys.forEach(key -> Static.keybinds.removeJ3Key(key.getId()));
+        keys.forEach(key -> {
+            Static.keybinds.removeJ3Key(key.getId());
+        });
         Static.sceneManager.removeOverlap(overlapId);
         lbl.clear();
         Static.sceneManager.deselectAll();

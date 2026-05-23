@@ -1,14 +1,10 @@
 package com.j3d.ui.engine.tb;
 
 import com.j3d.Static;
-import com.j3d.engine.interact.cmd.CommandParser;
-import com.j3d.storage.files.engine.DebugDump;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
-import com.j3d.engine.layer.Layer;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.Camera;
-import com.j3d.storage.files.engine.EngineFiles;
 import com.j3d.threads.LongTask;
 import com.j3d.ui.CursorManager;
 import com.j3d.ui.CursorNames;
@@ -32,7 +28,9 @@ import java.util.Objects;
 
 public class ToolboxButtons {
     private static final ArrayList<JPanel> toolboxButtons = new ArrayList<>();
-    private static Subbox currentViewableSubbox = null;
+    public static Subbox currentViewableSubbox = null;
+    public static final int MAX_BUTTONS = 6;
+    public static final int BUTTON_PANEL_SIZE = 120;
 
     static {
         register("Toggle Debug", e -> {
@@ -124,34 +122,26 @@ public class ToolboxButtons {
             }
 
         });
-        register("Transform", e -> {
-            TransformCmd cmd = new TransformCmd();
-        }, "transform.png");
 
-        registerComplex("Transform", new Subbox(s -> {
-            s
-                    .add("translate", e -> {
-                        Static.commandParser.runCommand(
-                                CommandsManager.commands.transform, "transform",
-                                new ArrayList<>(List.of("translate")), new ArrayList<>()
-                        );
-                        s.delete();
-                        }, "transform.png")
-                    .add("rotate", e -> {
-                        Static.commandParser.runCommand(
-                                CommandsManager.commands.transform, "transform",
-                                new ArrayList<>(List.of("rotate")), new ArrayList<>()
-                        );
-                        s.delete();
-                        }, "transform.png")
-                    .add("scale", e -> {
-                        Static.commandParser.runCommand(
-                                CommandsManager.commands.transform, "transform",
-                                new ArrayList<>(List.of("scale")), new ArrayList<>()
-                        );
-                        s.delete();
-                        }, "transform.png");
-        }), "transform.png");
+        registerComplex("Transform", new Subbox(s -> s
+                .add("translate", e -> {
+                    Static.commandParser.runCommand(
+                            CommandsManager.commands.transform, "transform",
+                            new ArrayList<>(List.of("translate")), new ArrayList<>()
+                    );
+                    }, "translate.png")
+                .add("rotate", e -> {
+                    Static.commandParser.runCommand(
+                            CommandsManager.commands.transform, "transform",
+                            new ArrayList<>(List.of("rotate")), new ArrayList<>()
+                    );
+                    }, "rotate.png")
+                .add("scale", e -> {
+                    Static.commandParser.runCommand(
+                            CommandsManager.commands.transform, "transform",
+                            new ArrayList<>(List.of("scale")), new ArrayList<>()
+                    );
+                    }, "scale.png")), "transform.png");
 
         FloatingPanel fp = new FloatingPanel("HIII", new javax.swing.JLabel(), (o) -> {
             if (!(o instanceof JLabel lbl)) return;
@@ -179,6 +169,18 @@ public class ToolboxButtons {
     }
 
     public static void registerComplex(String label, Subbox sub, String imageFileName) {
+        sub.setPreferredSize(
+                new Dimension(
+                        Math.min(sub.getButtons(), MAX_BUTTONS) * BUTTON_PANEL_SIZE,
+                        sub.getPreferredSize().height + 2
+                )
+        );
+        sub.toolboxScrollpane.setPreferredSize(
+                new Dimension(
+                        Math.min(sub.getButtons(), MAX_BUTTONS) * BUTTON_PANEL_SIZE,
+                        sub.getPreferredSize().height
+                )
+        );
         JButton l = register(label, new ActionListener() {
             final Subbox s = sub;
             @Override
@@ -189,12 +191,11 @@ public class ToolboxButtons {
                 } else {
                     if (currentViewableSubbox instanceof Subbox other)
                         other.delete();
-
                     sub.setBounds(
-                            sub.mousePos.x - (sub.getPreferredSize().width / 2),
-                            sub.mousePos.y + sub.getPreferredSize().height,
+                            Static.mainFrame.getWidth() / 2 - (sub.getPreferredSize().width / 2),
+                            (Static.mainFrame.getHeight() / 2 - (sub.getPreferredSize().height / 2)) - 30,
                             sub.getPreferredSize().width,
-                            sub.getPreferredSize().height
+                            sub.getPreferredSize().height + 10
                     );
                     Static.mainFrame.getLayeredPane().add(sub, JLayeredPane.DRAG_LAYER +1);
 
