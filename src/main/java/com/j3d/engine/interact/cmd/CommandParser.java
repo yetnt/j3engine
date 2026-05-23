@@ -356,7 +356,7 @@ public class CommandParser {
             } catch (IllegalArgumentException e) {
                 parseAsNumberOrBool(accumulator, acc -> {
                     // if numbers fail, check if this is a tagged arg
-                    TaggedArgValue<?> v = TaggedArgUtil.parse(acc, label);
+                    TaggedArgValue<?> v = TaggedArgUtil.parse(acc, true, label);
                     if (v.isErr()) return;
                     if (v.isEmpty()) {
                         arguments.add(acc.trim()); // something like an extra arg, just put it.

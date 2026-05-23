@@ -80,15 +80,16 @@ public class TaggedArgValue<T> {
      * This method validates that the provided value's type matches the expected type for this tag.
      *
      * @param val   The parsed value object.
+     * @param errorToLabel A boolean to log errors to the SafeJLabel
      * @param label A {@link SafeJLabel} for reporting type mismatch errors.
      * @return A new, populated {@code TaggedArgValue} instance, or an error-marked instance if types are incompatible.
      */
-    public TaggedArgValue<?> copy(Object val, SafeJLabel label) {
+    public TaggedArgValue<?> copy(Object val, boolean errorToLabel, SafeJLabel label) {
         if (val instanceof Integer i && type == Double.class) {
             val = (double) i;
         }
         if (!type.isInstance(val)) {
-            label.setText("Invalid type given to tagged argument: " + val.getClass().getSimpleName().toLowerCase() + ". Requires: " + type.getSimpleName().toLowerCase());
+            if (errorToLabel) label.setText("Invalid type given to tagged argument: " + val.getClass().getSimpleName().toLowerCase() + ". Requires: " + type.getSimpleName().toLowerCase());
             return new TaggedArgValue<>(null).error();
         }
         return new TaggedArgValue<>(val).setName(taggedArgName).setType(type);

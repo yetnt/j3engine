@@ -92,11 +92,13 @@ public class TaggedArgUtil {
      * the value into the expected type (e.g., number, boolean, quoted string, Vector3).
      *
      * @param accumulator The raw string segment to parse.
-     * @param label       A {@link SafeJLabel} for providing user feedback on parsing errors.
+     * @param errorToLabel A boolean to log errors to the SafeJLabel
+     * @param label       A {@link SafeJLabel} for providing user feedback on parsing errors. If {@code errorToLabel} is false, then this
+     *                    can have a null input.
      * @return A populated {@link TaggedArgValue} instance. If parsing fails, the instance
      *         will be marked as an error or empty.
      */
-    public static TaggedArgValue<?> parse(String accumulator, SafeJLabel label) {
+    public static TaggedArgValue<?> parse(String accumulator, boolean errorToLabel, SafeJLabel label) {
         accumulator = accumulator.trim();
         TaggedArgValue<Void> taggedArgValue = new TaggedArgValue<>(null);
         ArrayList<Character> disallowed = new ArrayList<>(List.of(
@@ -122,11 +124,11 @@ public class TaggedArgUtil {
 
         if (!encounteredSeparator) return taggedArgValue; // Never encountered separator. Return
         if (name.isEmpty() || value.isEmpty()) {
-            label.setText("Improper tagged argument syntax. No name or value?");
+            if (errorToLabel) label.setText("Improper tagged argument syntax. No name or value?");
             return taggedArgValue.error();
         };
         if (!acceptedTags.containsKey(name)) {
-            label.setText("Invalid tagged argument used: " + name);
+            if (errorToLabel) label.setText("Invalid tagged argument used: " + name);
             return taggedArgValue.error();
         }
 
@@ -149,7 +151,7 @@ public class TaggedArgUtil {
                             try {
                                 valueObject = UUID.fromString(value);
                             } catch (IllegalArgumentException l) {
-                                label.setText("Invalid tagged argument value: " + value + " (If text, wrap in quotes.)");
+                                if (errorToLabel) label.setText("Invalid tagged argument value: " + value + " (If text, wrap in quotes.)");
                                 return taggedArgValue.error();
                             }
                         }
@@ -163,7 +165,7 @@ public class TaggedArgUtil {
         } else if (braceQuotePairs.first.size() == 1) {
 
             if (!value.contains(",")) {
-                label.setText("Invalid tagged argument value: " + value + " (A Vector3 definition (x, y, z) is required when using braces)");
+                if (errorToLabel) label.setText("Invalid tagged argument value: " + value + " (A Vector3 definition (x, y, z) is required when using braces)");
                 return taggedArgValue.error();
             }
 
@@ -171,7 +173,7 @@ public class TaggedArgUtil {
             String[] values = valuesStr.split(",");
 
             if (values.length != 3) {
-                label.setText("Invalid tagged argument value: " + value + " (A Vector3 definition (x, y, z) is required when using braces)");
+                if (errorToLabel) label.setText("Invalid tagged argument value: " + value + " (A Vector3 definition (x, y, z) is required when using braces)");
                 return taggedArgValue.error();
             }
 
@@ -181,15 +183,15 @@ public class TaggedArgUtil {
                 double z = Double.parseDouble(values[2].trim());
                 valueObject = new Vector3(x, y, z);
             } catch (NumberFormatException e) {
-                label.setText("invalid tagged argument value: " + value + " (A Vector3 definition (x, y, z) where x, y, and z are numbers is required)");
+                if (errorToLabel) label.setText("invalid tagged argument value: " + value + " (A Vector3 definition (x, y, z) where x, y, and z are numbers is required)");
                 return taggedArgValue.error();
             }
 
         } else {
             // Both arrays contain something or more than 1 thing
-            label.setText("Malformed tagged argument value: " + value);
+            if (errorToLabel) label.setText("Malformed tagged argument value: " + value);
         }
 
-        return acceptedTags.get(name).copy(valueObject, label);
+        return acceptedTags.get(name).copy(valueObject, errorToLabel, label);
     }
 }

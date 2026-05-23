@@ -10,6 +10,7 @@ import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.settings.Settings;
 import com.j3d.storage.files.engine.EngineFiles;
 import com.j3d.ui.engine.DebugPanel;
+import com.j3d.ui.engine.EngineFrame;
 import com.j3d.ui.engine.tree.LayerTree;
 import com.j3d.ui.util.HoverJLabel;
 
@@ -36,7 +37,7 @@ public class Static {
      * The Main Frame that is displayed.
      * Rather call {@link Static#mainPanel}.repaint() instead of mainFrame.repaint() for better performance.
      */
-    public static JFrame mainFrame = null;
+    public static EngineFrame mainFrame = null;
     /**
      * The Camera Instance.
      */

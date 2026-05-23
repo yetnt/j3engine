@@ -2,6 +2,8 @@ package com.j3d.engine.interact.cmd.complete;
 
 import com.j3d.Static;
 import com.j3d.engine.interact.cmd.args.Subcommand;
+import com.j3d.engine.interact.cmd.args.TaggedArgUtil;
+import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.Command;
 
 import java.util.ArrayList;
@@ -69,9 +71,19 @@ public class AutoCompleteSession {
                         .map(Object::getClass)
                         .toArray(Class[]::new)
         );
+
         if (possibleUsages.length == 0) {
             Static.hoverLabel.setText("No such command.");
             return;
         }
+
+        TaggedArgValue t = TaggedArgUtil.parse(currentArg, false, null);
+        String real = currentArg.trim();
+        if (!t.isErr() || real.isEmpty()) {
+            // show suggested args next
+            return;
+        }
+
+        // other handling.
     }
 }

@@ -1,12 +1,10 @@
 package com.j3d.ui;
 
-import com.j3d.settings.CoreSettings;
 import com.j3d.storage.db.DatabaseManager;
 
 import java.awt.*;
 import java.util.HashMap;
 
-import static com.j3d.storage.db.themes.ThemesTable.getTheme;
 
 /**
  * The Theme class contains a set of predefined color themes for the UI.
@@ -108,7 +106,7 @@ public enum J3DTheme {
         currentLoadedTheme = id;
     }
 
-    static {
-        loadTheme(currentLoadedTheme);
-    }
+//    static {
+//        loadTheme(1);
+//    }
 }

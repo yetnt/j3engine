@@ -1,6 +1,7 @@
-package com.j3d.ui.tb;
+package com.j3d.ui.engine.tb;
 
 import com.j3d.Static;
+import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.storage.files.engine.DebugDump;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
@@ -17,16 +18,21 @@ import com.j3d.ui.engine.tree.LayerTree;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class ToolboxButtons {
     private static final ArrayList<JPanel> toolboxButtons = new ArrayList<>();
+    private static Subbox currentViewableSubbox = null;
 
     static {
         register("Toggle Debug", e -> {
@@ -122,6 +128,31 @@ public class ToolboxButtons {
             TransformCmd cmd = new TransformCmd();
         }, "transform.png");
 
+        registerComplex("Transform", new Subbox(s -> {
+            s
+                    .add("translate", e -> {
+                        Static.commandParser.runCommand(
+                                CommandsManager.commands.transform, "transform",
+                                new ArrayList<>(List.of("translate")), new ArrayList<>()
+                        );
+                        s.delete();
+                        }, "transform.png")
+                    .add("rotate", e -> {
+                        Static.commandParser.runCommand(
+                                CommandsManager.commands.transform, "transform",
+                                new ArrayList<>(List.of("rotate")), new ArrayList<>()
+                        );
+                        s.delete();
+                        }, "transform.png")
+                    .add("scale", e -> {
+                        Static.commandParser.runCommand(
+                                CommandsManager.commands.transform, "transform",
+                                new ArrayList<>(List.of("scale")), new ArrayList<>()
+                        );
+                        s.delete();
+                        }, "transform.png");
+        }), "transform.png");
+
         FloatingPanel fp = new FloatingPanel("HIII", new javax.swing.JLabel(), (o) -> {
             if (!(o instanceof JLabel lbl)) return;
             lbl.setFont(new java.awt.Font("Tahoma", Font.BOLD, 12)); // NOI18N
@@ -145,6 +176,46 @@ public class ToolboxButtons {
                 "orbit",
                 new ArrayList<>(),
                 new ArrayList<>()), "orbit.png");
+    }
+
+    public static void registerComplex(String label, Subbox sub, String imageFileName) {
+        JButton l = register(label, new ActionListener() {
+            final Subbox s = sub;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (currentViewableSubbox == s) {
+                    sub.delete();
+                    currentViewableSubbox = null;
+                } else {
+                    if (currentViewableSubbox instanceof Subbox other)
+                        other.delete();
+
+                    sub.setBounds(
+                            sub.mousePos.x - (sub.getPreferredSize().width / 2),
+                            sub.mousePos.y + sub.getPreferredSize().height,
+                            sub.getPreferredSize().width,
+                            sub.getPreferredSize().height
+                    );
+                    Static.mainFrame.getLayeredPane().add(sub, JLayeredPane.DRAG_LAYER +1);
+
+                    s.setEnabled(true);
+                    s.setVisible(true);
+                    currentViewableSubbox = s;
+                }
+                Static.mainFrame.repaint();
+                Static.mainFrame.revalidate();
+            }
+        });
+        l.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                sub.mousePos = e.getLocationOnScreen();
+            }
+        });
+        ImageIcon unscaled = new ImageIcon(Objects.requireNonNull(ToolboxButtons.class.getResource("/art/toolbox/" + imageFileName)));
+        Image scaled = unscaled.getImage().getScaledInstance(l.getPreferredSize().width, l.getPreferredSize().height, Image.SCALE_SMOOTH);
+        l.setText(""); // Set the text to nun so that it doesnt push the picture
+        l.setIcon(new ImageIcon(scaled));
     }
 
     public static void register(String label, ActionListener actionListener, String imageFileName) {

@@ -31,7 +31,7 @@ import com.j3d.threads.LongTask;
 import com.j3d.ui.CursorManager;
 import com.j3d.ui.CursorNames;
 import com.j3d.ui.settings.PreferencesFrame;
-import com.j3d.ui.tb.Toolbox;
+import com.j3d.ui.engine.tb.Toolbox;
 //import com.jaiva.JBundler;
 import java.awt.*;
 import java.awt.event.*;

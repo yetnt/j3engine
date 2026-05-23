@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package com.j3d.ui.tb;
+package com.j3d.ui.engine.tb;
 
 import com.j3d.ui.J3DTheme;
 
