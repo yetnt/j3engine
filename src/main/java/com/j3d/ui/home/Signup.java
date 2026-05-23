@@ -12,7 +12,7 @@ import com.j3d.storage.db.users.UsersTable;
 import com.j3d.ui.CursorManager;
 import com.j3d.ui.CursorNames;
 import com.j3d.ui.J3DTheme;
-import com.j3d.utility.Pair;
+import com.j3d.utility.generic.Pair;
 import com.j3d.utility.PasswordHasher;
 
 import javax.swing.*;

@@ -1,4 +1,4 @@
-package com.j3d.utility;
+package com.j3d.utility.generic;
 
 public class Triple<T> {
     final T first;

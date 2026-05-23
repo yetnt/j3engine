@@ -5,7 +5,7 @@ import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.api.SQLOperator;
 import com.j3d.storage.db.api.Table;
 import com.j3d.storage.db.api.TableColumns;
-import com.j3d.utility.Pair;
+import com.j3d.utility.generic.Pair;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

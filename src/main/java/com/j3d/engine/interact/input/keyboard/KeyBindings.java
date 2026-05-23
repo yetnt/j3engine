@@ -5,7 +5,7 @@ import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.interact.selection.SelectionUtils;
 import com.j3d.ui.engine.CommandPalette;
 import com.j3d.ui.engine.EngineFrame;
-import com.j3d.utility.Pair;
+import com.j3d.utility.generic.Pair;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

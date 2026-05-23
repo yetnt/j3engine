@@ -1,7 +1,5 @@
 package com.j3d.engine.geometry.geo3d.matrix;
 
-import com.j3d.utility.Pair;
-
 /**
  * Provides a collection of static utility methods for performing mathematical operations
  * on matrices that implement the {@link MatrixInterface}. This class includes methods

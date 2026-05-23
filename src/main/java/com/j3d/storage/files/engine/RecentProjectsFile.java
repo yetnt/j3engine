@@ -3,7 +3,6 @@ package com.j3d.storage.files.engine;
 import com.j3d.Static;
 import com.j3d.storage.files.util.ProjectImagePair;
 import com.j3d.ui.engine.J3DPanel;
-import com.j3d.utility.Pair;
 
 import java.io.*;
 import java.nio.file.Path;

@@ -1,4 +1,4 @@
-package com.j3d.utility;
+package com.j3d.utility.generic;
 
 /**
  * A generic Pair class that holds two related objects.

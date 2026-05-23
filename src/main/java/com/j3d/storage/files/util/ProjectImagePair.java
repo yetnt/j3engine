@@ -1,6 +1,6 @@
 package com.j3d.storage.files.util;
 
-import com.j3d.utility.Pair;
+import com.j3d.utility.generic.Pair;
 
 import java.io.File;
 

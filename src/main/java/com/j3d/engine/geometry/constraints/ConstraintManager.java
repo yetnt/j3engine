@@ -1,8 +1,7 @@
 package com.j3d.engine.geometry.constraints;
 
 import com.j3d.Static;
-import com.j3d.ui.util.SafeJLabel;
-import com.j3d.utility.SetDeque;
+import com.j3d.utility.generic.SetDeque;
 
 import java.util.stream.Stream;
 

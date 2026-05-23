@@ -12,7 +12,7 @@ import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.react.actions.Action;
-import com.j3d.utility.Pair;
+import com.j3d.utility.generic.Pair;
 
 import javax.swing.*;
 import java.awt.*;

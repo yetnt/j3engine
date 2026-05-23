@@ -11,9 +11,12 @@ import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.ui.util.SafeJLabel;
-import com.jaiva.utils.Find;
-import com.jaiva.utils.Pair;
-import com.jaiva.utils.Tuple2;
+import com.j3d.utility.Parsing;
+import com.j3d.utility.generic.Pair;
+import com.j3d.utility.generic.SamePair;
+//import com.jaiva.utils.Find;
+//import com.jaiva.utils.Pair;
+//import com.jaiva.utils.Tuple2;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -285,9 +288,9 @@ public class CommandParser {
      * @return True if the character is within braces, false otherwise.
      */
     private boolean inBrace(char c) {
-        Tuple2<ArrayList<Pair<Integer>>, ArrayList<Tuple2<Integer, Character>>> bp =
-                Find.bracePairs(accumulator);
-        ArrayList<Pair<Integer>> sp = Find.quotationPairs(accumulator);
+        Pair<ArrayList<SamePair<Integer>>, ArrayList<Pair<Integer, Character>>> bp =
+                Parsing.bracePairs(accumulator);
+        ArrayList<SamePair<Integer>> sp = Parsing.quotationPairs(accumulator);
         if (accumulator.contains(":(") && sp.isEmpty())
             return true; // Vector3 object within TaggedArgUtil
         return (bp.first.isEmpty() && accumulator.charAt(0) == '(') ||

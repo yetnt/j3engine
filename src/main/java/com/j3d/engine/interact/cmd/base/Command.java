@@ -193,13 +193,14 @@ public class Command {
                         case "Thing" -> usageAccumulatorEntry.append("<Thing").append(tArg.isOptional() ? "?" : "").append("> ");
                         case "GPoint" -> usageAccumulatorEntry.append("<point").append(tArg.isOptional() ? "?" : "").append("> ");
                         case "GLine" -> usageAccumulatorEntry.append("<line").append(tArg.isOptional() ? "?" : "").append("> ");
-                        case "GTri" -> usageAccumulatorEntry.append("<triangle").append(tArg.isOptional() ? "?" : "").append("> ");
-                        case "Color" -> usageAccumulatorEntry.append("#color").append(tArg.isOptional() ? "?" : "").append("# ");
-                        case "Vector3" -> usageAccumulatorEntry.append("(vector3").append(tArg.isOptional() ? "?" : "").append(") ");
-                        case "String" -> usageAccumulatorEntry.append("(string").append(tArg.isOptional() ? "?" : "").append(") ");
-                        case "Double" -> usageAccumulatorEntry.append("(number").append(tArg.isOptional() ? "?" : "").append(") ");
+                        case "GTri" -> usageAccumulatorEntry.append("<tri").append(tArg.isOptional() ? "?" : "").append("> ");
+                        case "Color" -> usageAccumulatorEntry.append("<color").append(tArg.isOptional() ? "?" : "").append("> ");
+                        case "Vector3" -> usageAccumulatorEntry.append("<vector3").append(tArg.isOptional() ? "?" : "").append("> ");
+                        case "String" -> usageAccumulatorEntry.append("<string").append(tArg.isOptional() ? "?" : "").append("> ");
+                        case "Integer" -> usageAccumulatorEntry.append("<int").append(tArg.isOptional() ? "?" : "").append("> ");
+                        case "Double" -> usageAccumulatorEntry.append("<number").append(tArg.isOptional() ? "?" : "").append("> ");
                         case "Any" -> usageAccumulatorEntry.append("<any").append(tArg.isOptional() ? "?" : "").append("> ");
-                        case "Boolean" -> usageAccumulatorEntry.append("(boolean").append(tArg.isOptional() ? "?" : "").append(") ");
+                        case "Boolean" -> usageAccumulatorEntry.append("<boolean").append(tArg.isOptional() ? "?" : "").append("> ");
                         default -> throw new IllegalStateException("Unexpected value: " + cls.getSimpleName());
                     }
                 }

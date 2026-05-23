@@ -7,7 +7,7 @@ import com.j3d.engine.interact.cmd.commands.transform.handles.Handle;
 import com.j3d.engine.interact.cmd.commands.transform.handles.HandleType;
 import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.engine.interact.input.mouse.MouseOwner;
-import com.j3d.utility.Pair;
+import com.j3d.utility.generic.Pair;
 
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;

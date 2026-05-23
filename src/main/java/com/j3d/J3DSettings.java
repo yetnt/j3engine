@@ -8,7 +8,7 @@ import com.j3d.engine.geometry.Dim;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
 import com.j3d.settings.Settings;
-import com.j3d.utility.Pair;
+import com.j3d.utility.generic.Pair;
 
 public class J3DSettings {
 

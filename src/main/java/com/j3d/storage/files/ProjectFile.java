@@ -13,8 +13,8 @@ import com.j3d.settings.CoreSettings;
 import com.j3d.storage.files.protocol.FileProtocol;
 import com.j3d.storage.files.protocol.GenericFileProtocol;
 import com.j3d.ui.dialog.Spinner;
-import com.j3d.utility.HashMultiMap;
-import com.j3d.utility.Pair;
+import com.j3d.utility.generic.HashMultiMap;
+import com.j3d.utility.generic.Pair;
 
 import java.awt.*;
 import java.io.DataInputStream;
