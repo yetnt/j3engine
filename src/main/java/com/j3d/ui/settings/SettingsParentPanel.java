@@ -30,6 +30,8 @@ public class SettingsParentPanel extends javax.swing.JPanel {
         for (SettingsChild setting : settings) {
             innerSettingsPanel.add(setting.panel());
         }
+        this.repaint();
+        this.revalidate();
         return this;
     }
 
@@ -44,11 +46,11 @@ public class SettingsParentPanel extends javax.swing.JPanel {
 
         settingsTitleLabel = new javax.swing.JLabel();
         settingsDescriptionLabel = new javax.swing.JLabel();
-        settingsScrollPane = new javax.swing.JScrollPane();
-        innerSettingsPanel = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
+        innerSettingsPanel = new javax.swing.JPanel();
 
         setBackground(J3DTheme.UI_SURFACE.color());
+        setMinimumSize(new java.awt.Dimension(733, 72));
 
         settingsTitleLabel.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         settingsTitleLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
@@ -58,8 +60,8 @@ public class SettingsParentPanel extends javax.swing.JPanel {
         settingsDescriptionLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
         settingsDescriptionLabel.setText("Settings Description");
 
-        innerSettingsPanel.setLayout(new javax.swing.BoxLayout(innerSettingsPanel, javax.swing.BoxLayout.Y_AXIS));
-        settingsScrollPane.setViewportView(innerSettingsPanel);
+        innerSettingsPanel.setMaximumSize(new java.awt.Dimension(32771823, 32771823));
+        innerSettingsPanel.setLayout(new java.awt.GridLayout(0, 1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -68,15 +70,14 @@ public class SettingsParentPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(settingsScrollPane)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(settingsTitleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(settingsDescriptionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 50, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(settingsDescriptionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(innerSettingsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE))
+                .addGap(8, 8, 8))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -86,9 +87,9 @@ public class SettingsParentPanel extends javax.swing.JPanel {
                     .addComponent(settingsDescriptionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(settingsTitleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jSeparator1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(settingsScrollPane)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(innerSettingsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 14, Short.MAX_VALUE)
+                .addGap(14, 14, 14))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -97,7 +98,6 @@ public class SettingsParentPanel extends javax.swing.JPanel {
     private javax.swing.JPanel innerSettingsPanel;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel settingsDescriptionLabel;
-    private javax.swing.JScrollPane settingsScrollPane;
     private javax.swing.JLabel settingsTitleLabel;
     // End of variables declaration//GEN-END:variables
 }
