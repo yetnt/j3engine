@@ -1,8 +1,8 @@
 package com.j3d.settings;
 
-import com.j3d.settings.classes.CameraPropertiesSettings;
+import com.j3d.settings.classes.CameraProperties;
 import com.j3d.settings.classes.EditorProperties;
-import com.j3d.settings.classes.ScenePropertiesSettings;
+import com.j3d.settings.classes.SceneProperties;
 import com.j3d.settings.types.ComplexSetting;
 import com.j3d.settings.types.StringSetting;
 import com.j3d.ui.J3DTheme;
@@ -14,8 +14,8 @@ import java.util.ArrayList;
 public class Settings implements SettingsParent {
     
     public static PreferencesFrame preferencesFrame;
-    public static CameraPropertiesSettings cameraProperties = new CameraPropertiesSettings();
-    public static ScenePropertiesSettings sceneProperties = new ScenePropertiesSettings();
+    public static CameraProperties cameraProperties = new CameraProperties();
+    public static SceneProperties sceneProperties = new SceneProperties();
     public static EditorProperties editorProperties = new EditorProperties();
     public static SettingsParent debugProperties;
     public static SettingsParent viewProperties;

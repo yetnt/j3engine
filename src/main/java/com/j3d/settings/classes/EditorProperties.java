@@ -44,7 +44,7 @@ public class EditorProperties implements SettingsParent {
 
     @Override
     public String getName() {
-        return "Camera Properties";
+        return "Editor Properties";
     }
 
     @Override

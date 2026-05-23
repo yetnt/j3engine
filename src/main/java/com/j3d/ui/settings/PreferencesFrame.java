@@ -23,6 +23,7 @@ public class PreferencesFrame extends javax.swing.JFrame {
             jPanel1.add(child.panel());
             System.out.println("Added");
         });
+        this.pack();
         this.repaint();
         this.revalidate();
         Static.getLog().uiPrintLn("PreferencesFrame completed building");
@@ -48,15 +49,12 @@ public class PreferencesFrame extends javax.swing.JFrame {
 
         jScrollPane1.setBackground(J3DTheme.UI_SURFACE.color());
         jScrollPane1.setForeground(J3DTheme.UI_SURFACE.color());
-        jScrollPane1.setMinimumSize(new java.awt.Dimension(100, 0));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(100, 0));
+        jScrollPane1.setMinimumSize(new java.awt.Dimension(400, 300));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(800, 500));
 
         jPanel1.setBackground(J3DTheme.UI_SURFACE.color());
         jPanel1.setForeground(J3DTheme.UI_SURFACE.color());
-        jPanel1.setMaximumSize(new java.awt.Dimension(32767, 32767));
-        jPanel1.setMinimumSize(new java.awt.Dimension(750, 352));
-        jPanel1.setPreferredSize(new java.awt.Dimension(750, 352));
-        jPanel1.setLayout(new java.awt.GridLayout(0, 1));
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
         jScrollPane1.setViewportView(jPanel1);
 
         getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);

@@ -61,7 +61,7 @@ public class SettingsParentPanel extends javax.swing.JPanel {
         settingsDescriptionLabel.setText("Settings Description");
 
         innerSettingsPanel.setMaximumSize(new java.awt.Dimension(32771823, 32771823));
-        innerSettingsPanel.setLayout(new java.awt.GridLayout(0, 1));
+        innerSettingsPanel.setLayout(new javax.swing.BoxLayout(innerSettingsPanel, javax.swing.BoxLayout.Y_AXIS));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

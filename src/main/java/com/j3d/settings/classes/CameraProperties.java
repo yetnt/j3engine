@@ -10,7 +10,7 @@ import com.j3d.ui.settings.SettingsParentPanel;
 
 import java.util.ArrayList;
 
-public class CameraPropertiesSettings implements SettingsParent {
+public class CameraProperties implements SettingsParent {
     public DoubleSetting fieldOfView = new DoubleSetting(
             "Field of View",
             2.0,
@@ -60,7 +60,7 @@ public class CameraPropertiesSettings implements SettingsParent {
         return null;
     });
 
-    public CameraPropertiesSettings() {
+    public CameraProperties() {
 
     }
 

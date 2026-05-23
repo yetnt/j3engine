@@ -14,7 +14,7 @@ import com.j3d.ui.settings.SettingsParentPanel;
 
 import java.util.ArrayList;
 
-public class ScenePropertiesSettings implements SettingsParent {
+public class SceneProperties implements SettingsParent {
     /**
      * Factor to scale the {@link CartesianPoint} vs {@link ScreenPoint} units.
      * <p>
@@ -47,7 +47,7 @@ public class ScenePropertiesSettings implements SettingsParent {
             "Draw method should use back face culling optimization"
     );
 
-    public ScenePropertiesSettings() {
+    public SceneProperties() {
 
     }
 
