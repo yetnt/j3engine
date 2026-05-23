@@ -13,7 +13,7 @@ import com.j3d.ui.CursorManager;
 import com.j3d.ui.CursorNames;
 import com.j3d.ui.J3DTheme;
 import com.j3d.ui.engine.EngineFrame;
-import com.j3d.utility.JLabelRichText;
+import com.j3d.utility.generators.JLabelRichText;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;

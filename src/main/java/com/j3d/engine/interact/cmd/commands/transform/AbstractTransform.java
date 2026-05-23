@@ -21,7 +21,7 @@ import com.j3d.engine.interact.cmd.commands.transform.mouse.TransformMouseOwner;
 import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.ui.engine.EngineFrame;
-import com.j3d.utility.JLabelRichText;
+import com.j3d.utility.generators.JLabelRichText;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

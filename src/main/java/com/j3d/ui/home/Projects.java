@@ -10,7 +10,7 @@ import com.j3d.settings.CoreSettings;
 import com.j3d.storage.files.util.ProjectImagePair;
 import com.j3d.ui.J3DTheme;
 import com.j3d.utility.ImageUtils;
-import com.j3d.utility.JLabelRichText;
+import com.j3d.utility.generators.JLabelRichText;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
