@@ -4,7 +4,9 @@
  */
 package com.j3d.ui.engine.popups;
 
+import com.j3d.engine.SceneManager;
 import com.j3d.engine.react.actions.Action;
+import com.j3d.ui.J3DTheme;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -22,6 +24,13 @@ public class ActionPanel extends javax.swing.JPanel {
         initComponents();
         jLabel3.setText(action.getDescription());
         timeBtn.setText(action.getTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+        this.action = action;
+        if (!action.isReversible()) jumpToBtn.setEnabled(false);
+    }
+
+    public void setAsGreyed() {
+        this.setBackground(J3DTheme.BACKGROUND.color());
+        jumpToBtn.setBackground(J3DTheme.UI_SURFACE.color());
     }
 
     /**
@@ -32,54 +41,42 @@ public class ActionPanel extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
-        jLabel3 = new javax.swing.JLabel();
-        timeBtn = new javax.swing.JLabel();
         jumpToBtn = new javax.swing.JButton();
+        timeBtn = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
-        setMinimumSize(new java.awt.Dimension(472, 48));
-        setPreferredSize(new java.awt.Dimension(472, 48));
-        setLayout(new java.awt.GridBagLayout());
+        setBackground(J3DTheme.UI_SURFACE.color());
+        setMinimumSize(new java.awt.Dimension(426, 48));
+        setPreferredSize(new java.awt.Dimension(426, 48));
+        setLayout(new java.awt.BorderLayout(20, 0));
 
-        jLabel3.setText("description");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipadx = 185;
-        gridBagConstraints.ipady = 14;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(135, 12, 0, 4);
-        add(jLabel3, gridBagConstraints);
-
-        timeBtn.setText("time");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipadx = 87;
-        gridBagConstraints.ipady = 14;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(135, 12, 0, 0);
-        add(timeBtn, gridBagConstraints);
-
-        jumpToBtn.setText("jButton1");
+        jumpToBtn.setBackground(J3DTheme.BACKGROUND.color());
+        jumpToBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jumpToBtn.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        jumpToBtn.setText("btn!");
         jumpToBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jumpToBtnActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.ipady = 19;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(129, 4, 129, 0);
-        add(jumpToBtn, gridBagConstraints);
+        add(jumpToBtn, java.awt.BorderLayout.WEST);
+
+        timeBtn.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        timeBtn.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        timeBtn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        timeBtn.setText("time");
+        add(timeBtn, java.awt.BorderLayout.EAST);
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        jLabel3.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("description");
+        add(jLabel3, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jumpToBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jumpToBtnActionPerformed
-        // TODO add your handling code here:
+        SceneManager.history.apply(action);
     }//GEN-LAST:event_jumpToBtnActionPerformed
 
 

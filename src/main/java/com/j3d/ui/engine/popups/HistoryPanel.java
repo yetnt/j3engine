@@ -18,6 +18,7 @@ public class HistoryPanel extends javax.swing.JPanel {
     }
 
     public void addPanel(ActionPanel actionPanel, boolean greyed) {
+        if (greyed) actionPanel.setAsGreyed();
         this.actionsPanel.add(actionPanel);
         this.actionsPanel.revalidate();
         this.actionsPanel.repaint();

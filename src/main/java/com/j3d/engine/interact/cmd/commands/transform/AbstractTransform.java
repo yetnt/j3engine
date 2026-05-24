@@ -294,9 +294,10 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
                     @Override
                     public String getDescription() { return "TransformSelection:" + getName(); }
 
+                    private final LocalTime now = LocalTime.now();
                     @Override
                     public LocalTime getTime() {
-                        return LocalTime.now();
+                        return now;
                     }
                 }
         );

@@ -108,9 +108,10 @@ public class Layer extends ArrayList<Thing> implements Interactable {
                         return "Construct:Layer-" + identifier;
                     }
 
+                    private final LocalTime now = LocalTime.now();
                     @Override
                     public LocalTime getTime() {
-                        return LocalTime.now();
+                        return now;
                     }
                 }
         );
@@ -167,9 +168,10 @@ public class Layer extends ArrayList<Thing> implements Interactable {
                         return "Construct:Layer-Default";
                     }
 
+                    private final LocalTime now = LocalTime.now();
                     @Override
                     public LocalTime getTime() {
-                        return LocalTime.now();
+                        return now;
                     }
                 }
         );
@@ -227,9 +229,10 @@ public class Layer extends ArrayList<Thing> implements Interactable {
                 return "Layer-"+ current.getIdentifier() + ":SquashWith-" + other.getIdentifier();
             }
 
+            private final LocalTime now = LocalTime.now();
             @Override
             public LocalTime getTime() {
-                return LocalTime.now();
+                return now;
             }
         };
     }
@@ -331,9 +334,10 @@ public class Layer extends ArrayList<Thing> implements Interactable {
                 return "Layer:VisibilityToggle";
             }
 
+            private final LocalTime now = LocalTime.now();
             @Override
             public LocalTime getTime() {
-                return LocalTime.now();
+                return now;
             }
         };
     }
@@ -371,9 +375,10 @@ public class Layer extends ArrayList<Thing> implements Interactable {
                 return "Layer:Delete";
             }
 
+            private final LocalTime now = LocalTime.now();
             @Override
             public LocalTime getTime() {
-                return LocalTime.now();
+                return now;
             }
         };
     }

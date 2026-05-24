@@ -186,9 +186,10 @@ public class Thing implements Interactable {
                         return "Construct:Thing";
                     }
 
+                    private final LocalTime now = LocalTime.now();
                     @Override
                     public LocalTime getTime() {
-                        return LocalTime.now();
+                        return now;
                     }
                 }
         );
@@ -346,9 +347,10 @@ public class Thing implements Interactable {
                 return "Thing:Copy";
             }
 
+            private final LocalTime now = LocalTime.now();
             @Override
             public LocalTime getTime() {
-                return LocalTime.now();
+                return now;
             }
         };
     }
@@ -399,9 +401,10 @@ public class Thing implements Interactable {
                 return "Thing:ScaleUniform";
             }
 
+            private final LocalTime now = LocalTime.now();
             @Override
             public LocalTime getTime() {
-                return LocalTime.now();
+                return now;
             }
         };
     }
@@ -443,9 +446,10 @@ public class Thing implements Interactable {
                 return "Thing:ScaleVector";
             }
 
+            private final LocalTime now = LocalTime.now();
             @Override
             public LocalTime getTime() {
-                return LocalTime.now();
+                return now;
             }
         };
     }
@@ -487,9 +491,10 @@ public class Thing implements Interactable {
                 return "Thing:ScaleVector";
             }
 
+            private final LocalTime now = LocalTime.now();
             @Override
             public LocalTime getTime() {
-                return LocalTime.now();
+                return now;
             }
         };
     }
@@ -534,9 +539,10 @@ public class Thing implements Interactable {
                 return "Thing:Rotate";
             }
 
+            private final LocalTime now = LocalTime.now();
             @Override
             public LocalTime getTime() {
-                return LocalTime.now();
+                return now;
             }
         };
     }
@@ -628,9 +634,10 @@ public class Thing implements Interactable {
                 return "Thing:VisibilityToggle";
             }
 
+            private final LocalTime now = LocalTime.now();
             @Override
             public LocalTime getTime() {
-                return LocalTime.now();
+                return now;
             }
         };
     }
@@ -671,9 +678,10 @@ public class Thing implements Interactable {
                 return "Thing:Delete";
             }
 
+            private final LocalTime now = LocalTime.now();
             @Override
             public LocalTime getTime() {
-                return LocalTime.now();
+                return now;
             }
         };
     }
