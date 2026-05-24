@@ -5,6 +5,7 @@ import com.j3d.engine.geometry.geo2d.constraints.CPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.args.ArgSet;
+import com.j3d.engine.interact.cmd.args.TypedArg;
 import com.j3d.engine.interact.cmd.base.KeyedStatefulCommand;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.commands.transform.handles.HandleType;
@@ -65,7 +66,8 @@ public class  ScaleSelection extends AbstractTransform {
                 // for scale since this doesn't scale up linearly, we define a set of multipliers/divisors
                 new double[]{1.1, 1.3, 2, 1.01});
         this.aliases("s", "size", "sc").args(
-                argSet
+                argSet,
+                new TypedArg("arg", "arg so subcommands dont collapse", true, Boolean.class)
         ).parseUsages();
 
         Supplier<Vector3> scaleAxisCalculator = () -> scaleMouseOwner.selectedHandle == null ? new Vector3(true) :

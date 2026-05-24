@@ -39,6 +39,7 @@ public class Command {
     public String description;
     public String usage = "This will be auto-generated.";
     public ArrayList<Argument> args = new ArrayList<>();
+    private boolean noArgs = false;
     /**
      * A flag indicating whether this command accepts a variable number of tagged arguments (e.g., key:value pairs).
      */
@@ -91,6 +92,15 @@ public class Command {
      */
     public Command args(Argument... a) {
         args.addAll(Arrays.asList(a));
+        return this;
+    }
+
+    public Command noArgs() {
+        noArgs = true;
+        usages.put(
+                new ArrayList<>(List.of(Void.class)),
+                "...key:value"
+        );
         return this;
     }
 
@@ -257,6 +267,7 @@ public class Command {
      * @return An array of usage strings that match the given argument types.
      */
     public String[] returnUsagesWhere(String alias, Class ...types) {
+        if (noArgs) return new String[]{alias + " ...key:value"};
         ArrayList<String> matchedUsages = new ArrayList<>();
         for (var entry : usages.entrySet()) {
             ArrayList<Class> key = entry.getKey();

@@ -38,7 +38,7 @@ import java.util.Random;
 public class RandomUUIDCmd extends Subcommand {
     public RandomUUIDCmd() {
         super("id", "returns a random object uuid");
-        aliases("rand", "random", "r", "uuid", "u").parseUsages();
+        aliases("rand", "random", "r", "uuid", "u").parseUsages().noArgs();
     }
 
     @Override

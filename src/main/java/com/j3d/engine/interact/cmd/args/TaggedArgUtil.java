@@ -101,6 +101,7 @@ public class TaggedArgUtil {
     public static TaggedArgValue<?> parse(String accumulator, boolean errorToLabel, SafeJLabel label) {
         accumulator = accumulator.trim();
         TaggedArgValue<Void> taggedArgValue = new TaggedArgValue<>(null);
+        if (accumulator.isEmpty()) return taggedArgValue; // return empty.
         ArrayList<Character> disallowed = new ArrayList<>(List.of(
                 '(', '[', '"', '\'', ']', ')', '#', ':', '='
         ));

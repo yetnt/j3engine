@@ -3,6 +3,7 @@ package com.j3d.engine.interact.cmd;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgUtil;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
+import com.j3d.engine.interact.cmd.complete.AutoCompleteSession;
 import com.j3d.ui.engine.CommandPalette;
 import com.j3d.Static;
 import com.j3d.ui.engine.EngineFrame;
@@ -80,6 +81,8 @@ public class CommandParser {
      */
     private boolean argumentClosed = true;
 
+    private AutoCompleteSession autoCompleteSession;
+
     /**
      * Enable the command input field and apply the 'active' background styling.
      * <p>
@@ -123,6 +126,7 @@ public class CommandParser {
             arguments.clear();
             taggedArguments.clear();
             accumulator = "";
+            autoCompleteSession = null;
             commandPalette.inputField.setText("");
             ignoreDocumentEvent = false;
         });
@@ -136,18 +140,31 @@ public class CommandParser {
                     String insertedText = commandPalette.inputField.getDocument().getText(offset, length);
 
                     for (char c : insertedText.toCharArray()) {
-                        //noinspection StringConcatenationInLoop
                         accumulator += c;
+
+                        // 1. Check token boundaries first!
+                        // If it's a space, commit it to arguments BEFORE updating hints
                         if (c == ' ' && !inBrace(c)) {
                             argumentClosed = true;
                             parse();
                         }
+
+                        // 2. Initialise the session if it's the very first argument
+                        if (arguments.size() == 1 && autoCompleteSession == null) {
+                            autoCompleteSession = new AutoCompleteSession(arguments.getFirst().toString());
+                        }
+
+                        // 3. Now update the live typing token with clean data
+                        if (autoCompleteSession != null) {
+                            autoCompleteSession.setCurrentArg(accumulator);
+                        }
                     }
 
                 } catch (BadLocationException ex) {
-                    ex.printStackTrace(); // Or log it properly
+                    ex.printStackTrace();
                 }
             }
+
 
             public void removeUpdate(DocumentEvent e) {
                 if (ignoreDocumentEvent) return;
@@ -159,8 +176,11 @@ public class CommandParser {
                     arguments.clear();
                     taggedArguments.clear();
                     accumulator = "";
+                    autoCompleteSession = null;
+                    label.clear(); // Clean up the label UI
                 }
             }
+
 
             @Override
             public void changedUpdate(DocumentEvent e) {
@@ -191,49 +211,49 @@ public class CommandParser {
         ignoreDocumentEvent = true; // don't trigger any updates.
         switch (obj) {
             case Vector3 v -> {
-                arguments.add(v);
+                addArg(v);
                 commandPalette.inputField.setText(
                         commandPalette.inputField.getText() + v.toCommandPaletteString() + " "
                 );
             }
             case GObject g -> {
-                arguments.add(g);
+                addArg(g);
                 commandPalette.inputField.setText(
                         commandPalette.inputField.getText() + g.getId() + " "
                 );
             }
             case Thing t -> {
-                arguments.add(t);
+                addArg(t);
                 commandPalette.inputField.setText(
                         commandPalette.inputField.getText() + t.getId() + " "
                 );
             }
             case Color c -> {
-                arguments.add(c);
+                addArg(c);
                 commandPalette.inputField.setText(
                         commandPalette.inputField.getText() + colourToCommandPaletteString(c) + " "
                 );
             }
             case String s -> {
-                arguments.add(s);
+                addArg(s);
                 commandPalette.inputField.setText(
                         commandPalette.inputField.getText() + "\"" + s + "\" "
                 );
             }
             case Integer i -> {
-                arguments.add(i);
+                addArg(i);
                 commandPalette.inputField.setText(
                         commandPalette.inputField.getText() + i + " "
                 );
             }
             case Double d -> {
-                arguments.add(d);
+                addArg(d);
                 commandPalette.inputField.setText(
                         commandPalette.inputField.getText() + d + " "
                 );
             }
             case Boolean b -> {
-                arguments.add(b);
+                addArg(b);
                 commandPalette.inputField.setText(
                         commandPalette.inputField.getText() + (b ? "true" : "false") + " "
                 );
@@ -275,11 +295,11 @@ public class CommandParser {
             if (t == null) {
                 label.error("No object or thing found with UUID: " + SafeJLabel.EMPH, uuid);
             } else {
-                arguments.add(t);
+                addArg(t);
             }
             return;
         }
-        arguments.add(g);
+        addArg(g);
     }
 
     /**
@@ -296,6 +316,11 @@ public class CommandParser {
         return (bp.first.isEmpty() && accumulator.charAt(0) == '(') ||
                 (sp.isEmpty() && accumulator.charAt(0) == '"');
 //        return (c != ')' && accumalator.charAt(0) == '(') || (c != '"' && accumalator.charAt(0) == '"');
+    }
+
+    private void addArg(Object arg) {
+        arguments.add(arg);
+        if (autoCompleteSession != null) autoCompleteSession.addArg(arg);
     }
 
     /**
@@ -319,7 +344,7 @@ public class CommandParser {
         }
         // First check for the obvious, whether the accumulator starts and ends with double qutoes
         if (accumulator.charAt(0) == '"' && accumulator.charAt(accumulator.length() - 1) == '"') {
-            arguments.add(accumulator.substring(1, accumulator.length() - 1));
+            addArg(accumulator.substring(1, accumulator.length() - 1));
         } else if (accumulator.charAt(0) == '(' && accumulator.charAt(accumulator.length() - 1) == ')') {
             // Now check for parenthesis
             String[] nums = accumulator.substring(1, accumulator.length() - 1).split(",");
@@ -336,7 +361,7 @@ public class CommandParser {
                 label.error("Invalid number of values in Vector3. Expected "+SafeJLabel.EMPH+" got "+SafeJLabel.EMPH ,3, parsedNums.size());
                 return;
             }
-            arguments.add(new Vector3(parsedNums.getFirst(), parsedNums.get(1), parsedNums.getLast()));
+            addArg(new Vector3(parsedNums.getFirst(), parsedNums.get(1), parsedNums.getLast()));
         } else if (accumulator.charAt(0) == '#' && accumulator.charAt(accumulator.length() - 1) == '#') {
             // This is a colour. In either:
             /*
@@ -345,7 +370,7 @@ public class CommandParser {
             #FFFFFF#
              */
             Color col = parseColor(accumulator.substring(1, accumulator.length() - 1));
-            if (col != null) arguments.add(col);
+            if (col != null) addArg(col);
         } else {
             // Otherwise, it may be a UUID, if so parse as UUID, find the given GObject, and pass it into the arguments
             // Otherwise, just pass it as a string
@@ -359,7 +384,7 @@ public class CommandParser {
                     TaggedArgValue<?> v = TaggedArgUtil.parse(acc, true, label);
                     if (v.isErr()) return;
                     if (v.isEmpty()) {
-                        arguments.add(acc.trim()); // something like an extra arg, just put it.
+                        addArg(acc.trim()); // something like an extra arg, just put it.
                         return;
                     }
                     taggedArguments.add(v);
@@ -380,14 +405,14 @@ public class CommandParser {
      */
     private void parseAsNumberOrBool(String accumulator, Consumer<String> otherwise) {
         try {
-            arguments.add(Integer.parseInt(accumulator.trim()));
+            addArg(Integer.parseInt(accumulator.trim()));
         } catch (NumberFormatException e) {
             try {
-                arguments.add(Double.parseDouble(accumulator.trim()));
+                addArg(Double.parseDouble(accumulator.trim()));
             } catch (NumberFormatException f) {
                 try {
                     String acc = accumulator.trim().toLowerCase();
-                    arguments.add(switch (acc) {
+                    addArg(switch (acc) {
                         case "yes", "yebo", "true" -> true;
                         case "no", "aowa", "false" -> false;
                         default -> throw new IllegalArgumentException("rah");

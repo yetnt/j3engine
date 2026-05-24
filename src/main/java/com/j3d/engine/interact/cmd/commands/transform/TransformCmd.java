@@ -46,9 +46,9 @@ public class TransformCmd extends Command implements SemiStatefulCommand {
                 new TranslateSelection(),
                 new ScaleSelection()
         ).parseUsages();
-        this.usages.put(
-                new ArrayList<>(List.of(String.class, String.class)),
-                " [scale|translate] [p|v|t|f] ...key:value");
+//        this.usages.put(
+//                new ArrayList<>(List.of(String.class, String.class)),
+//                " [scale|translate] [p|v|t|f] ...key:value");
     }
 
     private SelectionPreCondition selectionPreCondition;

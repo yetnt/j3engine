@@ -6,9 +6,20 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 /**
- * Represents an action that can be executed and potentially undone.
+ * Represents an action that can be executed and undone by either the app or the user affecting the scene.
  * Implementations of the interface provide the logic for executing and undoing the action themselves.
+ * <p>
+ *     This interface has multiple other versions for return type clarity.
+ * </p>
  * @param <T> The type of the result returned by the run method.
+ * @see VoidAction
+ * @see DirtyAction
+ * @see DirtyVoidAction
+ * @see CleanableAction
+ * @see ConstructorAction
+ * @see AbstractAction
+ * @see ActionPanel
+ * @author Lehlogonolo Poole
  */
 public interface Action<T> {
     /**
@@ -32,8 +43,16 @@ public interface Action<T> {
      */
     String getDescription();
 
+    /**
+     * Returns the time at which the action was performed.
+     * @return The time of the action.
+     */
     LocalTime getTime();
 
+    /**
+     * Provides a default implementation for getting an {@link ActionPanel} associated with this action.
+     * @return An {@link ActionPanel} instance.
+     */
     default ActionPanel getPanel() {
         return new ActionPanel(this);
     }

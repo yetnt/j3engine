@@ -17,6 +17,16 @@ public class JLabelRichText {
         content = cont;
     }
 
+    public JLabelRichText(String cont, boolean esc) {
+        if (esc) {
+            // replace greater than and less than symbols with html escape
+            cont = cont.replaceAll(">", GREATER_THAN);
+            cont = cont.replaceAll("<", LESS_THAN);
+            cont = cont.replaceAll("=", EQUAL);
+        }
+        content = cont;
+    }
+
     /**
      * Applies bold formatting to the content.
      *
@@ -177,4 +187,16 @@ public class JLabelRichText {
      * A constant string representing an HTML horizontal rule tag.
      */
     public static String HORIZONTAL_LINE = "<hr>";
+
+    public static String GREATER_THAN = "&gt;";
+    public static String LESS_THAN = "&lt;";
+    public static String EQUAL = "&equals;";
+
+    public String getRawContent() {
+        return content;
+    }
+
+    public void add(JLabelRichText jLabelRichText) {
+        this.content += jLabelRichText.toString();
+    }
 }

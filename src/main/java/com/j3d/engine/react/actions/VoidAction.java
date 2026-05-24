@@ -1,7 +1,8 @@
 package com.j3d.engine.react.actions;
 
 /**
- * A VoidAction is an Action that does not return any value when executed.
+ * An action who does not need to return any meaningful value. Simple side effects.
+ * @author Lehlogonolo Poole
  */
 public interface VoidAction extends Action<Void> {
 }

@@ -1,4 +1,7 @@
 import com.j3d.Static;
+import com.j3d.engine.interact.cmd.CommandsManager;
+import com.j3d.engine.interact.cmd.commands.debug.DebugCmd;
+import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -6,11 +9,7 @@ import java.util.HashSet;
 
 public class playground {
     public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        new HashSet<>(Static.commandManager.commandsAliasMap.values()).stream().flatMap(
-                c -> c.getUsages().values().stream().map(
-                        s -> c.aliases.getFirst() + " " + s
-                )
-        ).forEach(System.out::println);
+        new TransformCmd().getUsages().values().forEach(System.out::println);
     }
 
     public static void fb() {
