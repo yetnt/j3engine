@@ -115,7 +115,7 @@ public class Logger {
                                 err.getCause().getMessage() + " \n" +
                                 Arrays.stream((err.getCause().getStackTrace()))
                                         .map(StackTraceElement::toString)
-                                        .peek(s -> s = "\t" + s + "\n")
+                                        .map(s -> "\t" + s + "\n")
                                         .reduce("", String::concat)
                         : ""
                 );
