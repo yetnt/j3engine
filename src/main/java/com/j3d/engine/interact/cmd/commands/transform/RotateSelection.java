@@ -110,8 +110,10 @@ public class RotateSelection extends AbstractTransform {
 
     @Override
     public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+        axis = new Vector3(true);
         if (args.length > 1 && args[1] instanceof Vector3 a)
             axis = a.normalize();
+        rotateMouseOwner.axis = axis;
         super.run(logLabel, aliasUsed, args, taggedArgs);
     }
 

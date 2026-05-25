@@ -6,6 +6,7 @@ import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
+import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.args.ArgSet;
@@ -29,6 +30,7 @@ import java.awt.event.ActionEvent;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -52,13 +54,15 @@ import java.util.stream.Stream;
  * actions that happen when the user interacts with the handles or presses the arrow keys.
  * <p>
  *     Any command implementing this will inherit the need to take in a single optional
- *     {@link ArgSet} called {@code mode} ({@code "f"}, {@code "t"}, {@code "v"}, {@code "p"}).
+ *     {@link ArgSet} called {@code mode} ({@code "f"}, {@code "t"}, {@code "v"}, {@code "p"}, {@code "thing}).
  *     By default, is set to face-mode ({@code "f"} or {@code "t"}). The difference being within
  *     face-mode, the command will filter the selection only for {@link GTri} and take the points of
  *     each triangle as the points to transform. meaning if you had selected only a single point who
  *     is parented to some triangle, all the points in the triangle are part of the transformation
  *     selection as they share the same triangle up to hierarchy. To avoid this, use point-mode
- *     ({@code "p"}, {@code "v"}).
+ *     ({@code "p"}, {@code "v"}). Otherwise, if you had selected the {@code "thing"} option
+ *     the command will filter the selection only for that {@link Thing} and take all the points of
+ *     each thing as the points to transform.
  * </p>
  *
  * @author Lehlogonolo Poole
@@ -91,12 +95,13 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
                     "What the transformation should operate on",
                     true,
                     "p", "v", // Points/vertices
-                    "t", "f" // Triangles/faces
+                    "t", "f", // Triangles/faces
+                    "thing"
             );
     /** The name of the event associated with this stateful command. */
     protected String eventName;
-    /** A flag indicating if the transformation should operate on whole faces (tris) or individual points. */
-    protected boolean faceMode = true;
+    /** A flag indicating if the transformation should operate on whole faces (tris) or individual points or whole things. */
+    protected FaceMode faceMode = FaceMode.TRIANGLES;
     /** An array of step sizes (e.g., 1, 5, 20) that the user can cycle through. */
     protected double[] gearTrain;
     /** The index of the currently active step size in the gearTrain. */
@@ -138,39 +143,53 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
     @Override
     public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(logLabel, aliasUsed, args, taggedArgs);
-        CommandsManager.setAsCurrent(this);
         this.label = logLabel;
 
         if (args.length > 0 && !(args[0] instanceof String)) {
-            Static.getLog().println("Second argument has to be a string!");
+            logLabel.setText("Second argument has to be a string! [p|v|f|t|thing]");
             return;
         }
+
+        CommandsManager.setAsCurrent(this);
         keys.add(gear);
         if (args.length > 0 && argSet.isValid((String)args[0])) {
             String arg = (String)args[0];
-            faceMode = arg.equals("f") || arg.equals("v");
+            faceMode = switch (arg) {
+                case "f", "t" -> FaceMode.TRIANGLES;
+                case "p", "v" -> FaceMode.POINTS;
+                case "thing" -> FaceMode.THING;
+                default -> throw new IllegalStateException("Unexpected value: " + arg);
+            };
         }
 
         Stream<GTri> tris = Static.sceneManager.getSelected().stream()
                 .filter(obj -> obj instanceof GTri)
                 .map(obj -> (GTri) obj);
 
-        if (tris.findAny().isEmpty()) faceMode = false;
+        if (tris.findAny().isEmpty()) faceMode = FaceMode.TRIANGLES;
 
-        // Simple 3 dots
-        references =
-                faceMode ?
-                        new ArrayList<>(Static.sceneManager.getSelected().stream()
-                                .filter(obj -> obj instanceof GTri)
-                                .map(obj -> (GTri) obj)
-                                .flatMap(GTri::getLegStream)
-                                .flatMap(GLine::getPointStream)
-                                .collect(Collectors.toSet()))
-                        : Static.sceneManager.getSelected()
-                        .stream()
-                        .filter(obj -> obj instanceof GPoint)
-                        .map(obj -> (GPoint) obj)
-                        .collect(Collectors.toCollection(ArrayList::new));
+        references = switch (faceMode) {
+            case TRIANGLES -> new ArrayList<>(Static.sceneManager.getSelected().stream()
+                    .filter(obj -> obj instanceof GTri)
+                    .map(obj -> (GTri) obj)
+                    .flatMap(GTri::getLegStream)
+                    .flatMap(GLine::getPointStream)
+                    .collect(Collectors.toSet()));
+            case POINTS -> Static.sceneManager.getSelected()
+                    .stream()
+                    .filter(obj -> obj instanceof GPoint)
+                    .map(obj -> (GPoint) obj)
+                    .collect(Collectors.toCollection(ArrayList::new));
+            case THING ->  Static.sceneManager.getSelected()
+                    .stream()
+                    .map(g -> Static.sceneManager.findParentThing(g))
+                    .filter(Objects::nonNull)
+                    .flatMap(thing -> thing.getObjects().stream())
+                    .filter(obj -> obj instanceof GPoint)
+                    .map(obj -> (GPoint) obj)
+                    .collect(Collectors.toCollection(ArrayList::new));
+
+        };
 
         originalPointPos = references.stream().map(GObject::getPivot).collect(Collectors.toCollection(ArrayList::new));
         run(this, eventName, null, logLabel);
@@ -239,7 +258,11 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
                     SafeJLabel.EMPH + " " + SafeJLabel.EMPH + " using arrow keys and handles. | "
                             + SafeJLabel.EMPH + SafeJLabel.EMPH + " (Click "+SafeJLabel.EMPH+" to change)",
                     capitalizedName,
-                    new JLabelRichText(faceMode ? "faces" : "points")
+                    new JLabelRichText(switch (faceMode) {
+                        case THING -> "things";
+                        case POINTS -> "points";
+                        case TRIANGLES -> "triangles";
+                    })
                             .font(J3DTheme.TEXT_SECONDARY.color().darker(), "6"),
                     stepsTitle + ": ",
                     new JLabelRichText(Double.toString(getCurrentStepSize()) +
@@ -260,6 +283,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
      * Cleans up the stateful command environment after it has finished.
      */
     private void finished(SafeJLabel lbl) {
+        mouseOwner.handles.forEach(Handle::clear);
         keys.forEach(key -> {
             Static.keybinds.removeJ3Key(key.getId());
         });

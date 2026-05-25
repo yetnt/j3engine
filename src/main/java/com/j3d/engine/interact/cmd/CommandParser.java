@@ -3,7 +3,7 @@ package com.j3d.engine.interact.cmd;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgUtil;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
-import com.j3d.engine.interact.cmd.complete.AutoCompleteSession;
+import com.j3d.engine.interact.cmd.complete.TypingHintSession;
 import com.j3d.ui.engine.CommandPalette;
 import com.j3d.Static;
 import com.j3d.ui.engine.EngineFrame;
@@ -81,7 +81,7 @@ public class CommandParser {
      */
     private boolean argumentClosed = true;
 
-    private AutoCompleteSession autoCompleteSession;
+    private TypingHintSession typingHintSession;
 
     /**
      * Enable the command input field and apply the 'active' background styling.
@@ -126,7 +126,7 @@ public class CommandParser {
             arguments.clear();
             taggedArguments.clear();
             accumulator = "";
-            autoCompleteSession = null;
+            typingHintSession = null;
             commandPalette.inputField.setText("");
             ignoreDocumentEvent = false;
         });
@@ -150,13 +150,13 @@ public class CommandParser {
                         }
 
                         // 2. Initialise the session if it's the very first argument
-                        if (arguments.size() == 1 && autoCompleteSession == null) {
-                            autoCompleteSession = new AutoCompleteSession(arguments.getFirst().toString());
+                        if (arguments.size() == 1 && typingHintSession == null) {
+                            typingHintSession = new TypingHintSession(arguments.getFirst().toString());
                         }
 
                         // 3. Now update the live typing token with clean data
-                        if (autoCompleteSession != null) {
-                            autoCompleteSession.setCurrentArg(accumulator);
+                        if (typingHintSession != null) {
+                            typingHintSession.setCurrentArg(accumulator);
                         }
                     }
 
@@ -176,7 +176,7 @@ public class CommandParser {
                     arguments.clear();
                     taggedArguments.clear();
                     accumulator = "";
-                    autoCompleteSession = null;
+                    typingHintSession = null;
                     label.clear(); // Clean up the label UI
                 }
             }
@@ -320,7 +320,7 @@ public class CommandParser {
 
     private void addArg(Object arg) {
         arguments.add(arg);
-        if (autoCompleteSession != null) autoCompleteSession.addArg(arg);
+        if (typingHintSession != null) typingHintSession.addArg(arg);
     }
 
     /**

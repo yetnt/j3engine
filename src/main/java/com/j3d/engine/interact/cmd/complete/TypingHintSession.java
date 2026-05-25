@@ -16,10 +16,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class AutoCompleteSession {
+public class TypingHintSession {
     private String cmdName;
     private Command command;
     private boolean validSession = false;
@@ -30,7 +29,7 @@ public class AutoCompleteSession {
     private String cachedUsage = "";
     private boolean usageCached = false;
 
-    public AutoCompleteSession(String cmdName) {
+    public TypingHintSession(String cmdName) {
         this.cmdName = cmdName;
         Command c = Static.commandManager.commandsAliasMap.get(cmdName);
         if (c != null) {
@@ -40,25 +39,10 @@ public class AutoCompleteSession {
             this.validSession = false;
     }
 
-    public AutoCompleteSession(String subcommandName, Command parentCommand) {
-        this.cmdName = subcommandName;
-        parentCommand.args.stream().filter(
-                cmd ->
-                    cmd instanceof Subcommand && ((Subcommand) cmd).aliases.contains(subcommandName)
-        ).findAny().ifPresent(
-                cmd -> {
-                    this.validSession = true;
-                    this.command = (Subcommand) cmd;
-                }
-        );
-        if (!this.validSession)
-            this.command = null;
-    }
-
     public void addArg(Object arg) {
         this.arguments.add(arg);
-        updateSuggestions();
         this.currentArg = "";
+        updateSuggestions();
     }
 
     public void setCurrentArg(String newValue) {
@@ -123,7 +107,7 @@ public class AutoCompleteSession {
         );
 
         if (possibleUsages.length == 0) {
-            Static.commandParser.safeJLabel().setLower(cmdName + " has no expected type...");
+//            Static.commandParser.safeJLabel().setLower(cmdName + " has no expected type...");
             return;
         }
 

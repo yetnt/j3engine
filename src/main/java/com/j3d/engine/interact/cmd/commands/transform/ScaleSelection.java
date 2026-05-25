@@ -66,8 +66,7 @@ public class  ScaleSelection extends AbstractTransform {
                 // for scale since this doesn't scale up linearly, we define a set of multipliers/divisors
                 new double[]{1.1, 1.3, 2, 1.01});
         this.aliases("s", "size", "sc").args(
-                argSet,
-                new TypedArg("arg", "arg so subcommands dont collapse", true, Boolean.class)
+                argSet
         ).parseUsages();
 
         Supplier<Vector3> scaleAxisCalculator = () -> scaleMouseOwner.selectedHandle == null ? new Vector3(true) :

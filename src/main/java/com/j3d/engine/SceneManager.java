@@ -540,4 +540,14 @@ public class SceneManager {
     public void hasParent(HasParents<? extends GObject> gObject) {
         unparented.remove(gObject);
     }
+
+    public Thing findParentThing(GObject g) {
+        for (Layer layer : layers) {
+            for (Thing t : layer) {
+                if (t.getObjects().contains(g))
+                    return t;
+            }
+        }
+        return null;
+    }
 }

@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 public class  RotateMouseOwner extends TransformMouseOwner {
 
     public Handle handle;
+    public Vector3 axis = new Vector3(true);
 
     public RotateMouseOwner() {
         super(MOwner.ROTATE_HANDLE);
@@ -44,6 +45,17 @@ public class  RotateMouseOwner extends TransformMouseOwner {
         Vector3 center = Vector3.reduceToVector3(
                 references.stream().map(GPoint::getPivot).collect(Collectors.toCollection(ArrayList::new))
                 , Vector3::add).div(references.size());
+        if (axis.isNotEmpty()) {
+            handles.getFirst().extraDetailRegardless(
+                    g -> {
+                        // the handle we choose doesnt matter. we need to create point A and B from the centre.
+                        Vector3 A = center.add(axis.mult(axisLength));
+                        Vector3 B = center.sub(axis.mult(axisLength));
+                        Static.sceneManager.drawLine3D(g, A, B, Static.camera);
+                        g.setColor(new Color(126, 0, 126));
+                    }
+            );
+        }
         handles.forEach(
                 h -> {
                     h.extraDetail(g -> {

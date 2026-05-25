@@ -27,6 +27,7 @@ public class Handle {
     private boolean selected = false;
     private final BiConsumer<Graphics2D, ScreenPoint> draw;
     private Consumer<Graphics2D> extraDetail;
+    private Consumer<Graphics2D> extraDetailRegardless;
 
     /**
      * Constructs a new Handle.
@@ -53,6 +54,15 @@ public class Handle {
         return this;
     }
 
+    public Handle extraDetailRegardless(Consumer<Graphics2D> extraDetail) {
+        this.extraDetailRegardless = extraDetail;
+        return this;
+    }
+
+    public void clear() {
+        extraDetailRegardless = null;
+    }
+
     /**
      * Renders the handle on the screen.
      * <p>
@@ -65,6 +75,8 @@ public class Handle {
      */
     public Handle draw(Graphics2D g) {
         draw.accept(g, toSp());
+        if (extraDetailRegardless != null)
+            extraDetailRegardless.accept(g);
         if (selected) {
             if (extraDetail != null) {
                 extraDetail.accept(g);

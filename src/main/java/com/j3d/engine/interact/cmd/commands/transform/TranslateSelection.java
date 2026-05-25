@@ -3,11 +3,16 @@ package com.j3d.engine.interact.cmd.commands.transform;
 import com.j3d.engine.geometry.geo2d.constraints.CPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.args.ArgSet;
+import com.j3d.engine.interact.cmd.args.TaggedArgValue;
+import com.j3d.engine.interact.cmd.args.TypedArg;
 import com.j3d.engine.interact.cmd.base.KeyedStatefulCommand;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.commands.transform.handles.HandleType;
 import com.j3d.engine.interact.cmd.commands.transform.mouse.TransformMouseOwner;
 import com.j3d.engine.interact.cmd.commands.transform.mouse.TranslateMouseOwner;
+import com.j3d.ui.util.SafeJLabel;
+
+import java.util.ArrayList;
 
 /**
  * A sub-command of {@link TransformCmd} who uses the handles made by {@link AbstractTransform}
@@ -55,6 +60,7 @@ import com.j3d.engine.interact.cmd.commands.transform.mouse.TranslateMouseOwner;
 public class TranslateSelection extends AbstractTransform {
 
     public static TranslateMouseOwner translateMouseOwner = new TranslateMouseOwner();
+    private double mult = 1;
 
     TranslateSelection() {
         super(
@@ -62,7 +68,8 @@ public class TranslateSelection extends AbstractTransform {
                 "translateCmd", translateMouseOwner,
                 new double[]{1, 5, 20, 0.1});
         this.aliases("t", "trans","move","mv", "m").args(
-                argSet
+                argSet,
+                new TypedArg("multiplier", "Multiplies the step sizes by the given multiplier", true, Double.class)
         ).parseUsages();
 
         // this arrow is only functional when no handle is selected
@@ -197,5 +204,22 @@ public class TranslateSelection extends AbstractTransform {
                                 }
                         )
         );
+    }
+
+    @Override
+    public double getCurrentStepSize() {
+        return super.getCurrentStepSize() * mult;
+    }
+
+    @Override
+    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+        mult = 1;
+        if (args.length > 1)
+            switch (args[1]) {
+                case Integer integer -> mult = (double) integer;
+                case Double d -> mult = d;
+                default -> mult = 1;
+            }
+        super.run(logLabel, aliasUsed, args, taggedArgs);
     }
 }
