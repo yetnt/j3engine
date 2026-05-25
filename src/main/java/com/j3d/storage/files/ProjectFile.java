@@ -9,6 +9,7 @@ import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.layer.LayerList;
+import com.j3d.errors.ErrorHandler;
 import com.j3d.settings.CoreSettings;
 import com.j3d.storage.files.protocol.FileProtocol;
 import com.j3d.storage.files.protocol.GenericFileProtocol;
@@ -193,12 +194,16 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                             dos.writeUTF(thing.getName());
                             dos.writeBoolean(thing.isHidden());
                         } catch (IOException e) {
-                            throw new RuntimeException(e);
+                            ErrorHandler.handle(
+                                    new ProjectFileException("Error writing thing data to project file", e)
+                            );
                         }
                     });
                 }
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                ErrorHandler.handle(
+                        new ProjectFileException("Error writing project file data.", e)
+                );
             }
 
             msg("Wrote project file successfully to " + path);
@@ -280,7 +285,9 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                 int numLines = dis.readInt(); // Read number of lines
                 msg(numLines + " lines");
                 if (numPoints == 0 && numLines != 0)
-                    throw new IOException("Invalid project file: missing points");
+                    ErrorHandler.handle(
+                            new ProjectFileException("Invalid project file: missing points")
+                    );
 
                 if (numLines != 0) {
                     throbber.progressStart("Reading lines", numLines);
@@ -293,7 +300,9 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                         GPoint startPoint = pointsMap.get(startPointUUID);
                         GPoint endPoint = pointsMap.get(endPointUUID);
                         if (startPoint == null || endPoint == null)
-                            throw new IOException("Invalid line definition: missing points");
+                            ErrorHandler.handle(
+                                    new ProjectFileException("Invalid line definition: missing points")
+                            );
 
                         GLine line = GLine.fromRaw(lineUUID, startPoint, endPoint);
                         linesParentsMap.putValue(parentThingUUID, line);
@@ -326,7 +335,9 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                         GLine legB = linesMap.get(legBUUID);
                         GLine legC = linesMap.get(legCUUID);
                         if (legA == null || legB == null || legC == null) {
-                            throw new IOException("Invalid triangle definition: missing legs");
+                            ErrorHandler.handle(
+                                    new ProjectFileException("Invalid triangle definition: missing lines")
+                            );
                         }
                         trisParentsMap.putValue(parentThingUUID, GTri.fromRaw(triUUID, triColor, legA, legB, legC));
                         throbber.updateProgress(i + 1);
@@ -378,7 +389,9 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                 Static.getLog().println("Project file loaded successfully from " + path);
                 msg("Project file loaded successfully");
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                ErrorHandler.handle(
+                        new ProjectFileException("Error reading project file data.", e)
+                );
             }
             return null;
         };
