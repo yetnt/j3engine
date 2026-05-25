@@ -1,6 +1,10 @@
 package com.j3d.errors;
 
 import com.j3d.Static;
+import com.j3d.errors.severity.J3DFatal;
+import com.j3d.errors.severity.J3DMild;
+import com.j3d.errors.severity.J3DWarning;
+import com.j3d.errors.severity.J3Err;
 
 import javax.swing.*;
 
@@ -24,7 +28,9 @@ public class ErrorHandler {
                 // Fatal errors are unrecoverable.
                 Static.getLog().error(msg, false);
                 JOptionPane.showMessageDialog(Static.mainFrame, err.getMessage(), "Fatal Error", JOptionPane.ERROR_MESSAGE);
-                throw err; //
+                if (j3f.terminate()) {
+                    throw err;
+                }
             }
             default ->  {
                 Static.getLog().error(msg, true);

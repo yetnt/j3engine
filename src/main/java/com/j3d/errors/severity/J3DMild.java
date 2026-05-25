@@ -1,4 +1,4 @@
-package com.j3d.errors;
+package com.j3d.errors.severity;
 
 public interface J3DMild extends J3Err {
     @Override
