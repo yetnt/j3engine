@@ -102,7 +102,6 @@ public class Logger {
         }
     }
 
-    //TODO: Change boolean param
     public void error(J3DError err) {
         String message = switch (err) {
             case J3DMild i -> "!![MILD] ";
