@@ -20,6 +20,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Executor is a class called by {@link EngineFrame#main(String[])} that just draws things ot the window
@@ -50,18 +51,18 @@ public class Executor {
         Static.camera.lookAt(cub.getCentroid());
         Thing tris = threeTris();
 
-        Pair<Thing, MidpointConstraint> line = someLine();
+//        Pair<Thing, MidpointConstraint> line = someLine();
         ArrayList<Action<?>> actions = new ArrayList<>(List.of(
                 cub.rotate(new Vector3(0, 0, 1), 45),
                 cub.translate(new Vector3(4, 2, 3)),
                 cub.scale(0.4),
                 tris.translate(new Vector3(14, 0, 0)),
-                cub.rotate(new Vector3(2, 3, 1), 2),
-                line.first.translate(new Vector3(80, -10, 0))
+                cub.rotate(new Vector3(2, 3, 1), 2)
+//                line.first.translate(new Vector3(80, -10, 0))
         ));
         actions.forEach(Action::run);
         actions.forEach(SceneManager.history::add);
-        line.second.applyConstraint();
+//        line.second.applyConstraint();
 
     }
 

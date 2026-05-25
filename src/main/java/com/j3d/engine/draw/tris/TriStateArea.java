@@ -1,5 +1,6 @@
 package com.j3d.engine.draw.tris;
 
+import com.j3d.Executor;
 import com.j3d.Static;
 import com.j3d.engine.draw.tris.methods.CamDepthSort;
 import com.j3d.engine.draw.tris.methods.CamDistSort;
@@ -141,6 +142,7 @@ public class TriStateArea {
                 tri.draw(g);
             }
         }
+        clearQueue();
     }
 
     /**
@@ -148,7 +150,11 @@ public class TriStateArea {
      * @param tri The GTri to add.
      */
     public static void addToQueue(GTri tri) {
-        queue.add(tri);
+        if (registered.stream().anyMatch(
+                l -> l.tri == tri
+        )) {
+            queue.add(tri);
+        }
     }
 
     /**

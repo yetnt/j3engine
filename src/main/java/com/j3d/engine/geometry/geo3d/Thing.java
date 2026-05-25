@@ -170,8 +170,11 @@ public class Thing implements Interactable {
                     public Void run() {
                         // will be called after undo, so we need to re-add the thing
                         setForDeletion(false);
-                        DefaultMutableTreeNode node = Static.layerTree.addNode(parent.getTreeNode(), treeNodeIdentity);
-                        thing.treeNode = node;
+                        thing.treeNode = Static.layerTree.addNode(parent.getTreeNode(), treeNodeIdentity);
+                        objectsStream()
+                                .filter(s -> s instanceof GTri)
+                                .map(g -> (GTri)g)
+                                .forEach(TriStateArea::register);
                         return null;
                     }
 
@@ -179,6 +182,10 @@ public class Thing implements Interactable {
                     public void undo() {
                         setForDeletion(true);
                         Static.layerTree.removeNode(thing.treeNode);
+                        objectsStream()
+                                .filter(s -> s instanceof GTri)
+                                .map(g -> (GTri)g)
+                                .forEach(TriStateArea::unregister);
                     }
 
                     @Override
