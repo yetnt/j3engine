@@ -11,6 +11,7 @@ import com.j3d.engine.layer.Layer;
 import com.j3d.engine.layer.LayerList;
 import com.j3d.errors.ErrorHandler;
 import com.j3d.settings.CoreSettings;
+import com.j3d.storage.errs.ProjectFileException;
 import com.j3d.storage.files.protocol.FileProtocol;
 import com.j3d.storage.files.protocol.GenericFileProtocol;
 import com.j3d.ui.dialog.Spinner;
@@ -118,7 +119,9 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                         dos.writeUTF(layer.getIdentifier()); // Write layer identifier
                         dos.writeBoolean(layer.isHidden()); // Write layer hidden state
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        ErrorHandler.handle(
+                                new ProjectFileException("Error writing layer data to project file", e)
+                        );
                     }
                 });
 
@@ -409,7 +412,9 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                 dataOutputStream.writeUTF(getProtocolHeader());
                 dataOutputStream.writeInt(getProtocolVersion());
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                ErrorHandler.handle(
+                        new ProjectFileException("Error writing project file header", e)
+                );
             }
         };
     }
@@ -422,13 +427,19 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                 int version = dataInputStream.readInt();
 
                 if (!head.equals(getProtocolHeader())) {
-                    throw new IOException("Invalid Project file header: " + head);
+                    ErrorHandler.handle(
+                            new ProjectFileException("Unsupported Project file header: " + head)
+                    );
                 }
                 if (version != getProtocolVersion()) {
-                    throw new IOException("Unsupported Project file version: " + version);
+                    ErrorHandler.handle(
+                            new ProjectFileException("Unsupported Project file version: " + version)
+                    );
                 }
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                ErrorHandler.handle(
+                        new ProjectFileException("Error reading project file header", e)
+                );
             }
         };
     }

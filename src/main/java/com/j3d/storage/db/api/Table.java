@@ -1,9 +1,11 @@
 package com.j3d.storage.db.api;
 
+import com.j3d.errors.ErrorHandler;
 import com.j3d.storage.db.ConnectionReason;
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.themes.ThemesTable;
 import com.j3d.storage.db.users.UsersTable;
+import com.j3d.storage.errs.DBException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -103,8 +105,15 @@ public interface Table<T extends DBRecord<?>, C extends TableColumns> {
 
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            ErrorHandler.handle(
+                    new DBException(
+                            "An SQL exception was encountered!",
+                            cr,
+                            e
+                    )
+            );
         }
+        return list;
     }
 
     /**

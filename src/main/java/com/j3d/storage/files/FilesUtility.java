@@ -1,5 +1,8 @@
 package com.j3d.storage.files;
 
+import com.j3d.errors.ErrorHandler;
+import com.j3d.storage.errs.GenericIOException;
+
 import javax.swing.*;
 import java.io.*;
 import java.nio.charset.Charset;
@@ -34,7 +37,12 @@ public class FilesUtility {
             consumer.accept(scanner);
             scanner.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            ErrorHandler.handle(
+                    new GenericIOException(
+                            "Error reading from file:" + path,
+                            e
+                    )
+            );
         }
     }
 
@@ -67,7 +75,12 @@ public class FilesUtility {
             writer.close();
             w.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            ErrorHandler.handle(
+                    new GenericIOException(
+                            "Error writing to file:" + path + name,
+                            e
+                    )
+            );
         }
     }
 
@@ -105,7 +118,12 @@ public class FilesUtility {
             consumer.accept(out);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            ErrorHandler.handle(
+                    new GenericIOException(
+                            "Error writing binary to file:" + path + name,
+                            e
+                    )
+            );
         }
     }
 

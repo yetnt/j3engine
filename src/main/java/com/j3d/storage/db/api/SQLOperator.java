@@ -3,7 +3,7 @@ package com.j3d.storage.db.api;
 public enum SQLOperator {
     LIKE("LIKE"),
     EQUALS("="),
-    IN("IN"),
+//    IN("IN"),
     GREATER_THAN(">"),
     LESS_THAN("<"),
     GREATER_THAN_OR_EQUAL_TO(">="),

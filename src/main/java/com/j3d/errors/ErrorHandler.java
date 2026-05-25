@@ -29,7 +29,11 @@ public class ErrorHandler {
                 Static.getLog().error(err);
                 JOptionPane.showMessageDialog(Static.mainFrame, err.getMessage(), "Fatal Error", JOptionPane.ERROR_MESSAGE);
                 if (j3f.terminate()) {
-                    throw err;
+                    JOptionPane.showMessageDialog(Static.mainFrame,
+                            "Due to the nature of the previous error, the app cannot continue in this state and will shut down.",
+                            "Fatal Error", JOptionPane.ERROR_MESSAGE);
+                    System.exit(1);
+//                    throw err;
                 }
             }
             default ->  {

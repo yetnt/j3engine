@@ -1,10 +1,12 @@
 package com.j3d.storage.db.users;
 
+import com.j3d.errors.ErrorHandler;
 import com.j3d.storage.db.ConnectionReason;
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.api.SQLOperator;
 import com.j3d.storage.db.api.Table;
 import com.j3d.storage.db.api.TableColumns;
+import com.j3d.storage.errs.DBException;
 import com.j3d.utility.generic.Pair;
 
 import java.sql.Connection;
@@ -67,7 +69,7 @@ public class UsersTable implements Table<User, CUsers> {
      * user or the newly created user)
      * @throws SQLException if a database access error occurs.
      */
-    public static Pair<Boolean, User> newOrExisting(String name, String surname, String email, Password pass) throws SQLException {
+    public static Pair<Boolean, User> newOrExisting(String name, String surname, String email, Password pass) {
         // First, check if the user already exists.
         int userId = userExists(email);
         if (userId != -1)
@@ -108,7 +110,21 @@ public class UsersTable implements Table<User, CUsers> {
                             )
                     );
                 }
+            } catch (SQLException e) {
+                ErrorHandler.handle(
+                        new DBException(
+                                "An SQL exception was encountered whilst trying to insert a new user",
+                                cr, e
+                        )
+                );
             }
+        } catch (SQLException e) {
+            ErrorHandler.handle(
+                    new DBException(
+                            "An SQL exception was encountered whilst trying to insert or find a new user",
+                            cr, e
+                    )
+            );
         }
 
         return new Pair<>(false, null);
