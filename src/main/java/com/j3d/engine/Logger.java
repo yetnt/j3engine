@@ -95,4 +95,14 @@ public class Logger {
             logArea.setText("");
         }
     }
+
+    //TODO: Change boolean param
+    public void error(String message, boolean b) {
+        String errorMessage = ERROR_PREFIX + message + "\n";
+        Static.getEngineFiles().logFile.writeLn(getTimestamp() + " " + ERROR_PREFIX + message);
+        System.err.print(errorMessage);
+        if (b && logArea != null) {
+            logArea.append(errorMessage + getTimestamp() + "\n");
+        }
+    }
 }

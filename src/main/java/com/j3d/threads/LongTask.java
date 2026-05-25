@@ -1,6 +1,7 @@
 package com.j3d.threads;
 
 import com.j3d.Static;
+import com.j3d.errors.ErrorHandler;
 import com.j3d.ui.dialog.Spinner;
 
 import javax.swing.*;
@@ -43,7 +44,9 @@ public class LongTask<T> {
                  try {
                      cleanup.accept(throbber, o);
                  } catch (Exception e) {
-                     e.printStackTrace();
+                     ErrorHandler.handle(
+                             new LongTaskException("Task could not complete due to an unrecoverable error", e)
+                     );
                  }
                  throbber.dispose();
                  Static.mainFrame.repaint();
