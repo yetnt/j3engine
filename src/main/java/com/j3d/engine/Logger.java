@@ -1,17 +1,23 @@
 package com.j3d.engine;
 
 import com.j3d.Static;
+import com.j3d.errors.J3DError;
+import com.j3d.errors.severity.J3DFatal;
+import com.j3d.errors.severity.J3DMild;
+import com.j3d.errors.severity.J3DWarning;
+import com.j3d.storage.db.DatabaseManager;
 
 import javax.swing.*;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 /**
  * The Logger class provides a simple logging utility.
- * It supports logging messages to both the console and the {@link com.j3d.ui.engine.DebugPanel#logTextArea}
+ * It supports logging messages to both the console and the {@link com.j3d.ui.engine.popups.DebugPanel#logTextArea}
  * This class includes methods for standard logging, error logging, and clearing the log area.
  * @author Lehlogonolo Poole
  * @see com.j3d.storage.files.engine.EngineFiles#logFile
- * @see com.j3d.ui.engine.DebugPanel#logTextArea
+ * @see com.j3d.ui.engine.popups.DebugPanel#logTextArea
  * @see Static
  */
 public class Logger {
@@ -97,11 +103,26 @@ public class Logger {
     }
 
     //TODO: Change boolean param
-    public void error(String message, boolean b) {
-        String errorMessage = ERROR_PREFIX + message + "\n";
-        Static.getEngineFiles().logFile.writeLn(getTimestamp() + " " + ERROR_PREFIX + message);
+    public void error(J3DError err) {
+        String message = switch (err) {
+            case J3DMild i -> "!![MILD] ";
+            case J3DWarning w -> "!![WARN] ";
+            case J3DFatal f -> "!!![FATAL] ";
+            default -> ERROR_PREFIX;
+        } + "("+err.getClass().getSimpleName() +") " + err.getMessage() +
+                ( err.getCause() != null ?
+                        " - (threw " + err.getCause().getClass().getSimpleName() + ") " +
+                                err.getCause().getMessage() + " \n" +
+                                Arrays.stream((err.getCause().getStackTrace()))
+                                        .map(StackTraceElement::toString)
+                                        .peek(s -> s = "\t" + s + "\n")
+                                        .reduce("", String::concat)
+                        : ""
+                );
+        String errorMessage = message + "\n";
+        Static.getEngineFiles().logFile.writeLn("\n" + getTimestamp() + " " + message + "\n");
         System.err.print(errorMessage);
-        if (b && logArea != null) {
+        if (!(err instanceof J3DMild) && logArea != null) {
             logArea.append(errorMessage + getTimestamp() + "\n");
         }
     }
