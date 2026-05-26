@@ -1,16 +1,19 @@
 package com.j3d.storage.errs;
 
 
+import com.j3d.errors.J3DError;
+import com.j3d.errors.severity.J3DFatal;
 import com.j3d.storage.db.ConnectionReason;
 import com.j3d.storage.db.DatabaseManager;
 
 /**
  * An exception that occurs during the reading or writing to the database.
- * @see GenericIOException
+ * @see J3DError
+ * @see J3DFatal
  * @see DatabaseManager
  * @author Lehlogonolo Poole
  */
-public class DBException extends GenericIOException {
+public class DBException extends J3DError implements J3DFatal {
     public DBException(String message, ConnectionReason connectionReason) {
         super(message + " {" + connectionReason.toString() + "}");
     }
