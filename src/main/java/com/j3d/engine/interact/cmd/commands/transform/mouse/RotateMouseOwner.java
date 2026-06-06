@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  * @see TransformMouseOwner
  * @see RotateSelection
  */
-public class  RotateMouseOwner extends TransformMouseOwner {
+public class RotateMouseOwner extends TransformMouseOwner {
 
     public Handle handle;
     public Vector3 axis = new Vector3(true);

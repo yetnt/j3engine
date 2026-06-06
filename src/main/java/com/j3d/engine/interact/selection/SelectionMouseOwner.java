@@ -58,6 +58,7 @@ public class SelectionMouseOwner extends MouseOwner {
     @Override
     public void mouseReleased(MouseEvent e) {
         if (isNotOwner()) return;
+        super.mouseReleased(e);
         mousePos = null;
         if (selectionArea[0] != null && selectionArea[1] != null) {
             Static.getLog().println("Final Selection Area: " + selectionArea[0] + " to " + selectionArea[1]);
@@ -66,7 +67,7 @@ public class SelectionMouseOwner extends MouseOwner {
     }
 
     @Override
-    public void mouseDragged(MouseEvent e) {
+    public void mouseDraggedUsingClickDelay(MouseEvent e) {
         if (isNotOwner()) return;
         selectionArea[0] = mousePos;
         selectionArea[1] = new ScreenPoint(e.getX(), e.getY());

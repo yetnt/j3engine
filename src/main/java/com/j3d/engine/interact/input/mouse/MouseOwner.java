@@ -4,6 +4,7 @@ import com.j3d.engine.react.events.*;
 import com.j3d.ui.engine.EngineFrame;
 
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 /**
@@ -16,6 +17,8 @@ import java.util.ArrayList;
  * @author Lehlogonolo Poole
  */
 public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
+    public int clickDelayThreshold = 10;
+    public int clickDelay = 0;
     /**
      * All registered EventListeners
      */
@@ -31,6 +34,11 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
      */
     public MouseOwner(MOwner owner) {
         this.owner = owner;
+    }
+
+    public MouseOwner(MOwner owner, int clickDelayThreshold) {
+        this.owner = owner;
+        this.clickDelayThreshold = clickDelayThreshold;
     }
 
     /**
@@ -74,5 +82,27 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
     @Override
     public boolean isAttached(EventListener e) {
         return registered.contains(e);
+    }
+
+    public void mouseDraggedUsingClickDelay(MouseEvent e) {
+        // do whatever the hell.
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        clickDelay++;
+//        System.out.println(clickDelay);
+        if (clickDelay > clickDelayThreshold)
+            mouseDraggedUsingClickDelay(e);
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        super.mouseReleased(e);
+        if (clickDelay < clickDelayThreshold)
+            mousePressed(e);
+
+        clickDelay = 0;
     }
 }

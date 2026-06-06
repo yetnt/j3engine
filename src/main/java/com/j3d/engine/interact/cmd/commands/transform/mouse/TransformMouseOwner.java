@@ -111,6 +111,7 @@ public class TransformMouseOwner extends MouseOwner {
     @Override
     public void mouseReleased(MouseEvent e) {
         if (isNotOwner()) return;
+        super.mouseReleased(e);
         if (selectedHandleType == null) return;
         selectedHandleType = null;
     }

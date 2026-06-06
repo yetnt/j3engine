@@ -23,7 +23,7 @@ public class OrbitMouseOwner extends MouseOwner {
     private int startX, startY;
 
     public OrbitMouseOwner() {
-        super(MOwner.ORBIT);
+        super(MOwner.ORBIT, 0);
     }
 
     @Override
@@ -37,13 +37,14 @@ public class OrbitMouseOwner extends MouseOwner {
     @Override
     public void mouseReleased(MouseEvent e) {
         if (isNotOwner()) return;
+        super.mouseReleased(e);
         startX = 0;
         startY = 0;
         CursorManager.set(CursorNames.HAND_GRAB);
     }
 
     @Override
-    public void mouseDragged(MouseEvent e) {
+    public void mouseDraggedUsingClickDelay(MouseEvent e) {
         if (isNotOwner()) return;
         CursorManager.set(CursorNames.HAND_GRABBING);
 

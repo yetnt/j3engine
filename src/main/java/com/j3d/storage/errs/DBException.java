@@ -3,6 +3,8 @@ package com.j3d.storage.errs;
 
 import com.j3d.errors.J3DError;
 import com.j3d.errors.severity.J3DFatal;
+import com.j3d.errors.severity.J3DMild;
+import com.j3d.errors.severity.J3DWarning;
 import com.j3d.storage.db.ConnectionReason;
 import com.j3d.storage.db.DatabaseManager;
 
@@ -13,7 +15,7 @@ import com.j3d.storage.db.DatabaseManager;
  * @see DatabaseManager
  * @author Lehlogonolo Poole
  */
-public class DBException extends J3DError implements J3DFatal {
+public class DBException extends J3DError implements J3DWarning {
     public DBException(String message, ConnectionReason connectionReason) {
         super(message + " {" + connectionReason.toString() + "}");
     }

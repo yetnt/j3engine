@@ -430,29 +430,25 @@ public class Signup extends javax.swing.JFrame {
             String surname = surnameJField.getText();
             String email = emailJField.getText();
 
-            try {
-                this.setCursor(CursorManager.get(CursorNames.HOURGLASS));
-                Pair<Boolean, User> wasRegistered = UsersTable.newOrExisting(
-                        name,
-                        surname,
-                        email,
-                        new Password(hashed, salt)
-                );
-                this.setCursor(CursorManager.get(CursorNames.DEFAULT));
-                if (wasRegistered.first) {
-                    JOptionPane.showMessageDialog(this, "Registered!");
-                } else {
-                    JOptionPane.showMessageDialog(this, "A user with this email already exists", "Registration Failed", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
 
-                CoreSettings.user = wasRegistered.second;
-                this.dispose();
-                postSignup.run();
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(this, "A db error occurred", "err", JOptionPane.ERROR_MESSAGE);
-                throw new RuntimeException(e);
+            this.setCursor(CursorManager.get(CursorNames.HOURGLASS));
+            Pair<Boolean, User> wasRegistered = UsersTable.newOrExisting(
+                    name,
+                    surname,
+                    email,
+                    new Password(hashed, salt)
+            );
+            this.setCursor(CursorManager.get(CursorNames.DEFAULT));
+            if (wasRegistered.first) {
+                JOptionPane.showMessageDialog(this, "Registered!");
+            } else {
+                JOptionPane.showMessageDialog(this, "A user with this email already exists", "Registration Failed", JOptionPane.ERROR_MESSAGE);
+                return;
             }
+
+            CoreSettings.user = wasRegistered.second;
+            this.dispose();
+            postSignup.run();
 
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new RuntimeException(e);
