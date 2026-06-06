@@ -1,5 +1,6 @@
 package com.j3d.engine.interact.input.mouse;
 
+import com.j3d.engine.interact.selection.SelectionMouseOwner;
 import com.j3d.engine.react.events.*;
 import com.j3d.ui.engine.EngineFrame;
 
@@ -17,8 +18,15 @@ import java.util.ArrayList;
  * @author Lehlogonolo Poole
  */
 public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
-    public int clickDelayThreshold = 10;
-    public int clickDelay = 0;
+
+    /**
+     * The threshold for the click delay, used to differentiate between a click and a drag.
+     */
+    private int clickDelayThreshold = 10;
+    /**
+     * The current click delay, incremented on mouse drag and reset on mouse release.
+     */
+    private int clickDelay = 0;
     /**
      * All registered EventListeners
      */
@@ -36,6 +44,11 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
         this.owner = owner;
     }
 
+    /**
+     * Creates a new MouseOwner with the given owner and click delay threshold.
+     * @param owner The owner of the mouse input.
+     * @param clickDelayThreshold The threshold for the click delay.
+     */
     public MouseOwner(MOwner owner, int clickDelayThreshold) {
         this.owner = owner;
         this.clickDelayThreshold = clickDelayThreshold;
@@ -84,10 +97,28 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
         return registered.contains(e);
     }
 
+    /**
+     * This method is called when a mouse drag event occurs, but only after the {@link MouseOwner#clickDelayThreshold}
+     * has been exceeded. This is used to differentiate between a click and a drag.
+     * @implNote Only if this differentiation is required to be made like in the case of {@link SelectionMouseOwner}
+     * trying to avoid accidental selections, then you also need to override this. Otherwise simply overriding
+     * {@link MouseOwner#mouseDragged(MouseEvent)} is perfectly fine.
+     * @param e The mouse event.
+     */
     public void mouseDraggedUsingClickDelay(MouseEvent e) {
         // do whatever the hell.
     }
 
+    /**
+     * Handles the mouse dragged event
+     * @implNote This does some extra logic for determining the difference between an actual drag and an accidental
+     * drag (because human click never perfect) by making use of {@link MouseOwner#clickDelayThreshold} and
+     * {@link MouseOwner#clickDelay}. Implementors which requires dragging and needs differentiating should
+     * instead override {@link MouseOwner#mouseDraggedUsingClickDelay(MouseEvent)} and use the
+     * {@link MouseOwner#MouseOwner(MOwner, int)} to define the {@code clickDelayThreshold}. otherwise this method
+     * can be overridden directly.
+     * @param e the event to be processed
+     */
     @Override
     public void mouseDragged(MouseEvent e) {
         clickDelay++;
@@ -97,6 +128,14 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
 
     }
 
+    /**
+     * Handles the mouse pressed event.
+     * @implNote Implementors making use of {@link MouseOwner#mouseDraggedUsingClickDelay(MouseEvent)} and {@link MouseOwner#clickDelayThreshold}
+     * need to call {@code super.mouseReleased()} when overriding this such that it works. Also in the event that the threshold
+     * was not met, the same mouse event is instead passed into {@link MouseOwner#mousePressed(MouseEvent)} instead as if it were
+     * a click.
+     * @param e the event to be processed
+     */
     @Override
     public void mouseReleased(MouseEvent e) {
         super.mouseReleased(e);
