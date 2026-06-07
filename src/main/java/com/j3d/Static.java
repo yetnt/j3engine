@@ -7,6 +7,7 @@ import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
+import com.j3d.gen.help.HelpGenerator;
 import com.j3d.gen.settings.Settings;
 import com.j3d.storage.files.engine.EngineFiles;
 import com.j3d.ui.engine.popups.DebugPanel;
@@ -22,6 +23,9 @@ import java.net.URL;
  * Static is a class which holds static references to important instances in the engine, such as the SceneManager, Executor, Main Frame, Camera, etc.
  * <p>
  *     This is used to allow for easy access to these instances from anywhere in the code, without having to pass them around
+ * </p>
+ * <p>
+ *     No app should have static references like this. but this is MY app.
  * </p>
  */
 public class Static {
@@ -77,6 +81,8 @@ public class Static {
      * The Settings Object
      */
     public static Settings settings = new Settings();
+    public static HelpGenerator help = new HelpGenerator();
+    // TODO: document.
     public static CommandsManager commandManager = new CommandsManager();
     public static HoverJLabel hoverLabel;
     private static EngineFiles engineFiles;

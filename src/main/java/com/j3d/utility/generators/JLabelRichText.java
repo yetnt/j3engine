@@ -1,5 +1,7 @@
 package com.j3d.utility.generators;
 
+import com.j3d.gen.help.HelpProperties;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,13 +10,23 @@ import java.util.Arrays;
  * A utility class for creating rich text content suitable for display in Swing's JLabel.
  * It allows chaining methods to apply various HTML-like formatting to a given string.
  */
-public class JLabelRichText {
+public class JLabelRichText implements HelpProperties {
     private String content;
     private ArrayList<String> open = new ArrayList<>();
     private ArrayList<String> close = new ArrayList<>();
 
     public JLabelRichText(String cont) {
         content = cont;
+    }
+
+    public JLabelRichText add(String cont) {
+        content = content + cont;
+        return this;
+    }
+
+    public JLabelRichText addLn(String cont) {
+        content = content + LINE_BREAK + cont;
+        return this;
     }
 
     public JLabelRichText(String cont, boolean esc) {
@@ -113,6 +125,12 @@ public class JLabelRichText {
         return this;
     }
 
+    public JLabelRichText heading(Heading heading) {
+        open.add(heading.left);
+        close.add(heading.right);
+        return this;
+    }
+
     /**
      * Applies superscript formatting to the content.
      *
@@ -187,6 +205,7 @@ public class JLabelRichText {
      * A constant string representing an HTML horizontal rule tag.
      */
     public static String HORIZONTAL_LINE = "<hr>";
+    public static String LINE_BREAK = "<br>";
 
     public static String GREATER_THAN = "&gt;";
     public static String LESS_THAN = "&lt;";
@@ -198,5 +217,30 @@ public class JLabelRichText {
 
     public void add(JLabelRichText jLabelRichText) {
         this.content += jLabelRichText.toString();
+    }
+
+    public enum Heading {
+
+        H1("h1"),
+        H2("h2"),
+        H3("h3"),
+        H4("h4"),
+        H5("h5"),
+        H6("h6"),;
+
+        Heading(String i) {
+            this.left = "<" + i + ">";
+            this.right = "</"+ i + ">";
+        }
+
+        private String left, right;
+
+        public String getRight() {
+            return right;
+        }
+
+        public String getLeft() {
+            return left;
+        }
     }
 }

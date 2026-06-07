@@ -1,9 +1,13 @@
 package com.j3d.engine.draw.tris.methods;
 
+import com.j3d.Static;
 import com.j3d.engine.draw.tris.SortMethod;
 import com.j3d.engine.draw.tris.TriListener;
 import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
+import com.j3d.gen.help.HelpGenerator;
+import com.j3d.gen.help.properties.HelpText;
+import com.j3d.utility.generators.JLabelRichText;
 
 import java.util.ArrayList;
 
@@ -65,5 +69,17 @@ public class CamDistSort extends SortMethod {
                 double euclidDist2 = tri2.euclideanDist();
                 return Double.compare(euclidDist2, euclidDist1); // Sort in descending order (farthest first)
         });
+    }
+
+    static {
+        Static.help.addProperties(
+                HelpGenerator.Sections.TRIANGLE_SORT_METHOD,
+                new HelpText("CamDistSort").asSubheading(),
+                new HelpText("A sorting method which implements Painter's Algorithm.")
+                        .addLn("The way this method works is by sorting triangles back to front based ")
+                        .add("purely by their euclidean distance from it's centroid to the camera."),
+                new HelpText("While in hindsight this is definitely the simplest method, it also ")
+                        .add("looks best visually. Hence why it's the default.")
+        );
     }
 }

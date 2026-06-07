@@ -19,10 +19,13 @@ import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.ConstructorAction;
 import com.j3d.engine.react.actions.VoidAction;
+import com.j3d.gen.help.HelpGenerator;
+import com.j3d.gen.help.properties.HelpText;
 import com.j3d.storage.files.ProjectFile;
 import com.j3d.ui.J3DTheme;
 import com.j3d.ui.dialog.Spinner;
 import com.j3d.ui.engine.popups.tree.TreeNodeIdentity;
+import com.j3d.utility.generators.JLabelRichText;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
@@ -695,5 +698,15 @@ public class Thing implements Interactable {
 
     public Stream<GObject> objectsStream() {
         return objects.stream();
+    }
+
+    static {
+        Static.help.addProperties(
+                HelpGenerator.Sections.COMMON_TERMS,
+                new HelpText("\"Thing\" is a name for any unordered collection of primitives objects."),
+                new HelpText("This in other programs may be referred to as a simple collection of otherwise ")
+                        .add("more specifically, a mesh. However it does not function as such and is purely a collection ")
+                        .add("of individual triangles, lines and points.")
+        );
     }
 }
