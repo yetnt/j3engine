@@ -24,7 +24,7 @@ import com.j3d.engine.interact.input.mouse.MouseOwner;
 import com.j3d.engine.interact.input.mouse.NoMouseOwner;
 import com.j3d.engine.interact.selection.SelectionManager;
 //import com.j3d.jaiva.Testing;
-import com.j3d.settings.CoreSettings;
+import com.j3d.gen.settings.CoreSettings;
 import com.j3d.storage.files.FilesUtility;
 import com.j3d.storage.files.ProjectFile;
 import com.j3d.threads.LongTask;

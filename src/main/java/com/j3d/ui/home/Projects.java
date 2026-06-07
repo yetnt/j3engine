@@ -6,7 +6,7 @@ package com.j3d.ui.home;
 
 import com.j3d.Startup;
 import com.j3d.Static;
-import com.j3d.settings.CoreSettings;
+import com.j3d.gen.settings.CoreSettings;
 import com.j3d.storage.files.util.ProjectImagePair;
 import com.j3d.ui.J3DTheme;
 import com.j3d.utility.ImageUtils;

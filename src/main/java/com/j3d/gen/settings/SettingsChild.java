@@ -1,4 +1,4 @@
-package com.j3d.settings;
+package com.j3d.gen.settings;
 
 import java.awt.*;
 

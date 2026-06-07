@@ -6,8 +6,8 @@ package com.j3d.ui.settings.popouts;
 
 import com.j3d.Static;
 import com.j3d.engine.interact.cmd.CommandsManager;
-import com.j3d.settings.CoreSettings;
-import com.j3d.settings.Settings;
+import com.j3d.gen.settings.CoreSettings;
+import com.j3d.gen.settings.Settings;
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.themes.Theme;
 import com.j3d.ui.J3DTheme;

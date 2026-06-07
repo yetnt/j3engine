@@ -1,4 +1,4 @@
-package com.j3d.settings;
+package com.j3d.gen.settings;
 
 import com.j3d.Static;
 import com.j3d.engine.react.events.EventEmitterInterface;
@@ -6,7 +6,6 @@ import com.j3d.engine.react.events.EventListener;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.react.events.spec.SettingUpdatedPayload;
-import com.j3d.settings.types.EnumSetting;
 
 import java.awt.*;
 import java.util.ArrayList;

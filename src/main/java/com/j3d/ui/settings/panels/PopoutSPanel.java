@@ -6,7 +6,7 @@ package com.j3d.ui.settings.panels;
 
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
-import com.j3d.settings.types.ComplexSetting;
+import com.j3d.gen.settings.types.ComplexSetting;
 import com.j3d.ui.J3DTheme;
 
 import java.awt.event.ActionEvent;

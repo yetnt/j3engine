@@ -4,8 +4,8 @@
  */
 package com.j3d.ui.settings;
 
-import com.j3d.settings.SettingsChild;
-import com.j3d.settings.SettingsParent;
+import com.j3d.gen.settings.SettingsChild;
+import com.j3d.gen.settings.SettingsParent;
 import com.j3d.ui.J3DTheme;
 
 import java.util.ArrayList;

@@ -4,7 +4,7 @@ import com.j3d.Static;
 import com.j3d.engine.interact.selection.SelectionMouseOwner;
 import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.interact.selection.SelectionUtils;
-import com.j3d.settings.Settings;
+import com.j3d.gen.settings.Settings;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

@@ -2,7 +2,7 @@ package com.j3d.engine.react.events.spec;
 
 import com.j3d.Static;
 import com.j3d.engine.react.events.EventPayload;
-import com.j3d.settings.Setting;
+import com.j3d.gen.settings.Setting;
 
 public class SettingUpdatedPayload<T> extends EventPayload<Setting<T>> {
     private final T newValue;

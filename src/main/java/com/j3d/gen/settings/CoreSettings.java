@@ -1,4 +1,4 @@
-package com.j3d.settings;
+package com.j3d.gen.settings;
 
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.users.User;

@@ -5,7 +5,7 @@
 package com.j3d.ui.home;
 
 import com.j3d.Static;
-import com.j3d.settings.CoreSettings;
+import com.j3d.gen.settings.CoreSettings;
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.api.SQLOperator;
 import com.j3d.storage.db.users.CUsers;

@@ -1,7 +1,7 @@
 package com.j3d.engine.draw.tris;
 
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
-import com.j3d.settings.classes.SceneProperties;
+import com.j3d.gen.settings.classes.SceneProperties;
 
 /**
  * Enum used by the engine to decipher which triangle sorting method

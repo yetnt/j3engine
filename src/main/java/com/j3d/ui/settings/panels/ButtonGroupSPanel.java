@@ -7,7 +7,7 @@ package com.j3d.ui.settings.panels;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.react.events.spec.SettingUpdatedPayload;
-import com.j3d.settings.types.EnumSetting;
+import com.j3d.gen.settings.types.EnumSetting;
 import com.j3d.ui.J3DTheme;
 
 import javax.swing.*;

@@ -1,10 +1,10 @@
-package com.j3d.settings;
+package com.j3d.gen.settings;
 
-import com.j3d.settings.classes.CameraProperties;
-import com.j3d.settings.classes.EditorProperties;
-import com.j3d.settings.classes.SceneProperties;
-import com.j3d.settings.types.ComplexSetting;
-import com.j3d.settings.types.StringSetting;
+import com.j3d.gen.settings.classes.CameraProperties;
+import com.j3d.gen.settings.classes.EditorProperties;
+import com.j3d.gen.settings.classes.SceneProperties;
+import com.j3d.gen.settings.types.ComplexSetting;
+import com.j3d.gen.settings.types.StringSetting;
 import com.j3d.ui.J3DTheme;
 import com.j3d.ui.settings.PreferencesFrame;
 import com.j3d.ui.settings.popouts.ThemeChanger;

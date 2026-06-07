@@ -3,7 +3,7 @@ package com.j3d.engine.interact.cmd.commands.orbit;
 import com.j3d.Static;
 import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.engine.interact.input.mouse.MouseOwner;
-import com.j3d.settings.Settings;
+import com.j3d.gen.settings.Settings;
 import com.j3d.ui.CursorManager;
 import com.j3d.ui.CursorNames;
 

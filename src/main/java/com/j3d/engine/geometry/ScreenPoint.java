@@ -4,7 +4,7 @@ import com.j3d.J3DSettings;
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
-import com.j3d.settings.Settings;
+import com.j3d.gen.settings.Settings;
 
 import java.awt.*;
 

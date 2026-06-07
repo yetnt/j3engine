@@ -3,7 +3,7 @@ package com.j3d.engine.draw.tris;
 import com.j3d.Static;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
-import com.j3d.settings.Settings;
+import com.j3d.gen.settings.Settings;
 
 import java.util.ArrayList;
 

@@ -5,7 +5,7 @@
 package com.j3d.ui.home;
 
 import com.j3d.Static;
-import com.j3d.settings.CoreSettings;
+import com.j3d.gen.settings.CoreSettings;
 import com.j3d.storage.db.users.Password;
 import com.j3d.storage.db.users.User;
 import com.j3d.storage.db.users.UsersTable;
@@ -18,7 +18,6 @@ import com.j3d.utility.PasswordHasher;
 import javax.swing.*;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 

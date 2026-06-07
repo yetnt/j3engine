@@ -10,7 +10,7 @@ import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.layer.LayerList;
 import com.j3d.errors.ErrorHandler;
-import com.j3d.settings.CoreSettings;
+import com.j3d.gen.settings.CoreSettings;
 import com.j3d.storage.errs.ProjectFileException;
 import com.j3d.storage.files.protocol.FileProtocol;
 import com.j3d.storage.files.protocol.GenericFileProtocol;

@@ -1,15 +1,15 @@
-package com.j3d.settings.classes;
+package com.j3d.gen.settings.classes;
 
 import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.draw.tris.TriangleSortMethod;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
-import com.j3d.settings.Setting;
-import com.j3d.settings.SettingsChild;
-import com.j3d.settings.SettingsParent;
-import com.j3d.settings.types.BooleanSetting;
-import com.j3d.settings.types.DoubleSetting;
-import com.j3d.settings.types.EnumSetting;
+import com.j3d.gen.settings.Setting;
+import com.j3d.gen.settings.SettingsChild;
+import com.j3d.gen.settings.SettingsParent;
+import com.j3d.gen.settings.types.BooleanSetting;
+import com.j3d.gen.settings.types.DoubleSetting;
+import com.j3d.gen.settings.types.EnumSetting;
 import com.j3d.ui.settings.SettingsParentPanel;
 
 import java.util.ArrayList;

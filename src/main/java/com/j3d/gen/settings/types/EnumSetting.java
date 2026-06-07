@@ -1,6 +1,6 @@
-package com.j3d.settings.types;
+package com.j3d.gen.settings.types;
 
-import com.j3d.settings.Setting;
+import com.j3d.gen.settings.Setting;
 import com.j3d.ui.settings.panels.ButtonGroupSPanel;
 
 import java.util.function.Function;

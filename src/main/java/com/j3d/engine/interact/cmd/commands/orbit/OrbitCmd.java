@@ -8,7 +8,7 @@ import com.j3d.ui.util.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
-import com.j3d.settings.Settings;
+import com.j3d.gen.settings.Settings;
 import com.j3d.ui.CursorManager;
 import com.j3d.ui.CursorNames;
 import com.j3d.ui.J3DTheme;
