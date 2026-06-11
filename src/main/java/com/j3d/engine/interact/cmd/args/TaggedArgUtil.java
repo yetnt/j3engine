@@ -4,9 +4,9 @@ import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.ui.util.SafeJLabel;
-import com.jaiva.utils.Find;
-import com.jaiva.utils.Pair;
-import com.jaiva.utils.Tuple2;
+import com.j3d.utility.Parsing;
+import com.j3d.utility.generic.Pair;
+import com.j3d.utility.generic.SamePair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -135,10 +135,10 @@ public class TaggedArgUtil {
 
         Object valueObject = null;
 
-        ArrayList<Pair<Integer>> valueQuotePairs = Find.quotationPairs(value);
-        Tuple2<ArrayList<Pair<Integer>>, ArrayList<Tuple2<Integer, Character>>> braceQuotePairs = Find.bracePairs(value);
+        ArrayList<SamePair<Integer>> valueQuotePairs = Parsing.quotationPairs(value);
+        Parsing.BracePairs braceQuotePairs = Parsing.bracePairs(value);
 
-        if (valueQuotePairs.isEmpty() && braceQuotePairs.first.isEmpty()) {
+        if (valueQuotePairs.isEmpty() && braceQuotePairs.closedPairs().isEmpty()) {
             try {
                 valueObject = Integer.parseInt(value);
             } catch (NumberFormatException e) {
@@ -163,7 +163,7 @@ public class TaggedArgUtil {
 
             valueObject = value.substring(1, value.length() - 1);
 
-        } else if (braceQuotePairs.first.size() == 1) {
+        } else if (braceQuotePairs.closedPairs().size() == 1) {
 
             if (!value.contains(",")) {
                 if (errorToLabel) label.setText("Invalid tagged argument value: " + value + " (A Vector3 definition (x, y, z) is required when using braces)");

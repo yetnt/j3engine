@@ -308,12 +308,12 @@ public class CommandParser {
      * @return True if the character is within braces, false otherwise.
      */
     private boolean inBrace(char c) {
-        Pair<ArrayList<SamePair<Integer>>, ArrayList<Pair<Integer, Character>>> bp =
+        Parsing.BracePairs bp =
                 Parsing.bracePairs(accumulator);
         ArrayList<SamePair<Integer>> sp = Parsing.quotationPairs(accumulator);
         if (accumulator.contains(":(") && sp.isEmpty())
             return true; // Vector3 object within TaggedArgUtil
-        return (bp.first.isEmpty() && accumulator.charAt(0) == '(') ||
+        return (bp.closedPairs().isEmpty() && accumulator.charAt(0) == '(') ||
                 (sp.isEmpty() && accumulator.charAt(0) == '"');
 //        return (c != ')' && accumalator.charAt(0) == '(') || (c != '"' && accumalator.charAt(0) == '"');
     }

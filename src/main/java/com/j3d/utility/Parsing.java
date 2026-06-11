@@ -51,10 +51,10 @@ public class Parsing {
      * It also returns any unclosed braces.
      *
      * @param line The string to search for brace pairs.
-     * @return A {@link Pair} containing an {@link ArrayList} of {@link SamePair} for closed brace pairs (start and end index),
+     * @return A {@link BracePairs} instance containing a {@link Pair} with an {@link ArrayList} of {@link SamePair} for closed brace pairs (start and end index),
      *         and an {@link ArrayList} of {@link Pair} for unclosed braces (index and character).
      */
-    public static Pair<ArrayList<SamePair<Integer>>, ArrayList<Pair<Integer, Character>>> bracePairs(String line) {
+    public static BracePairs bracePairs(String line) {
         ArrayList<SamePair<Integer>> finalArr = new ArrayList<>();
         ArrayList<Pair<Integer, Character>> stack = new ArrayList<>();
 
@@ -73,6 +73,17 @@ public class Parsing {
             }
         }
 
-        return new Pair<>(finalArr, stack);
+        return new BracePairs(finalArr, stack);
     }
+
+    /**
+     * A record to hold the results of the {@link #bracePairs(String)} method.
+     *
+     * @param closedPairs An {@link ArrayList} of {@link SamePair} representing the start and end indices of closed brace pairs.
+     * @param unclosedBraces An {@link ArrayList} of {@link Pair} where each pair contains the index and character of an unclosed brace.
+     */
+    public record BracePairs(
+            ArrayList<SamePair<Integer>> closedPairs,
+            ArrayList<Pair<Integer, Character>> unclosedBraces
+    ) {}
 }
