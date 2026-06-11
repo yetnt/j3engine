@@ -8,12 +8,10 @@ import java.util.HashMap;
  * This class provides convenience methods to add values to a key's list and to
  * retrieve the list of values for a key. It intentionally extends HashMap<K, ArrayList<T>>
  * so all standard Map operations are available.
- * <p>
- * Note: This implementation is not thread-safe. Concurrent access should be
- * synchronized externally or a concurrent collection should be used.
  *
  * @param <K> the type of keys maintained by this multimap
  * @param <T> the type stored in the list
+ * @author Lehlogonolo Poole
  */
 public class HashMultiMap<K, T> extends HashMap<K, ArrayList<T>> {
 

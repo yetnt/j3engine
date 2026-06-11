@@ -1,6 +1,7 @@
 package com.j3d.utility;
 
 import com.j3d.engine.interact.cmd.CommandParser;
+import com.j3d.engine.interact.cmd.args.TaggedArgUtil;
 import com.j3d.utility.generic.Pair;
 import com.j3d.utility.generic.SamePair;
 
@@ -15,6 +16,9 @@ import java.util.ArrayList;
  *     for it's utilities and to remove parsing quirks that the Jaiva methods would've introduced.
  * </p>
  * @see CommandParser
+ * @see TaggedArgUtil
+ *
+ * @author Lehlogonolo Poole
  */
 public class Parsing {
 

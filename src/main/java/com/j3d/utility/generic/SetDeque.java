@@ -14,6 +14,7 @@ import java.util.Set;
  * and the guarantee that no duplicate elements exist in the collection.
  *
  * @param <T> the type of elements held in this collection
+ * @author Lehlogonolo Poole
  */
 public class SetDeque<T> extends ArrayDeque<T> {
 
