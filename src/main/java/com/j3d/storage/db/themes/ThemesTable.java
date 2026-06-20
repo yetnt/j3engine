@@ -6,6 +6,7 @@ import com.j3d.storage.db.api.Table;
 import com.j3d.storage.db.api.TableColumns;
 import com.j3d.storage.db.users.CUsers;
 import com.j3d.storage.db.users.User;
+import com.j3d.ui.J3DTheme;
 
 import java.awt.*;
 import java.sql.Connection;
@@ -13,12 +14,33 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ThemesTable implements Table<Theme, CThemes> {
 
     public final ArrayList<Theme> themes =
             this.findWhere(CThemes.IDENTIFIER, SQLOperator.GREATER_THAN, 0);
+
+    public Theme currentSelectedTheme() {
+        return themes.stream().filter(
+                theme ->
+                        theme.themeId == J3DTheme.getCurrentLoadedThemeId()
+        ).findFirst().orElse(null);
+    }
+
+    public HashMap<Integer, Theme> map() {
+        return themes.stream()
+                .collect(
+                        Collectors.toMap(
+                                theme -> theme.themeId,
+                                theme -> theme,
+                                (a, b) -> b,
+                                HashMap::new
+                        )
+                );
+    }
 
     @Override
     public String getName() {

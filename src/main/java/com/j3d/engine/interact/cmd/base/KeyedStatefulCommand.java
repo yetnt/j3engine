@@ -9,7 +9,7 @@ import com.j3d.engine.interact.cmd.commands.transform.AbstractTransform;
 import com.j3d.engine.interact.cmd.commands.transform.TranslateSelection;
 import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.input.keyboard.OtherKeys;
-import com.j3d.ui.util.SafeJLabel;
+import com.j3d.ui.SafeJLabel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

@@ -5,9 +5,8 @@ import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
-import com.j3d.engine.interact.cmd.args.TypedArg;
 import com.j3d.engine.layer.Layer;
-import com.j3d.ui.util.SafeJLabel;
+import com.j3d.ui.SafeJLabel;
 import com.j3d.utility.ClipboardUtil;
 
 import java.util.ArrayList;

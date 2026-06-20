@@ -3,7 +3,7 @@ package com.j3d.engine.interact.cmd.commands.engine;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
-import com.j3d.ui.util.SafeJLabel;
+import com.j3d.ui.SafeJLabel;
 
 import java.util.ArrayList;
 

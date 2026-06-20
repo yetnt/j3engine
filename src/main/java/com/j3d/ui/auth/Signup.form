@@ -82,7 +82,7 @@
             <Property name="text" type="java.lang.String" value="J3Engine (J3D)"/>
           </Properties>
         </Component>
-        <Component class="com.j3d.ui.home.ShowcasePanel" name="newJPanel1">
+        <Component class="com.j3d.ui.auth.ShowcasePanel" name="newJPanel1">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>

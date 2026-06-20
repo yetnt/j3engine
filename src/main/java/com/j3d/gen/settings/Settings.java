@@ -5,6 +5,8 @@ import com.j3d.gen.settings.classes.EditorProperties;
 import com.j3d.gen.settings.classes.SceneProperties;
 import com.j3d.gen.settings.types.ComplexSetting;
 import com.j3d.gen.settings.types.StringSetting;
+import com.j3d.storage.db.DatabaseManager;
+import com.j3d.storage.db.themes.ThemesTable;
 import com.j3d.ui.J3DTheme;
 import com.j3d.ui.settings.PreferencesFrame;
 import com.j3d.ui.settings.popouts.ThemeChanger;
@@ -20,16 +22,22 @@ public class Settings implements SettingsParent {
     public static SettingsParent debugProperties;
     public static SettingsParent viewProperties;
     public static ThemeChanger themeChanger;
-    public static ComplexSetting<?> changeTheme = new ComplexSetting<>(
+    public static ComplexSetting<String> changeTheme = new ComplexSetting<>(
             "Change Theme",
-            J3DTheme.BACKGROUND,
+            DatabaseManager.tblThemes.currentSelectedTheme().themeName.getValue(),
             "Change your theme (only applies on app restart)",
-            e -> {
+            (e, label) -> {
                 if (themeChanger == null) {
                     themeChanger = new ThemeChanger();
                     themeChanger.setVisible(true);
                 }
-            }
+                label.setText(
+                        DatabaseManager.tblThemes.map()
+                                .get(themeChanger.getSelectedId())
+                                .themeName.getValue()
+                );
+            },
+            () -> DatabaseManager.tblThemes.currentSelectedTheme().themeName.getValue()
     );
     public static StringSetting projectFile = new StringSetting("Project File", "", "The path to the project file.");
 

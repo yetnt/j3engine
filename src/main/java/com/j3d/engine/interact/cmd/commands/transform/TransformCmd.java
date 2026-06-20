@@ -5,13 +5,12 @@ import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.base.SemiStatefulCommand;
 import com.j3d.engine.interact.cmd.base.conditions.SelectionPreCondition;
-import com.j3d.ui.util.SafeJLabel;
+import com.j3d.ui.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.selection.SelectionManager;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A very complicated command which is a dispatcher for its specific transform subcommands.

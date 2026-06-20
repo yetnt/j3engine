@@ -47,7 +47,7 @@ import static com.j3d.engine.interact.input.keyboard.KeyBindings.commandPaletteF
 
 import com.j3d.engine.draw.ViewType;
 import com.j3d.ui.dialog.AreYouSure;
-import com.j3d.ui.util.HoverJLabel;
+import com.j3d.ui.HoverJLabel;
 
 /**
  *

@@ -3,9 +3,8 @@ package com.j3d.engine.interact.cmd.args;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.base.Command;
-import com.j3d.ui.util.SafeJLabel;
+import com.j3d.ui.SafeJLabel;
 import com.j3d.utility.Parsing;
-import com.j3d.utility.generic.Pair;
 import com.j3d.utility.generic.SamePair;
 
 import java.util.ArrayList;

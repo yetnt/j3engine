@@ -1,4 +1,4 @@
-package com.j3d.ui.util;
+package com.j3d.ui;
 
 import javax.swing.*;
 

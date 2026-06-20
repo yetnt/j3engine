@@ -43,6 +43,10 @@ public class ThemeChanger extends javax.swing.JFrame {
         Static.getLog().uiPrintLn("ThemeChanger completed building");
     }
 
+    public int getSelectedId() {
+        return selectedId;
+    }
+
     private JRadioButton radio(String title, int id) {
         JRadioButton rd = new JRadioButton();
 

@@ -4,9 +4,8 @@ import com.j3d.Static;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.args.TypedArg;
-import com.j3d.engine.interact.cmd.commands.debug.DebugCmd;
 import com.j3d.ui.dialog.AreYouSure;
-import com.j3d.ui.util.SafeJLabel;
+import com.j3d.ui.SafeJLabel;
 
 import java.util.ArrayList;
 

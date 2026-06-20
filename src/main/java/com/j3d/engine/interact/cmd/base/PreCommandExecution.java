@@ -1,10 +1,9 @@
 package com.j3d.engine.interact.cmd.base;
 
 import com.j3d.engine.interact.cmd.base.conditions.SelectionPreCondition;
-import com.j3d.engine.react.events.EventEmitter;
 import com.j3d.engine.react.events.EventEmitterInterface;
 import com.j3d.engine.react.events.EventReactor;
-import com.j3d.ui.util.SafeJLabel;
+import com.j3d.ui.SafeJLabel;
 
 import java.util.function.Supplier;
 

@@ -4,7 +4,7 @@ import com.j3d.Static;
 import com.j3d.engine.interact.cmd.args.ArgSet;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
-import com.j3d.ui.util.SafeJLabel;
+import com.j3d.ui.SafeJLabel;
 import com.j3d.utility.ClipboardUtil;
 
 import java.util.ArrayList;

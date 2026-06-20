@@ -10,7 +10,8 @@ import com.j3d.gen.settings.types.ComplexSetting;
 import com.j3d.ui.J3DTheme;
 
 import java.awt.event.ActionEvent;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
+import javax.swing.JLabel;
 
 /**
  *
@@ -18,14 +19,15 @@ import java.util.function.Consumer;
  */
 public class PopoutSPanel extends javax.swing.JPanel implements SettingPanel {
 
-    Consumer<ActionEvent> onOpen;
+    BiConsumer<ActionEvent, JLabel> onOpen;
 
     /**
      * Creates new form PopoutSPanel
      */
-    public PopoutSPanel(ComplexSetting<?> setting, Consumer<ActionEvent> onOpen) {
+    public PopoutSPanel(String initalValue, ComplexSetting<?> setting, BiConsumer<ActionEvent, JLabel> onOpen) {
         initComponents();
         setting.attach(this);
+        valueLabel.setText(initalValue);
         settingLabel4.setText(setting.getName());
         this.setToolTipText(setting.getDescription());
         this.onOpen = onOpen;
@@ -42,6 +44,7 @@ public class PopoutSPanel extends javax.swing.JPanel implements SettingPanel {
 
         settingLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        valueLabel = new javax.swing.JLabel();
 
         setBackground(J3DTheme.UI_SURFACE.color());
 
@@ -50,12 +53,16 @@ public class PopoutSPanel extends javax.swing.JPanel implements SettingPanel {
 
         jButton1.setBackground(J3DTheme.BACKGROUND.color());
         jButton1.setForeground(J3DTheme.TEXT_PRIMARY.color());
-        jButton1.setText("Open UI");
+        jButton1.setText("Set Value");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
+
+        valueLabel.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        valueLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        valueLabel.setText(" ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -65,7 +72,9 @@ public class PopoutSPanel extends javax.swing.JPanel implements SettingPanel {
                 .addContainerGap()
                 .addComponent(settingLabel4)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(valueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -74,19 +83,21 @@ public class PopoutSPanel extends javax.swing.JPanel implements SettingPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(settingLabel4)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(valueLabel))
                 .addGap(0, 10, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        onOpen.accept(evt);
+        onOpen.accept(evt, valueLabel);
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel settingLabel4;
+    private javax.swing.JLabel valueLabel;
     // End of variables declaration//GEN-END:variables
 
     @Override

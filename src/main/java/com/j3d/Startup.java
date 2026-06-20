@@ -7,7 +7,7 @@ package com.j3d;
 import com.j3d.threads.FakeLongTask;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.ui.engine.J3Splash;
-import com.j3d.ui.home.Login;
+import com.j3d.ui.auth.Login;
 import com.j3d.ui.home.Projects;
 
 import javax.swing.*;

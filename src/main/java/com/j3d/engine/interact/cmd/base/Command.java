@@ -3,7 +3,7 @@ package com.j3d.engine.interact.cmd.base;
 import com.j3d.Static;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.args.*;
-import com.j3d.ui.util.SafeJLabel;
+import com.j3d.ui.SafeJLabel;
 
 import java.util.*;
 import java.util.stream.Stream;

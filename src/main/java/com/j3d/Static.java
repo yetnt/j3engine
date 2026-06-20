@@ -13,7 +13,7 @@ import com.j3d.storage.files.engine.EngineFiles;
 import com.j3d.ui.engine.popups.DebugPanel;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.ui.engine.popups.tree.LayerTree;
-import com.j3d.ui.util.HoverJLabel;
+import com.j3d.ui.HoverJLabel;
 
 import javax.swing.*;
 import java.awt.*;

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.j3d.ui.home;
+package com.j3d.ui.auth;
 
 import com.j3d.Static;
 import com.j3d.gen.settings.CoreSettings;
@@ -120,7 +120,7 @@ public class Signup extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        newJPanel1 = new com.j3d.ui.home.ShowcasePanel();
+        newJPanel1 = new com.j3d.ui.auth.ShowcasePanel();
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel2 = new javax.swing.JPanel();
@@ -513,7 +513,7 @@ public class Signup extends javax.swing.JFrame {
     private javax.swing.JLabel nameErrorJLabel;
     private javax.swing.JTextField nameJField;
     private javax.swing.JLabel nameJLabel;
-    private com.j3d.ui.home.ShowcasePanel newJPanel1;
+    private com.j3d.ui.auth.ShowcasePanel newJPanel1;
     private javax.swing.JLabel passwordErrorJLabel;
     private javax.swing.JPasswordField passwordJField;
     private javax.swing.JLabel passwordJLabel;
