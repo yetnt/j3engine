@@ -251,10 +251,13 @@ public enum DefaultKeys {
                     KeyBindings.clearInferredSelectionType
             )
     ),
+    /**
+     * Keystroke to hide the command pallete.
+     */
     HIDECMDP(
             new J3Key(
                     "hideCommandPalleteKey",
-                    KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0),
+                    KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0),
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {

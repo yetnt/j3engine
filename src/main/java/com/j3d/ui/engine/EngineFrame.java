@@ -9,31 +9,29 @@ import com.j3d.Executor;
 import com.j3d.J3DSettings;
 import com.j3d.engine.geometry.Dim;
 import com.j3d.engine.interact.Interactable;
-import com.j3d.engine.interact.cmd.commands.orbit.OrbitCmd;
-import com.j3d.engine.interact.cmd.commands.transform.RotateSelection;
-import com.j3d.engine.interact.cmd.commands.transform.ScaleSelection;
-import com.j3d.engine.interact.cmd.commands.transform.TranslateSelection;
+import com.j3d.engine.interact.cmd.commands.engine.ExitCmd;
+import com.j3d.engine.interact.cmd.commands.orbit.*;
+import com.j3d.engine.interact.cmd.commands.transform.*;
+import com.j3d.engine.interact.cmd.commands.transform.mouse.*;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo3d.rot.Rotation;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandParser;
-import com.j3d.engine.interact.input.mouse.MOwner;
-import com.j3d.engine.interact.input.mouse.MouseOwner;
-import com.j3d.engine.interact.input.mouse.NoMouseOwner;
-import com.j3d.engine.interact.selection.SelectionManager;
-//import com.j3d.jaiva.Testing;
+import com.j3d.engine.interact.input.mouse.*;
+import com.j3d.engine.interact.selection.*;
 import com.j3d.gen.settings.CoreSettings;
 import com.j3d.gen.settings.Settings;
 import com.j3d.storage.files.FilesUtility;
 import com.j3d.storage.files.ProjectFile;
 import com.j3d.threads.LongTask;
-import com.j3d.ui.CursorManager;
-import com.j3d.ui.CursorNames;
+import com.j3d.ui.*;
+import com.j3d.ui.engine.popups.DebugPanel;
+import com.j3d.ui.engine.popups.tree.LayerTree;
+import com.j3d.ui.engine.tb.ToolboxButtons;
 import com.j3d.ui.settings.PreferencesFrame;
 import com.j3d.ui.engine.tb.Toolbox;
-//import com.jaiva.JBundler;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -51,25 +49,131 @@ import com.j3d.ui.dialog.AreYouSure;
 import com.j3d.ui.HoverJLabel;
 
 /**
- *
- * @author ACER
+ * Possibly. The most chaotic, most important UI. This is the main UI of the entire app where the user
+ * will spend ALL of their time and where just everything has to connect.
+ * <p>
+ *     As a result, this class is also the orchestrator of all the important references storted
+ *     within {@link Static}.
+ * </p>
+ * <p>
+ *     Like all other UI, it's generated with NetBeans, hence the {@link #initComponents()}.
+ * </p>
+ * @see Toolbox
+ * @see ToolboxButtons
+ * @see DebugPanel
+ * @see LayerTree
+ * @see CommandPalette
+ * @see FloatingPanel
+ * @see HoverJLabelPanel
+ * @see Static
+ * @see SceneManager
+ * @author Lehlogonolo Poole
  */
 public class EngineFrame extends javax.swing.JFrame {
+    /**
+     * Boolean flag to run the {@link Executor}. Once the executor has run this is immediately set
+     * to false.
+     */
     public static boolean run = true;
+    /**
+     * The default {@link MouseOwner}. being selection
+     * @see MouseOwner
+     * @see MOwner
+     */
     private static MOwner mouseOwner = MOwner.SELECTION;
+    /**
+     * The position of the mouse that is suspected by this frame.
+     * Do not trust this value. you might need to do offset magic with
+     * {@link J3DSettings#jMenuBarOffsetY}
+     */
     public static ScreenPoint mousePos = null;
+    /**
+     * The selection area of the actual selection
+     * @see SelectionQuery
+     * @see SelectionUI
+     * @see SelectionManager
+     */
     public static ScreenPoint[] selectionArea = new ScreenPoint[2];
+    /**
+     * The command palette instance.
+     * @see CommandParser
+     */
     public static final CommandPalette COMMAND_PALETTE = new CommandPalette();
 
+    /**
+     * Sets the mouse owner.
+     * @param owner The mouse owner's enum identifier
+     * @see MouseOwner
+     * @see MOwner
+     */
     public static void setMouseOwner(MOwner owner) {
         mouseOwner = owner == null ? MOwner.SELECTION : owner;
     }
+
+    /**
+     * Retries the mouse owner.
+     * @return The mouse owner's enum identifier.
+     * @see MouseOwner
+     * @see MOwner
+     */
     public static MOwner getMouseOwner() {
         return mouseOwner;
     }
 
-    public static ArrayList<Runnable> floats = new ArrayList<>();
+    /**
+     * The arraylist of runnables to initialise floaters when {@link EngineFrame} is ready.
+     */
+    private static final ArrayList<Runnable> floats = new ArrayList<>();
 
+    /**
+     * Default constructor.
+     * Initialises the entire engine in a clean state.
+     */
+    public EngineFrame() {
+        this(false);
+    }
+
+    /**
+     * Constructor to initialise the engine frame and immediately load up a project file.
+     * @param file The File instance to load up.
+     * @see ProjectFile
+     * @see LongTask
+     */
+    public EngineFrame(File file) {
+        // Call the other constructor, cuz it kinda does important stuff.
+        this(false);
+        this.setVisible(true);
+
+        // read the file.
+        readProjectFile(file);
+    }
+
+    /**
+     * Constructor with a boolean flag to initialise the executor.
+     * @param runExecutor Whether to run the executor or not. If false, then the engine is initialised
+     *                    in a clean state.
+     */
+    public EngineFrame(boolean runExecutor) {
+        try {
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            SwingUtilities.updateComponentTreeUI(this); // 'this' refers to the frame
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        initMouseOwners();
+        initComponents();
+        complete(runExecutor);
+        setCloseOperations();
+    }
+
+    /**
+     * Adds a floating panel to the engine. Or otherwise if the engine hasn't been built
+     * will add it later via a {@link Runnable}
+     * @param p The floating panel to add
+     * @param lastLocation The last location the mouse was at
+     * @see FloatingPanel
+     */
     public static void addFloaterAt(FloatingPanel p, Point lastLocation) {
         Runnable r = () -> {
             if (p.isHidden()) p.hideThis();
@@ -82,74 +186,110 @@ public class EngineFrame extends javax.swing.JFrame {
         else r.run();
     }
 
+    /**
+     * Brings a floating panel forward in the layer pane.
+     * @param p The floating panel
+     */
     public static void bringForward(FloatingPanel p) {
         Static.mainFrame.getLayeredPane().moveToFront(p);
         Static.mainFrame.revalidate();
         Static.mainFrame.repaint();
     }
 
+    /**
+     * Removes a floating panel from the EngineFrame
+     * @param p The floating panel
+     */
     public static void removeFloater(FloatingPanel p) {
         Static.mainFrame.getLayeredPane().remove(p);
         Static.mainFrame.revalidate();
         Static.mainFrame.repaint();
     }
 
+    /**
+     * Completes by manually initialising almost everything. I have no more words.
+     * @implNote Usually i hate documenting code extensively. Code should be self-documenting.
+     * However, this method is TOO LONG. I have to.
+     * @param runExecutor Boolean to run the executor. if false, it's basically running the engine in a
+     *                    new fresh state.
+     */
     public void complete(boolean runExecutor) {
+        // create the layered pane where all the panels will be layered on top of each other.
+        JLayeredPane layeredPane = this.getLayeredPane();
+        // initialise the menu bar offset
+        final int menuBarOffsetY = (this.getJMenuBar().getSize().height + jMenuBarOffsetY);
+        // initialise extra properties of this frame
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(J3DSettings.screenSize.width, J3DSettings.screenSize.height);
+        this.setResizable(false);
+
+        // initialise the Static reference to this frame and set it to be maximised both vertically and horizontally
         Static.mainFrame = this;
-        final int menuBarOffsetY = (Static.mainFrame.getJMenuBar().getSize().height + jMenuBarOffsetY);
         Static.mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        // initialise the scene manager with the screen size.
         Static.sceneManager = new SceneManager(J3DSettings.screenSize);
+        // If we can run the executor, initialise it.
         if (runExecutor)
             Static.executor = new Executor(Static.sceneManager);
-        Static.debugPanel.run(Static.sceneManager, Static.executor, Static.mainFrame);
+        // initialise the debug panel's components.
+        Static.debugPanel.run();
+        // create and set the bounds for the hover JLabel's panel.
         HoverJLabelPanel lbl = new HoverJLabelPanel();
         lbl.setBounds(0 ,0, lbl.getPreferredSize().width, lbl.getPreferredSize().height);
-        JLayeredPane layeredPane = Static.mainFrame.getLayeredPane();
+        // Add it to the layered pane. At level 400 and set it to visible.
         layeredPane.add(lbl, JLayeredPane.DRAG_LAYER);
         lbl.setVisible(true);
+        // Add to the Static references.
         Static.hoverLabel = new HoverJLabel(lbl.getLabel());
-        Static.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Static.mainFrame.setSize(J3DSettings.screenSize.width, J3DSettings.screenSize.height);
-        Static.mainFrame.setResizable(false);
 
+        // Add to the Static references and allow the draw panel to be focusable
+        // and do a lot of other window shenanigans. Swing is the best. (sarcasm)
         Static.mainPanel = (J3DPanel) mainPanel;
         Static.mainPanel.setFocusable(true);
-
-        InputMap im = Static.mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        ActionMap am = Static.mainPanel.getActionMap();
-        Static.keybinds = new KeyBindings(im, am);
-
-        Toolbox toolbox = new Toolbox();
-        // Toolbox at the top and extends full width but not very tall
-        toolbox.setBounds(0, menuBarOffsetY, J3DSettings.screenSize.width - 260, toolbox.getPreferredSize().height);
-        layeredPane.add(toolbox, JLayeredPane.MODAL_LAYER); // above default layer
-
         Static.mainPanel.requestFocusInWindow();
         Static.mainPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN));
         Static.mainPanel.setBounds(0, menuBarOffsetY, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
         Static.mainPanel.setPreferredSize(new Dimension(J3DSettings.screenSize.width, J3DSettings.screenSize.height));
 
-        Static.getLog().setLogArea(Static.debugPanel.logTextArea); // initialize logger with the text area
+        // Initialize all keybinds to be part of the mainPanel and add to the static references
+        InputMap im = Static.mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = Static.mainPanel.getActionMap();
+        Static.keybinds = new KeyBindings(im, am);
 
+        // Initialise the toolbox (at layer 200)
+        Toolbox toolbox = new Toolbox();
+        // Toolbox at the top and extends full width but not very tall
+        toolbox.setBounds(0, menuBarOffsetY, J3DSettings.screenSize.width - 260, toolbox.getPreferredSize().height);
+        layeredPane.add(toolbox, JLayeredPane.MODAL_LAYER); // above default layer
+
+        // Set the text area of the Logger to be the DebugPanel's JTextArea
+        Static.getLog().setLogArea(Static.debugPanel.logTextArea);
+
+        // Calculate offset for the command pallet.
+        // ideal offset should be sort of at the bottom of the frame, but centered horizontally.
         Rectangle bounds = Static.mainFrame.getBounds();
         Dimension size = COMMAND_PALETTE.getPreferredSize();
         int x = ((bounds.width - size.width) / 2) - 60;
         int y = bounds.height - size.height - 200;
         COMMAND_PALETTE.setBounds(x, y, size.width, size.height);
-
+        // Set extra properties of the command palette
         COMMAND_PALETTE.setOpaque(true);
         COMMAND_PALETTE.setBackground(new Color(30, 30, 30, 8));
         COMMAND_PALETTE.setVisible(true);
+        // Add to layer 300
         layeredPane.add(COMMAND_PALETTE, JLayeredPane.POPUP_LAYER);
-
         Static.commandParser = new CommandParser(COMMAND_PALETTE);
 
-        Static.mainPanel.getRootPane().setFocusable(true);
-        Static.mainPanel.getRootPane().requestFocusInWindow();
+        // Set the main panel to be focusable and immediately set the user's focus to it.
+        mainPanel.getRootPane().setFocusable(true);
+        mainPanel.getRootPane().requestFocusInWindow();
 
+        // Component Listener that triggers whenever the entire frame is resized to
+        // reposition the command palette.
         Static.mainFrame.addComponentListener(new ComponentListener() {
             @Override
             public void componentResized(ComponentEvent e) {
+                // Set values so other stuff know these values changed.
                 J3DSettings.screenSize = new Dim(Static.mainFrame.getSize());
                 Static.sceneManager.screenSize = J3DSettings.screenSize;
                 toolbox.setBounds(0, menuBarOffsetY, J3DSettings.screenSize.width - 10, toolbox.getPreferredSize().height);
@@ -161,6 +301,7 @@ public class EngineFrame extends javax.swing.JFrame {
 //                        Static.layerTree.getPreferredSize().width,
 //                        Static.layerTree.getPreferredSize().height);
 
+                // Calculate new offsets (TODO: Idnetical to the previous offset calculation, extract?)
                 Rectangle bounds = Static.mainFrame.getBounds();
                 Dimension size = COMMAND_PALETTE.getPreferredSize();
                 int x = ((bounds.width - size.width) / 2) - 10;
@@ -173,26 +314,34 @@ public class EngineFrame extends javax.swing.JFrame {
 
             @Override
             public void componentMoved(ComponentEvent e) {
+                // stub
             }
 
             @Override
             public void componentShown(ComponentEvent e) {
+                // stub
             }
 
             @Override
             public void componentHidden(ComponentEvent e) {
+                // stub
             }
         });
 
+        // Initialise the custom cursors to be for the entire frame. and set it to the default.
         CursorManager.init(Static.mainFrame);
         CursorManager.setDefault();
 
+        // Add all the floaters safely.
         floats.forEach(Runnable::run);
 
+        // MouseMotionListener to set the position of the hoverlabel below the mouse at all times
+        // but avoid the command palette. Don't ask me, it just starts glitching tf out when it goes
+        // over or even under the command palette. so when it gets even near those coordinates, it doesn't
+        // bother.
         this.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
-//                lbl.setLocation(e.getPoint());
                 int y = bounds.height - size.height - 200;
                 if (e.getY() > y - 20) return;
                 lbl.setBounds(e.getX(), e.getY(), lbl.getPreferredSize().width, lbl.getPreferredSize().height);
@@ -201,7 +350,6 @@ public class EngineFrame extends javax.swing.JFrame {
 
             @Override
             public void mouseMoved(MouseEvent e) {
-//                lbl.setLocation(e.getPoint());
                 int y = bounds.height - size.height - 200;
                 if (e.getY() > y - 20) return;
                 lbl.setBounds(e.getX(), e.getY(), lbl.getPreferredSize().width, lbl.getPreferredSize().height);
@@ -211,17 +359,22 @@ public class EngineFrame extends javax.swing.JFrame {
         Static.getLog().uiPrintLn("EngineFrame completed building");
     }
 
-    public EngineFrame(File file) {
-        this(false);
-        this.setVisible(true);
-
+    /**
+     * Extracts all the file stuff like its path and name, logs the read
+     * and also actually reads it by wrapping it in a {@link LongTask} so it
+     * runs off the EDT
+     * @param file The file to read.
+     * @see LongTask
+     * @see ProjectFile
+     * @see Interactable
+     */
+    private void readProjectFile(File file) {
         String path = file.getAbsolutePath();
         Static.getLog().println(path);
         Path p = Paths.get(path);
         String fileName = p.getFileName().toString();
         String fileDir = p.getParent().toString();
 
-//        J3DSettings.setProject(fileDir, fileName);
         Settings.projectOutputFile.setValue(file);
 
         LongTask<ArrayList<Interactable>> t = new LongTask<>(
@@ -245,28 +398,16 @@ public class EngineFrame extends javax.swing.JFrame {
     }
 
     /**
-     * Creates new form Main2
+     * Sets all the closing operations:
+     * <p>
+     *     1. The window will do nothing when it closes
+     * </p>
+     * <p>
+     *     2. If the user made a change and hasn't saved since, will prompt the user with and
+     *     are you sure dialogue. Similar to running the command {@link ExitCmd}
+     * </p>
      */
-    public EngineFrame(boolean runExecutor) {
-        try {
-            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-            SwingUtilities.updateComponentTreeUI(this); // 'this' refers to the frame
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        ArrayList<MouseOwner> owners = new ArrayList<>();
-        owners.add(SelectionManager.selectionMouseOwner);
-        owners.add(new NoMouseOwner());
-        owners.add(ScaleSelection.scaleMouseOwner);
-        owners.add(TranslateSelection.translateMouseOwner);
-        owners.add(RotateSelection.rotateMouseOwner);
-        owners.add(OrbitCmd.orbitMouseOwner);
-
-        owners.forEach(this::addMouseListener);
-        owners.forEach(this::addMouseMotionListener);
-        initComponents();
-        complete(runExecutor);
-
+    private void setCloseOperations() {
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -286,26 +427,35 @@ public class EngineFrame extends javax.swing.JFrame {
         });
     }
 
-//    /**
-//     * Initializes (if not already initialized) the Jaiva Instance by inputting the input file and passing {@link Testing} class
-//     * @param g The graphics
-//     * @param r The SceneManager Instance.
-//     */
-//    private void initBundler(Graphics g, SceneManager r) {
-//        if (jBundler == null) {
-//            try {
-//                jBundler = new JBundler("C:\\Users\\ACER\\Documents\\code\\Jaiva3dEngine\\src\\main\\resources\\file.jiv", Testing.class);
-//                jBundler.run(r);
-//            } catch (Exception e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-//    }
+    /**
+     *  Adds all the mouse owners.
+     * @see MouseOwner
+     * @see MOwner
+     * @see SelectionManager
+     * @see ScaleMouseOwner
+     * @see TranslateMouseOwner
+     * @see RotateMouseOwner
+     * @see OrbitMouseOwner
+     * @see NoMouseOwner
+     */
+    private void initMouseOwners() {
+        ArrayList<MouseOwner> owners = new ArrayList<>();
+        owners.add(SelectionManager.selectionMouseOwner);
+        owners.add(new NoMouseOwner());
+        owners.add(ScaleSelection.scaleMouseOwner);
+        owners.add(TranslateSelection.translateMouseOwner);
+        owners.add(RotateSelection.rotateMouseOwner);
+        owners.add(OrbitCmd.orbitMouseOwner);
 
+        owners.forEach(this::addMouseListener);
+        owners.forEach(this::addMouseMotionListener);
+    }
 
     /**
      * Repaints the debug panel, command pallete, and main frame on the Event Dispatch Thread.
      * This should only be called from non-EDT threads. e.g. from the SceneManager thread.
+     * @implNote The {@link CommandParser} is the only class using this. Thats how fragile the
+     * {@link CommandPalette} is and i wish i could tell you why.
      */
     public static void repaintL() {
         SwingUtilities.invokeLater(() -> {
@@ -604,33 +754,7 @@ public class EngineFrame extends javax.swing.JFrame {
             );
         }, Static.mainFrame);
         if (file == null) return;
-        String path = file.getAbsolutePath();
-        Static.getLog().println(path);
-        Path p = Paths.get(path);
-        String fileName = p.getFileName().toString();
-        String fileDir = p.getParent().toString();
-
-//        J3DSettings.setProject(fileDir, fileName);
-        Settings.projectOutputFile.setValue(file);
-
-        LongTask<ArrayList<Interactable>> t = new LongTask<>(
-                ta -> {
-                    ArrayList<Interactable> a = null;
-                    try {
-                        a = new ProjectFile()
-                                .readFile(fileDir, fileName, ta);
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                    System.out.println(a.size());
-                    return a;
-                },
-                (tb, i) -> {
-                    i.forEach(Interactable::invokeSwingHooks);
-                }
-        );
-
-        t.run();
+        readProjectFile(file);
     }//GEN-LAST:event_openProjectMenuItemActionPerformed
 
     private void saveProjectJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveProjectJMenuItemActionPerformed

@@ -549,10 +549,11 @@ public class DebugPanel extends javax.swing.JPanel {
         frame.repaint();
     }//GEN-LAST:event_clearButtonActionPerformed
 
-    public void run(SceneManager r, Executor e, Frame f) {
-        sceneManager = r;
-        executor = e;
-        frame = f;
+    public void run() {
+        // TODO: Refactor to mention static instead of storing.
+        sceneManager = Static.sceneManager;
+        executor = Static.executor;
+        frame = Static.mainFrame;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

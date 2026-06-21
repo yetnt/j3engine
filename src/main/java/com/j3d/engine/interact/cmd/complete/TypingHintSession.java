@@ -203,7 +203,6 @@ public class TypingHintSession {
     }
 
     private boolean isCurrentArgValid(String rawCurrentArg, String expectedToken) {
-        // Your logic to check if the live string being typed fits the usage hint token
         return true;
     }
 
@@ -251,51 +250,4 @@ public class TypingHintSession {
         // Fallback if we are looking at the command name token itself or out of bounds
         return currentHead.description != null ? currentHead.description : "";
     }
-
-
-
-
-//    public void updateSuggestions() {
-//        if (command == null) {
-//            Static.commandParser.safeJLabel().setLower("No command found...");
-//            return;
-//        }
-//        String[] possibleUsages = command.returnUsagesWhere(
-//                cmdName,
-//                arguments.stream()
-//                        .map(Object::getClass)
-//                        .toArray(Class[]::new)
-//        );
-//
-//        if (possibleUsa
-//        ges.length == 0) {
-//            Static.hoverLabel.setText("No such command.");
-//            return;
-//        }
-//
-//        TaggedArgValue t = TaggedArgUtil.parse(currentArg, false, null);
-//        String real = currentArg.trim();
-//        if (!t.isErr() || real.isEmpty()) {
-//            // show suggested args next
-//            String[] usage = findGoodUsage(possibleUsages, real).split(" ");
-//            AtomicInteger i = new AtomicInteger();
-//            String html = JLabelRichText.htmlOf(
-//                    Arrays.stream(usage)
-//                            .map(s -> s + " ")
-//                            .map(s -> new JLabelRichText(s, true))
-//                            .peek(jLabelRichText -> {
-//                                if (arguments.size() >= i.get()) jLabelRichText.font(Color.GREEN);
-//                                else jLabelRichText.underline();
-//                                i.getAndIncrement();
-//                            })
-//                            .toArray(JLabelRichText[]::new)
-//            );
-//            Static.commandParser.safeJLabel().setLower(
-//                    html
-//            );
-//            return;
-//        }
-//
-//        // other handling.
-//    }
 }

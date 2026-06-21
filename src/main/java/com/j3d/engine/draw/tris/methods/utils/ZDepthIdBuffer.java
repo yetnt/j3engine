@@ -28,7 +28,8 @@ import java.util.UUID;
  *
  * @author Gemini IntelliJ Plugin
  * @see VisibleSort
- * @implSpec This was generated with gemini along with {@link VisibleSort}
+ * @implNote This was generated with Gemini along with {@link VisibleSort}. I take no authorship
+ * and was purely trying to see what an implementation of an z-buffer would "look" like
  */
 public class ZDepthIdBuffer {
     private final UUID[][] buffer;

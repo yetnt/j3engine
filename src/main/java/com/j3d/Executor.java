@@ -20,7 +20,6 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Executor is a class called by {@link EngineFrame#main(String[])} that just draws things ot the window
