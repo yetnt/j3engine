@@ -112,7 +112,7 @@ public class EngineFrame extends javax.swing.JFrame {
         Static.mainFrame.setSize(J3DSettings.screenSize.width, J3DSettings.screenSize.height);
         Static.mainFrame.setResizable(false);
 
-        Static.mainPanel = mainPanel;
+        Static.mainPanel = (J3DPanel) mainPanel;
         Static.mainPanel.setFocusable(true);
 
         InputMap im = Static.mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
