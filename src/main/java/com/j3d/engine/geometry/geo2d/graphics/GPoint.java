@@ -77,20 +77,20 @@ public class GPoint extends GObject implements HasParents<GLine> {
      */
     @Override
     public void draw(Graphics2D graphics2D) {
-        Static.sceneManager.points.add(this);
+        // Move below method call into constructor. Why anyway would it be in the draw call???
+//        Static.sceneManager.points.add(this);
         if (J3DSettings.getViewType() != ViewType.WIREFRAME)
             if (hasParent() && getParents().stream().findAny().get().hasParent()) {
                 return;
             }
+
+        if (Static.sceneManager.getSelected().contains(this)) {
+            drawSelected(graphics2D);
+            return;
+        }
         graphics2D.setColor(col);
         ScreenPoint p = this.getPivot().toPoint(Static.camera).toScreen(Static.sceneManager);
         graphics2D.fillOval(p.x - DIAMETER / 2, p.y - DIAMETER / 2, DIAMETER, DIAMETER);
-    }
-
-    @Override
-    public void setPivot(Vector3 pivot) {
-        super.setPivot(pivot);
-        this.broadcast(EventType.GPOINT_RECALC_PIVOT, new GPointMovedEvent(this, Static.sceneManager));
     }
 
     /**
@@ -110,7 +110,13 @@ public class GPoint extends GObject implements HasParents<GLine> {
         graphics2D.setColor(Color.WHITE);
         ScreenPoint p = this.getPivot().toPoint(Static.camera).toScreen(Static.sceneManager);
         graphics2D.fillOval(p.x - (DIAMETER+1) / 2, p.y - (DIAMETER+1) / 2, (DIAMETER+1), (DIAMETER+1));
-        draw(graphics2D);
+//        draw(graphics2D);
+    }
+
+    @Override
+    public void setPivot(Vector3 pivot) {
+        super.setPivot(pivot);
+        this.broadcast(EventType.GPOINT_RECALC_PIVOT, new GPointMovedEvent(this, Static.sceneManager));
     }
 
     /**
@@ -118,6 +124,7 @@ public class GPoint extends GObject implements HasParents<GLine> {
      * @param v3 The position of this point.
      */
     public GPoint(Vector3 v3) {
+        Static.sceneManager.points.add(this);
         setPivot(v3);
         toConstraintObject();
         Static.sceneManager.hasNoParent(this);

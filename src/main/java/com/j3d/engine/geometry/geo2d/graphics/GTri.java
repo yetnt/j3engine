@@ -205,7 +205,11 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         LegA.drawSelected(graphics2D);
         LegB.drawSelected(graphics2D);
         LegC.drawSelected(graphics2D);
-        Static.sceneManager.drawText3D(graphics2D, getPivot().sub(new Vector3(1, 1, 1)), "Triangle - " + getId(), Static.camera);
+        Static.sceneManager.drawText3D(
+                graphics2D,
+                getPivot().sub(new Vector3(1, 1, 1)),
+                "Tri-" + getId().toString().substring(0, 4),
+                Static.camera);
     }
 
     /**

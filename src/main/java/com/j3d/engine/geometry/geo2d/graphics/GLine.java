@@ -50,7 +50,7 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
 
     /**
      * Constructs a GLine.
-     * @implSpec This is used by {@link ProjectFile#readFile(String, String, Throbber)} during a project file read and should only be used in that case.
+     * @implSpec This is used by {@link ProjectFile#readFile(String, String, Spinner)} during a project file read and should only be used in that case.
      * @param id The id of the line defined by the file
      * @param A The first constructed GPoint reference.
      * @param B The second constructed GPoint reference.
@@ -71,16 +71,23 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
      */
     @Override
     public void draw(Graphics2D graphics2D) {
+        if (sceneManager.getSelected().contains(this)) {
+            drawSelected(graphics2D);return;
+        }
         graphics2D.setColor(col);
+        swingDraw(graphics2D);
+        // dispatch to points
+        startPoint.draw(graphics2D);
+        endPoint.draw(graphics2D);
+    }
+
+    public void swingDraw(Graphics2D graphics2D) {
         graphics2D.drawLine(
                 startPoint.getPivot().toPoint(camera).toScreen(sceneManager).x,
                 startPoint.getPivot().toPoint(camera).toScreen(sceneManager).y,
                 endPoint.getPivot().toPoint(camera).toScreen(sceneManager).x,
                 endPoint.getPivot().toPoint(camera).toScreen(sceneManager).y
         );
-        // dispatch to points
-        startPoint.draw(graphics2D);
-        endPoint.draw(graphics2D);
     }
 
     /**
@@ -93,21 +100,12 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
     @Override
     public void drawSelected(Graphics2D graphics2D) {
         graphics2D.setColor(col.brighter());
-        graphics2D.setStroke(new BasicStroke(2));
-        graphics2D.drawLine(
-                startPoint.getPivot().toPoint(camera).toScreen(sceneManager).x,
-                startPoint.getPivot().toPoint(camera).toScreen(sceneManager).y,
-                endPoint.getPivot().toPoint(camera).toScreen(sceneManager).x,
-                endPoint.getPivot().toPoint(camera).toScreen(sceneManager).y
-        );
+        graphics2D.setStroke(new BasicStroke(4));
+        swingDraw(graphics2D);
         graphics2D.setStroke(new BasicStroke(1));
-        draw(graphics2D);
         // dispatch to points
         startPoint.drawSelected(graphics2D);
         endPoint.drawSelected(graphics2D);
-//        sceneManager.drawText3D(graphics2D, getPivot().sub(new Vector3(1, 1, 1)), "[{" + getPivot().getY() + ", " + getPivot().getX() + ", " + getPivot().getZ() + "} -> {" +
-//                 endPoint.getPivot().getY() + ", " + endPoint.getPivot().getX() + ", " + endPoint.getPivot().getZ() +
-//                "}]", camera);
     }
 
     /**
