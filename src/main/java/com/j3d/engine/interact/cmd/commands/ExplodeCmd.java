@@ -1,0 +1,179 @@
+package com.j3d.engine.interact.cmd.commands;
+
+import com.j3d.Static;
+import com.j3d.engine.SceneManager;
+import com.j3d.engine.geometry.geo2d.graphics.GLine;
+import com.j3d.engine.geometry.geo2d.graphics.GPoint;
+import com.j3d.engine.geometry.geo2d.graphics.GTri;
+import com.j3d.engine.geometry.geo3d.Thing;
+import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.engine.interact.cmd.CommandParser;
+import com.j3d.engine.interact.cmd.CommandsManager;
+import com.j3d.engine.interact.cmd.args.TaggedArgUtil;
+import com.j3d.engine.interact.cmd.args.TypedArg;
+import com.j3d.engine.interact.cmd.base.SemiStatefulCommand;
+import com.j3d.engine.interact.cmd.base.conditions.SelectionPreCondition;
+import com.j3d.engine.layer.Layer;
+import com.j3d.engine.react.actions.VoidAction;
+import com.j3d.ui.SafeJLabel;
+import com.j3d.engine.interact.cmd.base.Command;
+import com.j3d.engine.interact.cmd.args.TaggedArgValue;
+import com.j3d.engine.interact.selection.SelectionManager;
+import com.j3d.ui.dialog.AreYouSure;
+import com.j3d.utility.generators.JLabelRichText;
+
+import java.lang.reflect.Array;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.stream.Stream;
+
+import static com.j3d.Static.sceneManager;
+
+/**
+ * A command which makes the explodes the geometry structure of whatever.
+ * <p>
+ *     This has positional arguments, but makes use of tagged arguments to work,
+ *     specifically the {@code thing:"string"/thing="string"} or the
+ *     {@code layer:"string"/layer="string"}
+ * </p>
+ * <p>
+ *     While tagged arguments do not require a strict position, if both tagged arguments exist
+ *     it will check explicit for the {@code thing} tagged argument before {@code layer}.
+ *     And otherwise, if no tagged arguments are provided or tagged arguments that this command
+ *     does not check for, it is treated as exploding everything.
+ * </p>
+ * <p>
+ *     Aliases: {@code explode}, {@code expl}, {@code ex}, {@code destruct}
+ * </p>
+ * <p>
+ *     Typical Usage:
+ *     <pre>{@code
+ *     explode                      - Explodes All Things in All layers
+ *     expl thing:"Cube"            - Explodes the Thing labelled "Cube"
+ *     explode layer:"l"            - Explodes All the Things in the layer "l"
+ *     explode layer:"a" thing="b"  - Explodes the Thing labelled "b"
+ *     }</pre>
+ * </p>
+ * @implNote This command is undoable. Geometry destruction is one that cannot be undone, (specifically
+ *     due to events being registered both ways). Triangles are destroyed and dereferenced, and so
+ *    are lines.
+ * @see Command
+ * @see TaggedArgValue
+ * @see TaggedArgUtil
+ * @see Thing
+ * @see Layer
+ * @author Lehlogonolo Poole
+ */
+public class ExplodeCmd extends Command{
+
+    public ExplodeCmd() {
+        super("explode", "do stuff wit selection");
+        this.aliases("expl", "ex", "destruct").parseUsages();
+    }
+
+    @Override
+    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+        super.run(logLabel, aliasUsed, args, taggedArgs);
+        AreYouSure aysDialogue = new AreYouSure(
+                Static.mainFrame, true // sets to modal
+                , JLabelRichText.htmlOf(
+                        new JLabelRichText(
+                                "This command CANNOT be undone."
+                                        + JLabelRichText.LINE_BREAK
+                                        + "This means any previous history before this will be unreachable.")
+        )
+        );
+        aysDialogue.setVisible(true);
+        if (aysDialogue.canProceed())
+            explode(logLabel, args, taggedArgs);
+    }
+
+    private void explode(SafeJLabel logLabel, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+        // if there aren't any taggedArgs, explode it all
+        if (taggedArgs.isEmpty()) {
+            explodeAll();
+            return;
+        }
+
+        // look for a specific Thing to explode via tagged argz
+        TaggedArgValue<String> t1 =
+                TaggedArgUtil.getTaggedArg(taggedArgs, "thing", String.class);
+        if (t1 != null) {
+            Thing t = sceneManager.findThing(t1.value);
+            if (t == null) {
+                logLabel.setText("No thing with the name \"" + t1.value + "\" exists.");
+                return;
+            }
+            explode(t);
+            addHistory("thing-" + t1.value);
+            return;
+        }
+
+        // look for a specific Layer to explode things.
+        TaggedArgValue<String> t2 =
+                TaggedArgUtil.getTaggedArg(taggedArgs, "layer", String.class);
+        if (t2 != null) {
+            Layer l = sceneManager.layers.find(t2.value);
+            if (l == null) {
+                logLabel.setText("No layer with the name \"" + t2.value + "\" exists.");
+                return;
+            }
+            l.forEach(this::explode);
+            addHistory("layer-" + t2.value);
+            return;
+        }
+
+        // otherwise, explode it all.
+        explodeAll();
+    }
+
+    private void explodeAll() {
+        sceneManager.layers.forEach(layer -> {
+            layer.forEach(this::explode);
+        });
+        addHistory("all-layers");
+    }
+
+    private void explode(Thing thing) {
+        ArrayList<GPoint> points = new ArrayList<>();
+        new ArrayList<>(thing.getObjects()).stream()
+                .filter(o -> o instanceof GTri)
+                .map(o -> (GTri)o)
+                .forEach((tri) ->
+                    points.addAll(tri.explode(thing))
+                );
+
+        sceneManager.select(thing);
+    }
+
+    private void addHistory(String operation) {
+        SceneManager.history.add(
+                new VoidAction() {
+                    final LocalTime now = LocalTime.now();
+                    @Override
+                    public Void run() {
+                        return null;
+                    }
+
+                    @Override
+                    public void undo() {
+                    }
+
+                    @Override
+                    public boolean isReversible() {
+                        return false;
+                    }
+
+                    @Override
+                    public String getDescription() {
+                        return "explode:" + operation;
+                    }
+
+                    @Override
+                    public LocalTime getTime() {
+                        return now;
+                    }
+                }
+        );
+    }
+}

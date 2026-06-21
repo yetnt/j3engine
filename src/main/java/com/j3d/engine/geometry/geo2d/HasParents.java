@@ -58,4 +58,8 @@ public interface HasParents<T> {
     default boolean hasParent() {
         return !getParents().isEmpty();
     }
+
+    default void clearParents() {
+        getParents().forEach(this::removeParent);
+    }
 }

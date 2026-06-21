@@ -121,12 +121,12 @@ public abstract class GObject extends EventEmitter implements BaseObject, EventL
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         GObject gObject = (GObject) o;
-        return Objects.equals(pivot, gObject.pivot) && Objects.equals(Id, gObject.Id);
+        return Objects.equals(Id, gObject.Id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pivot, Id);
+        return Objects.hash(Id);
     }
 
     /**

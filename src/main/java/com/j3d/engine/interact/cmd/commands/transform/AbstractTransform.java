@@ -166,7 +166,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
                 .filter(obj -> obj instanceof GTri)
                 .map(obj -> (GTri) obj);
 
-        if (tris.findAny().isEmpty()) faceMode = FaceMode.TRIANGLES;
+        if (tris.findAny().isEmpty()) faceMode = FaceMode.POINTS;
 
         references = switch (faceMode) {
             case TRIANGLES -> new ArrayList<>(Static.sceneManager.getSelected().stream()

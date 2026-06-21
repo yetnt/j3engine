@@ -185,6 +185,19 @@ public class GPoint extends GObject implements HasParents<GLine> {
         Static.sceneManager.hasNoParent(this);
     }
 
+
+    public void explode(GLine line) {
+        line.detach(this);
+        this.detach(line);
+        removeParent(line);
+        toConstraintObject();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode());
+    }
+
     public static class GPointMovedEvent extends EventPayload<GPoint> {
         public GPointMovedEvent(GPoint e, SceneManager r) {
             super(e, r);

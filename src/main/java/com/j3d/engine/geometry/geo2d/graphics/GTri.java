@@ -2,6 +2,7 @@ package com.j3d.engine.geometry.geo2d.graphics;
 
 import com.j3d.J3DSettings;
 import com.j3d.Static;
+import com.j3d.engine.SceneManager;
 import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.geometry.constraints.ConstraintManager;
@@ -47,20 +48,22 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
     /**
      * Leg A, connected to Leg B and Leg C
      */
-    private final GLine LegA;
+    protected GLine LegA;
     /**
      * Leg B, connected to Leg A and Leg C
      */
-    private final GLine LegB;
+    protected GLine LegB;
     /**
      * Leg C, connected to Leg A and Leg B
      */
-    private final GLine LegC;
+    protected GLine LegC;
 
     /**
      * The normal of the triangle.
      */
     public Vector3 normal;
+
+    protected boolean deletedState = false;
 
     // TODO: I actually have no clue where the fuck this is used?? Uhm find this out??
     private boolean hidden = false;
@@ -68,7 +71,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
     /**
      * Constructs a GTri.
-     * @implSpec This is used by {@link ProjectFile#readFile(String, String, Throbber)} during a project file read and should only be used in that case.
+     * @implSpec This is used by {@link ProjectFile#readFile(String, String, Spinner)} during a project file read and should only be used in that case.
      * @param id The id of the triangle defined by the file
      * @param col The colour of the triangle defined by the file
      * @param legA The constructed reference of the first leg
@@ -91,6 +94,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
      */
     @Override
     public void draw(Graphics2D graphics2D) {
+        if (deletedState) return;
         setPivot(LegA.getStart().getPivot().add(LegB.getStart().getPivot()).add(LegC.getStart().getPivot()).div(3));
         calcNormal(LegA.getStart().getPivot(), LegB.getStart().getPivot(), LegC.getStart().getPivot());
         if (J3DSettings.getViewType() == ViewType.NORMAL) {
@@ -181,6 +185,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
      */
     @Override
     public void drawSelected(Graphics2D graphics2D) {
+        if (deletedState) return;
         setPivot(LegA.getStart().getPivot().add(LegB.getStart().getPivot()).add(LegC.getStart().getPivot()).div(3));
         calcNormal(LegA.getStart().getPivot(), LegB.getStart().getPivot(), LegC.getStart().getPivot());
         if (J3DSettings.getViewType() == ViewType.NORMAL) {
@@ -417,5 +422,47 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
             setPivot(piv);
             calcNormal(getLegA().getStart().getPivot(), getLegB().getStart().getPivot(), getLegC().getStart().getPivot());
         }
+    }
+
+    public ArrayList<GPoint> explode(Thing parent) {
+        deletedState = true;
+        ArrayList<GPoint> points = new ArrayList<>();
+        getLegStream().forEach(line -> {
+           ArrayList<GPoint> pointStream = line.explode(parent);
+           line.removeParent(this);
+           points.addAll(pointStream);
+           detach(line);
+           line.getPointStream().forEach(this::detach);
+        });
+        points.forEach(p -> {
+            this.detach(p);
+            p.detach(this);
+            p.hasParent();
+        });
+        LegA = null;
+        LegB = null;
+        LegC = null;
+
+        // without lines, this triangle cannot exist. It must be deleted.
+        TriStateArea.unregister(this);
+        parent.getObjects().remove(this);
+
+        return points;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        GTri gTri = (GTri) o;
+        return deletedState == gTri.deletedState &&
+                isHidden() == gTri.isHidden() &&
+                Objects.equals(normal, gTri.normal) &&
+                Objects.equals(getConstraints(), gTri.getConstraints());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), normal, deletedState, isHidden());
     }
 }

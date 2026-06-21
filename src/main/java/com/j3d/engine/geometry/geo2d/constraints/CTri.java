@@ -16,9 +16,9 @@ public class CTri extends CObject {
 
     public CTri(GTri gTri) {
         super(gTri);
-        LegA = gTri.getLegA().toConstraintObject();
-        LegB = gTri.getLegB().toConstraintObject();
-        LegC = gTri.getLegC().toConstraintObject();
+        LegA = gTri.getLegA() != null ? gTri.getLegA().toConstraintObject() : null;
+        LegB = gTri.getLegB() != null ? gTri.getLegB().toConstraintObject() : null;
+        LegC = gTri.getLegC() != null ? gTri.getLegC().toConstraintObject() : null;
     }
 
     /**

@@ -92,9 +92,9 @@ public abstract class EventEmitter implements EventEmitterInterface {
      * @param <K> The object held by the {@link EventPayload}.
      */
     public static <K> void genericBroadcast(ArrayList<EventListener> events, EventType eventType, EventPayload<K> properties) {
-        Static.getLog().println(
-                "[EVENTEMITTER] " + properties.emitter.getClass().getSimpleName() + " : " + eventType.toString() + " to " + events.size() + " listeners"
-        );
+//        Static.getLog().println(
+//                "[EVENTEMITTER] " + properties.emitter.getClass().getSimpleName() + " : " + eventType.toString() + " to " + events.size() + " listeners"
+//        );
         ArrayList<EventReactor> reactors = new ArrayList<>();
         new ArrayList<>(events).forEach(event -> {
             event.onEvent(eventType, properties);

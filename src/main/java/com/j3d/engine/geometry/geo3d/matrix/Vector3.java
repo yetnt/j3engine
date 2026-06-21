@@ -290,7 +290,9 @@ public class Vector3 implements MatrixInterface {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vector3 vector3 = (Vector3) o;
-        return Double.compare(vector3.X, X) == 0 && Double.compare(vector3.Y, Y) == 0 && Double.compare(vector3.Z, Z) == 0;
+        return Double.compare(vector3.X, X) == 0 &&
+                Double.compare(vector3.Y, Y) == 0 &&
+                Double.compare(vector3.Z, Z) == 0;
     }
 
     @Override

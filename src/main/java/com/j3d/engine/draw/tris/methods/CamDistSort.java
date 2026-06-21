@@ -70,16 +70,4 @@ public class CamDistSort extends SortMethod {
                 return Double.compare(euclidDist2, euclidDist1); // Sort in descending order (farthest first)
         });
     }
-
-    static {
-        Static.help.addProperties(
-                HelpGenerator.Sections.TRIANGLE_SORT_METHOD,
-                new HelpText("CamDistSort").asSubheading(),
-                new HelpText("A sorting method which implements Painter's Algorithm.")
-                        .addLn("The way this method works is by sorting triangles back to front based ")
-                        .add("purely by their euclidean distance from it's centroid to the camera."),
-                new HelpText("While in hindsight this is definitely the simplest method, it also ")
-                        .add("looks best visually. Hence why it's the default.")
-        );
-    }
 }

@@ -14,8 +14,11 @@ import com.j3d.storage.files.ProjectFile;
 import com.j3d.ui.dialog.Spinner;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.j3d.Static.camera;
@@ -40,11 +43,12 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
     /**
      * The startpoint of this line
      */
-    private final GPoint startPoint;
+    protected GPoint startPoint;
     /**
      * The endPoint of this line.
      */
-    private final GPoint endPoint;
+    protected GPoint endPoint;
+    protected boolean deletedState = false;
     private HashSet<GTri> parents = new HashSet<>();
     protected ConstraintManager<GLine> constraints = new ConstraintManager<>();
 
@@ -71,6 +75,7 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
      */
     @Override
     public void draw(Graphics2D graphics2D) {
+        if (deletedState) return;
         if (sceneManager.getSelected().contains(this)) {
             drawSelected(graphics2D);return;
         }
@@ -99,6 +104,7 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
      */
     @Override
     public void drawSelected(Graphics2D graphics2D) {
+        if (deletedState) return;
         graphics2D.setColor(col.brighter());
         graphics2D.setStroke(new BasicStroke(4));
         swingDraw(graphics2D);
@@ -239,5 +245,32 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
     public void handlePossibleDuplicates(EventType type, GPoint.GPointMovedEvent payload) {
         Vector3 piv = getStart().getPivot().add(getEnd().getPivot()).div(2);
         if (!piv.equals(getDupeObjectToCheck()))  setPivot(piv);
+    }
+
+    public ArrayList<GPoint> explode(Thing parent) {
+        deletedState = true;
+        parent.getObjects().remove(this);
+        sceneManager.getUnparented().remove(this);
+        ArrayList<GPoint> pointsList = getPointStream().collect(Collectors.toCollection(ArrayList::new));
+        pointsList.forEach(point -> point.explode(this));
+        startPoint = null;
+        endPoint = null;
+        return pointsList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        GLine gLine = (GLine) o;
+        return getId().equals(gLine.getId());
+//                deletedState == gLine.deletedState &&
+//                Objects.equals(startPoint, gLine.startPoint) &&
+//                Objects.equals(endPoint, gLine.endPoint);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode());
     }
 }

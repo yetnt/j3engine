@@ -77,9 +77,15 @@ public class SelectionPreCondition implements PreCommandExecution {
                         failListener.onEvent(null, null);
                     }
                 };
-        J3Key key = new J3Key("quitEnter", true).setKeyStroke(
+        AbstractAction succ = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                passListener.onEvent(null, null);
+            }
+        };
+        J3Key key = new J3Key("succEnter", true).setKeyStroke(
                 KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0)
-        ).setAction(quit);
+        ).setAction(succ);
         Static.keybinds.registerJ3Key(key);
         DefaultKeys.DEFOCUS_COMMAND_PALETTE.getKey().replaceAction(quit);
 

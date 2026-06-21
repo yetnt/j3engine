@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 /**
  * A utility class for parsing and managing "tagged arguments" within the command system.
@@ -81,6 +83,27 @@ public class TaggedArgUtil {
         acceptedTags.put("greaterThan", new TaggedArgValue<Double>(Double.class).setName("greaterThan"));
         acceptedTags.put("equalTo", new TaggedArgValue<Double>(Double.class).setName("equal"));
         acceptedTags.put("notEqualTo", new TaggedArgValue<Double>(Double.class).setName("notEqual"));
+    }
+
+    public static <T> TaggedArgValue<T> getTaggedArg(
+            ArrayList<TaggedArgValue<?>> argValues,
+            String name,
+            Class<T> expected
+    ) {
+        Predicate<TaggedArgValue<?>> predicate =
+                a -> a.taggedArgName.equals(name) && expected == a.type;
+        Stream<TaggedArgValue<?>> firstPass = argValues
+                .stream()
+                .filter(predicate);
+        if (firstPass.findFirst().isEmpty())
+            return null;
+
+        return argValues
+                .stream()
+                .filter(predicate)
+                .map(o -> (TaggedArgValue<T>)o)
+                .findFirst()
+                .orElse(null);
     }
 
     /**

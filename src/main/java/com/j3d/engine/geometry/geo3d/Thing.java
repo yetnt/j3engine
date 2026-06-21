@@ -699,14 +699,4 @@ public class Thing implements Interactable {
     public Stream<GObject> objectsStream() {
         return objects.stream();
     }
-
-    static {
-        Static.help.addProperties(
-                HelpGenerator.Sections.COMMON_TERMS,
-                new HelpText("\"Thing\" is a name for any unordered collection of primitives objects."),
-                new HelpText("This in other programs may be referred to as a simple collection of otherwise ")
-                        .add("more specifically, a mesh. However it does not function as such and is purely a collection ")
-                        .add("of individual triangles, lines and points.")
-        );
-    }
 }
