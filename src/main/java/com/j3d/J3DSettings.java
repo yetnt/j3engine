@@ -8,7 +8,6 @@ import com.j3d.engine.geometry.Dim;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
 import com.j3d.gen.settings.Settings;
-import com.j3d.utility.generic.Pair;
 
 public class J3DSettings {
 
@@ -46,12 +45,6 @@ public class J3DSettings {
      * How the objects should be drawn.
      */
     private static ViewType viewType = ViewType.NORMAL;
-    /**
-     * The current project open in the engine.
-     * First element is the project path
-     * Second element is the project file name
-     */
-    private static Pair<String, String> project;
 
     public static void setTriangleSortMethod(TriangleSortMethod method) {
         Settings.sceneProperties.triangleSortMethod.setValue(method);
@@ -93,12 +86,4 @@ public class J3DSettings {
         J3DSettings.viewType = viewType;
     }
 
-    public static Pair<String, String> getProject() {
-        return project;
-    }
-
-    public static void setProject(String path, String name) {
-        Settings.projectFile.setValue(path);
-        project = new Pair<>(path, name);
-    }
 }

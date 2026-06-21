@@ -25,6 +25,7 @@ import com.j3d.engine.interact.input.mouse.NoMouseOwner;
 import com.j3d.engine.interact.selection.SelectionManager;
 //import com.j3d.jaiva.Testing;
 import com.j3d.gen.settings.CoreSettings;
+import com.j3d.gen.settings.Settings;
 import com.j3d.storage.files.FilesUtility;
 import com.j3d.storage.files.ProjectFile;
 import com.j3d.threads.LongTask;
@@ -220,7 +221,8 @@ public class EngineFrame extends javax.swing.JFrame {
         String fileName = p.getFileName().toString();
         String fileDir = p.getParent().toString();
 
-        J3DSettings.setProject(fileDir, fileName);
+//        J3DSettings.setProject(fileDir, fileName);
+        Settings.projectOutputFile.setValue(file);
 
         LongTask<ArrayList<Interactable>> t = new LongTask<>(
                 ta -> {
@@ -272,11 +274,14 @@ public class EngineFrame extends javax.swing.JFrame {
                 boolean saved = CoreSettings.hasSaved;
                 if (saved) {
                     Static.mainFrame.dispose();
-                    return;
+                    System.exit(0);
                 }
                 AreYouSure ays = new AreYouSure(Static.mainFrame, true, "You have not saved this project. Progress will be lost.");
                 ays.setVisible(true);
-                if (ays.canProceed()) Static.mainFrame.dispose();
+                if (ays.canProceed()) {
+                    Static.mainFrame.dispose();
+                    System.exit(0);
+                }
             }
         });
     }
@@ -605,7 +610,8 @@ public class EngineFrame extends javax.swing.JFrame {
         String fileName = p.getFileName().toString();
         String fileDir = p.getParent().toString();
 
-        J3DSettings.setProject(fileDir, fileName);
+//        J3DSettings.setProject(fileDir, fileName);
+        Settings.projectOutputFile.setValue(file);
 
         LongTask<ArrayList<Interactable>> t = new LongTask<>(
                 ta -> {
@@ -628,18 +634,25 @@ public class EngineFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_openProjectMenuItemActionPerformed
 
     private void saveProjectJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveProjectJMenuItemActionPerformed
-        if (J3DSettings.getProject() == null) {
+        if (Settings.projectOutputFile.getValue() == null) {
             String fileName = JOptionPane.showInputDialog("Project name?");
-            fileName = fileName == null ? "project1" : fileName;
+            fileName = (
+                    fileName == null || fileName.trim().isEmpty()
+                            ? "project1"
+                            : fileName
+            ) + ".j3p";
 
-            String folder = FilesUtility.folderChooser(Static.mainFrame).getAbsolutePath();
+            File folder = FilesUtility.folderChooser(Static.mainFrame);
 
-            Static.getLog().println("Picked the location " + folder + " with the file name " + fileName);
+            Static.getLog().println("Picked the location " + folder.getAbsolutePath() + " with the file name " + fileName);
 
-            J3DSettings.setProject(folder, fileName);
+//            J3DSettings.setProject(folder.getAbsolutePath(), fileName);
+            Settings.projectOutputFile.setValue(new File(folder, fileName));
         }
 
-        new ProjectFile().writeFile(J3DSettings.getProject().first, J3DSettings.getProject().second + ".j3p", Static.sceneManager.layers);
+        new ProjectFile().writeFile(
+                Settings.projectOutputFile.getValue().getParent(),
+                Settings.projectOutputFile.getValue().getName(), Static.sceneManager.layers);
     }//GEN-LAST:event_saveProjectJMenuItemActionPerformed
 
     private void newProjectJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newProjectJMenuItemActionPerformed

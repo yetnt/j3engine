@@ -11,26 +11,29 @@ import com.j3d.ui.J3DTheme;
 
 import java.awt.event.ActionEvent;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import javax.swing.JLabel;
 
 /**
  *
  * @author ACER
  */
-public class PopoutSPanel extends javax.swing.JPanel implements SettingPanel {
+public class PopoutSPanel<T> extends javax.swing.JPanel implements SettingPanel {
 
-    BiConsumer<ActionEvent, JLabel> onOpen;
+    BiFunction<ActionEvent, JLabel, T> onOpen;
+    ComplexSetting<T> setting;
 
     /**
      * Creates new form PopoutSPanel
      */
-    public PopoutSPanel(String initalValue, ComplexSetting<?> setting, BiConsumer<ActionEvent, JLabel> onOpen) {
+    public PopoutSPanel(String initalValue, ComplexSetting<T> setting, BiFunction<ActionEvent, JLabel, T> onOpen) {
         initComponents();
         setting.attach(this);
         valueLabel.setText(initalValue);
         settingLabel4.setText(setting.getName());
         this.setToolTipText(setting.getDescription());
         this.onOpen = onOpen;
+        this.setting = setting;
     }
 
     /**
@@ -90,7 +93,9 @@ public class PopoutSPanel extends javax.swing.JPanel implements SettingPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        onOpen.accept(evt, valueLabel);
+        setting.setValue(onOpen.apply(evt, valueLabel));
+        this.repaint();
+        this.revalidate();
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
@@ -102,7 +107,6 @@ public class PopoutSPanel extends javax.swing.JPanel implements SettingPanel {
 
     @Override
     public <K> void onEvent(EventType event, EventPayload<K> properties) {
-        throw new UnsupportedOperationException("Not supported yet.");
-        //TODO: Implement
+        return;
     }
 }
