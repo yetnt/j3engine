@@ -8,7 +8,6 @@ import com.j3d.J3DSettings;
 import com.j3d.Static;
 import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.layer.Layer;
-import com.j3d.engine.draw.tris.TriangleSortMethod;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.Thing;
@@ -41,13 +40,13 @@ public class DebugPanel extends javax.swing.JPanel {
     private Consumer<JLabelRichText> stealStatsThreadRun = (s) -> {};
     private final StatisticsThread statisticsThread = new StatisticsThread(
             (map) -> {
-                JLabelRichText style = new JLabelRichText().bold().italic().font(Color.RED, "6");
+                JLabelRichText style = new JLabelRichText().bold().italic().font(Color.RED, "4");
                 statsLabelMap.forEach(
                         (uuid, label) -> label.setText(
                                JLabelRichText.of(map.get(uuid).toString(), style).wrapHTML()
                         )
                 );
-                // Since this is on the EDt, we shall use that to our advantage for static stats
+                // Since this is on the EDT, we shall use that to our advantage for static stats
                 // instead of using event listeners. Why? my code.
                 stealStatsThreadRun.accept(style);
             }
@@ -92,14 +91,6 @@ public class DebugPanel extends javax.swing.JPanel {
         showTriDistCheckBox = new javax.swing.JCheckBox();
         showTriDepthCheckBox = new javax.swing.JCheckBox();
         showTriNormalsCheckBox = new javax.swing.JCheckBox();
-        BucketSortRadio = new javax.swing.JRadioButton();
-        CamDistSortRadio = new javax.swing.JRadioButton();
-        jLabel1 = new javax.swing.JLabel();
-        backFaceCullingCheckBox = new javax.swing.JCheckBox();
-        jLabel3 = new javax.swing.JLabel();
-        visibleSortRadioButton = new javax.swing.JRadioButton();
-        camDepthSortRadioButton = new javax.swing.JRadioButton();
-        DDUUIDSortRadioButton = new javax.swing.JRadioButton();
         drawButton = new javax.swing.JButton();
         clearButton = new javax.swing.JButton();
         logLabel = new javax.swing.JLabel();
@@ -170,66 +161,6 @@ public class DebugPanel extends javax.swing.JPanel {
             }
         });
 
-        sortMethodButtonGroup.add(BucketSortRadio);
-        BucketSortRadio.setForeground(J3DTheme.TEXT_PRIMARY.color());
-        BucketSortRadio.setText("Bucket Sort");
-        BucketSortRadio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BucketSortRadioActionPerformed(evt);
-            }
-        });
-
-        sortMethodButtonGroup.add(CamDistSortRadio);
-        CamDistSortRadio.setForeground(J3DTheme.TEXT_PRIMARY.color());
-        CamDistSortRadio.setText("CamDist Sort");
-        CamDistSortRadio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CamDistSortRadioActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setForeground(J3DTheme.TEXT_PRIMARY.color());
-        jLabel1.setText("Triangle Sorting Algorithm");
-
-        backFaceCullingCheckBox.setForeground(J3DTheme.TEXT_PRIMARY.color());
-        backFaceCullingCheckBox.setText("Back Face Culling");
-        backFaceCullingCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backFaceCullingCheckBoxActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setForeground(J3DTheme.TEXT_PRIMARY.color());
-        jLabel3.setText("General Toggles");
-
-        sortMethodButtonGroup.add(visibleSortRadioButton);
-        visibleSortRadioButton.setForeground(J3DTheme.TEXT_PRIMARY.color());
-        visibleSortRadioButton.setText("Visible Sort");
-        visibleSortRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                visibleSortRadioButtonActionPerformed(evt);
-            }
-        });
-
-        sortMethodButtonGroup.add(camDepthSortRadioButton);
-        camDepthSortRadioButton.setForeground(J3DTheme.TEXT_PRIMARY.color());
-        camDepthSortRadioButton.setText("CamDepth Sort");
-        camDepthSortRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                camDepthSortRadioButtonActionPerformed(evt);
-            }
-        });
-
-        sortMethodButtonGroup.add(DDUUIDSortRadioButton);
-        DDUUIDSortRadioButton.setForeground(J3DTheme.TEXT_PRIMARY.color());
-        DDUUIDSortRadioButton.setSelected(true);
-        DDUUIDSortRadioButton.setText("DDUUID");
-        DDUUIDSortRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DDUUIDSortRadioButtonActionPerformed(evt);
-            }
-        });
-
         drawButton.setBackground(J3DTheme.BACKGROUND.color());
         drawButton.setForeground(J3DTheme.TEXT_PRIMARY.color());
         drawButton.setText("force swing repaint");
@@ -264,20 +195,11 @@ public class DebugPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(randomTriBtn))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(visibleSortRadioButton)
-                        .addComponent(BucketSortRadio)
-                        .addComponent(CamDistSortRadio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(DDUUIDSortRadioButton)
-                        .addComponent(camDepthSortRadioButton))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(NoneRadioButton)
                         .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(showTriDistCheckBox)
                         .addComponent(showTriDepthCheckBox)
-                        .addComponent(showTriNormalsCheckBox))
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(backFaceCullingCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(showTriNormalsCheckBox)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -301,22 +223,6 @@ public class DebugPanel extends javax.swing.JPanel {
                 .addComponent(showTriDepthCheckBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(showTriNormalsCheckBox)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1)
-                .addGap(13, 13, 13)
-                .addComponent(CamDistSortRadio)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(visibleSortRadioButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(camDepthSortRadioButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(DDUUIDSortRadioButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BucketSortRadio)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(backFaceCullingCheckBox)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -392,40 +298,6 @@ public class DebugPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void DDUUIDSortRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DDUUIDSortRadioButtonActionPerformed
-        if (DDUUIDSortRadioButton.isSelected()) {
-            J3DSettings.setTriangleSortMethod(TriangleSortMethod.DDUUIDSORT);
-            
-        }
-    }//GEN-LAST:event_DDUUIDSortRadioButtonActionPerformed
-
-    private void camDepthSortRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_camDepthSortRadioButtonActionPerformed
-        if  (camDepthSortRadioButton.isSelected())
-            J3DSettings.setTriangleSortMethod(TriangleSortMethod.CAMDEPTHSORT);
-    }//GEN-LAST:event_camDepthSortRadioButtonActionPerformed
-
-    private void visibleSortRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visibleSortRadioButtonActionPerformed
-        if (visibleSortRadioButton.isSelected()) {
-            J3DSettings.setTriangleSortMethod(TriangleSortMethod.VISIBLESORT);
-        }
-    }//GEN-LAST:event_visibleSortRadioButtonActionPerformed
-
-    private void backFaceCullingCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backFaceCullingCheckBoxActionPerformed
-        J3DSettings.setUseBackFaceCulling(backFaceCullingCheckBox.isSelected());
-    }//GEN-LAST:event_backFaceCullingCheckBoxActionPerformed
-
-    private void CamDistSortRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CamDistSortRadioActionPerformed
-        if (CamDistSortRadio.isSelected())
-            J3DSettings.setTriangleSortMethod(TriangleSortMethod.CAMDISTSORT);
-    }//GEN-LAST:event_CamDistSortRadioActionPerformed
-
-    private void BucketSortRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BucketSortRadioActionPerformed
-        if (BucketSortRadio.isSelected()) {
-            Static.getLog().println("Bucket Sort not implemented yet. Defaulting to CamDist Sort.");
-            J3DSettings.setTriangleSortMethod(TriangleSortMethod.CAMDISTSORT);
-        }
-    }//GEN-LAST:event_BucketSortRadioActionPerformed
-
     private void showTriNormalsCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTriNormalsCheckBoxActionPerformed
         if (showTriNormalsCheckBox.isSelected()) {
             J3DSettings.setShowNormals(true);
@@ -485,7 +357,13 @@ public class DebugPanel extends javax.swing.JPanel {
             gps[0], gps[1], gps[2]
         );
 
-        Thing g = new Thing(sceneManager, null, "Random Tri").addObjs(t, gps[0], gps[1], gps[2]);
+        Thing g = new Thing(
+                sceneManager, null,
+                "Random Tri " + t.getId().toString().substring(0, 4)).addObjs(
+                        t, gps[0], gps[1], gps[2],
+                // the fix
+                t.getLegA(), t.getLegB(), t.getLegC()
+        );
 
         Static.getLog().println("Added random tri " + t.getId() + " to layer " + g);
 
@@ -522,18 +400,11 @@ public class DebugPanel extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JRadioButton BucketSortRadio;
-    public javax.swing.JRadioButton CamDistSortRadio;
-    public javax.swing.JRadioButton DDUUIDSortRadioButton;
     public javax.swing.JRadioButton NoneRadioButton;
-    public javax.swing.JCheckBox backFaceCullingCheckBox;
-    public javax.swing.JRadioButton camDepthSortRadioButton;
     public javax.swing.JButton clearButton;
     public javax.swing.JLabel debugLabel;
     public javax.swing.JButton drawButton;
-    public javax.swing.JLabel jLabel1;
     public javax.swing.JLabel jLabel2;
-    public javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -549,6 +420,5 @@ public class DebugPanel extends javax.swing.JPanel {
     public javax.swing.JCheckBox showTriNormalsCheckBox;
     private javax.swing.ButtonGroup sortMethodButtonGroup;
     private javax.swing.JLabel trianglesInSceneLabel;
-    public javax.swing.JRadioButton visibleSortRadioButton;
     // End of variables declaration//GEN-END:variables
 }

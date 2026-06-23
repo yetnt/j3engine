@@ -20,6 +20,7 @@ import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.storage.files.ProjectFile;
 import com.j3d.ui.dialog.Spinner;
+import com.j3d.ui.engine.popups.DebugPanel;
 
 /**
  * GTri represents a Triangle. What'd you expect kau.
@@ -224,6 +225,16 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
      * @param A Point A
      * @param B Point B
      * @param C Point C
+     *
+     * @implSpec This constructor is a convenience constructor to {@link #GTri(Color, GLine, GLine, GLine)}
+     * which creates the lines from 3 points. However it's easy to forget that the constructor
+     * implicitly creates attitudinal GLines that still need to be parented to a
+     * {@link Thing}. Forgetting this would break {@link ProjectFile} serialization.
+     * if possible rather use {@link #GTri(Color, GLine, GLine, GLine)}, or otherwise
+     * make use of the ine accessor methods to get the created GLines
+     * @see ProjectFile
+     * @see Thing
+     * @see GLine
      */
     public GTri(Color c, GPoint A, GPoint B, GPoint C) {
         super(c);

@@ -107,9 +107,9 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="pinnedLabelPanel" alignment="1" pref="965" max="32767" attributes="0"/>
-                                  <Component id="startLabelPanel" alignment="1" pref="965" max="32767" attributes="0"/>
-                                  <Component id="recentLabelPanel" alignment="1" pref="965" max="32767" attributes="0"/>
+                                  <Component id="pinnedLabelPanel" alignment="1" pref="788" max="32767" attributes="0"/>
+                                  <Component id="startLabelPanel" alignment="1" pref="788" max="32767" attributes="0"/>
+                                  <Component id="recentLabelPanel" alignment="1" pref="788" max="32767" attributes="0"/>
                                   <Component id="jScrollPane4" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jScrollPane3" max="32767" attributes="0"/>
                                   <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
@@ -335,7 +335,7 @@
                           <Component id="jLabel6" min="-2" pref="176" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="jLabel3" min="-2" pref="553" max="-2" attributes="0"/>
-                          <EmptySpace pref="212" max="32767" attributes="0"/>
+                          <EmptySpace pref="35" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
