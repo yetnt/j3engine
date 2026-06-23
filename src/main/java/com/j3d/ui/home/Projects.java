@@ -178,8 +178,11 @@ public class Projects extends javax.swing.JFrame {
 
         getContentPane().add(welcomePanelLabels);
 
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
         scrollpanepanel.setBackground(J3DTheme.UI_SURFACE.color());
 
+        jScrollPane3.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane3.setMaximumSize(new java.awt.Dimension(327, 300));
         jScrollPane3.setPreferredSize(new java.awt.Dimension(120, 20));
 
@@ -190,6 +193,7 @@ public class Projects extends javax.swing.JFrame {
         pinnedProjectsPanel.setLayout(new javax.swing.BoxLayout(pinnedProjectsPanel, javax.swing.BoxLayout.LINE_AXIS));
         jScrollPane3.setViewportView(pinnedProjectsPanel);
 
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane2.setMaximumSize(new java.awt.Dimension(327, 300));
         jScrollPane2.setPreferredSize(new java.awt.Dimension(120, 20));
 
@@ -200,6 +204,7 @@ public class Projects extends javax.swing.JFrame {
         starterProjectsPanel.setLayout(new javax.swing.BoxLayout(starterProjectsPanel, javax.swing.BoxLayout.LINE_AXIS));
         jScrollPane2.setViewportView(starterProjectsPanel);
 
+        jScrollPane4.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane4.setMaximumSize(new java.awt.Dimension(327, 300));
         jScrollPane4.setPreferredSize(new java.awt.Dimension(120, 20));
 
