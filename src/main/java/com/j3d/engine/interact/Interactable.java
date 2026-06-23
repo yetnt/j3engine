@@ -20,7 +20,7 @@ import java.util.function.BiConsumer;
  * Any class implementing Interactable accepts the label of being the very first user tangible layer of
  * data or collection that can:
  * <ul>
- *     <li>Play within {@link Static#layerTree}</li>
+ *     <li>Play within {@link LayerTree}</li>
  *     <li>Be hidden and deleted via the {@link History} using {@link Action}s</li>
  *     <li>Be serialized by {@link ProjectFile} and reconstructed off the EDT thread via {@link #invokeSwingHooks()}</li>
  * </ul>

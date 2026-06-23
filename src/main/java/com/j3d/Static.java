@@ -78,9 +78,14 @@ public class Static {
     /**
      * The Debug Panel. The panel that holds debug stuff. Initialized by Static
      * and can be accessed via it's {@link FloatingPanel} by the user within the {@link Toolbox}.
-     * Initialised by {@link EngineFrame}
      */
-    public static DebugPanel debugPanel = new DebugPanel();
+    private static DebugPanel debugPanel = new DebugPanel();
+    public static DebugPanel getDebugPanel() {
+        if (debugPanel == null)
+            debugPanel = new DebugPanel();
+
+        return debugPanel;
+    }
     /**
      * The Command Parser Instance. Initialised by {@link EngineFrame} and is mainly a parsing
      * utility and manager for the {@link CommandPalette}. The engine that parses commands.
@@ -92,7 +97,13 @@ public class Static {
      * The user can access this panel via it's wrapped {@link FloatingPanel} version within
      * the {@link Toolbox}. Initialised by Static
      */
-    public static LayerTree layerTree = new LayerTree();
+    private static LayerTree layerTree;
+    public static LayerTree getLayerTree() {
+        if (layerTree == null)
+            layerTree = new LayerTree();
+
+        return layerTree;
+    }
     /**
      * The Main Draw Panel. This is where all geometry is calculated and drawn onto.
      * Initialised by {@link EngineFrame}

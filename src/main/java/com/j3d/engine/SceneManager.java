@@ -497,13 +497,13 @@ public class SceneManager {
         getSelected().clear();
         layers.forEach(layer -> {
             if (layer.getTreeNode() == null) return;
-            Static.layerTree.removeNode(layer.getTreeNode());
+            Static.getLayerTree().removeNode(layer.getTreeNode());
         });
         layers.stream()
                 .flatMap(Collection::stream)
                 .forEach(thing -> {
                     if (thing.getTreeNode() != null)
-                        Static.layerTree.removeNode(thing.getTreeNode());
+                        Static.getLayerTree().removeNode(thing.getTreeNode());
                     thing.getObjects().stream()
                             .filter(o -> o instanceof GTri)
                             .map(GTri.class::cast)

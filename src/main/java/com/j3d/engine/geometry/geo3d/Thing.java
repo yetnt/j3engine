@@ -158,7 +158,7 @@ public class Thing implements Interactable {
         treeNodeIdentity = new TreeNodeIdentity<>(
                 name, this, onSelectCallback
         );
-        treeNode = Static.layerTree.addNode(parent.getTreeNode(), treeNodeIdentity);
+        treeNode = Static.getLayerTree().addNode(parent.getTreeNode(), treeNodeIdentity);
         toggleSaved();
         SceneManager.history.add(
                 new ConstructorAction() {
@@ -173,7 +173,7 @@ public class Thing implements Interactable {
                     public Void run() {
                         // will be called after undo, so we need to re-add the thing
                         setForDeletion(false);
-                        thing.treeNode = Static.layerTree.addNode(parent.getTreeNode(), treeNodeIdentity);
+                        thing.treeNode = Static.getLayerTree().addNode(parent.getTreeNode(), treeNodeIdentity);
                         objectsStream()
                                 .filter(s -> s instanceof GTri)
                                 .map(g -> (GTri)g)
@@ -184,7 +184,7 @@ public class Thing implements Interactable {
                     @Override
                     public void undo() {
                         setForDeletion(true);
-                        Static.layerTree.removeNode(thing.treeNode);
+                        Static.getLayerTree().removeNode(thing.treeNode);
                         objectsStream()
                                 .filter(s -> s instanceof GTri)
                                 .map(g -> (GTri)g)
@@ -667,14 +667,14 @@ public class Thing implements Interactable {
             @Override
             public Void run() {
                 t.setForDeletion(true);
-                Static.layerTree.removeNode(treeNode);
+                Static.getLayerTree().removeNode(treeNode);
                 return null;
             }
 
             @Override
             public void undo() {
                 t.setForDeletion(false);
-                DefaultMutableTreeNode node = Static.layerTree.addNode(parentLayerNode, treeNodeIdentity);
+                DefaultMutableTreeNode node = Static.getLayerTree().addNode(parentLayerNode, treeNodeIdentity);
                 t.treeNode = node;
             }
 

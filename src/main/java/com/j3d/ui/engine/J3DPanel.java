@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 
 import static com.j3d.J3DSettings.jMenuBarOffsetY;
 import static com.j3d.ui.engine.EngineFrame.*;
@@ -21,6 +22,7 @@ import static com.j3d.ui.engine.EngineFrame.selectionArea;
  */
 public class J3DPanel extends JPanel {
     private static ScreenPoint[] selectionAreaOld = new ScreenPoint[]{new ScreenPoint(0, 0), new ScreenPoint(0, 0)};
+    private ArrayList<Runnable> runnables = new ArrayList<>();
     public J3DPanel() {
         super();
     }
@@ -49,6 +51,10 @@ public class J3DPanel extends JPanel {
         };
     }
 
+    public void registerRunnable(Runnable runnable) {
+        runnables.add(runnable);
+    }
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -60,9 +66,10 @@ public class J3DPanel extends JPanel {
         }
         Static.sceneManager.draw((Graphics2D) g, Static.camera);
         // draw selection area ontop of all render things.
-        if (selectionArea[0] != null && selectionArea[1] != null) {
+        if (selectionArea[0] != null && selectionArea[1] != null)
             SelectionUI.run((Graphics2D)g, applySelectionAreaOffset(selectionArea), Static.sceneManager);
-        }
+
+        runnables.forEach(Runnable::run);
     }
 
     /**

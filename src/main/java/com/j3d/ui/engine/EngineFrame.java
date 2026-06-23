@@ -223,6 +223,15 @@ public class EngineFrame extends javax.swing.JFrame {
         this.setSize(J3DSettings.screenSize.width, J3DSettings.screenSize.height);
         this.setResizable(false);
 
+        // Add to the Static references and allow the draw panel to be focusable
+        // and do a lot of other window shenanigans. Swing is the best. (sarcasm)
+        Static.mainPanel = (J3DPanel) mainPanel;
+        Static.mainPanel.setFocusable(true);
+        Static.mainPanel.requestFocusInWindow();
+        Static.mainPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN));
+        Static.mainPanel.setBounds(0, menuBarOffsetY, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
+        Static.mainPanel.setPreferredSize(new Dimension(J3DSettings.screenSize.width, J3DSettings.screenSize.height));
+
         // initialise the Static reference to this frame and set it to be maximised both vertically and horizontally
         Static.mainFrame = this;
         Static.mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -232,7 +241,7 @@ public class EngineFrame extends javax.swing.JFrame {
         if (runExecutor)
             Static.executor = new Executor(Static.sceneManager);
         // initialise the debug panel's components.
-        Static.debugPanel.run();
+        Static.getDebugPanel().startStatisticsThread();
         // create and set the bounds for the hover JLabel's panel.
         HoverJLabelPanel lbl = new HoverJLabelPanel();
         lbl.setBounds(0 ,0, lbl.getPreferredSize().width, lbl.getPreferredSize().height);
@@ -241,15 +250,6 @@ public class EngineFrame extends javax.swing.JFrame {
         lbl.setVisible(true);
         // Add to the Static references.
         Static.hoverLabel = new HoverJLabel(lbl.getLabel());
-
-        // Add to the Static references and allow the draw panel to be focusable
-        // and do a lot of other window shenanigans. Swing is the best. (sarcasm)
-        Static.mainPanel = (J3DPanel) mainPanel;
-        Static.mainPanel.setFocusable(true);
-        Static.mainPanel.requestFocusInWindow();
-        Static.mainPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN));
-        Static.mainPanel.setBounds(0, menuBarOffsetY, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
-        Static.mainPanel.setPreferredSize(new Dimension(J3DSettings.screenSize.width, J3DSettings.screenSize.height));
 
         // Initialize all keybinds to be part of the mainPanel and add to the static references
         InputMap im = Static.mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -263,7 +263,7 @@ public class EngineFrame extends javax.swing.JFrame {
         layeredPane.add(toolbox, JLayeredPane.MODAL_LAYER); // above default layer
 
         // Set the text area of the Logger to be the DebugPanel's JTextArea
-        Static.getLog().setLogArea(Static.debugPanel.logTextArea);
+        Static.getLog().setLogArea(Static.getDebugPanel().logTextArea);
 
         // Calculate offset for the command pallet.
         // ideal offset should be sort of at the bottom of the frame, but centered horizontally.
@@ -459,9 +459,9 @@ public class EngineFrame extends javax.swing.JFrame {
      */
     public static void repaintL() {
         SwingUtilities.invokeLater(() -> {
-            if (Static.debugPanel != null) {
-                Static.debugPanel.revalidate();
-                Static.debugPanel.repaint();
+            if (Static.getDebugPanel() != null) {
+                Static.getDebugPanel().revalidate();
+                Static.getDebugPanel().repaint();
             }
             COMMAND_PALETTE.revalidate();
             COMMAND_PALETTE.repaint();

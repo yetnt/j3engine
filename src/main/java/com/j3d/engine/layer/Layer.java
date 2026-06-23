@@ -79,7 +79,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
     public void invokeSwingHooks() {
         treeNodeIdentity = new TreeNodeIdentity<>(
                 identifier, this, onSelectCallback);
-        treeNode = Static.layerTree.addNode(null, treeNodeIdentity);
+        treeNode = Static.getLayerTree().addNode(null, treeNodeIdentity);
         SceneManager.history.add(
                 new ConstructorAction() {
                     @Override
@@ -93,14 +93,14 @@ public class Layer extends ArrayList<Thing> implements Interactable {
                     @Override
                     public Void run() {
                         layer.setForDeletion(false);
-                        layer.treeNode = Static.layerTree.addNode(null, treeNodeIdentity);
+                        layer.treeNode = Static.getLayerTree().addNode(null, treeNodeIdentity);
                         return null;
                     }
 
                     @Override
                     public void undo() {
                         layer.setForDeletion(true);
-                        Static.layerTree.removeNode(layer.treeNode);
+                        Static.getLayerTree().removeNode(layer.treeNode);
                     }
 
                     @Override
@@ -151,7 +151,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
         treeNodeIdentity = new TreeNodeIdentity<>(
                 "LAYER-0", this, onSelectCallback
         );
-        treeNode = Static.layerTree.addNode(null, treeNodeIdentity);
+        treeNode = Static.getLayerTree().addNode(null, treeNodeIdentity);
         SceneManager.history.add(
                 new ConstructorAction() {
                     @Override
@@ -355,14 +355,14 @@ public class Layer extends ArrayList<Thing> implements Interactable {
             @Override
             public Void run() {
                 l.setForDeletion(true);
-                Static.layerTree.removeNode(l.treeNode);
+                Static.getLayerTree().removeNode(l.treeNode);
                 return null;
             }
 
             @Override
             public void undo() {
                 l.setForDeletion(false);
-                l.treeNode = Static.layerTree.addNode(null, l.treeNodeIdentity);
+                l.treeNode = Static.getLayerTree().addNode(null, l.treeNodeIdentity);
             }
 
             @Override

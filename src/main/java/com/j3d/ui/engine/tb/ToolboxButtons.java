@@ -37,11 +37,11 @@ public class ToolboxButtons {
     static {
         register("Toggle Debug", e -> {
             // Toggle debug mode
-            Static.debugPanel.toggleHidden();
+            Static.getDebugPanel().toggleHidden();
         });
         // Example button registration
         FloatingPanel fpl = new FloatingPanel(
-                "Layer Tree", Static.layerTree,
+                "Layer Tree", Static.getLayerTree(),
                 (c) -> {
                     if (!(c instanceof LayerTree lt)) return;
                     lt.listJTree.setBounds(0, 0, c.getPreferredSize().width, c.getPreferredSize().height);
