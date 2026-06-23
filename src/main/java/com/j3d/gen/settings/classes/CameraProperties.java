@@ -6,22 +6,12 @@ import com.j3d.gen.settings.SettingsChild;
 import com.j3d.gen.settings.types.DoubleSetting;
 import com.j3d.gen.settings.Setting;
 import com.j3d.gen.settings.SettingsParent;
+import com.j3d.gen.settings.types.IntSetting;
 import com.j3d.ui.settings.SettingsParentPanel;
 
 import java.util.ArrayList;
 
 public class CameraProperties implements SettingsParent {
-    public DoubleSetting fieldOfView = new DoubleSetting(
-            "Field of View",
-            2.0,
-            "The field of view of the camera, in degrees.",
-            1.0,
-            200.0
-    ).setValues(
-            d -> (int)(d * 100),
-            i -> i/100.0,
-            0.01
-            );
     public DoubleSetting movementSpeed = new DoubleSetting(
             "Movement Speed",
             0.5,
@@ -44,6 +34,17 @@ public class CameraProperties implements SettingsParent {
             i -> i/100.0,
             0.01
     );
+    public DoubleSetting fieldOfView = new DoubleSetting(
+            "Field of View",
+            2.0,
+            "The field of view of the camera, in degrees.",
+            1.0,
+            200.0
+    ).setValues(
+            d -> (int)(d * 100),
+            i -> i/100.0,
+            0.01
+    );
     public DoubleSetting focalLength = new DoubleSetting(
             "Focal Length",
             37.0,
@@ -55,10 +56,17 @@ public class CameraProperties implements SettingsParent {
             i -> i/100.0,
             0.01
     ).onSetValue((Double d) -> {
-        Static.camera.setProjectionPlane(new Vector3(0, 0, d));
+        Static.camera.setFocalLength(d);
         Static.mainPanel.repaint();
         return null;
     });
+    public IntSetting nearZeroProjectionPower = new IntSetting(
+            "Near Zero Projection Power",
+            18,
+            "When the dz of a point approaches less than 10^-x, it's clamped to 10^-6",
+            6,
+            30
+    );
 
     public CameraProperties() {
 
@@ -81,6 +89,7 @@ public class CameraProperties implements SettingsParent {
             add(movementSpeed);
             add(orbitSensitivity);
             add(focalLength);
+            add(nearZeroProjectionPower);
         }};
     }
 
@@ -96,6 +105,7 @@ public class CameraProperties implements SettingsParent {
             add(movementSpeed);
             add(orbitSensitivity);
             add(focalLength);
+            add(nearZeroProjectionPower);
         }};
     }
 

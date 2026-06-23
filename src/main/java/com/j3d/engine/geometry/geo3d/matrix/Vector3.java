@@ -2,6 +2,7 @@ package com.j3d.engine.geometry.geo3d.matrix;
 
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
 import com.j3d.engine.geometry.geo3d.Camera;
+import com.j3d.gen.settings.Settings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -269,7 +270,9 @@ public class Vector3 implements MatrixInterface {
 
         // Perform perspective projection
         double dz = d.getZ();
-        if (dz < 1e-18) dz = 1e-6; // Avoid division by zero or near-zero
+        // this setting is default to 18. So 10e-18
+        if (dz < Math.pow(10, -Settings.cameraProperties.nearZeroProjectionPower.getValue()))
+            dz = 1e-6; // Avoid division by zero or near-zero
         double bz = (e.getZ() / dz) * d.getX() + e.getX();
         double by = (e.getZ() / dz) * d.getY() + e.getY();
 

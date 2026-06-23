@@ -203,4 +203,12 @@ public class Camera {
     public String toString() {
         return "Camera{" + "position=" + position + ", rotation=" + rotation + ", projectionPlane=" + projectionPlane + '}';
     }
+
+    public void setFocalLength(double d) {
+        this.projectionPlane = new Vector3(
+                this.projectionPlane.getX(),
+                this.projectionPlane.getY(),
+                d
+        );
+    }
 }
