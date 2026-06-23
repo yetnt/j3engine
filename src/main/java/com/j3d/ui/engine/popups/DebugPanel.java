@@ -13,7 +13,8 @@ import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.threads.StatisticsThread;
-import com.j3d.ui.J3DTheme;
+import com.j3d.ui.generic.J3DScrollBarUI;
+import com.j3d.ui.generic.J3DTheme;
 import com.j3d.ui.dialog.AreYouSure;
 import com.j3d.ui.engine.FloatingPanel;
 
@@ -52,6 +53,8 @@ public class DebugPanel extends javax.swing.JPanel {
         }
         initComponents();
         floatingPanel.finish(this, (c) -> {});
+        J3DScrollBarUI.setBars(jScrollPane1);
+        J3DScrollBarUI.setBars(jScrollPane2);
     }
 
     public void toggleHidden() {

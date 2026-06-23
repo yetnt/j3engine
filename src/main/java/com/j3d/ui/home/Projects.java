@@ -8,7 +8,8 @@ import com.j3d.Startup;
 import com.j3d.Static;
 import com.j3d.gen.settings.CoreSettings;
 import com.j3d.storage.files.util.ProjectImagePair;
-import com.j3d.ui.J3DTheme;
+import com.j3d.ui.generic.J3DScrollBarUI;
+import com.j3d.ui.generic.J3DTheme;
 import com.j3d.utility.ImageUtils;
 import com.j3d.utility.generators.JLabelRichText;
 
@@ -50,6 +51,10 @@ public class Projects extends javax.swing.JFrame {
                 );
             }
         });
+        J3DScrollBarUI.setBars(jScrollPane1);
+        J3DScrollBarUI.setBars(jScrollPane2);
+        J3DScrollBarUI.setBars(jScrollPane3);
+        J3DScrollBarUI.setBars(jScrollPane4);
         Static.getLog().uiPrintLn("Projects completed building");
     }
 

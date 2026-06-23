@@ -7,7 +7,7 @@ import com.j3d.ui.SafeJLabel;
 import com.j3d.engine.interact.input.keyboard.DefaultKeys;
 import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.selection.SelectionManager;
-import com.j3d.ui.J3DTheme;
+import com.j3d.ui.generic.J3DTheme;
 import com.j3d.utility.generators.JLabelRichText;
 
 import javax.swing.*;

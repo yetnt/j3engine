@@ -26,10 +26,12 @@ import com.j3d.gen.settings.Settings;
 import com.j3d.storage.files.FilesUtility;
 import com.j3d.storage.files.ProjectFile;
 import com.j3d.threads.LongTask;
-import com.j3d.ui.*;
 import com.j3d.ui.engine.popups.DebugPanel;
 import com.j3d.ui.engine.popups.tree.LayerTree;
 import com.j3d.ui.engine.tb.ToolboxButtons;
+import com.j3d.ui.generic.CursorManager;
+import com.j3d.ui.generic.CursorNames;
+import com.j3d.ui.generic.J3DTheme;
 import com.j3d.ui.settings.PreferencesFrame;
 import com.j3d.ui.engine.tb.Toolbox;
 import java.awt.*;
@@ -523,6 +525,9 @@ public class EngineFrame extends javax.swing.JFrame {
         );
 
         getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
+
+        jMenuBar1.setBackground(J3DTheme.UI_SURFACE.color().brighter());
+        jMenuBar1.setOpaque(true);
 
         jMenu1.setText("File");
 

@@ -4,6 +4,7 @@
  */
 package com.j3d.ui.engine.popups.tree;
 
+import com.j3d.ui.generic.J3DScrollBarUI;
 import com.j3d.ui.engine.FloatingPanel;
 
 import java.util.Arrays;
@@ -36,6 +37,7 @@ public class LayerTree extends javax.swing.JPanel {
             lt.jScrollPane1.setVisible(true);
             lt.listJTree.setVisible(true);
         });
+        J3DScrollBarUI.setBars(jScrollPane1);
     }
 
     /**

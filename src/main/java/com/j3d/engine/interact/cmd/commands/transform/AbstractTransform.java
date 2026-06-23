@@ -15,7 +15,7 @@ import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.*;
 import com.j3d.gen.settings.CoreSettings;
 import com.j3d.gen.settings.Settings;
-import com.j3d.ui.J3DTheme;
+import com.j3d.ui.generic.J3DTheme;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.engine.interact.cmd.commands.transform.handles.Handle;
 import com.j3d.engine.interact.cmd.commands.transform.handles.HandleType;

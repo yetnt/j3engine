@@ -18,7 +18,7 @@ import com.j3d.engine.interact.selection.SelectionType;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.layer.LayerList;
 import com.j3d.engine.react.history.History;
-import com.j3d.ui.J3DTheme;
+import com.j3d.ui.generic.J3DTheme;
 
 import java.awt.*;
 import java.util.*;

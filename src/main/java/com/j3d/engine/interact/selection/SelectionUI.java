@@ -2,12 +2,10 @@ package com.j3d.engine.interact.selection;
 
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.ScreenPoint;
-import com.j3d.ui.CursorManager;
-import com.j3d.ui.CursorNames;
+import com.j3d.ui.generic.CursorManager;
+import com.j3d.ui.generic.CursorNames;
 
 import java.awt.*;
-
-import static com.j3d.Static.getLog;
 
 /**
  * SelectionUI is a utility class for rendering the selection rectangle on the screen and determining the type of selection based on user input.

@@ -1,19 +1,14 @@
 package com.j3d.ui.engine.tb;
 
 import com.j3d.Static;
-import com.j3d.engine.SceneManager;
 import com.j3d.engine.interact.cmd.CommandsManager;
-import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.react.history.History;
 import com.j3d.threads.LongTask;
-import com.j3d.ui.CursorManager;
-import com.j3d.ui.CursorNames;
-import com.j3d.ui.J3DTheme;
-import com.j3d.ui.engine.FloatingPanel;
-import com.j3d.ui.engine.popups.DebugPanel;
-import com.j3d.ui.engine.popups.tree.LayerTree;
+import com.j3d.ui.generic.CursorManager;
+import com.j3d.ui.generic.CursorNames;
+import com.j3d.ui.generic.J3DTheme;
 
 import javax.swing.*;
 import java.awt.*;

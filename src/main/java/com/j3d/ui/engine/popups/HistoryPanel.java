@@ -4,6 +4,7 @@
  */
 package com.j3d.ui.engine.popups;
 
+import com.j3d.ui.generic.J3DScrollBarUI;
 import com.j3d.ui.engine.FloatingPanel;
 
 import javax.swing.*;
@@ -26,6 +27,7 @@ public class HistoryPanel extends javax.swing.JPanel {
             p.setBounds(0, 0, p.getPreferredSize().width, p.getPreferredSize().height);
             p.setVisible(true);
         });
+        J3DScrollBarUI.setBars(jScrollPane1);
     }
 
     public void toggleHidden() {

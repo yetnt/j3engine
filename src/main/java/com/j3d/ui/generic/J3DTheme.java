@@ -1,4 +1,4 @@
-package com.j3d.ui;
+package com.j3d.ui.generic;
 
 import com.j3d.storage.db.DatabaseManager;
 

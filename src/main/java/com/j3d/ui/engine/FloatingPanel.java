@@ -5,7 +5,7 @@
 package com.j3d.ui.engine;
 
 import com.j3d.Static;
-import com.j3d.ui.J3DTheme;
+import com.j3d.ui.generic.J3DTheme;
 
 import javax.swing.*;
 import java.awt.*;

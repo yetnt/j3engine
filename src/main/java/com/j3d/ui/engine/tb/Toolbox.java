@@ -4,7 +4,8 @@
  */
 package com.j3d.ui.engine.tb;
 
-import com.j3d.ui.J3DTheme;
+import com.j3d.ui.generic.J3DScrollBarUI;
+import com.j3d.ui.generic.J3DTheme;
 
 /**
  *
@@ -17,6 +18,9 @@ public class Toolbox extends javax.swing.JPanel {
      */
     public Toolbox() {
         initComponents();
+        J3DScrollBarUI.setBars(toolboxScrollpane);
+        repaint();
+        revalidate();
     }
 
     /**

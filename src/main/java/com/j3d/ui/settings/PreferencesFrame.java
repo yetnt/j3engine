@@ -5,7 +5,8 @@
 package com.j3d.ui.settings;
 
 import com.j3d.Static;
-import com.j3d.ui.J3DTheme;
+import com.j3d.ui.generic.J3DScrollBarUI;
+import com.j3d.ui.generic.J3DTheme;
 
 /**
  *
@@ -23,6 +24,7 @@ public class PreferencesFrame extends javax.swing.JFrame {
             jPanel1.add(child.panel());
             System.out.println("Added");
         });
+        J3DScrollBarUI.setBars(jScrollPane1);
         this.pack();
         this.repaint();
         this.revalidate();

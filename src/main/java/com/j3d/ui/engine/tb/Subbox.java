@@ -5,13 +5,13 @@
 package com.j3d.ui.engine.tb;
 
 import com.j3d.Static;
-import com.j3d.ui.CursorManager;
-import com.j3d.ui.CursorNames;
-import com.j3d.ui.J3DTheme;
+import com.j3d.ui.generic.CursorManager;
+import com.j3d.ui.generic.CursorNames;
+import com.j3d.ui.generic.J3DScrollBarUI;
+import com.j3d.ui.generic.J3DTheme;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -30,11 +30,13 @@ public class Subbox extends javax.swing.JPanel {
      */
     public Subbox() {
         initComponents();
+        J3DScrollBarUI.setBars(toolboxScrollpane);
     }
 
     public Subbox(Consumer<Subbox> init) {
         initComponents();
         init.accept(this);
+        J3DScrollBarUI.setBars(toolboxScrollpane);
     }
 
     public Subbox add(String label, ActionListener aL, String imageFileName) {

@@ -7,10 +7,9 @@ package com.j3d.ui.settings.panels;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.gen.settings.types.ComplexSetting;
-import com.j3d.ui.J3DTheme;
+import com.j3d.ui.generic.J3DTheme;
 
 import java.awt.event.ActionEvent;
-import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import javax.swing.JLabel;
 

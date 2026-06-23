@@ -10,7 +10,7 @@ import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.api.SQLOperator;
 import com.j3d.storage.db.users.CUsers;
 import com.j3d.storage.db.users.User;
-import com.j3d.ui.J3DTheme;
+import com.j3d.ui.generic.J3DTheme;
 import com.j3d.utility.PasswordHasher;
 
 import javax.swing.*;

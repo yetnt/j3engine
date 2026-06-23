@@ -6,9 +6,9 @@ package com.j3d.ui.home;
 
 import com.j3d.Startup;
 import com.j3d.storage.files.util.ProjectImagePair;
-import com.j3d.ui.CursorManager;
-import com.j3d.ui.CursorNames;
-import com.j3d.ui.J3DTheme;
+import com.j3d.ui.generic.CursorManager;
+import com.j3d.ui.generic.CursorNames;
+import com.j3d.ui.generic.J3DTheme;
 
 import javax.swing.*;
 import java.awt.*;

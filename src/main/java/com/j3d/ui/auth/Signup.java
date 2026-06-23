@@ -9,9 +9,9 @@ import com.j3d.gen.settings.CoreSettings;
 import com.j3d.storage.db.users.Password;
 import com.j3d.storage.db.users.User;
 import com.j3d.storage.db.users.UsersTable;
-import com.j3d.ui.CursorManager;
-import com.j3d.ui.CursorNames;
-import com.j3d.ui.J3DTheme;
+import com.j3d.ui.generic.CursorManager;
+import com.j3d.ui.generic.CursorNames;
+import com.j3d.ui.generic.J3DTheme;
 import com.j3d.utility.generic.Pair;
 import com.j3d.utility.PasswordHasher;
 
