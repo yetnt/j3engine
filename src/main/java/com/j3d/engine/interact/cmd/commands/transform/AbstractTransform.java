@@ -126,6 +126,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
         this.eventName = eventName;
         this.gearTrain = gearTrain;
         this.gear = newGearKey(commandName);
+        keys.add(gear);
     }
 
     /**
@@ -151,7 +152,6 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
         }
 
         CommandsManager.setAsCurrent(this);
-        keys.add(gear);
         if (args.length > 0 && argSet.isValid((String)args[0])) {
             String arg = (String)args[0];
             faceMode = switch (arg) {
@@ -284,9 +284,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
      */
     private void finished(SafeJLabel lbl) {
         mouseOwner.handles.forEach(Handle::clear);
-        keys.forEach(key -> {
-            Static.keybinds.removeJ3Key(key.getId());
-        });
+        keys.forEach(key -> Static.keybinds.removeJ3Key(key.getId()));
         Static.sceneManager.removeOverlap(overlapId);
         lbl.clear();
         Static.sceneManager.deselectAll();
