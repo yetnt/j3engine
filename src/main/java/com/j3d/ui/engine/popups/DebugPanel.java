@@ -6,6 +6,7 @@ package com.j3d.ui.engine.popups;
 
 import com.j3d.J3DSettings;
 import com.j3d.Static;
+import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.draw.tris.TriangleSortMethod;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
@@ -17,6 +18,7 @@ import com.j3d.ui.generic.J3DScrollBarUI;
 import com.j3d.ui.generic.J3DTheme;
 import com.j3d.ui.dialog.AreYouSure;
 import com.j3d.ui.engine.FloatingPanel;
+import com.j3d.utility.generators.JLabelRichText;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 import static com.j3d.Static.*;
 
@@ -35,10 +38,19 @@ public class DebugPanel extends javax.swing.JPanel {
 
     public FloatingPanel floatingPanel = new FloatingPanel("Debug Panel");
     private final Map<UUID, JLabel> statsLabelMap = new HashMap<>();
+    private Consumer<JLabelRichText> stealStatsThreadRun = (s) -> {};
     private final StatisticsThread statisticsThread = new StatisticsThread(
-            (map) -> statsLabelMap.forEach(
-                    (uuid, label) -> label.setText(map.get(uuid).toString())
-            )
+            (map) -> {
+                JLabelRichText style = new JLabelRichText().bold().italic().font(Color.RED, "6");
+                statsLabelMap.forEach(
+                        (uuid, label) -> label.setText(
+                               JLabelRichText.of(map.get(uuid).toString(), style).wrapHTML()
+                        )
+                );
+                // Since this is on the EDt, we shall use that to our advantage for static stats
+                // instead of using event listeners. Why? my code.
+                stealStatsThreadRun.accept(style);
+            }
     );
 
     /**
@@ -96,6 +108,8 @@ public class DebugPanel extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         repaintsPerSecondLabel = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        trianglesInSceneLabel = new javax.swing.JLabel();
 
         setBackground(J3DTheme.UI_SURFACE.color());
         setForeground(new java.awt.Color(51, 204, 0));
@@ -319,11 +333,20 @@ public class DebugPanel extends javax.swing.JPanel {
         logTextArea.setRows(5);
         jScrollPane1.setViewportView(logTextArea);
 
+        jLabel4.setForeground(J3DTheme.TEXT_PRIMARY.color());
         jLabel4.setText("Repaints:");
 
+        repaintsPerSecondLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
         repaintsPerSecondLabel.setText("jLabel5");
 
+        jLabel6.setForeground(J3DTheme.TEXT_PRIMARY.color());
         jLabel6.setText("per second");
+
+        jLabel5.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        jLabel5.setText("Triangles:");
+
+        trianglesInSceneLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        trianglesInSceneLabel.setText("jLabel5");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -336,11 +359,16 @@ public class DebugPanel extends javax.swing.JPanel {
                     .addComponent(logLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addComponent(repaintsPerSecondLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel6)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(trianglesInSceneLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(repaintsPerSecondLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(12, 12, 12)
+                                .addComponent(jLabel6)))))
                 .addContainerGap(10, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -356,7 +384,11 @@ public class DebugPanel extends javax.swing.JPanel {
                     .addComponent(jLabel4)
                     .addComponent(repaintsPerSecondLabel)
                     .addComponent(jLabel6))
-                .addContainerGap(152, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(trianglesInSceneLabel))
+                .addContainerGap(124, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -475,6 +507,12 @@ public class DebugPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_clearButtonActionPerformed
 
     public void startStatisticsThread() {
+        stealStatsThreadRun = style -> trianglesInSceneLabel.setText(
+                JLabelRichText.of(
+                        "" + TriStateArea.trisRegistered(),
+                        style
+                ).wrapHTML()
+        );
         statsLabelMap.put(StatisticsThread.IdEnum.REPAINTS_PER_SECOND.getId(), repaintsPerSecondLabel);
         statisticsThread.registerStatistic(StatisticsThread.IdEnum.REPAINTS_PER_SECOND.getId());
         mainPanel.registerRunnable(
@@ -497,6 +535,7 @@ public class DebugPanel extends javax.swing.JPanel {
     public javax.swing.JLabel jLabel2;
     public javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     public javax.swing.JScrollPane jScrollPane1;
@@ -509,6 +548,7 @@ public class DebugPanel extends javax.swing.JPanel {
     public javax.swing.JCheckBox showTriDistCheckBox;
     public javax.swing.JCheckBox showTriNormalsCheckBox;
     private javax.swing.ButtonGroup sortMethodButtonGroup;
+    private javax.swing.JLabel trianglesInSceneLabel;
     public javax.swing.JRadioButton visibleSortRadioButton;
     // End of variables declaration//GEN-END:variables
 }

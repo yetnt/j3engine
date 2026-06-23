@@ -19,6 +19,16 @@ public class JLabelRichText implements HelpProperties {
         content = cont;
     }
 
+    public JLabelRichText() {
+
+    }
+
+    public static JLabelRichText of(String string, JLabelRichText style) {
+        return new JLabelRichText(string)
+                .setClose(style.getClose())
+                .setOpen(style.getOpen());
+    }
+
     public JLabelRichText add(String cont) {
         content = content + cont;
         return this;
@@ -217,6 +227,24 @@ public class JLabelRichText implements HelpProperties {
 
     public void add(JLabelRichText jLabelRichText) {
         this.content += jLabelRichText.toString();
+    }
+
+    public ArrayList<String> getClose() {
+        return close;
+    }
+
+    public ArrayList<String> getOpen() {
+        return open;
+    }
+
+    public JLabelRichText setClose(ArrayList<String> close) {
+        this.close = close;
+        return this;
+    }
+
+    public JLabelRichText setOpen(ArrayList<String> open) {
+        this.open = open;
+        return this;
     }
 
     public enum Heading {

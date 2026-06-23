@@ -2,9 +2,9 @@ package com.j3d.ui.engine.tb;
 
 import com.j3d.Static;
 import com.j3d.engine.interact.cmd.CommandsManager;
-import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.react.history.History;
+import com.j3d.storage.files.engine.DebugDump;
 import com.j3d.threads.LongTask;
 import com.j3d.ui.generic.CursorManager;
 import com.j3d.ui.generic.CursorNames;
@@ -31,14 +31,15 @@ public class ToolboxButtons {
     public static final int BUTTON_PANEL_SIZE = 120;
 
     static {
-        register("Toggle Debug", e -> {
+        register("Toggle Debug Panel", e -> {
             // Toggle debug mode
             Static.getDebugPanel().toggleHidden();
         });
         // Example button registration
-        register("Toggle Layers", e -> {
-            Static.getLayerTree().toggleHidden();
-        }, "layers.png");
+        register("Toggle Layers",
+                e -> Static.getLayerTree().toggleHidden(),
+                "layers.png");
+
         // another for exmaple
         register("Toggle Throbber", e -> {
             String nString = JOptionPane.showInputDialog("Input time in ms to sleep");
@@ -68,71 +69,30 @@ public class ToolboxButtons {
             long current = System.currentTimeMillis();
             Camera cam = Static.camera;
             try (PrintWriter out = Static.getEngineFiles().debugDump.writer(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss")) + ".csv")) {
-                out.println("time,cx,cy,cz,cpitch,cyaw,croll,layerID,layerVisible,thingName,thingID,triID,tridist,trix,triy,triz,trinx,triny,trinz,tricol,triVisible");
-
-                Static.sceneManager.layers.forEach(
-                        l -> l.forEach(thing -> thing.getObjects().stream()
-                                .filter(GTri.class::isInstance)
-                                .map(GTri.class::cast)
-                                .forEach(tri -> {
-                                    String sb = current + "," +
-                                            cam.getPosition().getX() + "," +
-                                            cam.getPosition().getY() + "," +
-                                            cam.getPosition().getZ() + "," +
-                                            cam.getRotation().getPitch() + "," +
-                                            cam.getRotation().getYaw() + "," +
-                                            cam.getRotation().getRoll() + "," +
-                                            l.getIdentifier() + "," +
-                                            !l.isHidden() + "," +
-                                            thing.getName() + "," +
-                                            thing.getId() + "," +
-                                            tri.getId() + "," +
-                                            tri.euclideanDist() + "," +
-                                            tri.getPivot().getX() + "," +
-                                            tri.getPivot().getY() + "," +
-                                            tri.getPivot().getZ() + "," +
-                                            tri.normal.getX() + "," +
-                                            tri.normal.getY() + "," +
-                                            tri.normal.getZ() + "," +
-                                            String.format("#%02X%02X%02X", tri.getColour().getRed(), tri.getColour().getGreen(), tri.getColour().getBlue()) + "," +
-                                            !tri.isHidden();
-
-                                            out.println(sb);
-                                            out.flush();
-                                }
-                                )
-                        )
-                );
+                DebugDump.print(out, current, cam);
+                Desktop.getDesktop().open(Static.getEngineFiles().debugDump.getFolder());
             } catch (RuntimeException | IOException ex) {
                 throw new RuntimeException(ex);
             }
 
         });
         registerComplex("Transform", new Subbox(s -> s
-                .add("translate", e -> {
-                    Static.commandParser.runCommand(
-                            CommandsManager.commands.transform, "transform",
-                            new ArrayList<>(List.of("translate")), new ArrayList<>()
-                    );
-                    }, "translate.png")
-                .add("rotate", e -> {
-                    Static.commandParser.runCommand(
-                            CommandsManager.commands.transform, "transform",
-                            new ArrayList<>(List.of("rotate")), new ArrayList<>()
-                    );
-                    }, "rotate.png")
-                .add("scale", e -> {
-                    Static.commandParser.runCommand(
-                            CommandsManager.commands.transform, "transform",
-                            new ArrayList<>(List.of("scale")), new ArrayList<>()
-                    );
-                    }, "scale.png")), "transform.png");
+                .add("translate", e -> Static.commandParser.runCommand(
+                        CommandsManager.commands.transform, "transform",
+                        new ArrayList<>(List.of("translate")), new ArrayList<>()
+                ), "translate.png")
+                .add("rotate", e -> Static.commandParser.runCommand(
+                        CommandsManager.commands.transform, "transform",
+                        new ArrayList<>(List.of("rotate")), new ArrayList<>()
+                ), "rotate.png")
+                .add("scale", e -> Static.commandParser.runCommand(
+                        CommandsManager.commands.transform, "transform",
+                        new ArrayList<>(List.of("scale")), new ArrayList<>()
+                ), "scale.png")), "transform.png");
 
         register("Orbit", e -> Static.commandParser.runCommand(
-                CommandsManager.commands.orbit,
-                "orbit",
-                new ArrayList<>(),
-                new ArrayList<>()), "orbit.png");
+                CommandsManager.commands.orbit, "orbit",
+                new ArrayList<>(), new ArrayList<>()), "orbit.png");
         register("History", e -> History.panel.toggleHidden());
     }
 
@@ -183,7 +143,7 @@ public class ToolboxButtons {
         });
         ImageIcon unscaled = new ImageIcon(Objects.requireNonNull(ToolboxButtons.class.getResource("/art/toolbox/" + imageFileName)));
         Image scaled = unscaled.getImage().getScaledInstance(l.getPreferredSize().width, l.getPreferredSize().height, Image.SCALE_SMOOTH);
-        l.setText(""); // Set the text to nun so that it doesnt push the picture
+        l.setText(""); // Set the text to nun so that it doesn't push the picture
         l.setIcon(new ImageIcon(scaled));
     }
 

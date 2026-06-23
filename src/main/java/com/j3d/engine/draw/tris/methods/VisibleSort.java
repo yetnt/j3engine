@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
  * @see TriStateArea
  */
 public class VisibleSort extends SortMethod {
+    ZDepthIdBuffer zb = new ZDepthIdBuffer();
 
     public VisibleSort(ArrayList<TriListener> registered) {
         super(registered);
@@ -71,7 +72,6 @@ public class VisibleSort extends SortMethod {
      */
     private void updateVisibilityAndSort() {
         // Lazy reference to avoid a hard dependency in the class header
-        ZDepthIdBuffer zb = new ZDepthIdBuffer();
         zb.clear();
 
         // Rasterize all triangles known to the registered listeners

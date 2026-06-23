@@ -163,4 +163,8 @@ public class TriStateArea {
     public static void clearRegistered() {
         registered.clear();
     }
+
+    public static int trisRegistered() {
+        return registered.size();
+    }
 }

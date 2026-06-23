@@ -9,6 +9,7 @@ import com.j3d.engine.interact.cmd.commands.engine.EngineCmd;
 import com.j3d.engine.interact.cmd.commands.orbit.OrbitCmd;
 import com.j3d.engine.interact.cmd.commands.ExplodeCmd;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
+import com.j3d.engine.interact.cmd.commands.uicmd.UICmd;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,7 @@ public class Commands {
     public OrbitCmd orbit = new OrbitCmd();
     public EngineCmd engine = new EngineCmd();
     public ExplodeCmd explodeCmd = new ExplodeCmd();
+    public UICmd uiCmd = new UICmd();
 
     /**
      * Default (empty) constructor
@@ -56,7 +58,7 @@ public class Commands {
         return new ArrayList<>(List.of(
                 debug, transform, lookAt,
                 teleport, orbit, engine,
-                explodeCmd
+                explodeCmd, uiCmd
         ));
     }
 }
