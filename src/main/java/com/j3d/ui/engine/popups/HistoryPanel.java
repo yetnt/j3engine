@@ -4,17 +4,32 @@
  */
 package com.j3d.ui.engine.popups;
 
+import com.j3d.ui.engine.FloatingPanel;
+
+import javax.swing.*;
+
 /**
  *
  * @author ACER
  */
 public class HistoryPanel extends javax.swing.JPanel {
 
+    public FloatingPanel floatingPanel = new FloatingPanel("Debug Panel");
+
     /**
      * Creates new form HistoryPanel
      */
     public HistoryPanel() {
         initComponents();
+        floatingPanel.finish(this, (c) -> {
+            if (!(c instanceof JPanel p)) return;
+            p.setBounds(0, 0, p.getPreferredSize().width, p.getPreferredSize().height);
+            p.setVisible(true);
+        });
+    }
+
+    public void toggleHidden() {
+        floatingPanel.toggleHidden();
     }
 
     public void addPanel(ActionPanel actionPanel, boolean greyed) {

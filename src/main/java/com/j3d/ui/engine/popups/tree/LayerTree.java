@@ -4,6 +4,8 @@
  */
 package com.j3d.ui.engine.popups.tree;
 
+import com.j3d.ui.engine.FloatingPanel;
+
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.BiConsumer;
@@ -19,6 +21,22 @@ public class LayerTree extends javax.swing.JPanel {
     
     public static DefaultTreeModel model;
     public static DefaultMutableTreeNode root;
+    public FloatingPanel floatingPanel = new FloatingPanel("Layer Tree");
+
+    /**
+     * Creates new LayerTree
+     */
+    public LayerTree() {
+        initComponents();
+        floatingPanel.finish(this, (c) -> {
+            if (!(c instanceof LayerTree lt)) return;
+            lt.listJTree.setBounds(0, 0, c.getPreferredSize().width, c.getPreferredSize().height);
+            lt.jScrollPane1.setBounds(0, 0, c.getPreferredSize().width, c.getPreferredSize().height);
+            lt.setVisible(true);
+            lt.jScrollPane1.setVisible(true);
+            lt.listJTree.setVisible(true);
+        });
+    }
 
     /**
      * Adds a new node to the tree.
@@ -45,6 +63,10 @@ public class LayerTree extends javax.swing.JPanel {
         listJTree.expandPath(new TreePath(parent.getPath()));
         
         return node;
+    }
+
+    public void toggleHidden() {
+        floatingPanel.toggleHidden();
     }
 
     /**
@@ -74,13 +96,6 @@ public class LayerTree extends javax.swing.JPanel {
         if (node.getParent() != null) {
             model.removeNodeFromParent(node);
         }
-    }
-
-    /**
-     * Creates new form List
-     */
-    public LayerTree() {
-        initComponents();
     }
 
     /**

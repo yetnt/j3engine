@@ -12,6 +12,7 @@ import com.j3d.ui.CursorManager;
 import com.j3d.ui.CursorNames;
 import com.j3d.ui.J3DTheme;
 import com.j3d.ui.engine.FloatingPanel;
+import com.j3d.ui.engine.popups.DebugPanel;
 import com.j3d.ui.engine.popups.tree.LayerTree;
 
 import javax.swing.*;
@@ -40,19 +41,8 @@ public class ToolboxButtons {
             Static.getDebugPanel().toggleHidden();
         });
         // Example button registration
-        FloatingPanel fpl = new FloatingPanel(
-                "Layer Tree", Static.getLayerTree(),
-                (c) -> {
-                    if (!(c instanceof LayerTree lt)) return;
-                    lt.listJTree.setBounds(0, 0, c.getPreferredSize().width, c.getPreferredSize().height);
-                    lt.jScrollPane1.setBounds(0, 0, c.getPreferredSize().width, c.getPreferredSize().height);
-                    lt.setVisible(true);
-                    lt.jScrollPane1.setVisible(true);
-                    lt.listJTree.setVisible(true);
-                });
         register("Toggle Layers", e -> {
-            if (fpl.isHidden()) fpl.showThis();
-            else fpl.hideThis();
+            Static.getLayerTree().toggleHidden();
         }, "layers.png");
         // another for exmaple
         register("Toggle Throbber", e -> {
@@ -123,7 +113,6 @@ public class ToolboxButtons {
             }
 
         });
-
         registerComplex("Transform", new Subbox(s -> s
                 .add("translate", e -> {
                     Static.commandParser.runCommand(
@@ -144,39 +133,12 @@ public class ToolboxButtons {
                     );
                     }, "scale.png")), "transform.png");
 
-        FloatingPanel fp = new FloatingPanel("HIII", new javax.swing.JLabel(), (o) -> {
-            if (!(o instanceof JLabel lbl)) return;
-            lbl.setFont(new java.awt.Font("Tahoma", Font.BOLD, 12)); // NOI18N
-            lbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            lbl.setText("yo");
-            lbl.setMaximumSize(new java.awt.Dimension(100, 16));
-            lbl.setMinimumSize(new java.awt.Dimension(120, 16));
-            lbl.setPreferredSize(new java.awt.Dimension(120, 16));
-            lbl.setForeground(J3DTheme.BACKGROUND.color());
-            lbl.setBounds(0, 0, lbl.getPreferredSize().width, lbl.getPreferredSize().height);
-            lbl.setVisible(true);
-        });
-
-        register("UI elem", e -> {
-            if (fp.isHidden()) fp.showThis();
-            else fp.hideThis();
-        });
-
         register("Orbit", e -> Static.commandParser.runCommand(
                 CommandsManager.commands.orbit,
                 "orbit",
                 new ArrayList<>(),
                 new ArrayList<>()), "orbit.png");
-
-        FloatingPanel history = new FloatingPanel("history", History.panel, (o) -> {
-            if (!(o instanceof JPanel p)) return;
-            p.setBounds(0, 0, p.getPreferredSize().width, p.getPreferredSize().height);
-            p.setVisible(true);
-        });
-        register("History", e -> {
-            if (history.isHidden()) history.showThis();
-            else history.hideThis();
-        });
+        register("History", e -> History.panel.toggleHidden());
     }
 
     public static void registerComplex(String label, Subbox sub, String imageFileName) {

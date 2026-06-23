@@ -79,7 +79,7 @@ public class Static {
      * The Debug Panel. The panel that holds debug stuff. Initialized by Static
      * and can be accessed via it's {@link FloatingPanel} by the user within the {@link Toolbox}.
      */
-    private static DebugPanel debugPanel = new DebugPanel();
+    private static DebugPanel debugPanel;
     public static DebugPanel getDebugPanel() {
         if (debugPanel == null)
             debugPanel = new DebugPanel();

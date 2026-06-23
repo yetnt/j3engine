@@ -44,13 +44,13 @@ public class DebugPanel extends javax.swing.JPanel {
      * Creates new form NewJPanel
      */
     public DebugPanel() {
+        try {
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            SwingUtilities.updateComponentTreeUI(this); // 'this' refers to the panel
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         initComponents();
-//        try {
-//            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-//            SwingUtilities.updateComponentTreeUI(this); // 'this' refers to the panel
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
         floatingPanel.finish(this, (c) -> {});
     }
 
