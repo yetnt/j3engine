@@ -10,7 +10,7 @@ import java.util.Arrays;
  * A utility class for creating rich text content suitable for display in Swing's JLabel.
  * It allows chaining methods to apply various HTML-like formatting to a given string.
  */
-public class JLabelRichText implements HelpProperties {
+public class JLabelRichText {
     private String content;
     private ArrayList<String> open = new ArrayList<>();
     private ArrayList<String> close = new ArrayList<>();

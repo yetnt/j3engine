@@ -11,6 +11,7 @@ import com.j3d.engine.geometry.geo3d.Thing;
 
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -18,6 +19,7 @@ import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.react.events.IdempotentEventListener;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
+import com.j3d.gen.properties.Property;
 import com.j3d.storage.files.ProjectFile;
 import com.j3d.ui.dialog.Spinner;
 import com.j3d.ui.engine.popups.DebugPanel;
@@ -262,6 +264,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         TriStateArea.register(this);
         drawDist();
         toConstraintObject();
+        addProps();
     }
 
     /**
@@ -313,6 +316,20 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         TriStateArea.register(this);
         drawDist();
         toConstraintObject();
+        addProps();
+    }
+
+    private void addProps() {
+        properties.addAll(List.of(
+                new Property<>("normal", () -> normal, GTri.class)
+                        .setDescription("The normal of this triangle").constant(),
+                new Property<>("Leg A", () -> LegA, GTri.class)
+                        .setDescription("The first leg of this triangle").constant(),
+                new Property<>("Leg B", () -> LegB, GTri.class)
+                        .setDescription("The second leg of this triangle").constant(),
+                new Property<>("Leg C", () -> LegC, GTri.class)
+                        .setDescription("The third leg of this triangle").constant()
+        ));
     }
 
     public boolean isHidden() {

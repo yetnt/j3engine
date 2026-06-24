@@ -8,6 +8,8 @@ import com.j3d.engine.react.events.EventEmitter;
 import com.j3d.engine.react.events.EventListener;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.gen.properties.HasProperties;
+import com.j3d.gen.properties.Property;
 
 import java.awt.*;
 import java.util.*;
@@ -31,7 +33,7 @@ import java.util.*;
  * @see GLine
  * @see GTri
  */
-public abstract class GObject extends EventEmitter implements BaseObject, EventListener {
+public abstract class GObject extends EventEmitter implements BaseObject, EventListener, HasProperties {
     protected Color col = Color.BLACK;
     /**
      * The pivot point of this geometry. Unless a {@link GPoint} where this represents the actual location
@@ -43,6 +45,7 @@ public abstract class GObject extends EventEmitter implements BaseObject, EventL
      */
     private UUID Id;
     protected CObject constraintObject;
+    protected ArrayList<Property<?, ?>> properties = new ArrayList<>();
 
     /**
      * Draws this geometry to the screen.
@@ -67,6 +70,7 @@ public abstract class GObject extends EventEmitter implements BaseObject, EventL
      */
     public GObject() {
         Id = UUID.randomUUID();
+        addProps();
     }
 
 
@@ -75,8 +79,26 @@ public abstract class GObject extends EventEmitter implements BaseObject, EventL
      * @param colour The colour.
      */
     public GObject(Color colour) {
-        Id = UUID.randomUUID();
+        this();
         col = colour;
+        addProps();
+    }
+
+    private void addProps() {
+        properties.add(
+                new Property<>("id", () -> Id, GObject.class)
+                        .setDescription("The id of this object").constant()
+        );
+        properties.add(
+                new Property<>("colour", () -> col, GObject.class)
+                        .setDescription("The colour of this object")
+                        .setNewValueConsumer(colour -> col = colour)
+        );
+        properties.add(
+                new Property<>("pivot", () -> pivot, GObject.class)
+                        .setDescription("The pivot of this object, usually its geometric centre")
+                        .setNewValueConsumer(this::setPivot)
+        );
     }
 
     @Override
@@ -115,6 +137,11 @@ public abstract class GObject extends EventEmitter implements BaseObject, EventL
     public void setId(UUID id) {
         Id = id;
         toConstraintObject().setId(id);
+    }
+
+    @Override
+    public ArrayList<Property<?, ?>> getProperties() {
+        return properties;
     }
 
     @Override

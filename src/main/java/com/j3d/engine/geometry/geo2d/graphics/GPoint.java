@@ -128,6 +128,12 @@ public class GPoint extends GObject implements HasParents<GLine> {
         setPivot(v3);
         toConstraintObject();
         Static.sceneManager.hasNoParent(this);
+        addProps();
+    }
+
+    private void addProps() {
+        // technicaly doesnt add additional props from GObject since its pivot is provided already
+        // which is just the point itself.
     }
 
     @Override

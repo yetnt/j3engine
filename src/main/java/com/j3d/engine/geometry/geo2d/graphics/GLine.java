@@ -10,12 +10,14 @@ import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.react.events.IdempotentEventListener;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
+import com.j3d.gen.properties.Property;
 import com.j3d.storage.files.ProjectFile;
 import com.j3d.ui.dialog.Spinner;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -133,6 +135,16 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
         B.attach(this);
         B.addParent(this);
         Static.sceneManager.hasNoParent(this);
+        addProps();
+    }
+
+    private void addProps() {
+        properties.addAll(List.of(
+                new Property<>("Start", () -> startPoint, GLine.class)
+                        .setDescription("The start point of this line").constant(),
+                new Property<>("End", () -> endPoint, GLine.class)
+                        .setDescription("The end point of this line").constant()
+        ));
     }
 
     /**
