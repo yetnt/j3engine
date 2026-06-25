@@ -1,7 +1,5 @@
 package com.j3d.utility.generators;
 
-import com.j3d.gen.help.HelpProperties;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;

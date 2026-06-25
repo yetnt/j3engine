@@ -3,6 +3,7 @@ package com.j3d.engine.interact.cmd;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgUtil;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
+import com.j3d.engine.interact.cmd.commands.HelpCmd;
 import com.j3d.engine.interact.cmd.complete.TypingHintSession;
 import com.j3d.ui.engine.CommandPalette;
 import com.j3d.Static;
@@ -464,7 +465,8 @@ public class CommandParser {
             CommandsManager.setAsCurrent(statefulCommand);
 
         cmd.run(label, cmdName, arguments.toArray(), taggedArguments);
-        Static.hoverLabel.clear();
+        if (!(cmd instanceof HelpCmd))
+            Static.hoverLabel.clear();
         return true;
     }
 

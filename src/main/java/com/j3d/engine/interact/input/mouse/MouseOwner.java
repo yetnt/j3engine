@@ -16,6 +16,9 @@ import java.util.ArrayList;
  * @see EventEmitterInterface
  * @see EngineFrame
  * @author Lehlogonolo Poole
+ * @implSpec Implementors are meant to check whether they have ownership or not using {@link #isNotOwner()},
+ * since all MouseOwners are registered within {@link EngineFrame} and all get called. This does mean one
+ * who does not check whether they are the owner or not, can execute regardless. (system of trust typa stuff)
  */
 public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
 

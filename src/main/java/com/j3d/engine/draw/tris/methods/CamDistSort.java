@@ -5,9 +5,6 @@ import com.j3d.engine.draw.tris.SortMethod;
 import com.j3d.engine.draw.tris.TriListener;
 import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
-import com.j3d.gen.help.HelpGenerator;
-import com.j3d.gen.help.properties.HelpText;
-import com.j3d.utility.generators.JLabelRichText;
 
 import java.util.ArrayList;
 

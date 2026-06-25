@@ -2,6 +2,7 @@ package com.j3d.engine.interact.cmd;
 
 import com.j3d.Static;
 import com.j3d.engine.interact.cmd.base.Command;
+import com.j3d.engine.interact.cmd.commands.HelpCmd;
 import com.j3d.engine.interact.cmd.commands.LookAtCmd;
 import com.j3d.engine.interact.cmd.commands.TeleportCmd;
 import com.j3d.engine.interact.cmd.commands.debug.DebugCmd;
@@ -34,6 +35,7 @@ public class Commands {
     public EngineCmd engine = new EngineCmd();
     public ExplodeCmd explodeCmd = new ExplodeCmd();
     public UICmd uiCmd = new UICmd();
+    public HelpCmd helpCmd = new HelpCmd();
 
     /**
      * Default (empty) constructor
@@ -58,7 +60,7 @@ public class Commands {
         return new ArrayList<>(List.of(
                 debug, transform, lookAt,
                 teleport, orbit, engine,
-                explodeCmd, uiCmd
+                explodeCmd, uiCmd, helpCmd
         ));
     }
 }
