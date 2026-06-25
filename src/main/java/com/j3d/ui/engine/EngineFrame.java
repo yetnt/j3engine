@@ -24,7 +24,10 @@ import com.j3d.engine.interact.selection.*;
 import com.j3d.gen.settings.CoreSettings;
 import com.j3d.gen.settings.Settings;
 import com.j3d.storage.files.FilesUtility;
-import com.j3d.storage.files.ProjectFile;
+import com.j3d.storage.files.protocol.proj.ProjectFile;
+import com.j3d.storage.files.protocol.proj.ProjectFileV1;
+import com.j3d.storage.files.protocol.proj.ProjectFileV2;
+import com.j3d.storage.files.protocol.FileProtocol;
 import com.j3d.threads.LongTask;
 import com.j3d.ui.engine.popups.DebugPanel;
 import com.j3d.ui.engine.popups.tree.LayerTree;
@@ -40,6 +43,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.function.BiConsumer;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 
@@ -138,7 +142,7 @@ public class EngineFrame extends javax.swing.JFrame {
     /**
      * Constructor to initialise the engine frame and immediately load up a project file.
      * @param file The File instance to load up.
-     * @see ProjectFile
+     * @see ProjectFileV1
      * @see LongTask
      */
     public EngineFrame(File file) {
@@ -367,10 +371,40 @@ public class EngineFrame extends javax.swing.JFrame {
      * runs off the EDT
      * @param file The file to read.
      * @see LongTask
-     * @see ProjectFile
+     * @see ProjectFileV2
      * @see Interactable
      */
     private void readProjectFile(File file) {
+        readFileUsingVers(file, 2);
+    }
+
+    /**
+     * A flag to indicate if an old project file version was loaded during the {@link #readFileUsingVers(File, int)} process.
+     * This is used to prevent redundant processing when attempting to load newer versions after a fallback
+     * to an older version has already occurred.
+     */
+    private static boolean LOADED_OLD = false;
+
+    /**
+     * Reads a project file using a specified protocol version.
+     * This method extracts file information, sets the project output file, and initiates
+     * an asynchronous read operation using a {@link LongTask}. It includes error handling
+     * that can trigger a fallback to an older project file version if the initial read fails.
+     *
+     * @param file The {@link File} object representing the project file to read.
+     * @param vers The version number of the {@link ProjectFile} protocol to attempt reading with.
+     *             For example, `2` for {@link ProjectFileV2}.
+     * @see ProjectFile
+     * @see LongTask
+     * @see ProjectFile#handleErr(ProjectFile, Exception, BiConsumer) 
+     * @see Settings#projectOutputFile
+     * @see Static#getLog()
+     * @see Interactable#invokeSwingHooks()
+     * @implNote This method utilizes the {@link #LOADED_OLD} flag to prevent infinite loops or
+     *           redundant processing when a fallback to an older version has already been handled.
+     *           The `LOADED_OLD` flag is reset at the beginning of the success callback.
+     */
+    public static void readFileUsingVers(File file, int vers) {
         String path = file.getAbsolutePath();
         Static.getLog().println(path);
         Path p = Paths.get(path);
@@ -379,20 +413,41 @@ public class EngineFrame extends javax.swing.JFrame {
 
         Settings.projectOutputFile.setValue(file);
 
+        ProjectFile using = ProjectFile.getFromVersion(vers);
+        if (using == null) {
+            return;
+            // The error handler would've already thrown the fatal error if we tried
+            // referencing a version that doesnt exist. So this block is just to appease
+            // Java. Otherwise in case weird stuff happen TODO: it might be here.
+        }
+
         LongTask<ArrayList<Interactable>> t = new LongTask<>(
                 ta -> {
                     ArrayList<Interactable> a = null;
                     try {
-                        a = new ProjectFile()
-                                .readFile(fileDir, fileName, ta);
+                        a = using.readFile(fileDir, fileName, ta);
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
                     System.out.println(a.size());
                     return a;
                 },
-                (tb, i) -> {
+                (tb, i, completed) -> {
+                    if (!completed || (vers == 2 && LOADED_OLD)) {
+                        LOADED_OLD = false;
+                        return;
+                    }
                     i.forEach(Interactable::invokeSwingHooks);
+                },
+                (err) -> {
+                    BiConsumer<Integer, ProjectFile> loadable = (currentV, convertTo) -> {
+                        // just read the other version since this is being called.
+                        Static.getLog().println(
+                                "An old Project File Version of version 1 was detected.");
+                        readFileUsingVers(file, convertTo.getProtocolVersion());
+                        LOADED_OLD = true;
+                    };
+                    ProjectFile.handleErr(using, err, loadable);
                 }
         );
 
@@ -779,7 +834,7 @@ public class EngineFrame extends javax.swing.JFrame {
             Settings.projectOutputFile.setValue(new File(folder, fileName));
         }
 
-        new ProjectFile().writeFile(
+        new ProjectFileV1().writeFile(
                 Settings.projectOutputFile.getValue().getParent(),
                 Settings.projectOutputFile.getValue().getName(), Static.sceneManager.layers);
     }//GEN-LAST:event_saveProjectJMenuItemActionPerformed

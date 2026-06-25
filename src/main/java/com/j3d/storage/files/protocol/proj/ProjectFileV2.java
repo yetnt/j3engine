@@ -1,4 +1,4 @@
-package com.j3d.storage.files;
+package com.j3d.storage.files.protocol.proj;
 
 import com.j3d.Static;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
@@ -12,8 +12,10 @@ import com.j3d.engine.layer.LayerList;
 import com.j3d.errors.ErrorHandler;
 import com.j3d.gen.settings.CoreSettings;
 import com.j3d.storage.errs.ProjectFileException;
+import com.j3d.storage.files.FilesUtility;
+import com.j3d.storage.files.IOSupplier;
 import com.j3d.storage.files.protocol.FileProtocol;
-import com.j3d.storage.files.protocol.GenericFileProtocol;
+import com.j3d.storage.files.protocol.UnsupportedVersionException;
 import com.j3d.ui.dialog.Spinner;
 import com.j3d.utility.generic.HashMultiMap;
 import com.j3d.utility.generic.Pair;
@@ -29,10 +31,19 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
- * ProjectFile is a J3D file protocol implementation for reading and writing
+ * ProjectFileV2 is a J3D file protocol implementation for reading and writing
  * project files that contain layer and thing information to and from disk.
  * <p>
  *     Typically .j3p files
+ * </p>
+ * <p>
+ *     This version is different from {@link ProjectFileV1} as it makes the following changes:
+ *     (in the format {@code 0xAARRGGBB})
+ *     <ul>
+ *         <li>Writes {@link GPoint#getColour()}</li
+ *         <li>Writes {@link GLine#getColour()}</li>
+ *         <li>Changes {@link GTri}'s 4 colour ints to be 1 singular signed 32 bit int.</li>
+ *     </ul>
  * </p>
  * <p>
  *     The Exact format is as follows:
@@ -52,11 +63,13 @@ import java.util.stream.Collectors;
  *         <ul>X Coordinate (double)</ul>
  *         <ul>Y Coordinate (double)</ul>
  *         <ul>Z Coordinate (double)</ul>
+ *         <ul>Point Colour (signed 32 bit int) (Different from {@link ProjectFileV1})</ul>
  *     </ul>
  *     <ul>Number of lines in project (int)</ul>
  *     <ul>For each line:
  *         <ul>Line UUID (UTF-8)</ul>
  *         <ul>Thing Parent UUID (UTF-8)</ul>
+ *         <ul>Line Colour (signed 32 bit int) (Different from {@link ProjectFileV1})</ul>
  *         <ul>Start Point UUID (UTF-8)</ul>
  *         <ul>End Point UUID (UTF-8)</ul>
  *     </ul>
@@ -64,10 +77,7 @@ import java.util.stream.Collectors;
  *     <ul>For each triangle:
  *         <ul>Triangle UUID (UTF-8)</ul>
  *         <ul>Thing Parent UUID (UTF-8)</ul>
- *         <ul>Colour Red (int)</ul>
- *         <ul>Colour Green (int)</ul>
- *         <ul>Colour Blue (int)</ul>
- *         <ul>Colour Alpha (int)</ul>
+ *         <ul>Tri colour (signed 32 bit int) (Different from {@link ProjectFileV1})</ul>
  *         <ul>Line 1 UUID (UTF-8)</ul>
  *         <ul>Line 2 UUID (UTF-8)</ul>
  *         <ul>Line 3 UUID (UTF-8)</ul>
@@ -84,22 +94,15 @@ import java.util.stream.Collectors;
  *     </ul>
  *
  * </p>
+ * @implSpec {@link ProjectFileV2} can convert from {@link ProjectFileV1} but cannot convert to it.
  */
-public class ProjectFile extends GenericFileProtocol implements FileProtocol {
+public class ProjectFileV2 extends ProjectFile {
 
-    @Override
-    public String getProtocolHeader() {
-        return "PROJECT";
-    }
-
-    @Override
-    public int getProtocolVersion() {
-        return 1;
-    }
-
-    @Override
-    public String getExtension() {
-        return "j3p";
+    public ProjectFileV2() {
+        super(2,
+                Set.of(),                           // Can convert to
+                Set.of(FileProtocol.projectFileV1)  // Can convert from
+        );
     }
 
     @Override
@@ -152,6 +155,8 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                     dos.writeDouble(gp.getPivot().getX()); // Write X Coordinate
                     dos.writeDouble(gp.getPivot().getY()); // Write Y Coordinate
                     dos.writeDouble(gp.getPivot().getZ()); // Write Z Coordinate
+                    // V2 addition
+                    dos.writeInt(colToInt(gp.getColour()));
                 }
                 // Write lines
                 dos.writeInt(lines.size());
@@ -160,6 +165,8 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                     UUID parent = pair.first;
                     dos.writeUTF(gl.getId().toString());
                     dos.writeUTF(parent.toString());
+                    // v2 addition
+                    dos.writeInt(colToInt(gl.getColour()));
                     dos.writeUTF(gl.getStart().getId().toString());
                     dos.writeUTF(gl.getEnd().getId().toString());
                 }
@@ -170,11 +177,13 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                     UUID parent = pair.first;
                     dos.writeUTF(gt.getId().toString());
                     dos.writeUTF(parent.toString());
-                    // write colour
-                    dos.writeInt(gt.getColour().getRed());
-                    dos.writeInt(gt.getColour().getGreen());
-                    dos.writeInt(gt.getColour().getBlue());
-                    dos.writeInt(gt.getColour().getAlpha());
+//                    old write colour
+//                    dos.writeInt(gt.getColour().getRed());
+//                    dos.writeInt(gt.getColour().getGreen());
+//                    dos.writeInt(gt.getColour().getBlue());
+//                    dos.writeInt(gt.getColour().getAlpha());
+                    // new write colour
+                    dos.writeInt(colToInt(gt.getColour()));
                     // write legs
                     dos.writeUTF(gt.getLegA().getId().toString());
                     dos.writeUTF(gt.getLegB().getId().toString());
@@ -191,7 +200,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                     var layer = layers.get(i);
                     dos.writeInt(layer.size());
                     layers.get(i).forEach((thing) -> {
-                       // write thing data
+                        // write thing data
                         try {
                             dos.writeUTF(thing.getId().toString());
                             dos.writeUTF(thing.getName());
@@ -248,7 +257,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
             try {
                 msg("Reading project file from " + path);
                 readHeader(dis); // Read J3D file header
-                getHeaderReader().accept(dis); // Read PROJECT file header
+                getHeaderReader().accept(dis, 1); // Read PROJECT file header
 
                 msg("Reading layers");
                 int numLayers = dis.readInt(); // Read number of layers
@@ -276,7 +285,10 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                         double x = dis.readDouble(); // Read X Coordinate
                         double y = dis.readDouble(); // Read Y Coordinate
                         double z = dis.readDouble(); // Read Z Coordinate
+                        // v2 addition
+                        Color col = intToCol(dis.readInt());
                         GPoint point = GPoint.fromRaw(pointUUID, new Vector3(x, y, z));
+                        point.setColour(col);
                         pointsParentsMap.putValue(parentThingUUID, point);
                         pointsMap.put(pointUUID, point);
                         throbber.updateProgress(i + 1);
@@ -297,6 +309,8 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                     for (int i = 0; i < numLines; i++) {
                         String lineUUID = dis.readUTF();
                         String parentThingUUID = dis.readUTF();
+                        // v2 addition
+                        Color col = intToCol(dis.readInt());
                         String startPointUUID = dis.readUTF();
                         String endPointUUID = dis.readUTF();
                         // Create and store line as needed
@@ -308,6 +322,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                             );
 
                         GLine line = GLine.fromRaw(lineUUID, startPoint, endPoint);
+                        line.setColour(col);
                         linesParentsMap.putValue(parentThingUUID, line);
                         linesMap.put(lineUUID, line);
                         throbber.updateProgress(i + 1);
@@ -324,12 +339,9 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                         String triUUID = dis.readUTF();
                         String parentThingUUID = dis.readUTF();
                         msg("Reading triangle " + triUUID);
-                        int colorR = dis.readInt();
-                        int colorG = dis.readInt();
-                        int colorB = dis.readInt();
-                        int colorA = dis.readInt();
-                        msg("Color: " + colorR + ", " + colorG + ", " + colorB + ", " + colorA);
-                        Color triColor = new Color(colorR, colorG, colorB, colorA);
+                        // V2 col
+                        Color triColor = intToCol(dis.readInt());
+                        msg("Color: " + triColor);
                         String legAUUID = dis.readUTF();
                         String legBUUID = dis.readUTF();
                         String legCUUID = dis.readUTF();
@@ -369,16 +381,16 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
 
                         Thing thing = Thing.fromRaw(thingName, thingUUID, thingHidden, l, Static.sceneManager);
                         thing.addObjs(
-                                        pointsParentsMap.getValues(thingUUID).toArray(new GPoint[0])
-                                );
+                                pointsParentsMap.getValues(thingUUID).toArray(new GPoint[0])
+                        );
                         thing.addObjs(
-                                        linesParentsMap.getValues(thingUUID) == null ? new GLine[0] :
+                                linesParentsMap.getValues(thingUUID) == null ? new GLine[0] :
                                         linesParentsMap.getValues(thingUUID).toArray(new GLine[0])
-                                );
+                        );
                         thing.addObjs(
-                                        trisParentsMap.getValues(thingUUID) == null ? new GTri[0] :
+                                trisParentsMap.getValues(thingUUID) == null ? new GTri[0] :
                                         trisParentsMap.getValues(thingUUID).toArray(new GTri[0])
-                                );
+                        );
                         interactables.add(thing);
                         throbber.updateProgress(j + 1);
                         msg("\tRead thing " + thingUUID);
@@ -391,6 +403,8 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
 
                 Static.getLog().println("Project file loaded successfully from " + path);
                 msg("Project file loaded successfully");
+            } catch (UnsupportedVersionException f) {
+                throw f;
             } catch (IOException e) {
                 ErrorHandler.handle(
                         new ProjectFileException("Error reading project file data.", e)
@@ -405,42 +419,11 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
         return (T) interactables;
     }
 
-    @Override
-    public Consumer<DataOutputStream> getHeaderWriter() {
-        return dataOutputStream -> {
-            try {
-                dataOutputStream.writeUTF(getProtocolHeader());
-                dataOutputStream.writeInt(getProtocolVersion());
-            } catch (IOException e) {
-                ErrorHandler.handle(
-                        new ProjectFileException("Error writing project file header", e)
-                );
-            }
-        };
+    public static int colToInt(Color col) {
+        return col.getRGB();
     }
 
-    @Override
-    public Consumer<DataInputStream> getHeaderReader() throws IOException {
-        return dataInputStream -> {
-            try {
-                String head = dataInputStream.readUTF();
-                int version = dataInputStream.readInt();
-
-                if (!head.equals(getProtocolHeader())) {
-                    ErrorHandler.handle(
-                            new ProjectFileException("Unsupported Project file header: " + head)
-                    );
-                }
-                if (version != getProtocolVersion()) {
-                    ErrorHandler.handle(
-                            new ProjectFileException("Unsupported Project file version: " + version)
-                    );
-                }
-            } catch (IOException e) {
-                ErrorHandler.handle(
-                        new ProjectFileException("Error reading project file header", e)
-                );
-            }
-        };
+    public static Color intToCol(int col) {
+        return new Color(col, true);
     }
 }

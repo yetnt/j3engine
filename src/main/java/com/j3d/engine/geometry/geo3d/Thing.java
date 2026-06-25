@@ -17,7 +17,8 @@ import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.ConstructorAction;
 import com.j3d.engine.react.actions.VoidAction;
-import com.j3d.storage.files.ProjectFile;
+import com.j3d.storage.files.protocol.proj.ProjectFile;
+import com.j3d.storage.files.protocol.proj.ProjectFileV1;
 import com.j3d.ui.generic.J3DTheme;
 import com.j3d.ui.dialog.Spinner;
 import com.j3d.ui.engine.popups.tree.TreeNodeIdentity;
@@ -36,12 +37,12 @@ import java.util.stream.Stream;
  * <p>
  *     A Thing, can be transformed in any means necessary and is the only "object"
  *     which the user can actually interact with. They can interact with GObjects but a Thing
- *     is the first tangabile <i>thing</i>. (pun intended)
+ *     is the first tangible <i>thing</i>. (pun intended)
  * </p>
  * <p>
- *     A Thing is the first user tangible object. So it naturally has to itneract with
+ *     A Thing is the first user tangible object. So it naturally has to interact with
  *     the app in many different ways whther it be showing itself in the {@link javax.swing.JTree}
- *     or being written to a {@link com.j3d.storage.files.ProjectFile}
+ *     or being written to a {@link ProjectFile}
  * </p>
  * @implSpec
  *     As a user tangible object, most operations return an {@link Action} which
@@ -121,7 +122,7 @@ public class Thing implements Interactable {
 
     /**
      * Constructs a Thing.
-     * @implSpec This is used by {@link ProjectFile#readFile(String, String, Spinner)} during a project file read and should only be used in that case.
+     * @implSpec This is used by {@link ProjectFileV1#readFile(String, String, Spinner)} during a project file read and should only be used in that case.
      * @param name The name of the Thing defined in the file.
      * @param id The ID of the Thing defined in the file.
      * @param hidden Whether the Thing is hidden or not.
@@ -142,7 +143,7 @@ public class Thing implements Interactable {
      * file loading or anything where it hasnt had a UUID attached to it already.
      * Otherwise the UUID is treated as immutable.
      * @param uuid The new UUID
-     * @see ProjectFile#readFile(String, String, Spinner)
+     * @see ProjectFileV1#readFile(String, String, Spinner)
      */
     private void setId(UUID uuid) {
         this.id = uuid;

@@ -4,7 +4,8 @@ import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
-import com.j3d.storage.files.ProjectFile;
+import com.j3d.storage.files.protocol.proj.ProjectFile;
+import com.j3d.storage.files.protocol.proj.ProjectFileV1;
 import com.j3d.ui.dialog.Spinner;
 
 import java.awt.*;
@@ -45,7 +46,7 @@ public interface BaseObject {
      * file loading or anything where it hasnt had a UUID attached to it already.
      * Otherwise the UUID is treated as immutable.
      * @param id The new UUID
-     * @see ProjectFile#readFile(String, String, Throbber)
+     * @see ProjectFile#readFile(String, String, Spinner)
      * @see GPoint#fromRaw(String, Vector3)
      * @see GLine#fromRaw(String, GPoint, GPoint)
      * @see GTri#fromRaw(String, Color, GLine, GLine, GLine)

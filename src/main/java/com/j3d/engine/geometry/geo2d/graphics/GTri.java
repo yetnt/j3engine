@@ -2,7 +2,6 @@ package com.j3d.engine.geometry.geo2d.graphics;
 
 import com.j3d.J3DSettings;
 import com.j3d.Static;
-import com.j3d.engine.SceneManager;
 import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.geometry.constraints.ConstraintManager;
@@ -20,9 +19,9 @@ import com.j3d.engine.react.events.IdempotentEventListener;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.gen.properties.Property;
-import com.j3d.storage.files.ProjectFile;
+import com.j3d.storage.files.protocol.proj.ProjectFile;
+import com.j3d.storage.files.protocol.proj.ProjectFileV1;
 import com.j3d.ui.dialog.Spinner;
-import com.j3d.ui.engine.popups.DebugPanel;
 
 /**
  * GTri represents a Triangle. What'd you expect kau.
@@ -74,7 +73,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
     /**
      * Constructs a GTri.
-     * @implSpec This is used by {@link ProjectFile#readFile(String, String, Spinner)} during a project file read and should only be used in that case.
+     * @implSpec This is used by {@link ProjectFileV1#readFile(String, String, Spinner)} during a project file read and should only be used in that case.
      * @param id The id of the triangle defined by the file
      * @param col The colour of the triangle defined by the file
      * @param legA The constructed reference of the first leg

@@ -11,7 +11,7 @@ import com.j3d.engine.react.events.IdempotentEventListener;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.gen.properties.Property;
-import com.j3d.storage.files.ProjectFile;
+import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.ui.dialog.Spinner;
 
 import java.awt.*;

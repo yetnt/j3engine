@@ -41,7 +41,7 @@ public class ToolboxButtons {
                 "layers.png");
 
         // another for exmaple
-        register("Toggle Throbber", e -> {
+        register("Toggle Spinner", e -> {
             String nString = JOptionPane.showInputDialog("Input time in ms to sleep");
             if (nString == null) return;
             int n = Integer.parseInt(nString);
@@ -59,7 +59,7 @@ public class ToolboxButtons {
                         }
                         return null;
                     },
-                    (t, i)-> {
+                    (t, i, completed)-> {
                         // No cleanup needed.
                     }
             );
