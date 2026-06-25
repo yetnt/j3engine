@@ -828,6 +828,9 @@ public class EngineFrame extends javax.swing.JFrame {
 
             File folder = FilesUtility.folderChooser(Static.mainFrame);
 
+            if (folder == null)
+                return;
+
             Static.getLog().println("Picked the location " + folder.getAbsolutePath() + " with the file name " + fileName);
 
 //            J3DSettings.setProject(folder.getAbsolutePath(), fileName);

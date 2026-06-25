@@ -14,7 +14,6 @@ import com.j3d.gen.settings.CoreSettings;
 import com.j3d.storage.errs.ProjectFileException;
 import com.j3d.storage.files.FilesUtility;
 import com.j3d.storage.files.IOSupplier;
-import com.j3d.storage.files.protocol.FileProtocol;
 import com.j3d.storage.files.protocol.UnsupportedVersionException;
 import com.j3d.ui.dialog.Spinner;
 import com.j3d.utility.generic.HashMultiMap;
@@ -101,7 +100,7 @@ public class ProjectFileV2 extends ProjectFile {
     public ProjectFileV2() {
         super(2,
                 Set.of(),                           // Can convert to
-                Set.of(FileProtocol.projectFileV1)  // Can convert from
+                Set.of(PF.V1)  // Can convert from
         );
     }
 

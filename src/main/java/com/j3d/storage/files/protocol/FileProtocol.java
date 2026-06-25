@@ -1,7 +1,6 @@
 package com.j3d.storage.files.protocol;
 
-import com.j3d.storage.files.protocol.proj.ProjectFileV1;
-import com.j3d.storage.files.protocol.proj.ProjectFileV2;
+import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.ui.dialog.Spinner;
 
 import java.io.DataInputStream;
@@ -17,8 +16,6 @@ import java.util.function.Consumer;
  * using a custom protocol.
  */
 public interface FileProtocol {
-    ProjectFileV1 projectFileV1 = new ProjectFileV1();
-    ProjectFileV2 projectFileV2 = new ProjectFileV2();
 
     /**
      * Gets the protocol header string that uniquely identifies this specific file protocol.
@@ -43,7 +40,7 @@ public interface FileProtocol {
      *
      * @return A set of higher version protocols this protocol can convert to.
      */
-    Set<FileProtocol> convertibleToHigher();
+    Set<ProjectFile.PF> convertibleToHigher();
 
     /**
      * Returns a set of {@link FileProtocol} instances from which this protocol can be converted (downgraded or upgraded from).
@@ -51,7 +48,7 @@ public interface FileProtocol {
      *
      * @return A set of lower version protocols that can be converted to this protocol.
      */
-    Set<FileProtocol> convertibleFromLower();
+    Set<ProjectFile.PF> convertibleFromLower();
 
     /**
      * Reads a file from the specified path and returns its content as an object of type T. This should be

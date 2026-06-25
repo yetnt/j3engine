@@ -21,6 +21,7 @@ import java.awt.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 /**
  * GPoint is a class that represents a single point in 3D space.

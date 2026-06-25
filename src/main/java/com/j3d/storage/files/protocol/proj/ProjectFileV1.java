@@ -14,8 +14,6 @@ import com.j3d.gen.settings.CoreSettings;
 import com.j3d.storage.errs.ProjectFileException;
 import com.j3d.storage.files.FilesUtility;
 import com.j3d.storage.files.IOSupplier;
-import com.j3d.storage.files.protocol.FileProtocol;
-import com.j3d.storage.files.protocol.GenericFileProtocol;
 import com.j3d.ui.dialog.Spinner;
 import com.j3d.utility.generic.HashMultiMap;
 import com.j3d.utility.generic.Pair;
@@ -27,7 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -95,7 +92,7 @@ public class ProjectFileV1 extends ProjectFile {
      */
     public ProjectFileV1() {
         super(1,
-                Set.of(FileProtocol.projectFileV2), // Can convert to
+                Set.of(PF.V2), // Can convert to
                 Set.of()                            // Can convert from
         );
     }

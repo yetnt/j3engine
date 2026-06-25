@@ -18,6 +18,8 @@ import com.j3d.gen.settings.Settings;
 import com.j3d.gen.settings.classes.CameraProperties;
 import com.j3d.storage.files.engine.EngineFiles;
 import com.j3d.storage.files.engine.LogFile;
+import com.j3d.storage.files.protocol.proj.ProjectFileV1;
+import com.j3d.storage.files.protocol.proj.ProjectFileV2;
 import com.j3d.ui.engine.CommandPalette;
 import com.j3d.ui.engine.FloatingPanel;
 import com.j3d.ui.engine.J3DPanel;
@@ -44,6 +46,8 @@ import java.net.URL;
  * @author Lehlogonolo Poole
  */
 public class Static {
+    public static final ProjectFileV1 projectFileV1 = new ProjectFileV1();
+    public static final ProjectFileV2 projectFileV2 = new ProjectFileV2();
     /**
      * The SceneManager Instance. A very important class initialized by {@link EngineFrame}
      * who's job it is to store all information and references to the scene.

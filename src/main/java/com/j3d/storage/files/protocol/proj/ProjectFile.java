@@ -1,5 +1,6 @@
 package com.j3d.storage.files.protocol.proj;
 
+import com.j3d.Static;
 import com.j3d.errors.ErrorHandler;
 import com.j3d.storage.errs.J3DFileException;
 import com.j3d.storage.errs.ProjectFileException;
@@ -39,8 +40,8 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
     private final int VERSION;
     private final String HEADER = "PROJECT";
     private final String EXTENSION = "j3p";
-    private final Set<FileProtocol> convertibleTo;
-    private final Set<FileProtocol> convertibleFrom;
+    private final Set<PF> convertibleTo;
+    private final Set<PF> convertibleFrom;
 
     /**
      * Da default constructor
@@ -48,7 +49,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
      * @param convertibleTo The set of FileProtocol that this can be upgraded to.
      * @param convertibleFrom The set of FileProtocol that can upgrade to this.
      */
-    public ProjectFile(int version, Set<FileProtocol> convertibleTo, Set<FileProtocol> convertibleFrom) {
+    public ProjectFile(int version, Set<PF> convertibleTo, Set<PF> convertibleFrom) {
         this.VERSION = version;
         this.convertibleTo = convertibleTo;
         this.convertibleFrom = convertibleFrom;
@@ -71,12 +72,12 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
     }
 
     @Override
-    public Set<FileProtocol> convertibleToHigher() {
+    public Set<PF> convertibleToHigher() {
         return convertibleTo;
     }
 
     @Override
-    public Set<FileProtocol> convertibleFromLower() {
+    public Set<PF> convertibleFromLower() {
         return convertibleFrom;
     }
 
@@ -135,8 +136,8 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
 
     public static ProjectFile getFromVersion(int version) {
         return switch (version) {
-            case 1 -> FileProtocol.projectFileV1;
-            case 2 -> FileProtocol.projectFileV2;
+            case 1 -> Static.projectFileV1;
+            case 2 -> Static.projectFileV2;
             default -> {
                 ErrorHandler.handle(
                         new J3DFileException("Attempt to find a J3D project version which does not exist")
@@ -175,7 +176,12 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                     uve.version < vers.getProtocolVersion()
                             ? vers.convertibleFromLower()
                             : vers.convertibleToHigher()
-                    ).stream().filter(
+                    )
+                    .stream()
+                    .map(
+                            ProjectFile.PF::getProjectFile
+                    )
+                    .filter(
                             v -> v.getProtocolVersion() == vOld
                     ).findFirst().orElse(null);
             if (!(convTo instanceof ProjectFile pj)) {
@@ -188,6 +194,21 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                 return;
             }
             loadable.accept(vers.getProtocolVersion(), pj);
+        }
+    }
+
+    public enum PF {
+        V1(Static.projectFileV1),
+        V2(Static.projectFileV2);
+
+        PF(ProjectFile pf) {
+            projectFile = pf;
+        }
+
+        private ProjectFile projectFile;
+
+        public ProjectFile getProjectFile() {
+            return  projectFile;
         }
     }
 }
