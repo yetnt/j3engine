@@ -4,6 +4,8 @@ import com.j3d.engine.geometry.constraints.concrete.MidpointConstraint;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
+import com.j3d.engine.geometry.geo3d.Sampler;
+import com.j3d.engine.geometry.geo3d.Plane;
 import com.j3d.engine.interact.input.keyboard.DefaultKeys;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.ui.engine.EngineFrame;
@@ -20,6 +22,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Executor is a class called by {@link EngineFrame#main(String[])} that just draws things ot the window
@@ -49,6 +52,10 @@ public class Executor {
         Thing cub = cube();
         Static.camera.lookAt(cub.getCentroid());
         Thing tris = threeTris();
+//        line.second.applyConstraint();
+
+        Thing circ = circle(100);
+        Thing wtf = wtf(50);
 
 //        Pair<Thing, MidpointConstraint> line = someLine();
         ArrayList<Action<?>> actions = new ArrayList<>(List.of(
@@ -56,13 +63,120 @@ public class Executor {
                 cub.translate(new Vector3(4, 2, 3)),
                 cub.scale(0.4),
                 tris.translate(new Vector3(14, 0, 0)),
-                cub.rotate(new Vector3(2, 3, 1), 2)
-//                line.first.translate(new Vector3(80, -10, 0))
+                cub.rotate(new Vector3(2, 3, 1), 2),
+                wtf.translate(new Vector3(0, 10, 0)),
+                circ.rotate(new Vector3(0, 1, 0), 20) // 20 degrees
         ));
         actions.forEach(Action::run);
         actions.forEach(SceneManager.history::add);
-//        line.second.applyConstraint();
 
+    }
+
+    public Thing circle(int max) {
+        GPoint centre = new GPoint(new Vector3(0, 0, 0));
+        Plane plane = new Plane(
+                new Vector3(1, 0, 0),
+                new Vector3(0, 1, 0)
+        );
+
+        ArrayList<GPoint> points = Sampler.ngon(
+                centre.getPivot(),
+                10,
+                plane,
+                max,
+                p -> {
+                    GPoint point = new GPoint(p);
+                    // Random colour
+                    Random random = new Random();
+                    int red = random.nextInt(256);   // 0 to 255
+                    int green = random.nextInt(256);
+                    int blue = random.nextInt(256);
+                    //
+                    Color randomColor = new Color(red, green, blue);
+                    point.setColour(randomColor);
+                    return point;
+                }
+        );
+        ArrayList<GLine> lines = new ArrayList<>();
+        // connect lines to circle
+        for (int i = 0; i < points.size(); i++) {
+            GPoint p1 = points.get(i);
+            GPoint p2 = points.get((i + 1) % points.size()); // Connect last point to first
+            lines.add(new GLine(p1, p2));
+        }
+
+        Thing circleThing = new Thing(Static.sceneManager, layer, "Circle")
+                .addObjs(centre)
+                .addObjs(points.toArray(new GPoint[0]))
+                .addObjs(lines.toArray(new GLine[0]));
+        return circleThing;
+    }
+
+
+    public Thing wtf(int max) {
+        GPoint centre = new GPoint(new Vector3(2, 2, 2));
+        GPoint centre2 = new GPoint(new Vector3(0, 10, 0));
+        Plane plane = new Plane(
+                new Vector3(1, 0, 0),
+                new Vector3(0, 0, 1)
+        );
+
+        ArrayList<GPoint> points = Sampler.ngon(
+                centre.getPivot(),
+                10,
+                plane,
+                max,
+                p -> {
+                    GPoint point = new GPoint(p);
+                    // Random colour
+                    Random random = new Random();
+                    int red = random.nextInt(256);   // 0 to 255
+                    int green = random.nextInt(256);
+                    int blue = random.nextInt(256);
+                    //
+                    Color randomColor = new Color(red, green, blue);
+                    point.setColour(randomColor);
+                    return point;
+                }
+        );
+        ArrayList<GPoint> points2 = Sampler.ngon(
+                centre2.getPivot(),
+                10,
+                plane,
+                max,
+                p -> {
+                    GPoint point = new GPoint(p);
+                    // Random colour
+                    Random random = new Random();
+                    int red = random.nextInt(256);   // 0 to 255
+                    int green = random.nextInt(256);
+                    int blue = random.nextInt(256);
+                    //
+                    Color randomColor = new Color(red, green, blue);
+                    point.setColour(randomColor);
+                    return point;
+                }
+        );
+        ArrayList<GLine> lines = new ArrayList<>();
+        // connect lines to circle
+        for (int i = 0; i < points.size(); i++) {
+            GPoint p1 = points.get(i);
+            GPoint p2 = points.get((i + 1) % points.size()); // Connect last point to first
+            GPoint p3 = points2.get(i);
+            GPoint p4 = points2.get((i + 1) % points.size()); // Connect last point to first
+            lines.add(new GLine(p1, p2));
+            lines.add(new GLine(p3, p4));
+            lines.add(new GLine(p1, p3));
+            lines.add(new GLine(p2, p4));
+        }
+
+        Thing circleThing = new Thing(Static.sceneManager, layer, "Circle");
+        circleThing.addObjs(centre, centre)
+                .addObjs(points.toArray(new GPoint[0]))
+                .addObjs(points2.toArray(new GPoint[0]))
+                .addObjs(lines.toArray(new GLine[0]));
+
+        return circleThing;
     }
 
     public Pair<Thing, MidpointConstraint> someLine() {

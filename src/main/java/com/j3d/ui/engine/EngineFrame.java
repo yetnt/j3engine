@@ -837,7 +837,7 @@ public class EngineFrame extends javax.swing.JFrame {
             Settings.projectOutputFile.setValue(new File(folder, fileName));
         }
 
-        new ProjectFileV1().writeFile(
+        new ProjectFileV2().writeFile(
                 Settings.projectOutputFile.getValue().getParent(),
                 Settings.projectOutputFile.getValue().getName(), Static.sceneManager.layers);
     }//GEN-LAST:event_saveProjectJMenuItemActionPerformed

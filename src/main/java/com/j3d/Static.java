@@ -46,8 +46,22 @@ import java.net.URL;
  * @author Lehlogonolo Poole
  */
 public class Static {
-    public static final ProjectFileV1 projectFileV1 = new ProjectFileV1();
-    public static final ProjectFileV2 projectFileV2 = new ProjectFileV2();
+    private static ProjectFileV1 projectFileV1 = new ProjectFileV1();
+    public static ProjectFileV1 getProjectFileV1() {
+        if (projectFileV1 == null) {
+            projectFileV1 = new ProjectFileV1();
+        }
+        return projectFileV1;
+    }
+
+    private static ProjectFileV2 projectFileV2 = new ProjectFileV2();
+    public static ProjectFileV2 getProjectFileV2() {
+        if (projectFileV2 == null) {
+            projectFileV2 = new ProjectFileV2();
+        }
+        return projectFileV2;
+    }
+
     /**
      * The SceneManager Instance. A very important class initialized by {@link EngineFrame}
      * who's job it is to store all information and references to the scene.

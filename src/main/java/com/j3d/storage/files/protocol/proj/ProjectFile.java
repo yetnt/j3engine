@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  *  ProjectFile is an abstract base class for J3D project file protocols.
@@ -122,7 +123,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                     ErrorHandler.handle(
                             new ProjectFileException("Unsupported Project file version: " + version)
                     );
-                } else {
+                } else if (version < getProtocolVersion()) {
                     // old version.
                     throw new UnsupportedVersionException("An unsupported version ("+version+") was used to load a project file of version (2)", version);
                 }
@@ -136,8 +137,8 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
 
     public static ProjectFile getFromVersion(int version) {
         return switch (version) {
-            case 1 -> Static.projectFileV1;
-            case 2 -> Static.projectFileV2;
+            case 1 -> Static.getProjectFileV1();
+            case 2 -> Static.getProjectFileV2();
             default -> {
                 ErrorHandler.handle(
                         new J3DFileException("Attempt to find a J3D project version which does not exist")
@@ -198,17 +199,17 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
     }
 
     public enum PF {
-        V1(Static.projectFileV1),
-        V2(Static.projectFileV2);
+        V1(Static::getProjectFileV1),
+        V2(Static::getProjectFileV2);
 
-        PF(ProjectFile pf) {
+        PF(Supplier<ProjectFile> pf) {
             projectFile = pf;
         }
 
-        private ProjectFile projectFile;
+        private final Supplier<ProjectFile> projectFile;
 
         public ProjectFile getProjectFile() {
-            return  projectFile;
+            return  projectFile.get();
         }
     }
 }

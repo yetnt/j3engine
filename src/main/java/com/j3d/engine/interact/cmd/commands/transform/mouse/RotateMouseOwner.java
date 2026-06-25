@@ -2,9 +2,12 @@ package com.j3d.engine.interact.cmd.commands.transform.mouse;
 
 import com.j3d.Static;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
+import com.j3d.engine.geometry.geo3d.Sampler;
+import com.j3d.engine.geometry.geo3d.Plane;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.commands.transform.RotateSelection;
 import com.j3d.engine.interact.cmd.commands.transform.handles.Handle;
+import com.j3d.engine.interact.cmd.commands.transform.handles.HandleType;
 import com.j3d.engine.interact.input.mouse.MOwner;
 
 import java.awt.*;
@@ -52,7 +55,9 @@ public class RotateMouseOwner extends TransformMouseOwner {
                         Vector3 A = center.add(axis.mult(axisLength));
                         Vector3 B = center.sub(axis.mult(axisLength));
                         Static.sceneManager.drawLine3D(g, A, B, Static.camera);
-                        g.setColor(new Color(126, 0, 126));
+                        Color col = new Color(126, 0, 126);
+                        g.setColor(col);
+                        drawCircFromAxis(axis, g, center, null);
                     }
             );
         }
@@ -77,6 +82,7 @@ public class RotateMouseOwner extends TransformMouseOwner {
                                 g.setColor(Color.GREEN);
                             }
                         }
+                        drawCircFromAxis(axis, g, center, h.handleType());
                         Vector3 B = center.add((A.sub(center)).rotateAroundAxis(axis, 180));
                         Static.sceneManager.drawLine3D(g, A, B, Static.camera);
                         g.setColor(Color.WHITE);
@@ -84,5 +90,29 @@ public class RotateMouseOwner extends TransformMouseOwner {
                     );
                 }
         );
+    }
+
+    private void drawCircFromAxis(Vector3 axis, Graphics2D g, Vector3 center, HandleType handle) {
+        axis = axis.normalize();
+
+        Vector3 v = axis;
+        Vector3 w = arbitraryPerpendicular(v);
+        Vector3 u = switch (handle) {
+            case Y -> new Vector3(1, 0, 0);
+            case null, default -> v.cross(w).normalize();
+        };
+
+        ArrayList<Vector3> circle = Sampler.ngon(center, 10, new Plane(u, v), 64);
+
+        for (int i = 0; i < circle.size(); i++) {
+            Vector3 a = circle.get(i);
+            Vector3 b = circle.get((i + 1) % circle.size());
+            Static.sceneManager.drawLine3D(g, a, b, Static.camera);
+        }
+    }
+
+    public Vector3 arbitraryPerpendicular(Vector3 n) {
+        Vector3 up = Math.abs(n.getY()) < 0.99 ? new Vector3(0,1,0) : new Vector3(1,0,0);
+        return n.cross(up).normalize();
     }
 }
