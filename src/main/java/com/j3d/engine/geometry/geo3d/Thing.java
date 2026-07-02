@@ -17,6 +17,8 @@ import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.ConstructorAction;
 import com.j3d.engine.react.actions.VoidAction;
+import com.j3d.gen.properties.HasProperties;
+import com.j3d.gen.properties.Property;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.storage.files.protocol.proj.ProjectFileV1;
 import com.j3d.ui.generic.J3DTheme;
@@ -54,7 +56,7 @@ import java.util.stream.Stream;
  * @see Vector3
  * @see Action
  */
-public class Thing implements Interactable {
+public class Thing implements Interactable, HasProperties {
 
     /** The centroid of the Thing, calculated from the GPoints it contains. */
     private Vector3 centroid;
@@ -66,6 +68,8 @@ public class Thing implements Interactable {
      * The name of this Thing.
      */
     private String name = "Thing";
+
+    private final ArrayList<Property<?, ?>> properties = new ArrayList<>();
 
     /**
      * What the thing should do when it gets selected within the tree GUI
@@ -156,6 +160,7 @@ public class Thing implements Interactable {
         );
         treeNode = Static.getLayerTree().addNode(parent.getTreeNode(), treeNodeIdentity);
         toggleSaved();
+        addProps();
         SceneManager.history.add(
                 new ConstructorAction() {
                     @Override
@@ -317,6 +322,34 @@ public class Thing implements Interactable {
      */
     public Vector3 getCentroid() {
         return centroid;
+    }
+
+    @Override
+    public ArrayList<Property<?, ?>> getProperties() {
+        return properties;
+    }
+
+    private void addProps() {
+        properties.add(
+                new Property<>("Thing Name", this::getName, Thing.class)
+                        .setNewValueConsumer((newValue) -> name = newValue)
+                        .setDescription("The name given to this Thing")
+        );
+        properties.add(
+                new Property<>("Thing ID", this::getId, Thing.class)
+                        .setDescription("The id given to this Thing")
+                        .constant()
+        );
+        properties.add(
+                new Property<>("Object Amount", getObjects()::size, Thing.class)
+                        .setDescription("The amount of objects within this Thing")
+                        .constant()
+        );
+        properties.add(
+                new Property<>("Centroid", this::getCentroid, Thing.class)
+                        .setDescription("The centroid of this Thing, usually its geometric centre")
+                        .constant()
+        );
     }
 
     /**

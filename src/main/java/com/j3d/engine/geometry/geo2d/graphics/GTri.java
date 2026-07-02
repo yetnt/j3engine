@@ -320,15 +320,16 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
     private void addProps() {
         properties.addAll(List.of(
-                new Property<>("normal", () -> normal, GTri.class)
+                new Property<>("Tri Normal", () -> normal, GTri.class)
                         .setDescription("The normal of this triangle").constant(),
-                new Property<>("Leg A", () -> LegA, GTri.class)
+                new Property<>("Leg A", this::getLegA, GTri.class)
                         .setDescription("The first leg of this triangle").constant(),
-                new Property<>("Leg B", () -> LegB, GTri.class)
+                new Property<>("Leg B", this::getLegB, GTri.class)
                         .setDescription("The second leg of this triangle").constant(),
-                new Property<>("Leg C", () -> LegC, GTri.class)
+                new Property<>("Leg C", this::getLegC, GTri.class)
                         .setDescription("The third leg of this triangle").constant()
         ));
+        pivotProperty.constant(); // cannot be edited.
     }
 
     public boolean isHidden() {

@@ -67,7 +67,7 @@ public abstract class MatrixMath {
      * well-formed matrix.
      * <p>
      * Based on the dimensions of the input array, this method will return a specialized,
-     * high-performance implementation (e.g., {@link Matrix4} for 4x4, {@link Matrix3} for 3x3)
+     * high-performance implementation (e.g., {@link Matrix3} for 3x3)
      * or a generic, anonymous implementation for other sizes.
      *
      * @param m The 2D double array to create the matrix from. A deep copy of this array is created
@@ -91,7 +91,6 @@ public abstract class MatrixMath {
             System.arraycopy(m[i], 0, mCopy[i], 0, m[i].length);
         }
         return switch (size) {
-            case "44" -> new Matrix4(mCopy);
             case "33" -> new Matrix3(mCopy);
             case "31" -> new Vector3(mCopy);
             default -> new MatrixInterface() {

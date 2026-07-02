@@ -134,7 +134,7 @@ public class GPoint extends GObject implements HasParents<GLine> {
     }
 
     private void addProps() {
-        // technicaly doesnt add additional props from GObject since its pivot is provided already
+        // technically doesnt add additional props from GObject since its pivot is provided already
         // which is just the point itself.
     }
 

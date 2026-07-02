@@ -10,6 +10,8 @@ import com.j3d.engine.react.actions.DirtyAction;
 import com.j3d.engine.react.actions.DirtyVoidAction;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.ConstructorAction;
+import com.j3d.gen.properties.HasProperties;
+import com.j3d.gen.properties.Property;
 import com.j3d.ui.engine.popups.tree.TreeNodeIdentity;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -44,7 +46,7 @@ import java.util.stream.Stream;
  * @see GObject
  * @see ArrayDeque
  */
-public class Layer extends ArrayList<Thing> implements Interactable {
+public class Layer extends ArrayList<Thing> implements Interactable, HasProperties {
 
     private final String identifier;
 
@@ -55,6 +57,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
 
     private boolean hidden = false;
     private boolean forDeletion = false;
+    private ArrayList<Property<?, ?>> properties = new ArrayList<>();
 
     private TreeNodeIdentity<Layer> treeNodeIdentity;
     private DefaultMutableTreeNode treeNode;
@@ -80,6 +83,7 @@ public class Layer extends ArrayList<Thing> implements Interactable {
         treeNodeIdentity = new TreeNodeIdentity<>(
                 identifier, this, onSelectCallback);
         treeNode = Static.getLayerTree().addNode(null, treeNodeIdentity);
+        addProps();
         SceneManager.history.add(
                 new ConstructorAction() {
                     @Override
@@ -183,6 +187,24 @@ public class Layer extends ArrayList<Thing> implements Interactable {
      */
     public String getIdentifier() {
         return identifier;
+    }
+
+    @Override
+    public ArrayList<Property<?, ?>> getProperties() {
+        return properties;
+    }
+
+    private void addProps() {
+        properties.add(
+                new Property<>("Layer Identifier", this::getIdentifier, Layer.class)
+                        .setDescription("The name given to this Layer")
+                        .constant()
+        );
+        properties.add(
+                new Property<>("Thing Amount", this::size, Layer.class)
+                        .setDescription("The amount of Thing(s) within this Layer")
+                        .constant()
+        );
     }
 
     /**

@@ -33,7 +33,7 @@ import java.util.function.Supplier;
  * @param <G> The type of the property provider, this is the class itself which
  *           is defining this property.
  */
-public class Property<T, G extends GObject> {
+public class Property<T, G extends HasProperties> {
     /**
      * The property's label
      */
