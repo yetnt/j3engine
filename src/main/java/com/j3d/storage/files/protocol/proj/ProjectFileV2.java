@@ -166,8 +166,8 @@ public class ProjectFileV2 extends ProjectFile {
                     dos.writeUTF(parent.toString());
                     // v2 addition
                     dos.writeInt(colToInt(gl.getColour()));
-                    dos.writeUTF(gl.getStart().getId().toString());
-                    dos.writeUTF(gl.getEnd().getId().toString());
+                    dos.writeUTF(gl.getA().getId().toString());
+                    dos.writeUTF(gl.getB().getId().toString());
                 }
                 // Write triangles
                 dos.writeInt(tris.size());

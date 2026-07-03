@@ -45,11 +45,11 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
     /**
      * The startpoint of this line
      */
-    protected GPoint startPoint;
+    protected GPoint pointA;
     /**
      * The endPoint of this line.
      */
-    protected GPoint endPoint;
+    protected GPoint pointB;
     protected boolean deletedState = false;
     private HashSet<GTri> parents = new HashSet<>();
     protected ConstraintManager<GLine> constraints = new ConstraintManager<>();
@@ -84,16 +84,16 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
         graphics2D.setColor(col);
         swingDraw(graphics2D);
         // dispatch to points
-        startPoint.draw(graphics2D);
-        endPoint.draw(graphics2D);
+        pointA.draw(graphics2D);
+        pointB.draw(graphics2D);
     }
 
     public void swingDraw(Graphics2D graphics2D) {
         graphics2D.drawLine(
-                startPoint.getPivot().toPoint(camera).toScreen(sceneManager).x,
-                startPoint.getPivot().toPoint(camera).toScreen(sceneManager).y,
-                endPoint.getPivot().toPoint(camera).toScreen(sceneManager).x,
-                endPoint.getPivot().toPoint(camera).toScreen(sceneManager).y
+                pointA.getPivot().toPoint(camera).toScreen(sceneManager).x,
+                pointA.getPivot().toPoint(camera).toScreen(sceneManager).y,
+                pointB.getPivot().toPoint(camera).toScreen(sceneManager).x,
+                pointB.getPivot().toPoint(camera).toScreen(sceneManager).y
         );
     }
 
@@ -112,8 +112,8 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
         swingDraw(graphics2D);
         graphics2D.setStroke(new BasicStroke(1));
         // dispatch to points
-        startPoint.drawSelected(graphics2D);
-        endPoint.drawSelected(graphics2D);
+        pointA.drawSelected(graphics2D);
+        pointB.drawSelected(graphics2D);
     }
 
     /**
@@ -123,8 +123,8 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
      * @param B THe end point
      */
     public GLine(GPoint A, GPoint B) {
-        startPoint = A;
-        endPoint = B;
+        pointA = A;
+        pointB = B;
 
         // set the pivot to the midpoint of the line
         setPivot(A.getPivot().add(B.getPivot()).div(2));
@@ -140,9 +140,9 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
 
     private void addProps() {
         properties.addAll(List.of(
-                new Property<>("Start Point", this::getStart, GLine.class)
+                new Property<>("Point A", this::getA, GLine.class)
                         .setDescription("The start point of this line").constant(),
-                new Property<>("End Point", this::getEnd, GLine.class)
+                new Property<>("Point B", this::getB, GLine.class)
                         .setDescription("The end point of this line").constant()
         ));
         pivotProperty.constant(); // the pivot cannot be edited.
@@ -169,16 +169,16 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
      * Returns the end GPoint
      * @return GPoint
      */
-    public GPoint getEnd() {
-        return endPoint;
+    public GPoint getB() {
+        return pointB;
     }
 
     /**
      * Returns the start GPoint
      * @return start
      */
-    public GPoint getStart() {
-        return startPoint;
+    public GPoint getA() {
+        return pointA;
     }
 
     /**
@@ -187,14 +187,14 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
      */
     public double length() {
         return Math.sqrt(
-                Math.pow(startPoint.getPivot().getX()- endPoint.getPivot().getX(), 2) + Math.pow(startPoint.getPivot().getY()- endPoint.getPivot().getY(), 2)
+                Math.pow(pointA.getPivot().getX()- pointB.getPivot().getX(), 2) + Math.pow(pointA.getPivot().getY()- pointB.getPivot().getY(), 2)
         );
     }
 
     @Override
     public String toString() {
-        return "GLine [ " + startPoint +
-                " -> " + endPoint +
+        return "GLine [ " + pointA +
+                " -> " + pointB +
                 " ]";
     }
 
@@ -203,7 +203,7 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
      * @return A stream of GPoints
      */
     public Stream<GPoint> getPointStream() {
-        return Stream.of(startPoint, endPoint);
+        return Stream.of(pointA, pointB);
     }
 
     @Override
@@ -256,7 +256,7 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
 
     @Override
     public void handlePossibleDuplicates(EventType type, GPoint.GPointMovedEvent payload) {
-        Vector3 piv = getStart().getPivot().add(getEnd().getPivot()).div(2);
+        Vector3 piv = getA().getPivot().add(getB().getPivot()).div(2);
         if (!piv.equals(getDupeObjectToCheck()))  setPivot(piv);
     }
 
@@ -266,9 +266,24 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
         sceneManager.getUnparented().remove(this);
         ArrayList<GPoint> pointsList = getPointStream().collect(Collectors.toCollection(ArrayList::new));
         pointsList.forEach(point -> point.explode(this));
-        startPoint = null;
-        endPoint = null;
+        pointA = null;
+        pointB = null;
         return pointsList;
+    }
+
+    public boolean identicalPoints(GPoint A, GPoint B) {
+        return (pointA.equals(A) && pointB.equals(B))
+                ||
+                (pointA.equals(B) && pointB.equals(A));
+    }
+
+    public static GLine getInstance(ArrayList<GLine> lines, GPoint A, GPoint B) {
+        if (lines.isEmpty()) return new GLine(A, B);
+
+        return lines.stream()
+                .filter(line ->line.identicalPoints(A, B))
+                .findAny()
+                .orElse(new GLine(A, B));
     }
 
     @Override

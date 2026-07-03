@@ -390,7 +390,7 @@ public class SceneManager {
      *     <li>{@link SelectionType#BOUNDS_STRICT}: Selects objects fully contained within the selection boundaries.</li>
      *     <li>{@link SelectionType#BOUNDS_SOFT}: Selects objects that intersect with or are partially within the selection boundaries.</li>
      *     <li>{@link SelectionType#SUBTRACT}: Inverts the current selection, selecting unselected objects and deselecting selected ones.</li>
-     *     <li>{@link SelectionType#ADD}: Adds objects from the new selection to the existing selection.</li>
+     *     <li>{@link SelectionType#UNION}: Adds objects from the new selection to the existing selection.</li>
      *     <li>{@link SelectionType#INCLUDE}: Adds objects from the new selection to the existing selection.</li>
      *     <li>{@link SelectionType#EXCLUDE}: Removes objects from the existing selection that are present in the new selection.</li>
      * </ul>
@@ -406,7 +406,7 @@ public class SceneManager {
         switch (selectionQuery.type) {
             case EXCLUDE -> currentSelection.exclude(newSelection);
             case INCLUDE -> currentSelection.include(newSelection);
-            case ALL, BOUNDS_STRICT, BOUNDS_SOFT, SUBTRACT, ADD -> currentSelection = newSelection;
+            case ALL, BOUNDS_STRICT, BOUNDS_SOFT, SUBTRACT, UNION -> currentSelection = newSelection;
         }
         return currentSelection;
     }

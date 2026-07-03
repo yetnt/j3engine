@@ -10,33 +10,33 @@ import java.util.stream.Stream;
 
 public class CLine extends CObject implements HasParents<CTri> {
 
-    public final CPoint startPoint;
-    public final CPoint endPoint;
+    public final CPoint pointA;
+    public final CPoint pointB;
     private HashSet<CTri> parents = new HashSet<>();
 
     public CLine(GLine line) {
         super(line);
-        startPoint = line.getStart().toConstraintObject();
-        endPoint = line.getEnd().toConstraintObject();
+        pointA = line.getA().toConstraintObject();
+        pointB = line.getB().toConstraintObject();
         parents = line.getParents().stream().map(GTri::toConstraintObject).collect(Collectors.toCollection(HashSet::new));
     }
 
-    public CPoint getEnd() {
-        return endPoint;
+    public CPoint pointB() {
+        return pointB;
     }
 
-    public CPoint getStart() {
-        return startPoint;
+    public CPoint pointA() {
+        return pointA;
     }
 
     public double length() {
         return Math.sqrt(
-                Math.pow(startPoint.getPivot().getX()- endPoint.getPivot().getX(), 2) + Math.pow(startPoint.getPivot().getY()- endPoint.getPivot().getY(), 2)
+                Math.pow(pointA.getPivot().getX()- pointB.getPivot().getX(), 2) + Math.pow(pointA.getPivot().getY()- pointB.getPivot().getY(), 2)
         );
     }
 
     public Stream<CPoint> getPointStream() {
-        return Stream.of(startPoint, endPoint);
+        return Stream.of(pointA, pointB);
     }
 
     @Override

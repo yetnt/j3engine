@@ -70,10 +70,10 @@ public class ZDepthIdBuffer {
 
     // Rasterizes a line using Bresenham's algorithm with depth interpolation
     public void line(GLine line) {
-        Point p1 = line.getStart().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).toSwingPoint();
-        Point p2 = line.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).toSwingPoint();
-        float z1 = (float) line.getStart().getPivot().getZ();
-        float z2 = (float) line.getEnd().getPivot().getZ();
+        Point p1 = line.getA().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).toSwingPoint();
+        Point p2 = line.getB().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).toSwingPoint();
+        float z1 = (float) line.getA().getPivot().getZ();
+        float z2 = (float) line.getB().getPivot().getZ();
 
         int x1 = p1.x;
         int y1 = p1.y;
@@ -132,13 +132,13 @@ public class ZDepthIdBuffer {
      * This avoids costly floating-point operations per pixel.
      */
     public void tri(GTri triangle) {
-        Point p1 = triangle.getLegA().getStart().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).toSwingPoint();
-        Point p2 = triangle.getLegB().getStart().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).toSwingPoint();
-        Point p3 = triangle.getLegC().getStart().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).toSwingPoint();
+        Point p1 = triangle.getLegA().getA().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).toSwingPoint();
+        Point p2 = triangle.getLegB().getA().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).toSwingPoint();
+        Point p3 = triangle.getLegC().getA().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).toSwingPoint();
 
-        float z1 = (float) triangle.getLegA().getStart().getPivot().getZ();
-        float z2 = (float) triangle.getLegB().getStart().getPivot().getZ();
-        float z3 = (float) triangle.getLegC().getStart().getPivot().getZ();
+        float z1 = (float) triangle.getLegA().getA().getPivot().getZ();
+        float z2 = (float) triangle.getLegB().getA().getPivot().getZ();
+        float z3 = (float) triangle.getLegC().getA().getPivot().getZ();
 
         // Bounding box for the triangle, clamped to screen dimensions
         int minX = Math.max(0, Math.min(p1.x, Math.min(p2.x, p3.x)));

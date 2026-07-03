@@ -323,7 +323,7 @@ public class Vector3 implements MatrixInterface {
      * @param reducer A {@link BiFunction} that combines two vectors into one.
      * @return The final reduced {@code Vector3}.
      */
-    public static Vector3 reduceToVector3(ArrayList<Vector3> vectors, BiFunction<Vector3, Vector3, Vector3> reducer) {
+    public static Vector3 reduceToVector3(List<Vector3> vectors, BiFunction<Vector3, Vector3, Vector3> reducer) {
         if (vectors == null || vectors.isEmpty()) return new Vector3();
         Vector3 result = vectors.getFirst();
         for (int i = 1; i < vectors.size(); i++) {
@@ -440,5 +440,15 @@ public class Vector3 implements MatrixInterface {
      */
     public String toCommandPaletteString() {
         return String.format("(%f, %f, %f)", X, Y, Z);
+    }
+
+    public static Vector3 X(double x) {
+        return new Vector3(x, 0, 0);
+    }
+    public static Vector3 Y(double y) {
+        return new Vector3(0, y, 0);
+    }
+    public static Vector3 Z(double z) {
+        return new Vector3(0, 0, z);
     }
 }

@@ -50,9 +50,9 @@ public class DebugDump {
                                     tri.getPivot().getX() + "," +
                                     tri.getPivot().getY() + "," +
                                     tri.getPivot().getZ() + "," +
-                                    tri.normal.getX() + "," +
-                                    tri.normal.getY() + "," +
-                                    tri.normal.getZ() + "," +
+                                    tri.normal().getX() + "," +
+                                    tri.normal().getY() + "," +
+                                    tri.normal().getZ() + "," +
                                     String.format("#%02X%02X%02X", tri.getColour().getRed(), tri.getColour().getGreen(), tri.getColour().getBlue()) + "," +
                                     !tri.isHidden();
 

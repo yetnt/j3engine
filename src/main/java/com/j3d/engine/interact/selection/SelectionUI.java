@@ -44,7 +44,7 @@ public class SelectionUI {
         SelectionQuery selectionQuery = new SelectionQuery(
                 i, ii,
                 SelectionUtils.usingSelectionVariant(inferredSelection, isStrict,
-                        SelectionType.ADD, SelectionType.SUBTRACT, SelectionType.BOUNDS_STRICT, SelectionType.BOUNDS_SOFT)
+                        SelectionType.UNION, SelectionType.SUBTRACT, SelectionType.BOUNDS_STRICT, SelectionType.BOUNDS_SOFT)
         );
         SelectionManager m = sceneManager.select(selectionQuery);
     }

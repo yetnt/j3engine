@@ -62,9 +62,9 @@ public class SelectionQuery extends Rectangle {
      */
     public boolean has(GTri triangle, boolean soft) {
         GPoint[] pts = new GPoint[3];
-        pts[0] = triangle.getLegA().getStart();
-        pts[1] = triangle.getLegB().getStart();
-        pts[2] = triangle.getLegC().getStart();
+        pts[0] = triangle.getLegA().getA();
+        pts[1] = triangle.getLegB().getA();
+        pts[2] = triangle.getLegC().getA();
         if (soft) {
             if (has(triangle.getLegA(), true) ||
                     has(triangle.getLegB(), true) ||
@@ -92,9 +92,9 @@ public class SelectionQuery extends Rectangle {
     public boolean has(GLine line, boolean soft) {
         if (soft) {
             if (intersectsWith(line)) return true;
-            return has(line.getStart()) || has(line.getEnd());
+            return has(line.getA()) || has(line.getB());
         } else {
-            return has(line.getStart()) && has(line.getEnd());
+            return has(line.getA()) && has(line.getB());
         }
     }
 
@@ -109,8 +109,8 @@ public class SelectionQuery extends Rectangle {
     }
 
     public boolean intersectsWith(GLine line) {
-        ScreenPoint A = line.getStart().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager);
-        ScreenPoint B = line.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager);
+        ScreenPoint A = line.getA().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager);
+        ScreenPoint B = line.getB().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager);
 
         ScreenPoint rectA = points[0];
         ScreenPoint rectB = new ScreenPoint(points[0].x, points[1].y);

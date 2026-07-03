@@ -1,6 +1,7 @@
 package com.j3d;
 
 import com.j3d.engine.geometry.constraints.concrete.MidpointConstraint;
+import com.j3d.engine.geometry.geo2d.Winding;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
@@ -54,18 +55,19 @@ public class Executor {
         Thing tris = threeTris();
 //        line.second.applyConstraint();
 
-        Thing circ = circle(100);
-        Thing wtf = wtf(50);
+        Thing circ = circle(6);
+        Thing wtf = solidThing(6);
 
 //        Pair<Thing, MidpointConstraint> line = someLine();
         ArrayList<Action<?>> actions = new ArrayList<>(List.of(
-                cub.rotate(new Vector3(0, 0, 1), 45),
+                cub.rotate(Vector3.Z(1), 45),
                 cub.translate(new Vector3(4, 2, 3)),
                 cub.scale(0.4),
-                tris.translate(new Vector3(14, 0, 0)),
+                tris.translate(Vector3.X(14)),
                 cub.rotate(new Vector3(2, 3, 1), 2),
-                wtf.translate(new Vector3(0, 10, 0)),
-                circ.rotate(new Vector3(0, 1, 0), 20) // 20 degrees
+                wtf.translate(Vector3.Y(10)),
+                circ.rotate(Vector3.Y(1), 20), // 20 degrees
+                circ.translate(Vector3.Z(10))
         ));
         actions.forEach(Action::run);
         actions.forEach(SceneManager.history::add);
@@ -98,22 +100,42 @@ public class Executor {
                 }
         );
         ArrayList<GLine> lines = new ArrayList<>();
+        ArrayList<GLine> triLines = new ArrayList<>();
+        ArrayList<GTri> tris = new ArrayList<>();
         // connect lines to circle
         for (int i = 0; i < points.size(); i++) {
             GPoint p1 = points.get(i);
             GPoint p2 = points.get((i + 1) % points.size()); // Connect last point to first
-            lines.add(new GLine(p1, p2));
+            topFaceTri(lines, p1, p2, centre, tris);
         }
 
-        Thing circleThing = new Thing(Static.sceneManager, layer, "Circle")
+        return new Thing(Static.sceneManager, layer, "Circle")
                 .addObjs(centre)
                 .addObjs(points.toArray(new GPoint[0]))
-                .addObjs(lines.toArray(new GLine[0]));
-        return circleThing;
+                .addObjs(lines.toArray(new GLine[0]))
+//                .addObjs(triLines.toArray(new GLine[0]))
+                .addObjs(tris.toArray(new GTri[0]));
+    }
+
+    private static void topFaceTri(ArrayList<GLine> lines, GPoint p1, GPoint p2, GPoint centre, ArrayList<GTri> tris) {
+        GLine lnInCirc = GLine.getInstance(lines, p1, p2); // the line that is part of the ngon
+        GLine lineA = GLine.getInstance(lines, p1, centre);
+        GLine lineB = GLine.getInstance(lines, p2, centre);
+        lines.add(lnInCirc);
+        lines.add(lineA);
+        lines.add(lineB);
+        GTri tri = new GTri(
+                Color.GRAY,
+                lnInCirc,
+                lineA,
+                lineB,
+                new Winding(p1, centre, p2)
+        );
+        tris.add(tri);
     }
 
 
-    public Thing wtf(int max) {
+    public Thing solidThing(int max) {
         GPoint centre = new GPoint(new Vector3(2, 2, 2));
         GPoint centre2 = new GPoint(new Vector3(0, 10, 0));
         Plane plane = new Plane(
@@ -158,22 +180,40 @@ public class Executor {
                 }
         );
         ArrayList<GLine> lines = new ArrayList<>();
+        ArrayList<GTri> tris = new ArrayList<>();
         // connect lines to circle
         for (int i = 0; i < points.size(); i++) {
-            GPoint p1 = points.get(i);
-            GPoint p2 = points.get((i + 1) % points.size()); // Connect last point to first
-            GPoint p3 = points2.get(i);
-            GPoint p4 = points2.get((i + 1) % points.size()); // Connect last point to first
-            lines.add(new GLine(p1, p2));
-            lines.add(new GLine(p3, p4));
-            lines.add(new GLine(p1, p3));
-            lines.add(new GLine(p2, p4));
+            //top face points
+            GPoint A = points.get(i);
+            GPoint B = points.get((i + 1) % points.size()); // Connect last point to first
+            topFaceTri(lines, A, B, centre, tris);
+            //bottom face points
+            GPoint D = points2.get(i);
+            GPoint C = points2.get((i + 1) % points.size()); // Connect last point to first
+            topFaceTri(lines, D, C, centre2, tris);
+            // edge lines
+            GLine AB = GLine.getInstance(lines, A, B);
+            GLine BC = GLine.getInstance(lines, B, C);
+            GLine CD = GLine.getInstance(lines, C, D);
+            GLine DA = GLine.getInstance(lines, D, A);
+            GLine diagonalBD = new GLine(B, D);
+
+            // Triangle ABD and CDB
+            Color col = A.getColour();
+            lines.addAll(
+                    List.of(
+                            AB, BC, CD, DA, diagonalBD
+                    )
+            );
+            tris.add(new GTri(col, AB, diagonalBD, DA, new Winding(A, B, D)));
+            tris.add(new GTri(col, BC, diagonalBD, CD, new Winding(B, C, D)));
         }
 
-        Thing circleThing = new Thing(Static.sceneManager, layer, "Circle");
-        circleThing.addObjs(centre, centre)
+        Thing circleThing = new Thing(Static.sceneManager, layer, "wtf");
+        circleThing.addObjs(centre, centre2)
                 .addObjs(points.toArray(new GPoint[0]))
                 .addObjs(points2.toArray(new GPoint[0]))
+                .addObjs(tris.toArray(new GTri[0]))
                 .addObjs(lines.toArray(new GLine[0]));
 
         return circleThing;

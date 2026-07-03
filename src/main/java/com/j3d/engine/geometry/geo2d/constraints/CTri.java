@@ -1,7 +1,7 @@
 package com.j3d.engine.geometry.geo2d.constraints;
 
 import com.j3d.Static;
-import com.j3d.engine.geometry.geo2d.graphics.GLine;
+import com.j3d.engine.geometry.geo2d.Winding;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 
@@ -12,6 +12,7 @@ public class CTri extends CObject {
     public final CLine LegB;
     public final CLine LegC;
 
+    public final Winding winding;
     public Vector3 normal;
 
     public CTri(GTri gTri) {
@@ -19,6 +20,7 @@ public class CTri extends CObject {
         LegA = gTri.getLegA() != null ? gTri.getLegA().toConstraintObject() : null;
         LegB = gTri.getLegB() != null ? gTri.getLegB().toConstraintObject() : null;
         LegC = gTri.getLegC() != null ? gTri.getLegC().toConstraintObject() : null;
+        winding = gTri.getWinding();
     }
 
     /**
@@ -80,9 +82,9 @@ public class CTri extends CObject {
      * @return The area.
      */
     public double area() {
-        Vector3 A = LegA.getStart().getPivot();
-        Vector3 B = LegB.getStart().getPivot();
-        Vector3 C = LegC.getStart().getPivot();
+        Vector3 A = LegA.pointA().getPivot();
+        Vector3 B = LegB.pointA().getPivot();
+        Vector3 C = LegC.pointA().getPivot();
 
         return Math.abs((B.getX() - A.getX()) * (C.getY() - A.getY()) - (B.getY() - A.getY()) * (C.getX() - A.getX())) / 2;
     }

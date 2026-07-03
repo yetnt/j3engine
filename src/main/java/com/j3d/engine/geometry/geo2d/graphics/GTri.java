@@ -5,6 +5,7 @@ import com.j3d.Static;
 import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.geometry.constraints.ConstraintManager;
+import com.j3d.engine.geometry.geo2d.Winding;
 import com.j3d.engine.geometry.geo2d.constraints.CTri;
 import com.j3d.engine.geometry.geo3d.Thing;
 
@@ -61,9 +62,9 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
     protected GLine LegC;
 
     /**
-     * The normal of the triangle.
+     * The winding of the triangle
      */
-    public Vector3 normal;
+    protected Winding winding;
 
     protected boolean deletedState = false;
 
@@ -87,136 +88,8 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         return gt;
     }
 
-    /**
-     * Draws this triangle to the screen.
-     * @implSpec This is only called by {@link TriStateArea#draw(Graphics2D)}
-     * @implNote This respects {@link ViewType} and may or may not draw
-     * itself depending on the type.
-     * @param graphics2D The Graphics2D instance
-     */
-    @Override
-    public void draw(Graphics2D graphics2D) {
-        if (deletedState) return;
-        setPivot(LegA.getStart().getPivot().add(LegB.getStart().getPivot()).add(LegC.getStart().getPivot()).div(3));
-        calcNormal(LegA.getStart().getPivot(), LegB.getStart().getPivot(), LegC.getStart().getPivot());
-        if (J3DSettings.getViewType() == ViewType.NORMAL) {
-            graphics2D.setColor(col);
-            graphics2D.fillPolygon(new int[]{
-                            LegA.getStart().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).x,
-                            LegA.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).x,
-                            LegB.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).x
-                    },
-                    new int[]{
-                            LegA.getStart().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).y,
-                            LegA.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).y,
-                            LegB.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).y
-                    },
-                    3
-            );
-        }
-        // dispatch to lines
-        LegA.draw(graphics2D);
-        LegB.draw(graphics2D);
-        LegC.draw(graphics2D);
-    }
-
-    /**
-     * Private method to draw the triangle's distance depth and normal overlays.
-     */
-    private void drawDist() {
-                Static.sceneManager.scheduleOverlap(getId(), g -> {
-                            if (J3DSettings.isShowTriDistances()) {
-                                // draw text showing the tris distance from camera
-                                Vector3 triCentroid = this.getPivot();
-                                Static.sceneManager.drawText3D(g, triCentroid,
-                                        String.format("Dist: %.2f", this.getPivot().sub(Static.camera.getPosition()).magnitude()),
-                                        Static.camera,
-                                        new Color(0, 0, 0),
-                                        this.getColour());
-                            }
-                            if (J3DSettings.isShowDepth()) {
-                                // draw text showing the tris depth from camera
-                                Vector3 triCentroid = this.getPivot();
-                                double depth = this.calcDepth();
-                                Static.sceneManager.drawText3D(g, triCentroid.add(new Vector3(1, 0, 0)),
-                                        String.format("Depth: %.2f", depth),
-                                        Static.camera,
-                                        new Color(0, 0, 0),
-                                        this.getColour());
-                            }
-                            if (J3DSettings.isShowNormals()) {
-                                // draw text showing the tris normal
-                                Vector3 triCentroid = this.getPivot();
-                                Static.sceneManager.drawText3D(g, triCentroid.sub(new Vector3(4, 0, 0)),
-                                        String.format("Normal: (%.2f, %.2f, %.2f)", normal.getX(), normal.getY(), normal.getZ()),
-                                        Static.camera,
-                                        new Color(0, 0, 0),
-                                        this.getColour());
-                                // The following code draws the normal
-                                g.setColor(Color.RED);
-                                Static.sceneManager.drawLine3D(g, getPivot(), getPivot().add(normal.mult(0.5)), Static.camera);
-                            }
-                        }
-                );
-    }
-
-
-    /**
-     * Calculates the depth of the tri relative to the camera's forward direction.
-     * @return The depth value.
-     */
-    public double calcDepth() {
-        Vector3 toTri = getPivot().sub(Static.camera.getPosition());
-        return toTri.dot(Static.camera.getForward().normalize());
-    }
-
-    /**
-     * Calculates the Euclidean distance from the triangle's pivot to the camera position.
-     * @return The Euclidean distance.
-     */
-    public double euclideanDist() {
-        return getPivot().sub(Static.camera.getPosition()).magnitude();
-    }
-
-    /**
-     * Draws this triangle to the screen in its selected state.
-     * @implSpec This is only called by {@link TriStateArea#draw(Graphics2D)}
-     * @implNote This respects {@link ViewType} and may or may not draw
-     * itself depending on the type.
-     * @param graphics2D The Graphics2D instance
-     */
-    @Override
-    public void drawSelected(Graphics2D graphics2D) {
-        if (deletedState) return;
-        setPivot(LegA.getStart().getPivot().add(LegB.getStart().getPivot()).add(LegC.getStart().getPivot()).div(3));
-        calcNormal(LegA.getStart().getPivot(), LegB.getStart().getPivot(), LegC.getStart().getPivot());
-        if (J3DSettings.getViewType() == ViewType.NORMAL) {
-            graphics2D.setColor(col.brighter());
-            graphics2D.setStroke(new BasicStroke(2));
-            graphics2D.fillPolygon(new int[]{
-                            LegA.getStart().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).x,
-                            LegA.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).x,
-                            LegB.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).x
-                    },
-                    new int[]{
-                            LegA.getStart().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).y,
-                            LegA.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).y,
-                            LegB.getEnd().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).y
-                    },
-                    3
-            );
-            graphics2D.setStroke(new BasicStroke(1));
-            draw(graphics2D);
-            // dispatch to lines
-        }
-        LegA.drawSelected(graphics2D);
-        LegB.drawSelected(graphics2D);
-        LegC.drawSelected(graphics2D);
-        Static.sceneManager.drawText3D(
-                graphics2D,
-                getPivot().sub(new Vector3(1, 1, 1)),
-                "Tri-" + getId().toString().substring(0, 4),
-                Static.camera);
+    private void setWinding(GPoint A, GPoint B, GPoint C) {
+        winding = new Winding(A, B, C);
     }
 
     /**
@@ -243,6 +116,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         LegA = new GLine(A, B);
         LegB = new GLine(B, C);
         LegC = new GLine(C, A);
+        setWinding(A, B, C);
 
         LegA.addParent(this);
         LegB.addParent(this);
@@ -258,7 +132,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
         setPivot(A.getPivot().add(B.getPivot()).add(C.getPivot()).div(3));
 
-        calcNormal(A.getPivot(), B.getPivot(), C.getPivot());
+        normal();
 
         TriStateArea.register(this);
         drawDist();
@@ -274,13 +148,15 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
      * @param A The first line.
      * @param B The second line.
      * @param C The third line.
+     * @implSpec This constructor assumes winding by checking that each edge's start point is unique
+     * and similar to the end point.
      */
     public GTri(Color c, GLine A, GLine B, GLine C) {
         super(c);
         GPoint[] points = {
-                A.getStart(), A.getEnd(),
-                B.getStart(), B.getEnd(),
-                C.getStart(), C.getEnd()
+                A.getA(), A.getB(),
+                B.getA(), B.getB(),
+                C.getA(), C.getB()
         };
 
         // Count how many times each unique point appears
@@ -310,8 +186,43 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
                 p -> p.attach(this)
         );
 
-        setPivot(A.getStart().getPivot().add(B.getStart().getPivot()).add(C.getStart().getPivot()).div(3));
-        calcNormal(A.getStart().getPivot(), B.getStart().getPivot(), C.getStart().getPivot());
+        setWinding(points[0], points[2], points[4]);
+
+
+        setPivot(Vector3.reduceToVector3(
+                winding.toVector3List()
+                , Vector3::add).div(3));
+        normal();
+        TriStateArea.register(this);
+        drawDist();
+        toConstraintObject();
+        addProps();
+    }
+
+    /**
+     * Constructs a new GTri from a winding and 3 lines.
+     * @param c The colour.
+     * @param A The first line.
+     * @param B The second line.
+     * @param C The third line.
+     * @param winding The winding of the triangle.
+     * @implSpec This constructor is primarily used for deserialization purposes where the winding is already known.
+     */
+    public GTri(Color c, GLine A, GLine B, GLine C, Winding winding) {
+        super(c);
+
+        LegA = A;
+        LegB = B;
+        LegC = C;
+
+        this.winding = winding;
+
+        LegA.addParent(this);
+        LegB.addParent(this);
+        LegC.addParent(this);
+
+        setPivot(Vector3.reduceToVector3(winding.toVector3List(), Vector3::add).div(3));
+        normal();
         TriStateArea.register(this);
         drawDist();
         toConstraintObject();
@@ -320,7 +231,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
     private void addProps() {
         properties.addAll(List.of(
-                new Property<>("Tri Normal", () -> normal, GTri.class)
+                new Property<>("Tri Normal", this::normal, GTri.class)
                         .setDescription("The normal of this triangle").constant(),
                 new Property<>("Leg A", this::getLegA, GTri.class)
                         .setDescription("The first leg of this triangle").constant(),
@@ -342,14 +253,9 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
     /**
      * Calculates the normal vector of the triangle given three vertices.
-     * @param A The first vertex of the triangle.
-     * @param B The second vertex of the triangle.
-     * @param C The third vertex of the triangle.
      */
-    public void calcNormal(Vector3 A, Vector3 B, Vector3 C) {
-        Vector3 AB = B.sub(A);
-        Vector3 AC = C.sub(A);
-        normal = AB.cross(AC).normalize();
+    public Vector3 normal() {
+        return winding.normal();
     }
 
     /**
@@ -381,11 +287,32 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
      * @return The area.
      */
     public double area() {
-        Vector3 A = LegA.getStart().getPivot();
-        Vector3 B = LegB.getStart().getPivot();
-        Vector3 C = LegC.getStart().getPivot();
+        Vector3 A = LegA.getA().getPivot();
+        Vector3 B = LegB.getA().getPivot();
+        Vector3 C = LegC.getA().getPivot();
 
         return Math.abs((B.getX() - A.getX()) * (C.getY() - A.getY()) - (B.getY() - A.getY()) * (C.getX() - A.getX())) / 2;
+    }
+
+    /**
+     * Calculates the depth of the tri relative to the camera's forward direction.
+     * @return The depth value.
+     */
+    public double calcDepth() {
+        Vector3 toTri = getPivot().sub(Static.camera.getPosition());
+        return toTri.dot(Static.camera.getForward().normalize());
+    }
+
+    /**
+     * Calculates the Euclidean distance from the triangle's pivot to the camera position.
+     * @return The Euclidean distance.
+     */
+    public double euclideanDist() {
+        return getPivot().sub(Static.camera.getPosition()).magnitude();
+    }
+
+    public Winding getWinding() {
+        return winding;
     }
 
     @Override
@@ -445,10 +372,10 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
     @Override
     public void handlePossibleDuplicates(EventType type, GPoint.GPointMovedEvent payload) {
-        Vector3 piv = getLegA().getStart().getPivot().add(getLegB().getStart().getPivot()).add(getLegC().getStart().getPivot()).div(3);
+        Vector3 piv = getLegA().getA().getPivot().add(getLegB().getA().getPivot()).add(getLegC().getA().getPivot()).div(3);
         if (!piv.equals(getDupeObjectToCheck())) {
             setPivot(piv);
-            calcNormal(getLegA().getStart().getPivot(), getLegB().getStart().getPivot(), getLegC().getStart().getPivot());
+            normal();
         }
     }
 
@@ -485,12 +412,126 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         GTri gTri = (GTri) o;
         return deletedState == gTri.deletedState &&
                 isHidden() == gTri.isHidden() &&
-                Objects.equals(normal, gTri.normal) &&
                 Objects.equals(getConstraints(), gTri.getConstraints());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), normal, deletedState, isHidden());
+        return Objects.hash(super.hashCode(), deletedState, isHidden());
     }
+
+    /**
+     * Draws this triangle to the screen in its selected state.
+     * @implSpec This is only called by {@link TriStateArea#draw(Graphics2D)}
+     * @implNote This respects {@link ViewType} and may or may not draw
+     * itself depending on the type.
+     * @param graphics2D The Graphics2D instance
+     */
+    @Override
+    public void drawSelected(Graphics2D graphics2D) {
+        if (deletedState) return;
+        setPivot(LegA.getA().getPivot().add(LegB.getA().getPivot()).add(LegC.getA().getPivot()).div(3));
+        normal();
+        if (J3DSettings.getViewType() == ViewType.NORMAL) {
+            graphics2D.setColor(col.brighter());
+            graphics2D.setStroke(new BasicStroke(2));
+            graphics2D.fillPolygon(new int[]{
+                            LegA.getA().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).x,
+                            LegA.getB().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).x,
+                            LegB.getB().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).x
+                    },
+                    new int[]{
+                            LegA.getA().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).y,
+                            LegA.getB().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).y,
+                            LegB.getB().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).y
+                    },
+                    3
+            );
+            graphics2D.setStroke(new BasicStroke(1));
+            draw(graphics2D);
+            // dispatch to lines
+        }
+        LegA.drawSelected(graphics2D);
+        LegB.drawSelected(graphics2D);
+        LegC.drawSelected(graphics2D);
+        Static.sceneManager.drawText3D(
+                graphics2D,
+                getPivot().sub(new Vector3(1, 1, 1)),
+                "Tri-" + getId().toString().substring(0, 4),
+                Static.camera);
+    }
+
+    /**
+     * Draws this triangle to the screen.
+     * @implSpec This is only called by {@link TriStateArea#draw(Graphics2D)}
+     * @implNote This respects {@link ViewType} and may or may not draw
+     * itself depending on the type.
+     * @param graphics2D The Graphics2D instance
+     */
+    @Override
+    public void draw(Graphics2D graphics2D) {
+        if (deletedState) return;
+        setPivot(LegA.getA().getPivot().add(LegB.getA().getPivot()).add(LegC.getA().getPivot()).div(3));
+        normal();
+        if (J3DSettings.getViewType() == ViewType.NORMAL) {
+            graphics2D.setColor(col);
+            graphics2D.fillPolygon(new int[]{
+                            LegA.getA().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).x,
+                            LegA.getB().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).x,
+                            LegB.getB().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).x
+                    },
+                    new int[]{
+                            LegA.getA().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).y,
+                            LegA.getB().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).y,
+                            LegB.getB().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).y
+                    },
+                    3
+            );
+        }
+        // dispatch to lines
+        LegA.draw(graphics2D);
+        LegB.draw(graphics2D);
+        LegC.draw(graphics2D);
+    }
+
+    /**
+     * Private method to draw the triangle's distance depth and normal overlays.
+     */
+    private void drawDist() {
+        Static.sceneManager.scheduleOverlap(getId(), g -> {
+                    if (J3DSettings.isShowTriDistances()) {
+                        // draw text showing the tris distance from camera
+                        Vector3 triCentroid = this.getPivot();
+                        Static.sceneManager.drawText3D(g, triCentroid,
+                                String.format("Dist: %.2f", this.getPivot().sub(Static.camera.getPosition()).magnitude()),
+                                Static.camera,
+                                new Color(0, 0, 0),
+                                this.getColour());
+                    }
+                    if (J3DSettings.isShowDepth()) {
+                        // draw text showing the tris depth from camera
+                        Vector3 triCentroid = this.getPivot();
+                        double depth = this.calcDepth();
+                        Static.sceneManager.drawText3D(g, triCentroid.add(new Vector3(1, 0, 0)),
+                                String.format("Depth: %.2f", depth),
+                                Static.camera,
+                                new Color(0, 0, 0),
+                                this.getColour());
+                    }
+                    if (J3DSettings.isShowNormals()) {
+                        // draw text showing the tris normal
+                        Vector3 triCentroid = this.getPivot();
+                        Static.sceneManager.drawText3D(g, triCentroid.sub(new Vector3(4, 0, 0)),
+                                String.format("Normal: (%.2f, %.2f, %.2f)", normal().getX(), normal().getY(), normal().getZ()),
+                                Static.camera,
+                                new Color(0, 0, 0),
+                                this.getColour());
+                        // The following code draws the normal
+                        g.setColor(Color.RED);
+                        Static.sceneManager.drawLine3D(g, getPivot(), getPivot().add(normal().mult(0.5)), Static.camera);
+                    }
+                }
+        );
+    }
+
 }

@@ -29,8 +29,8 @@ public class MidpointConstraint implements ConstraintOn<GPoint> {
         };
         MidpointConstraintEventListener mdpl = new MidpointConstraintEventListener(applier);
 
-        line.getStart().attach(mdpl);
-        line.getEnd().attach(mdpl);
+        line.getA().attach(mdpl);
+        line.getB().attach(mdpl);
 
     }
 
@@ -59,12 +59,12 @@ public class MidpointConstraint implements ConstraintOn<GPoint> {
                 changedObjects.get(parent.getId()) ==  null
                         ? null : (CPoint) changedObjects.get(parent.getId());
         CPoint point1 =
-                changedObjects.get(line.getStart().getId()) == null
-                        ? null : (CPoint) changedObjects.get(line.getStart().getId());
+                changedObjects.get(line.getA().getId()) == null
+                        ? null : (CPoint) changedObjects.get(line.getA().getId());
 
         CPoint point2 =
-                changedObjects.get(line.getEnd().getId()) == null
-                        ? null : (CPoint) changedObjects.get(line.getEnd().getId());
+                changedObjects.get(line.getB().getId()) == null
+                        ? null : (CPoint) changedObjects.get(line.getB().getId());
 
         if ((point1 == null || point2 == null) && changedParent == null) {
             return true; // the midpoint was not moved. constraint satisfied.

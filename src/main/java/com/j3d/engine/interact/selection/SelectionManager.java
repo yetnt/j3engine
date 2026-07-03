@@ -55,7 +55,7 @@ public class SelectionManager {
                             if (wasSelected && !inBox)
                                 selected.add(obj); // keep
                         }
-                        case ADD -> {
+                        case UNION -> {
                             // pre-add the current selected objects.
                             sceneManager.getSelected().stream()
                                     .filter(o -> !selected.contains(o))

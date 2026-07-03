@@ -30,7 +30,7 @@ public enum SelectionType {
     /**
      * Adds a selection to an existing selection.
      */
-    ADD,
+    UNION,
     /**
      * When a selection already exists, This new selection will add its selection to the existing selection.
      */
