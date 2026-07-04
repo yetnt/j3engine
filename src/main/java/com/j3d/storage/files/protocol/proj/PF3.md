@@ -31,7 +31,7 @@ Italics - V3 addition
 - J3D Header `UTF-8` `(J3D)`
 - **J3D Version `short` `(1)`** 
 - PROJECT Header `UTF-8` `PROJECT`
-- PROJECT Header Version `int` `(3)`
+- PROJECT Header Version `short` `(3)`
 - _`Padding A`_
 - Number of Layers `int`
   - _`Padding B`_
@@ -76,7 +76,7 @@ Italics - V3 addition
   - ...
 - _`Padding C`_
 - _`Padding A`_
-- Number of Things `UTF-8`
+- Number of Things `int`
   - _`Padding B`_
   - Thing UUID `UTF-8`
   - Thing Name `UTF-8`
