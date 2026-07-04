@@ -19,8 +19,8 @@ import com.j3d.engine.react.actions.ConstructorAction;
 import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.gen.properties.HasProperties;
 import com.j3d.gen.properties.Property;
+import com.j3d.storage.files.protocol.proj.PF1;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
-import com.j3d.storage.files.protocol.proj.ProjectFileV1;
 import com.j3d.ui.generic.J3DTheme;
 import com.j3d.ui.dialog.Spinner;
 import com.j3d.ui.engine.popups.tree.TreeNodeIdentity;
@@ -131,7 +131,7 @@ public class Thing implements Interactable, HasProperties {
 
     /**
      * Constructs a Thing.
-     * @implSpec This is used by {@link ProjectFileV1#readFile(String, String, Spinner)} during a project file read and should only be used in that case.
+     * @implSpec This is used by {@link PF1#readFile(String, String, Spinner)} during a project file read and should only be used in that case.
      * @param name The name of the Thing defined in the file.
      * @param id The ID of the Thing defined in the file.
      * @param hidden Whether the Thing is hidden or not.
@@ -152,7 +152,7 @@ public class Thing implements Interactable, HasProperties {
      * file loading or anything where it hasnt had a UUID attached to it already.
      * Otherwise the UUID is treated as immutable.
      * @param uuid The new UUID
-     * @see ProjectFileV1#readFile(String, String, Spinner)
+     * @see PF1#readFile(String, String, Spinner)
      */
     private void setId(UUID uuid) {
         this.id = uuid;

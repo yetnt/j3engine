@@ -18,8 +18,8 @@ import com.j3d.gen.settings.Settings;
 import com.j3d.gen.settings.classes.CameraProperties;
 import com.j3d.storage.files.engine.EngineFiles;
 import com.j3d.storage.files.engine.LogFile;
-import com.j3d.storage.files.protocol.proj.ProjectFileV1;
-import com.j3d.storage.files.protocol.proj.ProjectFileV2;
+import com.j3d.storage.files.protocol.proj.PF1;
+import com.j3d.storage.files.protocol.proj.PF2;
 import com.j3d.ui.engine.CommandPalette;
 import com.j3d.ui.engine.FloatingPanel;
 import com.j3d.ui.engine.J3DPanel;
@@ -46,18 +46,18 @@ import java.net.URL;
  * @author Lehlogonolo Poole
  */
 public class Static {
-    private static ProjectFileV1 projectFileV1 = new ProjectFileV1();
-    public static ProjectFileV1 getProjectFileV1() {
+    private static PF1 projectFileV1 = new PF1();
+    public static PF1 getProjectFileV1() {
         if (projectFileV1 == null) {
-            projectFileV1 = new ProjectFileV1();
+            projectFileV1 = new PF1();
         }
         return projectFileV1;
     }
 
-    private static ProjectFileV2 projectFileV2 = new ProjectFileV2();
-    public static ProjectFileV2 getProjectFileV2() {
+    private static PF2 projectFileV2 = new PF2();
+    public static PF2 getProjectFileV2() {
         if (projectFileV2 == null) {
-            projectFileV2 = new ProjectFileV2();
+            projectFileV2 = new PF2();
         }
         return projectFileV2;
     }

@@ -30,13 +30,13 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
- * ProjectFileV2 is a J3D file protocol implementation for reading and writing
+ * PF2 is a J3D file protocol implementation for reading and writing
  * project files that contain layer and thing information to and from disk.
  * <p>
  *     Typically .j3p files
  * </p>
  * <p>
- *     This version is different from {@link ProjectFileV1} as it makes the following changes:
+ *     This version is different from {@link PF1} as it makes the following changes:
  *     (in the format {@code 0xAARRGGBB})
  *     <ul>
  *         <li>Writes {@link GPoint#getColour()}</li
@@ -62,13 +62,13 @@ import java.util.stream.Collectors;
  *         <ul>X Coordinate (double)</ul>
  *         <ul>Y Coordinate (double)</ul>
  *         <ul>Z Coordinate (double)</ul>
- *         <ul>Point Colour (signed 32 bit int) (Different from {@link ProjectFileV1})</ul>
+ *         <ul>Point Colour (signed 32 bit int) (Different from {@link PF1})</ul>
  *     </ul>
  *     <ul>Number of lines in project (int)</ul>
  *     <ul>For each line:
  *         <ul>Line UUID (UTF-8)</ul>
  *         <ul>Thing Parent UUID (UTF-8)</ul>
- *         <ul>Line Colour (signed 32 bit int) (Different from {@link ProjectFileV1})</ul>
+ *         <ul>Line Colour (signed 32 bit int) (Different from {@link PF1})</ul>
  *         <ul>Start Point UUID (UTF-8)</ul>
  *         <ul>End Point UUID (UTF-8)</ul>
  *     </ul>
@@ -76,7 +76,7 @@ import java.util.stream.Collectors;
  *     <ul>For each triangle:
  *         <ul>Triangle UUID (UTF-8)</ul>
  *         <ul>Thing Parent UUID (UTF-8)</ul>
- *         <ul>Tri colour (signed 32 bit int) (Different from {@link ProjectFileV1})</ul>
+ *         <ul>Tri colour (signed 32 bit int) (Different from {@link PF1})</ul>
  *         <ul>Line 1 UUID (UTF-8)</ul>
  *         <ul>Line 2 UUID (UTF-8)</ul>
  *         <ul>Line 3 UUID (UTF-8)</ul>
@@ -93,11 +93,11 @@ import java.util.stream.Collectors;
  *     </ul>
  *
  * </p>
- * @implSpec {@link ProjectFileV2} can convert from {@link ProjectFileV1} but cannot convert to it.
+ * @implSpec {@link PF2} can convert from {@link PF1} but cannot convert to it.
  */
-public class ProjectFileV2 extends ProjectFile {
+public class PF2 extends ProjectFile {
 
-    public ProjectFileV2() {
+    public PF2() {
         super(2,
                 Set.of(),                           // Can convert to
                 Set.of(PF.V1)  // Can convert from

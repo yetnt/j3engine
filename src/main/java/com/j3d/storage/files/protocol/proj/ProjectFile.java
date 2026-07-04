@@ -26,7 +26,7 @@ import java.util.function.Supplier;
  * It defines the common interface and properties for reading and writing
  * project files (typically .j3p files) of different versions.
  * <p>
- * Concrete implementations, such as {@link ProjectFileV1} and {@link ProjectFileV2},
+ * Concrete implementations, such as {@link PF1} and {@link PF2},
  * handle the specific serialization and deserialization logic for their respective
  * file formats.
  * </p>

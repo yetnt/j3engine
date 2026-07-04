@@ -8,7 +8,6 @@ import com.j3d.engine.react.actions.DirtyVoidAction;
 import com.j3d.engine.react.history.History;
 import com.j3d.gen.settings.CoreSettings;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
-import com.j3d.storage.files.protocol.proj.ProjectFileV1;
 import com.j3d.ui.dialog.Spinner;
 import com.j3d.ui.engine.popups.tree.LayerTree;
 import com.j3d.ui.engine.popups.tree.TreeNodeIdentity;

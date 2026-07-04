@@ -29,7 +29,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
- * ProjectFileV1 is a J3D file protocol implementation for reading and writing
+ * PF1 is a J3D file protocol implementation for reading and writing
  * project files that contain layer and thing information to and from disk.
  * <p>
  *     Typically .j3p files
@@ -83,14 +83,14 @@ import java.util.stream.Collectors;
  *         </ul>
  *     </ul>
  * </p>
- * @implSpec {@link ProjectFileV1} can conver to {@link ProjectFileV2} but cannot convert from it.
+ * @implSpec {@link PF1} can conver to {@link PF2} but cannot convert from it.
  */
-public class ProjectFileV1 extends ProjectFile {
+public class PF1 extends ProjectFile {
 
     /**
      * Default constructor.
      */
-    public ProjectFileV1() {
+    public PF1() {
         super(1,
                 Set.of(PF.V2), // Can convert to
                 Set.of()                            // Can convert from
