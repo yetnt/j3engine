@@ -6,6 +6,7 @@ import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.Sampler;
 import com.j3d.engine.geometry.geo3d.Plane;
+import com.j3d.engine.geometry.geo3d.Solids;
 import com.j3d.engine.interact.input.keyboard.DefaultKeys;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.ui.engine.EngineFrame;
@@ -14,6 +15,7 @@ import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.react.actions.Action;
+import com.j3d.utility.generic.SamePair;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,8 +55,18 @@ public class Executor {
         Thing tris = threeTris();
 //        line.second.applyConstraint();
 
-        Thing circ = circle(6);
-        Thing wtf = solidThing(9);
+        Thing ngon = ngon(3);
+        Thing solid = Solids.prism(
+                20,4, layer,
+                new SamePair<>(Vector3.X(-10), Vector3.X(-2)),
+                new Plane(new Vector3(0, 0.2, 0.6), new Vector3(0.1, 0.4, 0)).pair()
+        );
+        Thing genericSolid = Solids.prism(
+                10,40, layer,
+                new SamePair<>(Vector3.X(-30), Vector3.X(-22)),
+                Plane.ZY().pair()
+        );
+        Thing cone = cone(20, 20);
 
 //        Pair<Thing, MidpointConstraint> line = someLine();
         ArrayList<Action<?>> actions = new ArrayList<>(List.of(
@@ -63,16 +75,63 @@ public class Executor {
                 cub.scale(0.4),
                 tris.translate(Vector3.X(14)),
                 cub.rotate(new Vector3(2, 3, 1), 2),
-                wtf.translate(Vector3.Y(10)),
-                circ.rotate(Vector3.Y(1), 20), // 20 degrees
-                circ.translate(Vector3.Z(10))
+                solid.translate(Vector3.X(-20)),
+                ngon.rotate(Vector3.Y(1), 20), // 20 degrees
+                ngon.translate(Vector3.X(40)),
+                cone.rotate(Vector3.X(5), 5)
         ));
         actions.forEach(Action::run);
         actions.forEach(SceneManager.history::add);
 
     }
 
-    public Thing circle(int max) {
+    public Thing cone(int max, int height) {
+        GPoint centre = new GPoint(new Vector3(0, 0, 0));
+        Plane plane = new Plane(
+                new Vector3(1, 0, 0),
+                new Vector3(0, 0, 1)
+        );
+
+        ArrayList<GPoint> points = Sampler.ngon(
+                centre.getPivot(),
+                5,
+                plane,
+                max,
+                GPoint::new
+        );
+
+        centre.setPivot(centre.getPivot().sub(Vector3.Y(height)));
+
+        ArrayList<GLine> lines = new ArrayList<>();
+        ArrayList<GTri> tris = new ArrayList<>();
+        // connect lines to circle
+        for (int i = 0; i < points.size(); i++) {
+            GPoint p1 = points.get(i);
+            GPoint p2 = points.get((i + 1) % points.size()); // Connect last point to first
+            GLine lnInCirc = GLine.getInstance(lines, p1, p2); // the line that is part of the ngon
+            GLine lineA = GLine.getInstance(lines, p1, centre);
+            GLine lineB = GLine.getInstance(lines, p2, centre);
+            lines.add(lnInCirc);
+            lines.add(lineA);
+            lines.add(lineB);
+            GTri tri = new GTri(
+                    Color.ORANGE,
+                    lnInCirc,
+                    lineA,
+                    lineB,
+                    new Winding(p1, centre, p2)
+            );
+            tris.add(tri);
+        }
+
+        return new Thing(Static.sceneManager, layer, "Cone")
+                .addObjs(centre)
+                .addObjs(points.toArray(new GPoint[0]))
+                .addObjs(lines.toArray(new GLine[0]))
+                .addObjs(tris.toArray(new GTri[0]));
+    }
+
+    public Thing ngon(int max) {
         GPoint centre = new GPoint(new Vector3(0, 0, 0));
         Plane plane = new Plane(
                 new Vector3(1, 0, 0),
@@ -104,7 +163,7 @@ public class Executor {
         for (int i = 0; i < points.size(); i++) {
             GPoint p1 = points.get(i);
             GPoint p2 = points.get((i + 1) % points.size()); // Connect last point to first
-            topFaceTri(lines, p1, p2, centre, tris);
+            Solids.topFaceTri(lines, p1, p2, centre, tris);
         }
 
         return new Thing(Static.sceneManager, layer, "Circle")
@@ -113,109 +172,6 @@ public class Executor {
                 .addObjs(lines.toArray(new GLine[0]))
 //                .addObjs(triLines.toArray(new GLine[0]))
                 .addObjs(tris.toArray(new GTri[0]));
-    }
-
-    private static void topFaceTri(ArrayList<GLine> lines, GPoint p1, GPoint p2, GPoint centre, ArrayList<GTri> tris) {
-        GLine lnInCirc = GLine.getInstance(lines, p1, p2); // the line that is part of the ngon
-        GLine lineA = GLine.getInstance(lines, p1, centre);
-        GLine lineB = GLine.getInstance(lines, p2, centre);
-        lines.add(lnInCirc);
-        lines.add(lineA);
-        lines.add(lineB);
-        GTri tri = new GTri(
-                Color.GRAY,
-                lnInCirc,
-                lineA,
-                lineB,
-                new Winding(p1, centre, p2)
-        );
-        tris.add(tri);
-    }
-
-
-    public Thing solidThing(int max) {
-        GPoint centre = new GPoint(new Vector3(0, 0, 0));
-        GPoint centre2 = new GPoint(new Vector3(0, 10, 0));
-        Plane plane = new Plane(
-                new Vector3(1, 0, 0),
-                new Vector3(0, 0, 1)
-        );
-
-        ArrayList<GPoint> points = Sampler.ngon(
-                centre.getPivot(),
-                10,
-                plane,
-                max,
-                p -> {
-                    GPoint point = new GPoint(p);
-                    // Random colour
-                    Random random = new Random();
-                    int red = random.nextInt(256);   // 0 to 255
-                    int green = random.nextInt(256);
-                    int blue = random.nextInt(256);
-                    //
-                    Color randomColor = new Color(red, green, blue);
-                    point.setColour(randomColor);
-                    return point;
-                }
-        );
-        ArrayList<GPoint> points2 = Sampler.ngon(
-                centre2.getPivot(),
-                10,
-                plane,
-                max,
-                p -> {
-                    GPoint point = new GPoint(p);
-                    // Random colour
-                    Random random = new Random();
-                    int red = random.nextInt(256);   // 0 to 255
-                    int green = random.nextInt(256);
-                    int blue = random.nextInt(256);
-                    //
-                    Color randomColor = new Color(red, green, blue);
-                    point.setColour(randomColor);
-                    return point;
-                }
-        );
-        ArrayList<GLine> lines = new ArrayList<>();
-        ArrayList<GTri> tris = new ArrayList<>();
-        // connect lines to circle
-        for (int i = 0; i < points.size(); i++) {
-            //top face points
-            GPoint A = points.get(i);
-            GPoint B = points.get((i + 1) % points.size()); // Connect last point to first
-            topFaceTri(lines, B, A, centre, tris);
-            //bottom face points
-            GPoint D = points2.get(i);
-            GPoint C = points2.get((i + 1) % points.size()); // Connect last point to first
-            topFaceTri(lines, D, C, centre2, tris);
-            // edge lines
-            GLine AB = GLine.getInstance(lines, A, B);
-            GLine BC = GLine.getInstance(lines, B, C);
-            GLine CD = GLine.getInstance(lines, C, D);
-            GLine DA = GLine.getInstance(lines, D, A);
-            GLine diagonalBD = new GLine(B, D);
-
-            // Triangle ABD and CDB
-            Color col = A.getColour();
-            lines.addAll(
-                    List.of(
-                            AB, BC, CD, DA, diagonalBD
-                    )
-            );
-            tris.add(new GTri(col, AB, diagonalBD, DA, new Winding(D, B, A)));
-            tris.add(new GTri(col, BC, diagonalBD, CD, new Winding(B, D, C)));
-        }
-
-        Thing circleThing = new Thing(Static.sceneManager, layer, "wtf");
-        circleThing.addObjs(centre, centre2)
-                .addObjs(points.toArray(new GPoint[0]))
-                .addObjs(points2.toArray(new GPoint[0]))
-                .addObjs(tris.toArray(new GTri[0]))
-                .addObjs(lines.toArray(new GLine[0]))
-                .solidify();
-
-        return circleThing;
     }
 
     public void updatekeystrokeexample() {
@@ -317,12 +273,26 @@ public class Executor {
         return new Thing(sceneManager, null, "Test").addObjs(triangl, triangl.getLegA(), triangl.getLegB(), triangl.getLegC(), A, B, C);
     }
 
+    public void note(GPoint point, String label) {
+        sceneManager.scheduleOverlap(
+                point.getId(),
+                g ->
+                        sceneManager.drawText3D(
+                                g, point.getPivot(),
+                                label, Static.camera
+                        )
+                );
+    }
+
     public Thing cube() {
         // TODO: Cube triangles not winded properly.
         GPoint A = new GPoint(new Vector3(-5, 5, -5));
+        note(A, "A");
         GPoint B = new GPoint(new Vector3(-5, -5, -5));
+        note(B, "B");
         GPoint C = new GPoint(new Vector3(5, 5, -5));
-        GTri face1tri1 = new GTri(Color.ORANGE, A, B, C);
+        note(C, "C");
+        GTri face1tri1 = new GTri(Color.ORANGE, C, B, A);
         GPoint D = new GPoint(new Vector3(5, -5, -5));
         GTri face1tri2 = new GTri(Color.ORANGE.darker(), B, C, D);
         GPoint E = new GPoint(new Vector3(5, 5, 5));
@@ -355,7 +325,6 @@ public class Executor {
                 face5tri2.getLegA(), face5tri2.getLegB(), face5tri2.getLegC(),
                 face6tri1.getLegA(), face6tri1.getLegB(), face6tri1.getLegC(),
                 face6tri2.getLegA(), face6tri2.getLegB(), face6tri2.getLegC()
-
         ).solidify();
     }
 }

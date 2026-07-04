@@ -74,6 +74,7 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
      */
     @Override
     public void draw(Graphics2D graphics2D) {
+        super.draw(graphics2D);
         if (deletedState) return;
         if (sceneManager.getSelected().contains(this)) {
             drawSelected(graphics2D);return;
@@ -103,6 +104,7 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
      */
     @Override
     public void drawSelected(Graphics2D graphics2D) {
+        super.drawSelected(graphics2D);
         if (deletedState) return;
         graphics2D.setColor(col.brighter());
         graphics2D.setStroke(new BasicStroke(4));
@@ -130,7 +132,10 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
         A.addParent(this);
         B.attach(this);
         B.addParent(this);
+
         Static.sceneManager.hasNoParent(this);
+        A.addParent(this);
+        B.attach(this);
         addProps();
     }
 
@@ -210,7 +215,7 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
 
     @Override
     public void addParent(GTri parent) {
-        boolean su = parents.add(parent);
+        parents.add(parent);
         Static.sceneManager.hasParent(this);
     }
 

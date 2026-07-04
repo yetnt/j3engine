@@ -2,13 +2,10 @@ package com.j3d.engine.interact.cmd;
 
 import com.j3d.Static;
 import com.j3d.engine.interact.cmd.base.Command;
-import com.j3d.engine.interact.cmd.commands.HelpCmd;
-import com.j3d.engine.interact.cmd.commands.LookAtCmd;
-import com.j3d.engine.interact.cmd.commands.TeleportCmd;
+import com.j3d.engine.interact.cmd.commands.*;
 import com.j3d.engine.interact.cmd.commands.debug.DebugCmd;
 import com.j3d.engine.interact.cmd.commands.engine.EngineCmd;
 import com.j3d.engine.interact.cmd.commands.orbit.OrbitCmd;
-import com.j3d.engine.interact.cmd.commands.ExplodeCmd;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 import com.j3d.engine.interact.cmd.commands.uicmd.UICmd;
 
@@ -36,6 +33,7 @@ public class Commands {
     public ExplodeCmd explodeCmd = new ExplodeCmd();
     public UICmd uiCmd = new UICmd();
     public HelpCmd helpCmd = new HelpCmd();
+    public PrismCmd prismCmd = new PrismCmd();
 
     /**
      * Default (empty) constructor
@@ -60,7 +58,8 @@ public class Commands {
         return new ArrayList<>(List.of(
                 debug, transform, lookAt,
                 teleport, orbit, engine,
-                explodeCmd, uiCmd, helpCmd
+                explodeCmd, uiCmd, helpCmd,
+                prismCmd
         ));
     }
 }

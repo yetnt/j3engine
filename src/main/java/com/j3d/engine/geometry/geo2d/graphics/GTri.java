@@ -3,6 +3,7 @@ package com.j3d.engine.geometry.geo2d.graphics;
 import com.j3d.J3DSettings;
 import com.j3d.Static;
 import com.j3d.engine.draw.ViewType;
+import com.j3d.engine.draw.tris.SortMethod;
 import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.geometry.geo2d.Winding;
 import com.j3d.engine.geometry.geo3d.Thing;
@@ -37,8 +38,9 @@ import com.j3d.ui.dialog.Spinner;
  *     A GTri, is stored by reference like any other GObject within a {@link Thing}.
  *     it is also stored within {@link TriStateArea} for draw ordering.
  * </p>
- * @implSpec If defined by the lines, the lines need to connect to each other
- * in order or else calculations will be off.
+ * @implSpec Triangles rely on {@link Winding} order to define normal calculations and
+ * back face culling via {@link SortMethod#backFaceCulled(GTri)}.
+ * Normals are expected to point outward from solids.
  * @author Lehlogonolo Poole
  * @see TriStateArea
  * @see Thing
@@ -105,6 +107,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
      * {@link Thing}. Forgetting this would break {@link ProjectFile} serialization.
      * if possible rather use {@link #GTri(Color, GLine, GLine, GLine)}, or otherwise
      * make use of the ine accessor methods to get the created GLines
+     * @implNote Winding is implied obviously by the order of the points given.
      * @see ProjectFile
      * @see Thing
      * @see GLine
@@ -310,7 +313,6 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         return getPivot().sub(Static.camera.getPosition()).magnitude();
     }
 
-
     private void setWinding(GPoint A, GPoint B, GPoint C) {
         winding = new Winding(A, B, C);
     }
@@ -434,6 +436,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
      */
     @Override
     public void drawSelected(Graphics2D graphics2D) {
+        super.drawSelected(graphics2D);
         if (deletedState) return;
         setPivot(LegA.getA().getPivot().add(LegB.getA().getPivot()).add(LegC.getA().getPivot()).div(3));
         normal();
@@ -475,6 +478,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
      */
     @Override
     public void draw(Graphics2D graphics2D) {
+        super.drawSelected(graphics2D);
         if (deletedState) return;
         setPivot(LegA.getA().getPivot().add(LegB.getA().getPivot()).add(LegC.getA().getPivot()).div(3));
         normal();

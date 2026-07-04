@@ -49,19 +49,6 @@ public interface KeyedStatefulCommand extends StatefulCommand<Void> {
     String selfName();
 
     /**
-     * Retrieves the initial positions of all points being transformed.
-     * This is crucial for undoing the operation if the user cancels.
-     * @return An {@link ArrayList} of the original {@link Vector3} positions.
-     */
-    ArrayList<Vector3> getOriginalPointPositions();
-
-    /**
-     * Retrieves the actual {@link GPoint} objects that are being manipulated.
-     * @return An {@link ArrayList} of the point references.
-     */
-    ArrayList<GPoint> getReferences();
-
-    /**
      * Gets the array of available step sizes for the transformation (the "gear train").
      * @return An array of doubles representing different step magnitudes.
      */
@@ -125,7 +112,6 @@ public interface KeyedStatefulCommand extends StatefulCommand<Void> {
                                 T sharedVar = shared.get();
                                 if (earlyExit.apply(sharedVar)) return;
 
-                                // If all constraints passed, apply the transformation to the real objects
                                 application.accept(sharedVar);
 
                                 Static.mainPanel.repaint();

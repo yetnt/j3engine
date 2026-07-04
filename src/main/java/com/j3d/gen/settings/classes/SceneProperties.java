@@ -43,7 +43,7 @@ public class SceneProperties implements SettingsParent {
     });
     public BooleanSetting useBackFaceCulling = new BooleanSetting(
             "Use Back Face Culling",
-            false,
+            true,
             "Draw method should use back face culling optimization"
     );
 

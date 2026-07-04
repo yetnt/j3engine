@@ -305,6 +305,7 @@ public class DebugPanel extends javax.swing.JPanel {
         } else {
             J3DSettings.setShowNormals(false);
         }
+        mainPanel.repaint();
     }//GEN-LAST:event_showTriNormalsCheckBoxActionPerformed
 
     private void showTriDepthCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTriDepthCheckBoxActionPerformed
@@ -314,6 +315,7 @@ public class DebugPanel extends javax.swing.JPanel {
         } else {
             J3DSettings.setShowDepth(false);
         }
+        mainPanel.repaint();
     }//GEN-LAST:event_showTriDepthCheckBoxActionPerformed
 
     private void showTriDistCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTriDistCheckBoxActionPerformed
@@ -334,6 +336,7 @@ public class DebugPanel extends javax.swing.JPanel {
             if (showTriDepthCheckBox.isSelected()) showTriDepthCheckBox.doClick();
             if (showTriNormalsCheckBox.isSelected()) showTriNormalsCheckBox.doClick();
         }
+        mainPanel.repaint();
     }//GEN-LAST:event_NoneRadioButtonActionPerformed
 
     private void randomTriBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomTriBtnActionPerformed

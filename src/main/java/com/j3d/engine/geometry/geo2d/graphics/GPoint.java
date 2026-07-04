@@ -74,12 +74,10 @@ public class GPoint extends GObject implements HasParents<GLine> {
      */
     @Override
     public void draw(Graphics2D graphics2D) {
-        // Move below method call into constructor. Why anyway would it be in the draw call???
-//        Static.sceneManager.points.add(this);
+        super.draw(graphics2D);
         if (J3DSettings.getViewType() != ViewType.WIREFRAME)
-            if (hasParent() && getParents().stream().findAny().get().hasParent()) {
+            if (hasParent() /*&& getParents().stream().findAny().get().hasParent()*/)
                 return;
-            }
 
         if (Static.sceneManager.getSelected().contains(this)) {
             drawSelected(graphics2D);
@@ -100,8 +98,9 @@ public class GPoint extends GObject implements HasParents<GLine> {
      */
     @Override
     public void drawSelected(Graphics2D graphics2D) {
+        super.drawSelected(graphics2D);
         if (J3DSettings.getViewType() != ViewType.WIREFRAME)
-            if (hasParent() && getParents().stream().findAny().get().hasParent()) {
+            if (hasParent() /*&& getParents().stream().findAny().get().hasParent() */) {
                 return;
             }
         graphics2D.setColor(Color.WHITE);
@@ -158,7 +157,7 @@ public class GPoint extends GObject implements HasParents<GLine> {
 
     @Override
     public void addParent(GLine parent) {
-        boolean su = parents.add(parent);
+        parents.add(parent);
         Static.sceneManager.hasParent(this);
     }
 

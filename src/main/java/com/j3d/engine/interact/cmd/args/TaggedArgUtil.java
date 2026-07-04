@@ -6,6 +6,7 @@ import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.utility.Parsing;
 import com.j3d.utility.generic.SamePair;
+import org.apache.poi.ss.formula.functions.T;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,6 +84,8 @@ public class TaggedArgUtil {
         acceptedTags.put("greaterThan", new TaggedArgValue<Double>(Double.class).setName("greaterThan"));
         acceptedTags.put("equalTo", new TaggedArgValue<Double>(Double.class).setName("equal"));
         acceptedTags.put("notEqualTo", new TaggedArgValue<Double>(Double.class).setName("notEqual"));
+        acceptedTags.put("plane", new TaggedArgValue<String>(String.class).setName("plane"));
+        acceptedTags.put("unsafe", new TaggedArgValue<Boolean>(Boolean.class).setName("unsafe"));
     }
 
     public static <T> TaggedArgValue<T> getTaggedArg(

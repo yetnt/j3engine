@@ -54,7 +54,7 @@ Italics - V3 addition
 - Number of GLines `int`
   - _`Padding B`_
   - Line UUID `UTF-8`
-  - Parent THing UUID `UTF-8`
+  - Parent Thing UUID `UTF-8`
   - Colour `#AARRGGBB signed in32`
   - Point A UUID `UTf-8`
   - Point B UUID `UTF-8`

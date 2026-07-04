@@ -345,9 +345,17 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
     public ArrayList<J3Key> getKeys() { return keys; }
     @Override
     public String selfName() { return getName(); }
-    @Override
+    /**
+     * Retrieves the initial positions of all points being transformed.
+     * This is crucial for undoing the operation if the user cancels.
+     * @return An {@link ArrayList} of the original {@link Vector3} positions.
+     */
     public ArrayList<Vector3> getOriginalPointPositions() { return originalPointPos; }
-    @Override
+
+    /**
+     * Retrieves the actual {@link GPoint} objects that are being manipulated.
+     * @return An {@link ArrayList} of the point references.
+     */
     public ArrayList<GPoint> getReferences() { return references; }
     @Override
     public double[] getGearTrain() { return gearTrain; }

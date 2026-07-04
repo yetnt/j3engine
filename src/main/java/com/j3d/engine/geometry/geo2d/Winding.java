@@ -1,5 +1,6 @@
 package com.j3d.engine.geometry.geo2d;
 
+import com.j3d.engine.draw.tris.SortMethod;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
@@ -11,9 +12,13 @@ import java.util.Objects;
  * Represents a winding of three {@link GPoint}s, typically used to define a triangle or a face in 2D geometry.
  * This record provides utility methods for converting the winding to lists of points or vectors, reversing its order,
  * and generating a string representation.
+ * @implSpec
+ *      Clockwise winding = front face
+ *      <p>Counter-clockwise winding = back face</p>
  * @param first The first point in the winding.
  * @param second The second point in the winding.
  * @param third The third point in the winding.
+ * @see SortMethod#backFaceCulled(GTri)
  * @see GTri
  * @see GPoint
  * @see Vector3

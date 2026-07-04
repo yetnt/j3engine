@@ -12,7 +12,6 @@ package com.j3d.engine.geometry.geo3d.matrix;
  * @see MatrixMath
  * @see Vector3
  * @see Matrix3
- * @see Matrix4
  */
 public interface MatrixInterface {
     /**

@@ -1,9 +1,13 @@
 package com.j3d.engine.geometry.geo3d;
 
+import com.j3d.Static;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.function.Function;
+
+import static com.j3d.Static.sceneManager;
 
 public class Sampler {
 
@@ -65,5 +69,15 @@ public class Sampler {
             objs.add(point);
         }
         return objs;
+    }
+
+    public static void joinNGonArbitaryVectors(ArrayList<Vector3> vector3list, Graphics2D g) {
+        for (int i = 0; i < vector3list.size(); i++) {
+            Vector3 vector3 = vector3list.get(i);
+            Vector3 nextVector3 = vector3list.get((i + 1) % vector3list.size());
+            sceneManager.drawLine3D(
+                    g, vector3, nextVector3, Static.camera
+            );
+        }
     }
 }
