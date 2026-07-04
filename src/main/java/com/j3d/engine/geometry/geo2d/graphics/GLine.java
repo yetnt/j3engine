@@ -271,17 +271,30 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
         return pointsList;
     }
 
+    /**
+     * Checks if this GLine's points are identical to the given points, regardless of order.
+     * @param A The first GPoint to compare.
+     * @param B The second GPoint to compare.
+     * @return true if the points match, false otherwise.
+     */
     public boolean identicalPoints(GPoint A, GPoint B) {
         return (pointA.equals(A) && pointB.equals(B))
                 ||
                 (pointA.equals(B) && pointB.equals(A));
     }
 
-    public static GLine getInstance(ArrayList<GLine> lines, GPoint A, GPoint B) {
+    /**
+     * Retrieves an existing GLine from a list if its points match the given points, or creates a new GLine if no match is found.
+     * @param lines The list of existing GLines to search through.
+     * @param A The first GPoint for comparison or new GLine creation.
+     * @param B The second GPoint for comparison or new GLine creation.
+     * @return An existing GLine with matching points, or a new GLine if none exists.
+     */
+    public static GLine getInstance(List<GLine> lines, GPoint A, GPoint B) {
         if (lines.isEmpty()) return new GLine(A, B);
 
         return lines.stream()
-                .filter(line ->line.identicalPoints(A, B))
+                .filter(line -> line.identicalPoints(A, B))
                 .findAny()
                 .orElse(new GLine(A, B));
     }

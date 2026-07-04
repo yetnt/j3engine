@@ -66,6 +66,12 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
      */
     protected Winding winding;
 
+    /**
+     * Whether this triangle is double sided or not. If it is, it's unaffected by back-face culling.
+     * (Infinite 2d surface)
+     */
+    private boolean doubleSided = true;
+
     protected boolean deletedState = false;
 
     // TODO: I actually have no clue where the fuck this is used?? Uhm find this out??
@@ -238,7 +244,10 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
                 new Property<>("Leg B", this::getLegB, GTri.class)
                         .setDescription("The second leg of this triangle").constant(),
                 new Property<>("Leg C", this::getLegC, GTri.class)
-                        .setDescription("The third leg of this triangle").constant()
+                        .setDescription("The third leg of this triangle").constant(),
+                new Property<>("Double Sided", this::isDoubleSided, GTri.class)
+                        .setDescription("Whether this triangle is double sided or not")
+                        .constant()
         ));
         pivotProperty.constant(); // cannot be edited.
     }
@@ -336,6 +345,22 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         TriStateArea.unregister(this);
         Static.sceneManager.removeOverlap(getId());
         return true;
+    }
+
+    /**
+     * Checks if this triangle is double-sided. Double-sided triangles are unaffected by back-face culling.
+     * @return {@code true} if the triangle is double-sided, {@code false} otherwise.
+     */
+    public boolean isDoubleSided() {
+        return doubleSided;
+    }
+
+    /**
+     * Sets whether this triangle is double-sided.
+     * @param doubleSided {@code true} to make the triangle double-sided, {@code false} for single-sided.
+     */
+    public void setDoubleSided(boolean doubleSided) {
+        this.doubleSided = doubleSided;
     }
 
     /**
@@ -493,6 +518,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         LegB.draw(graphics2D);
         LegC.draw(graphics2D);
     }
+    public boolean showNorm = false;
 
     /**
      * Private method to draw the triangle's distance depth and normal overlays.
@@ -518,14 +544,14 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
                                 new Color(0, 0, 0),
                                 this.getColour());
                     }
-                    if (J3DSettings.isShowNormals()) {
+                    if (J3DSettings.isShowNormals() || showNorm) {
                         // draw text showing the tris normal
                         Vector3 triCentroid = this.getPivot();
-                        Static.sceneManager.drawText3D(g, triCentroid.sub(new Vector3(4, 0, 0)),
-                                String.format("Normal: (%.2f, %.2f, %.2f)", normal().getX(), normal().getY(), normal().getZ()),
-                                Static.camera,
-                                new Color(0, 0, 0),
-                                this.getColour());
+//                        Static.sceneManager.drawText3D(g, triCentroid.sub(new Vector3(4, 0, 0)),
+//                                String.format("Normal: (%.2f, %.2f, %.2f)", normal().getX(), normal().getY(), normal().getZ()),
+//                                Static.camera,
+//                                new Color(0, 0, 0),
+//                                this.getColour());
                         // The following code draws the normal
                         g.setColor(Color.RED);
                         Static.sceneManager.drawLine3D(g, getPivot(), getPivot().add(normal().mult(0.5)), Static.camera);

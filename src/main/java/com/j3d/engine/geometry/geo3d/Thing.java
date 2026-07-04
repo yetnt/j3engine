@@ -329,6 +329,18 @@ public class Thing implements Interactable, HasProperties {
         return properties;
     }
 
+    /**
+     * Solidifies the Thing by setting all its {@link GTri}s to be single-sided.
+     * @return This Thing, for method chaining.
+     */
+    public Thing solidify() {
+        objectsStream()
+                .filter(s -> s instanceof GTri)
+                .map(g -> (GTri)g)
+                .forEach(t -> t.setDoubleSided(false));
+        return this;
+    }
+
     private void addProps() {
         properties.add(
                 new Property<>("Thing Name", this::getName, Thing.class)

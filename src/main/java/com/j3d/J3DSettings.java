@@ -7,7 +7,12 @@ import com.j3d.engine.draw.tris.TriangleSortMethod;
 import com.j3d.engine.geometry.Dim;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
+import com.j3d.engine.geometry.geo2d.graphics.GTri;
+import com.j3d.engine.geometry.geo3d.Thing;
+import com.j3d.engine.layer.Layer;
 import com.j3d.gen.settings.Settings;
+
+import static com.j3d.Static.sceneManager;
 
 public class J3DSettings {
 
@@ -28,7 +33,7 @@ public class J3DSettings {
     /**
      * Flag to determine if back-face culling is used during rendering.
      */
-    private static boolean useBackFaceCulling = false;
+    private static boolean useBackFaceCulling = true;
     /**
      * Flag to determine if triangle distances from the camera are displayed.
      */
@@ -76,6 +81,14 @@ public class J3DSettings {
         return showNormals;
     }
     public static void setShowNormals(boolean showNormals) {
+        if (!showNormals) {
+            sceneManager.layers.stream()
+                    .flatMap(Layer::usableLayersStream)
+                    .flatMap(Thing::objectsStream)
+                    .filter(t -> t instanceof GTri)
+                    .map(t -> (GTri) t)
+                    .forEach(t -> t.showNorm = false);
+        }
         J3DSettings.showNormals = showNormals;
     }
 

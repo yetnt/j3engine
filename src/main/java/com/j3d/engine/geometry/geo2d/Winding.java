@@ -4,7 +4,6 @@ import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 

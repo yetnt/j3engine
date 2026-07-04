@@ -44,6 +44,7 @@ public abstract class SortMethod extends ArrayList<GTri> {
      * Also quite buggy TODO Fix this or enforce consistent winding of triangles.
      */
     public boolean backFaceCulled(GTri tri) {
+        if (tri.isDoubleSided()) return false;
         if (!Settings.sceneProperties.useBackFaceCulling.getValue()) return false;
         Vector3 N = tri.normal();
         Vector3 P = Static.camera.getPosition().sub(tri.getLegA().getA().getPivot());

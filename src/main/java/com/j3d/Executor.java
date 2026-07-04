@@ -56,7 +56,7 @@ public class Executor {
 //        line.second.applyConstraint();
 
         Thing circ = circle(6);
-        Thing wtf = solidThing(6);
+        Thing wtf = solidThing(9);
 
 //        Pair<Thing, MidpointConstraint> line = someLine();
         ArrayList<Action<?>> actions = new ArrayList<>(List.of(
@@ -136,7 +136,7 @@ public class Executor {
 
 
     public Thing solidThing(int max) {
-        GPoint centre = new GPoint(new Vector3(2, 2, 2));
+        GPoint centre = new GPoint(new Vector3(0, 0, 0));
         GPoint centre2 = new GPoint(new Vector3(0, 10, 0));
         Plane plane = new Plane(
                 new Vector3(1, 0, 0),
@@ -186,7 +186,7 @@ public class Executor {
             //top face points
             GPoint A = points.get(i);
             GPoint B = points.get((i + 1) % points.size()); // Connect last point to first
-            topFaceTri(lines, A, B, centre, tris);
+            topFaceTri(lines, B, A, centre, tris);
             //bottom face points
             GPoint D = points2.get(i);
             GPoint C = points2.get((i + 1) % points.size()); // Connect last point to first
@@ -205,8 +205,8 @@ public class Executor {
                             AB, BC, CD, DA, diagonalBD
                     )
             );
-            tris.add(new GTri(col, AB, diagonalBD, DA, new Winding(A, B, D)));
-            tris.add(new GTri(col, BC, diagonalBD, CD, new Winding(B, C, D)));
+            tris.add(new GTri(col, AB, diagonalBD, DA, new Winding(D, B, A)));
+            tris.add(new GTri(col, BC, diagonalBD, CD, new Winding(B, D, C)));
         }
 
         Thing circleThing = new Thing(Static.sceneManager, layer, "wtf");
@@ -214,7 +214,8 @@ public class Executor {
                 .addObjs(points.toArray(new GPoint[0]))
                 .addObjs(points2.toArray(new GPoint[0]))
                 .addObjs(tris.toArray(new GTri[0]))
-                .addObjs(lines.toArray(new GLine[0]));
+                .addObjs(lines.toArray(new GLine[0]))
+                .solidify();
 
         return circleThing;
     }
@@ -297,7 +298,7 @@ public class Executor {
                 A, B, C,
                 A1, B1, C1,
                 A2, B2, C2
-        );
+        ).solidify();
     }
 
     public Thing openedLetter() {
@@ -339,6 +340,7 @@ public class Executor {
     }
 
     public Thing cube() {
+        // TODO: Cube triangles not winded properly.
         GPoint A = new GPoint(new Vector3(-5, 5, -5));
         GPoint B = new GPoint(new Vector3(-5, -5, -5));
         GPoint C = new GPoint(new Vector3(5, 5, -5));
@@ -376,6 +378,6 @@ public class Executor {
                 face6tri1.getLegA(), face6tri1.getLegB(), face6tri1.getLegC(),
                 face6tri2.getLegA(), face6tri2.getLegB(), face6tri2.getLegC()
 
-        );
+        ).solidify();
     }
 }

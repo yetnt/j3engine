@@ -42,7 +42,8 @@ public class DebugCmd extends Command {
                 new EchoCmd(),
                 new TypeOf(),
                 new RandomUUIDCmd(),
-                new CameraInfoCmd()
+                new CameraInfoCmd(),
+                new TriangleCmd()
         ).parseUsages();
     }
 
