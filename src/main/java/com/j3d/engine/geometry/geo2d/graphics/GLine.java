@@ -2,9 +2,7 @@ package com.j3d.engine.geometry.geo2d.graphics;
 
 import com.j3d.Static;
 import com.j3d.engine.draw.ViewType;
-import com.j3d.engine.geometry.constraints.ConstraintManager;
 import com.j3d.engine.geometry.geo2d.HasParents;
-import com.j3d.engine.geometry.geo2d.constraints.CLine;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.react.events.IdempotentEventListener;
@@ -52,7 +50,6 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
     protected GPoint pointB;
     protected boolean deletedState = false;
     private HashSet<GTri> parents = new HashSet<>();
-    protected ConstraintManager<GLine> constraints = new ConstraintManager<>();
 
     /**
      * Constructs a GLine.
@@ -128,7 +125,6 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
 
         // set the pivot to the midpoint of the line
         setPivot(A.getPivot().add(B.getPivot()).div(2));
-        toConstraintObject();
 
         A.attach(this);
         A.addParent(this);
@@ -206,19 +202,6 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
         return Stream.of(pointA, pointB);
     }
 
-    @Override
-    public CLine toConstraintObject() {
-        if (constraintObject == null) {
-            constraintObject = new CLine(this);
-        }
-        return (CLine) constraintObject;
-    }
-
-    @Override
-    public ConstraintManager<GLine> getConstraints() {
-        return constraints;
-    }
-
 
     @Override
     public HashSet<GTri> getParents() {
@@ -228,18 +211,12 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
     @Override
     public void addParent(GTri parent) {
         boolean su = parents.add(parent);
-        if (su) toConstraintObject().addParent(
-                parent.toConstraintObject()
-        );
         Static.sceneManager.hasParent(this);
     }
 
     @Override
     public void removeParent(GTri parent) {
         boolean su = parents.remove(parent);
-        if (su) toConstraintObject().removeParent(
-                parent.toConstraintObject()
-        );
         Static.sceneManager.hasNoParent(this);
     }
 

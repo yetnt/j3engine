@@ -1,6 +1,5 @@
 package com.j3d.engine.interact.cmd.commands.transform;
 
-import com.j3d.engine.geometry.geo2d.constraints.CPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.args.ArgSet;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
@@ -81,14 +80,6 @@ public class TranslateSelection extends AbstractTransform {
                                 gpoint.setPivot(
                                         gpoint.getPivot().sub(new Vector3(getCurrentStepSize(), 0, 0))
                                 )
-                ), (o, m) ->
-                        m.values().stream()
-                                .filter(i -> i instanceof CPoint)
-                                .map(i -> (CPoint)i)
-                                .forEach(
-                                        gpoint -> gpoint.setPivot(
-                                                        gpoint.getPivot().sub(new Vector3(getCurrentStepSize(), 0, 0))
-                                        )
                 ));
 
 
@@ -101,15 +92,7 @@ public class TranslateSelection extends AbstractTransform {
                                 gpoint.setPivot(
                                         gpoint.getPivot().add(new Vector3(getCurrentStepSize(), 0, 0))
                                 )
-                ), (o, m) -> m.values().stream()
-                        .filter(i -> i instanceof CPoint)
-                        .map(i -> (CPoint)i)
-                        .forEach(
-                                gpoint ->
-                                        gpoint.setPivot(
-                                                gpoint.getPivot().add(new Vector3(getCurrentStepSize(), 0, 0))
-                                        )
-                        ));
+                ));
 
         setUpKey(
                 () -> null,
@@ -133,29 +116,7 @@ public class TranslateSelection extends AbstractTransform {
                                     )
                             );
                         }
-                ),
-                (o, m) -> m.values().stream()
-                        .filter(i -> i instanceof CPoint)
-                        .map(i -> (CPoint)i).forEach(
-                            (gpoint) -> {
-                                if (translateMouseOwner.selectedHandle == null) {
-                                    gpoint.setPivot(
-                                            gpoint.getPivot().add(new Vector3(0, 0, getCurrentStepSize()))
-                                    );
-                                    return;
-                                }
-
-                                gpoint.setPivot(
-                                        gpoint.getPivot().add(
-                                                switch (translateMouseOwner.selectedHandle.handleType()) {
-                                                    case HandleType.X -> new Vector3(getCurrentStepSize(), 0, 0);
-                                                    case HandleType.Y -> new Vector3(0, getCurrentStepSize(), 0);
-                                                    case HandleType.Z -> new Vector3(0, 0, getCurrentStepSize());
-                                                }
-                                        )
-                                );
-                            }
-                        )
+                )
         );
 
         setDownKey(
@@ -180,29 +141,7 @@ public class TranslateSelection extends AbstractTransform {
                                     )
                             );
                         }
-                ),
-                (o, m) -> m.values().stream()
-                        .filter(i -> i instanceof CPoint)
-                        .map(i -> (CPoint)i).forEach(
-                                (gpoint) -> {
-                                    if (translateMouseOwner.selectedHandle == null) {
-                                        gpoint.setPivot(
-                                                gpoint.getPivot().sub(new Vector3(0, 0, getCurrentStepSize()))
-                                        );
-                                        return;
-                                    }
-
-                                    gpoint.setPivot(
-                                            gpoint.getPivot().sub(
-                                                    switch (translateMouseOwner.selectedHandle.handleType()) {
-                                                        case HandleType.X -> new Vector3(getCurrentStepSize(), 0, 0);
-                                                        case HandleType.Y -> new Vector3(0, getCurrentStepSize(), 0);
-                                                        case HandleType.Z -> new Vector3(0, 0, getCurrentStepSize());
-                                                    }
-                                            )
-                                    );
-                                }
-                        )
+                )
         );
     }
 

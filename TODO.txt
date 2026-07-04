@@ -27,6 +27,9 @@ Future ToDo (Important)
 13. [DONE] Colour to Db integeration via Phase 1 documentation
 14. (CURRENT) Help Menu and its decentralizatrion
 15. [DONE] complex toolbox buttons
+16. Properties Menu
+17. Help Menu
+18. (Phase 2 docs) re-add geometryA and geometry-B class diagrams (remove constraint references)
 
 Future ToDo (optional, these are more convenience and nice-to-have. might implement after submitting the PAT when this goes back to being a personal project)
 

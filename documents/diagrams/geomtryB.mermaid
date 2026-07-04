@@ -19,6 +19,8 @@ classDiagram
             -setId(uuid: UUID)
             +Constructor(sceneManager: SceneManager, l: Layer, name: string, invokeSwingHooks: boolean)
             +Constructor(sceneManager: SceneManager, l: Layer, name: string)
+            -isSolid boolean
+            +solidify()
             +addObjs(gObjects: GObject...) Thing
             +draw(graphics2D: Graphics2D)
             +getId() UUID

@@ -96,6 +96,11 @@ public class Thing implements Interactable, HasProperties {
     /** The list of points that compose this 3D Thing. */
     private final List<GPoint> points = new ArrayList<>();
 
+    /**
+     * Whether all triangles that get added to this Thing should be single sided or not.
+     */
+    private boolean isSolid = false;
+
     /** The parent layer of this Thing. */
     private Layer parent;
 
@@ -268,6 +273,8 @@ public class Thing implements Interactable, HasProperties {
             if (ob instanceof GPoint p) {
                 pts.add(p.getPivot());
                 points.add(p);
+            } else if (ob instanceof GTri tri && isSolid) {
+                tri.setDoubleSided(false);
             }
         }
         if (!pts.isEmpty()) {
@@ -334,6 +341,8 @@ public class Thing implements Interactable, HasProperties {
      * @return This Thing, for method chaining.
      */
     public Thing solidify() {
+        isSolid = true;
+        toggleSaved();
         objectsStream()
                 .filter(s -> s instanceof GTri)
                 .map(g -> (GTri)g)

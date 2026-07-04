@@ -4,9 +4,7 @@ import com.j3d.J3DSettings;
 import com.j3d.Static;
 import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.draw.tris.TriStateArea;
-import com.j3d.engine.geometry.constraints.ConstraintManager;
 import com.j3d.engine.geometry.geo2d.Winding;
-import com.j3d.engine.geometry.geo2d.constraints.CTri;
 import com.j3d.engine.geometry.geo3d.Thing;
 
 import java.awt.*;
@@ -76,7 +74,6 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
     // TODO: I actually have no clue where the fuck this is used?? Uhm find this out??
     private boolean hidden = false;
-    protected ConstraintManager<GTri> constraints = new ConstraintManager<>();
 
     /**
      * Constructs a GTri.
@@ -92,10 +89,6 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         GTri gt = new GTri(col, legA, legB, legC);
         gt.setId(UUID.fromString(id));
         return gt;
-    }
-
-    private void setWinding(GPoint A, GPoint B, GPoint C) {
-        winding = new Winding(A, B, C);
     }
 
     /**
@@ -142,7 +135,6 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
         TriStateArea.register(this);
         drawDist();
-        toConstraintObject();
         addProps();
     }
 
@@ -201,7 +193,6 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         normal();
         TriStateArea.register(this);
         drawDist();
-        toConstraintObject();
         addProps();
     }
 
@@ -231,7 +222,6 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         normal();
         TriStateArea.register(this);
         drawDist();
-        toConstraintObject();
         addProps();
     }
 
@@ -320,6 +310,10 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         return getPivot().sub(Static.camera.getPosition()).magnitude();
     }
 
+
+    private void setWinding(GPoint A, GPoint B, GPoint C) {
+        winding = new Winding(A, B, C);
+    }
     public Winding getWinding() {
         return winding;
     }
@@ -369,19 +363,6 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
      */
     public Stream<GLine> getLegStream() {
         return Stream.of(LegA, LegB, LegC);
-    }
-
-    @Override
-    public ConstraintManager<GTri> getConstraints() {
-        return constraints;
-    }
-
-    @Override
-    public CTri toConstraintObject() {
-        if (constraintObject == null) {
-            constraintObject = new CTri(this);
-        }
-        return (CTri) constraintObject;
     }
 
     @Override
@@ -436,13 +417,12 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         if (!super.equals(o)) return false;
         GTri gTri = (GTri) o;
         return deletedState == gTri.deletedState &&
-                isHidden() == gTri.isHidden() &&
-                Objects.equals(getConstraints(), gTri.getConstraints());
+                isHidden() == gTri.isHidden();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), deletedState, isHidden());
+        return Objects.hash(super.hashCode(), deletedState, isHidden(), doubleSided);
     }
 
     /**

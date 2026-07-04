@@ -12,7 +12,6 @@ classDiagram
     -col Color
     -pivot Vector3
     -Id UUID
-    #constraintObject CObject
     +draw(graphics2D: Graphics2D)
     +drawSelected(graphics2D: Graphics2D)
     +Constructor()
@@ -27,8 +26,6 @@ classDiagram
     +equals(obj: Object) boolean
     +hashCode() int
     +onEvent(event: EventType, properties: EventPayload)
-    +detachConstraint()
-    +toConstraintObject() CObject
     }
 
     class GPoint {
@@ -38,7 +35,6 @@ classDiagram
     +Constructor(v3: Vector3)
     +equals(obj: Object) boolean
     +toString() string
-    +toConstraintObject() CPoint
     +getParents() HashSet~GLine~
     +addParent(parent: GLine)
     +removeParent(parent: GLine)
@@ -55,7 +51,6 @@ classDiagram
     +length() real
     +toString() string
     +getPointStream() Stream~GPoint~
-    +toConstraintObject() CLine
     +getDupeObjectToCheck() Vector3
     +handlePossibleDuplicates(type: EventType, payload: GPoint.GPointMovedEvent)
     }
@@ -64,10 +59,14 @@ classDiagram
     -LegA GLine
     -LegB GLine
     -LegC GLine
-    +normal Vector3
     -hidden boolean
     +fromRaw(id: string, col: Color, legA: GLine, legB: GLine, legC: GLine)$ GTri
     -drawDist()
+    -winding Winding
+    -doubleSided boolean
+    +getWinding() Winding
+    -setWinding(GPoint A, GPoint B, GPoint C)
+    +normal() Vector3
     +calcDepth() real
     +euclideanDist() real
     +drawSelected(graphics2D: Graphics2D)
@@ -82,7 +81,6 @@ classDiagram
     +area() real
     +toString() string
     +getLegStream() Stream~GLine~
-    +toConstraintObject() CTri
     +getDupeObjectToCheck() Vector3
     +handlePossibleDuplicates(type: EventType, payload: GPoint.GPointMovedEvent)
     }
@@ -109,7 +107,6 @@ classDiagram
     GTri --|> GObject
 
     GObject --> EventListener
-    GObject --|> BaseObject
 
     GPoint --> HasParents
     GLine --> HasParents

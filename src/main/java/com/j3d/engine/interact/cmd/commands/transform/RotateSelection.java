@@ -1,7 +1,7 @@
 package com.j3d.engine.interact.cmd.commands.transform;
 
-import com.j3d.engine.geometry.geo2d.BaseObject;
-import com.j3d.engine.geometry.geo2d.constraints.CPoint;
+import com.j3d.engine.geometry.geo2d.graphics.GObject;
+import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.args.ArgSet;
 import com.j3d.engine.interact.cmd.base.KeyedStatefulCommand;
@@ -88,23 +88,13 @@ public class RotateSelection extends AbstractTransform {
         setUpKey(
                 supplier,
                 ignored -> false,
-                axis -> references.forEach(gPoint -> rotateUpKey(axis, gPoint)),
-                (axis, m) ->
-                        m.values().stream()
-                                .filter(i -> i instanceof CPoint)
-                                .map(i -> (CPoint)i)
-                                .forEach(gPoint -> rotateUpKey(axis, gPoint))
+                axis -> references.forEach(gPoint -> rotateUpKey(axis, gPoint))
         );
 
         setDownKey(
                 supplier,
                 ignored -> false,
-                axis -> references.forEach(gPoint -> rotateDownKey(axis, gPoint)),
-                (axis, m) ->
-                        m.values().stream()
-                                .filter(i -> i instanceof CPoint)
-                                .map(i -> (CPoint)i)
-                                .forEach(gPoint -> rotateDownKey(axis, gPoint))
+                axis -> references.forEach(gPoint -> rotateDownKey(axis, gPoint))
         );
     }
 
@@ -117,7 +107,7 @@ public class RotateSelection extends AbstractTransform {
         super.run(logLabel, aliasUsed, args, taggedArgs);
     }
 
-    public void rotateUpKey(Vector3 a, BaseObject gPoint) {
+    public void rotateUpKey(Vector3 a, GPoint gPoint) {
         gPoint.setPivot(
                 center.add((gPoint.getPivot().sub(center)).rotateAroundAxis(
                                 a,
@@ -127,7 +117,7 @@ public class RotateSelection extends AbstractTransform {
         );
     }
 
-    public void rotateDownKey(Vector3 a, BaseObject gPoint) {
+    public void rotateDownKey(Vector3 a, GPoint gPoint) {
         gPoint.setPivot(
                 center.add((gPoint.getPivot().sub(center)).rotateAroundAxis(
                                 a,

@@ -4,9 +4,7 @@ import com.j3d.J3DSettings;
 import com.j3d.Static;
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.draw.ViewType;
-import com.j3d.engine.geometry.constraints.ConstraintManager;
 import com.j3d.engine.geometry.geo2d.HasParents;
-import com.j3d.engine.geometry.geo2d.constraints.CPoint;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
@@ -14,14 +12,12 @@ import com.j3d.engine.layer.Layer;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
-import com.j3d.storage.files.protocol.proj.ProjectFileV1;
 import com.j3d.ui.dialog.Spinner;
 
 import java.awt.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 /**
  * GPoint is a class that represents a single point in 3D space.
@@ -54,7 +50,6 @@ public class GPoint extends GObject implements HasParents<GLine> {
      */
     public static final int DIAMETER = 7;
     private HashSet<GLine> parents = new HashSet<>();
-    protected ConstraintManager<GPoint> constraints = new ConstraintManager<>();
 
     /**
      * Constructs a GPoint.
@@ -128,7 +123,6 @@ public class GPoint extends GObject implements HasParents<GLine> {
     public GPoint(Vector3 v3) {
         Static.sceneManager.points.add(this);
         setPivot(v3);
-        toConstraintObject();
         Static.sceneManager.hasNoParent(this);
         addProps();
     }
@@ -158,19 +152,6 @@ public class GPoint extends GObject implements HasParents<GLine> {
     }
 
     @Override
-    public ConstraintManager<GPoint> getConstraints() {
-        return constraints;
-    }
-
-    @Override
-    public CPoint toConstraintObject() {
-        if (constraintObject == null) {
-            constraintObject = new CPoint(this);
-        }
-        return (CPoint) constraintObject;
-    }
-
-    @Override
     public HashSet<GLine> getParents() {
         return parents;
     }
@@ -178,18 +159,12 @@ public class GPoint extends GObject implements HasParents<GLine> {
     @Override
     public void addParent(GLine parent) {
         boolean su = parents.add(parent);
-        if (su) toConstraintObject().addParent(
-                parent.toConstraintObject()
-        );
         Static.sceneManager.hasParent(this);
     }
 
     @Override
     public void removeParent(GLine parent) {
         boolean su = parents.remove(parent);
-        if (su) toConstraintObject().removeParent(
-                parent.toConstraintObject()
-        );
         Static.sceneManager.hasNoParent(this);
     }
 
@@ -198,7 +173,6 @@ public class GPoint extends GObject implements HasParents<GLine> {
         line.detach(this);
         this.detach(line);
         removeParent(line);
-        toConstraintObject();
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.j3d.engine.interact.cmd.base;
 
 import com.j3d.Static;
-import com.j3d.engine.geometry.constraints.*;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
@@ -9,19 +8,14 @@ import com.j3d.engine.interact.cmd.commands.transform.AbstractTransform;
 import com.j3d.engine.interact.cmd.commands.transform.TranslateSelection;
 import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.input.keyboard.OtherKeys;
-import com.j3d.ui.SafeJLabel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * An extension of {@link StatefulCommand} for commands that are interactive and primarily
@@ -118,11 +112,9 @@ public interface KeyedStatefulCommand extends StatefulCommand<Void> {
      *                    representing the transformation's value (e.g., the distance to move).
      * @param application A {@link Consumer} that applies the transformation to the "real" {@link GObject}s.
      *                    This is only executed if all constraints are satisfied.
-     * @param biConsumer  A {@link BiConsumer} that applies the same transformation to the temporary
-     *                    {@link ConstraintMirror} objects for "what-if" validation.
      * @param <T>         The type of the shared variable representing the transformation value.
      */
-    default <T> void setKey(int key, Function<T, Boolean> earlyExit, Supplier<T> shared, Consumer<T> application, BiConsumer<T, HashMap<UUID, ConstraintMirror>> biConsumer) {
+    default <T> void setKey(int key, Function<T, Boolean> earlyExit, Supplier<T> shared, Consumer<T> application) {
         getKeys().add(
                 new J3Key(
                         selfName() + KeyEvent.getKeyText(key) + "keyedOperation",
@@ -133,32 +125,9 @@ public interface KeyedStatefulCommand extends StatefulCommand<Void> {
                                 T sharedVar = shared.get();
                                 if (earlyExit.apply(sharedVar)) return;
 
-                                // Create mirrors for all affected objects
-                                ArrayList<ConstraintMirror> c = ConstraintUtils.converter(
-                                        getReferences().stream().map(o -> (GObject)o).collect(Collectors.toCollection(ArrayList::new))
-                                );
-                                // Create an intent with the "what-if" transformation logic
-                                ConstraintIntent intent = new ConstraintIntent(c,
-                                        (mp) -> biConsumer.accept(sharedVar, mp)
-                                );
-
-                                // Validate the intent against all constraints on all points
-                                for (GPoint ref : getReferences()) {
-                                    boolean allConstr = ref.getConstraints().allSatisfied(
-                                            "Cannot transform object due to " + SafeJLabel.EMPH,
-                                            intent
-                                    );
-                                    if (!allConstr) return; // A constraint failed, abort.
-                                }
-
                                 // If all constraints passed, apply the transformation to the real objects
                                 application.accept(sharedVar);
 
-                                // After applying, run the appliers for all constraints to snap geometry into place
-                                getReferences().stream()
-                                        .map(GPoint::getConstraints)
-                                        .flatMap(ConstraintManager::constraintStream)
-                                        .forEach(ConstraintOn::applyConstraint);
                                 Static.mainPanel.repaint();
                             }
                         }
@@ -169,26 +138,26 @@ public interface KeyedStatefulCommand extends StatefulCommand<Void> {
     /**
      * A convenience method to configure the 'Up Arrow' key.
      */
-    default <T> void setUpKey(Supplier<T> shared, Function<T, Boolean> earlyExit, Consumer<T> application, BiConsumer<T, HashMap<UUID, ConstraintMirror>> biConsumer) {
-        setKey(KeyEvent.VK_UP, earlyExit, shared, application, biConsumer);
+    default <T> void setUpKey(Supplier<T> shared, Function<T, Boolean> earlyExit, Consumer<T> application) {
+        setKey(KeyEvent.VK_UP, earlyExit, shared, application);
     }
     /**
      * A convenience method to configure the 'Down Arrow' key.
      */
-    default <T> void setDownKey(Supplier<T> shared, Function<T, Boolean> earlyExit, Consumer<T> application, BiConsumer<T, HashMap<UUID, ConstraintMirror>> biConsumer) {
-        setKey(KeyEvent.VK_DOWN, earlyExit, shared, application, biConsumer);
+    default <T> void setDownKey(Supplier<T> shared, Function<T, Boolean> earlyExit, Consumer<T> application) {
+        setKey(KeyEvent.VK_DOWN, earlyExit, shared, application);
     }
     /**
      * A convenience method to configure the 'Left Arrow' key.
      */
-    default <T> void setLeftKey(Supplier<T> shared, Function<T, Boolean> earlyExit, Consumer<T> application, BiConsumer<T, HashMap<UUID, ConstraintMirror>> biConsumer) {
-        setKey(KeyEvent.VK_LEFT, earlyExit, shared, application, biConsumer);
+    default <T> void setLeftKey(Supplier<T> shared, Function<T, Boolean> earlyExit, Consumer<T> application) {
+        setKey(KeyEvent.VK_LEFT, earlyExit, shared, application);
     }
     /**
      * A convenience method to configure the 'Right Arrow' key.
      */
-    default <T> void setRightKey(Supplier<T> shared, Function<T, Boolean> earlyExit, Consumer<T> application, BiConsumer<T, HashMap<UUID, ConstraintMirror>> biConsumer) {
-        setKey(KeyEvent.VK_RIGHT, earlyExit, shared, application, biConsumer);
+    default <T> void setRightKey(Supplier<T> shared, Function<T, Boolean> earlyExit, Consumer<T> application) {
+        setKey(KeyEvent.VK_RIGHT, earlyExit, shared, application);
     }
 
     /**
@@ -204,8 +173,7 @@ public interface KeyedStatefulCommand extends StatefulCommand<Void> {
             return true; // Use earlyExit to run the function and then immediately abort.
         },
                 ()-> null,
-                (ignored)->{},
-                (ignored, ignored1)->{}
+                (ignored)->{}
         );
     }
 }

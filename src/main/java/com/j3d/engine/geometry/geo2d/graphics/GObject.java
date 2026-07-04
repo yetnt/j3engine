@@ -1,8 +1,5 @@
 package com.j3d.engine.geometry.geo2d.graphics;
 
-import com.j3d.engine.geometry.constraints.ConstraintManager;
-import com.j3d.engine.geometry.geo2d.BaseObject;
-import com.j3d.engine.geometry.geo2d.constraints.CObject;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventEmitter;
 import com.j3d.engine.react.events.EventListener;
@@ -10,6 +7,8 @@ import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.gen.properties.HasProperties;
 import com.j3d.gen.properties.Property;
+import com.j3d.storage.files.protocol.proj.ProjectFile;
+import com.j3d.ui.dialog.Spinner;
 
 import java.awt.*;
 import java.util.*;
@@ -33,7 +32,7 @@ import java.util.*;
  * @see GLine
  * @see GTri
  */
-public abstract class GObject extends EventEmitter implements BaseObject, EventListener, HasProperties {
+public abstract class GObject extends EventEmitter implements EventListener, HasProperties {
     protected Color col = Color.BLACK;
     /**
      * The pivot point of this geometry. Unless a {@link GPoint} where this represents the actual location
@@ -44,7 +43,6 @@ public abstract class GObject extends EventEmitter implements BaseObject, EventL
      * A Unique UUID to identify this geometry.
      */
     private UUID Id;
-    protected CObject constraintObject;
     protected ArrayList<Property<?, ?>> properties = new ArrayList<>();
 
     /**
@@ -105,42 +103,72 @@ public abstract class GObject extends EventEmitter implements BaseObject, EventL
         );
     }
 
-    @Override
+    /**
+     * Returns the pivot point.
+     * @implSpec Child-classes need to guarantee that this returns the
+     * exact mathematical pivot point of this object. Which if it does
+     * not define as some special point, nees to be it's centre.
+     * @return a CartesianPoint
+     */
     public Vector3 getPivot() {
         return pivot;
     }
 
-    @Override
+    /**
+     * Deletes itself
+     * @return true if the object was deleted
+     * @implNote This is meant to be overriden by inheritors.
+     */
     public boolean deleteSelf() {
         this.detachAll();
         return false;
     }
 
+    /**
+     * Sets the pivot point.
+     * @param pivot The new pivot point.
+     */
     public void setPivot(Vector3 pivot) {
         this.pivot = pivot;
-        toConstraintObject().setPivot(pivot);
     }
 
-    @Override
+    /**
+     * Sets the colour
+     * @param colour The new colour
+     */
     public void setColour(Color colour) {
         col = colour;
-        toConstraintObject().setColour(colour);
     }
 
-    @Override
+    /**
+     * Returns this geometry's color
+     * @return The Color
+     */
     public Color getColour() {
         return col;
     }
 
-    @Override
+    /**
+     * Returns this geometry's unique identifier
+     * @return The UUID
+     */
     public UUID getId() {
         return Id;
     }
 
-    @Override
+    /**
+     * Sets this geometry's unique identifier
+     * @implSpec This is intended to be used when a child is created from
+     * file loading or anything where it hasnt had a UUID attached to it already.
+     * Otherwise the UUID is treated as immutable.
+     * @param id The new UUID
+     * @see ProjectFile#readFile(String, String, Spinner)
+     * @see GPoint#fromRaw(String, Vector3)
+     * @see GLine#fromRaw(String, GPoint, GPoint)
+     * @see GTri#fromRaw(String, Color, GLine, GLine, GLine)
+     */
     public void setId(UUID id) {
         Id = id;
-        toConstraintObject().setId(id);
     }
 
     @Override
@@ -168,20 +196,5 @@ public abstract class GObject extends EventEmitter implements BaseObject, EventL
     @Override
     public void onEvent(EventType event, EventPayload properties) {
 
-    }
-
-    public void detachConstraint() {
-        constraintObject = null;
-    }
-
-    public CObject toConstraintObject() {
-        if (constraintObject == null) {
-            constraintObject = new CObject(this);
-        }
-        return constraintObject;
-    }
-
-    public ConstraintManager<?> getConstraints() {
-        return null;
     }
 }

@@ -1,7 +1,6 @@
 package com.j3d.engine.interact.cmd.commands.transform;
 
-import com.j3d.engine.geometry.geo2d.BaseObject;
-import com.j3d.engine.geometry.geo2d.constraints.CPoint;
+import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.args.ArgSet;
@@ -83,12 +82,6 @@ public class  ScaleSelection extends AbstractTransform {
                 scaleAxis ->
                         references.stream().map(obj -> (GPoint) obj).forEach(
                                 gpoint -> upKey(gpoint, scaleAxis)
-                        ),
-                (scaleAxis, m) ->
-                        m.values().stream()
-                                .filter(i -> i instanceof CPoint)
-                                .map(i -> (CPoint)i).forEach(
-                                gpoint -> upKey(gpoint, scaleAxis)
                         )
 
         );
@@ -99,13 +92,7 @@ public class  ScaleSelection extends AbstractTransform {
                 scaleAxis ->
                         references.stream().map(obj -> (GPoint) obj).forEach(
                                 gpoint -> downKey(gpoint, scaleAxis)
-                        ),
-                (scaleAxis, m) ->
-                        m.values().stream()
-                                .filter(i -> i instanceof CPoint)
-                                .map(i -> (CPoint)i).forEach(
-                                        gpoint -> downKey(gpoint, scaleAxis)
-                                )
+                        )
 
         );
     }
@@ -115,7 +102,7 @@ public class  ScaleSelection extends AbstractTransform {
         return ((int)((1/getCurrentStepSize()) * 100)/100d);
     }
 
-    public void upKey(BaseObject gpoint, Vector3 scaleAxis) {
+    public void upKey(GPoint gpoint, Vector3 scaleAxis) {
         if (scaleAxis.isNotEmpty()) {
             Vector3 fromCenter = gpoint.getPivot().sub(center);
 
@@ -132,7 +119,7 @@ public class  ScaleSelection extends AbstractTransform {
             );
     }
 
-    public void downKey(BaseObject gpoint, Vector3 scaleAxis) {
+    public void downKey(GPoint gpoint, Vector3 scaleAxis) {
         if (scaleAxis.isNotEmpty()) {
             Vector3 fromCenter = gpoint.getPivot().sub(center);
 

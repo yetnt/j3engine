@@ -1,6 +1,5 @@
 package com.j3d;
 
-import com.j3d.engine.geometry.constraints.concrete.MidpointConstraint;
 import com.j3d.engine.geometry.geo2d.Winding;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
@@ -15,7 +14,6 @@ import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.react.actions.Action;
-import com.j3d.utility.generic.Pair;
 
 import javax.swing.*;
 import java.awt.*;
@@ -220,26 +218,6 @@ public class Executor {
         return circleThing;
     }
 
-    public Pair<Thing, MidpointConstraint> someLine() {
-        GPoint A = new GPoint(new Vector3(10, 0, 0));
-        GPoint B = new GPoint(new Vector3(30, 0, 0));
-        GPoint C = new GPoint(new Vector3(-10, 10, 0));
-        // D will be the midpt between A and B
-        GPoint D = new GPoint(new Vector3(0, 0, 0));
-
-        GLine line = new GLine(A, B);
-        GLine line2 = new GLine(C, D);
-
-        MidpointConstraint mdpc = new MidpointConstraint(D, line);
-        D.getConstraints().addConstraint(
-                mdpc
-        );
-        mdpc.applyConstraint();
-
-        return new Pair<>(new Thing(Static.sceneManager, layer, "constrainted")
-                .addObjs(A, B, C, D, line, line2), mdpc);
-    }
-
     public void updatekeystrokeexample() {
 
         // How to update a keystroke ->
@@ -298,7 +276,7 @@ public class Executor {
                 A, B, C,
                 A1, B1, C1,
                 A2, B2, C2
-        ).solidify();
+        );
     }
 
     public Thing openedLetter() {
