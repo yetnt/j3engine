@@ -173,6 +173,8 @@ public class FloatingPanel extends javax.swing.JPanel {
         btnsPanel.add(dockButton);
 
         jSeparator1.setBackground(J3DTheme.UI_SURFACE.color());
+        jSeparator1.setForeground(J3DTheme.UI_SURFACE.color());
+        jSeparator1.setOpaque(true);
         btnsPanel.add(jSeparator1);
 
         attachButton.setBackground(J3DTheme.BACKGROUND.color());

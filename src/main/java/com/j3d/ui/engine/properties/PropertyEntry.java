@@ -4,25 +4,56 @@
  */
 package com.j3d.ui.engine.properties;
 
-import com.j3d.engine.geometry.geo3d.Thing;
+import com.j3d.gen.properties.Property;
+import com.j3d.gen.properties.PropertyKey;
 import com.j3d.ui.engine.properties.panels.PropertyPanel;
+import com.j3d.ui.generic.J3DTheme;
 
 import javax.swing.*;
+import java.util.*;
 
 /**
- *
- * @author yetnt
+ * A {@link PropertyEntry} represents either a single or combined list of properties and is itself
+ * one entry into the {@link PropertiesPanel}.
+ * <p>
+ *     A {@link PropertyEntry} always has a property of the exact same {@link PropertyKey} that may
+ *     converge to multiple different values.
+ * </p>
+ * <p>
+ *     This panel only has a singular {@link JTextField} which displays the name of the property
+ *     and then wraps a {@link PropertyPanel} next to it for the specific property type.
+ * </p>
+ * @see PropertyKey
+ * @see Property
+ * @see PropertiesPanel
+ * @author Lehlogonolo Poole
  */
 public class PropertyEntry extends javax.swing.JPanel {
+
+    public final String label;
 
     public PropertyEntry(JPanel other) {
         initComponents();
         this.add(other);
         assert other instanceof PropertyPanel<?> pl;
         PropertyPanel<?> pl = (PropertyPanel<?>) other;
+        ArrayList<JComponent> components = new ArrayList<>(
+                List.of(propertyLabel, this, other)
+        );
+        label = pl.getProperties().getFirst().getName();
         propertyLabel.setText(
                 pl.getProperties().getFirst().getName()
         );
+        String str = pl.getProperties().getFirst().getDescription();
+        components.forEach(
+                c ->
+                        c.setToolTipText(str)
+        );
+        Arrays.stream(other.getComponents())
+                .map(c -> (JComponent)c)
+                .forEach(
+                        c -> c.setToolTipText(str)
+                );
     }
 
     /**
@@ -36,16 +67,20 @@ public class PropertyEntry extends javax.swing.JPanel {
 
         propertyLabel = new javax.swing.JLabel();
 
+        setBackground(J3DTheme.UI_SURFACE.color());
         setMaximumSize(new java.awt.Dimension(461, 40));
         setMinimumSize(new java.awt.Dimension(461, 40));
         setPreferredSize(new java.awt.Dimension(461, 40));
         setLayout(new java.awt.GridLayout(1, 0, 0, -1));
 
-        propertyLabel.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
-        propertyLabel.setText("Some Label For String");
-        propertyLabel.setMaximumSize(new java.awt.Dimension(100, 20));
-        propertyLabel.setMinimumSize(new java.awt.Dimension(100, 20));
-        propertyLabel.setPreferredSize(new java.awt.Dimension(100, 20));
+        propertyLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        propertyLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        propertyLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        propertyLabel.setText("lbl");
+        propertyLabel.setToolTipText("");
+        propertyLabel.setMaximumSize(new java.awt.Dimension(50, 20));
+        propertyLabel.setMinimumSize(new java.awt.Dimension(50, 20));
+        propertyLabel.setPreferredSize(new java.awt.Dimension(50, 20));
         add(propertyLabel);
     }// </editor-fold>//GEN-END:initComponents
 

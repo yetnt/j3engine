@@ -4,11 +4,18 @@
  */
 package com.j3d.ui.engine.properties;
 
+import com.j3d.Static;
+import com.j3d.engine.geometry.geo2d.graphics.GObject;
+import com.j3d.gen.properties.SelectionPropertiesFilter;
+import com.j3d.gen.properties.PropertiesUI;
 import com.j3d.ui.engine.FloatingPanel;
 import com.j3d.ui.generic.J3DScrollBarUI;
 
 import javax.swing.*;
 import java.util.ArrayList;
+
+import static com.j3d.Static.sceneManager;
+import com.j3d.ui.generic.J3DTheme;
 
 
 /**
@@ -38,6 +45,18 @@ public class PropertiesPanel extends javax.swing.JPanel {
         J3DScrollBarUI.setBars(jScrollPane1);
     }
 
+    public static void propertiesPanel() {
+        Static.getPropertiesPanel().clear();
+        ArrayList<GObject> selected = sceneManager.getSelected();
+        ArrayList<GObject> filtered =
+                PropertiesUI.getFilteredObjects(selected);
+        Static.getPropertiesPanel().addAll(
+                PropertiesUI.get(
+                        filtered
+                )
+        );
+    }
+
     public void toggleHidden() {
         floatingPanel.toggleHidden();
     }
@@ -45,7 +64,11 @@ public class PropertiesPanel extends javax.swing.JPanel {
     public void addAll(ArrayList<JPanel> panelArrayList) {
         panelArrayList.forEach(propertiesPanel::add);
         propertiesPanel.revalidate();
-        propertiesPanel.setPreferredSize(null);
+        propertiesPanel.setPreferredSize(null);SwingUtilities.invokeLater(() -> {
+            JScrollBar bar = jScrollPane1.getHorizontalScrollBar();
+            bar.setValue(bar.getMaximum());
+        });
+        jScrollPane1.getHorizontalScrollBar().setEnabled(false);
     }
 
     private static void debug(JPanel p, String name) {
@@ -71,37 +94,62 @@ public class PropertiesPanel extends javax.swing.JPanel {
 
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        comboBox = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         propertiesPanel = new javax.swing.JPanel();
 
+        setBackground(J3DTheme.UI_SURFACE.color());
         setMaximumSize(new java.awt.Dimension(412, 39));
         setMinimumSize(new java.awt.Dimension(412, 39));
 
+        jPanel3.setBackground(J3DTheme.UI_SURFACE.color());
+
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setForeground(J3DTheme.TEXT_PRIMARY.color());
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Da Properties Mf (here label specific)");
+        jLabel1.setText("Properties");
+
+        comboBox.setBackground(J3DTheme.BACKGROUND.color());
+        comboBox.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "default", "point", "line", "tri", "thing", "layer" }));
+        comboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("<html>selection filter</html>");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 449, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(comboBox, 0, 89, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(0, 0, 0))
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+            .addComponent(comboBox)
+            .addComponent(jLabel2)
         );
+
+        jSeparator1.setBackground(J3DTheme.UI_SURFACE.color());
+        jSeparator1.setBorder(new javax.swing.border.MatteBorder(null));
+        jSeparator1.setOpaque(true);
 
         jScrollPane1.setMinimumSize(new java.awt.Dimension(430, 265));
         jScrollPane1.setPreferredSize(new java.awt.Dimension(430, 265));
 
+        propertiesPanel.setBackground(J3DTheme.UI_SURFACE.color());
         propertiesPanel.setMinimumSize(new java.awt.Dimension(0, 0));
         propertiesPanel.setPreferredSize(new java.awt.Dimension(0, 0));
         propertiesPanel.setLayout(new javax.swing.BoxLayout(propertiesPanel, javax.swing.BoxLayout.Y_AXIS));
@@ -111,27 +159,39 @@ public class PropertiesPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 1, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void comboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxActionPerformed
+        String selected = comboBox.getItemAt(comboBox.getSelectedIndex());
+        PropertiesUI.selectionPropertiesFilter = switch (selected) {
+            case "thing" -> SelectionPropertiesFilter.THING;
+            case "layer" -> SelectionPropertiesFilter.LAYER;
+            case "point" -> SelectionPropertiesFilter.POINT;
+            case "line" -> SelectionPropertiesFilter.LINE;
+            case "tri" -> SelectionPropertiesFilter.TRI;
+            default -> SelectionPropertiesFilter.DEFAULT;
+        };
+        propertiesPanel();
+    }//GEN-LAST:event_comboBoxActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> comboBox;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;

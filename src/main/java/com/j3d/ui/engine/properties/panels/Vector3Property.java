@@ -4,8 +4,11 @@
  */
 package com.j3d.ui.engine.properties.panels;
 
+import com.j3d.Static;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.gen.properties.Property;
+import com.j3d.ui.generic.J3DTheme;
 
 import java.util.ArrayList;
 
@@ -16,6 +19,7 @@ import java.util.ArrayList;
 public class Vector3Property extends javax.swing.JPanel implements PropertyPanel<Vector3> {
 
     ArrayList<Property<Vector3, ?>> properties;
+    public static int ROUND = 2;
 
     /**
      * Creates new form StringProperty
@@ -28,7 +32,32 @@ public class Vector3Property extends javax.swing.JPanel implements PropertyPanel
 
     @Override
     public void setFields() {
+        if (
+                getProperties().stream()
+                        .anyMatch(Property::isConstant)
+        ) setEnb(false);
 
+        setabelsAndShi(!singleProperty());
+    }
+
+    private void setEnb(boolean b) {
+        setBtn.setEnabled(b);
+    }
+
+    private void setabelsAndShi(boolean multipleValues) {
+        if (multipleValues) {
+            vector3Preview.setText("(multiple values)");
+            return;
+        }
+        double x = round(getSingleProperty().getValueSupplier().get().getX());
+        double y = round(getSingleProperty().getValueSupplier().get().getY());
+        double z = round(getSingleProperty().getValueSupplier().get().getZ());
+
+        vector3Preview.setText("(" + x + ", " + y + ", " + z + ")");
+    }
+
+    private double round(double val) {
+        return (double)((int)(val * ROUND))/ROUND;
     }
 
     @Override
@@ -45,20 +74,26 @@ public class Vector3Property extends javax.swing.JPanel implements PropertyPanel
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        X = new javax.swing.JSpinner();
-        Y = new javax.swing.JSpinner();
-        Z = new javax.swing.JSpinner();
         setBtn = new javax.swing.JButton();
+        vector3Preview = new javax.swing.JLabel();
 
+        setBackground(J3DTheme.UI_SURFACE.color());
         setMaximumSize(new java.awt.Dimension(215, 34));
         setMinimumSize(new java.awt.Dimension(215, 34));
 
-        setBtn.setText("c");
+        setBtn.setBackground(J3DTheme.BACKGROUND.color());
+        setBtn.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        setBtn.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        setBtn.setText("view");
         setBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 setBtnActionPerformed(evt);
             }
         });
+
+        vector3Preview.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        vector3Preview.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        vector3Preview.setText("LBL FOR VECTOR3");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -66,37 +101,35 @@ public class Vector3Property extends javax.swing.JPanel implements PropertyPanel
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(X, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(vector3Preview, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Y, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Z, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(setBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(setBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 53, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Z, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(X, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Y, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(setBtn))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(setBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(vector3Preview, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void setBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setBtnActionPerformed
-        // TODO add your handling code here:
+        if (singleProperty()) {
+            if (CommandsManager.commandIsRunning()) {
+                Static.hoverLabel.error("Finish running command first");
+                return;
+            }
+            new Vector3Dialogue(getSingleProperty().getValueSupplier().get(), setBtn);
+        }
     }//GEN-LAST:event_setBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JSpinner X;
-    private javax.swing.JSpinner Y;
-    private javax.swing.JSpinner Z;
     private javax.swing.JButton setBtn;
+    private javax.swing.JLabel vector3Preview;
     // End of variables declaration//GEN-END:variables
 }

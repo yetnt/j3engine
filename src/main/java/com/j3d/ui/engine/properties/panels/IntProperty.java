@@ -5,7 +5,9 @@
 package com.j3d.ui.engine.properties.panels;
 
 import com.j3d.gen.properties.Property;
+import com.j3d.ui.generic.J3DTheme;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 /**
@@ -27,7 +29,35 @@ public class IntProperty extends javax.swing.JPanel implements PropertyPanel<Int
 
     @Override
     public void setFields() {
+        spinner.setModel(
+                new SpinnerNumberModel(
+                        getSingleProperty().getValueSupplier().get().intValue(),
+                        0,
+                        100,
+                        1
+                )
+        );
+        if (singleProperty()) {
+            spinner.setValue(getSingleProperty().getValueSupplier().get());
+            if (getSingleProperty().isConstant())
+                spinner.setEnabled(false);
+        } else {
+            JFormattedTextField field =
+                    ((JSpinner.DefaultEditor)spinner.getEditor())
+                            .getTextField();
+            field.setText("**");
+            if (
+                    getProperties().stream()
+                            .anyMatch(Property::isConstant)
+            )
+                spinner.setEnabled(false);
+        }
+    }
 
+    private void addSpinnerListeners() {
+        spinner.addChangeListener(e -> {
+            runAndAddAction((Integer) spinner.getValue(), "Int");
+        });
     }
 
     @Override
@@ -46,6 +76,7 @@ public class IntProperty extends javax.swing.JPanel implements PropertyPanel<Int
 
         spinner = new javax.swing.JSpinner();
 
+        setBackground(J3DTheme.UI_SURFACE.color());
         setMaximumSize(new java.awt.Dimension(215, 34));
         setMinimumSize(new java.awt.Dimension(215, 34));
 

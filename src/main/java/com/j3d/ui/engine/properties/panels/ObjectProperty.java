@@ -4,16 +4,24 @@
  */
 package com.j3d.ui.engine.properties.panels;
 
+import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
+import com.j3d.engine.geometry.geo2d.graphics.GPoint;
+import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.gen.properties.Property;
+import com.j3d.ui.generic.J3DTheme;
+import com.j3d.utility.generic.Pair;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  *
  * @author yetnt
  */
-public class ObjectProperty<T extends GObject> extends javax.swing.JPanel implements PropertyPanel<T> {
+public class ObjectProperty<T extends GObject> extends JPanel implements PropertyPanel<T> {
 
     ArrayList<Property<T, ?>> properties;
     /**
@@ -27,7 +35,28 @@ public class ObjectProperty<T extends GObject> extends javax.swing.JPanel implem
 
     @Override
     public void setFields() {
-
+        // The type of the object reference is guaranteed to be the same whether there is one
+        // or multiple.
+        // e.g. Tri Leg A will always be a GLine or Line Point B will always be a GPoint
+        labelTxtField.setEnabled(false);
+        uuidTextField.setEnabled(false);
+        Pair<String, UUID> type = setType();
+        labelTxtField.setText(type.first);
+        if (singleProperty()) {
+            uuidTextField.setText(type.second.toString().substring(0, 10) + "...");
+        } else {
+            uuidTextField.setText("(multiple values)");
+        }
+    }
+    
+    private Pair<String, UUID> setType() {
+        return switch (getSingleProperty().getValueSupplier().get()) {
+            case GTri t -> new Pair<>("(tri)", t.getId());
+            case GLine l -> new Pair<>("(line)", l.getId());
+            case GPoint p -> new Pair<>("(point)", p.getId());
+            default ->
+                    throw new IllegalStateException("Unexpected value: " + getSingleProperty().getValueSupplier().get());
+        };
     }
 
     @Override
@@ -48,10 +77,14 @@ public class ObjectProperty<T extends GObject> extends javax.swing.JPanel implem
         uuidTextField = new javax.swing.JTextField();
         labelTxtField = new javax.swing.JTextField();
 
+        setBackground(J3DTheme.UI_SURFACE.color());
         setMaximumSize(new java.awt.Dimension(215, 34));
         setMinimumSize(new java.awt.Dimension(215, 34));
 
-        copyBtn.setText("o");
+        copyBtn.setBackground(J3DTheme.BACKGROUND.color());
+        copyBtn.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        copyBtn.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        copyBtn.setText("copy");
         copyBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 copyBtnActionPerformed(evt);
@@ -59,10 +92,14 @@ public class ObjectProperty<T extends GObject> extends javax.swing.JPanel implem
         });
 
         uuidTextField.setEditable(false);
+        uuidTextField.setBackground(J3DTheme.BACKGROUND.color());
+        uuidTextField.setForeground(J3DTheme.TEXT_PRIMARY.color());
         uuidTextField.setText("6f099092....");
 
         labelTxtField.setEditable(false);
+        labelTxtField.setBackground(J3DTheme.BACKGROUND.color());
         labelTxtField.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        labelTxtField.setForeground(J3DTheme.TEXT_PRIMARY.color());
         labelTxtField.setText("(point)");
         labelTxtField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -79,7 +116,7 @@ public class ObjectProperty<T extends GObject> extends javax.swing.JPanel implem
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(uuidTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(copyBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+                .addComponent(copyBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 54, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -94,12 +131,12 @@ public class ObjectProperty<T extends GObject> extends javax.swing.JPanel implem
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void labelTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_labelTxtFieldActionPerformed
-        // TODO add your handling code here:
+    private void labelTxtFieldActionPerformed(ActionEvent evt) {//GEN-FIRST:event_labelTxtFieldActionPerformed
+        // Do nbohing
     }//GEN-LAST:event_labelTxtFieldActionPerformed
 
-    private void copyBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyBtnActionPerformed
-        // TODO add your handling code here:
+    private void copyBtnActionPerformed(ActionEvent evt) {//GEN-FIRST:event_copyBtnActionPerformed
+        // Copy to user clipboard later maybe.
     }//GEN-LAST:event_copyBtnActionPerformed
 
 

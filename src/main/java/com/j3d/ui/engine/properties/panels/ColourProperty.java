@@ -4,6 +4,8 @@
  */
 package com.j3d.ui.engine.properties.panels;
 
+import com.j3d.Static;
+import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.gen.properties.Property;
 import com.j3d.ui.generic.J3DTheme;
 import com.j3d.utility.generators.JLabelRichText;
@@ -11,7 +13,6 @@ import com.j3d.utility.generators.JLabelRichText;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-
 import static com.j3d.Static.mainFrame;
 
 /**
@@ -37,7 +38,7 @@ public class ColourProperty extends javax.swing.JPanel implements PropertyPanel<
             Color col = getSingleProperty().getValueSupplier().get();
 
             colourPreviewLabel.setText(
-                    new JLabelRichText("~".repeat(5))
+                    new JLabelRichText("~".repeat(15))
                             .font(J3DTheme.TEXT_PRIMARY.color(), "4", col)
                             .wrapHTML()
             );
@@ -76,12 +77,16 @@ public class ColourProperty extends javax.swing.JPanel implements PropertyPanel<
         colourPreviewLabel = new javax.swing.JLabel();
         setBtn = new javax.swing.JButton();
 
+        setBackground(J3DTheme.UI_SURFACE.color());
         setMaximumSize(new java.awt.Dimension(215, 34));
         setMinimumSize(new java.awt.Dimension(215, 34));
 
+        colourPreviewLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
         colourPreviewLabel.setText("COLOUR LABEL JLBLRICH");
 
-        setBtn.setText("o");
+        setBtn.setBackground(J3DTheme.BACKGROUND.color());
+        setBtn.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        setBtn.setText(" set");
         setBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 setBtnActionPerformed(evt);
@@ -96,7 +101,8 @@ public class ColourProperty extends javax.swing.JPanel implements PropertyPanel<
                 .addContainerGap()
                 .addComponent(colourPreviewLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(setBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE))
+                .addComponent(setBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 53, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -110,11 +116,17 @@ public class ColourProperty extends javax.swing.JPanel implements PropertyPanel<
     }// </editor-fold>//GEN-END:initComponents
 
     private void setBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setBtnActionPerformed
+        if (CommandsManager.commandIsRunning()) {
+            Static.hoverLabel.error("Finish running command first");
+            return;
+        }
         Color chosen = JColorChooser.showDialog(
                 mainFrame,
                 "Choose a colour man",
                 getSingleProperty().getValueSupplier().get()
         );
+        if (chosen == null) return;
+        runAndAddAction(chosen, "Colour");
     }//GEN-LAST:event_setBtnActionPerformed
 
 

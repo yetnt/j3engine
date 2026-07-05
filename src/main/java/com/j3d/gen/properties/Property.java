@@ -3,6 +3,8 @@ package com.j3d.gen.properties;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.ui.engine.properties.PropertiesPanel;
+import com.j3d.ui.engine.properties.PropertyEntry;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,11 +30,15 @@ import java.util.function.Supplier;
  *     <li>{@link Double}</li>
  *     <li>{@link Boolean}</li>
  * </ul>
- * @implNote Right now only stuff like {@link GObject} can have properties defined as such, as they
- * can be selected. May change but otherwise not. //TODO: Ponder. (and implement {@link com.j3d.ui.engine.properties.PropertiesPanel}
  * @param <T> The type of the property (allowed types given above)
  * @param <G> The type of the property provider, this is the class itself which
  *           is defining this property.
+ * @see HasProperties
+ * @see PropertyKey
+ * @see PropertiesUI
+ * @see PropertiesPanel
+ * @see PropertyEntry
+ * @author Lehlogonolo Poole
  */
 public class Property<T, G extends HasProperties> {
     /**

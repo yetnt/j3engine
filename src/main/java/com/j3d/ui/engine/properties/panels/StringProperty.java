@@ -4,18 +4,10 @@
  */
 package com.j3d.ui.engine.properties.panels;
 
-import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.gen.properties.Property;
+import com.j3d.ui.generic.J3DTheme;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
-import static com.j3d.Static.getPropertiesPanel;
-import static com.j3d.Static.sceneManager;
-import static com.j3d.engine.SceneManager.history;
 
 /**
  *
@@ -66,9 +58,12 @@ public class StringProperty extends javax.swing.JPanel implements PropertyPanel<
 
         textField = new javax.swing.JTextField();
 
+        setBackground(J3DTheme.UI_SURFACE.color());
         setMaximumSize(new java.awt.Dimension(215, 34));
         setMinimumSize(new java.awt.Dimension(215, 34));
 
+        textField.setBackground(J3DTheme.BACKGROUND.color());
+        textField.setForeground(J3DTheme.TEXT_PRIMARY.color());
         textField.setText("jTextField1");
         textField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -94,51 +89,7 @@ public class StringProperty extends javax.swing.JPanel implements PropertyPanel<
     }// </editor-fold>//GEN-END:initComponents
 
     private void textFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldActionPerformed
-        VoidAction setText = new VoidAction() {
-
-            final LocalTime now = LocalTime.now();
-            final String value = textField.getText();
-            final ArrayList<String> oldValues = getProperties()
-                    .stream()
-                    .map(Property::getValueSupplier)
-                    .map(Supplier::get)
-                    .collect(Collectors.toCollection(ArrayList::new));
-
-            @Override
-            public Void run() {
-                getProperties()
-                        .forEach(p -> p.getNewValueConsumer().accept(value));
-                getPropertiesPanel().repaint();
-                return null;
-            }
-
-            @Override
-            public void undo() {
-                for (int i = 0; i < getProperties().size(); i++) {
-                    Property<String, ?> property = getProperties().get(i);
-                    String value = oldValues.get(i);
-                    property.getNewValueConsumer().accept(value);
-                }
-                getPropertiesPanel().repaint();
-            }
-
-            @Override
-            public boolean isReversible() {
-                return true;
-            }
-
-            @Override
-            public String getDescription() {
-                return getActionDesc("String", value);
-            }
-
-            @Override
-            public LocalTime getTime() {
-                return now;
-            }
-        };
-        setText.run();
-        history.add(setText);
+        runAndAddAction(textField.getText(), "String");
     }//GEN-LAST:event_textFieldActionPerformed
 
 

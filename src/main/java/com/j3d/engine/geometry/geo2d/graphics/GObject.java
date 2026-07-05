@@ -79,7 +79,7 @@ public abstract class GObject extends EventEmitter implements EventListener, Has
     public GObject(Color colour) {
         this();
         col = colour;
-        addProps();
+        // addprops()
     }
 
     // GLine and GTri make this constant.

@@ -4,16 +4,10 @@
  */
 package com.j3d.ui.engine.properties.panels;
 
-import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.gen.properties.Property;
+import com.j3d.ui.generic.J3DTheme;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
-import static com.j3d.Static.getPropertiesPanel;
-import static com.j3d.engine.SceneManager.history;
 
 /**
  *
@@ -77,9 +71,12 @@ public class BooleanProperty extends javax.swing.JPanel implements PropertyPanel
 
         enabledCheckbox = new javax.swing.JCheckBox();
 
+        setBackground(J3DTheme.UI_SURFACE.color());
         setMaximumSize(new java.awt.Dimension(215, 34));
         setMinimumSize(new java.awt.Dimension(215, 34));
 
+        enabledCheckbox.setBackground(J3DTheme.UI_SURFACE.color());
+        enabledCheckbox.setForeground(J3DTheme.TEXT_PRIMARY.color());
         enabledCheckbox.setText("Enabled");
         enabledCheckbox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -105,53 +102,7 @@ public class BooleanProperty extends javax.swing.JPanel implements PropertyPanel
     }// </editor-fold>//GEN-END:initComponents
 
     private void enabledCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enabledCheckboxActionPerformed
-        VoidAction action = new VoidAction() {
-
-            final LocalTime now = LocalTime.now();
-            final Boolean value = enabledCheckbox.isSelected();
-            final ArrayList<Boolean> oldValues = getProperties()
-                    .stream()
-                    .map(Property::getValueSupplier)
-                    .map(Supplier::get)
-                    .collect(Collectors.toCollection(ArrayList::new));
-
-            @Override
-            public Void run() {
-                getProperties()
-                        .forEach(p -> p.getNewValueConsumer().accept(value));
-                setFields();
-                getPropertiesPanel().repaint();
-                return null;
-            }
-
-            @Override
-            public void undo() {
-                for (int i = 0; i < getProperties().size(); i++) {
-                    Property<Boolean, ?> property = getProperties().get(i);
-                    Boolean value = oldValues.get(i);
-                    property.getNewValueConsumer().accept(value);
-                }
-                setFields();
-                getPropertiesPanel().repaint();
-            }
-
-            @Override
-            public boolean isReversible() {
-                return true;
-            }
-
-            @Override
-            public String getDescription() {
-                return getActionDesc("Boolean", value);
-            }
-
-            @Override
-            public LocalTime getTime() {
-                return now;
-            }
-        };
-        action.run();
-        history.add(action);
+        runAndAddAction(enabledCheckbox.isSelected(), "Boolean");
     }//GEN-LAST:event_enabledCheckboxActionPerformed
 
 

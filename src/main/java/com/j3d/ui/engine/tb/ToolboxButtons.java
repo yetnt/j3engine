@@ -31,17 +31,17 @@ public class ToolboxButtons {
     public static final int BUTTON_PANEL_SIZE = 120;
 
     static {
-        register("Toggle Debug Panel", e -> {
+        register("Debug Panel", e -> {
             // Toggle debug mode
             Static.getDebugPanel().toggleHidden();
         });
-        register("Toggle Props Panel", e -> {
+        register("Properties", e -> {
             // Toggle props mode
             Static.getPropertiesPanel().toggleHidden();
         });
 
         // Example button registration
-        register("Toggle Layers",
+        register("Layers",
                 e -> Static.getLayerTree().toggleHidden(),
                 "layers.png");
 

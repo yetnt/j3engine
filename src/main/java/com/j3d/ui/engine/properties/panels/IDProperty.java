@@ -5,6 +5,7 @@
 package com.j3d.ui.engine.properties.panels;
 
 import com.j3d.gen.properties.Property;
+import com.j3d.ui.generic.J3DTheme;
 import com.j3d.utility.ClipboardUtil;
 
 import java.util.ArrayList;
@@ -61,11 +62,14 @@ public class IDProperty extends javax.swing.JPanel implements PropertyPanel<UUID
         idTextField = new javax.swing.JTextField();
         copyBtn = new javax.swing.JButton();
 
+        setBackground(J3DTheme.UI_SURFACE.color());
         setMaximumSize(new java.awt.Dimension(215, 34));
         setMinimumSize(new java.awt.Dimension(215, 34));
 
         idTextField.setEditable(false);
+        idTextField.setBackground(J3DTheme.BACKGROUND.color());
         idTextField.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        idTextField.setForeground(J3DTheme.TEXT_PRIMARY.color());
         idTextField.setText("6f099092-2641-49b4...");
         idTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -73,7 +77,10 @@ public class IDProperty extends javax.swing.JPanel implements PropertyPanel<UUID
             }
         });
 
-        copyBtn.setText("o");
+        copyBtn.setBackground(J3DTheme.BACKGROUND.color());
+        copyBtn.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        copyBtn.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        copyBtn.setText("copy");
         copyBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 copyBtnActionPerformed(evt);
@@ -87,7 +94,7 @@ public class IDProperty extends javax.swing.JPanel implements PropertyPanel<UUID
             .addGroup(layout.createSequentialGroup()
                 .addComponent(idTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(copyBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+                .addComponent(copyBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 54, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
