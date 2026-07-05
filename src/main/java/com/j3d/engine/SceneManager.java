@@ -18,6 +18,7 @@ import com.j3d.engine.interact.selection.SelectionType;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.layer.LayerList;
 import com.j3d.engine.react.history.History;
+import com.j3d.gen.properties.HasProperties;
 import com.j3d.ui.generic.J3DTheme;
 
 import java.awt.*;
@@ -546,6 +547,16 @@ public class SceneManager {
             for (Thing t : layer) {
                 if (t.getObjects().contains(g))
                     return t;
+            }
+        }
+        return null;
+    }
+
+    public Layer findThingLayer(Thing objectParent) {
+        for (Layer l : layers) {
+            for (Thing t : l) {
+                if (objectParent.getId().equals(t.getId()))
+                    return l;
             }
         }
         return null;

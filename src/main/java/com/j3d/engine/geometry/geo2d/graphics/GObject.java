@@ -85,16 +85,19 @@ public abstract class GObject extends EventEmitter implements EventListener, Has
     // GLine and GTri make this constant.
     protected Property<Vector3, GObject> pivotProperty =
             new Property<>("Object Pivot", this::getPivot, GObject.class)
+                    .holds(Vector3.class)
                     .setDescription("The pivot of this object, usually its geometric centre")
                     .setNewValueConsumer(this::setPivot);
 
     private void addProps() {
         properties.add(
                 new Property<>("Object Id", this::getId, GObject.class)
+                        .holds(UUID.class)
                         .setDescription("The id of this object").constant()
         );
         properties.add(
                 new Property<>("Object Colour", this::getColour, GObject.class)
+                        .holds(Color.class)
                         .setDescription("The colour of this object")
                         .setNewValueConsumer(this::setColour)
         );

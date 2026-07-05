@@ -1,6 +1,6 @@
 package com.j3d.gen.settings;
 
-import com.j3d.engine.interact.selection.SelectionLevel;
+import com.j3d.engine.interact.selection.SelectionFilter;
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.users.User;
 
@@ -14,5 +14,5 @@ public abstract class CoreSettings {
     static {
         user = DatabaseManager.tblUsers.findById(1);
     }
-    public static SelectionLevel selectionLevel = SelectionLevel.DEFAULT;
+    public static SelectionFilter selectionFilter = SelectionFilter.TRI;
 }

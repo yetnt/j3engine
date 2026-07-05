@@ -231,14 +231,19 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
     private void addProps() {
         properties.addAll(List.of(
                 new Property<>("Tri Normal", this::normal, GTri.class)
+                        .holds(Vector3.class)
                         .setDescription("The normal of this triangle").constant(),
                 new Property<>("Leg A", this::getLegA, GTri.class)
+                        .holds(GLine.class)
                         .setDescription("The first leg of this triangle").constant(),
                 new Property<>("Leg B", this::getLegB, GTri.class)
+                        .holds(GLine.class)
                         .setDescription("The second leg of this triangle").constant(),
                 new Property<>("Leg C", this::getLegC, GTri.class)
+                        .holds(GLine.class)
                         .setDescription("The third leg of this triangle").constant(),
                 new Property<>("Double Sided", this::isDoubleSided, GTri.class)
+                        .holds(Boolean.class)
                         .setDescription("Whether this triangle is double sided or not")
                         .constant()
         ));

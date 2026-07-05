@@ -353,21 +353,25 @@ public class Thing implements Interactable, HasProperties {
     private void addProps() {
         properties.add(
                 new Property<>("Thing Name", this::getName, Thing.class)
+                        .holds(String.class)
                         .setNewValueConsumer((newValue) -> name = newValue)
                         .setDescription("The name given to this Thing")
         );
         properties.add(
                 new Property<>("Thing ID", this::getId, Thing.class)
+                        .holds(UUID.class)
                         .setDescription("The id given to this Thing")
                         .constant()
         );
         properties.add(
                 new Property<>("Object Amount", getObjects()::size, Thing.class)
+                        .holds(Integer.class)
                         .setDescription("The amount of objects within this Thing")
                         .constant()
         );
         properties.add(
                 new Property<>("Centroid", this::getCentroid, Thing.class)
+                        .holds(Vector3.class)
                         .setDescription("The centroid of this Thing, usually its geometric centre")
                         .constant()
         );

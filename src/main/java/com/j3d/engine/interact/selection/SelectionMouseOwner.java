@@ -3,11 +3,14 @@ package com.j3d.engine.interact.selection;
 import com.j3d.Static;
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.ScreenPoint;
+import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.engine.interact.input.mouse.MouseOwner;
+import com.j3d.gen.properties.PropertiesUI;
 import com.j3d.ui.generic.CursorManager;
 
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import static com.j3d.Static.getLog;
 import static com.j3d.Static.sceneManager;
@@ -63,6 +66,15 @@ public class SelectionMouseOwner extends MouseOwner {
         if (selectionArea[0] != null && selectionArea[1] != null) {
             Static.getLog().println("Final Selection Area: " + selectionArea[0] + " to " + selectionArea[1]);
             getLog().println("Selected " + sceneManager.getSelected().size() + " objects.");
+            Static.getPropertiesPanel().clear();
+            ArrayList<GObject> selected = sceneManager.getSelected();
+            ArrayList<GObject> filtered =
+                    PropertiesUI.getFilteredObjects(selected);
+            Static.getPropertiesPanel().addAll(
+                    PropertiesUI.get(
+                            filtered
+                    )
+            );
         }
     }
 

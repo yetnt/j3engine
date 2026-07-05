@@ -35,6 +35,11 @@ public class ToolboxButtons {
             // Toggle debug mode
             Static.getDebugPanel().toggleHidden();
         });
+        register("Toggle Props Panel", e -> {
+            // Toggle props mode
+            Static.getPropertiesPanel().toggleHidden();
+        });
+
         // Example button registration
         register("Toggle Layers",
                 e -> Static.getLayerTree().toggleHidden(),

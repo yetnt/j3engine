@@ -142,8 +142,10 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
     private void addProps() {
         properties.addAll(List.of(
                 new Property<>("Point A", this::getA, GLine.class)
+                        .holds(GPoint.class)
                         .setDescription("The start point of this line").constant(),
                 new Property<>("Point B", this::getB, GLine.class)
+                        .holds(GPoint.class)
                         .setDescription("The end point of this line").constant()
         ));
         pivotProperty.constant(); // the pivot cannot be edited.

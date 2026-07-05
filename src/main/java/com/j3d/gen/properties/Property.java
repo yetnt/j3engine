@@ -4,6 +4,7 @@ import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
 import java.util.UUID;
@@ -54,6 +55,7 @@ public class Property<T, G extends HasProperties> {
      * How to apply a new value to this property.
      */
     private Consumer<T> newValue;
+    private JPanel panel;
 
     /**
      * The class which defined this property. e.g. {@link GTri} may provide it's Vector3 normal,
@@ -64,6 +66,8 @@ public class Property<T, G extends HasProperties> {
      * for selections with multiple objects.
      */
     private final Class<G> propertyProvider;
+
+    private Class<T> holds;
 
     /**
      * Constructs a new Property instance.
@@ -76,6 +80,11 @@ public class Property<T, G extends HasProperties> {
         this.name = name;
         this.valueSupplier = value;
         this.propertyProvider = providerClass;
+    }
+
+    public Property<T, G> holds(Class<T> clazz) {
+        holds = clazz;
+        return this;
     }
 
     /**
@@ -177,8 +186,29 @@ public class Property<T, G extends HasProperties> {
                         Objects.equals(getPropertyProvider(), property.getPropertyProvider());
     }
 
+    public PropertyKey<T, G> getKey() {
+        return new PropertyKey<>(
+                name,
+                description,
+                holds,
+                propertyProvider,
+                constant
+        );
+    }
+
+//    public JPanel toPanel() throws Exception {
+//        if (panel == null) {
+//            panel = PropertiesUI.getSpecificPanel(new ArrayList<>(this));
+//        }
+//        return panel;
+//    }
+
     @Override
     public int hashCode() {
         return Objects.hash(getName(), isConstant(), getDescription(), getPropertyProvider());
+    }
+
+    public Class<T> getPropertyType() {
+        return holds;
     }
 }

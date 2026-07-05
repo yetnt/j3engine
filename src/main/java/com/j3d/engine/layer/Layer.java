@@ -197,11 +197,13 @@ public class Layer extends ArrayList<Thing> implements Interactable, HasProperti
     private void addProps() {
         properties.add(
                 new Property<>("Layer Identifier", this::getIdentifier, Layer.class)
+                        .holds(String.class)
                         .setDescription("The name given to this Layer")
                         .constant()
         );
         properties.add(
                 new Property<>("Thing Amount", this::size, Layer.class)
+                        .holds(Integer.class)
                         .setDescription("The amount of Thing(s) within this Layer")
                         .constant()
         );

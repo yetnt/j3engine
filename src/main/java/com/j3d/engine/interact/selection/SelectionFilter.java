@@ -1,7 +1,10 @@
 package com.j3d.engine.interact.selection;
 
-public enum SelectionLevel {
+public enum SelectionFilter {
     DEFAULT,
+    POINT,
+    LINE,
+    TRI,
     THING,
     LAYER
 }

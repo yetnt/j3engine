@@ -122,6 +122,15 @@ public class JLabelRichText {
         return this;
     }
 
+    public JLabelRichText font(Color col, String size, Color backgroundCol) {
+        open.add("<font color=\"" +
+                String.format("#%02x%02x%02x", col.getRed(), col.getGreen(), col.getBlue())
+                + "\" size=\"" + size + "\" bgcolor=\"" +
+                String.format("#%02x%02x%02x", backgroundCol.getRed(), backgroundCol.getGreen(), backgroundCol.getBlue()) + "\">");
+        close.add("</font>");
+        return this;
+    }
+
     /**
      * Wraps the content in a paragraph tag.
      *

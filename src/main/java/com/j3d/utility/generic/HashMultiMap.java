@@ -38,4 +38,10 @@ public class HashMultiMap<K, T> extends HashMap<K, ArrayList<T>> {
     public ArrayList<T> getValues(K key) {
         return this.get(key);
     }
+
+    public boolean holdsSingletonLists() {
+        return values().stream()
+                .filter(value -> value.size() == 1)
+                .toList().size() == values().size();
+    }
 }

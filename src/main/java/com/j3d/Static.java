@@ -27,6 +27,7 @@ import com.j3d.ui.engine.popups.DebugPanel;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.ui.engine.popups.tree.LayerTree;
 import com.j3d.ui.HoverJLabel;
+import com.j3d.ui.engine.properties.PropertiesPanel;
 import com.j3d.ui.engine.tb.Toolbox;
 
 import javax.swing.*;
@@ -103,6 +104,13 @@ public class Static {
             debugPanel = new DebugPanel();
 
         return debugPanel;
+    }
+    private static PropertiesPanel propertiesPanel;
+    public static PropertiesPanel getPropertiesPanel() {
+        if (propertiesPanel == null)
+            propertiesPanel = new PropertiesPanel();
+
+        return propertiesPanel;
     }
     /**
      * The Command Parser Instance. Initialised by {@link EngineFrame} and is mainly a parsing
