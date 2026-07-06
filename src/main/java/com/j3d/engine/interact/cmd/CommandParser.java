@@ -7,7 +7,9 @@ import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgUtil;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.commands.HelpCmd;
-import com.j3d.engine.interact.cmd.complete.TypingHintSession;
+import com.j3d.engine.interact.cmd.complete.TypingHints;
+import com.j3d.engine.interact.input.keyboard.J3Key;
+import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.ui.engine.CommandPalette;
 import com.j3d.Static;
 import com.j3d.ui.engine.EngineFrame;
@@ -24,7 +26,10 @@ import com.j3d.utility.Parsing;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.DefaultEditorKit;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -32,20 +37,19 @@ import java.util.function.Consumer;
 import static com.j3d.engine.interact.cmd.CommandsManager.getCommand;
 
 /**
- * Parses text input from a {@link CommandPalette} input field and converts it into
- * command invocations. The parser maintains an argument accumulator while the user
- * types and converts typed tokens into appropriate argument objects (strings, quoted
- * text, numeric vectors, colours, UUID-referenced objects, etc.). Once a full command
- * line is entered the parser resolves the command name and executes the corresponding
- * {@link Command}.
- *
- * <p>The parser also integrates with the UI via {@link SafeJLabel} to present parsing
- * or execution errors to the user and controls the enabled/disabled state of the
- * input field.
- *
+ * A parser for the command palette that handles tokenisation, argument parsing, command execution,
+ * and command history.
+ * <p>
+ *     It supports various argument types including strings, vectors, colours, UUIDs, numbers,
+ *     and booleans.
+ *     It also integrates with {@link CommandsManager} for command lookup and execution,
+ *     and {@link RunHistory} for command history management.
+ * </p>
  * @author Lehlogonolo Poole
  * @see CommandPalette
  * @see CommandsManager
+ * @see RunHistory
+ * @see TypingHints
  */
 public class CommandParser {
     /**
@@ -59,7 +63,6 @@ public class CommandParser {
      * Collected tagged argument values for the current command invocation.
      */
     private final ArrayList<TaggedArgValue<?>> taggedArguments = new ArrayList<>();
-
     /**
      * When true, document events coming from the input field are ignored. This is used
      * to prevent re-entrant parsing when the parser programmatically updates the field.
@@ -74,17 +77,21 @@ public class CommandParser {
      */
     private final SafeJLabel label;
     /**
-     * Helper variable to deduce whether some code can inject an argument to the command line.
+     * Key bindings for the command palette's input field.
      */
-//    private boolean argumentClosed = true;
-
-    private final TypingHintSession typingHintSession = new TypingHintSession();
-
+    public final KeyBindings commandPaletteBinds;
+    /**
+     * Manages the history of executed commands.
+     */
+    public final RunHistory runHistory = new RunHistory();
+    /**
+     * Provides typing hints and tab completion suggestions.
+     */
+    private final TypingHints typingHints = new TypingHints();
+    /**
+     * A list of {@link CmdToken} objects representing the parsed input line.
+     */
     private final ArrayList<CmdToken> tokens = new ArrayList<>();
-
-    public ArrayList<CmdToken> getTokens() {
-        return tokens;
-    }
 
     /**
      * Enable the command input field and apply the 'active' background styling.
@@ -113,24 +120,21 @@ public class CommandParser {
     /**
      * Create a new {@code CommandParser} bound to the given {@link CommandPalette}.
      * <p>
-     * The constructor wires action and document listeners to the palette's input field
-     * to accumulate typed characters, split tokens, and trigger parsing and execution
-     * when the user submits a command.
+     * It registers key bindings for command execution, tab completion, and history navigation.
+     * It also sets up a {@link DocumentListener} to reparse the input line as the user types.
+     * </p>
      *
      * @param p the {@link CommandPalette} instance this parser should use for input and output
      */
     public CommandParser(CommandPalette p) {
         this.commandPalette = p;
         this.label = new SafeJLabel(commandPalette.logLabel, commandPalette.logLabel2);
-        commandPalette.inputField.addActionListener(e -> {
-            ignoreDocumentEvent = true;
-            run();
-            tokens.clear();
-            arguments.clear();
-            taggedArguments.clear();
-            commandPalette.inputField.setText("");
-            ignoreDocumentEvent = false;
-        });
+        commandPaletteBinds = new KeyBindings(
+                commandPalette.inputField.getInputMap(),
+                commandPalette.inputField.getActionMap(),
+                false
+        );
+        registerKeys();
         commandPalette.inputField.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e) {
                 if (ignoreDocumentEvent) return;
@@ -152,6 +156,26 @@ public class CommandParser {
         });
     }
 
+    /**
+     * Sets the text of the command palette's input field and triggers a re-parsing of the line.
+     * This method temporarily ignores document events to prevent re-entrant parsing.
+     * @param input The string to set as the input field's text.
+     */
+    public void setInputField(String input) {
+        ignoreDocumentEvent = true;
+//        tokens.clear();
+//        arguments.clear();
+//        taggedArguments.clear();
+        // reparse line calls the above methods.
+        commandPalette.inputField.setText(input);
+        ignoreDocumentEvent = false;
+        reParseLine();
+    }
+
+    /**
+     * Reparses the current line in the command palette's input field.
+     * This method clears existing tokens and arguments, then re-tokenises and reparses the input.
+     */
     private void reParseLine() {
         // clear all stuff. tokens and arguments and tagged arguments
         tokens.clear();
@@ -172,22 +196,16 @@ public class CommandParser {
         }
 
         // happy fun times.
-        typingHintSession.parse(tokens);
+        typingHints.parse(tokens);
     }
 
+
     /**
-     * Inject an argument into the current argument list and append its textual
-     * representation to the command palette input field.
-     *
-     * <p>The method supports multiple argument types (Vector3, GObject, Thing,
-     * Color, String, Integer, Double). When invoked it will add the object to
-     * {@link #arguments} and update the {@link #commandPalette} input field with
-     * a command-compatible textual form of the argument. During the update the
-     * {@link #ignoreDocumentEvent} flag is set to prevent the document listener
-     * from processing the programmatic change.
-     *
-     * @param obj the argument object to inject (must be one of the supported types)
-     * @throws RuntimeException if the argument type is not recognised
+     * Injects an object as an argument into the command palette's input field.
+     * This method converts the object into its command palette string representation and appends it to the input.
+     * @param obj The object to inject as an argument. Supported types include
+     * {@link Vector3}, {@link GObject}, {@link Thing},
+     * {@link Color}, {@link String}, {@link Integer}, {@link Double}, and {@link Boolean}.
      */
     public void injectArgument(Object obj) {
         if (arguments.isEmpty()) return; // no command name, no arguments
@@ -214,6 +232,13 @@ public class CommandParser {
         ignoreDocumentEvent = false;
     }
 
+    /**
+     * Appends the given string to the command palette's input field, followed by a space.
+     * This method is used internally to update the input field when arguments are
+     * programmatically injected.
+     *
+     * @param t The string to inject into the input field.
+     */
     private void inject(String t) {
         commandPalette.inputField.setText(
                 commandPalette.inputField.getText() + t + " "
@@ -244,7 +269,7 @@ public class CommandParser {
      * </p>
      * @param uuid The UUID of the GObject or Thing to find.
      */
-    public void argAddUUID(CmdToken tok, UUID uuid, boolean injected) {
+    private void argAddUUID(CmdToken tok, UUID uuid, boolean injected) {
         GObject g = Static.sceneManager.findObjectByUUID(uuid);
         if (g == null) {
             // try to find a Thing with the given UUID
@@ -265,6 +290,17 @@ public class CommandParser {
                 }, injected);
     }
 
+
+    /**
+     * Adds an argument to the internal list of arguments and updates the command palette's input field
+     * if the argument was "injected" (i.e., programmatically added rather than typed by the user).
+     *
+     * @param cmdToken The {@link CmdToken} representing the argument.
+     * @param arg The parsed argument object.
+     * @param t The {@link CmdToken.Type} of the argument.
+     * @param injected A boolean indicating whether the argument was injected programmatically.
+     *                 If true, the argument's string representation will be appended to the input field.
+     */
     private void addArg(CmdToken cmdToken, Object arg, CmdToken.Type t, boolean injected) {
         cmdToken.parsedAs(arg, t);
         if (t == CmdToken.Type.TAGGED) {
@@ -280,6 +316,13 @@ public class CommandParser {
         }
     }
 
+    /**
+     * Parses a single command token, attempting to convert its string representation
+     * into a specific object type (String, Vector3, Colour, UUID-referenced object,
+     * number, boolean, or tagged argument). The parsed object is then added to the
+     * {@link #arguments} or {@link #taggedArguments} list.
+     * @param token The {@link CmdToken} to parse.
+     */
     private void parse(CmdToken token) {
         String accumulator = token.getInput().trim();
         accumulator = accumulator.trim();
@@ -329,15 +372,18 @@ public class CommandParser {
                     TaggedArgValue<?> v = TaggedArgUtil.parse(acc, true, label);
                     if (v.isErr()) return;
                     if (v.isEmpty()) {
-                        addArg(token, acc.trim(), CmdToken.Type.STRING, false); // something like an extra arg, just put it.
+                        addArg(
+                                token, acc.trim(),
+                                tokens.size() == 1 ? CmdToken.Type.CMD_NAME : CmdToken.Type.STRING,
+                                false
+                        );
+                        // something like an extra arg, just put it.
                         return;
                     }
                     addArg(token, v, CmdToken.Type.TAGGED, false);
                 });
             }
         }
-//        argumentClosed = true;
-        accumulator = "";
     }
 
     /**
@@ -345,6 +391,7 @@ public class CommandParser {
      * resulting number to {@link #arguments}. If parsing as a number fails,
      * the provided {@code otherwise} consumer is invoked with the original token.
      *
+     * @param token the token to parse
      * @param accumulator the token to parse
      * @param otherwise a fallback consumer called when the token is not numeric
      */
@@ -377,7 +424,8 @@ public class CommandParser {
      * check for any currently running stateful command, and if applicable mark the resolved
      * command as the current stateful command before invoking its {@code run} method.
      */
-    public void run() {
+    private void run() {
+        runHistory.commit(commandPalette.inputField.getText());
         label.clear();
         if (arguments.isEmpty())
             return;
@@ -397,9 +445,17 @@ public class CommandParser {
             label.error("Invalid command name.");
         }
         EngineFrame.repaintL();
-//        EngineFrame.f.repaint(); // Repaint the frame to reflect any changes.
     }
 
+    /**
+     * Executes the given command with the provided arguments.
+     *
+     * @param cmd The command to execute.
+     * @param cmdName The name of the command.
+     * @param arguments The list of positional arguments for the command.
+     * @param taggedArguments The list of tagged arguments for the command.
+     * @return {@code true} if the command was executed successfully, {@code false} otherwise.
+     */
     public boolean runCommand(Command cmd, String cmdName, ArrayList<Object> arguments, ArrayList<TaggedArgValue<?>> taggedArguments) {
         if (CommandsManager.commandIsRunning()) {
             Static.hoverLabel.error("Command is currently running: " + SafeJLabel.EMPH, CommandsManager.getCurrentCommandName());
@@ -416,7 +472,7 @@ public class CommandParser {
     }
 
     /**
-     * Parse a color specification string into a {@link Color}.
+     * Parse a colour specification string into a {@link Color}.
      *
      * <p>Supported formats:
      * <ul>
@@ -425,7 +481,7 @@ public class CommandParser {
      *   <li>Hex string parseable by {@link Color#decode(String)}</li>
      * </ul>
      *
-     * @param input the color string (without surrounding hashes)
+     * @param input the colour string (without surrounding hashes)
      * @return a {@link Color} instance if parsing succeeds, or {@code null} on failure
      */
     private Color parseColor(String input) {
@@ -474,7 +530,124 @@ public class CommandParser {
         }
     }
 
+    /**
+     * Returns the {@link SafeJLabel} instance used by this parser to display messages.
+     * @return the {@link SafeJLabel} instance
+     */
     public SafeJLabel safeJLabel() {
         return label;
+    }
+
+    /**
+     * Returns the {@link TypingHints} instance associated with this parser.
+     * @return the {@link TypingHints} instance
+     */
+    public TypingHints getTypingHintSession() {
+        return typingHints;
+    }
+
+    /**
+     * Checks if the caret in the command palette's input field is at the end of the text.
+     * @return {@code true} if the caret is at the end, {@code false} otherwise
+     */
+    public boolean caretAtEnd() {
+        return commandPalette.inputField.getCaretPosition() == commandPalette.inputField.getText().length();
+    }
+
+    /**
+     * Returns the {@link KeyBindings} instance used for the command palette.
+     * @return the {@link KeyBindings} instance
+     */
+    public KeyBindings getCommandPaletteKeyBinds() {
+        return commandPaletteBinds;
+    }
+
+    public ArrayList<CmdToken> getTokens() {
+        return tokens;
+    }
+
+    /**
+     * Registers the following keybinds:
+     * <ul>
+     *     <li>{@link KeyEvent#VK_ENTER} to run the command</li>
+     *     <li>{@link KeyEvent#VK_RIGHT} to tab complete the command</li>
+     *     <li>{@link KeyEvent#VK_ESCAPE} to defocus the command palette</li>
+     *     <li>{@link KeyEvent#VK_UP} to navigate up the command history</li>
+     *     <li>{@link KeyEvent#VK_DOWN} to navigate down the command history</li>
+     * </ul>
+     */
+    private void registerKeys() {
+        commandPaletteBinds.registerJ3Key(
+                new J3Key(
+                        "enterCommand",
+                        KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
+                        new AbstractAction() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                ignoreDocumentEvent = true;
+                                run();
+                                tokens.clear();
+                                arguments.clear();
+                                taggedArguments.clear();
+                                commandPalette.inputField.setText("");
+                                ignoreDocumentEvent = false;
+                            }
+                        }));
+        commandPaletteBinds.registerJ3Key(
+                new J3Key(
+                        "rightFinishCommand",
+                        KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0),
+                        new AbstractAction() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                if (caretAtEnd()) {
+                                    getTypingHintSession().onTabComplete().accept(
+                                            getTokens()
+                                    );
+                                } else {
+                                            commandPalette.inputField.getActionMap()
+                                                    .get(DefaultEditorKit.forwardAction)
+                                                    .actionPerformed(e);
+                                }
+                            }
+                        }
+                )
+        );
+        commandPaletteBinds.registerJ3Key(
+                new J3Key(
+                        "defocusCommandPalette",
+                        KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                        new AbstractAction() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                Static.mainFrame.requestFocusInWindow();
+                            }
+                        }
+                )
+        );
+        commandPaletteBinds.registerJ3Key(
+                new J3Key(
+                        "historyUp",
+                        KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0),
+                        new AbstractAction() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                commandPalette.inputField.setText(runHistory.up());
+                            }
+                        }
+                )
+        );
+        commandPaletteBinds.registerJ3Key(
+                new J3Key(
+                        "historyDown",
+                        KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0),
+                        new AbstractAction() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                commandPalette.inputField.setText(runHistory.down());
+                            }
+                        }
+                )
+        );
     }
 }

@@ -91,26 +91,39 @@ public class Parsing {
             ArrayList<Pair<Integer, Character>> unclosedBraces
     ) {}
 
+    /**
+     * Splits a string by a given character, ignoring delimiters within quotation marks or brace pairs.
+     * This method handles nested braces and quotes.
+     *
+     * @param input The string to be split.
+     * @param c The character to split the string by.
+     * @return An {@link ArrayList} of strings, where each string is a segment of the input string.
+     */
     public static ArrayList<String> split(String input, char c) {
         BracePairs bracePairs = bracePairs(input);
         ArrayList<SamePair<Integer>> quotePairs = quotationPairs(input);
 
         StringBuilder acc = new StringBuilder();
         ArrayList<String> content = new ArrayList<>();
+        // since we know where brace pairs and quote pairs are
+        // we trust it. meaning if we encounter a quote or opening brace and
+        // nether say it belongs there, accumulate everything as mishandled string.
+        boolean dangling = false;
         for (int i = 0; i < input.length(); i++) {
             char ch = input.charAt(i);
             int finalI = i;
-            if (ch != c || (
-                    bracePairs.closedPairs.stream().anyMatch(
+            boolean inBrace = bracePairs.closedPairs.stream().anyMatch(
+                    pair -> finalI >= pair.first && finalI <= pair.second);
+            boolean inQuote = quotePairs.stream().anyMatch(
                     pair -> finalI >= pair.first && finalI <= pair.second
-            ) ||
-                    quotePairs.stream().anyMatch(
-                            pair -> finalI >= pair.first && finalI <= pair.second
-                    ))
-            ) {
+            );
+            if (ch != c || dangling || (inBrace || inQuote)) {
+                if ((ch == '\"' || ch == '(') && !(inBrace || inQuote))
+                    dangling = true;
                 acc.append(ch);
                 continue;
             }
+
             if (!acc.isEmpty()) {
                 content.add(acc.toString());
                 acc = new StringBuilder();

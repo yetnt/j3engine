@@ -97,20 +97,25 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
         // keystroke for when they bail with escape
         // Escape is already binded to something so it cant be a oneshot in practice
         // but we can replace it and immediately set it back to normal!
-        DefaultKeys.DEFOCUS_COMMAND_PALETTE.getKey().replaceAction(
-                new AbstractAction() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (!CommandsManager.isCurrentStatefulRunning(t)) return;
-                        onEsc(e, object, label);
-                        Static.keybinds.removeJ3Key(enter.getId());
-                        Static.mainFrame.repaint();
-                        Static.commandParser.enable();
-                        CommandsManager.clearCurrent();
-                        Static.hoverLabel.clear();
-                        DefaultKeys.DEFOCUS_COMMAND_PALETTE.getKey().resetAction();
-                    }
-                }
+        Static.keybinds.registerJ3Key(
+                new J3Key(
+                        name + "e", true
+                ).setKeyStroke(
+                        KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false)
+                ).setAction(
+                        new AbstractAction() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                if (!CommandsManager.isCurrentStatefulRunning(t)) return;
+                                onEsc(e, object, label);
+                                Static.keybinds.removeJ3Key(enter.getId());
+                                Static.mainFrame.repaint();
+                                Static.commandParser.enable();
+                                CommandsManager.clearCurrent();
+                                Static.hoverLabel.clear();
+                            }
+                        }
+                )
         );
     }
 }

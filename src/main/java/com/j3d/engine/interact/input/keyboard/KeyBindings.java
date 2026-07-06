@@ -69,28 +69,31 @@ public class KeyBindings {
      * @param im the input map to use for key bindings
      * @param am the action map to use for key bindings
      */
-    public KeyBindings(InputMap im, ActionMap am) {
+    public KeyBindings(InputMap im, ActionMap am, boolean global) {
         inputMap = im;
         actionMap = am;
 
-        // TODO: Wherever keybinds can be changed Enforce only SELECT_SUBTRACT_DOWN as changeable and cannot have the SHIFT_DOWN_MASK as its links use it.
-        DefaultKeys.SELECT_SUBTRACT_DOWN.getKey().linkTo(
-                DefaultKeys.SELECT_SUBTRACT_UP.getKey(),
-                0
-        );
-        DefaultKeys.SELECT_SUBTRACT_UP.getKey().linkTo(
-                DefaultKeys.SELECT_ADD_DOWN.getKey(),
-                KeyEvent.SHIFT_DOWN_MASK
-        );
-        DefaultKeys.SELECT_ADD_DOWN.getKey().linkTo(
-                DefaultKeys.SELECT_ADD_UP.getKey(),
-                KeyEvent.SHIFT_DOWN_MASK
-        );
+        if (global) {
 
-        for (DefaultKeys key : DefaultKeys.values()) {
-            rJ3Key(
-                    key.getKey()
+            // TODO: Wherever keybinds can be changed Enforce only SELECT_SUBTRACT_DOWN as changeable and cannot have the SHIFT_DOWN_MASK as its links use it.
+            DefaultKeys.SELECT_SUBTRACT_DOWN.getKey().linkTo(
+                    DefaultKeys.SELECT_SUBTRACT_UP.getKey(),
+                    0
             );
+            DefaultKeys.SELECT_SUBTRACT_UP.getKey().linkTo(
+                    DefaultKeys.SELECT_ADD_DOWN.getKey(),
+                    KeyEvent.SHIFT_DOWN_MASK
+            );
+            DefaultKeys.SELECT_ADD_DOWN.getKey().linkTo(
+                    DefaultKeys.SELECT_ADD_UP.getKey(),
+                    KeyEvent.SHIFT_DOWN_MASK
+            );
+
+            for (DefaultKeys key : DefaultKeys.values()) {
+                rJ3Key(
+                        key.getKey()
+                );
+            }
         }
     }
 
@@ -98,7 +101,7 @@ public class KeyBindings {
     /**
      * Registers a J3Key. unsafely.
      * @implSpec This bypasses all the hecks and guard rails. Specifically for when they've already been
-     * checked or if we're in {@link #KeyBindings(InputMap, ActionMap)}
+     * checked or if we're in {@link #KeyBindings(InputMap, ActionMap, boolean)}
      * where we're implementing the default trusted keys.
      * @param key the J3Key to register
      */

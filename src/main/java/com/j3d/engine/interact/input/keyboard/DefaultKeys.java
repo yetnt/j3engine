@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import static com.j3d.Static.camera;
+import static com.j3d.Static.commandParser;
 import static com.j3d.engine.interact.input.keyboard.KeyBindings.commandPaletteFocusOwner;
 import static com.j3d.ui.engine.EngineFrame.COMMAND_PALETTE;
 
@@ -39,24 +40,7 @@ public enum DefaultKeys {
                     }
             )
     ),
-    /**
-     * keystroke to escape out of the command palette's focus.
-     */
-    DEFOCUS_COMMAND_PALETTE(
-            new J3Key(
-                    "defocusCommandPalette",
-                    KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
-                    new AbstractAction() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            if (COMMAND_PALETTE.inputField.isFocusOwner()) {
-                                if (Static.commandParser.commandPalette.isDisabled()) return;
-                                Static.mainFrame.requestFocusInWindow();
-                            }
-                        }
-                    }
-            )
-    ),
+    // DEFOCUS_COMMAND_PALETTE moved to the command palette input map.
     /**
      * keystroke to move the camera forward (along the forward vector).
      */

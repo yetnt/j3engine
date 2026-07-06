@@ -259,7 +259,7 @@ public class EngineFrame extends javax.swing.JFrame {
         // Initialize all keybinds to be part of the mainPanel and add to the static references
         InputMap im = Static.mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap am = Static.mainPanel.getActionMap();
-        Static.keybinds = new KeyBindings(im, am);
+        Static.keybinds = new KeyBindings(im, am, true);
 
         // Initialise the toolbox (at layer 200)
         Toolbox toolbox = new Toolbox();

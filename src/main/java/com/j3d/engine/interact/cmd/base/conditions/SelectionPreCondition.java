@@ -86,13 +86,16 @@ public class SelectionPreCondition implements PreCommandExecution {
         J3Key key = new J3Key("succEnter", true).setKeyStroke(
                 KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0)
         ).setAction(succ);
+        J3Key quitKey = new J3Key("quit", true).setKeyStroke(
+                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0)
+        ).setAction(quit);
         Static.keybinds.registerJ3Key(key);
-        DefaultKeys.DEFOCUS_COMMAND_PALETTE.getKey().replaceAction(quit);
+        Static.keybinds.registerJ3Key(quitKey);
 
         cleanup = () -> {
             extraCleanup.run();
             Static.keybinds.removeJ3Key(key.getId());
-            DefaultKeys.DEFOCUS_COMMAND_PALETTE.getKey().resetAction();
+            Static.keybinds.removeJ3Key(quitKey.getId());
         };
         commandEndCleanup = () -> {
             getEventEmitterToAttachTo().detach(failListener);
