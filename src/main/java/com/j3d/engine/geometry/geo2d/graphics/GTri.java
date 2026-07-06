@@ -23,6 +23,8 @@ import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.storage.files.protocol.proj.PF1;
 import com.j3d.ui.dialog.Spinner;
 
+import static com.j3d.Static.sceneManager;
+
 /**
  * GTri represents a Triangle. What'd you expect kau.
  * <p>
@@ -344,7 +346,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
                 }
         );
         TriStateArea.unregister(this);
-        Static.sceneManager.removeOverlap(getId());
+        sceneManager.removeOverlap(getId());
         return true;
     }
 
@@ -403,9 +405,11 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
            line.getPointStream().forEach(this::detach);
         });
         points.forEach(p -> {
-            this.detach(p);
-            p.detach(this);
-            p.hasParent();
+            if (p != null) {
+                this.detach(p);
+                p.detach(this);
+                p.hasParent();
+            }
         });
         LegA = null;
         LegB = null;
@@ -449,14 +453,14 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
             graphics2D.setColor(col.brighter());
             graphics2D.setStroke(new BasicStroke(2));
             graphics2D.fillPolygon(new int[]{
-                            LegA.getA().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).x,
-                            LegA.getB().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).x,
-                            LegB.getB().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).x
+                            LegA.getA().getPivot().toPoint(Static.camera).toScreen(sceneManager).x,
+                            LegA.getB().getPivot().toPoint(Static.camera).toScreen(sceneManager).x,
+                            LegB.getB().getPivot().toPoint(Static.camera).toScreen(sceneManager).x
                     },
                     new int[]{
-                            LegA.getA().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).y,
-                            LegA.getB().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).y,
-                            LegB.getB().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).y
+                            LegA.getA().getPivot().toPoint(Static.camera).toScreen(sceneManager).y,
+                            LegA.getB().getPivot().toPoint(Static.camera).toScreen(sceneManager).y,
+                            LegB.getB().getPivot().toPoint(Static.camera).toScreen(sceneManager).y
                     },
                     3
             );
@@ -467,7 +471,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         LegA.drawSelected(graphics2D);
         LegB.drawSelected(graphics2D);
         LegC.drawSelected(graphics2D);
-        Static.sceneManager.drawText3D(
+        sceneManager.drawText3D(
                 graphics2D,
                 getPivot().sub(new Vector3(1, 1, 1)),
                 "Tri-" + getId().toString().substring(0, 4),
@@ -490,14 +494,14 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         if (J3DSettings.getViewType() == ViewType.NORMAL) {
             graphics2D.setColor(col);
             graphics2D.fillPolygon(new int[]{
-                            LegA.getA().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).x,
-                            LegA.getB().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).x,
-                            LegB.getB().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).x
+                            LegA.getA().getPivot().toPoint(Static.camera).toScreen(sceneManager).x,
+                            LegA.getB().getPivot().toPoint(Static.camera).toScreen(sceneManager).x,
+                            LegB.getB().getPivot().toPoint(Static.camera).toScreen(sceneManager).x
                     },
                     new int[]{
-                            LegA.getA().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).y,
-                            LegA.getB().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).y,
-                            LegB.getB().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).y
+                            LegA.getA().getPivot().toPoint(Static.camera).toScreen(sceneManager).y,
+                            LegA.getB().getPivot().toPoint(Static.camera).toScreen(sceneManager).y,
+                            LegB.getB().getPivot().toPoint(Static.camera).toScreen(sceneManager).y
                     },
                     3
             );
@@ -513,11 +517,11 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
      * Private method to draw the triangle's distance depth and normal overlays.
      */
     private void drawDist() {
-        Static.sceneManager.scheduleOverlap(getId(), g -> {
+        sceneManager.scheduleOverlap(getId(), g -> {
                     if (J3DSettings.isShowTriDistances()) {
                         // draw text showing the tris distance from camera
                         Vector3 triCentroid = this.getPivot();
-                        Static.sceneManager.drawText3D(g, triCentroid,
+                        sceneManager.drawText3D(g, triCentroid,
                                 String.format("Dist: %.2f", this.getPivot().sub(Static.camera.getPosition()).magnitude()),
                                 Static.camera,
                                 new Color(0, 0, 0),
@@ -527,7 +531,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
                         // draw text showing the tris depth from camera
                         Vector3 triCentroid = this.getPivot();
                         double depth = this.calcDepth();
-                        Static.sceneManager.drawText3D(g, triCentroid.add(new Vector3(1, 0, 0)),
+                        sceneManager.drawText3D(g, triCentroid.add(new Vector3(1, 0, 0)),
                                 String.format("Depth: %.2f", depth),
                                 Static.camera,
                                 new Color(0, 0, 0),
@@ -543,7 +547,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 //                                this.getColour());
                         // The following code draws the normal
                         g.setColor(Color.RED);
-                        Static.sceneManager.drawLine3D(g, getPivot(), getPivot().add(normal().mult(0.5)), Static.camera);
+                        sceneManager.drawLine3D(g, getPivot(), getPivot().add(normal().mult(0.5)), Static.camera);
                     }
                 }
         );

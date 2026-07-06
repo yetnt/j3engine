@@ -13,13 +13,16 @@ import com.j3d.utility.generators.JLabelRichText;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.UUID;
+
+import static org.hsqldb.Tokens.UUID;
 
 /**
  * A command that can be in one of two states: running or not running.
  * When a stateful command is running, it takes over the input stream and waits for a specific event to occur.
  * This event can be either the 'Enter' key being pressed, which confirms the command and executes its 'onEnter' method,
  * or the 'Escape' key being pressed, which cancels the command and executes its 'onEsc' method.
- * @implSpec While {@link CommandParser#run()} does the handling of stateful commands
+ * @implSpec While {@code CommandParser#run()} does the handling of stateful commands
  * as in registering which stateful command is running and disallowing other commands to run,
  * subcommands which are defined as stateful by design don't parse through that method. Therefore
  * in order to stay consistent with only 1 single stateful command running, the command itself within its
@@ -77,6 +80,7 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
         Static.commandParser.disable(); // disable the command pallete input field.
 
         onStart(object, label); // Fire the starting stuff
+        UUID esckey = java.util.UUID.randomUUID();
 
         // keystroke for when they hit enter
         J3Key enter = new J3Key(name + "n", true)
@@ -90,6 +94,7 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
                                 Static.commandParser.enable();
                                 CommandsManager.clearCurrent();
                                 Static.hoverLabel.clear();
+                                Static.keybinds.removeJ3Key(esckey);
                             }
                         });
         Static.keybinds.registerJ3Key(enter);
@@ -97,8 +102,7 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
         // keystroke for when they bail with escape
         // Escape is already binded to something so it cant be a oneshot in practice
         // but we can replace it and immediately set it back to normal!
-        Static.keybinds.registerJ3Key(
-                new J3Key(
+        J3Key key = new J3Key(
                         name + "e", true
                 ).setKeyStroke(
                         KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false)
@@ -115,7 +119,7 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
                                 Static.hoverLabel.clear();
                             }
                         }
-                )
-        );
+                ).setId(esckey);
+        Static.keybinds.registerJ3Key(key);
     }
 }

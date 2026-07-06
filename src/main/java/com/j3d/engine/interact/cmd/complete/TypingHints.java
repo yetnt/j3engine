@@ -1,6 +1,7 @@
 package com.j3d.engine.interact.cmd.complete;
 
 import com.j3d.Static;
+import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CmdToken;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.base.Command;
@@ -25,7 +26,15 @@ public class TypingHints {
 
     }
 
-    public void parse(ArrayList<CmdToken> tokens) {
+    public void parse(ArrayList<CmdToken> init) {
+        ArrayList<CmdToken> tokens = init
+                .stream()
+                .filter(
+                        c ->
+                                // tagged args and unfinished tagged args
+                                c.getType() != CmdToken.Type.TAGGED && c.getType() != null
+                )
+                .collect(Collectors.toCollection(ArrayList::new));
         Static.commandParser.safeJLabel().clearLower();
         // If the tokens are empty. Do nothing
         if (tokens.isEmpty()) return;
@@ -69,7 +78,14 @@ public class TypingHints {
         ArrayList<CmdToken> argsList = new ArrayList<>(tokens.subList(1, tokens.size()));
         Class<?>[] classes = argsList
                 .stream()
-                .map(c -> c.getType().getTypeClass())
+                .map(c -> {
+                    CmdToken.Type clazz = c.getType();
+                    if (clazz == CmdToken.Type.STRING && c.getInput().startsWith("(") && !c.getInput().endsWith(")"))
+                        return Vector3.class;
+                    if (clazz == CmdToken.Type.STRING && c.getInput().startsWith("#"))
+                        return Color.class;
+                    return c.getType().getTypeClass();
+                })
                 .toArray(Class[]::new);
 
         String[] usages = command.returnUsagesWhere(
@@ -100,7 +116,14 @@ public class TypingHints {
         System.out.println();
 
         // TODO: the rest. Sequel.
+        Static.commandParser.safeJLabel().setLower(
+                new JLabelRichText(usages[0], true).bold().wrapHTML()
+        );
     }
+
+//    public JLabelRichText colourUsage(String expected, CmdToken actual) {
+//        // the real pain starts
+//    }
 
     public ArrayList<String> findUsages(String alias, String[] usages, ArrayList<CmdToken> tokens) {
         ArrayList<String> use = new ArrayList<>(List.of(usages));
@@ -127,7 +150,9 @@ public class TypingHints {
 
     public boolean similarTypes(CmdToken token, String usage) {
         // long if-else. unfortunately
-        if (usage.startsWith(token.getInput())
+        if (usage.contains("<any")) {
+            return true;
+        } else if (usage.startsWith(token.getInput())
                 || (usage.contains(token.getInput()) && usage.contains("["))
         ) {
             // string input
@@ -135,48 +160,33 @@ public class TypingHints {
         } else if (usage.contains("<" + token.getType().toUsage())) {
             // typed argument
             return true;
+        } else if (usage.contains("number") &&
+                token.getType().getTypeClass().isAssignableFrom(Number.class)) {
+            return true;
         } else if (token.getType() == CmdToken.Type.STRING) {
             // check for unfinished or malformed stuff.
-            if (usage.contains("vector3") && token.getInput().contains("("))
+            if (usage.contains("vector") && token.getInput().contains("("))
                 return true;
-            if (usage.contains("string") && token.getInput().contains("\""))
+            else if (usage.contains("string") && token.getInput().contains("\""))
                 return true;
-            if (usage.contains("col") && token.getInput().contains("#"))
+            else if (usage.contains("col") && token.getInput().contains("#"))
                 return true;
-            //TODO: add UUID like syntax
+            else if (usage.contains("bool") && (
+                    token.getInput().startsWith("t") || token.getInput().startsWith("f") ||
+                            token.getInput().startsWith("y") || token.getInput().startsWith("a")
+                    ) )
+                return true;
+            else if (
+                    (usage.contains("point")
+                            || usage.contains("line")
+                            || usage.contains("tri")
+                            || usage.contains("thing"))
+                    && token.getInput().length() > 5//TODO: add UUID like syntax
+            )
+                return true;
         }
         return false;
     }
-
-//    public void p(String alias, String[] usages, ArrayList<CmdToken> tokens) {
-//        ArrayList<SubcommandSearch> expectedSubCommands = find(alias, usages);
-//    }
-//    private ArrayList<SubcommandSearch> find(String alias, String[] usages) {
-//        ArrayList<SubcommandSearch> subcommands = new ArrayList<>();
-//        for (int i = 0; i < usages.length; i++) {
-//            String u = usages[i].replace(alias + " ", "").trim();
-//            ArrayList<String> split = Parsing.split(u, ' ');
-//            for (int j = 0; j < split.size(); j++) {
-//                String fromUsage = split.get(j);
-//                if (
-//                        !(fromUsage.contains("[") ||
-//                                fromUsage.contains(":") ||
-//                                fromUsage.contains("<") ||
-//                                fromUsage.contains("?"))
-//                )
-//                    subcommands.add(new SubcommandSearch(fromUsage, i, j));
-//            }
-//        }
-//        return subcommands;
-//    }
-//
-//    public record SubcommandSearch(
-//            String expectedValue,
-//            int mainListIndex,
-//            int usageIndex
-//    ) {
-//
-//    }
 
     private SamePair<ArrayList<JLabelRichText>> possibleCommandAliasMatches(CmdToken token) {
         ArrayList<JLabelRichText> likelyMatchesJL = new ArrayList<>();

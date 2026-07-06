@@ -12,6 +12,7 @@ import com.j3d.utility.generic.SamePair;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -40,7 +41,7 @@ public class Solids {
      * @param tris An {@link ArrayList} of {@link GTri} objects to which the newly created triangle will be added.
      *             The triangle is formed by `p1`, `p2`, and `centre`.
      */
-    public static void topFaceTri(ArrayList<GLine> lines, GPoint p1, GPoint p2, GPoint centre, ArrayList<GTri> tris) {
+    public static void topFaceTri(HashSet<GLine> lines, GPoint p1, GPoint p2, GPoint centre, HashSet<GTri> tris) {
         GLine lnInCirc = GLine.getInstance(lines, p1, p2); // the line that is part of the ngon
         GLine lineA = GLine.getInstance(lines, p1, centre);
         GLine lineB = GLine.getInstance(lines, p2, centre);
@@ -115,8 +116,8 @@ public class Solids {
                     return point;
                 }
         );
-        ArrayList<GLine> lines = new ArrayList<>();
-        ArrayList<GTri> tris = new ArrayList<>();
+        HashSet<GLine> lines = new HashSet<>();
+        HashSet<GTri> tris = new HashSet<>();
         // connect lines to circle
         for (int i = 0; i < points.size(); i++) {
             //bottom face points

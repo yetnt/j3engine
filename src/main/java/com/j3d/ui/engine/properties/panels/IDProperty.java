@@ -36,7 +36,7 @@ public class IDProperty extends javax.swing.JPanel implements PropertyPanel<UUID
                             .get().toString().substring(0, 15) + "..."
             );
             // Ids should not be editable anyway
-            // Really i should be consisntent and check isCOnstant
+            // Really i should be consistent and check isCOnstant
             // but if im making an ID editable that's 100% a mistake.
 //            if (getSingleProperty().isConstant())
 //                idTextField.setEnabled(false);

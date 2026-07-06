@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -247,9 +248,15 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
     public ArrayList<GPoint> explode(Thing parent) {
         deletedState = true;
         parent.getObjects().remove(this);
-        sceneManager.getUnparented().remove(this);
         ArrayList<GPoint> pointsList = getPointStream().collect(Collectors.toCollection(ArrayList::new));
-        pointsList.forEach(point -> point.explode(this));
+        pointsList.forEach(point -> {
+            if (point != null) {
+                point.explode(this);
+                detach(point);
+                point.detach(this);
+            }
+        });
+        sceneManager.hasParent(this);
         pointA = null;
         pointB = null;
         return pointsList;
@@ -274,13 +281,13 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
      * @param B The second GPoint for comparison or new GLine creation.
      * @return An existing GLine with matching points, or a new GLine if none exists.
      */
-    public static GLine getInstance(List<GLine> lines, GPoint A, GPoint B) {
+    public static GLine getInstance(HashSet<GLine> lines, GPoint A, GPoint B) {
         if (lines.isEmpty()) return new GLine(A, B);
 
         return lines.stream()
                 .filter(line -> line.identicalPoints(A, B))
                 .findAny()
-                .orElse(new GLine(A, B));
+                .orElseGet(() -> new GLine(A, B));
     }
 
     @Override
@@ -289,13 +296,10 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
         if (!super.equals(o)) return false;
         GLine gLine = (GLine) o;
         return getId().equals(gLine.getId());
-//                deletedState == gLine.deletedState &&
-//                Objects.equals(startPoint, gLine.startPoint) &&
-//                Objects.equals(endPoint, gLine.endPoint);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode());
+        return super.hashCode();
     }
 }

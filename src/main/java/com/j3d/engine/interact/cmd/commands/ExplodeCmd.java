@@ -25,6 +25,9 @@ import com.j3d.utility.generators.JLabelRichText;
 import java.lang.reflect.Array;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.j3d.Static.sceneManager;
@@ -135,14 +138,21 @@ public class ExplodeCmd extends Command{
     }
 
     private void explode(Thing thing) {
-        ArrayList<GPoint> points = new ArrayList<>();
-        new ArrayList<>(thing.getObjects()).stream()
+        HashSet<GPoint> points = new HashSet<>();
+        HashSet<GLine> lines = new HashSet<>();
+        new ArrayList<>(thing.getObjects())
+                .stream()
                 .filter(o -> o instanceof GTri)
                 .map(o -> (GTri)o)
-                .forEach((tri) ->
-                    points.addAll(tri.explode(thing))
+                .forEach((tri) -> {
+                    lines.addAll(tri.getLegStream().collect(Collectors.toCollection(ArrayList::new)));
+                            points.addAll(tri.explode(thing));
+                        }
                 );
-
+//        thing.getObjects().clear();
+//        thing.getObjects().addAll(points.stream()
+//                .filter(Objects::nonNull)
+//                .collect(Collectors.toCollection(ArrayList::new)));
         sceneManager.select(thing);
     }
 

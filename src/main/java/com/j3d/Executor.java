@@ -22,6 +22,7 @@ import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -50,12 +51,11 @@ public class Executor {
     public void run(Graphics2D graphics2D) {
         Static.sceneManager.layers.add(layer);
 
-        Thing cub = cube();
-        Static.camera.lookAt(cub.getCentroid());
-        Thing tris = threeTris();
-//        line.second.applyConstraint();
-
         Thing ngon = ngon(3);
+        Thing cub = cube();
+        Static.camera.lookAt(ngon.getCentroid());
+        Thing tris = threeTris();
+
         Thing solid = Solids.prism(
                 20,4, layer,
                 new SamePair<>(Vector3.X(-10), Vector3.X(-2)),
@@ -68,7 +68,6 @@ public class Executor {
         );
         Thing cone = cone(20, 20);
 
-//        Pair<Thing, MidpointConstraint> line = someLine();
         ArrayList<Action<?>> actions = new ArrayList<>(List.of(
                 cub.rotate(Vector3.Z(1), 45),
                 cub.translate(new Vector3(4, 2, 3)),
@@ -102,8 +101,8 @@ public class Executor {
 
         centre.setPivot(centre.getPivot().sub(Vector3.Y(height)));
 
-        ArrayList<GLine> lines = new ArrayList<>();
-        ArrayList<GTri> tris = new ArrayList<>();
+        HashSet<GLine> lines = new HashSet<>();
+        HashSet<GTri> tris = new HashSet<>();
         // connect lines to circle
         for (int i = 0; i < points.size(); i++) {
             GPoint p1 = points.get(i);
@@ -156,9 +155,9 @@ public class Executor {
                     return point;
                 }
         );
-        ArrayList<GLine> lines = new ArrayList<>();
+        HashSet<GLine> lines = new HashSet<>();
         ArrayList<GLine> triLines = new ArrayList<>();
-        ArrayList<GTri> tris = new ArrayList<>();
+        HashSet<GTri> tris = new HashSet<>();
         // connect lines to circle
         for (int i = 0; i < points.size(); i++) {
             GPoint p1 = points.get(i);

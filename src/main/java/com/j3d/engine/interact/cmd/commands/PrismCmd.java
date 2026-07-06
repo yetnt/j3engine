@@ -6,6 +6,7 @@ import com.j3d.engine.geometry.geo3d.Sampler;
 import com.j3d.engine.geometry.geo3d.Solids;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.args.TaggedArgUtil;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.args.TypedArg;
@@ -156,6 +157,7 @@ public class PrismCmd extends Command implements KeyedStatefulCommand {
             logLabel.setText("Not enough arguments given. Usage: "
                     + aliasUsed + " "
                     + getUsages().values().stream().findAny().orElse(""));
+            CommandsManager.clearCurrent();
             return;
         }
         // check that all args are a Vector3 input

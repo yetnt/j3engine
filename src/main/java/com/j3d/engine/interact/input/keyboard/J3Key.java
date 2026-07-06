@@ -45,7 +45,7 @@ import java.util.UUID;
  */
 public class J3Key {
     private String name;
-    private final UUID id = UUID.randomUUID();
+    private UUID id = UUID.randomUUID();
     private KeyStroke keyStroke;
     private Action oldAction = null;
     private Action action;
@@ -226,5 +226,10 @@ public class J3Key {
      */
     public void call(ActionEvent e) {
         action.actionPerformed(e);
+    }
+
+    public J3Key setId(UUID id) {
+        this.id = id;
+        return this;
     }
 }
