@@ -5,249 +5,124 @@ import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.engine.interact.cmd.CmdToken;
+import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.args.Argument;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgUtil;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.utility.generators.JLabelRichText;
+import com.j3d.utility.generic.SamePair;
 
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class TypingHintSession {
-    private String cmdName;
-    private Command command;
-    private boolean validSession = false;
 
-    private ArrayList<Object> arguments = new ArrayList<>();
-    private String currentArg = "";
+    public static Color COMMAND_NAME_LIEKLY_MATCH = Color.GREEN;
+    public static Color COMMAND_NAME_PARTIAL_MATCH = new Color(236, 191, 100);
+    int MAX_SUGGESTIONS = 8;
 
-    private String cachedUsage = "";
-    private boolean usageCached = false;
+    public TypingHintSession() {
 
-    public TypingHintSession(String cmdName) {
-        this.cmdName = cmdName;
-        Command c = Static.commandManager.commandsAliasMap.get(cmdName);
-        if (c != null) {
-            this.command = c;
-            this.validSession = true;
-        } else
-            this.validSession = false;
     }
 
-    public void addArg(Object arg) {
-        this.arguments.add(arg);
-        this.currentArg = "";
-        updateSuggestions();
-    }
+    public void parse(ArrayList<CmdToken> tokens) {
+        Static.commandParser.safeJLabel().clearLower();
+        // If the tokens are empty. Do nothing
+        if (tokens.isEmpty()) return;
 
-    public void setCurrentArg(String newValue) {
-        this.currentArg = newValue;
-        updateSuggestions();
-    }
-
-    public String getCmdName() {
-        return cmdName;
-    }
-
-    public boolean isValidSession() {
-        return validSession;
-    }
-
-    public Command getCommand() {
-        return command;
-    }
-
-    private String findGoodUsage(String[] usages, String real) {
-        if (!usageCached) {
-            if (real.isEmpty()) return usages[0];
-            // Next case, if the "real" string partially matches the next argument of a given usage, return that string, otherwise the first usage
-            for (String usage : usages) {
-                String[] args = usage.split(" ");
-                if (arguments.size() < args.length) {
-                    String nextArg = args[arguments.size() + 1];
-                    if (nextArg.startsWith(real)) {
-                        usageCached = true;
-                        cachedUsage = usage;
-                        return usage;
-                    }
-                }
+        // if there is a single token. its the command name try find matches.
+        if (tokens.size() == 1) {
+            CmdToken token = tokens.getFirst();
+            if (token.getType() != CmdToken.Type.STRING) {
+                Static.commandParser.safeJLabel().setText(
+                        new JLabelRichText("The first argument (command name) is usually a string bro")
+                                .italic().wrapHTML()
+                );
+                return;
             }
-        } else {
-            return cachedUsage;
-        }
-        return usages[0];
-    }
+            SamePair<ArrayList<JLabelRichText>> matches = possibleCommandMatches(token);
+            // limit to 5 per likely/partial
+            StringBuilder likely = new StringBuilder(), partial = new StringBuilder();
+            for (int i = 0; i < MAX_SUGGESTIONS; i++) {
+                if (i < matches.first.size())
+                    likely.append(matches.first.get(i)).append(" ");
+                if (i < matches.second.size())
+                    partial.append(matches.second.get(i)).append(" ");
+            }
 
-    private JLabelRichText matchesExpectedType(JLabelRichText jLabelRichText, int i) {
+            Static.commandParser.safeJLabel().setLower(
+                    JLabelRichText.htmlOf(likely.toString(), partial.toString())
+            );
 
-        if (arguments.isEmpty()) return jLabelRichText.font(Color.GREEN);
-
-        String[] rawUsage = jLabelRichText.getRawContent().split(" ");
-        String expectedType = rawUsage[i];
-        Object currentType = arguments.get(i);
-
-        // logic
-        return jLabelRichText.font(Color.GREEN);
-    }
-    public void updateSuggestions() {
-        if (command == null) {
-            Static.commandParser.safeJLabel().setLower("No command found...");
-            return;
-        }
-        String[] possibleUsages = command.returnUsagesWhere(
-                cmdName,
-                arguments.stream()
-                        .map(Object::getClass)
-                        .toArray(Class[]::new)
-        );
-
-        if (possibleUsages.length == 0) {
-//            Static.commandParser.safeJLabel().setLower(cmdName + " has no expected type...");
             return;
         }
 
-        TaggedArgValue t = TaggedArgUtil.parse(currentArg, false, null);
-        String real = currentArg.trim();
-        if (!t.isErr() || real.isEmpty()) {
-            String[] usage = findGoodUsage(possibleUsages, real).split(" ");
-            AtomicInteger i = new AtomicInteger();
-
-            JLabelRichText[] rT = Arrays.stream(usage)
-                    .map(s -> {
-                        JLabelRichText richText = new JLabelRichText(s + " ", true);
-                        // Abstracted method handling both index checking and validation
-                        validateAndColorToken(richText, i.getAndIncrement(), s);
-                        return richText;
-                    })
-                    .toArray(JLabelRichText[]::new);
-            JLabelRichText otherLabel = new JLabelRichText(" | ");
-            JLabelRichText descriptionLabel = new JLabelRichText(command.description).italic().font("4");
-
-            ArrayList<JLabelRichText> richTexts = new ArrayList<>(List.of(rT));
-            richTexts.add(otherLabel);
-            richTexts.add(descriptionLabel);
-
-            Static.commandParser.safeJLabel().setLower(JLabelRichText.htmlOf(
-                    richTexts.toArray(JLabelRichText[]::new)
-            ));
-            return;
-        }
-
-        // other handling.
+        //TODO: the rest
     }
 
-    /**
-     * Validates the token context against actual or currently typing arguments
-     * and applies the appropriate UI styling.
-     */
-    private void validateAndColorToken(JLabelRichText richText, int index, String expectedToken) {
-        // 1. Check already completed/parsed arguments
-        if (index < arguments.size()) {
-            Object actualArg = arguments.get(index);
-            if (isArgumentValid(actualArg, expectedToken)) {
-                richText.font(Color.GREEN);
-            } else {
-                richText.font(Color.RED);
-            }
-        }
-        // 2. Check the argument slot currently being typed into
-        else if (index == arguments.size()) {
-            if (isCurrentArgValid(currentArg, expectedToken)) {
-                richText.font(Color.ORANGE);
-            } else {
-                richText.font(Color.RED);
-            }
-        }
-        // 3. Future/unreached arguments in the usage hint
-        else {
-            richText.underline();
-        }
-    }
+    private SamePair<ArrayList<JLabelRichText>> possibleCommandMatches(CmdToken token) {
+        ArrayList<JLabelRichText> likelyMatchesJL = new ArrayList<>();
 
-    private boolean isArgumentValid(Object actualArg, String expectedToken) {
-        // Your logic to check if the processed argument matches the usage hint token
-        if (expectedToken.contains("|") && actualArg instanceof String arg) {
-            // arg set.
-            String[] expectedTokens = expectedToken.substring(1, expectedToken.length() - 1).split("\\|");
-            for (String token : expectedTokens)
-                if (arg.equals(token)) return true;
-        } else if (expectedToken.contains("<vect") && !(actualArg instanceof Vector3)) {
-            return false;
-        } else if ((expectedToken.contains("<col") ) && !(actualArg instanceof Color)) {
-            return false;
-        } else if (expectedToken.contains("<str")&& !(actualArg instanceof String)) {
-            return false;
-        } else if (expectedToken.contains("<bool") && !(actualArg instanceof Boolean)) {
-            return false;
-        } else if (expectedToken.contains("<num") && !(actualArg instanceof Double)) {
-            return false;
-        } else if (expectedToken.contains("<int") && !(actualArg instanceof Integer)) {
-            return false;
-        } else if (expectedToken.contains("<poi") && !(actualArg instanceof GPoint)) {
-            return false;
-        } else if (expectedToken.contains("<line") && !(actualArg instanceof GLine)) {
-            return false;
-        } else if (expectedToken.contains("<tri") && !(actualArg instanceof GTri)) {
-            return false;
-        } else if (expectedToken.contains("<any")) {
-            return true;
-        }
-            // if its literally none of those, then it can only be the exact string, meaning a possible subcommand.
-            // just return true since we genunely cant check if it is or not yet
-        return true;
-    }
+        String input = token.getInput();
+        ArrayList<Command> commands = CommandsManager.commands.getCommands();
 
-    private boolean isCurrentArgValid(String rawCurrentArg, String expectedToken) {
-        return true;
-    }
+        // Get all possible command aliases
+        ArrayList<String> commandAliases = commands
+                .stream()
+                .flatMap(Command::aliasStream)
+                .filter( s -> {
+                    // filter out aliases who are too short to match.
+                    return s.length() >= input.length();
+                })
+                .collect(Collectors.toCollection(ArrayList::new));
 
-    private String getDescriptionForIndex(int index) {
-        if (command == null) return "";
+        // Aliases who start with the input
+        ArrayList<String> likelyMatches = commandAliases
+                .stream()
+                .filter(s -> s.startsWith(input))
+                .collect(Collectors.toCollection(ArrayList::new));
 
-        Command currentHead = this.command;
-        int relativeIndex = index;
+        // Aliases whose substring contains the input (and isnt in the likelyMatches)
+        ArrayList<JLabelRichText> possibleMatches = commandAliases
+                .stream()
+                .filter(s -> s.contains(input))
+                .filter(s -> !likelyMatches.contains(s))
+                .map(s -> {
+                    // Style.
+                    JLabelRichText match = new JLabelRichText(input)
+                            .bold().font(COMMAND_NAME_PARTIAL_MATCH);
+                    // style the rest (might be before or after)
+                    JLabelRichText before = new JLabelRichText(
+                            s.substring(0, s.indexOf(input))
+                    ).bold();
+                    // Abba
+                    JLabelRichText after = new JLabelRichText(
+                            s.substring(s.indexOf(input) + input.length())
+                    ).bold();
+                    return new JLabelRichText(
+                            before.toString() + match.toString() + after.toString());
+                })
+                .collect(Collectors.toCollection(ArrayList::new));
 
-        // Step down through subcommands, keeping track of our position relative to the active head
-        for (int i = 0; i < index; i++) {
-            if (i < arguments.size()) {
-                Object actualArg = arguments.get(i);
+        likelyMatches.forEach(s -> {
+            // Style.
+            JLabelRichText match = new JLabelRichText(input)
+                    .bold().font(COMMAND_NAME_LIEKLY_MATCH);
+            // rest of alias name
+            JLabelRichText rest = new JLabelRichText(
+                    s.substring(input.length())
+            ).bold();
+            likelyMatchesJL.add(new JLabelRichText(match.toString() + rest));
+        });
 
-                // Check if this step matches a subcommand definition under our current head
-                Command finalCurrentHead = currentHead;
-                Command sub = finalCurrentHead.args.stream()
-                        .filter(argDef -> argDef instanceof Subcommand &&
-                                ((Subcommand) argDef).aliases.contains(actualArg.toString()))
-                        .map(argDef -> (Subcommand) argDef)
-                        .findFirst()
-                        .orElse(null);
-
-                if (sub != null) {
-                    currentHead = sub;
-                    // CRUCIAL: Because subcommands reset the local argument scope,
-                    // our target index shifts relative to this new subcommand head's base (0)
-                    relativeIndex = index - (i + 1);
-                }
-            }
-        }
-
-        // Now currentHead is holding the exact final subcommand or root command scope
-        if (relativeIndex >= 0 && relativeIndex < currentHead.args.size()) {
-            Object argDefinition = currentHead.args.get(relativeIndex);
-            if (argDefinition instanceof Subcommand sub) {
-                return sub.description;
-            } else if (argDefinition != null) {
-                // Adjust this line to match your engine's actual base Argument class/field
-                // e.g., ((CommandArgument) argDefinition).description
-                return ((Argument)argDefinition).getDescription();
-            }
-        }
-
-        // Fallback if we are looking at the command name token itself or out of bounds
-        return currentHead.description != null ? currentHead.description : "";
+        return new SamePair<>(likelyMatchesJL, possibleMatches);
     }
 }

@@ -1,10 +1,12 @@
 import com.j3d.Static;
+import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.commands.debug.DebugCmd;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 import com.j3d.errors.Err;
 import com.j3d.errors.ErrorHandler;
 import com.j3d.errors.J3DError;
+import com.j3d.utility.Parsing;
 
 import java.io.File;
 import java.security.NoSuchAlgorithmException;
@@ -13,21 +15,13 @@ import java.util.HashSet;
 
 public class playground {
     public static void main(String[] args) {
-        try {
-            File a = new File((String) null);
-        } catch (NullPointerException e) {
-            ErrorHandler.handle(
-                    new Err(e)
-            );
-        }
-    }
-
-    public static void fb() {
-        for (int i = 0; i < 100; i++) {
-            if (i % 3 == 0) System.out.print("Fizz");
-            if (i % 5 == 0) System.out.print("Buzz");
-            if (i % 5 != 0 && i % 3 != 0) System.out.print(i);
-            System.out.println();
-        }
+        Static.none();
+        CommandsManager.commands.getCommands().forEach(
+                c -> {
+                    c.getUsages().values().forEach(u -> {
+                        System.out.println(c.aliases.getFirst() + " " + u);
+                    });
+                }
+        );
     }
 }

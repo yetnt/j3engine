@@ -1,5 +1,8 @@
 package com.j3d.engine.interact.cmd;
 
+import com.j3d.engine.geometry.geo2d.graphics.GLine;
+import com.j3d.engine.geometry.geo2d.graphics.GPoint;
+import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgUtil;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
@@ -14,14 +17,13 @@ import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.utility.Parsing;
-import com.j3d.utility.generic.SamePair;
 //import com.jaiva.utils.Find;
 //import com.jaiva.utils.Pair;
 //import com.jaiva.utils.Tuple2;
 
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -46,11 +48,6 @@ import static com.j3d.engine.interact.cmd.CommandsManager.getCommand;
  * @see CommandsManager
  */
 public class CommandParser {
-    /**
-     * Working buffer for the current token being typed. Characters from the input field
-     * are appended to this accumulator until a token boundary (typically a space) is detected.
-     */
-    private String accumulator = "";
     /**
      * Collected argument objects for the current command invocation. Elements may be
      * instances of {@link String}, {@link UUID}, {@link Vector3},
@@ -79,9 +76,15 @@ public class CommandParser {
     /**
      * Helper variable to deduce whether some code can inject an argument to the command line.
      */
-    private boolean argumentClosed = true;
+//    private boolean argumentClosed = true;
 
-    private TypingHintSession typingHintSession;
+    private final TypingHintSession typingHintSession = new TypingHintSession();
+
+    private final ArrayList<CmdToken> tokens = new ArrayList<>();
+
+    public ArrayList<CmdToken> getTokens() {
+        return tokens;
+    }
 
     /**
      * Enable the command input field and apply the 'active' background styling.
@@ -121,64 +124,23 @@ public class CommandParser {
         this.label = new SafeJLabel(commandPalette.logLabel, commandPalette.logLabel2);
         commandPalette.inputField.addActionListener(e -> {
             ignoreDocumentEvent = true;
-            parse();
             run();
+            tokens.clear();
             arguments.clear();
             taggedArguments.clear();
-            accumulator = "";
-            typingHintSession = null;
             commandPalette.inputField.setText("");
             ignoreDocumentEvent = false;
         });
         commandPalette.inputField.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e) {
                 if (ignoreDocumentEvent) return;
-
-                try {
-                    int offset = e.getOffset();
-                    int length = e.getLength();
-                    String insertedText = commandPalette.inputField.getDocument().getText(offset, length);
-
-                    for (char c : insertedText.toCharArray()) {
-                        accumulator += c;
-
-                        // 1. Check token boundaries first!
-                        // If it's a space, commit it to arguments BEFORE updating hints
-                        if (c == ' ' && !inBrace(c)) {
-                            argumentClosed = true;
-                            parse();
-                        }
-
-                        // 2. Initialise the session if it's the very first argument
-                        if (arguments.size() == 1 && typingHintSession == null) {
-                            typingHintSession = new TypingHintSession(arguments.getFirst().toString());
-                        }
-
-                        // 3. Now update the live typing token with clean data
-                        if (typingHintSession != null) {
-                            typingHintSession.setCurrentArg(accumulator);
-                        }
-                    }
-
-                } catch (BadLocationException ex) {
-                    ex.printStackTrace();
-                }
+                SwingUtilities.invokeLater(CommandParser.this::reParseLine);
             }
 
 
             public void removeUpdate(DocumentEvent e) {
                 if (ignoreDocumentEvent) return;
-                if (!accumulator.isEmpty()) {
-                    accumulator = accumulator.substring(0, accumulator.length() - 1);
-                }
-
-                if (commandPalette.inputField.getText().isEmpty()) {
-                    arguments.clear();
-                    taggedArguments.clear();
-                    accumulator = "";
-                    typingHintSession = null;
-                    label.clear(); // Clean up the label UI
-                }
+                SwingUtilities.invokeLater(CommandParser.this::reParseLine);
             }
 
 
@@ -188,7 +150,29 @@ public class CommandParser {
                 // But this mf wants me to implement it anyway.
             }
         });
+    }
 
+    private void reParseLine() {
+        // clear all stuff. tokens and arguments and tagged arguments
+        tokens.clear();
+        arguments.clear();
+        taggedArguments.clear();
+
+        // get fresh line
+        String line = commandPalette.inputField.getText();
+
+        // split by space
+        ArrayList<String> args = Parsing.split(line, ' ');
+
+        // add new token and parse to arguments
+        for (String arg : args) {
+            CmdToken tok = new CmdToken(arg);
+            tokens.add(tok);
+            parse(tok); // ads the object to the token.
+        }
+
+        // happy fun times.
+        typingHintSession.parse(tokens);
     }
 
     /**
@@ -205,62 +189,35 @@ public class CommandParser {
      * @param obj the argument object to inject (must be one of the supported types)
      * @throws RuntimeException if the argument type is not recognised
      */
-    public void addArgument(Object obj) {
-        if (!argumentClosed) return;
+    public void injectArgument(Object obj) {
         if (arguments.isEmpty()) return; // no command name, no arguments
         ignoreDocumentEvent = true; // don't trigger any updates.
         switch (obj) {
-            case Vector3 v -> {
-                addArg(v);
-                commandPalette.inputField.setText(
-                        commandPalette.inputField.getText() + v.toCommandPaletteString() + " "
-                );
-            }
-            case GObject g -> {
-                addArg(g);
-                commandPalette.inputField.setText(
-                        commandPalette.inputField.getText() + g.getId() + " "
-                );
-            }
-            case Thing t -> {
-                addArg(t);
-                commandPalette.inputField.setText(
-                        commandPalette.inputField.getText() + t.getId() + " "
-                );
-            }
-            case Color c -> {
-                addArg(c);
-                commandPalette.inputField.setText(
-                        commandPalette.inputField.getText() + colourToCommandPaletteString(c) + " "
-                );
-            }
-            case String s -> {
-                addArg(s);
-                commandPalette.inputField.setText(
-                        commandPalette.inputField.getText() + "\"" + s + "\" "
-                );
-            }
-            case Integer i -> {
-                addArg(i);
-                commandPalette.inputField.setText(
-                        commandPalette.inputField.getText() + i + " "
-                );
-            }
-            case Double d -> {
-                addArg(d);
-                commandPalette.inputField.setText(
-                        commandPalette.inputField.getText() + d + " "
-                );
-            }
-            case Boolean b -> {
-                addArg(b);
-                commandPalette.inputField.setText(
-                        commandPalette.inputField.getText() + (b ? "true" : "false") + " "
-                );
-            }
+            case Vector3 v ->
+                    addArg(new CmdToken(v.toCommandPaletteString()), v, CmdToken.Type.VECTOR3, true);
+            case GObject g ->
+                    argAddUUID(new CmdToken(g.getId().toString()), g.getId(), true);
+            case Thing i ->
+                    argAddUUID(new CmdToken(i.getId().toString()), i.getId(), true);
+            case Color c ->
+                    addArg(new CmdToken(colourToCommandPaletteString(c)), c, CmdToken.Type.COLOUR, true);
+            case String s ->
+                    addArg(new CmdToken("\"" + s + "\""), s, CmdToken.Type.STRING, true);
+            case Integer i ->
+                    addArg(new CmdToken(i.toString()), i, CmdToken.Type.INT, true);
+            case Double d ->
+                    addArg(new CmdToken(d.toString()), d, CmdToken.Type.DOUBLE, true);
+            case Boolean b ->
+                    addArg(new CmdToken(b ? "true" : "false"), b, CmdToken.Type.BOOL, true);
             default -> throw new RuntimeException("Unknown argument type: " + obj.getClass().getName());
         }
         ignoreDocumentEvent = false;
+    }
+
+    private void inject(String t) {
+        commandPalette.inputField.setText(
+                commandPalette.inputField.getText() + t + " "
+        );
     }
 
     /**
@@ -287,7 +244,7 @@ public class CommandParser {
      * </p>
      * @param uuid The UUID of the GObject or Thing to find.
      */
-    public void argAddUUID(UUID uuid) {
+    public void argAddUUID(CmdToken tok, UUID uuid, boolean injected) {
         GObject g = Static.sceneManager.findObjectByUUID(uuid);
         if (g == null) {
             // try to find a Thing with the given UUID
@@ -295,56 +252,43 @@ public class CommandParser {
             if (t == null) {
                 label.error("No object or thing found with UUID: " + SafeJLabel.EMPH, uuid);
             } else {
-                addArg(t);
+                addArg(tok, t, CmdToken.Type.ID_THING, injected);
             }
             return;
         }
-        addArg(g);
+        addArg(tok, g,
+                switch (g) {
+                    case GLine l -> CmdToken.Type.ID_LINE;
+                    case GTri t -> CmdToken.Type.ID_TRI;
+                    case GPoint p -> CmdToken.Type.ID_POINT;
+                    default -> throw new IllegalArgumentException("Unknown argument type: " + g);
+                }, injected);
     }
 
-    /**
-     * Checks if the character is within braces.
-     * @param c The character to check.
-     * @return True if the character is within braces, false otherwise.
-     */
-    private boolean inBrace(char c) {
-        Parsing.BracePairs bp =
-                Parsing.bracePairs(accumulator);
-        ArrayList<SamePair<Integer>> sp = Parsing.quotationPairs(accumulator);
-        if (accumulator.contains(":(") && sp.isEmpty())
-            return true; // Vector3 object within TaggedArgUtil
-        return (bp.closedPairs().isEmpty() && accumulator.charAt(0) == '(') ||
-                (sp.isEmpty() && accumulator.charAt(0) == '"');
-//        return (c != ')' && accumalator.charAt(0) == '(') || (c != '"' && accumalator.charAt(0) == '"');
-    }
-
-    private void addArg(Object arg) {
+    private void addArg(CmdToken cmdToken, Object arg, CmdToken.Type t, boolean injected) {
+        cmdToken.parsedAs(arg, t);
+        if (t == CmdToken.Type.TAGGED) {
+            taggedArguments.add((TaggedArgValue<?>) arg);
+            return;
+        }
         arguments.add(arg);
-        if (typingHintSession != null) typingHintSession.addArg(arg);
+
+        // injected tokens.
+        if (injected) {
+            tokens.add(cmdToken);
+            inject(cmdToken.getInput());
+        }
     }
 
-    /**
-     * Parse the current {@link #accumulator} token and convert it into an argument
-     * object which is appended to {@link #arguments}.
-     *
-     * <p>The parser recognises:
-     * <ul>
-     *   <li>Quoted strings: "..."</li>
-     *   <li>Parenthesized numeric tuples: (x,y,z) -> {@link com.j3d.engine.geometry.geo3d.matrix.Vector3}</li>
-     *   <li>Colour literals surrounded by hashes: #...# (supports R:G:B, R:G:B:A, or hex)</li>
-     *   <li>UUIDs: resolves to a {@link GObject} or
-     *       {@link .Thing} via {@link #argAddUUID(UUID)}</li>
-     *   <li>Fallback: plain string tokens</li>
-     * </ul>
-     */
-    private void parse() {
+    private void parse(CmdToken token) {
+        String accumulator = token.getInput().trim();
         accumulator = accumulator.trim();
         if (accumulator.isEmpty()) {
             return;
         }
         // First check for the obvious, whether the accumulator starts and ends with double qutoes
         if (accumulator.charAt(0) == '"' && accumulator.charAt(accumulator.length() - 1) == '"') {
-            addArg(accumulator.substring(1, accumulator.length() - 1));
+            addArg(token, accumulator.substring(1, accumulator.length() - 1), CmdToken.Type.STRING, false);
         } else if (accumulator.charAt(0) == '(' && accumulator.charAt(accumulator.length() - 1) == ')') {
             // Now check for parenthesis
             String[] nums = accumulator.substring(1, accumulator.length() - 1).split(",");
@@ -361,7 +305,8 @@ public class CommandParser {
                 label.error("Invalid number of values in Vector3. Expected "+SafeJLabel.EMPH+" got "+SafeJLabel.EMPH ,3, parsedNums.size());
                 return;
             }
-            addArg(new Vector3(parsedNums.getFirst(), parsedNums.get(1), parsedNums.getLast()));
+            addArg(token, new Vector3(parsedNums.getFirst(), parsedNums.get(1), parsedNums.getLast()),
+                    CmdToken.Type.VECTOR3, false);
         } else if (accumulator.charAt(0) == '#' && accumulator.charAt(accumulator.length() - 1) == '#') {
             // This is a colour. In either:
             /*
@@ -370,28 +315,28 @@ public class CommandParser {
             #FFFFFF#
              */
             Color col = parseColor(accumulator.substring(1, accumulator.length() - 1));
-            if (col != null) addArg(col);
+            if (col != null) addArg(token, col, CmdToken.Type.COLOUR, false);
         } else {
             // Otherwise, it may be a UUID, if so parse as UUID, find the given GObject, and pass it into the arguments
             // Otherwise, just pass it as a string
             try {
                 UUID uuid = UUID.fromString(accumulator.trim());
                 // Find the GObject with the given UUID
-                argAddUUID(uuid);
+                argAddUUID(token, uuid, false);
             } catch (IllegalArgumentException e) {
-                parseAsNumberOrBool(accumulator, acc -> {
+                parseAsNumberOrBool(token, accumulator, acc -> {
                     // if numbers fail, check if this is a tagged arg
                     TaggedArgValue<?> v = TaggedArgUtil.parse(acc, true, label);
                     if (v.isErr()) return;
                     if (v.isEmpty()) {
-                        addArg(acc.trim()); // something like an extra arg, just put it.
+                        addArg(token, acc.trim(), CmdToken.Type.STRING, false); // something like an extra arg, just put it.
                         return;
                     }
-                    taggedArguments.add(v);
+                    addArg(token, v, CmdToken.Type.TAGGED, false);
                 });
             }
         }
-        argumentClosed = true;
+//        argumentClosed = true;
         accumulator = "";
     }
 
@@ -403,20 +348,20 @@ public class CommandParser {
      * @param accumulator the token to parse
      * @param otherwise a fallback consumer called when the token is not numeric
      */
-    private void parseAsNumberOrBool(String accumulator, Consumer<String> otherwise) {
+    private void parseAsNumberOrBool(CmdToken token, String accumulator, Consumer<String> otherwise) {
         try {
-            addArg(Integer.parseInt(accumulator.trim()));
+            addArg(token, Integer.parseInt(accumulator.trim()), CmdToken.Type.INT, false);
         } catch (NumberFormatException e) {
             try {
-                addArg(Double.parseDouble(accumulator.trim()));
+                addArg(token, Double.parseDouble(accumulator.trim()), CmdToken.Type.DOUBLE, false);
             } catch (NumberFormatException f) {
                 try {
                     String acc = accumulator.trim().toLowerCase();
-                    addArg(switch (acc) {
+                    addArg(token, switch (acc) {
                         case "yes", "yebo", "true" -> true;
                         case "no", "aowa", "false" -> false;
                         default -> throw new IllegalArgumentException("rah");
-                    });
+                    }, CmdToken.Type.BOOL, false);
                 } catch (IllegalArgumentException ex) {
                     otherwise.accept(accumulator);
                 }

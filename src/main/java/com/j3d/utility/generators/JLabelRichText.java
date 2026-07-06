@@ -205,6 +205,14 @@ public class JLabelRichText {
         return sb.toString();
     }
 
+    public static String htmlOf(String... txt) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>");
+        Arrays.stream(txt).forEach(sb::append);
+        sb.append("</html>");
+        return sb.toString();
+    }
+
     /**
      * Static factory method to combine multiple JLabelRichText instances and wrap them
      * within a single paragraph {@code <p>} tag.
@@ -232,8 +240,9 @@ public class JLabelRichText {
         return content;
     }
 
-    public void add(JLabelRichText jLabelRichText) {
+    public JLabelRichText add(JLabelRichText jLabelRichText) {
         this.content += jLabelRichText.toString();
+        return this;
     }
 
     public ArrayList<String> getClose() {

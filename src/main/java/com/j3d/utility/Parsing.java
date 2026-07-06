@@ -90,4 +90,37 @@ public class Parsing {
             ArrayList<SamePair<Integer>> closedPairs,
             ArrayList<Pair<Integer, Character>> unclosedBraces
     ) {}
+
+    public static ArrayList<String> split(String input, char c) {
+        BracePairs bracePairs = bracePairs(input);
+        ArrayList<SamePair<Integer>> quotePairs = quotationPairs(input);
+
+        StringBuilder acc = new StringBuilder();
+        ArrayList<String> content = new ArrayList<>();
+        for (int i = 0; i < input.length(); i++) {
+            char ch = input.charAt(i);
+            int finalI = i;
+            if (ch != c || (
+                    bracePairs.closedPairs.stream().anyMatch(
+                    pair -> finalI >= pair.first && finalI <= pair.second
+            ) ||
+                    quotePairs.stream().anyMatch(
+                            pair -> finalI >= pair.first && finalI <= pair.second
+                    ))
+            ) {
+                acc.append(ch);
+                continue;
+            }
+            if (!acc.isEmpty()) {
+                content.add(acc.toString());
+                acc = new StringBuilder();
+            }
+        }
+
+        if (!acc.isEmpty()) {
+            content.add(acc.toString());
+        }
+
+        return content;
+    }
 }

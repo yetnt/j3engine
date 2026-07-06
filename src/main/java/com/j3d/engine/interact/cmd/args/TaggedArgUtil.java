@@ -124,6 +124,7 @@ public class TaggedArgUtil {
      *         will be marked as an error or empty.
      */
     public static TaggedArgValue<?> parse(String accumulator, boolean errorToLabel, SafeJLabel label) {
+        label.clearHigher();
         accumulator = accumulator.trim();
         TaggedArgValue<Void> taggedArgValue = new TaggedArgValue<>(null);
         if (accumulator.isEmpty()) return taggedArgValue; // return empty.
@@ -218,6 +219,7 @@ public class TaggedArgUtil {
             if (errorToLabel) label.setText("Malformed tagged argument value: " + value);
         }
 
+        label.setText(name + "=" + "(" + acceptedTags.get(name).type.getSimpleName() + ")");
         return acceptedTags.get(name).copy(valueObject, errorToLabel, label);
     }
 }
