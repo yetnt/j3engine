@@ -35,12 +35,6 @@ public class PropertiesPanel extends javax.swing.JPanel {
             if (!(c instanceof PropertiesPanel lt)) return;
             lt.setBounds(0, 0, lt.getPreferredSize().width, lt.getPreferredSize().height);
             lt.setVisible(true);
-//            lt.jScrollPane1.setBounds(0, 0, c.getPreferredSize().width, c.getPreferredSize().height);
-//            JPanel prp = lt.propertiesPanel;
-//            lt.propertiesPanel.setBounds(0, 0, prp.getPreferredSize().width, prp.getPreferredSize().height);
-//            lt.setVisible(true);
-//            lt.jScrollPane1.setVisible(true);
-//            prp.setVisible(true);
         });
         J3DScrollBarUI.setBars(jScrollPane1);
     }

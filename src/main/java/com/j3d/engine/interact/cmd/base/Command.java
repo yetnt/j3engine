@@ -1,6 +1,7 @@
 package com.j3d.engine.interact.cmd.base;
 
 import com.j3d.Static;
+import com.j3d.engine.interact.cmd.Any;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.args.*;
 import com.j3d.ui.SafeJLabel;
@@ -60,7 +61,7 @@ public class Command {
      *     This allows the command to provide specific usage instructions based on the types of arguments provided
      * </p>
      */
-    protected HashMap<ArrayList<Class>, String> usages = new HashMap<>();
+    protected HashMap<ArrayList<Class<?>>, String> usages = new HashMap<>();
 
     /**
      * Constructs a new Command.
@@ -161,14 +162,14 @@ public class Command {
         // This method is going to be long as hell I can already feel it.
         // For each returned usage, don't prefix the command name, just the arguments.
         // So later the suggestions can prefix the command name or the given alias for said command.
-        ArrayList<ArrayList<Class>> typeAccumulator = new ArrayList<>();
+        ArrayList<ArrayList<Class<?>>> typeAccumulator = new ArrayList<>();
         ArrayList<StringBuilder> usageAccumulator = new ArrayList<>();
         for (Argument arg : args) {
             if (arg instanceof Subcommand sub) {
                 // Step 1: If the argument is a Subcommand, get all it's usages and add
                 // them to this command's usages.
                 for (var entry : sub.getUsages().entrySet()) {
-                    ArrayList<Class> key = new ArrayList<>();
+                    ArrayList<Class<?>> key = new ArrayList<>();
                     key.addFirst(String.class); // The first argument is always the subcommand name
                     key.addAll(entry.getKey());
                     String value = sub.aliases.getFirst() + " " + entry.getValue();
@@ -190,13 +191,13 @@ public class Command {
                 // Next problem: a TypedArg can take multiple types. And we need to
                 // create a usage for each type.
                 for (int i = 0; i < tArg.getType().size(); i++) {
-                    Class cls = tArg.getType().get(i);
+                    Class<?> cls = tArg.getType().get(i);
                     // If the accumulators are empty at the index, we need to add a new entry.
                     if (typeAccumulator.size() <= i) {
                         typeAccumulator.add(new ArrayList<>());
                         usageAccumulator.add(new StringBuilder());
                     }
-                    ArrayList<Class> clsList = typeAccumulator.get(i);
+                    ArrayList<Class<?>> clsList = typeAccumulator.get(i);
                     clsList.add(cls);
                     StringBuilder usageAccumulatorEntry = usageAccumulator.get(i);
                     switch (cls.getSimpleName()) {
@@ -204,7 +205,7 @@ public class Command {
                         case "GPoint" -> usageAccumulatorEntry.append("<point").append(tArg.isOptional() ? "?" : "").append("> ");
                         case "GLine" -> usageAccumulatorEntry.append("<line").append(tArg.isOptional() ? "?" : "").append("> ");
                         case "GTri" -> usageAccumulatorEntry.append("<tri").append(tArg.isOptional() ? "?" : "").append("> ");
-                        case "Color" -> usageAccumulatorEntry.append("<color").append(tArg.isOptional() ? "?" : "").append("> ");
+                        case "Color" -> usageAccumulatorEntry.append("<#color").append(tArg.isOptional() ? "?" : "").append("#> ");
                         case "Vector3" -> usageAccumulatorEntry.append("<vector3").append(tArg.isOptional() ? "?" : "").append("> ");
                         case "String" -> usageAccumulatorEntry.append("<string").append(tArg.isOptional() ? "?" : "").append("> ");
                         case "Integer" -> usageAccumulatorEntry.append("<int").append(tArg.isOptional() ? "?" : "").append("> ");
@@ -226,7 +227,7 @@ public class Command {
                     typeAccumulator.add(new ArrayList<>(List.of(String.class)));
                     usageAccumulator.add(new StringBuilder("[" + String.join("|", setArg.getAllowedValues()) + "] "));
                 } else {
-                    for (ArrayList<Class> clsList : typeAccumulator) {
+                    for (ArrayList<Class<?>> clsList : typeAccumulator) {
                         clsList.add(String.class);
                     }
                     for (StringBuilder usage : usageAccumulator) {
@@ -240,7 +241,7 @@ public class Command {
 
         // Now we need to combine the typeAccumulator and usageAccumulator into the usages map.
         for (int i = 0; i < typeAccumulator.size(); i++) {
-            ArrayList<Class> key = typeAccumulator.get(i);
+            ArrayList<Class<?>> key = typeAccumulator.get(i);
             String value = usageAccumulator.get(i).toString().trim()
                     + (variadicTaggedArgs ? " ...key:value" : "");
             usages.put(key, value);
@@ -255,7 +256,7 @@ public class Command {
      *
      * @return A {@link HashMap} containing all possible usage patterns.
      */
-    public HashMap<ArrayList<Class>, String> getUsages() {
+    public HashMap<ArrayList<Class<?>>, String> getUsages() {
         return usages;
     }
 
@@ -266,16 +267,17 @@ public class Command {
      * @param types The argument types to match against.
      * @return An array of usage strings that match the given argument types.
      */
-    public String[] returnUsagesWhere(String alias, Class ...types) {
+    public String[] returnUsagesWhere(String alias, Class<?> ...types) {
         if (noArgs) return new String[]{alias + " ...key:value"};
         ArrayList<String> matchedUsages = new ArrayList<>();
         for (var entry : usages.entrySet()) {
-            ArrayList<Class> key = entry.getKey();
+            ArrayList<Class<?>> key = entry.getKey();
             String value = entry.getValue();
             // Check if the key matches or partially matches the given types
             boolean matches = true;
             for (int i = 0; i < types.length; i++) {
-                if (i >= key.size() || !key.get(i).isAssignableFrom(types[i])) {
+                if ((i >= key.size() || !key.get(i).isAssignableFrom(types[i])) &&
+                        (i < key.size() && key.get(i) != Any.class)) {
                     matches = false;
                     break;
                 }

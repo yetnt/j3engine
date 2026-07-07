@@ -194,9 +194,11 @@ public class CommandParser {
             tokens.add(tok);
             parse(tok); // ads the object to the token.
         }
+        
+        boolean endsWithSpace = commandPalette.inputField.getText().endsWith(" ");
 
         // happy fun times.
-        typingHints.parse(tokens);
+        typingHints.parse(tokens, endsWithSpace);
     }
 
 
@@ -522,7 +524,7 @@ public class CommandParser {
         } else {
             // Hex format
             try {
-                return Color.decode(input);
+                return Color.decode("0x" + input);
             } catch (NumberFormatException e) {
                 label.setText("Invalid hex color format.");
                 return null;

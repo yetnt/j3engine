@@ -33,7 +33,7 @@ public class IntProperty extends javax.swing.JPanel implements PropertyPanel<Int
                 new SpinnerNumberModel(
                         getSingleProperty().getValueSupplier().get().intValue(),
                         0,
-                        100,
+                        getSingleProperty().getValueSupplier().get().intValue(),
                         1
                 )
         );
