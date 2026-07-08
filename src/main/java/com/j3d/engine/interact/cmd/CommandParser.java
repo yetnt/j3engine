@@ -199,6 +199,8 @@ public class CommandParser {
 
         // happy fun times.
         typingHints.parse(tokens, endsWithSpace);
+
+        typingHints.taggedArgErr(false);
     }
 
 
@@ -333,7 +335,11 @@ public class CommandParser {
         }
         // First check for the obvious, whether the accumulator starts and ends with double qutoes
         if (accumulator.charAt(0) == '"' && accumulator.charAt(accumulator.length() - 1) == '"') {
-            addArg(token, accumulator.substring(1, accumulator.length() - 1), CmdToken.Type.STRING, false);
+            addArg(token,
+                    accumulator.length() == 1 ?
+                            ""
+                            : accumulator.substring(1, accumulator.length() - 1)
+                    , CmdToken.Type.STRING, false);
         } else if (accumulator.charAt(0) == '(' && accumulator.charAt(accumulator.length() - 1) == ')') {
             // Now check for parenthesis
             String[] nums = accumulator.substring(1, accumulator.length() - 1).split(",");
@@ -372,7 +378,10 @@ public class CommandParser {
                 parseAsNumberOrBool(token, accumulator, acc -> {
                     // if numbers fail, check if this is a tagged arg
                     TaggedArgValue<?> v = TaggedArgUtil.parse(acc, true, label);
-                    if (v.isErr()) return;
+                    if (v.isErr()) {
+                        typingHints.taggedArgErr(true);
+                        return;
+                    }
                     if (v.isEmpty()) {
                         addArg(
                                 token, acc.trim(),
@@ -602,14 +611,16 @@ public class CommandParser {
                         new AbstractAction() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
+                                javax.swing.Action a = commandPalette.inputField.getActionMap()
+                                        .get(DefaultEditorKit.forwardAction);
                                 if (caretAtEnd()) {
                                     getTypingHintSession().onTabComplete().accept(
-                                            getTokens()
+                                            getTokens(),
+                                            a,
+                                            e
                                     );
                                 } else {
-                                            commandPalette.inputField.getActionMap()
-                                                    .get(DefaultEditorKit.forwardAction)
-                                                    .actionPerformed(e);
+                                     a.actionPerformed(e);
                                 }
                             }
                         }

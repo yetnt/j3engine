@@ -72,6 +72,7 @@ public class ExplodeCmd extends Command{
     public ExplodeCmd() {
         super("explode", "do stuff wit selection");
         this.aliases("expl", "ex", "destruct").parseUsages();
+        this.noArgs();
     }
 
     @Override

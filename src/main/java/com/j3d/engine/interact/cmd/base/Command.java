@@ -201,7 +201,7 @@ public class Command {
                     clsList.add(cls);
                     StringBuilder usageAccumulatorEntry = usageAccumulator.get(i);
                     switch (cls.getSimpleName()) {
-                        case "Thing" -> usageAccumulatorEntry.append("<Thing").append(tArg.isOptional() ? "?" : "").append("> ");
+                        case "Thing" -> usageAccumulatorEntry.append("<thing").append(tArg.isOptional() ? "?" : "").append("> ");
                         case "GPoint" -> usageAccumulatorEntry.append("<point").append(tArg.isOptional() ? "?" : "").append("> ");
                         case "GLine" -> usageAccumulatorEntry.append("<line").append(tArg.isOptional() ? "?" : "").append("> ");
                         case "GTri" -> usageAccumulatorEntry.append("<tri").append(tArg.isOptional() ? "?" : "").append("> ");
@@ -287,5 +287,22 @@ public class Command {
             }
         }
         return matchedUsages.toArray(new String[0]);
+    }
+
+    public String[] getAllUsages(String alias) {
+        if (noArgs) return new String[]{alias + " ...key:value"};
+        String[] usages = getUsages().values().toArray(new String[0]);
+        for (int i = 0; i < usages.length; i++) {
+            usages[i] = alias + " " + usages[i];
+        }
+        return usages;
+    }
+
+    public boolean varTaggedArgs() {
+        return variadicTaggedArgs;
+    }
+
+    public boolean hasNoArgs() {
+        return noArgs;
     }
 }
