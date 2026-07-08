@@ -39,8 +39,8 @@ import java.util.ArrayList;
 public class TransformCmd extends Command implements SemiStatefulCommand {
 
     public TransformCmd() {
-        super("transform", "do stuff wit selection");
-        this.aliases("sel", "s", "trans", "t", "tr").args(
+        super("transform", "Transform a selection of objects");
+        this.aliases("sel", "s", "trans", "t", "tr", "selection").args(
                 new RotateSelection(),
                 new TranslateSelection(),
                 new ScaleSelection()

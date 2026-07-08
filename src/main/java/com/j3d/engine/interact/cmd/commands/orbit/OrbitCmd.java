@@ -48,7 +48,7 @@ public class OrbitCmd extends Command implements StatefulCommand<Rotation> {
 
     public OrbitCmd() {
         super("orbit", "Orbits the camera around itself");
-        this.aliases("o", "rot").parseUsages();
+        this.aliases("o", "rot").parseUsages().noArgs();
     }
 
     @Override

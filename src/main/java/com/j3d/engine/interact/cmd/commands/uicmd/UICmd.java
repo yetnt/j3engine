@@ -31,7 +31,7 @@ import java.util.ArrayList;
 public class UICmd extends Command {
 
     public UICmd() {
-        super("ui", "UI related commands. Pretty cool");
+        super("ui", "Toggle ui related options.");
         this.args(new ToggleCmd()).aliases("gui", "swing").parseUsages();
     }
 

@@ -245,9 +245,10 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
                         .holds(GLine.class)
                         .setDescription("The third leg of this triangle").constant(),
                 new Property<>("Double Sided", this::isDoubleSided, GTri.class)
+                        .setNewValueConsumer(this::setDoubleSided)
                         .holds(Boolean.class)
                         .setDescription("Whether this triangle is double sided or not")
-                        .constant()
+//                        .constant()
         ));
         pivotProperty.constant(); // cannot be edited.
     }

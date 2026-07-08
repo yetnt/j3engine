@@ -35,7 +35,7 @@ import java.util.ArrayList;
  */
 public class LookAtCmd extends Command {
     public LookAtCmd() {
-        super("lookAt", "Makes the camera look at an object");
+        super("lookAt", "Looks at a specific position or Thing");
         this.aliases("la", "look", "lookat").args(
                 new TypedArg("thing", "the name or UUID of the thing to look at or otherwise coordinates.", false,
                         String.class, Vector3.class, Thing.class)

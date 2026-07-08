@@ -37,7 +37,7 @@ import java.util.ArrayList;
  */
 public class DebugCmd extends Command {
     public DebugCmd() {
-        super("debug", "Toggle debug mode");
+        super("debug", "Just some debugging commands and stuff");
         this.aliases("dbg", "test", "d").args(
                 new EchoCmd(),
                 new TypeOf(),

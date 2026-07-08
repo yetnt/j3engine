@@ -5,6 +5,7 @@ import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
+import com.j3d.engine.interact.cmd.args.TypedArg;
 import com.j3d.engine.layer.Layer;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.utility.ClipboardUtil;
@@ -37,7 +38,12 @@ import java.util.Random;
 public class RandomUUIDCmd extends Subcommand {
     public RandomUUIDCmd() {
         super("id", "returns a random object uuid");
-        aliases("rand", "random", "r", "uuid", "u").parseUsages().noArgs();
+        aliases("rand", "random", "r", "uuid", "u")
+                .args(
+                        new TypedArg("bool", "random bool so this doesnt clash with another subcommand",
+                                true, Boolean.class)
+                )
+                .parseUsages();
     }
 
     @Override

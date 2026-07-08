@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * <p>
  *     Typical Usage:
  *     <pre>{@code
- *     ui toggle layertree  - Toggles the visibility of the Layer Tree panel.
+ *     ui toggle layers     - Toggles the visibility of the Layer Tree panel.
  *     gui t history        - Toggles the visibility of the History panel.
  *     swing toggle debug   - Toggles the visibility of the Debug panel.
  *     }</pre>
@@ -40,9 +40,10 @@ public class ToggleCmd extends Subcommand {
     ArgSet argSet = new ArgSet("floatingPanel",
             "the floating panel to target",
             false,
-            "layertree", "layer-tree", "layers", "l",
-            "history", "hist", "h",
-            "debug", "dbg", "d", "dev");
+            "layers", "l",
+            "history", "h",
+            "debug", "dbg", "d",
+            "properties", "prop", "p");
 
     public ToggleCmd() {
         super("toggle", "Toggles a floating panel to be visible or hidden.");
@@ -60,11 +61,13 @@ public class ToggleCmd extends Subcommand {
         }
 
         switch (targetPanel) {
-            case "layertree", "layer-tree", "layers", "l" ->
+            case "layers", "l" ->
                 Static.getLayerTree().toggleHidden();
-            case "history", "hist", "h" -> History.panel.toggleHidden();
-            case "debug", "dbg", "d", "dev" ->
+            case "history", "h" -> History.panel.toggleHidden();
+            case "debug", "dbg", "d" ->
                 Static.getDebugPanel().toggleHidden();
+            case "p", "properties", "prop" ->
+                Static.getPropertiesPanel().toggleHidden();
         }
 
     }

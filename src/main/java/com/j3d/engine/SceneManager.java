@@ -122,35 +122,65 @@ public class SceneManager {
     }
 
     public void axisGrid(Graphics2D g, Camera camera) {
-        double axisLength = camera.getPosition().magnitude() * 0.9;
-        int amt = ((int) camera.getPosition().magnitude());
-        ArrayList<Integer> nums = new ArrayList<>();
+        int start = 100;
+        int jump = 10;
+        int amt = 20;
 
-        for (int i = -100; i < amt; i+=10) {
-            Color col = new Color(
-                    J3DTheme.TEXT_PRIMARY.color().getRed(),
-                    J3DTheme.TEXT_PRIMARY.color().getGreen(),
-                    J3DTheme.TEXT_PRIMARY.color().getBlue(),
-                    100
+        Vector3 vXA = new Vector3(-start, 0, -start);
+        Vector3 vXB = new Vector3(-start, 0, start);
+        Vector3 vZA = new Vector3(-start, 0, -start);
+        Vector3 vZB = new Vector3(start, 0, -start);
+        g.setColor(
+                new Color(
+                        J3DTheme.TEXT_PRIMARY.color().getRed(),
+                        J3DTheme.TEXT_PRIMARY.color().getBlue(),
+                        J3DTheme.TEXT_PRIMARY.color().getGreen(),
+                        140
+                )
+        );
+        for (int i = 0; i <= amt; i++) {
+            this.drawLine3D(
+                    g,
+                    vXA.add(new Vector3(i * jump, 0, 0)),
+                    vXB.add(new Vector3(i * jump, 0, 0)),
+                    camera
             );
-            g.setColor(col);
-            g.setStroke(new BasicStroke(2));
-
-
-            this.drawLine3D(g,
-                    new Vector3(i, 0, axisLength),
-                    new Vector3(i, 0,
-                            camera.getPosition().getZ() < 0 ?
-                                    Math.clamp(-axisLength, camera.getPosition().getZ(), axisLength) :
-                                    Math.clamp(camera.getPosition().getZ() - 100, 0, axisLength)
-                            ),
-                    camera);
-
-            this.drawLine3D(g,
-                    new Vector3(axisLength, 0, i),
-                    new Vector3(-axisLength, 0, i),
-                    camera);
+            this.drawLine3D(
+                    g,
+                    vZA.add(new Vector3(0, 0, i * jump)),
+                    vZB.add(new Vector3(0, 0, i * jump)),
+                    camera
+            );
         }
+//        double axisLength = camera.getPosition().magnitude() * 0.9;
+//        int amt = ((int) camera.getPosition().magnitude());
+//        ArrayList<Integer> nums = new ArrayList<>();
+//
+//        for (int i = -100; i < amt; i+=10) {
+//            Color col = new Color(
+//                    J3DTheme.TEXT_PRIMARY.color().getRed(),
+//                    J3DTheme.TEXT_PRIMARY.color().getGreen(),
+//                    J3DTheme.TEXT_PRIMARY.color().getBlue(),
+//                    100
+//            );
+//            g.setColor(col);
+//            g.setStroke(new BasicStroke(2));
+//
+//
+//            this.drawLine3D(g,
+//                    new Vector3(i, 0, axisLength),
+//                    new Vector3(i, 0,
+//                            camera.getPosition().getZ() < 0 ?
+//                                    Math.clamp(-axisLength, camera.getPosition().getZ(), axisLength) :
+//                                    Math.clamp(camera.getPosition().getZ() - 100, 0, axisLength)
+//                            ),
+//                    camera);
+//
+//            this.drawLine3D(g,
+//                    new Vector3(axisLength, 0, i),
+//                    new Vector3(-axisLength, 0, i),
+//                    camera);
+//        }
 
     }
 

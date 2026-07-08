@@ -79,7 +79,7 @@ public class PrismCmd extends Command implements KeyedStatefulCommand {
     UUID overlapId = UUID.randomUUID();
 
     public PrismCmd() {
-        super("prism", "Create a prism");
+        super("prism", "Create a prism with the given bottom face and top face");
         this.aliases("p").args(
                 new TypedArg(
                         "bottomFace", "The bottom face's centre",
