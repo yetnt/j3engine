@@ -5,6 +5,7 @@ import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.commands.*;
 import com.j3d.engine.interact.cmd.commands.debug.DebugCmd;
 import com.j3d.engine.interact.cmd.commands.engine.EngineCmd;
+import com.j3d.engine.interact.cmd.commands.measure.MeasureCmd;
 import com.j3d.engine.interact.cmd.commands.orbit.OrbitCmd;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 import com.j3d.engine.interact.cmd.commands.uicmd.UICmd;
@@ -34,6 +35,7 @@ public class Commands {
     public UICmd uiCmd = new UICmd();
     public HelpCmd helpCmd = new HelpCmd();
     public PrismCmd prismCmd = new PrismCmd();
+    public MeasureCmd measureCmd = new MeasureCmd();
 
     /**
      * Default (empty) constructor
@@ -59,7 +61,7 @@ public class Commands {
                 debug, transform, lookAt,
                 teleport, orbit, engine,
                 explodeCmd, uiCmd, helpCmd,
-                prismCmd
+                prismCmd, measureCmd
         ));
     }
 }

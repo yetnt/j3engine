@@ -122,9 +122,9 @@ public class SceneManager {
     }
 
     public void axisGrid(Graphics2D g, Camera camera) {
-        int start = 100;
+        int start = 50;
         int jump = 10;
-        int amt = 20;
+        int amt = 10;
 
         Vector3 vXA = new Vector3(-start, 0, -start);
         Vector3 vXB = new Vector3(-start, 0, start);

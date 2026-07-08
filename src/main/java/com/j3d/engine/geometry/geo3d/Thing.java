@@ -99,7 +99,7 @@ public class Thing implements Interactable, HasProperties {
     /**
      * Whether all triangles that get added to this Thing should be single sided or not.
      */
-    private boolean isSolid = false;
+    private boolean solid = false;
 
     /** The parent layer of this Thing. */
     private Layer parent;
@@ -273,7 +273,7 @@ public class Thing implements Interactable, HasProperties {
             if (ob instanceof GPoint p) {
                 pts.add(p.getPivot());
                 points.add(p);
-            } else if (ob instanceof GTri tri && isSolid) {
+            } else if (ob instanceof GTri tri && solid) {
                 tri.setDoubleSided(false);
             }
         }
@@ -341,7 +341,7 @@ public class Thing implements Interactable, HasProperties {
      * @return This Thing, for method chaining.
      */
     public Thing solidify() {
-        isSolid = true;
+        solid = true;
         toggleSaved();
         objectsStream()
                 .filter(s -> s instanceof GTri)
@@ -752,5 +752,9 @@ public class Thing implements Interactable, HasProperties {
 
     public Stream<GObject> objectsStream() {
         return objects.stream();
+    }
+
+    public boolean isSolid() {
+        return solid;
     }
 }
