@@ -31,19 +31,37 @@ public class ToolboxButtons {
     public static final int BUTTON_PANEL_SIZE = 120;
 
     static {
+        registerComplex("Transform", new Subbox(s -> s
+                .add("translate", e -> Static.commandParser.runCommand(
+                        CommandsManager.commands.transform, "transform",
+                        new ArrayList<>(List.of("translate")), new ArrayList<>()
+                ), "translate.png")
+                .add("rotate", e -> Static.commandParser.runCommand(
+                        CommandsManager.commands.transform, "transform",
+                        new ArrayList<>(List.of("rotate")), new ArrayList<>()
+                ), "rotate.png")
+                .add("scale", e -> Static.commandParser.runCommand(
+                        CommandsManager.commands.transform, "transform",
+                        new ArrayList<>(List.of("scale")), new ArrayList<>()
+                ), "scale.png")), "transform.png");
+        register("Properties", e -> {
+            // Toggle props mode
+            Static.getPropertiesPanel().toggleHidden();
+        }, "properties.png");
+        register("Orbit", e -> Static.commandParser.runCommand(
+                CommandsManager.commands.orbit, "orbit",
+                new ArrayList<>(), new ArrayList<>()), "orbit.png");
+        register("History",
+                e -> History.panel.toggleHidden(),
+                "history.png"
+        );
+        register("Layers",
+                e -> Static.getLayerTree().toggleHidden(),
+                "layers.png");
         register("Debug Panel", e -> {
             // Toggle debug mode
             Static.getDebugPanel().toggleHidden();
         });
-        register("Properties", e -> {
-            // Toggle props mode
-            Static.getPropertiesPanel().toggleHidden();
-        });
-
-        // Example button registration
-        register("Layers",
-                e -> Static.getLayerTree().toggleHidden(),
-                "layers.png");
 
         // another for exmaple
         register("Toggle Spinner", e -> {
@@ -81,24 +99,7 @@ public class ToolboxButtons {
             }
 
         });
-        registerComplex("Transform", new Subbox(s -> s
-                .add("translate", e -> Static.commandParser.runCommand(
-                        CommandsManager.commands.transform, "transform",
-                        new ArrayList<>(List.of("translate")), new ArrayList<>()
-                ), "translate.png")
-                .add("rotate", e -> Static.commandParser.runCommand(
-                        CommandsManager.commands.transform, "transform",
-                        new ArrayList<>(List.of("rotate")), new ArrayList<>()
-                ), "rotate.png")
-                .add("scale", e -> Static.commandParser.runCommand(
-                        CommandsManager.commands.transform, "transform",
-                        new ArrayList<>(List.of("scale")), new ArrayList<>()
-                ), "scale.png")), "transform.png");
 
-        register("Orbit", e -> Static.commandParser.runCommand(
-                CommandsManager.commands.orbit, "orbit",
-                new ArrayList<>(), new ArrayList<>()), "orbit.png");
-        register("History", e -> History.panel.toggleHidden(), "history.png");
     }
 
     public static void registerComplex(String label, Subbox sub, String imageFileName) {

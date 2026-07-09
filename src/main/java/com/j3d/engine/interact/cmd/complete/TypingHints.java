@@ -186,8 +186,6 @@ public class TypingHints {
                         split.removeFirst();
                         if (split.size() <= finalI) return false;
                         String usage = split.get(finalI).trim();
-                        if (usage.contains("any"))
-                            System.out.println("picle");
                         return similarTypes(token, usage);
                     })
                     .collect(Collectors.toCollection(ArrayList::new));

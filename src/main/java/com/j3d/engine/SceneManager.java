@@ -102,24 +102,6 @@ public class SceneManager {
         return new GPoint(point);
     }
 
-    /**
-     * Draws the Cartesian XY Axis at play.
-     */
-    public void axis(Graphics2D graphics) {
-        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        // Draw X axis (horizontal)
-        graphics.drawLine(0, screenSize.height / 2, screenSize.width,  screenSize.height / 2);
-
-        // Draw Y axis (vertical)
-        graphics.drawLine(screenSize.width / 2, 0, screenSize.width / 2, screenSize.height);
-
-        // Optional: draw origin marker
-        graphics.setColor(Color.RED);
-        graphics.fillOval(screenSize.width / 2 - GPoint.DIAMETER / 2, screenSize.height / 2 - GPoint.DIAMETER / 2, GPoint.DIAMETER, GPoint.DIAMETER);
-
-        graphics.setColor(Color.BLACK);
-    }
 
     public void axisGrid(Graphics2D g, Camera camera) {
         int start = 50;
@@ -152,36 +134,6 @@ public class SceneManager {
                     camera
             );
         }
-//        double axisLength = camera.getPosition().magnitude() * 0.9;
-//        int amt = ((int) camera.getPosition().magnitude());
-//        ArrayList<Integer> nums = new ArrayList<>();
-//
-//        for (int i = -100; i < amt; i+=10) {
-//            Color col = new Color(
-//                    J3DTheme.TEXT_PRIMARY.color().getRed(),
-//                    J3DTheme.TEXT_PRIMARY.color().getGreen(),
-//                    J3DTheme.TEXT_PRIMARY.color().getBlue(),
-//                    100
-//            );
-//            g.setColor(col);
-//            g.setStroke(new BasicStroke(2));
-//
-//
-//            this.drawLine3D(g,
-//                    new Vector3(i, 0, axisLength),
-//                    new Vector3(i, 0,
-//                            camera.getPosition().getZ() < 0 ?
-//                                    Math.clamp(-axisLength, camera.getPosition().getZ(), axisLength) :
-//                                    Math.clamp(camera.getPosition().getZ() - 100, 0, axisLength)
-//                            ),
-//                    camera);
-//
-//            this.drawLine3D(g,
-//                    new Vector3(axisLength, 0, i),
-//                    new Vector3(-axisLength, 0, i),
-//                    camera);
-//        }
-
     }
 
 
@@ -192,48 +144,53 @@ public class SceneManager {
      * @param camera The camera instance used for perspective transformation.
      */
     public void axis(Graphics2D g, Camera camera) {
-        double axisLength = camera.getPosition().magnitude() * 0.9;
+//        double axisLength = camera.getPosition().magnitude() * 0.9;
+        double axisLength = 20;
+        int axisOffset = 2;
+        Stroke s = g.getStroke();
         Vector3 origin = new Vector3(0, 0, 0);
         Vector3 offset = new Vector3(0, 0, 0);
         ArrayList<Double> nums = new ArrayList<>(List.of(-1.0, 1.0));
         for (double i = 2.0; i < Math.clamp(Math.floor(axisLength), 0, 20); i++) {
             nums.add(i);
-        };
+        }
 
+        g.setStroke(new BasicStroke(2));
         g.setColor(J3DTheme.TEXT_PRIMARY.color());
-//        g.setColor(Color.RED);
+        g.setColor(Color.RED);
         this.drawLine3D(g,
                 origin.add(offset).sub(new Vector3(2, 0, 0)),
                 origin.add(new Vector3(axisLength, 0, 0)),
                 camera);
-        this.drawText3D(g, origin.add(new Vector3(axisLength+5, 0, 0)), "X", camera);
+        this.drawText3D(g, origin.add(new Vector3(axisLength+axisOffset, 0, 0)), "X", camera);
         nums.forEach(num -> {
             this.drawLine3D(
                     g, new Vector3(num, 0, -1), new Vector3(num, 0, 1), camera
             );
         });
 
-//        g.setColor(Color.GREEN);
+        g.setColor(Color.GREEN);
         this.drawLine3D(g, origin.add(offset).sub(new Vector3(0, 30, 0)),
                 origin.add(new Vector3(0, axisLength, 0)),
                 camera);
-        this.drawText3D(g, origin.add(new Vector3(0, axisLength+5, 0)), "Y", camera);
+        this.drawText3D(g, origin.add(new Vector3(0, axisLength+axisOffset, 0)), "Y", camera);
         nums.forEach(num -> {
             this.drawLine3D(
                     g, new Vector3(-1, num, 0), new Vector3(1, num, 0), camera
             );
         });
 
-//        g.setColor(Color.BLUE);
+        g.setColor(Color.BLUE);
         this.drawLine3D(g, origin.add(offset).sub(new Vector3(0, 0, 2)),
                 origin.add(new Vector3(0, 0, axisLength)),
                 camera);
-        this.drawText3D(g, origin.add(new Vector3(0, 0, axisLength+5)), "Z", camera);
+        this.drawText3D(g, origin.add(new Vector3(0, 0, axisLength+axisOffset)), "Z", camera);
         nums.forEach(num -> {
             this.drawLine3D(
                     g, new Vector3(0, -1, num), new Vector3(0, 1, num), camera
             );
         });
+        g.setStroke(s);
     }
 
     public void drawLine3D(Graphics2D g, Vector3 start, Vector3 end, Camera cam) {

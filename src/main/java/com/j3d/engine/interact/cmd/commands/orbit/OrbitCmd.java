@@ -1,6 +1,7 @@
 package com.j3d.engine.interact.cmd.commands.orbit;
 
 import com.j3d.Static;
+import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.geometry.geo3d.rot.Rotation;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.layer.Layer;
@@ -14,6 +15,7 @@ import com.j3d.ui.generic.CursorNames;
 import com.j3d.ui.generic.J3DTheme;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.utility.generators.JLabelRichText;
+import com.j3d.utility.generic.Pair;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -36,7 +38,7 @@ import java.util.UUID;
  * @see Command
  * @author Lehlogonolo Poole
  */
-public class OrbitCmd extends Command implements StatefulCommand<Rotation> {
+public class OrbitCmd extends Command implements StatefulCommand<Pair<Vector3, Rotation>> {
     /**
      * The mouse owner for {@link OrbitCmd} to function
      */
@@ -56,11 +58,15 @@ public class OrbitCmd extends Command implements StatefulCommand<Rotation> {
         super.run(logLabel, aliasUsed, args, taggedArgs);
         if (!CommandsManager.isCurrentStatefulRunning(this)) return;
 
-        run(this, "orbitCmd", Static.camera.getRotation().copy(), logLabel);
+        run(this, "orbitCmd",
+                new Pair<>(
+                        Static.camera.getPosition().copy(),
+                        Static.camera.getRotation().copy()
+                ), logLabel);
     }
 
     @Override
-    public void onStart(Rotation object, SafeJLabel label) {
+    public void onStart(Pair<Vector3, Rotation> object, SafeJLabel label) {
         orbitMouseOwner.requestOwnership();
         CursorManager.set(CursorNames.HAND_GRAB);
         Static.mainPanel.repaint();
@@ -91,17 +97,18 @@ public class OrbitCmd extends Command implements StatefulCommand<Rotation> {
     }
 
     @Override
-    public void onEnter(ActionEvent e, Rotation object, SafeJLabel label) {
+    public void onEnter(ActionEvent e, Pair<Vector3, Rotation> object, SafeJLabel label) {
         cleanup(label);
         Static.getLog().println(
-                "Camera was rotated from: " + object.toLogString() + " to " + Static.camera.getRotation().toLogString()
+                "Camera was rotated from: pos-" + object.first.toCommandPaletteString() + " rot-" + object.second.toLogString() + " to " + Static.camera.getRotation().toLogString()
         );
         // done
     }
 
     @Override
-    public  void onEsc(ActionEvent e, Rotation object, SafeJLabel label) {
-        Static.camera.setRotation((Rotation) object);
+    public  void onEsc(ActionEvent e, Pair<Vector3, Rotation> object, SafeJLabel label) {
+        Static.camera.setPosition(object.first);
+        Static.camera.setRotation(object.second);
         cleanup(label);
     }
 

@@ -70,7 +70,7 @@ import static com.j3d.Static.sceneManager;
 public class ExplodeCmd extends Command{
 
     public ExplodeCmd() {
-        super("explode", "Destroy given geometry of triangles and lines into constituent points.");
+        super("explode", "Destroy given geometry of triangles and lines into constituent points. (Uses tagged arguments)");
         this.aliases("expl", "ex", "destruct").parseUsages();
         this.noArgs();
     }
@@ -150,10 +150,6 @@ public class ExplodeCmd extends Command{
                             points.addAll(tri.explode(thing));
                         }
                 );
-//        thing.getObjects().clear();
-//        thing.getObjects().addAll(points.stream()
-//                .filter(Objects::nonNull)
-//                .collect(Collectors.toCollection(ArrayList::new)));
         sceneManager.select(thing);
     }
 

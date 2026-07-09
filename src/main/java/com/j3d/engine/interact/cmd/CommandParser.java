@@ -215,6 +215,8 @@ public class CommandParser {
         if (arguments.isEmpty()) return; // no command name, no arguments
         ignoreDocumentEvent = true; // don't trigger any updates.
         switch (obj) {
+            case UUID id ->
+                    argAddUUID(new CmdToken(id.toString()), id, true);
             case Vector3 v ->
                     addArg(new CmdToken(v.toCommandPaletteString()), v, CmdToken.Type.VECTOR3, true);
             case GObject g ->
@@ -245,7 +247,9 @@ public class CommandParser {
      */
     private void inject(String t) {
         commandPalette.inputField.setText(
-                commandPalette.inputField.getText() + t + " "
+                commandPalette.inputField.getText()
+                        + (commandPalette.inputField.getText().endsWith(" ") ? "" : " ")
+                        + t + " "
         );
     }
 
@@ -317,6 +321,7 @@ public class CommandParser {
         if (injected) {
             tokens.add(cmdToken);
             inject(cmdToken.getInput());
+            reParseLine();
         }
     }
 

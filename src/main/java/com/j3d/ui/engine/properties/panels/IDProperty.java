@@ -4,10 +4,13 @@
  */
 package com.j3d.ui.engine.properties.panels;
 
+import com.j3d.Static;
 import com.j3d.gen.properties.Property;
 import com.j3d.ui.generic.J3DTheme;
 import com.j3d.utility.ClipboardUtil;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -34,6 +37,19 @@ public class IDProperty extends javax.swing.JPanel implements PropertyPanel<UUID
             idTextField.setText(
                     getSingleProperty().getValueSupplier()
                             .get().toString().substring(0, 15) + "..."
+            );
+            idTextField.addMouseListener(
+                    new MouseAdapter() {
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                            if (e.getClickCount() == 2) {
+                                // add the UUID to the command palette
+                                Static.commandParser.injectArgument(
+                                        getSingleProperty().getValueSupplier().get()
+                                );
+                            }
+                        }
+                    }
             );
             // Ids should not be editable anyway
             // Really i should be consistent and check isCOnstant

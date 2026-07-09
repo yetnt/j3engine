@@ -4,6 +4,7 @@
  */
 package com.j3d.ui.engine.properties.panels;
 
+import com.j3d.Static;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
@@ -14,6 +15,8 @@ import com.j3d.utility.generic.Pair;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -44,6 +47,20 @@ public class ObjectProperty<T extends GObject> extends JPanel implements Propert
         labelTxtField.setText(type.first);
         if (singleProperty()) {
             uuidTextField.setText(type.second.toString().substring(0, 10) + "...");
+
+            MouseAdapter mouseAdapter = new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getClickCount() == 2) {
+                        // add the UUID to the command palette
+                        Static.commandParser.injectArgument(
+                                type.second
+                        );
+                    }
+                }
+            };
+            uuidTextField.addMouseListener(mouseAdapter);
+            labelTxtField.addMouseListener(mouseAdapter);
         } else {
             uuidTextField.setText("(multiple values)");
         }

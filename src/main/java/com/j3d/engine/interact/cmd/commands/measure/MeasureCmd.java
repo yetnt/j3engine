@@ -6,6 +6,16 @@ import com.j3d.ui.SafeJLabel;
 
 import java.util.ArrayList;
 
+/**
+ *  A command that dispatches to various measurement subcommands like {@link VolumeCmd} and {@link DistanceCmd}.
+ * This command acts as a parent for all measurement-related operations.
+ * <p>
+ *     Aliases: {@code measure}, {@code meas}, {@code m}
+ * </p>
+ * @see VolumeCmd
+ * @see DistanceCmd
+ * @author Lehlogonolo Poole
+ */
 public class MeasureCmd extends Command {
     public MeasureCmd() {
         super("measure", "Measures geometry");
