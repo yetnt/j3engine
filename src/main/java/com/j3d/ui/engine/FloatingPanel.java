@@ -156,9 +156,11 @@ public class FloatingPanel extends javax.swing.JPanel {
         attachButton = new javax.swing.JButton();
         propertiesPanel = new javax.swing.JPanel();
 
+        setBackground(J3DTheme.UI_SURFACE.color());
         setMaximumSize(new java.awt.Dimension(862, 580));
         setLayout(new java.awt.BorderLayout());
 
+        btnsPanel.setBackground(J3DTheme.UI_SURFACE.color());
         btnsPanel.setMaximumSize(new java.awt.Dimension(350, 23));
         btnsPanel.setLayout(new javax.swing.BoxLayout(btnsPanel, javax.swing.BoxLayout.LINE_AXIS));
 

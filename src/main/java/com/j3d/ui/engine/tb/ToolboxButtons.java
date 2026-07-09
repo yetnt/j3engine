@@ -98,7 +98,7 @@ public class ToolboxButtons {
         register("Orbit", e -> Static.commandParser.runCommand(
                 CommandsManager.commands.orbit, "orbit",
                 new ArrayList<>(), new ArrayList<>()), "orbit.png");
-        register("History", e -> History.panel.toggleHidden());
+        register("History", e -> History.panel.toggleHidden(), "history.png");
     }
 
     public static void registerComplex(String label, Subbox sub, String imageFileName) {

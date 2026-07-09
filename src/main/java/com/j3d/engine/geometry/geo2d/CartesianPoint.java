@@ -4,8 +4,6 @@ import com.j3d.J3DSettings;
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.BasePoint;
 import com.j3d.engine.geometry.ScreenPoint;
-import com.j3d.engine.geometry.geo3d.Camera;
-import com.j3d.engine.geometry.geo3d.matrix.MatrixMath;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.gen.settings.Settings;
 
@@ -73,32 +71,6 @@ public class CartesianPoint extends BasePoint<Double> {
 
 
         return new ScreenPoint(screenX - J3DSettings.OFFSET_X, screenY);
-    }
-
-    /**
-     * Converts the cartesian point to a {@link Vector3} and places it along the camera's
-     * plane.
-     * @param camera The camera instance.
-     * @return A Vector3
-     */
-    public Vector3 toVector3(Camera camera) {
-        Vector3 e = camera.getProjectionPlane();
-        //TODO: When orbiting the camera left and right, the points tend to move outside of camera view.
-
-        double dx = (x / Settings.sceneProperties.scale.getValue()) - e.getX();
-        double dy = (y / Settings.sceneProperties.scale.getValue()) - e.getY();
-        double dz = e.getZ();
-
-        Vector3 camSpacePoint = new Vector3(dx, dy, dz);
-
-        Vector3 rotated = Vector3.of(
-                MatrixMath.mult(
-                        camera.getRotation().camToWorld().matrix(),
-                        camSpacePoint
-                )
-        );
-
-        return rotated.add(camera.getPosition());
     }
 
     /**
