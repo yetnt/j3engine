@@ -4,6 +4,7 @@ import com.j3d.Static;
 import com.j3d.engine.interact.selection.SelectionMouseOwner;
 import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.interact.selection.SelectionUtils;
+import com.j3d.gen.settings.CoreSettings;
 import com.j3d.gen.settings.Settings;
 
 import javax.swing.*;
@@ -11,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import static com.j3d.Static.camera;
-import static com.j3d.Static.commandParser;
 import static com.j3d.engine.interact.input.keyboard.KeyBindings.commandPaletteFocusOwner;
 import static com.j3d.ui.engine.EngineFrame.COMMAND_PALETTE;
 
@@ -22,7 +22,7 @@ import static com.j3d.ui.engine.EngineFrame.COMMAND_PALETTE;
  * @see KeyBindings
  * @see J3Key
  */
-public enum DefaultKeys {
+public enum GlobalKeybinds {
 
     /**
      * keystroke to directly focus into the command palette.
@@ -175,8 +175,8 @@ public enum DefaultKeys {
     ),
     /**
      * Paired with {@link SelectionMouseOwner} where if the user holds down I while making a selection
-     * it will switch to the subtract selection mode. This is then reset by {@link DefaultKeys#SELECT_SUBTRACT_UP}
-     * @implSpec This is the leader of a 4 keychain link, the first child is {@link DefaultKeys#SELECT_SUBTRACT_UP}
+     * it will switch to the subtract selection mode. This is then reset by {@link GlobalKeybinds#SELECT_SUBTRACT_UP}
+     * @implSpec This is the leader of a 4 keychain link, the first child is {@link GlobalKeybinds#SELECT_SUBTRACT_UP}
      */
     SELECT_SUBTRACT_DOWN(
             new J3Key(
@@ -192,8 +192,8 @@ public enum DefaultKeys {
     ),
     /**
      * Wrapper of {@link KeyBindings#clearInferredSelectionType}
-     * @see DefaultKeys#SELECT_SUBTRACT_DOWN
-     * @implSpec This is the child link to {@link DefaultKeys#SELECT_SUBTRACT_DOWN}
+     * @see GlobalKeybinds#SELECT_SUBTRACT_DOWN
+     * @implSpec This is the child link to {@link GlobalKeybinds#SELECT_SUBTRACT_DOWN}
      *
      */
     SELECT_SUBTRACT_UP(
@@ -205,9 +205,9 @@ public enum DefaultKeys {
     ),
     /**
      * Paired with {@link SelectionMouseOwner} where if the user holds down Shift + I while making a selection
-     * it will switch to the add selection mode. This is then reset by {@link DefaultKeys#SELECT_ADD_UP}
-     * @implSpec This is a child link to {@link DefaultKeys#SELECT_SUBTRACT_UP}
-     * @see DefaultKeys#SELECT_SUBTRACT_DOWN
+     * it will switch to the add selection mode. This is then reset by {@link GlobalKeybinds#SELECT_ADD_UP}
+     * @implSpec This is a child link to {@link GlobalKeybinds#SELECT_SUBTRACT_UP}
+     * @see GlobalKeybinds#SELECT_SUBTRACT_DOWN
      */
     SELECT_ADD_DOWN(
             new J3Key(
@@ -223,10 +223,10 @@ public enum DefaultKeys {
     ),
     /**
      * Wrapper of {@link KeyBindings#clearInferredSelectionType}
-     * @see DefaultKeys#SELECT_ADD_DOWN
-     * @see DefaultKeys#SELECT_SUBTRACT_DOWN
-     * @implSpec This is a child link to {@link DefaultKeys#SELECT_ADD_DOWN} and is the last child in the
-     * {@link DefaultKeys#SELECT_ADD_DOWN} chain.
+     * @see GlobalKeybinds#SELECT_ADD_DOWN
+     * @see GlobalKeybinds#SELECT_SUBTRACT_DOWN
+     * @implSpec This is a child link to {@link GlobalKeybinds#SELECT_ADD_DOWN} and is the last child in the
+     * {@link GlobalKeybinds#SELECT_ADD_DOWN} chain.
      */
     SELECT_ADD_UP(
             new J3Key(
@@ -252,10 +252,25 @@ public enum DefaultKeys {
                         }
                     }
             )
+    ),
+    CAPS_LOCK(
+            new J3Key(
+                    "shiftDown",
+                    KeyStroke.getKeyStroke(KeyEvent.VK_CAPS_LOCK, 0, false),
+                    new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            CoreSettings.lock = !CoreSettings.lock;
+                        }
+                    }
+            )
     );
 
+
+
+
     private J3Key key;
-    DefaultKeys(J3Key key) {
+    GlobalKeybinds(J3Key key) {
         this.key = key;
     }
 

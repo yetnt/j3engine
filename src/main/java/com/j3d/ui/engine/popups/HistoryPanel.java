@@ -15,7 +15,7 @@ import javax.swing.*;
  */
 public class HistoryPanel extends javax.swing.JPanel {
 
-    public FloatingPanel floatingPanel = new FloatingPanel("Debug Panel");
+    public FloatingPanel floatingPanel = new FloatingPanel("History Panel");
 
     /**
      * Creates new form HistoryPanel

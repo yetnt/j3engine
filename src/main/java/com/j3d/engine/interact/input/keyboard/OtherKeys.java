@@ -9,10 +9,10 @@ import javax.swing.*;
 import java.awt.event.KeyEvent;
 
 /**
- * Any key defintion not defined within {@link DefaultKeys} for whatever reason.
+ * Any key defintion not defined within {@link GlobalKeybinds} for whatever reason.
  * This is just for clarity to know what keybinds are what.
  * @author Lehlogonolo Poole
- * @see DefaultKeys
+ * @see GlobalKeybinds
  * @see KeyBindings
  */
 public enum OtherKeys {

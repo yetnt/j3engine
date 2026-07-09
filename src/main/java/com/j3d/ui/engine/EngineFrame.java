@@ -52,6 +52,7 @@ import static com.j3d.engine.interact.input.keyboard.KeyBindings.commandPaletteF
 import com.j3d.engine.draw.ViewType;
 import com.j3d.ui.dialog.AreYouSure;
 import com.j3d.ui.HoverJLabel;
+import com.j3d.utility.generators.JLabelRichText;
 
 /**
  * Possibly. The most chaotic, most important UI. This is the main UI of the entire app where the user
@@ -792,8 +793,6 @@ public class EngineFrame extends javax.swing.JFrame {
 
         if (!ays.canProceed()) return;
 
-        Static.sceneManager.resetScene();
-
         File file = FilesUtility.fileChooser(jfcConfig -> {
             jfcConfig.setDialogTitle("choose a filel");
             jfcConfig.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -813,6 +812,7 @@ public class EngineFrame extends javax.swing.JFrame {
             );
         }, Static.mainFrame);
         if (file == null) return;
+        Static.sceneManager.resetScene();
         readProjectFile(file);
     }//GEN-LAST:event_openProjectMenuItemActionPerformed
 
@@ -842,7 +842,21 @@ public class EngineFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_saveProjectJMenuItemActionPerformed
 
     private void newProjectJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newProjectJMenuItemActionPerformed
-        // TODO add your handling code here:
+        boolean canProceed = true;
+        if (!CoreSettings.hasSaved) {
+            AreYouSure ays = new AreYouSure(
+                    this, true,
+                    new JLabelRichText(
+                            "You haven't saved this project! Click Nah Fam then use"
+                    ).addLn("CTRL+S to save, or click Hell Yeah to proceed anyway.")
+                            .wrapHTML()
+            );
+            ays.setVisible(true);
+            canProceed = ays.canProceed();
+        }
+        if (!canProceed) return;
+        Settings.projectOutputFile.setValue(null);
+        Static.sceneManager.resetScene();
     }//GEN-LAST:event_newProjectJMenuItemActionPerformed
 
     private void exportAsPNGJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportAsPNGJMenuItemActionPerformed

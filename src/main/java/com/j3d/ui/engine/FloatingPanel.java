@@ -30,6 +30,7 @@ public class FloatingPanel extends javax.swing.JPanel {
     public FloatingPanel(String name) {
         this.name = name;
         initComponents();
+        this.jLabel1.setText(name);
     }
 
     public void addComponentToPanel(Component c) {
@@ -152,7 +153,7 @@ public class FloatingPanel extends javax.swing.JPanel {
 
         btnsPanel = new javax.swing.JPanel();
         dockButton = new javax.swing.JButton();
-        jSeparator1 = new javax.swing.JSeparator();
+        jLabel1 = new javax.swing.JLabel();
         attachButton = new javax.swing.JButton();
         propertiesPanel = new javax.swing.JPanel();
 
@@ -174,10 +175,13 @@ public class FloatingPanel extends javax.swing.JPanel {
         });
         btnsPanel.add(dockButton);
 
-        jSeparator1.setBackground(J3DTheme.UI_SURFACE.color());
-        jSeparator1.setForeground(J3DTheme.UI_SURFACE.color());
-        jSeparator1.setOpaque(true);
-        btnsPanel.add(jSeparator1);
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel1.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("jLabel1");
+        jLabel1.setMaximumSize(new java.awt.Dimension(3278, 16));
+        jLabel1.setPreferredSize(new java.awt.Dimension(60, 16));
+        btnsPanel.add(jLabel1);
 
         attachButton.setBackground(J3DTheme.BACKGROUND.color());
         attachButton.setForeground(J3DTheme.TEXT_PRIMARY.color());
@@ -231,7 +235,7 @@ public class FloatingPanel extends javax.swing.JPanel {
     private javax.swing.JButton attachButton;
     private javax.swing.JPanel btnsPanel;
     private javax.swing.JButton dockButton;
-    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel propertiesPanel;
     // End of variables declaration//GEN-END:variables
 }

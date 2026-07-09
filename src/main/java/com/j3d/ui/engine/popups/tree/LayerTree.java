@@ -6,6 +6,7 @@ package com.j3d.ui.engine.popups.tree;
 
 import com.j3d.ui.generic.J3DScrollBarUI;
 import com.j3d.ui.engine.FloatingPanel;
+import com.j3d.ui.generic.J3DTheme;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -58,7 +59,7 @@ public class LayerTree extends javax.swing.JPanel {
         if (parent == null)
             parent = root;
         
-        TreeNodeIdentity<T> action = new TreeNodeIdentity(label, value, onSelect);
+        TreeNodeIdentity<T> action = new TreeNodeIdentity<>(label, value, onSelect);
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(action);
         
         model.insertNodeInto(node, parent, parent.getChildCount());
@@ -112,10 +113,14 @@ public class LayerTree extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         listJTree = new javax.swing.JTree();
 
+        setBackground(J3DTheme.UI_SURFACE.color());
         setOpaque(false);
 
         jScrollPane1.setOpaque(false);
 
+        listJTree.setBackground(J3DTheme.UI_SURFACE.color());
+        listJTree.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        listJTree.setCellRenderer(new TreeCellRenderer());
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Layers");
         listJTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         listJTree.setOpaque(false);
@@ -124,19 +129,20 @@ public class LayerTree extends javax.swing.JPanel {
 
         listJTree.addTreeSelectionListener(
             e -> {
-//                DefaultMutableTreeNode node = (DefaultMutableTreeNode) listJTree.getLastSelectedPathComponent();
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) listJTree.getLastSelectedPathComponent();
 
+                if (listJTree.getSelectionPaths() == null) return;
                 Arrays.stream(listJTree.getSelectionPaths())
                 .filter(Objects::nonNull)
                 .map(TreePath::getLastPathComponent)
                 .map(o -> (DefaultMutableTreeNode) o)
-                .forEach(node -> {
-                    if (node == null) return;
+                .forEach(n -> {
+                    if (n == null) return;
 
                     Object obj = node.getUserObject();
                     if (obj instanceof TreeNodeIdentity tni) {
                         if (tni.onSelect != null)
-                        tni.onSelect.accept(tni.value, node);
+                        tni.onSelect.accept(tni.value, n);
                     }
                 });
 
@@ -149,7 +155,7 @@ public class LayerTree extends javax.swing.JPanel {
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
                     .addContainerGap())
             );
             layout.setVerticalGroup(

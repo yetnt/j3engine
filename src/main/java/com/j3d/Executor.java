@@ -7,7 +7,7 @@ import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.Sampler;
 import com.j3d.engine.geometry.geo3d.Plane;
 import com.j3d.engine.geometry.geo3d.Solids;
-import com.j3d.engine.interact.input.keyboard.DefaultKeys;
+import com.j3d.engine.interact.input.keyboard.GlobalKeybinds;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.engine.layer.Layer;
@@ -183,7 +183,7 @@ public class Executor {
                 false
         );
         // get the key
-        DefaultKeys SELECT_SUB = DefaultKeys.SELECT_SUBTRACT_DOWN;
+        GlobalKeybinds SELECT_SUB = GlobalKeybinds.SELECT_SUBTRACT_DOWN;
         // get the old keystroke
         KeyStroke oldkeyStroke = SELECT_SUB.getKey().getKeyStroke();
         // update the keystroke

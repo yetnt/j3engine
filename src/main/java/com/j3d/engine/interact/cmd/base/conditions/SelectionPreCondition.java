@@ -4,7 +4,6 @@ import com.j3d.Static;
 import com.j3d.engine.interact.cmd.base.PreCommandExecution;
 import com.j3d.engine.interact.cmd.base.SemiStatefulCommand;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
-import com.j3d.engine.interact.input.keyboard.DefaultKeys;
 import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.selection.SelectionManager;
 import com.j3d.engine.react.events.*;

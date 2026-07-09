@@ -76,20 +76,20 @@ public class KeyBindings {
         if (global) {
 
             // TODO: Wherever keybinds can be changed Enforce only SELECT_SUBTRACT_DOWN as changeable and cannot have the SHIFT_DOWN_MASK as its links use it.
-            DefaultKeys.SELECT_SUBTRACT_DOWN.getKey().linkTo(
-                    DefaultKeys.SELECT_SUBTRACT_UP.getKey(),
+            GlobalKeybinds.SELECT_SUBTRACT_DOWN.getKey().linkTo(
+                    GlobalKeybinds.SELECT_SUBTRACT_UP.getKey(),
                     0
             );
-            DefaultKeys.SELECT_SUBTRACT_UP.getKey().linkTo(
-                    DefaultKeys.SELECT_ADD_DOWN.getKey(),
+            GlobalKeybinds.SELECT_SUBTRACT_UP.getKey().linkTo(
+                    GlobalKeybinds.SELECT_ADD_DOWN.getKey(),
                     KeyEvent.SHIFT_DOWN_MASK
             );
-            DefaultKeys.SELECT_ADD_DOWN.getKey().linkTo(
-                    DefaultKeys.SELECT_ADD_UP.getKey(),
+            GlobalKeybinds.SELECT_ADD_DOWN.getKey().linkTo(
+                    GlobalKeybinds.SELECT_ADD_UP.getKey(),
                     KeyEvent.SHIFT_DOWN_MASK
             );
 
-            for (DefaultKeys key : DefaultKeys.values()) {
+            for (GlobalKeybinds key : GlobalKeybinds.values()) {
                 rJ3Key(
                         key.getKey()
                 );
@@ -307,7 +307,7 @@ public class KeyBindings {
     };
 
     public static boolean commandPaletteFocusOwner(CommandPalette cmdP) {
-        return cmdP.inputField.isFocusOwner();
+        return cmdP.inputField.isFocusOwner() && !Static.mainPanel.isFocusOwner();
     }
 
     /**

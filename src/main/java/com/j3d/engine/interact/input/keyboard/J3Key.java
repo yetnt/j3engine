@@ -20,7 +20,7 @@ import java.util.UUID;
  *     A J3Key can also represent a one shot key where it deregisters itself after clicking.
  * </p>
  * <p>
- *     A J3key can also be linked to other keys. See {@link DefaultKeys#SELECT_SUBTRACT_DOWN}
+ *     A J3key can also be linked to other keys. See {@link GlobalKeybinds#SELECT_SUBTRACT_DOWN}
  *     for example which is the leader of a 4 keychain link. If it's {@code I} keybind is changed,
  *     the children will also change along with their own respective keycode.
  *     e.g. if {@code I} changes to {@code G+SHIFT}, and it was linked to {@code I+CTRL},

@@ -1,5 +1,7 @@
 package com.j3d.ui.engine.popups.tree;
 
+import com.j3d.Static;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.util.HashMap;
 import java.util.UUID;
@@ -10,7 +12,7 @@ public class TreeNodeIdentity<T> {
     /**
      * The label of the node.
      */
-    public final String label;
+    public String label;
     /**
      * The value of the node.
      */
@@ -41,5 +43,10 @@ public class TreeNodeIdentity<T> {
     @Override
     public String toString() {
         return label;
+    }
+
+    public void setLabel(String s) {
+        this.label = s;
+        Static.getLayerTree().repaint();
     }
 }

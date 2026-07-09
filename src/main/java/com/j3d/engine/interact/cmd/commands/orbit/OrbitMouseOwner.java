@@ -1,8 +1,10 @@
 package com.j3d.engine.interact.cmd.commands.orbit;
 
 import com.j3d.Static;
+import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.engine.interact.input.mouse.MouseOwner;
+import com.j3d.gen.settings.CoreSettings;
 import com.j3d.gen.settings.Settings;
 import com.j3d.ui.generic.CursorManager;
 import com.j3d.ui.generic.CursorNames;
@@ -47,6 +49,7 @@ public class OrbitMouseOwner extends MouseOwner {
     public void mouseDraggedUsingClickDelay(MouseEvent e) {
         if (isNotOwner()) return;
         CursorManager.set(CursorNames.HAND_GRABBING);
+        boolean locked = CoreSettings.lock;
 
         int dx = e.getX() - startX;
         int dy = e.getY() - startY;
@@ -54,8 +57,29 @@ public class OrbitMouseOwner extends MouseOwner {
         double dxScaled = scaleDifference(dx);
         double dyScaled = scaleDifference(dy);
 
-        Static.camera.getRotation().setPitch(Static.camera.getRotation().getPitch() - dyScaled);
-        Static.camera.getRotation().setYaw(Static.camera.getRotation().getYaw() - dxScaled);
+        if (locked) {
+            double lockedScale = 2;
+            Static.camera.setPosition(
+                    Static.camera.getPosition().rotateAroundAxis(
+                            Vector3.Y(1),
+                            dxScaled * lockedScale
+                    )
+            );
+            double dyLockedScale = (Static.camera.getPosition().getZ() <= 0
+                    ? lockedScale : -lockedScale) * 1.4;
+            Static.camera.setPosition(
+                    Static.camera.getPosition().rotateAroundAxis(
+                            Vector3.X(1),
+                            dyScaled * dyLockedScale
+                    )
+            );
+            Static.camera.lookAt(new Vector3());
+        } else {
+
+            Static.camera.getRotation().setPitch(Static.camera.getRotation().getPitch() - dyScaled);
+            Static.camera.getRotation().setYaw(Static.camera.getRotation().getYaw() - dxScaled);
+
+        }
 
         startX = e.getX();
         startY = e.getY();

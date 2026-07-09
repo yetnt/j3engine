@@ -354,7 +354,7 @@ public class Thing implements Interactable, HasProperties {
         properties.add(
                 new Property<>("Thing Name", this::getName, Thing.class)
                         .holds(String.class)
-                        .setNewValueConsumer((newValue) -> name = newValue)
+                        .setNewValueConsumer(this::setName)
                         .setDescription("The name given to this Thing")
         );
         properties.add(
@@ -375,6 +375,12 @@ public class Thing implements Interactable, HasProperties {
                         .setDescription("The centroid of this Thing, usually its geometric centre")
                         .constant()
         );
+    }
+
+    private void setName(String s) {
+        name = s;
+        getIdentity().setLabel(s);
+        toggleSaved();
     }
 
     /**

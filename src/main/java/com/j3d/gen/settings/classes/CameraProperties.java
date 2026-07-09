@@ -25,7 +25,7 @@ public class CameraProperties implements SettingsParent {
     );
     public DoubleSetting orbitSensitivity = new DoubleSetting(
             "Orbit Sensitivity",
-            61.56,
+            40.0,
             "Determines how sensitive the camera's orbit control is.",
             1.0,
             100.0

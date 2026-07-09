@@ -9,7 +9,7 @@ import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.base.SemiStatefulCommand;
 import com.j3d.engine.interact.cmd.commands.orbit.OrbitCmd;
-import com.j3d.engine.interact.input.keyboard.DefaultKeys;
+import com.j3d.engine.interact.input.keyboard.GlobalKeybinds;
 import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.engine.layer.Layer;
@@ -82,7 +82,7 @@ public class Static {
     public static EngineFrame mainFrame = null;
     /**
      * The Camera Instance. The main camera used to view the scene, which is immediately
-     * initialised statically and can be changed by say {@link DefaultKeys#MOVE_CAM_FORWARD}
+     * initialised statically and can be changed by say {@link GlobalKeybinds#MOVE_CAM_FORWARD}
      *  (moving the camera) or {@link OrbitCmd} (changing the camera's rotation).
      *  <p>
      *      Initialised to position {@code (20, 50, -90)} and with the projection plane at (0, 0)

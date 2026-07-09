@@ -4,7 +4,6 @@ import com.j3d.Static;
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.ui.SafeJLabel;
-import com.j3d.engine.interact.input.keyboard.DefaultKeys;
 import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.selection.SelectionManager;
 import com.j3d.ui.generic.J3DTheme;
@@ -14,8 +13,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.UUID;
-
-import static org.hsqldb.Tokens.UUID;
 
 /**
  * A command that can be in one of two states: running or not running.
