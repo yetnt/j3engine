@@ -10,21 +10,6 @@
     
 
     <dependencies>
-        <!-- TO INSTALL THE BELOW DEPENDENCY (in netbeans):
-                1. Right click the "jaiva-1.0.0.jar" file in the Dependencies folder of the project
-                2. Click "Manually Install Artifact"
-                3. Locate the jaiva.jar file within (this project directory)/lib/bin/jaiva.jar
-                4. After install it should work fine.
-                
-                Before this worked with jsut systemPath (systemPath is deprecated i'm aware)
-                on IntelliJ, however when i tried it on NetBeans it refused to work.
-                This was the only work around to no local files and 
-        -->
-        <dependency>
-            <groupId>jaiva</groupId>
-            <artifactId>jaiva</artifactId>
-            <version>1.0.0</version>
-        </dependency>
         <dependency>
             <groupId>io.github.spannm</groupId>
             <artifactId>ucanaccess</artifactId>

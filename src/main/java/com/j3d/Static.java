@@ -13,7 +13,7 @@ import com.j3d.engine.interact.input.keyboard.GlobalKeybinds;
 import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.engine.layer.Layer;
-import com.j3d.gen.help.HelpGenerator;
+import com.j3d.gen.docs.HelpGenerator;
 import com.j3d.gen.settings.Settings;
 import com.j3d.gen.settings.classes.CameraProperties;
 import com.j3d.storage.files.engine.EngineFiles;

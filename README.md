@@ -16,21 +16,33 @@ To use the engine, clone this repository and compile the Java files using your p
 
 (This is a Maven project, so you can also use Maven to handle dependencies and build the project.)
 
-You're also going to have to install the jaiva dependency which can be found in `lib/bin/jaiva.jar`
+[//]: # (You're also going to have to install the jaiva dependency which can be found in `lib/bin/jaiva.jar`)
 
-In NetBeans this can be done by:
-1. Going into libraries
-2. Right clicking on the jaiva package
-3. Clicking install manually
-4. Locating the jar in `lib/bin/jaiva.jar`
-5. install.
+[//]: # ()
+[//]: # (In NetBeans this can be done by:)
 
-```bash
-git clone https://github.com/yetnt/j3engine.git
-cd j3engine
-mvn compile
-mvn exec:java -Dexec.mainClass="j3engine.Main"
-```
+[//]: # (1. Going into libraries)
+
+[//]: # (2. Right clicking on the jaiva package)
+
+[//]: # (3. Clicking install manually)
+
+[//]: # (4. Locating the jar in `lib/bin/jaiva.jar`)
+
+[//]: # (5. install.)
+
+[//]: # ()
+[//]: # (```bash)
+
+[//]: # (git clone https://github.com/yetnt/j3engine.git)
+
+[//]: # (cd j3engine)
+
+[//]: # (mvn compile)
+
+[//]: # (mvn exec:java -Dexec.mainClass="j3engine.Main")
+
+[//]: # (```)
 
 ## Features
 

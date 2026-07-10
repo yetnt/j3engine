@@ -1,9 +1,4 @@
-package com.j3d.gen.help;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+package com.j3d.gen.docs;
 
 /**
  * Beginnings of the Helpogenerator for the later help UI frame describing the app and anything to do with or in relation
