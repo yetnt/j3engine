@@ -1,6 +1,5 @@
 package com.j3d.gen.docs;
 
-import com.j3d.errors.ErrorHandler;
 import com.j3d.gen.docs.tokens.TLink;
 import com.j3d.gen.docs.tokens.TText;
 import com.j3d.gen.docs.tokens.TWrapper;
@@ -10,7 +9,6 @@ import com.j3d.utility.Parsing;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class J3DocsReader {
@@ -30,12 +28,12 @@ public class J3DocsReader {
         boolean codeBlock = false,
                 leaveNewLn = false;
 
-        fileReaderLoop: while (scanner.hasNextLine()) {
+        while (scanner.hasNextLine()) {
             String line = scanner.nextLine().trim();
             if (line.isEmpty()) continue;
             if (codeBlock && !line.startsWith("```")) {
                 arbitary.add(line);
-                continue fileReaderLoop;
+                continue;
             }
             if (line.startsWith("```")) {
                 if (codeBlock) {
@@ -67,17 +65,15 @@ public class J3DocsReader {
                         ' '
                 );
                 ArrayList<TText> paragraphText = new ArrayList<>();
-                linesLoop: for (int i = 0; i < lineContent.size(); i++) {
-                    String part = lineContent.get(i);
+                for (String part : lineContent) {
                     TText text = unwrapPart(part);
                     String raw = text.getContent();
 
                     if (raw.startsWith("[") && raw.endsWith(")")) {
                         // possible a link.
                         String label = raw.substring(1, raw.indexOf("]"));
-                        String url = raw.substring(raw.indexOf("(")+1, raw.length()-1);
+                        String url = raw.substring(raw.indexOf("(") + 1, raw.length() - 1);
                         paragraphText.add(TLink.fromText(text, label, url));
-                        continue linesLoop;
                     } else {
                         paragraphText.add(text);
                     }

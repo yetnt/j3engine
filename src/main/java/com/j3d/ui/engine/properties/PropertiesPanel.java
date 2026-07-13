@@ -58,7 +58,8 @@ public class PropertiesPanel extends javax.swing.JPanel {
     public void addAll(ArrayList<JPanel> panelArrayList) {
         panelArrayList.forEach(propertiesPanel::add);
         propertiesPanel.revalidate();
-        propertiesPanel.setPreferredSize(null);SwingUtilities.invokeLater(() -> {
+        propertiesPanel.setPreferredSize(null);
+        SwingUtilities.invokeLater(() -> {
             JScrollBar bar = jScrollPane1.getHorizontalScrollBar();
             bar.setValue(bar.getMaximum());
         });
