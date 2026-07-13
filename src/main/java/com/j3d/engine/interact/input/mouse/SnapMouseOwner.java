@@ -1,5 +1,6 @@
 package com.j3d.engine.interact.input.mouse;
 
+import com.j3d.J3DSettings;
 import com.j3d.Static;
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.ScreenPoint;
@@ -184,7 +185,9 @@ public class SnapMouseOwner extends MouseOwner {
     @Override
     public void mouseMoved(MouseEvent e) {
         super.mouseMoved(e);
-        mouseLoc = new ScreenPoint(e.getX(), e.getY());
+        mouseLoc = new ScreenPoint(
+                e.getX() - 4,
+                e.getY() - ((2*J3DSettings.jMenuBarOffsetY))-10);
         if (isNotOwner() || !enabled) return;
         if (!overlapScheduled) {
             sceneManager.scheduleOverlap(uuid, consumer());
@@ -192,8 +195,8 @@ public class SnapMouseOwner extends MouseOwner {
         }
         snappingCandidates.clear();
         SelectionQuery sq = new SelectionQuery(
-                new ScreenPoint(e.getX()-offset, e.getY()-offset),
-                new ScreenPoint(e.getX()+offset, e.getY()+offset),
+                new ScreenPoint(mouseLoc.x-offset, mouseLoc.y-offset),
+                new ScreenPoint(mouseLoc.x+offset, mouseLoc.y+offset),
                 SelectionType.BOUNDS_SOFT
         );
         SelectionManager sm = new SelectionManager(sceneManager.layers, sq);
