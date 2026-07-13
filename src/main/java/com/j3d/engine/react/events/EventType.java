@@ -17,5 +17,5 @@ public enum EventType {
      */
     X_SELECTED,
     SETTINGS_CODE_UPDATED,
-    GPOINT_RECALC_PIVOT
+    SNAP_TO_OBJ, GPOINT_RECALC_PIVOT
 }

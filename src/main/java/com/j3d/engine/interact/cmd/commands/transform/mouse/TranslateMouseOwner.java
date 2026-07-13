@@ -22,6 +22,7 @@ public class TranslateMouseOwner extends TransformMouseOwner {
 
     public TranslateMouseOwner() {
         super(MOwner.TRANSLATE_HANDLE);
+        snapEnabled();
     }
 
     @Override

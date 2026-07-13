@@ -1,5 +1,8 @@
 package com.j3d.engine.interact.cmd.commands.transform;
 
+import com.j3d.engine.geometry.geo2d.graphics.GLine;
+import com.j3d.engine.geometry.geo2d.graphics.GObject;
+import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.args.ArgSet;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
@@ -9,6 +12,9 @@ import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.commands.transform.handles.HandleType;
 import com.j3d.engine.interact.cmd.commands.transform.mouse.TransformMouseOwner;
 import com.j3d.engine.interact.cmd.commands.transform.mouse.TranslateMouseOwner;
+import com.j3d.engine.interact.input.mouse.SnapPayload;
+import com.j3d.engine.react.events.EventPayload;
+import com.j3d.engine.react.events.EventType;
 import com.j3d.ui.SafeJLabel;
 
 import java.util.ArrayList;
@@ -143,6 +149,21 @@ public class TranslateSelection extends AbstractTransform {
                         }
                 )
         );
+    }
+
+    @Override
+    public <K> void onEvent(EventType event, EventPayload<K> properties) {
+        if (event == EventType.SNAP_TO_OBJ && properties instanceof SnapPayload sp) {
+            if (translateMouseOwner.isNotOwner()) return;
+
+            GObject snap = sp.getSnap();
+            Vector3 pos = snap.getPivot();
+
+            Vector3 delta = pos.sub(center);
+
+            references.forEach(gpoint -> gpoint.setPivot(gpoint.getPivot().add(delta)));
+
+        }
     }
 
     @Override

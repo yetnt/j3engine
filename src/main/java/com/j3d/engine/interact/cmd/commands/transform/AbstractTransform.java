@@ -13,6 +13,9 @@ import com.j3d.engine.interact.cmd.args.ArgSet;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.*;
+import com.j3d.engine.react.events.EventListener;
+import com.j3d.engine.react.events.EventPayload;
+import com.j3d.engine.react.events.EventType;
 import com.j3d.gen.settings.CoreSettings;
 import com.j3d.gen.settings.Settings;
 import com.j3d.ui.generic.J3DTheme;
@@ -28,10 +31,8 @@ import com.j3d.utility.generators.JLabelRichText;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.time.LocalTime;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -74,7 +75,7 @@ import java.util.stream.Stream;
  * @see ScaleSelection
  * @see RotateSelection
  */
-public abstract class AbstractTransform extends Subcommand implements KeyedStatefulCommand {
+public abstract class AbstractTransform extends Subcommand implements KeyedStatefulCommand, EventListener {
 
     /** A unique ID for the UI overlay drawn by the sceneManager during the transform state. */
     protected UUID overlapId;
@@ -127,6 +128,12 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
         this.gearTrain = gearTrain;
         this.gear = newGearKey(commandName);
         keys.add(gear);
+        mouseOwner.attach(this);
+    }
+
+    @Override
+    public <K> void onEvent(EventType event, EventPayload<K> properties) {
+        return;
     }
 
     /**

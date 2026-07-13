@@ -71,7 +71,7 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
      * @implNote This is flipped from the more intuitive isOwner() method to allow for easier use in mouse event methods,
      *           where we want to return early if this MouseOwner is not the owner of the mouse input in the sceneManager.
      */
-    protected boolean isNotOwner() {
+    public boolean isNotOwner() {
         return EngineFrame.getMouseOwner() != owner;
     }
 

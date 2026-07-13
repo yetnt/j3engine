@@ -5,7 +5,7 @@ import java.net.URISyntaxException;
 import java.util.Objects;
 
 public class DocsFolder {
-    File folder = new File(Objects.requireNonNull(DocsFolder.class.getResource("/doc/")).toURI());
+    File folder = new File(Objects.requireNonNull(DocsFolder.class.getResource("/docs/")).toURI());
 
     public DocsFolder() throws URISyntaxException {
 

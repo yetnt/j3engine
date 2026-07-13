@@ -7,10 +7,12 @@ import com.j3d.engine.interact.cmd.commands.transform.handles.Handle;
 import com.j3d.engine.interact.cmd.commands.transform.handles.HandleType;
 import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.engine.interact.input.mouse.MouseOwner;
+import com.j3d.engine.interact.input.mouse.SnapMouseOwner;
 import com.j3d.utility.generic.Pair;
 
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * A specialized {@link MouseOwner} that manages user interaction with a set of
@@ -28,7 +30,7 @@ import java.util.ArrayList;
  * @see Handle
  * @see AbstractTransform
  */
-public class TransformMouseOwner extends MouseOwner {
+public class TransformMouseOwner extends SnapMouseOwner {
 
     /** The list of 3D handles (e.g., for X, Y, Z axes) that this owner manages. */
     public ArrayList<Handle> handles = new ArrayList<>();
@@ -61,7 +63,7 @@ public class TransformMouseOwner extends MouseOwner {
      * @param mw The parent {@link MOwner} that manages all mouse owners.
      */
     public TransformMouseOwner(MOwner mw) {
-        super(mw);
+        super(mw, UUID.randomUUID());
     }
 
     /**
