@@ -8,8 +8,11 @@ import com.j3d.engine.interact.cmd.commands.transform.handles.HandleType;
 import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.engine.interact.input.mouse.MouseOwner;
 import com.j3d.engine.interact.input.mouse.SnapMouseOwner;
+import com.j3d.engine.react.events.EventPayload;
+import com.j3d.engine.react.events.EventType;
 import com.j3d.utility.generic.Pair;
 
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -86,6 +89,8 @@ public class TransformMouseOwner extends SnapMouseOwner {
     @Override
     public void mousePressed(MouseEvent e) {
         if (isNotOwner()) return;
+        // only left click
+        if (e.getButton() != MouseEvent.BUTTON1) return;
 
         // Reset selection state before checking for a new one
         if (this.selectedHandle != null) {
@@ -114,8 +119,23 @@ public class TransformMouseOwner extends SnapMouseOwner {
     public void mouseReleased(MouseEvent e) {
         if (isNotOwner()) return;
         super.mouseReleased(e);
+        // only left click
+        if (e.getButton() != MouseEvent.BUTTON1) return;
         if (selectedHandleType == null) return;
         selectedHandleType = null;
+    }
+
+    /**
+     * Draws a debug rectangle around the mouse cursor's snapping region.
+     * @param g The {@code Graphics2D} context to draw on.
+     */
+    public void square(Graphics2D g, int offset) {
+        g.drawRect(
+                getMouseLocation().x - offset,
+                getMouseLocation().y - offset,
+                offset * 2,
+                offset * 2
+        );
     }
 
     /**
@@ -125,5 +145,22 @@ public class TransformMouseOwner extends SnapMouseOwner {
      */
     public void setHandles(ArrayList<Handle> handles, ArrayList<GPoint> references) {
         this.handles = handles;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        super.mouseClicked(e);
+        if (isNotOwner()) return;
+        // right click
+        if (e.getButton() != MouseEvent.BUTTON1) return;
+        // only 1 click
+        if (e.getClickCount() != 2) return;
+        broadcast(
+                EventType.TRANSFORM_CHANGE_CENTRE,
+                new ChangeCentreEventPayload(
+                        this,
+                        new ScreenPoint(e.getX(), e.getY())
+                )
+        );
     }
 }

@@ -2,6 +2,7 @@ package com.j3d.engine.interact.cmd.commands.transform;
 
 import com.j3d.Static;
 import com.j3d.engine.SceneManager;
+import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
@@ -13,6 +14,7 @@ import com.j3d.engine.interact.cmd.args.ArgSet;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.*;
+import com.j3d.engine.interact.cmd.commands.transform.mouse.ChangeCentreEventPayload;
 import com.j3d.engine.react.events.EventListener;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
@@ -112,6 +114,9 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
     /** The label used for providing feedback to the user. */
     protected SafeJLabel label;
 
+    private boolean centreIsSelectionPivot = true;
+    private GPoint selectionPivot = null;
+
     /**
      * Constructs the abstract base for a transformation command.
      *
@@ -133,7 +138,38 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
 
     @Override
     public <K> void onEvent(EventType event, EventPayload<K> properties) {
-        return;
+        if (event == EventType.TRANSFORM_CHANGE_CENTRE && properties instanceof ChangeCentreEventPayload cce) {
+            // sort closest to the camera
+            ArrayList<GPoint> points = new ArrayList<>();
+            ScreenPoint target = cce.getMousePos();
+            references
+                    .stream()
+                    .sorted(
+                            (a, b) -> {
+                                Vector3 aPos = a.getPivot();
+                                Vector3 bPos = b.getPivot();
+                                return Double.compare(
+                                        aPos.distance(Static.camera.getPosition()),
+                                        bPos.distance(Static.camera.getPosition())
+                                );
+                            }
+                    )
+                    .filter(
+                            a -> {
+                                ScreenPoint Asp = a.getPivot().toPoint(Static.camera).toScreen(Static.sceneManager);
+                                // a matching points is within 5 up down left or right of the target
+                                return Math.abs(Asp.x - target.x) < 5 && Math.abs(Asp.y - target.y) < 5;
+                            }
+                    )
+                    .forEach(points::add);
+            if (points.isEmpty()) {
+                centreIsSelectionPivot = true;
+                selectionPivot = null;
+            } else {
+                centreIsSelectionPivot = false;
+                selectionPivot = points.getFirst();
+            }
+        }
     }
 
     /**
@@ -210,9 +246,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
         mouseOwner.requestOwnership();
         keys.forEach(Static.keybinds::registerJ3Key);
 
-        center = Vector3.reduceToVector3(
-                references.stream().map(GPoint::getPivot).collect(Collectors.toCollection(ArrayList::new))
-                , Vector3::add).div(references.size());
+        center = calculateCentre();
 
         // Create and configure the X, Y, Z handles
         final int size = Settings.editorProperties.handleSize.getValue();
@@ -241,9 +275,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
         // Define the drawing logic for the UI overlay
         Consumer<Graphics2D> drawScaleHandle = g -> {
             final double dist2 = Settings.editorProperties.handleDist.getValue();
-            center = Vector3.reduceToVector3(
-                    references.stream().map(GPoint::getPivot).collect(Collectors.toCollection(ArrayList::new))
-                    , Vector3::add).div(references.size());
+            center = calculateCentre();
             X.setPos(center.add(new Vector3(dist2, 0, 0)));
             Y.setPos(center.add(new Vector3(0, dist2, 0)));
             Z.setPos(center.add(new Vector3(0, 0, dist2)));
@@ -272,13 +304,27 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
                     })
                             .font(J3DTheme.TEXT_SECONDARY.color().darker(), "6"),
                     stepsTitle + ": ",
-                    new JLabelRichText(Double.toString(getCurrentStepSize()) +
+                    new JLabelRichText(getCurrentStepSize() +
                             (this instanceof ScaleSelection s ? "/" + Double.toString(s.getInverseStepSize()) : "") +
                             (this instanceof RotateSelection ? '°' : " units")
                     )
                             .font(J3DTheme.TEXT_SECONDARY.color().brighter(), "6"),
                     "[R]"
             );
+
+            Stroke s = g.getStroke();
+
+            // draw X at the centre.
+            g.setColor(new Color(148, 0, 0));
+            g.setStroke(new BasicStroke(3));
+            ScreenPoint sp = center.toPoint(Static.camera).toScreen(Static.sceneManager);
+            int crossSize = 10; // Size of the 'X' cross
+            g.drawLine(sp.x - crossSize, sp.y - crossSize, sp.x + crossSize, sp.y + crossSize);
+            g.drawLine(sp.x + crossSize, sp.y - crossSize, sp.x - crossSize, sp.y + crossSize);
+            g.setColor(Color.WHITE);
+            g.setStroke(s);
+
+            mouseOwner.square(g, 5);
         };
 
         overlapId = UUID.randomUUID();
@@ -286,11 +332,23 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
         Static.sceneManager.scheduleOverlap(overlapId, drawScaleHandle);
     }
 
+    private Vector3 calculateCentre() {
+        if (centreIsSelectionPivot || selectionPivot == null) {
+            return Vector3.reduceToVector3(
+                    references.stream().map(GPoint::getPivot).collect(Collectors.toCollection(ArrayList::new))
+                    , Vector3::add).div(references.size());
+        } else {
+            return selectionPivot.getPivot();
+        }
+    }
+
     /**
      * Cleans up the stateful command environment after it has finished.
      */
     private void finished(SafeJLabel lbl) {
         mouseOwner.handles.forEach(Handle::clear);
+        selectionPivot = null;
+        centreIsSelectionPivot = true;
         keys.forEach(key -> Static.keybinds.removeJ3Key(key.getId()));
         Static.sceneManager.removeOverlap(overlapId);
         lbl.clear();

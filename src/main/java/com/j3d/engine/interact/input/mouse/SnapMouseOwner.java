@@ -94,19 +94,6 @@ public class SnapMouseOwner extends MouseOwner {
     }
 
     /**
-     * Draws a debug rectangle around the mouse cursor's snapping region.
-     * @param g The {@code Graphics2D} context to draw on.
-     */
-    private void debug(Graphics2D g) {
-        g.drawRect(
-                mouseLoc.x - offset,
-                mouseLoc.y - offset,
-                offset * 2,
-                offset * 2
-        );
-    }
-
-    /**
      * Returns a {@code Consumer<Graphics2D>} that handles the visual representation of snapping candidates.
      * This consumer is scheduled with the {@link SceneManager} to draw overlays, identifying and highlighting
      * potential snap targets (points and midpoints of lines) within the snapping region.
@@ -115,7 +102,6 @@ public class SnapMouseOwner extends MouseOwner {
     private Consumer<Graphics2D> consumer() {
         return (g) -> {
             hoveringOver = null;
-            debug(g);
             // get the first 5 elements
             for (int i = 0; i < Math.min(5, snappingCandidates.size()); i++) {
                 GObject obj = snappingCandidates.get(i);
@@ -156,6 +142,8 @@ public class SnapMouseOwner extends MouseOwner {
         if (isNotOwner() || !enabled) return;
         // only use right click.
         if (e.getButton() != MouseEvent.BUTTON3) return;
+        // only double click
+        if (e.getClickCount() != 2) return;
         if (hoveringOver == null) return;
 
         broadcast(
@@ -184,6 +172,10 @@ public class SnapMouseOwner extends MouseOwner {
         enabled = true;
     }
 
+    public ScreenPoint getMouseLocation() {
+        return mouseLoc;
+    }
+
     /**
      * Handles mouse movement events. When the mouse moves, it updates the {@code mouseLoc}, clears previous snapping candidates,
      * and queries the {@link SelectionManager} for new potential snap targets within the snapping region. It also schedules the overlap consumer if not already scheduled.
@@ -192,12 +184,12 @@ public class SnapMouseOwner extends MouseOwner {
     @Override
     public void mouseMoved(MouseEvent e) {
         super.mouseMoved(e);
+        mouseLoc = new ScreenPoint(e.getX(), e.getY());
         if (isNotOwner() || !enabled) return;
         if (!overlapScheduled) {
             sceneManager.scheduleOverlap(uuid, consumer());
             overlapScheduled = true;
         }
-        mouseLoc = new ScreenPoint(e.getX(), e.getY());
         snappingCandidates.clear();
         SelectionQuery sq = new SelectionQuery(
                 new ScreenPoint(e.getX()-offset, e.getY()-offset),
@@ -224,7 +216,9 @@ public class SnapMouseOwner extends MouseOwner {
      * Clears all snapping-related state, including removing the overlap consumer from the {@link SceneManager},
      * clearing snapping candidates, and resetting the {@code hoveringOver} object. This should be called when snapping is no longer needed.
      */
+    @Override
     public void clear() {
+        super.clear();
         sceneManager.removeOverlap(uuid);
         overlapScheduled = false;
         snappingCandidates.clear();

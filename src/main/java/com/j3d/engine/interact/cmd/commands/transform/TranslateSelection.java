@@ -153,6 +153,7 @@ public class TranslateSelection extends AbstractTransform {
 
     @Override
     public <K> void onEvent(EventType event, EventPayload<K> properties) {
+        super.onEvent(event, properties);
         if (event == EventType.SNAP_TO_OBJ && properties instanceof SnapPayload sp) {
             if (translateMouseOwner.isNotOwner()) return;
 

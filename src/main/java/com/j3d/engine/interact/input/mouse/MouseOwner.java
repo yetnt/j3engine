@@ -75,6 +75,10 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
         return EngineFrame.getMouseOwner() != owner;
     }
 
+    public void clear() {
+
+    }
+
     @Override
     public void attach(EventListener event) {
         EventEmitter.genericAttach(registered, event);
