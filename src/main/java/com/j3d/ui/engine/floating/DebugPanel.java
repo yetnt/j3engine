@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package com.j3d.ui.engine.popups;
+package com.j3d.ui.engine.floating;
 
 import com.j3d.J3DSettings;
 import com.j3d.Static;

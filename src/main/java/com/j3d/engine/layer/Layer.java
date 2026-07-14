@@ -12,7 +12,7 @@ import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.ConstructorAction;
 import com.j3d.gen.properties.HasProperties;
 import com.j3d.gen.properties.Property;
-import com.j3d.ui.engine.popups.tree.TreeNodeIdentity;
+import com.j3d.ui.engine.floating.tree.TreeNodeIdentity;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;

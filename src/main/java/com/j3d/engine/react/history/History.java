@@ -3,7 +3,7 @@ package com.j3d.engine.react.history;
 import com.j3d.Static;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.CleanableAction;
-import com.j3d.ui.engine.popups.HistoryPanel;
+import com.j3d.ui.engine.floating.HistoryPanel;
 
 import java.io.Serial;
 import java.util.ArrayList;

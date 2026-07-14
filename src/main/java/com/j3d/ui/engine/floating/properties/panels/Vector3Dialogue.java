@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
-package com.j3d.ui.engine.properties.panels;
+package com.j3d.ui.engine.floating.properties.panels;
 
 import static com.j3d.Static.mainFrame;
 import static com.j3d.Static.mainPanel;

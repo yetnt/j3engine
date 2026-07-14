@@ -2,66 +2,48 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package com.j3d.ui.engine.properties.panels;
+package com.j3d.ui.engine.floating.properties.panels;
 
 import com.j3d.gen.properties.Property;
 import com.j3d.ui.generic.J3DTheme;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
 /**
  *
  * @author yetnt
  */
-public class IntProperty extends javax.swing.JPanel implements PropertyPanel<Integer> {
+public class StringProperty extends javax.swing.JPanel implements PropertyPanel<String> {
 
-    ArrayList<Property<Integer, ?>> properties;
+    ArrayList<Property<String, ?>> properties;
 
     /**
      * Creates new form StringProperty
      */
-    public IntProperty(ArrayList<Property<?, ?>> properties) {
+    public StringProperty(ArrayList<Property<?, ?>> properties) {
         initComponents();
         this.properties = typeConvert(properties);
-        setFields(); //TODO: Implement
+        setFields();
     }
 
     @Override
     public void setFields() {
-        spinner.setModel(
-                new SpinnerNumberModel(
-                        getSingleProperty().getValueSupplier().get().intValue(),
-                        0,
-                        getSingleProperty().getValueSupplier().get().intValue(),
-                        1
-                )
-        );
         if (singleProperty()) {
-            spinner.setValue(getSingleProperty().getValueSupplier().get());
+            textField.setText(getSingleProperty().getValueSupplier().get());
             if (getSingleProperty().isConstant())
-                spinner.setEnabled(false);
+                textField.setEnabled(false);
         } else {
-            JFormattedTextField field =
-                    ((JSpinner.DefaultEditor)spinner.getEditor())
-                            .getTextField();
-            field.setText("**");
+            textField.setText("(multiple)");
             if (
                     getProperties().stream()
                             .anyMatch(Property::isConstant)
             )
-                spinner.setEnabled(false);
+                textField.setEnabled(false);
         }
     }
 
-    private void addSpinnerListeners() {
-        spinner.addChangeListener(e -> {
-            runAndAddAction((Integer) spinner.getValue(), "Int");
-        });
-    }
-
     @Override
-    public ArrayList<Property<Integer, ?>> getProperties() {
+    public ArrayList<Property<String, ?>> getProperties() {
         return properties;
     }
 
@@ -74,32 +56,44 @@ public class IntProperty extends javax.swing.JPanel implements PropertyPanel<Int
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        spinner = new javax.swing.JSpinner();
+        textField = new javax.swing.JTextField();
 
         setBackground(J3DTheme.UI_SURFACE.color());
         setMaximumSize(new java.awt.Dimension(215, 34));
         setMinimumSize(new java.awt.Dimension(215, 34));
 
+        textField.setBackground(J3DTheme.BACKGROUND.color());
+        textField.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        textField.setText("jTextField1");
+        textField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(spinner, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(textField, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(spinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(textField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void textFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldActionPerformed
+        runAndAddAction(textField.getText(), "String");
+    }//GEN-LAST:event_textFieldActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JSpinner spinner;
+    private javax.swing.JTextField textField;
     // End of variables declaration//GEN-END:variables
 }

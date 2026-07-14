@@ -1,4 +1,4 @@
-package com.j3d.ui.engine.popups.tree;
+package com.j3d.ui.engine.floating.tree;
 
 import com.j3d.Static;
 
@@ -6,7 +6,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class TreeNodeIdentity<T> {
     /**

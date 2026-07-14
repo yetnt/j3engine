@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package com.j3d.ui.engine.properties.panels;
+package com.j3d.ui.engine.floating.properties.panels;
 
 import com.j3d.Static;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;

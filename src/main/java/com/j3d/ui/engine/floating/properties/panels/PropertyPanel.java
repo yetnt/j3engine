@@ -1,11 +1,10 @@
-package com.j3d.ui.engine.properties.panels;
+package com.j3d.ui.engine.floating.properties.panels;
 
 import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.gen.properties.Property;
-import com.j3d.ui.engine.properties.PropertiesPanel;
-import com.j3d.ui.engine.properties.PropertyEntry;
+import com.j3d.ui.engine.floating.properties.PropertiesPanel;
+import com.j3d.ui.engine.floating.properties.PropertyEntry;
 
-import java.awt.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.function.Supplier;

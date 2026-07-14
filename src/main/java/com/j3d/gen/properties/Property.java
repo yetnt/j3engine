@@ -3,8 +3,8 @@ package com.j3d.gen.properties;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
-import com.j3d.ui.engine.properties.PropertiesPanel;
-import com.j3d.ui.engine.properties.PropertyEntry;
+import com.j3d.ui.engine.floating.properties.PropertiesPanel;
+import com.j3d.ui.engine.floating.properties.PropertyEntry;
 
 import javax.swing.*;
 import java.awt.*;

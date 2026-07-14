@@ -6,8 +6,8 @@ import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.react.history.History;
 import com.j3d.ui.SafeJLabel;
-import com.j3d.ui.engine.popups.DebugPanel;
-import com.j3d.ui.engine.popups.tree.LayerTree;
+import com.j3d.ui.engine.floating.DebugPanel;
+import com.j3d.ui.engine.floating.tree.LayerTree;
 
 import java.util.ArrayList;
 

@@ -2,11 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package com.j3d.ui.engine.properties;
+package com.j3d.ui.engine.floating.properties;
 
 import com.j3d.gen.properties.Property;
 import com.j3d.gen.properties.PropertyKey;
-import com.j3d.ui.engine.properties.panels.PropertyPanel;
+import com.j3d.ui.engine.floating.properties.panels.PropertyPanel;
 import com.j3d.ui.generic.J3DTheme;
 
 import javax.swing.*;

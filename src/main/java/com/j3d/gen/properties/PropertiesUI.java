@@ -5,8 +5,8 @@ import com.j3d.engine.geometry.geo2d.graphics.*;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.layer.Layer;
-import com.j3d.ui.engine.properties.PropertyEntry;
-import com.j3d.ui.engine.properties.panels.*;
+import com.j3d.ui.engine.floating.properties.PropertyEntry;
+import com.j3d.ui.engine.floating.properties.panels.*;
 import com.j3d.utility.generic.HashMultiMap;
 
 import javax.swing.*;

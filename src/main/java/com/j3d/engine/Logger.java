@@ -5,7 +5,6 @@ import com.j3d.errors.J3DError;
 import com.j3d.errors.severity.J3DFatal;
 import com.j3d.errors.severity.J3DMild;
 import com.j3d.errors.severity.J3DWarning;
-import com.j3d.storage.db.DatabaseManager;
 
 import javax.swing.*;
 import java.time.format.DateTimeFormatter;
@@ -13,11 +12,11 @@ import java.util.Arrays;
 
 /**
  * The Logger class provides a simple logging utility.
- * It supports logging messages to both the console and the {@link com.j3d.ui.engine.popups.DebugPanel#logTextArea}
+ * It supports logging messages to both the console and the {@link com.j3d.ui.engine.floating.DebugPanel#logTextArea}
  * This class includes methods for standard logging, error logging, and clearing the log area.
  * @author Lehlogonolo Poole
  * @see com.j3d.storage.files.engine.EngineFiles#logFile
- * @see com.j3d.ui.engine.popups.DebugPanel#logTextArea
+ * @see com.j3d.ui.engine.floating.DebugPanel#logTextArea
  * @see Static
  */
 public class Logger {

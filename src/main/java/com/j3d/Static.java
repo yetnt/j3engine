@@ -23,12 +23,12 @@ import com.j3d.storage.files.protocol.proj.PF2;
 import com.j3d.ui.engine.CommandPalette;
 import com.j3d.ui.engine.FloatingPanel;
 import com.j3d.ui.engine.J3DPanel;
-import com.j3d.ui.engine.popups.DebugPanel;
+import com.j3d.ui.engine.floating.DebugPanel;
 import com.j3d.ui.engine.EngineFrame;
-import com.j3d.ui.engine.popups.tree.LayerTree;
+import com.j3d.ui.engine.floating.tree.LayerTree;
 import com.j3d.ui.HoverJLabel;
-import com.j3d.ui.engine.properties.PropertiesPanel;
-import com.j3d.ui.engine.tb.Toolbox;
+import com.j3d.ui.engine.floating.properties.PropertiesPanel;
+import com.j3d.ui.engine.toolbox.Toolbox;
 
 import javax.swing.*;
 import java.awt.*;

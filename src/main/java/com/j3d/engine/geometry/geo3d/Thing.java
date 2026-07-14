@@ -23,7 +23,7 @@ import com.j3d.storage.files.protocol.proj.PF1;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.ui.generic.J3DTheme;
 import com.j3d.ui.dialog.Spinner;
-import com.j3d.ui.engine.popups.tree.TreeNodeIdentity;
+import com.j3d.ui.engine.floating.tree.TreeNodeIdentity;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;

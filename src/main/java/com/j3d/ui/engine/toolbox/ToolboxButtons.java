@@ -1,4 +1,4 @@
-package com.j3d.ui.engine.tb;
+package com.j3d.ui.engine.toolbox;
 
 import com.j3d.Static;
 import com.j3d.engine.interact.cmd.CommandsManager;
