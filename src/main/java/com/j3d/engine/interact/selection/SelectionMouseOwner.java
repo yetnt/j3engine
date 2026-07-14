@@ -53,7 +53,8 @@ public class SelectionMouseOwner extends MouseOwner {
     @Override
     public void mousePressed(MouseEvent e) {
         if (isNotOwner()) return;
-        mousePos = new ScreenPoint(e.getX(), e.getY());
+        mousePos = getSelectionMouseLoc(e);
+//        mousePos = new ScreenPoint(e.getX(), e.getY());
     }
 
     @Override
@@ -72,7 +73,9 @@ public class SelectionMouseOwner extends MouseOwner {
     public void mouseDraggedUsingClickDelay(MouseEvent e) {
         if (isNotOwner()) return;
         selectionArea[0] = mousePos;
-        selectionArea[1] = new ScreenPoint(e.getX(), e.getY());
+        selectionArea[1] = getSelectionMouseLoc(e);
+//        selectionArea[1] = new ScreenPoint(e.getX(), e.getY());
         Static.mainFrame.repaint();
     }
+
 }

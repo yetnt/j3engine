@@ -142,12 +142,6 @@ public class TransformMouseOwner extends SnapMouseOwner {
                 offset * 2,
                 offset * 2
         );
-//        g.drawRect(
-//                getMouseLocation().x - offset - 2,
-//                (getMouseLocation().y - offset) - ((2*J3DSettings.jMenuBarOffsetY))-10,
-//                offset * 2,
-//                (offset * 2)
-//        );
     }
 
     /**
@@ -171,7 +165,7 @@ public class TransformMouseOwner extends SnapMouseOwner {
                 EventType.TRANSFORM_CHANGE_CENTRE,
                 new ChangeCentreEventPayload(
                         this,
-                        getMouseLocation()
+                        getMouseLoc(e)
                 )
         );
     }

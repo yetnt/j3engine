@@ -1,5 +1,7 @@
 package com.j3d.engine.interact.input.mouse;
 
+import com.j3d.J3DSettings;
+import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.interact.selection.SelectionMouseOwner;
 import com.j3d.engine.react.events.*;
 import com.j3d.ui.engine.EngineFrame;
@@ -73,6 +75,18 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
      */
     public boolean isNotOwner() {
         return EngineFrame.getMouseOwner() != owner;
+    }
+
+    protected ScreenPoint getMouseLoc(MouseEvent e) {
+        return new ScreenPoint(
+                e.getX() - 4,
+                e.getY() - ((2 * J3DSettings.jMenuBarOffsetY)) - 10);
+    }
+
+    protected ScreenPoint getSelectionMouseLoc(MouseEvent e) {
+        return new ScreenPoint(
+                e.getX() - 4,
+                e.getY() - 2) ;
     }
 
     public void clear() {

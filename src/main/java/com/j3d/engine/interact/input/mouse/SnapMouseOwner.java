@@ -1,6 +1,5 @@
 package com.j3d.engine.interact.input.mouse;
 
-import com.j3d.J3DSettings;
 import com.j3d.Static;
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.ScreenPoint;
@@ -185,9 +184,7 @@ public class SnapMouseOwner extends MouseOwner {
     @Override
     public void mouseMoved(MouseEvent e) {
         super.mouseMoved(e);
-        mouseLoc = new ScreenPoint(
-                e.getX() - 4,
-                e.getY() - ((2*J3DSettings.jMenuBarOffsetY))-10);
+        mouseLoc = getMouseLoc(e);
         if (isNotOwner() || !enabled) return;
         if (!overlapScheduled) {
             sceneManager.scheduleOverlap(uuid, consumer());
