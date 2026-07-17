@@ -43,7 +43,7 @@ public class DebugPanel extends javax.swing.JPanel {
                 JLabelRichText style = new JLabelRichText().bold().italic().font(Color.RED, "4");
                 statsLabelMap.forEach(
                         (uuid, label) -> label.setText(
-                               JLabelRichText.of(map.get(uuid).toString(), style).wrapHTML()
+                               JLabelRichText.from(map.get(uuid).toString(), style).wrapHTML()
                         )
                 );
                 // Since this is on the EDT, we shall use that to our advantage for static stats
@@ -389,7 +389,7 @@ public class DebugPanel extends javax.swing.JPanel {
 
     public void startStatisticsThread() {
         stealStatsThreadRun = style -> trianglesInSceneLabel.setText(
-                JLabelRichText.of(
+                JLabelRichText.from(
                         "" + TriStateArea.trisRegistered(),
                         style
                 ).wrapHTML()

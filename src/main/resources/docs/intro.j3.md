@@ -12,7 +12,7 @@ line separator!!
 
 ## Again
 
-And I've got `inline code` in me ong.
+And I've got `inline` `code` in me ong.
 
 ```shell
 random fuck codeblock

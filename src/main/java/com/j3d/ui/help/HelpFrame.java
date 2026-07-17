@@ -4,7 +4,21 @@
  */
 package com.j3d.ui.help;
 
+import com.j3d.Static;
+import com.j3d.gen.docs.J3DocsReader;
+import com.j3d.gen.docs.tokens.TLink;
+import com.j3d.gen.docs.tokens.TWrapper;
+import com.j3d.gen.docs.tokens.wrappers.TWHeader;
+import com.j3d.gen.docs.tokens.wrappers.TWLineSeparator;
+import com.j3d.gen.docs.tokens.wrappers.TWParagraph;
 import com.j3d.utility.generators.JLabelRichText;
+
+import javax.swing.*;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  *
@@ -17,23 +31,95 @@ public class HelpFrame extends javax.swing.JFrame {
      */
     public HelpFrame() {
         initComponents();
-        test();
+        try {
+            test();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void test() {
+    private void test() throws FileNotFoundException {
         String some = "pdsdfd ".repeat(20);
 
-        TextPanel p = new TextPanel(new JLabelRichText(some).paragraph().wrapHTML());
-        TextPanel p2 = new TextPanel(new JLabelRichText(some.repeat(300)).paragraph().wrapHTML());
+        TextPanel p = new TextPanel(
+                new JLabelRichText(some)
+                        .wrapDiv(400)
+                        .heading(JLabelRichText.Heading.H1)
+                        .addStyle(
+                                new LinkedHashMap<>(
+                                        Map.of(
+                                                "text-align", "center"
+                                        )
+                                )
+                        )
+                        .wrapHTML()
+        );
+        TextPanel p2 = new TextPanel(
+                new JLabelRichText(some.repeat(300))
+                        .wrapDiv(400)
+                        .wrapHTML()
+        );
 
         jPanel1.add(p);
         jPanel1.add(p2);
 
-        jScrollPane1.revalidate();
-        jScrollPane1.repaint();
+        ArrayList<TWrapper> wrappers = J3DocsReader.parseFile(
+                Static.getEngineFiles().docsFolder.intro
+        );
 
-        jPanel1.revalidate();
-        jPanel1.repaint();
+        JLabelRichText div = new JLabelRichText()
+                .wrapDiv(500);
+        ArrayList<TLink> linksPerParagraph = new ArrayList<>();
+
+        wrappers.forEach(wrapper -> {
+            if (wrapper instanceof TWLineSeparator) {
+                jPanel1.add(new TextPanel(
+                        new JLabelRichText(JLabelRichText.HORIZONTAL_LINE)
+                                .wrapHTML()
+                ));
+            } else if (wrapper instanceof TWHeader header) {
+                jPanel1.add(
+                        new TextPanel(
+                                JLabelRichText.from(
+                                        header.getContent(),
+                                        div
+                                )
+                                        .heading(JLabelRichText.Heading.fromInt(header.getHeaderLevel()))
+                                        .addStyle(new LinkedHashMap<>(Map.of(
+                                                "text-align", "center"
+                                        )))
+                                        .wrapHTML()
+                        )
+                );
+                linksPerParagraph.clear();
+            } else if (wrapper instanceof TWParagraph paragraph) {
+                StringBuilder content = new StringBuilder();
+                paragraph.getParagraph().forEach(text -> {
+                    if (text instanceof TLink l) {
+                        linksPerParagraph.add(l);
+                    }
+                    JLabelRichText text1 = new JLabelRichText(
+                            text.getContent() + (text instanceof TLink ?
+                                    "[" + linksPerParagraph.size() + "]"
+                            : "")
+                    );
+                    if (text.isBold()) text1.bold();
+                    if (text.isItalic()) text1.italic();
+                    if (text.isInlineCode()) text1.wrapTag("code", new LinkedHashMap<>());
+                    content.append(text1).append(" ");
+                });
+                jPanel1.add(
+                        new TextPanel(
+                                JLabelRichText.from(
+                                        content.toString(),
+                                        div
+                                )
+                                        .wrapHTML()
+                        )
+                );
+                // TODO: add links via buttons here at end of paragraph.
+            }
+        });
     }
 
     /**
@@ -58,9 +144,6 @@ public class HelpFrame extends javax.swing.JFrame {
         jLabel1.setText("Help Menu");
         getContentPane().add(jLabel1, java.awt.BorderLayout.NORTH);
 
-        jPanel1.setMaximumSize(new java.awt.Dimension(570, 452));
-        jPanel1.setMinimumSize(new java.awt.Dimension(570, 452));
-        jPanel1.setPreferredSize(new java.awt.Dimension(570, 452));
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
 
         jLabel2.setText("hi");
