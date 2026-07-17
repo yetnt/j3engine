@@ -14,7 +14,7 @@ import java.util.Objects;
 /**
  * CartesianPoint, not to be confused with {@link ScreenPoint}, represents
  * a point in 2D space.
- * (On the Cartesian Plane, where (0, 0) is the centre of the window.)
+ * (On the Cartesian AxisPlane, where (0, 0) is the centre of the window.)
  * <p>
  * All 2d points should be calculated in {@link CartesianPoint}, but when you
  * want to show it on the screen, converted to a {@link ScreenPoint}

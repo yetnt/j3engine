@@ -4,8 +4,8 @@ import com.j3d.engine.geometry.geo2d.Winding;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
+import com.j3d.engine.geometry.geo3d.AxisPlane;
 import com.j3d.engine.geometry.geo3d.Sampler;
-import com.j3d.engine.geometry.geo3d.Plane;
 import com.j3d.engine.geometry.geo3d.Solids;
 import com.j3d.engine.interact.input.keyboard.GlobalKeybinds;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
@@ -15,7 +15,6 @@ import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.react.actions.Action;
-import com.j3d.utility.generic.SamePair;
 
 import javax.swing.*;
 import java.awt.*;
@@ -58,24 +57,27 @@ public class Executor {
 
         Thing solid = Solids.prism(
                 20,4, layer,
-                new SamePair<>(Vector3.X(-10), Vector3.X(-2)),
-                new Plane(new Vector3(0, 0.2, 0.6), new Vector3(0.1, 0.4, 0)).pair()
+                new AxisPlane(
+                        Vector3.ZERO,
+                        new Vector3(0, 0.2, 0.6),
+                        new Vector3(0.1, 0.4, 0)
+                ).sameAxes(Vector3.X(-10), Vector3.X(-2))
         );
         Thing genericSolid = Solids.prism(
                 10,40, layer,
-                new SamePair<>(Vector3.X(-30), Vector3.X(-22)),
-                Plane.ZY().pair()
+                AxisPlane.ZY(Vector3.ZERO)
+                        .sameAxes(Vector3.X(-30), Vector3.X(-22))
         );
         Thing cone = cone(20, 20);
 
         ArrayList<Action<?>> actions = new ArrayList<>(List.of(
-                cub.rotate(Vector3.Z(1), 45),
+                cub.rotate(Vector3.Z, 45),
                 cub.translate(new Vector3(4, 2, 3)),
                 cub.scale(0.4),
                 tris.translate(Vector3.X(14)),
                 cub.rotate(new Vector3(2, 3, 1), 2),
                 solid.translate(Vector3.X(-20)),
-                ngon.rotate(Vector3.Y(1), 20), // 20 degrees
+                ngon.rotate(Vector3.Y, 20), // 20 degrees
                 ngon.translate(Vector3.X(40)),
                 cone.rotate(Vector3.X(5), 5)
         ));
@@ -85,16 +87,12 @@ public class Executor {
     }
 
     public Thing cone(int max, int height) {
-        GPoint centre = new GPoint(new Vector3(0, 0, 0));
-        Plane plane = new Plane(
-                new Vector3(1, 0, 0),
-                new Vector3(0, 0, 1)
-        );
+        GPoint centre = new GPoint(Vector3.ZERO);
+        AxisPlane axisPlane = AxisPlane.XZ(centre.getPivot());
 
         ArrayList<GPoint> points = Sampler.ngon(
-                centre.getPivot(),
                 5,
-                plane,
+                axisPlane,
                 max,
                 GPoint::new
         );
@@ -131,16 +129,12 @@ public class Executor {
     }
 
     public Thing ngon(int max) {
-        GPoint centre = new GPoint(new Vector3(0, 0, 0));
-        Plane plane = new Plane(
-                new Vector3(1, 0, 0),
-                new Vector3(0, 1, 0)
-        );
+        GPoint centre = new GPoint(Vector3.ZERO);
+        AxisPlane axisPlane = AxisPlane.XY(centre.getPivot());
 
         ArrayList<GPoint> points = Sampler.ngon(
-                centre.getPivot(),
                 10,
-                plane,
+                axisPlane,
                 max,
                 p -> {
                     GPoint point = new GPoint(p);

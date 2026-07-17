@@ -73,7 +73,7 @@ public class OrbitMouseOwner extends MouseOwner {
                             dyScaled * dyLockedScale
                     )
             );
-            Static.camera.lookAt(new Vector3());
+            Static.camera.lookAt(Vector3.ZERO);
         } else {
 
             Static.camera.getRotation().setPitch(Static.camera.getRotation().getPitch() - dyScaled);

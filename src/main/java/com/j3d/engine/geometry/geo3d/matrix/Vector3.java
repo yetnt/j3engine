@@ -23,11 +23,19 @@ import java.util.function.BiFunction;
  * @see MatrixMath
  * @see Matrix3
  * @see CartesianPoint
+ * @implNote There are constants for recurring Vector3 objects.
+ * <ul>
+ *     <li>{@link #X}/{@link #NX}</li>
+ *     <li>{@link #Y}/{@link #NY}</li>
+ *     <li>{@link #Z}/{@link #NZ}</li>
+ *     <li>{@link #UNIT}</li>
+ *     <li>{@link #ZERO}</li>
+ * </ul>
  */
 public class Vector3 implements MatrixInterface {
-    private final double X;
-    private final double Y;
-    private final double Z;
+    private final double x;
+    private final double y;
+    private final double z;
 
     /**
      * Constructs a new vector 3 from a 2d matrix double array
@@ -35,9 +43,9 @@ public class Vector3 implements MatrixInterface {
      * @implSpec The matrix must be 3x1
      */
     public Vector3(double[][] m) {
-        X = m[0][0];
-        Y = m[1][0];
-        Z = m[2][0];
+        x = m[0][0];
+        y = m[1][0];
+        z = m[2][0];
     }
 
 
@@ -49,29 +57,29 @@ public class Vector3 implements MatrixInterface {
      * @param z The Z component.
      */
     public Vector3(double x, double y, double z) {
-        X = x;
-        Y = y;
-        Z = z;
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     /**
      * Constructs a zero vector (0, 0, 0).
      */
     public Vector3() {
-        X = 0;
-        Y = 0;
-        Z = 0;
+        x = 0;
+        y = 0;
+        z = 0;
     }
 
     public Vector3(boolean empty) {
         if (empty) {
-            X = Double.MAX_VALUE;
-            Y = Double.MAX_VALUE;
-            Z = Double.MAX_VALUE;
+            x = Double.MAX_VALUE;
+            y = Double.MAX_VALUE;
+            z = Double.MAX_VALUE;
         } else {
-            X = 0;
-            Y = 0;
-            Z = 0;
+            x = 0;
+            y = 0;
+            z = 0;
         }
     }
 
@@ -81,7 +89,7 @@ public class Vector3 implements MatrixInterface {
      * @return {@code true} if the vector holds meaningful data, {@code false} otherwise.
      */
     public boolean isNotEmpty() {
-        return X != Double.MAX_VALUE || Y != Double.MAX_VALUE || Z != Double.MAX_VALUE;
+        return x != Double.MAX_VALUE || y != Double.MAX_VALUE || z != Double.MAX_VALUE;
     }
 
 
@@ -102,21 +110,21 @@ public class Vector3 implements MatrixInterface {
      * @return The X component of the vector.
      */
     public double getX() {
-        return X;
+        return x;
     }
 
     /**
      * @return The Y component of the vector.
      */
     public double getY() {
-        return Y;
+        return y;
     }
 
     /**
      * @return The Z component of the vector.
      */
     public double getZ() {
-        return Z;
+        return z;
     }
 
     /**
@@ -126,7 +134,7 @@ public class Vector3 implements MatrixInterface {
      * @return The scalar dot product.
      */
     public double dot(Vector3 v) {
-        return X * v.getX() + Y * v.getY() + Z * v.getZ();
+        return x * v.getX() + y * v.getY() + z * v.getZ();
     }
 
     /**
@@ -135,9 +143,9 @@ public class Vector3 implements MatrixInterface {
      * @return A new, normalized {@code Vector3}.
      */
     public Vector3 normalize() {
-        double magnitude = Math.sqrt(X * X + Y * Y + Z * Z);
-        if (magnitude == 0) return new Vector3(0, 0, 0);
-        return new Vector3(X / magnitude, Y / magnitude, Z / magnitude);
+        double magnitude = Math.sqrt(x * x + y * y + z * z);
+        if (magnitude == 0) return Vector3.ZERO;
+        return new Vector3(x / magnitude, y / magnitude, z / magnitude);
     }
 
     /**
@@ -147,7 +155,7 @@ public class Vector3 implements MatrixInterface {
      * @return A new {@code Vector3} representing the sum.
      */
     public Vector3 add(Vector3 v) {
-        return new Vector3(this.X + v.X, this.Y + v.Y, this.Z + v.Z);
+        return new Vector3(this.x + v.x, this.y + v.y, this.z + v.z);
     }
 
     /**
@@ -156,7 +164,7 @@ public class Vector3 implements MatrixInterface {
      * @return The magnitude of the vector.
      */
     public double magnitude() {
-        return Math.sqrt(this.X * this.X + this.Y * this.Y + this.Z * this.Z);
+        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
     }
 
     /**
@@ -166,7 +174,7 @@ public class Vector3 implements MatrixInterface {
      * @return A new, scaled {@code Vector3}.
      */
     public Vector3 mult(double scalar) {
-        return new Vector3(this.X * scalar, this.Y * scalar, this.Z * scalar);
+        return new Vector3(this.x * scalar, this.y * scalar, this.z * scalar);
     }
 
     /**
@@ -176,7 +184,7 @@ public class Vector3 implements MatrixInterface {
      * @return A new {@code Vector3} with the component-wise product.
      */
     public Vector3 mult(Vector3 B) {
-        return new Vector3(this.X * B.getX(), this.Y * B.getY(), this.Z * B.getZ());
+        return new Vector3(this.x * B.getX(), this.y * B.getY(), this.z * B.getZ());
     }
 
     /**
@@ -187,7 +195,7 @@ public class Vector3 implements MatrixInterface {
      */
     public Vector3 div(double scalar) {
         if (scalar == 0) throw new ArithmeticException("Cannot divide by zero.");
-        return new Vector3(this.X / scalar, this.Y / scalar, this.Z / scalar);
+        return new Vector3(this.x / scalar, this.y / scalar, this.z / scalar);
     }
 
     /**
@@ -198,9 +206,9 @@ public class Vector3 implements MatrixInterface {
      */
     public Vector3 cross(Vector3 B) {
         return new Vector3(
-                Y * B.getZ() - Z * B.getY(),
-                Z * B.getX() - X * B.getZ(),
-                X * B.getY() - Y * B.getX()
+                y * B.getZ() - z * B.getY(),
+                z * B.getX() - x * B.getZ(),
+                x * B.getY() - y * B.getX()
         );
     }
 
@@ -211,7 +219,7 @@ public class Vector3 implements MatrixInterface {
      * @return A new {@code Vector3} representing the difference.
      */
     public Vector3 sub(Vector3 B) {
-        return new Vector3(this.X - B.X, this.Y - B.Y, this.Z - B.Z);
+        return new Vector3(this.x - B.x, this.y - B.y, this.z - B.z);
     }
 
     /**
@@ -221,7 +229,7 @@ public class Vector3 implements MatrixInterface {
      * @return The distance between the two points.
      */
     public double distance(Vector3 B) {
-        return Math.sqrt(Math.pow(X - B.getX(), 2) + Math.pow(Y - B.getY(), 2) + Math.pow(Z - B.getZ(), 2));
+        return Math.sqrt(Math.pow(x - B.getX(), 2) + Math.pow(y - B.getY(), 2) + Math.pow(z - B.getZ(), 2));
     }
 
     /**
@@ -246,7 +254,7 @@ public class Vector3 implements MatrixInterface {
      */
     @Override
     public Vector3 copy() {
-        return new Vector3(this.X, this.Y, this.Z);
+        return new Vector3(this.x, this.y, this.z);
     }
 
     /**
@@ -279,28 +287,19 @@ public class Vector3 implements MatrixInterface {
         return new CartesianPoint(bz, by);
     }
 
-    /**
-     * Converts the vector's components to an {@code ArrayList} of Objects.
-     *
-     * @return An {@code ArrayList} containing the X, Y, and Z components in order.
-     */
-    public ArrayList<Object> toArray() {
-        return new ArrayList<>(List.of(X, Y, Z));
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vector3 vector3 = (Vector3) o;
-        return Double.compare(vector3.X, X) == 0 &&
-                Double.compare(vector3.Y, Y) == 0 &&
-                Double.compare(vector3.Z, Z) == 0;
+        return Double.compare(vector3.x, x) == 0 &&
+                Double.compare(vector3.y, y) == 0 &&
+                Double.compare(vector3.z, z) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(X, Y, Z);
+        return Objects.hash(x, y, z);
     }
 
     /**
@@ -311,8 +310,8 @@ public class Vector3 implements MatrixInterface {
      * @return The squared distance in the XY plane.
      */
     public double distanceSquaredTo(CartesianPoint point) {
-        double dx = this.X - point.x;
-        double dy = this.Y - point.y;
+        double dx = this.x - point.x;
+        double dy = this.y - point.y;
         return dx * dx + dy * dy;
     }
 
@@ -324,7 +323,7 @@ public class Vector3 implements MatrixInterface {
      * @return The final reduced {@code Vector3}.
      */
     public static Vector3 reduceToVector3(List<Vector3> vectors, BiFunction<Vector3, Vector3, Vector3> reducer) {
-        if (vectors == null || vectors.isEmpty()) return new Vector3();
+        if (vectors == null || vectors.isEmpty()) return Vector3.ZERO;
         Vector3 result = vectors.getFirst();
         for (int i = 1; i < vectors.size(); i++) {
             result = reducer.apply(result, vectors.get(i));
@@ -352,7 +351,7 @@ public class Vector3 implements MatrixInterface {
 
     @Override
     public String toString() {
-        return String.format("Vector3{X=%.4f, Y=%.4f, Z=%.4f}", X, Y, Z);
+        return String.format("Vector3{X=%.4f, Y=%.4f, Z=%.4f}", x, y, z);
     }
 
     /**
@@ -383,7 +382,7 @@ public class Vector3 implements MatrixInterface {
      * @return A new, scaled {@code Vector3}.
      */
     public Vector3 scale(double d) {
-        return new Vector3(X * d, Y * d, Z * d);
+        return new Vector3(x * d, y * d, z * d);
     }
 
     /**
@@ -413,9 +412,9 @@ public class Vector3 implements MatrixInterface {
     public double get(int row, int col) {
         if (col != 0) throw new IndexOutOfBoundsException("Column index must be 0 for a Vector3.");
         return switch (row) {
-            case 0 -> X;
-            case 1 -> Y;
-            case 2 -> Z;
+            case 0 -> x;
+            case 1 -> y;
+            case 2 -> z;
             default -> throw new IndexOutOfBoundsException("Row index must be between 0 and 2 for a Vector3.");
         };
     }
@@ -428,9 +427,9 @@ public class Vector3 implements MatrixInterface {
     @Override
     public double[][] get() {
         return new double[][]{
-                {X},
-                {Y},
-                {Z}
+                {x},
+                {y},
+                {z}
         };
     }
 
@@ -439,16 +438,75 @@ public class Vector3 implements MatrixInterface {
      * @return the string version of this vector3.
      */
     public String toCommandPaletteString() {
-        return String.format("(%f, %f, %f)", X, Y, Z);
+        return String.format("(%f, %f, %f)", x, y, z);
     }
 
+    /**
+     * Creates a vector along the X-axis with the specified magnitude.
+     *
+     * @param x The magnitude along the X-axis.
+     * @return A new {@code Vector3} (x, 0, 0).
+     */
     public static Vector3 X(double x) {
         return new Vector3(x, 0, 0);
     }
+
+    /**
+     * Creates a vector along the Y-axis with the specified magnitude.
+     *
+     * @param y The magnitude along the Y-axis.
+     * @return A new {@code Vector3} (0, y, 0).
+     */
     public static Vector3 Y(double y) {
         return new Vector3(0, y, 0);
     }
+
+    /**
+     * Creates a vector along the Z-axis with the specified magnitude.
+     *
+     * @param z The magnitude along the Z-axis.
+     * @return A new {@code Vector3} (0, 0, z).
+     */
     public static Vector3 Z(double z) {
         return new Vector3(0, 0, z);
     }
+
+    /**
+     * A static constant representing the unit vector along the positive Y-axis (0, 1, 0).
+     */
+    public static Vector3 Y = Vector3.Y(1);
+
+    /**
+     * A static constant representing the unit vector along the positive X-axis (1, 0, 0).
+     */
+    public static Vector3 X = Vector3.X(1);
+
+    /**
+     * A static constant representing the unit vector along the positive Z-axis (0, 0, 1).
+     */
+    public static Vector3 Z = Vector3.Z(1);
+
+    /**
+     * A static constant representing the unit vector along the negative Y-axis (0, -1, 0).
+     */
+    public static Vector3 NY = Vector3.Y(-1);
+
+    /**
+     * A static constant representing the unit vector along the negative X-axis (-1, 0, 0).
+     */
+    public static Vector3 NX = Vector3.X(-1);
+
+    /**
+     * A static constant representing the unit vector along the negative Z-axis (0, 0, -1).
+     */
+    public static Vector3 NZ = Vector3.Z(-1);
+
+    /**
+     * A static constant representing the zero vector (0, 0, 0).
+     */
+    public static Vector3 ZERO = new Vector3();
+    /**
+     * A static constant representing the unit vector (1, 1, 1).
+     */
+    public static Vector3 UNIT = new Vector3(1, 1, 1);
 }

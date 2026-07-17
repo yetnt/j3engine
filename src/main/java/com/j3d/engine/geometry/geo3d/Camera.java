@@ -53,10 +53,10 @@ public class Camera {
      * looking along the world's Z-axis. It uses a default projection plane.
      */
     public Camera() {
-        this.position = new Vector3(0, 0, 0);
+        this.position = Vector3.ZERO;
         this.rotation = new Rotation(0, 0, 0);
         // A default focal length (e.g., 500). e_x and e_y are 0 for a standard projection.
-        this.projectionPlane = new Vector3(0, 0, 2);
+        this.projectionPlane = Vector3.Z(2);
     }
 
     /**
@@ -134,7 +134,7 @@ public class Camera {
                                 rotation.camToWorld().rotPitch()
                         ),
                         // The local forward vector
-                        new Vector3(0, 0, 1)
+                        Vector3.Z
                 )
         ).normalize();
     }
@@ -153,7 +153,7 @@ public class Camera {
                                 rotation.camToWorld().rotPitch()
                         ),
                         // The local right vector
-                        new Vector3(1, 0, 0)
+                        Vector3.X
                 )
         ).normalize();
     }
@@ -172,7 +172,7 @@ public class Camera {
                                 rotation.camToWorld().rotPitch()
                         ),
                         // The local up vector
-                        new Vector3(0, 1, 0)
+                        Vector3.Y
                 )
         ).normalize();
     }

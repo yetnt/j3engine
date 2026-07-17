@@ -64,19 +64,17 @@ public class Solids {
      * @param radius The radius of the prism's base.
      * @param sideFaceAmts The number of sides for the prism's base (e.g., 3 for a triangular prism, 4 for a square prism).
      * @param parentLayer The layer to which this prism will be added in the scene.
-     * @param centres A {@link SamePair} containing the {@link Vector3} coordinates for the bottom and top centers of the prism.
-     * @param planes A {@link SamePair} containing the {@link Plane} objects defining the bottom and top planes of the prism.
-     * @return A {@link Thing} object representing the created prism.
+     * @param planes `SamePair` of {@link AxisPlane} objects, where the first plane defines the bottom face and the second defines the top face.
      * <p>
      * This method generates a prism by creating two n-gons (defined by `sideFaceAmts` and `radius`)
      * on the specified bottom and top planes, and then connecting their corresponding vertices to form the side faces.
      */
 
-    public static Thing prism(int radius, int sideFaceAmts, Layer parentLayer, SamePair<Vector3> centres, SamePair<Plane> planes) {
-        Vector3 bottomCentre = centres.first;
-        Vector3 topCentre = centres.second;
-        Plane bottomPlane = planes.first;
-        Plane topPlane = planes.second;
+    public static Thing prism(int radius, int sideFaceAmts, Layer parentLayer, SamePair<AxisPlane> planes) {
+        Vector3 bottomCentre = planes.first.origin();
+        Vector3 topCentre = planes.second.origin();
+        AxisPlane bottomAxisPlane = planes.first;
+        AxisPlane topAxisPlane = planes.second;
 
         GPoint centre = new GPoint(bottomCentre);
         GPoint centre2 = new GPoint(topCentre);
@@ -85,7 +83,7 @@ public class Solids {
         ArrayList<GPoint> points = Sampler.ngon(
                 centre.getPivot(),
                 radius,
-                bottomPlane,
+                bottomAxisPlane,
                 sideFaceAmts,
                 p -> {
                     GPoint point = new GPoint(p);
@@ -102,7 +100,7 @@ public class Solids {
         ArrayList<GPoint> points2 = Sampler.ngon(
                 centre2.getPivot(),
                 radius,
-                topPlane,
+                topAxisPlane,
                 sideFaceAmts,
                 p -> {
                     GPoint point = new GPoint(p);

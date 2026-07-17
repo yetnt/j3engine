@@ -123,14 +123,14 @@ public class SceneManager {
         for (int i = 0; i <= amt; i++) {
             this.drawLine3D(
                     g,
-                    vXA.add(new Vector3(i * jump, 0, 0)),
-                    vXB.add(new Vector3(i * jump, 0, 0)),
+                    vXA.add(Vector3.X(i * jump)),
+                    vXB.add(Vector3.X(i * jump)),
                     camera
             );
             this.drawLine3D(
                     g,
-                    vZA.add(new Vector3(0, 0, i * jump)),
-                    vZB.add(new Vector3(0, 0, i * jump)),
+                    vZA.add(Vector3.Z(i * jump)),
+                    vZB.add(Vector3.Z(i * jump)),
                     camera
             );
         }

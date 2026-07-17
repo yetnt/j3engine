@@ -1,7 +1,7 @@
 package com.j3d.engine.interact.cmd.commands;
 
 import com.j3d.Static;
-import com.j3d.engine.geometry.geo3d.Plane;
+import com.j3d.engine.geometry.geo3d.AxisPlane;
 import com.j3d.engine.geometry.geo3d.Sampler;
 import com.j3d.engine.geometry.geo3d.Solids;
 import com.j3d.engine.geometry.geo3d.Thing;
@@ -57,7 +57,7 @@ import static com.j3d.Static.sceneManager;
  *
  * @author Lehlogonolo Poole
  * @see Command
- * @see Plane
+ * @see AxisPlane
  * @see Vector3
  * @see Thing
  * @see KeyedStatefulCommand
@@ -73,7 +73,7 @@ public class PrismCmd extends Command implements KeyedStatefulCommand {
     protected ArrayList<J3Key> keys = new ArrayList<>();
 
     Vector3 bottomFaceCenter, topFaceCenter;
-    Plane bottom, top;
+    AxisPlane bottom, top;
     int radius = 5;
     int sides = 3;
     UUID overlapId = UUID.randomUUID();
@@ -217,8 +217,8 @@ public class PrismCmd extends Command implements KeyedStatefulCommand {
             topPlaneV2 = (args.length > 5) ? ((Vector3) args[5]) : bottomPlaneV2;
         }
 
-        bottom = new Plane(bottomPlaneV1, bottomPlaneV2);
-        top = new Plane(topPlaneV1, topPlaneV2);
+        bottom = new AxisPlane(bottomFaceCenter, bottomPlaneV1, bottomPlaneV2);
+        top = new AxisPlane(topFaceCenter, topPlaneV1, topPlaneV2);
 
         // check for unsafe.
         TaggedArgValue<Boolean> unsafe =

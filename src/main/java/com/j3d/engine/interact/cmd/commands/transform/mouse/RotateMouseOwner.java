@@ -2,8 +2,8 @@ package com.j3d.engine.interact.cmd.commands.transform.mouse;
 
 import com.j3d.Static;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
+import com.j3d.engine.geometry.geo3d.AxisPlane;
 import com.j3d.engine.geometry.geo3d.Sampler;
-import com.j3d.engine.geometry.geo3d.Plane;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.commands.transform.RotateSelection;
 import com.j3d.engine.interact.cmd.commands.transform.handles.Handle;
@@ -102,7 +102,7 @@ public class RotateMouseOwner extends TransformMouseOwner {
             case null, default -> v.cross(w).normalize();
         };
 
-        ArrayList<Vector3> circle = Sampler.ngon(center, 10, new Plane(u, v), 64);
+        ArrayList<Vector3> circle = Sampler.ngon(center, 10, new AxisPlane(center, u, v), 64);
 
         for (int i = 0; i < circle.size(); i++) {
             Vector3 a = circle.get(i);
