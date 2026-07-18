@@ -81,7 +81,6 @@ public class Solids {
 
         Random random = new Random();
         ArrayList<GPoint> points = Sampler.ngon(
-                centre.getPivot(),
                 radius,
                 bottomAxisPlane,
                 sideFaceAmts,
@@ -98,7 +97,6 @@ public class Solids {
                 }
         );
         ArrayList<GPoint> points2 = Sampler.ngon(
-                centre2.getPivot(),
                 radius,
                 topAxisPlane,
                 sideFaceAmts,

@@ -32,6 +32,20 @@ public record NormalPlane(
         return new AxisPlane(origin, x, y);
     }
 
+    /**
+     * Checks if a given 3D point lies on this plane.
+     * @param pos The 3D point to check.
+     * @return {@code true} if the point is on the plane (within a small epsilon tolerance), {@code false} otherwise.
+     */
+    public boolean onPlane(Vector3 pos) {
+        return Math.abs(pos.dot(normal)) < EPSILON;
+    }
+
+    /**
+     * Returns a {@code SamePair} containing two references to this {@code NormalPlane}.
+     * This can be useful in contexts where a pair of identical objects is required.
+     * @return A {@code SamePair} with both elements being this {@code NormalPlane}.
+     */
     public SamePair<NormalPlane> pair() {
         return new SamePair<>(this, this);
     }
@@ -114,4 +128,6 @@ public record NormalPlane(
                 ", normal=" + normal +
                 '}';
     }
+
+    public static final double EPSILON = 1e-9;
 }

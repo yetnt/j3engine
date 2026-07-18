@@ -102,7 +102,7 @@ public class RotateMouseOwner extends TransformMouseOwner {
             case null, default -> v.cross(w).normalize();
         };
 
-        ArrayList<Vector3> circle = Sampler.ngon(center, 10, new AxisPlane(center, u, v), 64);
+        ArrayList<Vector3> circle = Sampler.ngon(10, new AxisPlane(center, u, v), 64);
 
         for (int i = 0; i < circle.size(); i++) {
             Vector3 a = circle.get(i);

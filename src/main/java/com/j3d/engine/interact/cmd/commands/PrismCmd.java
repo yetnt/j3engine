@@ -245,14 +245,12 @@ public class PrismCmd extends Command implements KeyedStatefulCommand {
             );
             // Draw 2 n-gons on the top and bottom face.
             ArrayList<Vector3> bottomFace = Sampler.ngon(
-                    bottomFaceCenter,
                     radius,
                     bottom,
                     sides
             );
             Sampler.joinNGonArbitaryVectors(bottomFace, g);
             ArrayList<Vector3> topFace = Sampler.ngon(
-                    topFaceCenter,
                     radius,
                     top,
                     sides
@@ -288,7 +286,6 @@ public class PrismCmd extends Command implements KeyedStatefulCommand {
                 radius,
                 sides,
                 l,
-                new SamePair<>(bottomFaceCenter, topFaceCenter),
                 new SamePair<>(bottom, top)
         );
         finish(label);

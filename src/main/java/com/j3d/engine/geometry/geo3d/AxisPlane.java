@@ -12,6 +12,7 @@ import java.util.Objects;
  * @param origin The point on the plane
  * @param v1 The first orthogonal vector
  * @param v2 The second orthogonal vector
+ * @implNote To check if a point lies on this specified plane, use {@link NormalPlane#onPlane(Vector3)}
  */
 public record AxisPlane(
         Vector3 origin,
