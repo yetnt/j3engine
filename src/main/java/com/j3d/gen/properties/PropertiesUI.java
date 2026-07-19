@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.UUID;
 
-import static com.j3d.StaticRefs.getSceneManager();
+import static com.j3d.StaticRefs.getSceneManager;
 
 public class PropertiesUI {
 
@@ -68,10 +68,10 @@ public class PropertiesUI {
                             if (o instanceof GPoint) filtered.add((T) o);
                         }
                         case THING -> filtered.add(
-                                (T) sceneManager.findObjectParent(o)
+                                (T) getSceneManager().findObjectParent(o)
                         );
                         case LAYER -> filtered.add(
-                                (T) sceneManager.findThingLayer(sceneManager.findObjectParent(o))
+                                (T) getSceneManager().findThingLayer(getSceneManager().findObjectParent(o))
                         );
                     }
                 }

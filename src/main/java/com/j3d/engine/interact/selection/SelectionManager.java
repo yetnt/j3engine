@@ -8,7 +8,7 @@ import com.j3d.engine.geometry.geo3d.Thing;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
-import static com.j3d.StaticRefs.getSceneManager();
+import static com.j3d.StaticRefs.getSceneManager;
 
 /**
  * Manages the selection of GObjects within a collection of Layers and Things.
@@ -49,7 +49,7 @@ public class SelectionManager {
                             if (selectionQuery.has(obj, true)) selected.add(obj);
                         }
                         case SUBTRACT -> {
-                            boolean wasSelected = sceneManager.getSelected().contains(obj);
+                            boolean wasSelected = getSceneManager().getSelected().contains(obj);
                             boolean inBox = selectionQuery.has(obj, true);
 
                             if (wasSelected && !inBox)
@@ -57,10 +57,10 @@ public class SelectionManager {
                         }
                         case UNION -> {
                             // pre-add the current selected objects.
-                            sceneManager.getSelected().stream()
+                            getSceneManager().getSelected().stream()
                                     .filter(o -> !selected.contains(o))
                                     .forEach(selected::add);
-                            boolean wasSelected = sceneManager.getSelected().contains(obj);
+                            boolean wasSelected = getSceneManager().getSelected().contains(obj);
                             boolean inBox = selectionQuery.has(obj, true);
 
                             if (!wasSelected && inBox)

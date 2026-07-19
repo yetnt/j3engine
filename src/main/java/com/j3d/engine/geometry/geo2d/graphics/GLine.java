@@ -20,8 +20,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.j3d.StaticRefs.getCamera();
-import static com.j3d.StaticRefs.getSceneManager();
+import static com.j3d.StaticRefs.getCamera;
+import static com.j3d.StaticRefs.getSceneManager;
 
 /**
  * GLine represents, you guessed it, a line.
@@ -75,7 +75,7 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
     public void draw(Graphics2D graphics2D) {
         super.draw(graphics2D);
         if (deletedState) return;
-        if (sceneManager.getSelected().contains(this)) {
+        if (getSceneManager().getSelected().contains(this)) {
             drawSelected(graphics2D);return;
         }
         graphics2D.setColor(col);
@@ -87,10 +87,10 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
 
     public void swingDraw(Graphics2D graphics2D) {
         graphics2D.drawLine(
-                pointA.getPivot().toPoint(camera).toScreen(sceneManager).x,
-                pointA.getPivot().toPoint(camera).toScreen(sceneManager).y,
-                pointB.getPivot().toPoint(camera).toScreen(sceneManager).x,
-                pointB.getPivot().toPoint(camera).toScreen(sceneManager).y
+                pointA.getPivot().toPoint(getCamera()).toScreen(getSceneManager()).x,
+                pointA.getPivot().toPoint(getCamera()).toScreen(getSceneManager()).y,
+                pointB.getPivot().toPoint(getCamera()).toScreen(getSceneManager()).x,
+                pointB.getPivot().toPoint(getCamera()).toScreen(getSceneManager()).y
         );
     }
 
@@ -254,7 +254,7 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
                 point.detach(this);
             }
         });
-        sceneManager.hasParent(this);
+        getSceneManager().hasParent(this);
         pointA = null;
         pointB = null;
         return pointsList;

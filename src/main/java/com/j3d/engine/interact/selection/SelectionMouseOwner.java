@@ -11,7 +11,7 @@ import com.j3d.ui.generic.CursorManager;
 import java.awt.event.MouseEvent;
 
 import static com.j3d.StaticRefs.getLog;
-import static com.j3d.StaticRefs.getSceneManager();
+import static com.j3d.StaticRefs.getSceneManager;
 import static com.j3d.ui.engine.EngineFrame.*;
 import com.j3d.engine.react.events.*;
 
@@ -64,7 +64,7 @@ public class SelectionMouseOwner extends MouseOwner {
         mousePos = null;
         if (selectionArea[0] != null && selectionArea[1] != null) {
             StaticRefs.getLog().println("Final Selection Area: " + selectionArea[0] + " to " + selectionArea[1]);
-            getLog().println("Selected " + sceneManager.getSelected().size() + " objects.");
+            getLog().println("Selected " + getSceneManager().getSelected().size() + " objects.");
             PropertiesPanel.propertiesPanel();
         }
     }

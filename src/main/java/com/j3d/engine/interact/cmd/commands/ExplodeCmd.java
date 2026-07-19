@@ -20,8 +20,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
-import static com.j3d.StaticRefs.getSceneManager();
-
 /**
  * A command which makes the explodes the geometry structure of whatever.
  * <p>
@@ -93,7 +91,7 @@ public class ExplodeCmd extends Command{
         TaggedArgValue<String> t1 =
                 TaggedArgUtil.getTaggedArg(taggedArgs, "thing", String.class);
         if (t1 != null) {
-            Thing t = sceneManager.findThing(t1.value);
+            Thing t = StaticRefs.getSceneManager().findThing(t1.value);
             if (t == null) {
                 logLabel.setText("No thing with the name \"" + t1.value + "\" exists.");
                 return;
@@ -107,7 +105,7 @@ public class ExplodeCmd extends Command{
         TaggedArgValue<String> t2 =
                 TaggedArgUtil.getTaggedArg(taggedArgs, "layer", String.class);
         if (t2 != null) {
-            Layer l = sceneManager.layers.find(t2.value);
+            Layer l = StaticRefs.getSceneManager().layers.find(t2.value);
             if (l == null) {
                 logLabel.setText("No layer with the name \"" + t2.value + "\" exists.");
                 return;
@@ -122,7 +120,7 @@ public class ExplodeCmd extends Command{
     }
 
     private void explodeAll() {
-        sceneManager.layers.forEach(layer -> {
+        StaticRefs.getSceneManager().layers.forEach(layer -> {
             layer.forEach(this::explode);
         });
         addHistory("all-layers");
@@ -140,7 +138,7 @@ public class ExplodeCmd extends Command{
                             points.addAll(tri.explode(thing));
                         }
                 );
-        sceneManager.select(thing);
+        StaticRefs.getSceneManager().select(thing);
     }
 
     private void addHistory(String operation) {

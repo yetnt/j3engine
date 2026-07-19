@@ -11,7 +11,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import static com.j3d.StaticRefs.getCamera();
+import static com.j3d.StaticRefs.getCamera;
 import static com.j3d.engine.interact.input.keyboard.KeyBindings.commandPaletteFocusOwner;
 import static com.j3d.ui.engine.EngineFrame.COMMAND_PALETTE;
 
@@ -53,9 +53,9 @@ public enum GlobalKeybinds {
                         public void actionPerformed(ActionEvent e) {
                             if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
-                            camera.setPosition(
-                                    camera.getPosition().add(
-                                            camera.getForward().mult(mvSpeed)
+                            getCamera().setPosition(
+                                    getCamera().getPosition().add(
+                                            getCamera().getForward().mult(mvSpeed)
                                     )
                             );
                             StaticRefs.getMainFrame().repaint();
@@ -75,9 +75,9 @@ public enum GlobalKeybinds {
                         public void actionPerformed(ActionEvent e) {
                             if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
-                            camera.setPosition(
-                                    camera.getPosition().sub(
-                                            camera.getForward().mult(mvSpeed)
+                            getCamera().setPosition(
+                                    getCamera().getPosition().sub(
+                                            getCamera().getForward().mult(mvSpeed)
                                     )
                             );
                             StaticRefs.getMainFrame().repaint();
@@ -97,9 +97,9 @@ public enum GlobalKeybinds {
                         public void actionPerformed(ActionEvent e) {
                             if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
-                            camera.setPosition(
-                                    camera.getPosition().sub(
-                                            camera.getRight().mult(mvSpeed)
+                            getCamera().setPosition(
+                                    getCamera().getPosition().sub(
+                                            getCamera().getRight().mult(mvSpeed)
                                     )
                             );
                             StaticRefs.getMainFrame().repaint();
@@ -119,9 +119,9 @@ public enum GlobalKeybinds {
                         public void actionPerformed(ActionEvent e) {
                             if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
-                            camera.setPosition(
-                                    camera.getPosition().add(
-                                            camera.getRight().mult(mvSpeed)
+                            getCamera().setPosition(
+                                    getCamera().getPosition().add(
+                                            getCamera().getRight().mult(mvSpeed)
                                     )
                             );
                             StaticRefs.getMainFrame().repaint();
@@ -141,9 +141,9 @@ public enum GlobalKeybinds {
                         public void actionPerformed(ActionEvent e) {
                             if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
-                            camera.setPosition(
-                                    camera.getPosition().add(
-                                            camera.getUp().mult(mvSpeed)
+                            getCamera().setPosition(
+                                    getCamera().getPosition().add(
+                                            getCamera().getUp().mult(mvSpeed)
                                     )
                             );
                             StaticRefs.getMainFrame().repaint();
@@ -163,9 +163,9 @@ public enum GlobalKeybinds {
                         public void actionPerformed(ActionEvent e) {
                             if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
-                            camera.setPosition(
-                                    camera.getPosition().sub(
-                                            camera.getUp().mult(mvSpeed)
+                            getCamera().setPosition(
+                                    getCamera().getPosition().sub(
+                                            getCamera().getUp().mult(mvSpeed)
                                     )
                             );
                             StaticRefs.getMainFrame().repaint();

@@ -9,7 +9,7 @@ import com.j3d.ui.SafeJLabel;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.j3d.StaticRefs.getSceneManager();
+import static com.j3d.StaticRefs.getSceneManager;
 
 /**
  * A no-arg subcommand of {@link DebugCmd} which simply toggles the normal of a selected triangle or triangles.
@@ -38,13 +38,13 @@ public class TriangleCmd extends Subcommand {
     public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(logLabel, aliasUsed, args, taggedArgs);
 
-        if (sceneManager.getSelected().isEmpty()) {
+        if (getSceneManager().getSelected().isEmpty()) {
             logLabel.setText("No objects selected. Normals were cleared instead");
             StaticConfig.setShowNormals(false);
             return;
         }
 
-        List<GTri> selected = sceneManager.getSelected()
+        List<GTri> selected = getSceneManager().getSelected()
                 .stream()
                 .filter(t -> t instanceof GTri)
                 .map(t -> (GTri)t)

@@ -12,8 +12,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import static com.j3d.StaticRefs.getCamera();
-import static com.j3d.StaticRefs.getSceneManager();
+import static com.j3d.StaticRefs.getCamera;
+import static com.j3d.StaticRefs.getSceneManager;
 
 /**
  * A subcommand of {@link MeasureCmd} that calculates and displays the distance between two points.
@@ -71,16 +71,16 @@ public class DistanceCmd extends Subcommand {
 
     private void ghost(Vector3 A, Vector3 B, double d) {
         UUID id = UUID.randomUUID();
-        sceneManager.scheduleOverlap(id, (c) -> {
+        getSceneManager().scheduleOverlap(id, (c) -> {
             if (!draw) return;
             c.setColor(new Color(206, 0, 0));
             c.setStroke(new BasicStroke(1.8f));
-            sceneManager.drawLine3D(
-                    c, A, B, camera
+            getSceneManager().drawLine3D(
+                    c, A, B, getCamera()
             );
-            sceneManager.drawText3D(
+            getSceneManager().drawText3D(
                     c, A.add(B).div(2), String.format("%.2f units long", d),
-                    camera
+                    getCamera()
             );
         });
         // schedule swing worker to remove thread after its slept for 5 seconds
