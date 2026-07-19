@@ -42,6 +42,12 @@ public class ScreenPoint extends BasePoint<Integer> {
         return new CartesianPoint(adjustedX, adjustedY);
     }
 
+    public CartesianPoint toPointWithProps(double scale, Dim size) {
+        double adjustedX = ((x)- size.width / 2.0) / scale;
+        double adjustedY = (size.height / 2.0 - y) / scale;
+        return new CartesianPoint(adjustedX, adjustedY);
+    }
+
     /**
      * Returns the ScreenPoint as {@link Point}
      * @return A Point

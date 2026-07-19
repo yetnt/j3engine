@@ -1,9 +1,11 @@
 package com.j3d.engine.geometry.geo3d;
 
+import com.j3d.engine.geometry.geo2d.CartesianPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.utility.generic.SamePair;
 
 import java.util.Objects;
+import java.util.Vector;
 
 /**
  * A plane defined by an origin point and two orthogonal vectors (v1 and v2) that lie within the plane.
@@ -19,6 +21,12 @@ public record AxisPlane(
         Vector3 v1,
         Vector3 v2
 ) {
+
+    public Vector3 toWorld(CartesianPoint point) {
+        return origin
+                .add(v1.scale(point.x))
+                .add(v2.scale(point.y));
+    }
     /**
      * Normalises the vectors
      * @return A new plane with the normalised vectors

@@ -62,6 +62,9 @@ public class ToolboxButtons {
             // Toggle debug mode
             StaticRefs.getDebugPanel().toggleHidden();
         });
+        register("2D Grid", e -> {
+            StaticRefs.getGrid2DPanel().toggleHidden();
+        });
 
         // another for exmaple
         register("Toggle Spinner", e -> {

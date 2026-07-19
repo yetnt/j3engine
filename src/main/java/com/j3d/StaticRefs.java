@@ -25,6 +25,7 @@ import com.j3d.ui.engine.FloatingPanel;
 import com.j3d.ui.engine.J3DPanel;
 import com.j3d.ui.engine.floating.DebugPanel;
 import com.j3d.ui.engine.EngineFrame;
+import com.j3d.ui.engine.floating.grid2d.Grid2DPanel;
 import com.j3d.ui.engine.floating.tree.LayerTree;
 import com.j3d.ui.HoverJLabel;
 import com.j3d.ui.engine.floating.properties.PropertiesPanel;
@@ -212,7 +213,7 @@ public class StaticRefs {
      * The Project File V1 instance. Used for reading and writing project files in version 1 format.
      * Lazily initialised.
      */
-    private static PF1 projectFileV1 = new PF1();
+    private static PF1 projectFileV1;
     public static PF1 getProjectFileV1() {
         if (projectFileV1 == null) {
             projectFileV1 = new PF1();
@@ -223,7 +224,7 @@ public class StaticRefs {
      * The Project File V2 instance. Used for reading and writing project files in version 2 format.
      * Lazily initialised.
      */
-    private static PF2 projectFileV2 = new PF2();
+    private static PF2 projectFileV2;
     public static PF2 getProjectFileV2() {
         if (projectFileV2 == null) {
             projectFileV2 = new PF2();
@@ -242,6 +243,14 @@ public class StaticRefs {
             layerTree = new LayerTree();
 
         return layerTree;
+    }
+
+    private static Grid2DPanel grid2DPanel;
+    public static Grid2DPanel getGrid2DPanel() {
+        if (grid2DPanel == null)
+            grid2DPanel = new Grid2DPanel();
+
+        return grid2DPanel;
     }
 
     /**

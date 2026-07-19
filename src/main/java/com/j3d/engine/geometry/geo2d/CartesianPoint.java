@@ -2,6 +2,7 @@ package com.j3d.engine.geometry.geo2d;
 
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.BasePoint;
+import com.j3d.engine.geometry.Dim;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.StaticConfig;
@@ -63,14 +64,38 @@ public class CartesianPoint extends BasePoint<Double> {
      * @return A ScreenPoint
      */
     public ScreenPoint toScreen(SceneManager sceneManager) {
-        double adjustedX = x * Settings.sceneProperties.scale.getValue();
-        double adjustedY = y * Settings.sceneProperties.scale.getValue();
+//        double adjustedX = x * Settings.sceneProperties.scale.getValue();
+//        double adjustedY = y * Settings.sceneProperties.scale.getValue();
+//
+//        int screenX = (int) (adjustedX + (double) sceneManager.screenSize.width / 2);
+//        int screenY = (int) ((double) sceneManager.screenSize.height / 2 - adjustedY);
+//
+//
+//        return new ScreenPoint(screenX - StaticConfig.OFFSET_X, screenY);
 
-        int screenX = (int) (adjustedX + (double) sceneManager.screenSize.width / 2);
-        int screenY = (int) ((double) sceneManager.screenSize.height / 2 - adjustedY);
+        ScreenPoint s = toScreenWithProps(
+                Settings.sceneProperties.scale.getValue(),
+                sceneManager.screenSize
+        );
+        return new ScreenPoint(s.x - StaticConfig.OFFSET_X, s.y);
+    }
 
 
-        return new ScreenPoint(screenX - StaticConfig.OFFSET_X, screenY);
+    /**
+     * Converts the Cartesian Point to a {@link ScreenPoint} using provided scale and dimension properties.
+     * @param scale The scaling factor to apply to the Cartesian coordinates.
+     * @param size The dimensions (width and height) of the screen or target area.
+     * @return A ScreenPoint representing the converted coordinates.
+     */
+    public ScreenPoint toScreenWithProps(double scale, Dim size) {
+        double adjustedX = x * scale;
+        double adjustedY = y * scale;
+
+        int screenX = (int) (adjustedX + (double) size.width / 2);
+        int screenY = (int) ((double) size.height / 2 - adjustedY);
+
+
+        return new ScreenPoint(screenX, screenY);
     }
 
     /**
@@ -134,5 +159,9 @@ public class CartesianPoint extends BasePoint<Double> {
         double dx = this.x - other.x;
         double dy = this.y - other.y;
         return dx * dx + dy * dy;
+    }
+
+    public String friendlyString() {
+        return String.format("(%.2f, %.2f)", x, y);
     }
 }
