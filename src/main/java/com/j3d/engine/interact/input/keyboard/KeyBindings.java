@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.input.keyboard;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.interact.selection.SelectionUtils;
 import com.j3d.ui.engine.CommandPalette;
@@ -125,19 +125,19 @@ public class KeyBindings {
      */
     public void registerJ3Key(J3Key key) {
         if (keys.contains(key)) {
-            Static.getLog().error("Attempted to add duplicate J3Key: " + key.getName());
+            StaticRefs.getLog().error("Attempted to add duplicate J3Key: " + key.getName());
             return;
         }
         if (prohibited.contains(key.getKeyStroke())) {
-            Static.getLog().error("Attempted to add prohibited key binding: " + key.getKeyStroke());
+            StaticRefs.getLog().error("Attempted to add prohibited key binding: " + key.getKeyStroke());
             return;
         }
         if (keys.stream().anyMatch(k -> k.getKeyStroke().equals(key.getKeyStroke()))) {
-            Static.getLog().error("Attempted to add duplicate key binding: " + key.getKeyStroke());
+            StaticRefs.getLog().error("Attempted to add duplicate key binding: " + key.getKeyStroke());
             return;
         }
         if (keys.stream().anyMatch(k -> k.getName().equals(key.getName()))) {
-            Static.getLog().error("Attempted to add duplicate key name: " + key.getName());
+            StaticRefs.getLog().error("Attempted to add duplicate key name: " + key.getName());
             return;
         }
         rJ3Key(key);
@@ -244,12 +244,12 @@ public class KeyBindings {
      */
     public UpdatedJ3Key rebindJ3KeyKeystroke(KeyStroke old, J3Key key) {
         if (prohibited.contains(key.getKeyStroke())) {
-            Static.getLog().error("Attempted to add prohibited key binding: " + key.getKeyStroke());
+            StaticRefs.getLog().error("Attempted to add prohibited key binding: " + key.getKeyStroke());
             key.setKeyStroke(old);
             return new UpdatedJ3Key();
         }
         if (childModifiersClash(key)) {
-            Static.getLog().error("Attempted to update a leader key with a new modifier that would cause a collision with a child key.");
+            StaticRefs.getLog().error("Attempted to update a leader key with a new modifier that would cause a collision with a child key.");
             key.setKeyStroke(old);
             return new UpdatedJ3Key();
         }
@@ -307,7 +307,7 @@ public class KeyBindings {
     };
 
     public static boolean commandPaletteFocusOwner(CommandPalette cmdP) {
-        return cmdP.inputField.isFocusOwner() && !Static.mainPanel.isFocusOwner();
+        return cmdP.inputField.isFocusOwner() && !StaticRefs.mainPanel.isFocusOwner();
     }
 
     /**

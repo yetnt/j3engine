@@ -4,7 +4,7 @@
  */
 package com.j3d.ui.engine.floating.properties.panels;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.gen.properties.Property;
 import com.j3d.ui.generic.J3DTheme;
@@ -13,7 +13,7 @@ import com.j3d.utility.generators.JLabelRichText;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import static com.j3d.Static.mainFrame;
+import static com.j3d.StaticRefs.mainFrame;
 
 /**
  *
@@ -117,7 +117,7 @@ public class ColourProperty extends javax.swing.JPanel implements PropertyPanel<
 
     private void setBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setBtnActionPerformed
         if (CommandsManager.commandIsRunning()) {
-            Static.hoverLabel.error("Finish running command first");
+            StaticRefs.hoverLabel.error("Finish running command first");
             return;
         }
         Color chosen = JColorChooser.showDialog(

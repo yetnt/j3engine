@@ -4,7 +4,7 @@
  */
 package com.j3d.ui.engine.floating.properties.panels;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
@@ -53,7 +53,7 @@ public class ObjectProperty<T extends GObject> extends JPanel implements Propert
                 public void mouseClicked(MouseEvent e) {
                     if (e.getClickCount() == 2) {
                         // add the UUID to the command palette
-                        Static.commandParser.injectArgument(
+                        StaticRefs.commandParser.injectArgument(
                                 type.second
                         );
                     }

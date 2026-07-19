@@ -1,6 +1,6 @@
 package com.j3d.engine.draw.tris;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.draw.tris.methods.CamDepthSort;
 import com.j3d.engine.draw.tris.methods.CamDistSort;
 import com.j3d.engine.react.events.EventPayload;
@@ -59,7 +59,7 @@ public class TriListener implements EventListener {
         this.triID = tri.getId();
         this.lastPosition = tri.getPivot();
         this.tri = tri;
-        this.lastDistanceFromCamera = tri.getPivot().sub(Static.camera.getPosition()).magnitude();
+        this.lastDistanceFromCamera = tri.getPivot().sub(StaticRefs.camera.getPosition()).magnitude();
         this.depth = tri.calcDepth();
     }
 
@@ -84,7 +84,7 @@ public class TriListener implements EventListener {
             return;
 
         // When a tri is updated, recalculate its distance from the camera to ensure proper rendering order.
-        Camera cam = Static.camera;
+        Camera cam = StaticRefs.camera;
         GTri tri = (GTri) properties.emitter;
 
         this.lastPosition = tri.getPivot();

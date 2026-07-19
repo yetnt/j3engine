@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.cmd.commands.orbit;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.geometry.geo3d.rot.Rotation;
 import com.j3d.engine.interact.cmd.CommandsManager;
@@ -60,8 +60,8 @@ public class OrbitCmd extends Command implements StatefulCommand<Pair<Vector3, R
 
         run(this, "orbitCmd",
                 new Pair<>(
-                        Static.camera.getPosition().copy(),
-                        Static.camera.getRotation().copy()
+                        StaticRefs.camera.getPosition().copy(),
+                        StaticRefs.camera.getRotation().copy()
                 ), logLabel);
     }
 
@@ -69,8 +69,8 @@ public class OrbitCmd extends Command implements StatefulCommand<Pair<Vector3, R
     public void onStart(Pair<Vector3, Rotation> object, SafeJLabel label) {
         orbitMouseOwner.requestOwnership();
         CursorManager.set(CursorNames.HAND_GRAB);
-        Static.mainPanel.repaint();
-        Static.sceneManager.scheduleOverlap(orbitCmdUUID, c -> label.setText(
+        StaticRefs.mainPanel.repaint();
+        StaticRefs.sceneManager.scheduleOverlap(orbitCmdUUID, c -> label.setText(
                 "Use the mouse to orbit the camera around. | "+SafeJLabel.EMPH+": "
                         + SafeJLabel.EMPH + SafeJLabel.EMPH,
                 "Sensitivity",
@@ -78,20 +78,20 @@ public class OrbitCmd extends Command implements StatefulCommand<Pair<Vector3, R
                         .font(J3DTheme.TEXT_SECONDARY.color().brighter(), "8"),
                 " units per mouse drag"
         ));
-        Static.sceneManager.layers.stream()
+        StaticRefs.sceneManager.layers.stream()
                 .flatMap(Layer::usableLayersStream)
                 .forEach(t -> t.getIdentity().add(orbitCmdUUID, (t2, d) -> {
-                    Static.camera.lookAt(t2.getCentroid());
+                    StaticRefs.camera.lookAt(t2.getCentroid());
                 }));
     }
 
     public void cleanup(SafeJLabel label) {
         EngineFrame.setMouseOwner(null);
         CursorManager.setDefault();
-        Static.sceneManager.removeOverlap(orbitCmdUUID);
+        StaticRefs.sceneManager.removeOverlap(orbitCmdUUID);
         label.clear();
         CommandsManager.clearCurrent();
-        Static.sceneManager.layers.stream()
+        StaticRefs.sceneManager.layers.stream()
                 .flatMap(Layer::usableLayersStream)
                 .forEach(t -> t.getIdentity().remove(orbitCmdUUID));
     }
@@ -99,16 +99,16 @@ public class OrbitCmd extends Command implements StatefulCommand<Pair<Vector3, R
     @Override
     public void onEnter(ActionEvent e, Pair<Vector3, Rotation> object, SafeJLabel label) {
         cleanup(label);
-        Static.getLog().println(
-                "Camera was rotated from: pos-" + object.first.toCommandPaletteString() + " rot-" + object.second.toLogString() + " to " + Static.camera.getRotation().toLogString()
+        StaticRefs.getLog().println(
+                "Camera was rotated from: pos-" + object.first.toCommandPaletteString() + " rot-" + object.second.toLogString() + " to " + StaticRefs.camera.getRotation().toLogString()
         );
         // done
     }
 
     @Override
     public  void onEsc(ActionEvent e, Pair<Vector3, Rotation> object, SafeJLabel label) {
-        Static.camera.setPosition(object.first);
-        Static.camera.setRotation(object.second);
+        StaticRefs.camera.setPosition(object.first);
+        StaticRefs.camera.setRotation(object.second);
         cleanup(label);
     }
 

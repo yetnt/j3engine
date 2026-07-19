@@ -1,6 +1,6 @@
 package com.j3d.threads;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.errors.ErrorHandler;
 import com.j3d.ui.dialog.Spinner;
 import com.j3d.utility.generic.TriConsumer;
@@ -38,7 +38,7 @@ public class LongTask<T> {
     }
 
      public void run() {
-         Spinner throbber = new Spinner(Static.mainFrame, true);
+         Spinner throbber = new Spinner(StaticRefs.mainFrame, true);
 
          SwingWorker<Void, Void> worker = new SwingWorker<>() {
              T o;
@@ -63,7 +63,7 @@ public class LongTask<T> {
                      );
                  }
                  throbber.dispose();
-                 Static.mainFrame.repaint();
+                 StaticRefs.mainFrame.repaint();
              }
          };
 

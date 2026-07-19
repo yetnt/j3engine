@@ -1,36 +1,26 @@
 package com.j3d.engine.interact.cmd.commands;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.Thing;
-import com.j3d.engine.geometry.geo3d.matrix.Vector3;
-import com.j3d.engine.interact.cmd.CommandParser;
-import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.args.TaggedArgUtil;
-import com.j3d.engine.interact.cmd.args.TypedArg;
-import com.j3d.engine.interact.cmd.base.SemiStatefulCommand;
-import com.j3d.engine.interact.cmd.base.conditions.SelectionPreCondition;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
-import com.j3d.engine.interact.selection.SelectionManager;
 import com.j3d.ui.dialog.AreYouSure;
 import com.j3d.utility.generators.JLabelRichText;
 
-import java.lang.reflect.Array;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import static com.j3d.Static.sceneManager;
+import static com.j3d.StaticRefs.sceneManager;
 
 /**
  * A command which makes the explodes the geometry structure of whatever.
@@ -79,7 +69,7 @@ public class ExplodeCmd extends Command{
     public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(logLabel, aliasUsed, args, taggedArgs);
         AreYouSure aysDialogue = new AreYouSure(
-                Static.mainFrame, true // sets to modal
+                StaticRefs.mainFrame, true // sets to modal
                 , JLabelRichText.htmlOf(
                         new JLabelRichText(
                                 "This command CANNOT be undone."

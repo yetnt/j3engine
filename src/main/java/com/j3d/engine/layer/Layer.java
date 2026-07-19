@@ -1,6 +1,6 @@
 package com.j3d.engine.layer;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
@@ -52,7 +52,7 @@ public class Layer extends ArrayList<Thing> implements Interactable, HasProperti
 
     public static final String BACKGROUND_ID = "BACKG";
     private final BiConsumer<Layer, DefaultMutableTreeNode> onSelectCallback = (o, t) -> {
-        Static.getLog().println("Layer " + o.getIdentifier() + " was selected in the tree.");
+        StaticRefs.getLog().println("Layer " + o.getIdentifier() + " was selected in the tree.");
     };
 
     private boolean hidden = false;
@@ -82,7 +82,7 @@ public class Layer extends ArrayList<Thing> implements Interactable, HasProperti
     public void invokeSwingHooks() {
         treeNodeIdentity = new TreeNodeIdentity<>(
                 identifier, this, onSelectCallback);
-        treeNode = Static.getLayerTree().addNode(null, treeNodeIdentity);
+        treeNode = StaticRefs.getLayerTree().addNode(null, treeNodeIdentity);
         addProps();
         SceneManager.history.add(
                 new ConstructorAction() {
@@ -97,14 +97,14 @@ public class Layer extends ArrayList<Thing> implements Interactable, HasProperti
                     @Override
                     public Void run() {
                         layer.setForDeletion(false);
-                        layer.treeNode = Static.getLayerTree().addNode(null, treeNodeIdentity);
+                        layer.treeNode = StaticRefs.getLayerTree().addNode(null, treeNodeIdentity);
                         return null;
                     }
 
                     @Override
                     public void undo() {
                         layer.setForDeletion(true);
-                        Static.getLayerTree().removeNode(layer.treeNode);
+                        StaticRefs.getLayerTree().removeNode(layer.treeNode);
                     }
 
                     @Override
@@ -155,7 +155,7 @@ public class Layer extends ArrayList<Thing> implements Interactable, HasProperti
         treeNodeIdentity = new TreeNodeIdentity<>(
                 "LAYER-0", this, onSelectCallback
         );
-        treeNode = Static.getLayerTree().addNode(null, treeNodeIdentity);
+        treeNode = StaticRefs.getLayerTree().addNode(null, treeNodeIdentity);
         SceneManager.history.add(
                 new ConstructorAction() {
                     @Override
@@ -271,7 +271,7 @@ public class Layer extends ArrayList<Thing> implements Interactable, HasProperti
      */
     public void draw(Graphics2D graphics2D) {
         if (!getIdentifier().equals(BACKGROUND_ID))
-            sort(Comparator.comparingDouble(t -> t.getCentroid().distance(Static.camera.getPosition())));
+            sort(Comparator.comparingDouble(t -> t.getCentroid().distance(StaticRefs.camera.getPosition())));
         if (isHidden() || isForDeletion()) return;
         for (Thing o : this.reversed()) {
             o.draw(graphics2D);
@@ -280,7 +280,7 @@ public class Layer extends ArrayList<Thing> implements Interactable, HasProperti
 
     @Override
     public void instantDelete() {
-        Static.sceneManager.layers.remove(this);
+        StaticRefs.sceneManager.layers.remove(this);
         for (Thing t : this) {
             t.instantDelete();
         }
@@ -379,14 +379,14 @@ public class Layer extends ArrayList<Thing> implements Interactable, HasProperti
             @Override
             public Void run() {
                 l.setForDeletion(true);
-                Static.getLayerTree().removeNode(l.treeNode);
+                StaticRefs.getLayerTree().removeNode(l.treeNode);
                 return null;
             }
 
             @Override
             public void undo() {
                 l.setForDeletion(false);
-                l.treeNode = Static.getLayerTree().addNode(null, l.treeNodeIdentity);
+                l.treeNode = StaticRefs.getLayerTree().addNode(null, l.treeNodeIdentity);
             }
 
             @Override

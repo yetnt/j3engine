@@ -1,6 +1,6 @@
 package com.j3d.engine;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.errors.J3DError;
 import com.j3d.errors.severity.J3DFatal;
 import com.j3d.errors.severity.J3DMild;
@@ -17,7 +17,7 @@ import java.util.Arrays;
  * @author Lehlogonolo Poole
  * @see com.j3d.storage.files.engine.EngineFiles#logFile
  * @see com.j3d.ui.engine.floating.DebugPanel#logTextArea
- * @see Static
+ * @see StaticRefs
  */
 public class Logger {
     // Prefix for standard log messages
@@ -55,7 +55,7 @@ public class Logger {
      */
     public void println(String message) {
         String logMessage = PREFIX + message + "\n";
-        Static.getEngineFiles().logFile.writeLn(getTimestamp() + " " + PREFIX + message);
+        StaticRefs.getEngineFiles().logFile.writeLn(getTimestamp() + " " + PREFIX + message);
         System.out.print(logMessage);
         if (logArea != null) {
             logArea.append(logMessage + getTimestamp() + "\n");
@@ -84,7 +84,7 @@ public class Logger {
      */
     public void error(String message) {
         String errorMessage = ERROR_PREFIX + message + "\n";
-        Static.getEngineFiles().logFile.writeLn(getTimestamp() + " " + ERROR_PREFIX + message);
+        StaticRefs.getEngineFiles().logFile.writeLn(getTimestamp() + " " + ERROR_PREFIX + message);
         System.err.print(errorMessage);
         if (logArea != null) {
             logArea.append(errorMessage + getTimestamp() + "\n");
@@ -118,7 +118,7 @@ public class Logger {
                         : ""
                 );
         String errorMessage = message + "\n";
-        Static.getEngineFiles().logFile.writeLn("\n" + getTimestamp() + " " + message + "\n");
+        StaticRefs.getEngineFiles().logFile.writeLn("\n" + getTimestamp() + " " + message + "\n");
         System.err.print(errorMessage);
         if (!(err instanceof J3DMild) && logArea != null) {
             logArea.append(errorMessage + getTimestamp() + "\n");

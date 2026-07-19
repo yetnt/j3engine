@@ -1,10 +1,10 @@
 package com.j3d.engine.geometry.geo2d;
 
-import com.j3d.J3DSettings;
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.BasePoint;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.StaticConfig;
 import com.j3d.gen.settings.Settings;
 
 import java.util.ArrayList;
@@ -70,7 +70,7 @@ public class CartesianPoint extends BasePoint<Double> {
         int screenY = (int) ((double) sceneManager.screenSize.height / 2 - adjustedY);
 
 
-        return new ScreenPoint(screenX - J3DSettings.OFFSET_X, screenY);
+        return new ScreenPoint(screenX - StaticConfig.OFFSET_X, screenY);
     }
 
     /**

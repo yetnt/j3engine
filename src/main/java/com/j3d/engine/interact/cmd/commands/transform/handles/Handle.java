@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.cmd.commands.transform.handles;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.commands.transform.mouse.TransformMouseOwner;
@@ -81,9 +81,9 @@ public class Handle {
             if (extraDetail != null) {
                 extraDetail.accept(g);
             }
-            Static.sceneManager.drawText3D(
+            StaticRefs.sceneManager.drawText3D(
                     g, position.sub(new Vector3(0, 5, 0)),
-                    handleType.name(), Static.camera,
+                    handleType.name(), StaticRefs.camera,
                     new Color(0x000000),
                     Color.WHITE
             );
@@ -97,7 +97,7 @@ public class Handle {
      * @return The calculated {@link ScreenPoint}.
      */
     public ScreenPoint toSp() {
-        return position.toPoint(Static.camera).toScreen(Static.sceneManager);
+        return position.toPoint(StaticRefs.camera).toScreen(StaticRefs.sceneManager);
     }
 
     /**

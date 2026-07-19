@@ -6,7 +6,7 @@ import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.CleanableAction;
 import com.j3d.engine.react.actions.DirtyVoidAction;
 import com.j3d.engine.react.history.History;
-import com.j3d.gen.settings.CoreSettings;
+import com.j3d.StaticConfig;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.ui.dialog.Spinner;
 import com.j3d.ui.engine.floating.tree.LayerTree;
@@ -78,7 +78,7 @@ public interface Interactable {
     DirtyVoidAction deleteLater();
 
     default void toggleSaved() {
-        CoreSettings.hasSaved = false;
+        StaticConfig.hasSaved = false;
     };
 
     /**

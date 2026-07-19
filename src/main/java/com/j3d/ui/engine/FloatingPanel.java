@@ -4,7 +4,7 @@
  */
 package com.j3d.ui.engine;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.ui.generic.J3DTheme;
 
 import javax.swing.*;
@@ -60,7 +60,7 @@ public class FloatingPanel extends javax.swing.JPanel {
             public void mouseMoved(MouseEvent e) {
                 Point newP = new Point(e.getX() - panel.getSize().width + 5, e.getY() - 35);
                 panel.setLocation(newP);
-                Static.mainFrame.repaint();
+                StaticRefs.mainFrame.repaint();
                 lastLocation = newP;
             }
         };
@@ -87,10 +87,10 @@ public class FloatingPanel extends javax.swing.JPanel {
             frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
             attachButton.setVisible(false);
             EngineFrame.removeFloater(this);
-            Static.mainFrame.revalidate();
+            StaticRefs.mainFrame.revalidate();
             frame.add(this);
             frame.pack();
-            frame.setLocationRelativeTo(Static.mainFrame);
+            frame.setLocationRelativeTo(StaticRefs.mainFrame);
             this.revalidate();
             frame.setVisible(true);
         }
@@ -107,7 +107,7 @@ public class FloatingPanel extends javax.swing.JPanel {
             EngineFrame.addFloaterAt(this, lastLocation);
             EngineFrame.bringForward(this);
             this.setVisible(true);
-            Static.mainFrame.revalidate();
+            StaticRefs.mainFrame.revalidate();
         }
     }
 
@@ -129,7 +129,7 @@ public class FloatingPanel extends javax.swing.JPanel {
         if (isDocked) frame.setVisible(false);
         else {
             if (moving) {
-                Static.hoverLabel.error("  Finish moving the panel first.");
+                StaticRefs.hoverLabel.error("  Finish moving the panel first.");
                 return;
             }
             this.setVisible(false);
@@ -212,17 +212,17 @@ public class FloatingPanel extends javax.swing.JPanel {
     private void attachButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attachButtonActionPerformed
         if (!isDocked) {
             if (!moving) {
-                Static.mainFrame.addMouseMotionListener(msl);
+                StaticRefs.mainFrame.addMouseMotionListener(msl);
                 moving = true;
                 attachButton.setText("(detach)");
             } else {
-                Static.mainFrame.removeMouseMotionListener(msl);
+                StaticRefs.mainFrame.removeMouseMotionListener(msl);
                 moving = false;
                 this.setLocation(lastLocation);
                 attachButton.setText("attach");
             }
         }
-        Static.hoverLabel.clear();
+        StaticRefs.hoverLabel.clear();
     }//GEN-LAST:event_attachButtonActionPerformed
 
     private void dockButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dockButtonActionPerformed

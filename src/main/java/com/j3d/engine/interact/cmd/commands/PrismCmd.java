@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.cmd.commands;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.geometry.geo3d.AxisPlane;
 import com.j3d.engine.geometry.geo3d.Sampler;
 import com.j3d.engine.geometry.geo3d.Solids;
@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import static com.j3d.Static.sceneManager;
+import static com.j3d.StaticRefs.sceneManager;
 
 /**
  * A command to create a prism.
@@ -235,13 +235,13 @@ public class PrismCmd extends Command implements KeyedStatefulCommand {
 
     @Override
     public void onStart(Void object, SafeJLabel label) {
-        keys.forEach(Static.keybinds::registerJ3Key);
+        keys.forEach(StaticRefs.keybinds::registerJ3Key);
 
         Consumer<Graphics2D> drawGhosts = g -> {
             g.setColor(Color.WHITE);
             // Draw a line connecting the 2 centres
             sceneManager.drawLine3D(
-                    g, bottomFaceCenter, topFaceCenter, Static.camera
+                    g, bottomFaceCenter, topFaceCenter, StaticRefs.camera
             );
             // Draw 2 n-gons on the top and bottom face.
             ArrayList<Vector3> bottomFace = Sampler.ngon(
@@ -301,7 +301,7 @@ public class PrismCmd extends Command implements KeyedStatefulCommand {
         radius = 5;
         sceneManager.removeOverlap(overlapId);
         label.clear();
-        keys.forEach(key -> Static.keybinds.removeJ3Key(key.getId()));
+        keys.forEach(key -> StaticRefs.keybinds.removeJ3Key(key.getId()));
     }
 
     @Override

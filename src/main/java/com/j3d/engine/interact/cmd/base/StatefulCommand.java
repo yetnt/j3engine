@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.cmd.base;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.ui.SafeJLabel;
@@ -73,8 +73,8 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
                 )
         );
 
-        Static.mainFrame.requestFocusInWindow(); // get out of the command window focus. very important
-        Static.commandParser.disable(); // disable the command pallete input field.
+        StaticRefs.mainFrame.requestFocusInWindow(); // get out of the command window focus. very important
+        StaticRefs.commandParser.disable(); // disable the command pallete input field.
 
         onStart(object, label); // Fire the starting stuff
         UUID esckey = java.util.UUID.randomUUID();
@@ -87,14 +87,14 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 onEnter(e, object, label);
-                                Static.mainFrame.repaint();
-                                Static.commandParser.enable();
+                                StaticRefs.mainFrame.repaint();
+                                StaticRefs.commandParser.enable();
                                 CommandsManager.clearCurrent();
-                                Static.hoverLabel.clear();
-                                Static.keybinds.removeJ3Key(esckey);
+                                StaticRefs.hoverLabel.clear();
+                                StaticRefs.keybinds.removeJ3Key(esckey);
                             }
                         });
-        Static.keybinds.registerJ3Key(enter);
+        StaticRefs.keybinds.registerJ3Key(enter);
 
         // keystroke for when they bail with escape
         // Escape is already binded to something so it cant be a oneshot in practice
@@ -109,14 +109,14 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
                             public void actionPerformed(ActionEvent e) {
                                 if (!CommandsManager.isCurrentStatefulRunning(t)) return;
                                 onEsc(e, object, label);
-                                Static.keybinds.removeJ3Key(enter.getId());
-                                Static.mainFrame.repaint();
-                                Static.commandParser.enable();
+                                StaticRefs.keybinds.removeJ3Key(enter.getId());
+                                StaticRefs.mainFrame.repaint();
+                                StaticRefs.commandParser.enable();
                                 CommandsManager.clearCurrent();
-                                Static.hoverLabel.clear();
+                                StaticRefs.hoverLabel.clear();
                             }
                         }
                 ).setId(esckey);
-        Static.keybinds.registerJ3Key(key);
+        StaticRefs.keybinds.registerJ3Key(key);
     }
 }

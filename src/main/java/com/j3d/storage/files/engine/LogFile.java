@@ -1,6 +1,6 @@
 package com.j3d.storage.files.engine;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -32,7 +32,7 @@ public class LogFile {
 
         Runtime.getRuntime().addShutdownHook(
                 new Thread(() -> {
-                    Static.getLog().println("Engine shutdown.");
+                    StaticRefs.getLog().println("Engine shutdown.");
                     pw.close();
                 })
         );

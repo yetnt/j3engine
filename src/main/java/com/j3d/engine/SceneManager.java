@@ -1,6 +1,6 @@
 package com.j3d.engine;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.*;
@@ -18,7 +18,6 @@ import com.j3d.engine.interact.selection.SelectionType;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.layer.LayerList;
 import com.j3d.engine.react.history.History;
-import com.j3d.gen.properties.HasProperties;
 import com.j3d.ui.generic.J3DTheme;
 
 import java.awt.*;
@@ -485,13 +484,13 @@ public class SceneManager {
         getSelected().clear();
         layers.forEach(layer -> {
             if (layer.getTreeNode() == null) return;
-            Static.getLayerTree().removeNode(layer.getTreeNode());
+            StaticRefs.getLayerTree().removeNode(layer.getTreeNode());
         });
         layers.stream()
                 .flatMap(Collection::stream)
                 .forEach(thing -> {
                     if (thing.getTreeNode() != null)
-                        Static.getLayerTree().removeNode(thing.getTreeNode());
+                        StaticRefs.getLayerTree().removeNode(thing.getTreeNode());
                     thing.getObjects().stream()
                             .filter(o -> o instanceof GTri)
                             .map(GTri.class::cast)
@@ -506,7 +505,7 @@ public class SceneManager {
         currentSelection.clear();
         unparented.clear();
         history.clear(); // also clears backup.
-        Static.mainPanel.repaint();
+        StaticRefs.mainPanel.repaint();
     }
 
     public void removeOverlap(UUID id) {

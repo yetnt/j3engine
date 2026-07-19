@@ -1,7 +1,6 @@
 package com.j3d.engine.draw.tris;
 
-import com.j3d.Executor;
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.draw.tris.methods.CamDepthSort;
 import com.j3d.engine.draw.tris.methods.CamDistSort;
 import com.j3d.engine.draw.tris.methods.DDUUIDSort;
@@ -120,14 +119,14 @@ public class TriStateArea {
      * @param g The Graphics2D context.
      */
     public static void draw(Graphics2D g) {
-        ArrayList<GObject> unparented = Static.sceneManager.getUnparented().stream()
+        ArrayList<GObject> unparented = StaticRefs.sceneManager.getUnparented().stream()
                 .map(o -> (GObject) o)
                 .collect(Collectors.toCollection(ArrayList::new));
         unparented.forEach(
                 u -> {
                     // draw these fools first since we cant use TriStateArea methods for sorting.
                     // upper todo for optimizaiton but this may stay.
-                    if (Static.sceneManager.getSelected().contains(u)) {
+                    if (StaticRefs.sceneManager.getSelected().contains(u)) {
                         u.drawSelected(g);
                     } else {
                         u.draw(g);
@@ -136,7 +135,7 @@ public class TriStateArea {
         );
         for  (GTri tri : queue) {
             if (tri.isHidden()) continue;
-            if (Static.sceneManager.getSelected().contains(tri)) {
+            if (StaticRefs.sceneManager.getSelected().contains(tri)) {
                 tri.drawSelected(g);
             } else {
                 tri.draw(g);

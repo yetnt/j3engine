@@ -4,7 +4,6 @@
  */
 package com.j3d;
 
-import com.j3d.gen.settings.CoreSettings;
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.users.User;
 import com.j3d.threads.FakeLongTask;
@@ -128,7 +127,7 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void openEngineButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openEngineButtonActionPerformed
-        Static.getLog().stPrintln("Splash Screen Engine Access");
+        StaticRefs.getLog().stPrintln("Splash Screen Engine Access");
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
@@ -157,7 +156,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_openEngineButtonActionPerformed
 
     private void openEngineQuickActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openEngineQuickActionPerformed
-        Static.getLog().stPrintln("Direct Engine Access");
+        StaticRefs.getLog().stPrintln("Direct Engine Access");
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
@@ -171,15 +170,15 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_openEngineQuickActionPerformed
 
     private void openEngineLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openEngineLoginActionPerformed
-        Static.getLog().stPrintln("Default Path (Login)");
+        StaticRefs.getLog().stPrintln("Default Path (Login)");
         Startup.run();
         this.dispose();
     }//GEN-LAST:event_openEngineLoginActionPerformed
 
     private void loginAslehlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginAslehlActionPerformed
-        Static.getLog().stPrintln("Projects Path (LoginAsLehlogonolo)");
+        StaticRefs.getLog().stPrintln("Projects Path (LoginAsLehlogonolo)");
         User user = DatabaseManager.tblUsers.findById(3);
-        CoreSettings.user = user;
+        StaticConfig.user = user;
         J3DTheme.loadTheme(user.themeId.getValue());
         this.dispose();
         Startup.runnable.run();
@@ -189,7 +188,7 @@ public class Main extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        Static.none(); // force java to init the Static class.
+        StaticRefs.none(); // force java to init the StaticRefs class.
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |

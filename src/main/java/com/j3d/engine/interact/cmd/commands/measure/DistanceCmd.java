@@ -1,6 +1,5 @@
 package com.j3d.engine.interact.cmd.commands.measure;
 
-import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.args.Subcommand;
@@ -13,8 +12,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import static com.j3d.Static.camera;
-import static com.j3d.Static.sceneManager;
+import static com.j3d.StaticRefs.camera;
+import static com.j3d.StaticRefs.sceneManager;
 
 /**
  * A subcommand of {@link MeasureCmd} that calculates and displays the distance between two points.

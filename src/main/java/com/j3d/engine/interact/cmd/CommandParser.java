@@ -1,5 +1,6 @@
 package com.j3d.engine.interact.cmd;
 
+import com.j3d.StaticRefs;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
@@ -11,7 +12,6 @@ import com.j3d.engine.interact.cmd.complete.TypingHints;
 import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.ui.engine.CommandPalette;
-import com.j3d.Static;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo3d.Thing;
@@ -275,10 +275,10 @@ public class CommandParser {
      * @param uuid The UUID of the GObject or Thing to find.
      */
     private void argAddUUID(CmdToken tok, UUID uuid, boolean injected) {
-        GObject g = Static.sceneManager.findObjectByUUID(uuid);
+        GObject g = StaticRefs.sceneManager.findObjectByUUID(uuid);
         if (g == null) {
             // try to find a Thing with the given UUID
-            Thing t = Static.sceneManager.findThingByUUID(uuid);
+            Thing t = StaticRefs.sceneManager.findThingByUUID(uuid);
             if (t == null) {
                 label.error("No object or thing found with UUID: " + SafeJLabel.EMPH, uuid);
             } else {
@@ -471,8 +471,8 @@ public class CommandParser {
      */
     public boolean runCommand(Command cmd, String cmdName, ArrayList<Object> arguments, ArrayList<TaggedArgValue<?>> taggedArguments) {
         if (CommandsManager.commandIsRunning()) {
-            Static.hoverLabel.error("Command is currently running: " + SafeJLabel.EMPH, CommandsManager.getCurrentCommandName());
-            Static.mainFrame.requestFocusInWindow();
+            StaticRefs.hoverLabel.error("Command is currently running: " + SafeJLabel.EMPH, CommandsManager.getCurrentCommandName());
+            StaticRefs.mainFrame.requestFocusInWindow();
             return false;
         }
         if (cmd instanceof StatefulCommand statefulCommand)
@@ -480,7 +480,7 @@ public class CommandParser {
 
         cmd.run(label, cmdName, arguments.toArray(), taggedArguments);
         if (!(cmd instanceof HelpCmd))
-            Static.hoverLabel.clear();
+            StaticRefs.hoverLabel.clear();
         return true;
     }
 
@@ -635,7 +635,7 @@ public class CommandParser {
                         new AbstractAction() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                Static.mainFrame.requestFocusInWindow();
+                                StaticRefs.mainFrame.requestFocusInWindow();
                             }
                         }
                 )

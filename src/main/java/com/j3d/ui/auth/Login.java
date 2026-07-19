@@ -4,8 +4,8 @@
  */
 package com.j3d.ui.auth;
 
-import com.j3d.Static;
-import com.j3d.gen.settings.CoreSettings;
+import com.j3d.StaticRefs;
+import com.j3d.StaticConfig;
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.api.SQLOperator;
 import com.j3d.storage.db.users.CUsers;
@@ -35,7 +35,7 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         this.setCursor(CursorManager.get(CursorNames.DEFAULT));
         this.postLogin = postLogin;
-        Static.getLog().uiPrintLn("Login completed building");
+        StaticRefs.getLog().uiPrintLn("Login completed building");
     }
 
     /**
@@ -66,7 +66,7 @@ public class Login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("J3Engine Login");
-        setIconImage(Static.logo());
+        setIconImage(StaticRefs.logo());
         setResizable(false);
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
@@ -293,7 +293,7 @@ public class Login extends javax.swing.JFrame {
 
             this.setCursor(CursorManager.get(CursorNames.DEFAULT));
 
-            CoreSettings.user = user;
+            StaticConfig.user = user;
 
             JOptionPane.showMessageDialog(this, "Welcome to J3Engine, " + user.firstName.getValue() + "!!!");
 

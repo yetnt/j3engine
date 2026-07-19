@@ -4,14 +4,14 @@
  */
 package com.j3d.ui.engine.floating;
 
-import com.j3d.J3DSettings;
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.StaticConfig;
 import com.j3d.threads.StatisticsThread;
 import com.j3d.ui.generic.J3DScrollBarUI;
 import com.j3d.ui.generic.J3DTheme;
@@ -27,7 +27,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import static com.j3d.Static.*;
+import static com.j3d.StaticRefs.*;
 
 /**
  *
@@ -300,38 +300,38 @@ public class DebugPanel extends javax.swing.JPanel {
 
     private void showTriNormalsCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTriNormalsCheckBoxActionPerformed
         if (showTriNormalsCheckBox.isSelected()) {
-            J3DSettings.setShowNormals(true);
+            StaticConfig.setShowNormals(true);
             if (NoneRadioButton.isSelected()) NoneRadioButton.doClick(); // unselect none
         } else {
-            J3DSettings.setShowNormals(false);
+            StaticConfig.setShowNormals(false);
         }
         mainPanel.repaint();
     }//GEN-LAST:event_showTriNormalsCheckBoxActionPerformed
 
     private void showTriDepthCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTriDepthCheckBoxActionPerformed
         if  (showTriDepthCheckBox.isSelected()) {
-            J3DSettings.setShowDepth(true);
+            StaticConfig.setShowDepth(true);
             if (NoneRadioButton.isSelected()) NoneRadioButton.doClick(); // unselect none
         } else {
-            J3DSettings.setShowDepth(false);
+            StaticConfig.setShowDepth(false);
         }
         mainPanel.repaint();
     }//GEN-LAST:event_showTriDepthCheckBoxActionPerformed
 
     private void showTriDistCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTriDistCheckBoxActionPerformed
         if (showTriDistCheckBox.isSelected()) {
-            J3DSettings.setShowTriDistances(true);
+            StaticConfig.setShowTriDistances(true);
             if (NoneRadioButton.isSelected()) NoneRadioButton.doClick(); // unselect none
         } else {
-            J3DSettings.setShowTriDistances(false);
+            StaticConfig.setShowTriDistances(false);
         }
     }//GEN-LAST:event_showTriDistCheckBoxActionPerformed
 
     private void NoneRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NoneRadioButtonActionPerformed
         if (NoneRadioButton.isSelected()) {
-            J3DSettings.setShowTriDistances(false);
-            J3DSettings.setShowDepth(false);
-            J3DSettings.setShowNormals(false);
+            StaticConfig.setShowTriDistances(false);
+            StaticConfig.setShowDepth(false);
+            StaticConfig.setShowNormals(false);
             if (showTriDistCheckBox.isSelected()) showTriDistCheckBox.doClick();
             if (showTriDepthCheckBox.isSelected()) showTriDepthCheckBox.doClick();
             if (showTriNormalsCheckBox.isSelected()) showTriNormalsCheckBox.doClick();
@@ -368,7 +368,7 @@ public class DebugPanel extends javax.swing.JPanel {
                 t.getLegA(), t.getLegB(), t.getLegC()
         );
 
-        Static.getLog().println("Added random tri " + t.getId() + " to layer " + g);
+        StaticRefs.getLog().println("Added random tri " + t.getId() + " to layer " + g);
 
         mainPanel.repaint();
     }//GEN-LAST:event_randomTriBtnActionPerformed

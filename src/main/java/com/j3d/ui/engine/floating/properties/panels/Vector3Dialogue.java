@@ -4,10 +4,10 @@
  */
 package com.j3d.ui.engine.floating.properties.panels;
 
-import static com.j3d.Static.mainFrame;
-import static com.j3d.Static.mainPanel;
+import static com.j3d.StaticRefs.mainFrame;
+import static com.j3d.StaticRefs.mainPanel;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.ui.generic.J3DTheme;
@@ -186,13 +186,13 @@ public class Vector3Dialogue extends javax.swing.JDialog {
         this.dispose();
 
         // also toggle the panel so we tell the user a command is running.
-        Static.getPropertiesPanel().toggleHidden();
+        StaticRefs.getPropertiesPanel().toggleHidden();
 
         // make sure the focus is on the main panel
         mainPanel.requestFocus();
 
         // run the command.
-        Static.commandParser.runCommand(
+        StaticRefs.commandParser.runCommand(
                 CommandsManager.commands.transform,
                 "transform",
                 new ArrayList<>(List.of("translate", "p")),

@@ -1,7 +1,6 @@
 package com.j3d.engine.draw.tris.methods.utils;
 
-import com.j3d.J3DSettings;
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.draw.tris.methods.VisibleSort;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
@@ -9,6 +8,7 @@ import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.Thing;
+import com.j3d.StaticConfig;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class ZDepthIdBuffer {
 
     // Default constructor: allocates new buffers
     public ZDepthIdBuffer() {
-        this(J3DSettings.screenSize.width, J3DSettings.screenSize.height);
+        this(StaticConfig.screenSize.width, StaticConfig.screenSize.height);
     }
 
     // Constructor for specific dimensions
@@ -70,8 +70,8 @@ public class ZDepthIdBuffer {
 
     // Rasterizes a line using Bresenham's algorithm with depth interpolation
     public void line(GLine line) {
-        Point p1 = line.getA().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).toSwingPoint();
-        Point p2 = line.getB().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).toSwingPoint();
+        Point p1 = line.getA().getPivot().toPoint(StaticRefs.camera).toScreen(StaticRefs.sceneManager).toSwingPoint();
+        Point p2 = line.getB().getPivot().toPoint(StaticRefs.camera).toScreen(StaticRefs.sceneManager).toSwingPoint();
         float z1 = (float) line.getA().getPivot().getZ();
         float z2 = (float) line.getB().getPivot().getZ();
 
@@ -114,7 +114,7 @@ public class ZDepthIdBuffer {
 
     // Rasterizes a single point
     public void point(GPoint pt) {
-        Point screenPt = pt.getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).toSwingPoint();
+        Point screenPt = pt.getPivot().toPoint(StaticRefs.camera).toScreen(StaticRefs.sceneManager).toSwingPoint();
         int x = screenPt.x;
         int y = screenPt.y;
         float z = (float) pt.getPivot().getZ();
@@ -132,9 +132,9 @@ public class ZDepthIdBuffer {
      * This avoids costly floating-point operations per pixel.
      */
     public void tri(GTri triangle) {
-        Point p1 = triangle.getLegA().getA().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).toSwingPoint();
-        Point p2 = triangle.getLegB().getA().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).toSwingPoint();
-        Point p3 = triangle.getLegC().getA().getPivot().toPoint(Static.camera).toScreen(Static.sceneManager).toSwingPoint();
+        Point p1 = triangle.getLegA().getA().getPivot().toPoint(StaticRefs.camera).toScreen(StaticRefs.sceneManager).toSwingPoint();
+        Point p2 = triangle.getLegB().getA().getPivot().toPoint(StaticRefs.camera).toScreen(StaticRefs.sceneManager).toSwingPoint();
+        Point p3 = triangle.getLegC().getA().getPivot().toPoint(StaticRefs.camera).toScreen(StaticRefs.sceneManager).toSwingPoint();
 
         float z1 = (float) triangle.getLegA().getA().getPivot().getZ();
         float z2 = (float) triangle.getLegB().getA().getPivot().getZ();

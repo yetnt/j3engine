@@ -5,7 +5,7 @@
 package com.j3d.ui.auth;
 
 import com.j3d.Startup;
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.api.SQLOperator;
 import com.j3d.storage.db.users.CUsers;
@@ -34,14 +34,14 @@ public class ForgotPassword extends javax.swing.JFrame {
     public ForgotPassword(Runnable postPasswordChange) {
         initComponents();
         this.postPasswordChange = postPasswordChange;
-        Static.getLog().uiPrintLn("ForgotPassword completed building");
+        StaticRefs.getLog().uiPrintLn("ForgotPassword completed building");
     }
 
     public ForgotPassword(String email, Runnable postPasswordChange) {
         initComponents();
         emailTextField.setText(email);
         this.postPasswordChange = postPasswordChange;
-        Static.getLog().uiPrintLn("ForgotPassword completed building");
+        StaticRefs.getLog().uiPrintLn("ForgotPassword completed building");
     }
 
     /**

@@ -1,7 +1,6 @@
 package com.j3d.engine.interact.cmd.commands.transform.mouse;
 
-import com.j3d.Static;
-import com.j3d.engine.SceneManager;
+import com.j3d.StaticRefs;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.react.events.EventPayload;
 
@@ -14,7 +13,7 @@ public class ChangeCentreEventPayload extends EventPayload<TransformMouseOwner> 
      * @param position Mouse position
      */
     public ChangeCentreEventPayload(TransformMouseOwner e, ScreenPoint position) {
-        super(e, Static.sceneManager);
+        super(e, StaticRefs.sceneManager);
         this.mousePos = position;
     }
 

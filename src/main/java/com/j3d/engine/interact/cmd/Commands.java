@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.cmd;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.commands.*;
 import com.j3d.engine.interact.cmd.commands.debug.DebugCmd;
@@ -41,8 +41,8 @@ public class Commands {
      * Default (empty) constructor
      */
     public Commands() {
-        Static.getLog().cmdPrintln("Commands populated with " + getCommands().size() + " commands.");
-        Static.getLog().cmdPrintln(
+        StaticRefs.getLog().cmdPrintln("Commands populated with " + getCommands().size() + " commands.");
+        StaticRefs.getLog().cmdPrintln(
                 "(" + getCommands()
                         .stream()
                         .map((c) -> c.aliases.getFirst())

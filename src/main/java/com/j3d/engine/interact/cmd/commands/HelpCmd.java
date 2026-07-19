@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.cmd.commands;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.args.TypedArg;
@@ -57,7 +57,7 @@ public class HelpCmd extends Command {
                         .append(new JLabelRichText("and like " + (commands.size()-10) + " more...").italic());
             }
 
-            Static.hoverLabel.setText(
+            StaticRefs.hoverLabel.setText(
                     new JLabelRichText(stringBuilder.toString()).wrapHTML()
             );
             return;
@@ -68,7 +68,7 @@ public class HelpCmd extends Command {
             return;
         }
 
-        Command cmd = Static.commandManager.commandsAliasMap.get(cmdName);
+        Command cmd = StaticRefs.commandManager.commandsAliasMap.get(cmdName);
 
         if (cmd == null) {
             logLabel.setText("No command with the name \"" + cmdName + "\" exists.");
@@ -105,7 +105,7 @@ public class HelpCmd extends Command {
 
         // print
 
-        Static.hoverLabel.setText(new JLabelRichText(stringBuilder.toString()).wrapHTML());
+        StaticRefs.hoverLabel.setText(new JLabelRichText(stringBuilder.toString()).wrapHTML());
     }
 
     private static ArrayList<Command> getCommands(AtomicInteger maxCmd, StringBuilder stringBuilder) {

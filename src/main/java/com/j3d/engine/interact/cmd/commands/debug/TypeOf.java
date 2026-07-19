@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.cmd.commands.debug;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.Any;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
@@ -64,6 +64,6 @@ public class TypeOf extends Subcommand {
             typeName = typeName + "<" + g.type.getSimpleName() + ">";
 
         logLabel.setText("Type: " + typeName);
-        Static.getLog().println("Type: " + typeName);
+        StaticRefs.getLog().println("Type: " + typeName);
     }
 }

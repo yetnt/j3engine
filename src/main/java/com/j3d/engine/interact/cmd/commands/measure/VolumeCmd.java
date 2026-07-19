@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.cmd.commands.measure;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.j3d.Static.*;
+import static com.j3d.StaticRefs.*;
 
 /**
  *  * A subcommand of {@link MeasureCmd} that calculates and displays the volume of a solid
@@ -105,7 +105,7 @@ public class VolumeCmd extends Subcommand {
         return t.objectsStream()
                 .filter(o -> o instanceof GPoint)
                 .map(o -> (GPoint) o).min((a, b) -> {
-                    Vector3 cameraPos = Static.camera.getPosition();
+                    Vector3 cameraPos = StaticRefs.camera.getPosition();
                     double distA = a.getPivot().distance(cameraPos);
                     double distB = b.getPivot().distance(cameraPos);
                     return Double.compare(distA, distB);

@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.input.mouse;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import static com.j3d.Static.camera;
-import static com.j3d.Static.sceneManager;
+import static com.j3d.StaticRefs.camera;
+import static com.j3d.StaticRefs.sceneManager;
 
 /**
  * A {@link MouseOwner} which enables child classes which extend it, the capability to snap to
@@ -68,7 +68,7 @@ public class SnapMouseOwner extends MouseOwner {
     private GObject hoveringOver = null;
     /**
      * A unique identifier for this {@code SnapMouseOwner} instance, used for managing overlaps
-     * with the {@link com.j3d.Static#sceneManager}.
+     * with the {@link StaticRefs#sceneManager}.
      */
     private final UUID uuid;
     /**
@@ -116,14 +116,14 @@ public class SnapMouseOwner extends MouseOwner {
                     int[] yPoints = {sp.y - 5, sp.y + 5, sp.y + 5};
                     g.fillPolygon(xPoints, yPoints, 3);
                     if (isWithinRegion(sp)) {
-                        Static.hoverLabel.setText("Snap to Midpoint of " + obj.getId().toString().substring(0, 5));
+                        StaticRefs.hoverLabel.setText("Snap to Midpoint of " + obj.getId().toString().substring(0, 5));
                         hoveringOver = obj;
                     }
                 } else { // It's a GPoint
                     g.setColor(java.awt.Color.MAGENTA);
                     g.fillOval(sp.x - 3, sp.y - 3, 6, 6);
                     if (isWithinRegion(sp)) {
-                        Static.hoverLabel.setText("Snap to " + obj.getId().toString().substring(0, 5));
+                        StaticRefs.hoverLabel.setText("Snap to " + obj.getId().toString().substring(0, 5));
                         hoveringOver = obj;
                     }
                 }
@@ -203,7 +203,7 @@ public class SnapMouseOwner extends MouseOwner {
                 .sorted((a, b) -> {
                     Vector3 A = a.getPivot();
                     Vector3 B = b.getPivot();
-                    Vector3 camera = Static.camera.getPosition();
+                    Vector3 camera = StaticRefs.camera.getPosition();
                     // shortest distance to camera
                     double Ad = A.distance(camera);
                     double Bd = B.distance(camera);

@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.cmd.commands.transform;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
@@ -18,7 +18,7 @@ import com.j3d.engine.interact.cmd.commands.transform.mouse.ChangeCentreEventPay
 import com.j3d.engine.react.events.EventListener;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
-import com.j3d.gen.settings.CoreSettings;
+import com.j3d.StaticConfig;
 import com.j3d.gen.settings.Settings;
 import com.j3d.ui.generic.J3DTheme;
 import com.j3d.ui.SafeJLabel;
@@ -149,14 +149,14 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
                                 Vector3 aPos = a.getPivot();
                                 Vector3 bPos = b.getPivot();
                                 return Double.compare(
-                                        aPos.distance(Static.camera.getPosition()),
-                                        bPos.distance(Static.camera.getPosition())
+                                        aPos.distance(StaticRefs.camera.getPosition()),
+                                        bPos.distance(StaticRefs.camera.getPosition())
                                 );
                             }
                     )
                     .filter(
                             a -> {
-                                ScreenPoint Asp = a.getPivot().toPoint(Static.camera).toScreen(Static.sceneManager);
+                                ScreenPoint Asp = a.getPivot().toPoint(StaticRefs.camera).toScreen(StaticRefs.sceneManager);
                                 // a matching points is within 5 up down left or right of the target
                                 return Math.abs(Asp.x - target.x) < 5 && Math.abs(Asp.y - target.y) < 5;
                             }
@@ -205,27 +205,27 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
             };
         }
 
-        Stream<GTri> tris = Static.sceneManager.getSelected().stream()
+        Stream<GTri> tris = StaticRefs.sceneManager.getSelected().stream()
                 .filter(obj -> obj instanceof GTri)
                 .map(obj -> (GTri) obj);
 
         if (tris.findAny().isEmpty()) faceMode = FaceMode.POINTS;
 
         references = switch (faceMode) {
-            case TRIANGLES -> new ArrayList<>(Static.sceneManager.getSelected().stream()
+            case TRIANGLES -> new ArrayList<>(StaticRefs.sceneManager.getSelected().stream()
                     .filter(obj -> obj instanceof GTri)
                     .map(obj -> (GTri) obj)
                     .flatMap(GTri::getLegStream)
                     .flatMap(GLine::getPointStream)
                     .collect(Collectors.toSet()));
-            case POINTS -> Static.sceneManager.getSelected()
+            case POINTS -> StaticRefs.sceneManager.getSelected()
                     .stream()
                     .filter(obj -> obj instanceof GPoint)
                     .map(obj -> (GPoint) obj)
                     .collect(Collectors.toCollection(ArrayList::new));
-            case THING ->  Static.sceneManager.getSelected()
+            case THING ->  StaticRefs.sceneManager.getSelected()
                     .stream()
-                    .map(g -> Static.sceneManager.findParentThing(g))
+                    .map(g -> StaticRefs.sceneManager.findParentThing(g))
                     .filter(Objects::nonNull)
                     .flatMap(thing -> thing.getObjects().stream())
                     .filter(obj -> obj instanceof GPoint)
@@ -244,7 +244,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
     @Override
     public void onStart(Void object, SafeJLabel label) {
         mouseOwner.requestOwnership();
-        keys.forEach(Static.keybinds::registerJ3Key);
+        keys.forEach(StaticRefs.keybinds::registerJ3Key);
 
         center = calculateCentre();
 
@@ -317,7 +317,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
             // draw X at the centre.
             g.setColor(new Color(148, 0, 0));
             g.setStroke(new BasicStroke(3));
-            ScreenPoint sp = center.toPoint(Static.camera).toScreen(Static.sceneManager);
+            ScreenPoint sp = center.toPoint(StaticRefs.camera).toScreen(StaticRefs.sceneManager);
             int crossSize = 10; // Size of the 'X' cross
             g.drawLine(sp.x - crossSize, sp.y - crossSize, sp.x + crossSize, sp.y + crossSize);
             g.drawLine(sp.x + crossSize, sp.y - crossSize, sp.x - crossSize, sp.y + crossSize);
@@ -329,7 +329,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
 
         overlapId = UUID.randomUUID();
 
-        Static.sceneManager.scheduleOverlap(overlapId, drawScaleHandle);
+        StaticRefs.sceneManager.scheduleOverlap(overlapId, drawScaleHandle);
     }
 
     private Vector3 calculateCentre() {
@@ -349,11 +349,11 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
         mouseOwner.handles.forEach(Handle::clear);
         selectionPivot = null;
         centreIsSelectionPivot = true;
-        keys.forEach(key -> Static.keybinds.removeJ3Key(key.getId()));
-        Static.sceneManager.removeOverlap(overlapId);
+        keys.forEach(key -> StaticRefs.keybinds.removeJ3Key(key.getId()));
+        StaticRefs.sceneManager.removeOverlap(overlapId);
         lbl.clear();
-        Static.sceneManager.deselectAll();
-        Static.mainFrame.repaint();
+        StaticRefs.sceneManager.deselectAll();
+        StaticRefs.mainFrame.repaint();
     }
 
     /**
@@ -392,7 +392,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
     }
 
     private void toggleSaved() {
-        CoreSettings.hasSaved = false;
+        StaticConfig.hasSaved = false;
     }
 
     /**

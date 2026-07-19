@@ -1,7 +1,6 @@
 package com.j3d.engine.geometry.geo2d.graphics;
 
-import com.j3d.J3DSettings;
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.geometry.geo2d.HasParents;
@@ -11,6 +10,7 @@ import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
+import com.j3d.StaticConfig;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.ui.dialog.Spinner;
 
@@ -75,16 +75,16 @@ public class GPoint extends GObject implements HasParents<GLine> {
     @Override
     public void draw(Graphics2D graphics2D) {
         super.draw(graphics2D);
-        if (J3DSettings.getViewType() != ViewType.WIREFRAME)
+        if (StaticConfig.getViewType() != ViewType.WIREFRAME)
             if (hasParent() /*&& getParents().stream().findAny().get().hasParent()*/)
                 return;
 
-        if (Static.sceneManager.getSelected().contains(this)) {
+        if (StaticRefs.sceneManager.getSelected().contains(this)) {
             drawSelected(graphics2D);
             return;
         }
         graphics2D.setColor(col);
-        ScreenPoint p = this.getPivot().toPoint(Static.camera).toScreen(Static.sceneManager);
+        ScreenPoint p = this.getPivot().toPoint(StaticRefs.camera).toScreen(StaticRefs.sceneManager);
         graphics2D.fillOval(p.x - DIAMETER / 2, p.y - DIAMETER / 2, DIAMETER, DIAMETER);
     }
 
@@ -99,12 +99,12 @@ public class GPoint extends GObject implements HasParents<GLine> {
     @Override
     public void drawSelected(Graphics2D graphics2D) {
         super.drawSelected(graphics2D);
-        if (J3DSettings.getViewType() != ViewType.WIREFRAME)
+        if (StaticConfig.getViewType() != ViewType.WIREFRAME)
             if (hasParent() /*&& getParents().stream().findAny().get().hasParent() */) {
                 return;
             }
         graphics2D.setColor(Color.WHITE);
-        ScreenPoint p = this.getPivot().toPoint(Static.camera).toScreen(Static.sceneManager);
+        ScreenPoint p = this.getPivot().toPoint(StaticRefs.camera).toScreen(StaticRefs.sceneManager);
         graphics2D.fillOval(p.x - (DIAMETER+1) / 2, p.y - (DIAMETER+1) / 2, (DIAMETER+1), (DIAMETER+1));
 //        draw(graphics2D);
     }
@@ -112,7 +112,7 @@ public class GPoint extends GObject implements HasParents<GLine> {
     @Override
     public void setPivot(Vector3 pivot) {
         super.setPivot(pivot);
-        this.broadcast(EventType.GPOINT_RECALC_PIVOT, new GPointMovedEvent(this, Static.sceneManager));
+        this.broadcast(EventType.GPOINT_RECALC_PIVOT, new GPointMovedEvent(this, StaticRefs.sceneManager));
     }
 
     /**
@@ -120,9 +120,9 @@ public class GPoint extends GObject implements HasParents<GLine> {
      * @param v3 The position of this point.
      */
     public GPoint(Vector3 v3) {
-        Static.sceneManager.points.add(this);
+        StaticRefs.sceneManager.points.add(this);
         setPivot(v3);
-        Static.sceneManager.hasNoParent(this);
+        StaticRefs.sceneManager.hasNoParent(this);
         addProps();
     }
 
@@ -134,7 +134,7 @@ public class GPoint extends GObject implements HasParents<GLine> {
     @Override
     public boolean deleteSelf() {
         super.deleteSelf();
-        Static.sceneManager.points.remove(this);
+        StaticRefs.sceneManager.points.remove(this);
         return true;
     }
 
@@ -158,13 +158,13 @@ public class GPoint extends GObject implements HasParents<GLine> {
     @Override
     public void addParent(GLine parent) {
         parents.add(parent);
-        Static.sceneManager.hasParent(this);
+        StaticRefs.sceneManager.hasParent(this);
     }
 
     @Override
     public void removeParent(GLine parent) {
         boolean su = parents.remove(parent);
-        Static.sceneManager.hasNoParent(this);
+        StaticRefs.sceneManager.hasNoParent(this);
     }
 
 

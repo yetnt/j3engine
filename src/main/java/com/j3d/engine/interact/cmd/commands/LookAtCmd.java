@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.cmd.commands;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.ui.SafeJLabel;
@@ -52,16 +52,16 @@ public class LookAtCmd extends Command {
 
         switch (args[0]) {
             case String thing -> {
-                Thing t = Static.sceneManager.findThing(thing);
+                Thing t = StaticRefs.sceneManager.findThing(thing);
                 if (t == null) {
                     logLabel.setText("No thing found with the name " + thing);
                     return;
                 }
 
-                Static.camera.lookAt(t.getCentroid());
+                StaticRefs.camera.lookAt(t.getCentroid());
             }
-            case Vector3 v3 -> Static.camera.lookAt(v3);
-            case Thing thing -> Static.camera.lookAt(thing.getCentroid());
+            case Vector3 v3 -> StaticRefs.camera.lookAt(v3);
+            case Thing thing -> StaticRefs.camera.lookAt(thing.getCentroid());
             default -> {
             }
         }

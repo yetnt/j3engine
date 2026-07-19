@@ -1,6 +1,6 @@
 package com.j3d.ui.engine.floating.tree;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.util.HashMap;
@@ -46,6 +46,6 @@ public class TreeNodeIdentity<T> {
 
     public void setLabel(String s) {
         this.label = s;
-        Static.getLayerTree().repaint();
+        StaticRefs.getLayerTree().repaint();
     }
 }

@@ -1,6 +1,6 @@
 package com.j3d.engine.geometry.geo3d;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.geo2d.Winding;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
@@ -145,7 +145,7 @@ public class Solids {
             tris.add(new GTri(col, BC, diagonalBD, CD, new Winding(B, D, C)));
         }
 
-        Thing circleThing = new Thing(Static.sceneManager, parentLayer, "Prism-"+radius);
+        Thing circleThing = new Thing(StaticRefs.sceneManager, parentLayer, "Prism-"+radius);
         circleThing.addObjs(centre, centre2)
                 .addObjs(points.toArray(new GPoint[0]))
                 .addObjs(points2.toArray(new GPoint[0]))

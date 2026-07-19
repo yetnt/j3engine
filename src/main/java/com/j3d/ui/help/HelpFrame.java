@@ -4,19 +4,18 @@
  */
 package com.j3d.ui.help;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.gen.docs.J3DocsReader;
 import com.j3d.gen.docs.tokens.TLink;
 import com.j3d.gen.docs.tokens.TWrapper;
 import com.j3d.gen.docs.tokens.wrappers.TWHeader;
 import com.j3d.gen.docs.tokens.wrappers.TWLineSeparator;
 import com.j3d.gen.docs.tokens.wrappers.TWParagraph;
+import com.j3d.ui.generic.J3DTheme;
 import com.j3d.utility.generators.JLabelRichText;
 
-import javax.swing.*;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -64,7 +63,7 @@ public class HelpFrame extends javax.swing.JFrame {
         jPanel1.add(p2);
 
         ArrayList<TWrapper> wrappers = J3DocsReader.parseFile(
-                Static.getEngineFiles().docsFolder.intro
+                StaticRefs.getEngineFiles().docsFolder.intro
         );
 
         JLabelRichText div = new JLabelRichText()
@@ -137,9 +136,12 @@ public class HelpFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setBackground(J3DTheme.UI_SURFACE.color());
         setMinimumSize(new java.awt.Dimension(570, 500));
 
+        jLabel1.setBackground(J3DTheme.UI_SURFACE.color());
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel1.setForeground(J3DTheme.TEXT_PRIMARY.color());
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Help Menu");
         getContentPane().add(jLabel1, java.awt.BorderLayout.NORTH);

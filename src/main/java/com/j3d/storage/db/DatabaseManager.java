@@ -1,10 +1,8 @@
 package com.j3d.storage.db;
 
-import com.j3d.Static;
-import com.j3d.engine.Logger;
+import com.j3d.StaticRefs;
 import com.j3d.storage.db.themes.ThemesTable;
 import com.j3d.storage.db.users.UsersTable;
-import com.j3d.storage.files.engine.EngineFiles;
 
 import java.io.File;
 import java.sql.*;
@@ -31,7 +29,7 @@ public class DatabaseManager {
 
         System.out.println("Connected to: " + dbFilePath);
 
-        Static.getLog().println("[DB] Connected. " + cr);
+        StaticRefs.getLog().println("[DB] Connected. " + cr);
         return DriverManager.getConnection(url);
     }
 

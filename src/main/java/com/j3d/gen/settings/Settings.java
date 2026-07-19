@@ -1,6 +1,6 @@
 package com.j3d.gen.settings;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.gen.settings.classes.CameraProperties;
 import com.j3d.gen.settings.classes.EditorProperties;
 import com.j3d.gen.settings.classes.SceneProperties;
@@ -58,7 +58,7 @@ public class Settings implements SettingsParent {
                                 cf.setSelectedFile(f2);
                             }
                         },
-                        Static.mainFrame
+                        StaticRefs.mainFrame
                 );
 
                 Function<File, File> isDir = f -> new File(f, "new.j3p");

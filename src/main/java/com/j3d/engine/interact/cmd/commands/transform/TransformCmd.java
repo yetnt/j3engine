@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.cmd.commands.transform;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.base.SemiStatefulCommand;
@@ -84,7 +84,7 @@ public class TransformCmd extends Command implements SemiStatefulCommand {
                     SelectionManager.selectionMouseOwner.clearSelectionSquare();
                 }
         );
-        Static.mainFrame.requestFocusInWindow(); // Remove focus from the command pallete
+        StaticRefs.mainFrame.requestFocusInWindow(); // Remove focus from the command pallete
         this.subcommandName = subcommandNamei;
         this.logLabel = logLabel;
         this._args = args;

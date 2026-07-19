@@ -4,7 +4,7 @@
  */
 package com.j3d.ui.dialog;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.ui.generic.J3DTheme;
 
 /**
@@ -34,7 +34,7 @@ public class TestDialog extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setIconImage(Static.logo());
+        setIconImage(StaticRefs.logo());
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
         jPanel1.setBackground(J3DTheme.UI_SURFACE.color());

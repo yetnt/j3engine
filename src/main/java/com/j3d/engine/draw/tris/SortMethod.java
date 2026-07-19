@@ -1,6 +1,6 @@
 package com.j3d.engine.draw.tris;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.gen.settings.Settings;
@@ -47,7 +47,7 @@ public abstract class SortMethod extends ArrayList<GTri> {
         if (tri.isDoubleSided()) return false;
         if (!Settings.sceneProperties.useBackFaceCulling.getValue()) return false;
         Vector3 N = tri.normal();
-        Vector3 P = Static.camera.getPosition().sub(tri.getLegA().getA().getPivot());
+        Vector3 P = StaticRefs.camera.getPosition().sub(tri.getLegA().getA().getPivot());
         return N.dot(P) < 0;
     }
 }

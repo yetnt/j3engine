@@ -1,6 +1,5 @@
 package com.j3d.engine.draw.tris.methods;
 
-import com.j3d.Static;
 import com.j3d.engine.draw.tris.SortMethod;
 import com.j3d.engine.draw.tris.TriListener;
 import com.j3d.engine.draw.tris.TriStateArea;

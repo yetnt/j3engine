@@ -35,7 +35,7 @@ import java.awt.*;
 import java.net.URL;
 
 /**
- * Static is a class which holds static references to important instances in the engine, such as the SceneManager, Executor, Main Frame, Camera, etc.
+ * StaticRefs is a class which holds static references to important instances in the engine, such as the SceneManager, Executor, Main Frame, Camera, etc.
  * <p>
  *     This is used to allow for easy access to these instances from anywhere in the code, without having to pass them around
  * </p>
@@ -46,7 +46,7 @@ import java.net.URL;
  * </p>
  * @author Lehlogonolo Poole
  */
-public class Static {
+public class StaticRefs {
     private static PF1 projectFileV1 = new PF1();
     public static PF1 getProjectFileV1() {
         if (projectFileV1 == null) {
@@ -77,7 +77,7 @@ public class Static {
     /**
      * The Main Frame that is displayed. {@link EngineFrame}
      * @implSpec
-     *  {@link Static#mainPanel}.repaint() instead of mainFrame.repaint() for better performance.
+     *  {@link StaticRefs#mainPanel}.repaint() instead of mainFrame.repaint() for better performance.
      */
     public static EngineFrame mainFrame = null;
     /**
@@ -95,7 +95,7 @@ public class Static {
                     new Vector3(0, 0, Settings.cameraProperties.focalLength.getValue())
             );
     /**
-     * The Debug Panel. The panel that holds debug stuff. Initialized by Static
+     * The Debug Panel. The panel that holds debug stuff. Initialized by StaticRefs
      * and can be accessed via it's {@link FloatingPanel} by the user within the {@link Toolbox}.
      */
     private static DebugPanel debugPanel;
@@ -121,7 +121,7 @@ public class Static {
     /**
      * The layer tree instance which holds the tree view of {@link Layer} and {@link Thing}s.
      * The user can access this panel via it's wrapped {@link FloatingPanel} version within
-     * the {@link Toolbox}. Initialised by Static
+     * the {@link Toolbox}. Initialised by StaticRefs
      */
     private static LayerTree layerTree;
     public static LayerTree getLayerTree() {
@@ -159,16 +159,16 @@ public class Static {
     }
     /**
      * The Settings Instance. Usually all code accesses settings within {@link Settings}
-     * statically. This instance is only really used to access it's UI. Initialised by Static
+     * statically. This instance is only really used to access it's UI. Initialised by StaticRefs
      */
     public static Settings settings = new Settings();
     /**
-     * New help generator. No docs yet. lmao. Initialised by Static
+     * New help generator. No docs yet. lmao. Initialised by StaticRefs
      */
     public static HelpGenerator help = new HelpGenerator();
     /**
      * The commands manager which just holds the current running {@link SemiStatefulCommand}
-     * and gets all the commands otherwise. Initialised by Static
+     * and gets all the commands otherwise. Initialised by StaticRefs
      */
     public static CommandsManager commandManager = new CommandsManager();
     /**
@@ -178,7 +178,7 @@ public class Static {
     public static HoverJLabel hoverLabel;
     /**
      * The Engine Files instances. This encapsulates all the files stored in
-     * {@code user.dir/J3Engine}. Lazily initialised by Static.
+     * {@code user.dir/J3Engine}. Lazily initialised by StaticRefs.
      */
     private static EngineFiles engineFiles;
 
@@ -197,7 +197,7 @@ public class Static {
      * @return an Image
      */
     public static Image logo() {
-        URL imgURL = Static.class.getResource("/art/logo/J3Dicon.png");
+        URL imgURL = StaticRefs.class.getResource("/art/logo/J3Dicon.png");
         if (imgURL != null) {
             return new ImageIcon(imgURL).getImage();
         } else {

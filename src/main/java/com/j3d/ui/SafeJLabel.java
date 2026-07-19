@@ -1,6 +1,6 @@
 package com.j3d.ui;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.ui.engine.CommandPalette;
 import com.j3d.ui.generic.J3DTheme;
@@ -33,7 +33,7 @@ public class SafeJLabel {
             @Override
             public void run() {
                 label.setText(text);
-                Static.mainFrame.repaint();
+                StaticRefs.mainFrame.repaint();
             }
         });
     }
@@ -81,7 +81,7 @@ public class SafeJLabel {
             @Override
             public void run() {
                 label2.setText(text);
-                Static.mainFrame.repaint();
+                StaticRefs.mainFrame.repaint();
             }
         });
     }
@@ -91,7 +91,7 @@ public class SafeJLabel {
             @Override
             public void run() {
                 label2.setText("");
-                Static.mainFrame.repaint();
+                StaticRefs.mainFrame.repaint();
             }
         });
     }
@@ -101,7 +101,7 @@ public class SafeJLabel {
             @Override
             public void run() {
                 label.setText("");
-                Static.mainFrame.repaint();
+                StaticRefs.mainFrame.repaint();
             }
         });
     }

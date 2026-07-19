@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.selection;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.interact.input.mouse.MOwner;
@@ -10,8 +10,8 @@ import com.j3d.ui.generic.CursorManager;
 
 import java.awt.event.MouseEvent;
 
-import static com.j3d.Static.getLog;
-import static com.j3d.Static.sceneManager;
+import static com.j3d.StaticRefs.getLog;
+import static com.j3d.StaticRefs.sceneManager;
 import static com.j3d.ui.engine.EngineFrame.*;
 import com.j3d.engine.react.events.*;
 
@@ -38,7 +38,7 @@ public class SelectionMouseOwner extends MouseOwner {
      */
     public void clearSelectionSquare() {
         selectionArea = new ScreenPoint[]{null, null};
-        Static.mainFrame.repaint();
+        StaticRefs.mainFrame.repaint();
         CursorManager.setDefault();
     }
 
@@ -46,7 +46,7 @@ public class SelectionMouseOwner extends MouseOwner {
     public void mouseClicked(MouseEvent e) {
         if (isNotOwner()) return;
         clearSelectionSquare();
-        broadcast(EventType.X_SELECTED, new EventPayload<>(this, Static.sceneManager) {
+        broadcast(EventType.X_SELECTED, new EventPayload<>(this, StaticRefs.sceneManager) {
         });
     }
 
@@ -63,7 +63,7 @@ public class SelectionMouseOwner extends MouseOwner {
         super.mouseReleased(e);
         mousePos = null;
         if (selectionArea[0] != null && selectionArea[1] != null) {
-            Static.getLog().println("Final Selection Area: " + selectionArea[0] + " to " + selectionArea[1]);
+            StaticRefs.getLog().println("Final Selection Area: " + selectionArea[0] + " to " + selectionArea[1]);
             getLog().println("Selected " + sceneManager.getSelected().size() + " objects.");
             PropertiesPanel.propertiesPanel();
         }
@@ -75,7 +75,7 @@ public class SelectionMouseOwner extends MouseOwner {
         selectionArea[0] = mousePos;
         selectionArea[1] = getSelectionMouseLoc(e);
 //        selectionArea[1] = new ScreenPoint(e.getX(), e.getY());
-        Static.mainFrame.repaint();
+        StaticRefs.mainFrame.repaint();
     }
 
 }

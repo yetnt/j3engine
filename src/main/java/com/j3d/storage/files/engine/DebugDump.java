@@ -1,6 +1,6 @@
 package com.j3d.storage.files.engine;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.Camera;
 
@@ -29,7 +29,7 @@ public class DebugDump {
     public static void print(PrintWriter out, long current, Camera cam) {
         out.println("time,cx,cy,cz,cpitch,cyaw,croll,layerID,layerVisible,thingName,thingID,triID,tridist,trix,triy,triz,trinx,triny,trinz,tricol,triVisible");
 
-        Static.sceneManager.layers.forEach(
+        StaticRefs.sceneManager.layers.forEach(
                 l -> l.forEach(thing -> thing.getObjects().stream()
                         .filter(GTri.class::isInstance)
                         .map(GTri.class::cast)

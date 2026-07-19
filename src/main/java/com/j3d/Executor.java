@@ -48,11 +48,11 @@ public class Executor {
      * Runs the executor.
      */
     public void run(Graphics2D graphics2D) {
-        Static.sceneManager.layers.add(layer);
+        StaticRefs.sceneManager.layers.add(layer);
 
         Thing ngon = ngon(3);
         Thing cub = cube();
-        Static.camera.lookAt(ngon.getCentroid());
+        StaticRefs.camera.lookAt(ngon.getCentroid());
         Thing tris = threeTris();
 
         Thing solid = Solids.prism(
@@ -121,7 +121,7 @@ public class Executor {
             tris.add(tri);
         }
 
-        return new Thing(Static.sceneManager, layer, "Cone")
+        return new Thing(StaticRefs.sceneManager, layer, "Cone")
                 .addObjs(centre)
                 .addObjs(points.toArray(new GPoint[0]))
                 .addObjs(lines.toArray(new GLine[0]))
@@ -159,7 +159,7 @@ public class Executor {
             Solids.topFaceTri(lines, p1, p2, centre, tris);
         }
 
-        return new Thing(Static.sceneManager, layer, "Circle")
+        return new Thing(StaticRefs.sceneManager, layer, "Circle")
                 .addObjs(centre)
                 .addObjs(points.toArray(new GPoint[0]))
                 .addObjs(lines.toArray(new GLine[0]))
@@ -185,12 +185,12 @@ public class Executor {
                 newkeyStroke
         );
         // rebind the keystroke
-        KeyBindings.UpdatedJ3Key updatedJ3Key = Static.keybinds.rebindJ3KeyKeystroke(
+        KeyBindings.UpdatedJ3Key updatedJ3Key = StaticRefs.keybinds.rebindJ3KeyKeystroke(
                 oldkeyStroke,
                 SELECT_SUB.getKey()
         );
 
-        if (updatedJ3Key.keyChangeSuccess) Static.getLog().println("WOHOOOO KEY CHANGE SUCCESS!!!! :)))");
+        if (updatedJ3Key.keyChangeSuccess) StaticRefs.getLog().println("WOHOOOO KEY CHANGE SUCCESS!!!! :)))");
     }
 
     /**
@@ -245,7 +245,7 @@ public class Executor {
 
         GTri PRT = new GTri(Color.PINK, P, R, T);
 
-        return new Thing(Static.sceneManager, null, "Letter")
+        return new Thing(StaticRefs.sceneManager, null, "Letter")
                 .addObjs(
                         P, Q, S, R, U, T,
                         SPR, PRQ, PQT, PUT, PRT,
@@ -262,7 +262,7 @@ public class Executor {
         GPoint B = new GPoint(new Vector3(0, 10, 0));
         GPoint C = new GPoint(new Vector3(0, 0, 10));
         GTri triangl = new GTri(Color.ORANGE, A, B, C);
-        Static.getLog().println(triangl.getId().toString());
+        StaticRefs.getLog().println(triangl.getId().toString());
         return new Thing(sceneManager, null, "Test").addObjs(triangl, triangl.getLegA(), triangl.getLegB(), triangl.getLegC(), A, B, C);
     }
 
@@ -272,7 +272,7 @@ public class Executor {
                 g ->
                         sceneManager.drawText3D(
                                 g, point.getPivot(),
-                                label, Static.camera
+                                label, StaticRefs.camera
                         )
                 );
     }

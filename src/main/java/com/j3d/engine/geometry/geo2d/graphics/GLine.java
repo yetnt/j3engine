@@ -1,6 +1,6 @@
 package com.j3d.engine.geometry.geo2d.graphics;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.geometry.geo2d.HasParents;
 import com.j3d.engine.geometry.geo3d.Thing;
@@ -16,14 +16,12 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.j3d.Static.camera;
-import static com.j3d.Static.sceneManager;
+import static com.j3d.StaticRefs.camera;
+import static com.j3d.StaticRefs.sceneManager;
 
 /**
  * GLine represents, you guessed it, a line.
@@ -134,7 +132,7 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
         B.attach(this);
         B.addParent(this);
 
-        Static.sceneManager.hasNoParent(this);
+        StaticRefs.sceneManager.hasNoParent(this);
         A.addParent(this);
         B.attach(this);
         addProps();
@@ -219,13 +217,13 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
     @Override
     public void addParent(GTri parent) {
         parents.add(parent);
-        Static.sceneManager.hasParent(this);
+        StaticRefs.sceneManager.hasParent(this);
     }
 
     @Override
     public void removeParent(GTri parent) {
         boolean su = parents.remove(parent);
-        Static.sceneManager.hasNoParent(this);
+        StaticRefs.sceneManager.hasNoParent(this);
     }
 
     @Override

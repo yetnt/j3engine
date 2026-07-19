@@ -1,6 +1,6 @@
 package com.j3d.storage.files.protocol.proj;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
@@ -10,7 +10,7 @@ import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.layer.LayerList;
 import com.j3d.errors.ErrorHandler;
-import com.j3d.gen.settings.CoreSettings;
+import com.j3d.StaticConfig;
 import com.j3d.storage.errs.ProjectFileException;
 import com.j3d.storage.files.FilesUtility;
 import com.j3d.storage.files.IOSupplier;
@@ -208,12 +208,12 @@ public class PF1 extends ProjectFile {
         };
 
         FilesUtility.writeBinary(path, name, fileWriter);
-        CoreSettings.hasSaved = true;
-        Static.getEngineFiles().recents.writeProj(new File(path).toPath().resolve(name).toFile());
+        StaticConfig.hasSaved = true;
+        StaticRefs.getEngineFiles().recents.writeProj(new File(path).toPath().resolve(name).toFile());
     }
 
     private static void msg(String message) {
-        Static.getLog().println(message);
+        StaticRefs.getLog().println(message);
     }
 
     /**
@@ -237,7 +237,7 @@ public class PF1 extends ProjectFile {
         final HashMultiMap<String, GTri> trisParentsMap = new HashMultiMap<>();
         final HashMap<String, GTri> trisMap = new HashMap<>();
 
-        Static.sceneManager.layers.removeIf(l -> !Objects.equals(l.getIdentifier(), Layer.BACKGROUND_ID));
+        StaticRefs.sceneManager.layers.removeIf(l -> !Objects.equals(l.getIdentifier(), Layer.BACKGROUND_ID));
 
         IOSupplier<DataInputStream> fileReader = dis -> {
             try {
@@ -362,7 +362,7 @@ public class PF1 extends ProjectFile {
                         boolean thingHidden = dis.readBoolean();
                         msg("\t\tHidden: " + thingHidden);
 
-                        Thing thing = Thing.fromRaw(thingName, thingUUID, thingHidden, l, Static.sceneManager);
+                        Thing thing = Thing.fromRaw(thingName, thingUUID, thingHidden, l, StaticRefs.sceneManager);
                         thing.addObjs(
                                         pointsParentsMap.getValues(thingUUID).toArray(new GPoint[0])
                                 );
@@ -382,9 +382,9 @@ public class PF1 extends ProjectFile {
 
                 throbber.setTaskTitle("Finalizing");
 
-                Static.sceneManager.layers.addAll(layerOrder);
+                StaticRefs.sceneManager.layers.addAll(layerOrder);
 
-                Static.getLog().println("Project file loaded successfully from " + path);
+                StaticRefs.getLog().println("Project file loaded successfully from " + path);
                 msg("Project file loaded successfully");
             } catch (IOException e) {
                 ErrorHandler.handle(
@@ -394,8 +394,8 @@ public class PF1 extends ProjectFile {
             return null;
         };
         FilesUtility.readBinary(path, name, fileReader);
-        CoreSettings.hasSaved = true;
-        Static.getEngineFiles().recents.writeProj(new File(path).toPath().resolve(name).toFile());
+        StaticConfig.hasSaved = true;
+        StaticRefs.getEngineFiles().recents.writeProj(new File(path).toPath().resolve(name).toFile());
 //        success.add(true);
         return (T) interactables;
     }

@@ -1,7 +1,6 @@
 package com.j3d.gen.settings.classes;
 
-import com.j3d.Static;
-import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.StaticRefs;
 import com.j3d.gen.settings.SettingsChild;
 import com.j3d.gen.settings.types.DoubleSetting;
 import com.j3d.gen.settings.Setting;
@@ -56,8 +55,8 @@ public class CameraProperties implements SettingsParent {
             i -> i/100.0,
             0.01
     ).onSetValue((Double d) -> {
-        Static.camera.setFocalLength(d);
-        Static.mainPanel.repaint();
+        StaticRefs.camera.setFocalLength(d);
+        StaticRefs.mainPanel.repaint();
         return null;
     });
     public IntSetting nearZeroProjectionPower = new IntSetting(

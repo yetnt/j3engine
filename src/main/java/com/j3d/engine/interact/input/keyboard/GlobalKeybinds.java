@@ -1,17 +1,17 @@
 package com.j3d.engine.interact.input.keyboard;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.interact.selection.SelectionMouseOwner;
 import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.interact.selection.SelectionUtils;
-import com.j3d.gen.settings.CoreSettings;
+import com.j3d.StaticConfig;
 import com.j3d.gen.settings.Settings;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import static com.j3d.Static.camera;
+import static com.j3d.StaticRefs.camera;
 import static com.j3d.engine.interact.input.keyboard.KeyBindings.commandPaletteFocusOwner;
 import static com.j3d.ui.engine.EngineFrame.COMMAND_PALETTE;
 
@@ -34,7 +34,7 @@ public enum GlobalKeybinds {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (Static.commandParser.commandPalette.isDisabled()) return;
+                            if (StaticRefs.commandParser.commandPalette.isDisabled()) return;
                             COMMAND_PALETTE.inputField.requestFocusInWindow();
                         }
                     }
@@ -58,7 +58,7 @@ public enum GlobalKeybinds {
                                             camera.getForward().mult(mvSpeed)
                                     )
                             );
-                            Static.mainFrame.repaint();
+                            StaticRefs.mainFrame.repaint();
                         }
                     }
             )
@@ -80,7 +80,7 @@ public enum GlobalKeybinds {
                                             camera.getForward().mult(mvSpeed)
                                     )
                             );
-                            Static.mainFrame.repaint();
+                            StaticRefs.mainFrame.repaint();
                         }
                     }
             )
@@ -102,7 +102,7 @@ public enum GlobalKeybinds {
                                             camera.getRight().mult(mvSpeed)
                                     )
                             );
-                            Static.mainFrame.repaint();
+                            StaticRefs.mainFrame.repaint();
                         }
                     }
             )
@@ -124,7 +124,7 @@ public enum GlobalKeybinds {
                                             camera.getRight().mult(mvSpeed)
                                     )
                             );
-                            Static.mainFrame.repaint();
+                            StaticRefs.mainFrame.repaint();
                         }
                     }
             )
@@ -146,7 +146,7 @@ public enum GlobalKeybinds {
                                             camera.getUp().mult(mvSpeed)
                                     )
                             );
-                            Static.mainFrame.repaint();
+                            StaticRefs.mainFrame.repaint();
                         }
                     }
             )
@@ -168,7 +168,7 @@ public enum GlobalKeybinds {
                                             camera.getUp().mult(mvSpeed)
                                     )
                             );
-                            Static.mainFrame.repaint();
+                            StaticRefs.mainFrame.repaint();
                         }
                     }
             )
@@ -245,10 +245,10 @@ public enum GlobalKeybinds {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            Static.commandParser.commandPalette.setDisabled(
-                                    !Static.commandParser.commandPalette.isDisabled()
+                            StaticRefs.commandParser.commandPalette.setDisabled(
+                                    !StaticRefs.commandParser.commandPalette.isDisabled()
                             );
-                            Static.mainFrame.repaint();
+                            StaticRefs.mainFrame.repaint();
                         }
                     }
             )
@@ -260,7 +260,7 @@ public enum GlobalKeybinds {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            CoreSettings.lock = !CoreSettings.lock;
+                            StaticConfig.lock = !StaticConfig.lock;
                         }
                     }
             )

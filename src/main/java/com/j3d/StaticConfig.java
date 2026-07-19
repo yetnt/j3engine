@@ -11,11 +11,19 @@ import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.layer.Layer;
 import com.j3d.gen.settings.Settings;
+import com.j3d.storage.db.DatabaseManager;
+import com.j3d.storage.db.users.User;
 
-import static com.j3d.Static.sceneManager;
+import java.awt.*;
+import java.awt.event.KeyEvent;
 
-public class J3DSettings {
+import static com.j3d.StaticRefs.sceneManager;
 
+/**
+ * While apart from settings, core settings are the modernied versio.
+ * Settings who the user should not be able to access and thus is not available on the UI.
+ */
+public abstract class StaticConfig {
     /**
      * A constant number to offset all components which get pushed down by the JMenuBar
      */
@@ -26,6 +34,12 @@ public class J3DSettings {
      * of the screen.
      */
     public static final int OFFSET_X = 200;
+    public static User user;
+    public static boolean hasSaved = false;
+    /**
+     * Generic lock flag for when the user has CAPS LOCK enabled.
+     */
+    public static boolean lock;
     /**
      * The default screen size for the SceneManager.
      */
@@ -33,23 +47,33 @@ public class J3DSettings {
     /**
      * Flag to determine if back-face culling is used during rendering.
      */
-    private static boolean useBackFaceCulling = true;
+    public static boolean useBackFaceCulling = true;
     /**
      * Flag to determine if triangle distances from the camera are displayed.
      */
-    private static boolean showTriDistances = false;
+    public static boolean showTriDistances = false;
     /**
      * Flag to determine if depth information is displayed.
      */
-    private static boolean showDepth = false;
+    public static boolean showDepth = false;
     /**
      * Flag to determine if normals are displayed.
      */
-    private static boolean showNormals = false;
+    public static boolean showNormals = false;
     /**
      * How the objects should be drawn.
      */
-    private static ViewType viewType = ViewType.NORMAL;
+    public static ViewType viewType = ViewType.NORMAL;
+
+    static {
+        user = DatabaseManager.tblUsers.findById(1);
+        try {
+            StaticConfig.lock =
+                    Toolkit.getDefaultToolkit().getLockingKeyState(KeyEvent.VK_CAPS_LOCK);
+        } catch (UnsupportedOperationException ue) {
+            StaticConfig.lock = false;
+        }
+    }
 
     public static void setTriangleSortMethod(TriangleSortMethod method) {
         Settings.sceneProperties.triangleSortMethod.setValue(method);
@@ -59,27 +83,31 @@ public class J3DSettings {
     public static boolean isUseBackFaceCulling() {
         return useBackFaceCulling;
     }
+
     public static void setUseBackFaceCulling(boolean useBackFaceCulling) {
-        J3DSettings.useBackFaceCulling = useBackFaceCulling;
+        StaticConfig.useBackFaceCulling = useBackFaceCulling;
     }
 
     public static boolean isShowTriDistances() {
         return showTriDistances;
     }
+
     public static void setShowTriDistances(boolean showTriDistances) {
-        J3DSettings.showTriDistances = showTriDistances;
+        StaticConfig.showTriDistances = showTriDistances;
     }
 
     public static boolean isShowDepth() {
         return showDepth;
     }
+
     public static void setShowDepth(boolean showDepth) {
-        J3DSettings.showDepth = showDepth;
+        StaticConfig.showDepth = showDepth;
     }
 
     public static boolean isShowNormals() {
         return showNormals;
     }
+
     public static void setShowNormals(boolean showNormals) {
         if (!showNormals) {
             sceneManager.layers.stream()
@@ -89,14 +117,14 @@ public class J3DSettings {
                     .map(t -> (GTri) t)
                     .forEach(t -> t.showNorm = false);
         }
-        J3DSettings.showNormals = showNormals;
+        StaticConfig.showNormals = showNormals;
     }
 
     public static ViewType getViewType() {
         return viewType;
     }
-    public static void setViewType(ViewType viewType) {
-        J3DSettings.viewType = viewType;
-    }
 
+    public static void setViewType(ViewType viewType) {
+        StaticConfig.viewType = viewType;
+    }
 }

@@ -4,7 +4,7 @@
  */
 package com.j3d.ui.engine.floating.properties.panels;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.gen.properties.Property;
@@ -120,7 +120,7 @@ public class Vector3Property extends javax.swing.JPanel implements PropertyPanel
     private void setBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setBtnActionPerformed
         if (singleProperty()) {
             if (CommandsManager.commandIsRunning()) {
-                Static.hoverLabel.error("Finish running command first");
+                StaticRefs.hoverLabel.error("Finish running command first");
                 return;
             }
             new Vector3Dialogue(getSingleProperty().getValueSupplier().get(), setBtn);

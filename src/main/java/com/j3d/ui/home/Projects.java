@@ -5,8 +5,8 @@
 package com.j3d.ui.home;
 
 import com.j3d.Startup;
-import com.j3d.Static;
-import com.j3d.gen.settings.CoreSettings;
+import com.j3d.StaticRefs;
+import com.j3d.StaticConfig;
 import com.j3d.storage.files.util.ProjectImagePair;
 import com.j3d.ui.generic.J3DScrollBarUI;
 import com.j3d.ui.generic.J3DTheme;
@@ -37,14 +37,14 @@ public class Projects extends javax.swing.JFrame {
         jLabel4.setText(
                 JLabelRichText.htmlOf(
                         new JLabelRichText("Welcome "),
-                        new JLabelRichText(CoreSettings.user.firstName.getValue()).italic(),
+                        new JLabelRichText(StaticConfig.user.firstName.getValue()).italic(),
                         new JLabelRichText("!")
                 )
         );
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                Static.getEngineFiles().pinned.writeProjs(
+                StaticRefs.getEngineFiles().pinned.writeProjs(
                         pinned.stream()
                                 .map(ProjectButton::getIdentity)
                                 .collect(Collectors.toCollection(HashSet::new))
@@ -55,7 +55,7 @@ public class Projects extends javax.swing.JFrame {
         J3DScrollBarUI.setBars(jScrollPane2);
         J3DScrollBarUI.setBars(jScrollPane3);
         J3DScrollBarUI.setBars(jScrollPane4);
-        Static.getLog().uiPrintLn("Projects completed building");
+        StaticRefs.getLog().uiPrintLn("Projects completed building");
     }
 
     public ImageIcon scaleImage(File image) {
@@ -85,12 +85,12 @@ public class Projects extends javax.swing.JFrame {
     }
 
     public void loadRecentProjects() {
-        ArrayList<ProjectImagePair> projs = Static.getEngineFiles().recents.readRecents();
+        ArrayList<ProjectImagePair> projs = StaticRefs.getEngineFiles().recents.readRecents();
         genericLoad(projs, recentProjectsPanel, false);
     }
 
     public void loadPinnedProjects() {
-        ArrayList<ProjectImagePair> projs = Static.getEngineFiles().pinned.readPinned();
+        ArrayList<ProjectImagePair> projs = StaticRefs.getEngineFiles().pinned.readPinned();
         genericLoad(projs, pinnedProjectsPanel, true);
     }
 
@@ -143,7 +143,7 @@ public class Projects extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("J3Engine Projects");
-        setIconImage(Static.logo());
+        setIconImage(StaticRefs.logo());
         setMaximumSize(new java.awt.Dimension(16, 2147483647));
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.Y_AXIS));
 

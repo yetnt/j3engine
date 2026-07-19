@@ -1,6 +1,6 @@
 package com.j3d.engine.react.history;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.CleanableAction;
 import com.j3d.ui.engine.floating.HistoryPanel;
@@ -47,13 +47,13 @@ public class History extends ArrayList<Action<?>> {
     public void undo() {
         if (this.isEmpty()) return;
         if (!this.getLast().isReversible()) {
-            Static.getLog().println(logHead + "Attempt to undo: " + this.getLast().getDescription());
+            StaticRefs.getLog().println(logHead + "Attempt to undo: " + this.getLast().getDescription());
             return;
         };
         Action<?> action = this.removeLast();
         action.undo();
         backup.add(action);
-        Static.getLog().println(logHead + "Undo -> " + action.getDescription());
+        StaticRefs.getLog().println(logHead + "Undo -> " + action.getDescription());
         updateHistory();
     }
 
@@ -65,7 +65,7 @@ public class History extends ArrayList<Action<?>> {
         Action<?> action = backup.removeLast();
         action.run();
         bypassAdd(action);
-        Static.getLog().println(logHead + "Redo -> " + action.getDescription());
+        StaticRefs.getLog().println(logHead + "Redo -> " + action.getDescription());
         updateHistory();
     }
 
@@ -82,11 +82,11 @@ public class History extends ArrayList<Action<?>> {
     public boolean add(Action<?> action) {
         if (this.size() >= MAX_HISTORY_SIZE) {
             Action<?> a = this.remove(0);
-            Static.getLog().println(logHead + "History head removed -> " + a.getDescription());
+            StaticRefs.getLog().println(logHead + "History head removed -> " + a.getDescription());
             if (a instanceof CleanableAction cl) {
                 try {
                     cl.cleanup();
-                    Static.getLog().println(logHead + "Cleaned up (as a result of being too old) -> " + a.getDescription());
+                    StaticRefs.getLog().println(logHead + "Cleaned up (as a result of being too old) -> " + a.getDescription());
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -94,7 +94,7 @@ public class History extends ArrayList<Action<?>> {
         }
 
         backup.clear();
-        Static.getLog().println(logHead + "Add ["+
+        StaticRefs.getLog().println(logHead + "Add ["+
                 (action.isReversible() ? "R" : "!R")
                 +"] -> " + action.getDescription());
         boolean a = super.add(action);
@@ -145,6 +145,6 @@ public class History extends ArrayList<Action<?>> {
             }
         }
 
-        Static.mainPanel.repaint();
+        StaticRefs.mainPanel.repaint();
     }
 }

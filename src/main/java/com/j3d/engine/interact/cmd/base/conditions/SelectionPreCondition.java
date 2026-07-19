@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.cmd.base.conditions;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.base.PreCommandExecution;
 import com.j3d.engine.interact.cmd.base.SemiStatefulCommand;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
@@ -65,8 +65,8 @@ public class SelectionPreCondition implements PreCommandExecution {
             @Override
             public <K> void onEvent(EventType event, EventPayload<K> properties) {
                 cleanup.run();
-                Static.commandParser.safeJLabel().clearHigher();
-                Static.hoverLabel.error("No selection was made. Command Aborted");
+                StaticRefs.commandParser.safeJLabel().clearHigher();
+                StaticRefs.hoverLabel.error("No selection was made. Command Aborted");
             }
         };
         AbstractAction quit =
@@ -88,13 +88,13 @@ public class SelectionPreCondition implements PreCommandExecution {
         J3Key quitKey = new J3Key("quit", true).setKeyStroke(
                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0)
         ).setAction(quit);
-        Static.keybinds.registerJ3Key(key);
-        Static.keybinds.registerJ3Key(quitKey);
+        StaticRefs.keybinds.registerJ3Key(key);
+        StaticRefs.keybinds.registerJ3Key(quitKey);
 
         cleanup = () -> {
             extraCleanup.run();
-            Static.keybinds.removeJ3Key(key.getId());
-            Static.keybinds.removeJ3Key(quitKey.getId());
+            StaticRefs.keybinds.removeJ3Key(key.getId());
+            StaticRefs.keybinds.removeJ3Key(quitKey.getId());
         };
         commandEndCleanup = () -> {
             getEventEmitterToAttachTo().detach(failListener);
@@ -140,7 +140,7 @@ public class SelectionPreCondition implements PreCommandExecution {
         return new Supplier<Boolean>() {
             @Override
             public Boolean get() {
-                return !Static.sceneManager.getSelected().isEmpty();
+                return !StaticRefs.sceneManager.getSelected().isEmpty();
             }
         };
     }

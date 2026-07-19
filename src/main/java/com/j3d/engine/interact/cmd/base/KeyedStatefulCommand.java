@@ -1,9 +1,7 @@
 package com.j3d.engine.interact.cmd.base;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
-import com.j3d.engine.geometry.geo2d.graphics.GPoint;
-import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.commands.transform.AbstractTransform;
 import com.j3d.engine.interact.cmd.commands.transform.TranslateSelection;
 import com.j3d.engine.interact.input.keyboard.J3Key;
@@ -114,7 +112,7 @@ public interface KeyedStatefulCommand extends StatefulCommand<Void> {
 
                                 application.accept(sharedVar);
 
-                                Static.mainPanel.repaint();
+                                StaticRefs.mainPanel.repaint();
                             }
                         }
                 )

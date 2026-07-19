@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.cmd.commands;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
@@ -46,6 +46,6 @@ public class TeleportCmd extends Command {
             return;
         }
 
-        Static.camera.setPosition(v3);
+        StaticRefs.camera.setPosition(v3);
     }
 }

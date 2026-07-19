@@ -1,6 +1,5 @@
 package com.j3d.engine.interact.cmd.commands.transform.mouse;
 
-import com.j3d.J3DSettings;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.interact.cmd.commands.transform.AbstractTransform;
@@ -9,19 +8,13 @@ import com.j3d.engine.interact.cmd.commands.transform.handles.HandleType;
 import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.engine.interact.input.mouse.MouseOwner;
 import com.j3d.engine.interact.input.mouse.SnapMouseOwner;
-import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
-import com.j3d.gen.settings.CoreSettings;
-import com.j3d.ui.engine.EngineFrame;
 import com.j3d.utility.generic.Pair;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.UUID;
-
-import static com.j3d.Static.mainFrame;
-import static com.j3d.Static.sceneManager;
 
 /**
  * A specialized {@link MouseOwner} that manages user interaction with a set of

@@ -4,7 +4,7 @@
  */
 package com.j3d.ui.settings;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.ui.generic.J3DScrollBarUI;
 import com.j3d.ui.generic.J3DTheme;
 
@@ -19,7 +19,7 @@ public class PreferencesFrame extends javax.swing.JFrame {
      */
     public PreferencesFrame() {
         initComponents();
-        Static.settings.getAllChildren().forEach(child -> {
+        StaticRefs.settings.getAllChildren().forEach(child -> {
             System.out.println("Adding + " + child);
             jPanel1.add(child.panel());
             System.out.println("Added");
@@ -28,7 +28,7 @@ public class PreferencesFrame extends javax.swing.JFrame {
         this.pack();
         this.repaint();
         this.revalidate();
-        Static.getLog().uiPrintLn("PreferencesFrame completed building");
+        StaticRefs.getLog().uiPrintLn("PreferencesFrame completed building");
     }
 
     /**
@@ -46,7 +46,7 @@ public class PreferencesFrame extends javax.swing.JFrame {
 
         setTitle("J3D Settings Mfwethu");
         setBackground(J3DTheme.UI_SURFACE.color());
-        setIconImage(Static.logo());
+        setIconImage(StaticRefs.logo());
         setMinimumSize(new java.awt.Dimension(300, 0));
 
         jScrollPane1.setBackground(J3DTheme.UI_SURFACE.color());

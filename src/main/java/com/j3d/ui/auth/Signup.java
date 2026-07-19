@@ -4,8 +4,8 @@
  */
 package com.j3d.ui.auth;
 
-import com.j3d.Static;
-import com.j3d.gen.settings.CoreSettings;
+import com.j3d.StaticRefs;
+import com.j3d.StaticConfig;
 import com.j3d.storage.db.users.Password;
 import com.j3d.storage.db.users.User;
 import com.j3d.storage.db.users.UsersTable;
@@ -38,7 +38,7 @@ public class Signup extends javax.swing.JFrame {
         initComponents();
         this.setCursor(CursorManager.get(CursorNames.DEFAULT));
         this.postSignup = postsignup;
-        Static.getLog().uiPrintLn("Signup completed building");
+        StaticRefs.getLog().uiPrintLn("Signup completed building");
     }
 
     private boolean validPassword() {
@@ -145,7 +145,7 @@ public class Signup extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("J3Engine Signup");
-        setIconImage(Static.logo());
+        setIconImage(StaticRefs.logo());
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
         jPanel1.setBackground(J3DTheme.BACKGROUND.color());
@@ -445,7 +445,7 @@ public class Signup extends javax.swing.JFrame {
                 return;
             }
 
-            CoreSettings.user = wasRegistered.second;
+            StaticConfig.user = wasRegistered.second;
             this.dispose();
             postSignup.run();
 

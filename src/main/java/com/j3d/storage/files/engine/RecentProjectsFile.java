@@ -1,6 +1,6 @@
 package com.j3d.storage.files.engine;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.storage.files.util.ProjectImagePair;
 import com.j3d.ui.engine.J3DPanel;
 
@@ -38,7 +38,7 @@ public class RecentProjectsFile extends ProjectsFile {
     public void writeProj(File project) {
         try {
             File image = projectsFolder.toPath().resolve(project.getName() + ".png").toFile();
-            ((J3DPanel)Static.mainPanel).exportAs("png", image);
+            ((J3DPanel) StaticRefs.mainPanel).exportAs("png", image);
 
             if (existsInFile(file, project)) return;
             PrintWriter pw = new PrintWriter(new FileWriter(file, true));

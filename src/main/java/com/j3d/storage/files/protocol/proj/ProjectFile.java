@@ -1,6 +1,6 @@
 package com.j3d.storage.files.protocol.proj;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.errors.ErrorHandler;
 import com.j3d.storage.errs.J3DFileException;
 import com.j3d.storage.errs.ProjectFileException;
@@ -137,8 +137,8 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
 
     public static ProjectFile getFromVersion(int version) {
         return switch (version) {
-            case 1 -> Static.getProjectFileV1();
-            case 2 -> Static.getProjectFileV2();
+            case 1 -> StaticRefs.getProjectFileV1();
+            case 2 -> StaticRefs.getProjectFileV2();
             default -> {
                 ErrorHandler.handle(
                         new J3DFileException("Attempt to find a J3D project version which does not exist")
@@ -199,8 +199,8 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
     }
 
     public enum PF {
-        V1(Static::getProjectFileV1),
-        V2(Static::getProjectFileV2);
+        V1(StaticRefs::getProjectFileV1),
+        V2(StaticRefs::getProjectFileV2);
 
         PF(Supplier<ProjectFile> pf) {
             projectFile = pf;

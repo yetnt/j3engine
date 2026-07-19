@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static com.j3d.Static.getPropertiesPanel;
-import static com.j3d.Static.mainPanel;
+import static com.j3d.StaticRefs.getPropertiesPanel;
+import static com.j3d.StaticRefs.mainPanel;
 import static com.j3d.engine.SceneManager.history;
 
 /**

@@ -1,6 +1,6 @@
 package com.j3d.ui.engine.toolbox;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.react.history.History;
@@ -32,23 +32,23 @@ public class ToolboxButtons {
 
     static {
         registerComplex("Transform", new Subbox(s -> s
-                .add("translate", e -> Static.commandParser.runCommand(
+                .add("translate", e -> StaticRefs.commandParser.runCommand(
                         CommandsManager.commands.transform, "transform",
                         new ArrayList<>(List.of("translate")), new ArrayList<>()
                 ), "translate.png")
-                .add("rotate", e -> Static.commandParser.runCommand(
+                .add("rotate", e -> StaticRefs.commandParser.runCommand(
                         CommandsManager.commands.transform, "transform",
                         new ArrayList<>(List.of("rotate")), new ArrayList<>()
                 ), "rotate.png")
-                .add("scale", e -> Static.commandParser.runCommand(
+                .add("scale", e -> StaticRefs.commandParser.runCommand(
                         CommandsManager.commands.transform, "transform",
                         new ArrayList<>(List.of("scale")), new ArrayList<>()
                 ), "scale.png")), "transform.png");
         register("Properties", e -> {
             // Toggle props mode
-            Static.getPropertiesPanel().toggleHidden();
+            StaticRefs.getPropertiesPanel().toggleHidden();
         }, "properties.png");
-        register("Orbit", e -> Static.commandParser.runCommand(
+        register("Orbit", e -> StaticRefs.commandParser.runCommand(
                 CommandsManager.commands.orbit, "orbit",
                 new ArrayList<>(), new ArrayList<>()), "orbit.png");
         register("History",
@@ -56,11 +56,11 @@ public class ToolboxButtons {
                 "history.png"
         );
         register("Layers",
-                e -> Static.getLayerTree().toggleHidden(),
+                e -> StaticRefs.getLayerTree().toggleHidden(),
                 "layers.png");
         register("Debug Panel", e -> {
             // Toggle debug mode
-            Static.getDebugPanel().toggleHidden();
+            StaticRefs.getDebugPanel().toggleHidden();
         });
 
         // another for exmaple
@@ -90,10 +90,10 @@ public class ToolboxButtons {
         });
         register("Dump to Debug", e -> {
             long current = System.currentTimeMillis();
-            Camera cam = Static.camera;
-            try (PrintWriter out = Static.getEngineFiles().debugDump.writer(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss")) + ".csv")) {
+            Camera cam = StaticRefs.camera;
+            try (PrintWriter out = StaticRefs.getEngineFiles().debugDump.writer(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss")) + ".csv")) {
                 DebugDump.print(out, current, cam);
-                Desktop.getDesktop().open(Static.getEngineFiles().debugDump.getFolder());
+                Desktop.getDesktop().open(StaticRefs.getEngineFiles().debugDump.getFolder());
             } catch (RuntimeException | IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -126,19 +126,19 @@ public class ToolboxButtons {
                     if (currentViewableSubbox instanceof Subbox other)
                         other.delete();
                     sub.setBounds(
-                            Static.mainFrame.getWidth() / 2 - (sub.getPreferredSize().width / 2),
-                            (Static.mainFrame.getHeight() / 2 - (sub.getPreferredSize().height / 2)) - 30,
+                            StaticRefs.mainFrame.getWidth() / 2 - (sub.getPreferredSize().width / 2),
+                            (StaticRefs.mainFrame.getHeight() / 2 - (sub.getPreferredSize().height / 2)) - 30,
                             sub.getPreferredSize().width,
                             sub.getPreferredSize().height + 10
                     );
-                    Static.mainFrame.getLayeredPane().add(sub, JLayeredPane.DRAG_LAYER +1);
+                    StaticRefs.mainFrame.getLayeredPane().add(sub, JLayeredPane.DRAG_LAYER +1);
 
                     s.setEnabled(true);
                     s.setVisible(true);
                     currentViewableSubbox = s;
                 }
-                Static.mainFrame.repaint();
-                Static.mainFrame.revalidate();
+                StaticRefs.mainFrame.repaint();
+                StaticRefs.mainFrame.revalidate();
             }
         });
         l.addMouseListener(new MouseAdapter() {

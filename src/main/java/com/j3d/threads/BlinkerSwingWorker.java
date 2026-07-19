@@ -1,6 +1,6 @@
 package com.j3d.threads;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.interact.cmd.commands.measure.VolumeCmd;
 
@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import static com.j3d.Static.sceneManager;
+import static com.j3d.StaticRefs.sceneManager;
 
 /**
  * A SwingWorker implementation designed to perform a blinking effect on a UI component.
@@ -51,7 +51,7 @@ public class BlinkerSwingWorker extends SwingWorker<Void, Void> {
      * <ol>
      *      <li>Sleeps for {@code waitMs} milliseconds.</li>
      *      <li>Executes the provided {@code runnable}.</li>
-     *      <li>Repaints the {@code Static.mainPanel}.</li>
+     *      <li>Repaints the {@code StaticRefs.mainPanel}.</li>
      * </ol>
      * If the thread is interrupted during sleep, the exception is caught and ignored.
      */
@@ -60,7 +60,7 @@ public class BlinkerSwingWorker extends SwingWorker<Void, Void> {
             try {
                 Thread.sleep(waitMs);
                 runnable.run();
-                Static.mainPanel.repaint();
+                StaticRefs.mainPanel.repaint();
             } catch (InterruptedException e) {
 
             }

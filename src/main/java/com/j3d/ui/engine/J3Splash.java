@@ -4,7 +4,7 @@
  */
 package com.j3d.ui.engine;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.ui.generic.J3DTheme;
 
 /**
@@ -34,7 +34,7 @@ public class J3Splash extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
         setBackground(J3DTheme.BACKGROUND.defaultCol());
-        setIconImage(Static.logo());
+        setIconImage(StaticRefs.logo());
         getContentPane().setLayout(new java.awt.GridLayout(1, 0));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);

@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.cmd.commands.debug;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.args.ArgSet;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
@@ -55,13 +55,13 @@ public class CameraInfoCmd extends Subcommand {
         }
 
         String rot = "rot(" +
-                Static.camera.getRotation().getPitch() + ", "
-                + Static.camera.getRotation().getYaw() + ", "
-                + Static.camera.getRotation().getRoll() + ")";
+                StaticRefs.camera.getRotation().getPitch() + ", "
+                + StaticRefs.camera.getRotation().getYaw() + ", "
+                + StaticRefs.camera.getRotation().getRoll() + ")";
         String pos = "pos(" +
-                Static.camera.getPosition().getX() + ", "
-                + Static.camera.getPosition().getY() + ", "
-                + Static.camera.getPosition().getZ() + ")";
+                StaticRefs.camera.getPosition().getX() + ", "
+                + StaticRefs.camera.getPosition().getY() + ", "
+                + StaticRefs.camera.getPosition().getZ() + ")";
 
         String content = args.length == 0 ?
                 pos + " " + rot : switch ((String)args[0]) {
@@ -72,7 +72,7 @@ public class CameraInfoCmd extends Subcommand {
 
         logLabel.setText(content);
         ClipboardUtil.copyToClipboard(content);
-        Static.getLog().println(content);
+        StaticRefs.getLog().println(content);
     }
 
 }

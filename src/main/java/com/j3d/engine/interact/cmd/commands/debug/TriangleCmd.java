@@ -1,15 +1,15 @@
 package com.j3d.engine.interact.cmd.commands.debug;
 
-import com.j3d.J3DSettings;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
+import com.j3d.StaticConfig;
 import com.j3d.ui.SafeJLabel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.j3d.Static.sceneManager;
+import static com.j3d.StaticRefs.sceneManager;
 
 /**
  * A no-arg subcommand of {@link DebugCmd} which simply toggles the normal of a selected triangle or triangles.
@@ -40,7 +40,7 @@ public class TriangleCmd extends Subcommand {
 
         if (sceneManager.getSelected().isEmpty()) {
             logLabel.setText("No objects selected. Normals were cleared instead");
-            J3DSettings.setShowNormals(false);
+            StaticConfig.setShowNormals(false);
             return;
         }
 
@@ -51,7 +51,7 @@ public class TriangleCmd extends Subcommand {
                 .toList();
         if (selected.isEmpty()) {
             logLabel.setText("No triangles selected.");
-            J3DSettings.setShowNormals(false);
+            StaticConfig.setShowNormals(false);
             return;
         }
 

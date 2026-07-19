@@ -4,9 +4,9 @@
  */
 package com.j3d.ui.settings.popouts;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.CommandsManager;
-import com.j3d.gen.settings.CoreSettings;
+import com.j3d.StaticConfig;
 import com.j3d.gen.settings.Settings;
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.themes.Theme;
@@ -40,7 +40,7 @@ public class ThemeChanger extends javax.swing.JFrame {
         buttons.revalidate();
         this.revalidate();
         this.repaint();
-        Static.getLog().uiPrintLn("ThemeChanger completed building");
+        StaticRefs.getLog().uiPrintLn("ThemeChanger completed building");
     }
 
     public int getSelectedId() {
@@ -319,12 +319,12 @@ public class ThemeChanger extends javax.swing.JFrame {
 
     private void enterThemeChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterThemeChangeActionPerformed
         // TODO: Somehow change entire app theme or ask user to close and open for theme change.
-        CoreSettings.user.themeId.setValue(
+        StaticConfig.user.themeId.setValue(
                 selectedId
         );
-        CoreSettings.user.save();
+        StaticConfig.user.save();
 
-        Static.settings.panel().dispose();
+        StaticRefs.settings.panel().dispose();
 
         this.dispose();
         Settings.themeChanger = null;
@@ -336,7 +336,7 @@ public class ThemeChanger extends javax.swing.JFrame {
 
     private void changeAndCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeAndCloseActionPerformed
         enterThemeChangeActionPerformed(evt);
-        Static.commandParser.runCommand(
+        StaticRefs.commandParser.runCommand(
                 CommandsManager.commands.engine,
                 "engine",
                 new ArrayList<>(Collections.singleton("exit")),

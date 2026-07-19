@@ -1,7 +1,6 @@
 package com.j3d.engine.geometry.geo3d;
 
-import com.j3d.J3DSettings;
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
@@ -19,6 +18,7 @@ import com.j3d.engine.react.actions.ConstructorAction;
 import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.gen.properties.HasProperties;
 import com.j3d.gen.properties.Property;
+import com.j3d.StaticConfig;
 import com.j3d.storage.files.protocol.proj.PF1;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.ui.generic.J3DTheme;
@@ -77,9 +77,9 @@ public class Thing implements Interactable, HasProperties {
     private final BiConsumer<Thing, DefaultMutableTreeNode>  onSelectCallback =
             (o, t) -> {
                 if (this.isBg || this.hidden) return;
-                Static.getLog().println(name + " thing was selected in the tree.");
-                Static.sceneManager.select(this);
-                Static.mainPanel.repaint();
+                StaticRefs.getLog().println(name + " thing was selected in the tree.");
+                StaticRefs.sceneManager.select(this);
+                StaticRefs.mainPanel.repaint();
             };
 
     /**
@@ -163,7 +163,7 @@ public class Thing implements Interactable, HasProperties {
         treeNodeIdentity = new TreeNodeIdentity<>(
                 name, this, onSelectCallback
         );
-        treeNode = Static.getLayerTree().addNode(parent.getTreeNode(), treeNodeIdentity);
+        treeNode = StaticRefs.getLayerTree().addNode(parent.getTreeNode(), treeNodeIdentity);
         toggleSaved();
         addProps();
         SceneManager.history.add(
@@ -179,7 +179,7 @@ public class Thing implements Interactable, HasProperties {
                     public Void run() {
                         // will be called after undo, so we need to re-add the thing
                         setForDeletion(false);
-                        thing.treeNode = Static.getLayerTree().addNode(parent.getTreeNode(), treeNodeIdentity);
+                        thing.treeNode = StaticRefs.getLayerTree().addNode(parent.getTreeNode(), treeNodeIdentity);
                         objectsStream()
                                 .filter(s -> s instanceof GTri)
                                 .map(g -> (GTri)g)
@@ -190,7 +190,7 @@ public class Thing implements Interactable, HasProperties {
                     @Override
                     public void undo() {
                         setForDeletion(true);
-                        Static.getLayerTree().removeNode(thing.treeNode);
+                        StaticRefs.getLayerTree().removeNode(thing.treeNode);
                         objectsStream()
                                 .filter(s -> s instanceof GTri)
                                 .map(g -> (GTri)g)
@@ -293,9 +293,9 @@ public class Thing implements Interactable, HasProperties {
         if (isBg) {
 //            graphics2D.setColor(new Color(52, 52, 52));
             graphics2D.setColor(J3DTheme.BACKGROUND.color());
-            graphics2D.fillRect(0, 0, J3DSettings.screenSize.width, J3DSettings.screenSize.height);
-            Static.sceneManager.axis(graphics2D, Static.camera);
-            Static.sceneManager.axisGrid(graphics2D, Static.camera);
+            graphics2D.fillRect(0, 0, StaticConfig.screenSize.width, StaticConfig.screenSize.height);
+            StaticRefs.sceneManager.axis(graphics2D, StaticRefs.camera);
+            StaticRefs.sceneManager.axisGrid(graphics2D, StaticRefs.camera);
             return;
         }
 
@@ -430,7 +430,7 @@ public class Thing implements Interactable, HasProperties {
      */
     private void notifyTris() {
         for (GTri tri : objects.stream().filter(o -> o instanceof GTri).map(o -> (GTri) o).toList()) {
-            tri.broadcast(EventType.OBJ_UPDATED, new TriUpdatedBroadcast(tri, Static.sceneManager));
+            tri.broadcast(EventType.OBJ_UPDATED, new TriUpdatedBroadcast(tri, StaticRefs.sceneManager));
         }
     }
 
@@ -720,21 +720,21 @@ public class Thing implements Interactable, HasProperties {
         return new DirtyVoidAction() {
             @Override
             public void cleanup() throws Exception {
-                 Static.sceneManager.removeThing(t);
+                 StaticRefs.sceneManager.removeThing(t);
                  t.instantDelete();
             }
 
             @Override
             public Void run() {
                 t.setForDeletion(true);
-                Static.getLayerTree().removeNode(treeNode);
+                StaticRefs.getLayerTree().removeNode(treeNode);
                 return null;
             }
 
             @Override
             public void undo() {
                 t.setForDeletion(false);
-                DefaultMutableTreeNode node = Static.getLayerTree().addNode(parentLayerNode, treeNodeIdentity);
+                DefaultMutableTreeNode node = StaticRefs.getLayerTree().addNode(parentLayerNode, treeNodeIdentity);
                 t.treeNode = node;
             }
 

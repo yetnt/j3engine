@@ -4,7 +4,7 @@
  */
 package com.j3d.ui.engine.floating.properties.panels;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.gen.properties.Property;
 import com.j3d.ui.generic.J3DTheme;
 import com.j3d.utility.ClipboardUtil;
@@ -44,7 +44,7 @@ public class IDProperty extends javax.swing.JPanel implements PropertyPanel<UUID
                         public void mouseClicked(MouseEvent e) {
                             if (e.getClickCount() == 2) {
                                 // add the UUID to the command palette
-                                Static.commandParser.injectArgument(
+                                StaticRefs.commandParser.injectArgument(
                                         getSingleProperty().getValueSupplier().get()
                                 );
                             }

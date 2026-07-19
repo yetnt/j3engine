@@ -4,7 +4,7 @@
  */
 package com.j3d.ui.engine.toolbox;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.ui.generic.CursorManager;
 import com.j3d.ui.generic.CursorNames;
 import com.j3d.ui.generic.J3DScrollBarUI;
@@ -90,7 +90,7 @@ public class Subbox extends javax.swing.JPanel {
     public void delete() {
         this.setVisible(false);
         this.setEnabled(false);
-        Static.mainFrame.getLayeredPane().remove(this);
+        StaticRefs.mainFrame.getLayeredPane().remove(this);
         ToolboxButtons.currentViewableSubbox = null;
     }
 

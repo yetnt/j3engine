@@ -374,7 +374,7 @@ public class JLabelRichText {
     }
 
     /**
-     * Static factory method to combine multiple JLabelRichText instances into a single HTML string,
+     * StaticRefs factory method to combine multiple JLabelRichText instances into a single HTML string,
      * wrapped in an {@code <html>} tag.
      *
      * @param richTexts An array of JLabelRichText objects to combine.
@@ -389,7 +389,7 @@ public class JLabelRichText {
     }
 
     /**
-     * Static factory method to combine multiple String instances into a single HTML string,
+     * StaticRefs factory method to combine multiple String instances into a single HTML string,
      * wrapped in an {@code <html>} tag.
      * @param txt An array of String objects to combine.
      * @return A single HTML string containing all the text content.
@@ -403,7 +403,7 @@ public class JLabelRichText {
     }
 
     /**
-     * Static factory method to combine multiple JLabelRichText instances and wrap them
+     * StaticRefs factory method to combine multiple JLabelRichText instances and wrap them
      * within a single paragraph {@code <p>} tag.
      *
      * @param richTexts An array of JLabelRichText objects to combine.

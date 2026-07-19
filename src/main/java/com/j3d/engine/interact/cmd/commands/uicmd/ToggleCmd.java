@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.cmd.commands.uicmd;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.args.ArgSet;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
@@ -62,12 +62,12 @@ public class ToggleCmd extends Subcommand {
 
         switch (targetPanel) {
             case "layers", "l" ->
-                Static.getLayerTree().toggleHidden();
+                StaticRefs.getLayerTree().toggleHidden();
             case "history", "h" -> History.panel.toggleHidden();
             case "debug", "dbg", "d" ->
-                Static.getDebugPanel().toggleHidden();
+                StaticRefs.getDebugPanel().toggleHidden();
             case "p", "properties", "prop" ->
-                Static.getPropertiesPanel().toggleHidden();
+                StaticRefs.getPropertiesPanel().toggleHidden();
         }
 
     }

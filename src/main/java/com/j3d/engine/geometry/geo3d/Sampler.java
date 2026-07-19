@@ -1,13 +1,13 @@
 package com.j3d.engine.geometry.geo3d;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.function.Function;
 
-import static com.j3d.Static.sceneManager;
+import static com.j3d.StaticRefs.sceneManager;
 
 public class Sampler {
 
@@ -74,7 +74,7 @@ public class Sampler {
             Vector3 vector3 = vector3list.get(i);
             Vector3 nextVector3 = vector3list.get((i + 1) % vector3list.size());
             sceneManager.drawLine3D(
-                    g, vector3, nextVector3, Static.camera
+                    g, vector3, nextVector3, StaticRefs.camera
             );
         }
     }

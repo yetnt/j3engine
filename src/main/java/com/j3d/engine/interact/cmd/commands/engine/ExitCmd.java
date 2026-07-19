@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.cmd.commands.engine;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.args.TypedArg;
@@ -51,7 +51,7 @@ public class ExitCmd extends Subcommand {
         }
         boolean force = args.length != 0 && (boolean) args[0];
         if (!force) {
-            AreYouSure ays = new AreYouSure(Static.mainFrame, true, "This will save nothing. Its a hard exit.");
+            AreYouSure ays = new AreYouSure(StaticRefs.mainFrame, true, "This will save nothing. Its a hard exit.");
             ays.setVisible(true);
             if (ays.canProceed())
                 System.exit(0);

@@ -1,6 +1,6 @@
 package com.j3d.errors;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.errors.severity.J3DFatal;
 import com.j3d.errors.severity.J3DMild;
 import com.j3d.errors.severity.J3DWarning;
@@ -17,19 +17,19 @@ public class ErrorHandler {
         switch (err) {
             case J3DMild j3m -> {
                 // mild errors only get printed to the log as the user need not know of this.
-                Static.getLog().error(err);
+                StaticRefs.getLog().error(err);
             }
             case J3DWarning j3w -> {
                 // Warnings get printed to the log, user debug log and also a little box to the user.
-                Static.getLog().error(err);
-                JOptionPane.showMessageDialog(Static.mainFrame, err.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
+                StaticRefs.getLog().error(err);
+                JOptionPane.showMessageDialog(StaticRefs.mainFrame, err.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
             }
             case J3DFatal j3f -> {
                 // Fatal errors are unrecoverable.
-                Static.getLog().error(err);
-                JOptionPane.showMessageDialog(Static.mainFrame, err.getMessage(), "Fatal Error", JOptionPane.ERROR_MESSAGE);
+                StaticRefs.getLog().error(err);
+                JOptionPane.showMessageDialog(StaticRefs.mainFrame, err.getMessage(), "Fatal Error", JOptionPane.ERROR_MESSAGE);
                 if (j3f.terminate()) {
-                    JOptionPane.showMessageDialog(Static.mainFrame,
+                    JOptionPane.showMessageDialog(StaticRefs.mainFrame,
                             "Due to the nature of the previous error, the app cannot continue in this state and will shut down.",
                             "Fatal Error", JOptionPane.ERROR_MESSAGE);
                     System.exit(1);
@@ -37,7 +37,7 @@ public class ErrorHandler {
                 }
             }
             default ->  {
-                Static.getLog().error(err);
+                StaticRefs.getLog().error(err);
             }
         }
     }

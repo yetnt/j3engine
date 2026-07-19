@@ -4,7 +4,7 @@
  */
 package com.j3d.ui.engine;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 
 /**
  *
@@ -17,7 +17,7 @@ public class CommandPalette extends javax.swing.JPanel {
      */
     public CommandPalette() {
         initComponents();
-        Static.getLog().uiPrintLn("CommandPalette completed building");
+        StaticRefs.getLog().uiPrintLn("CommandPalette completed building");
     }
 
     private boolean disabled = false;

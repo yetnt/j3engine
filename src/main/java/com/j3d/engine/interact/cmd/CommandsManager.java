@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.cmd;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.base.SemiStatefulCommand;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.base.Command;
@@ -104,7 +104,7 @@ public class CommandsManager {
      * @see #commandsAliasMap
      */
     public static Command getCommand(String name) {
-        return Static.commandManager.commandsAliasMap.getOrDefault(name, null);
+        return StaticRefs.commandManager.commandsAliasMap.getOrDefault(name, null);
     }
 
     /**

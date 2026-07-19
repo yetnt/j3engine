@@ -4,7 +4,7 @@
  */
 package com.j3d.ui.engine.floating.properties;
 
-import com.j3d.Static;
+import com.j3d.StaticRefs;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.gen.properties.SelectionPropertiesFilter;
 import com.j3d.gen.properties.PropertiesUI;
@@ -14,7 +14,7 @@ import com.j3d.ui.generic.J3DScrollBarUI;
 import javax.swing.*;
 import java.util.ArrayList;
 
-import static com.j3d.Static.sceneManager;
+import static com.j3d.StaticRefs.sceneManager;
 import com.j3d.ui.generic.J3DTheme;
 
 
@@ -40,11 +40,11 @@ public class PropertiesPanel extends javax.swing.JPanel {
     }
 
     public static void propertiesPanel() {
-        Static.getPropertiesPanel().clear();
+        StaticRefs.getPropertiesPanel().clear();
         ArrayList<GObject> selected = sceneManager.getSelected();
         ArrayList<GObject> filtered =
                 PropertiesUI.getFilteredObjects(selected);
-        Static.getPropertiesPanel().addAll(
+        StaticRefs.getPropertiesPanel().addAll(
                 PropertiesUI.get(
                         filtered
                 )
