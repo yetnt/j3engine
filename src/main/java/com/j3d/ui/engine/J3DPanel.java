@@ -39,7 +39,7 @@ public class J3DPanel extends JPanel {
         if (selectionAreaOld[0].equals(sA[0]) && selectionAreaOld[1].equals(sA[1])) {
             return selectionAreaOld;
         }
-        int offset = StaticRefs.mainFrame.getJMenuBar().getSize().height + jMenuBarOffsetY;
+        int offset = StaticRefs.getMainFrame().getJMenuBar().getSize().height + jMenuBarOffsetY;
         ScreenPoint a = new ScreenPoint(sA[0].x, sA[0].y - offset);
         ScreenPoint b = new ScreenPoint(sA[1].x, sA[1].y - offset);
         selectionAreaOld = new ScreenPoint[] {
@@ -60,14 +60,14 @@ public class J3DPanel extends JPanel {
         super.paint(g);
         if (run) {
 //            sceneManager.axis((Graphics2D) g, camera);
-            if (StaticRefs.executor != null)
-                StaticRefs.executor.run((Graphics2D) g);
+            if (StaticRefs.getExecutor() != null)
+                StaticRefs.getExecutor().run((Graphics2D) g);
             run = false;
         }
-        StaticRefs.sceneManager.draw((Graphics2D) g, StaticRefs.camera);
+        StaticRefs.getSceneManager().draw((Graphics2D) g, StaticRefs.getCamera());
         // draw selection area ontop of all render things.
         if (selectionArea[0] != null && selectionArea[1] != null)
-            SelectionUI.run((Graphics2D)g, applySelectionAreaOffset(selectionArea), StaticRefs.sceneManager);
+            SelectionUI.run((Graphics2D)g, applySelectionAreaOffset(selectionArea), StaticRefs.getSceneManager());
 
         runnables.forEach(Runnable::run);
     }

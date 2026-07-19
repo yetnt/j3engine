@@ -11,7 +11,7 @@ import com.j3d.ui.generic.CursorManager;
 import java.awt.event.MouseEvent;
 
 import static com.j3d.StaticRefs.getLog;
-import static com.j3d.StaticRefs.sceneManager;
+import static com.j3d.StaticRefs.getSceneManager();
 import static com.j3d.ui.engine.EngineFrame.*;
 import com.j3d.engine.react.events.*;
 
@@ -38,7 +38,7 @@ public class SelectionMouseOwner extends MouseOwner {
      */
     public void clearSelectionSquare() {
         selectionArea = new ScreenPoint[]{null, null};
-        StaticRefs.mainFrame.repaint();
+        StaticRefs.getMainFrame().repaint();
         CursorManager.setDefault();
     }
 
@@ -46,7 +46,7 @@ public class SelectionMouseOwner extends MouseOwner {
     public void mouseClicked(MouseEvent e) {
         if (isNotOwner()) return;
         clearSelectionSquare();
-        broadcast(EventType.X_SELECTED, new EventPayload<>(this, StaticRefs.sceneManager) {
+        broadcast(EventType.X_SELECTED, new EventPayload<>(this, StaticRefs.getSceneManager()) {
         });
     }
 
@@ -75,7 +75,7 @@ public class SelectionMouseOwner extends MouseOwner {
         selectionArea[0] = mousePos;
         selectionArea[1] = getSelectionMouseLoc(e);
 //        selectionArea[1] = new ScreenPoint(e.getX(), e.getY());
-        StaticRefs.mainFrame.repaint();
+        StaticRefs.getMainFrame().repaint();
     }
 
 }

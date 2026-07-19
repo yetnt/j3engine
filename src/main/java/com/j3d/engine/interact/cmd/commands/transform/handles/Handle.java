@@ -81,9 +81,9 @@ public class Handle {
             if (extraDetail != null) {
                 extraDetail.accept(g);
             }
-            StaticRefs.sceneManager.drawText3D(
+            StaticRefs.getSceneManager().drawText3D(
                     g, position.sub(new Vector3(0, 5, 0)),
-                    handleType.name(), StaticRefs.camera,
+                    handleType.name(), StaticRefs.getCamera(),
                     new Color(0x000000),
                     Color.WHITE
             );
@@ -97,7 +97,7 @@ public class Handle {
      * @return The calculated {@link ScreenPoint}.
      */
     public ScreenPoint toSp() {
-        return position.toPoint(StaticRefs.camera).toScreen(StaticRefs.sceneManager);
+        return position.toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager());
     }
 
     /**

@@ -78,8 +78,8 @@ public class Thing implements Interactable, HasProperties {
             (o, t) -> {
                 if (this.isBg || this.hidden) return;
                 StaticRefs.getLog().println(name + " thing was selected in the tree.");
-                StaticRefs.sceneManager.select(this);
-                StaticRefs.mainPanel.repaint();
+                StaticRefs.getSceneManager().select(this);
+                StaticRefs.getMainPanel().repaint();
             };
 
     /**
@@ -294,8 +294,8 @@ public class Thing implements Interactable, HasProperties {
 //            graphics2D.setColor(new Color(52, 52, 52));
             graphics2D.setColor(J3DTheme.BACKGROUND.color());
             graphics2D.fillRect(0, 0, StaticConfig.screenSize.width, StaticConfig.screenSize.height);
-            StaticRefs.sceneManager.axis(graphics2D, StaticRefs.camera);
-            StaticRefs.sceneManager.axisGrid(graphics2D, StaticRefs.camera);
+            StaticRefs.getSceneManager().axis(graphics2D, StaticRefs.getCamera());
+            StaticRefs.getSceneManager().axisGrid(graphics2D, StaticRefs.getCamera());
             return;
         }
 
@@ -430,7 +430,7 @@ public class Thing implements Interactable, HasProperties {
      */
     private void notifyTris() {
         for (GTri tri : objects.stream().filter(o -> o instanceof GTri).map(o -> (GTri) o).toList()) {
-            tri.broadcast(EventType.OBJ_UPDATED, new TriUpdatedBroadcast(tri, StaticRefs.sceneManager));
+            tri.broadcast(EventType.OBJ_UPDATED, new TriUpdatedBroadcast(tri, StaticRefs.getSceneManager()));
         }
     }
 
@@ -720,7 +720,7 @@ public class Thing implements Interactable, HasProperties {
         return new DirtyVoidAction() {
             @Override
             public void cleanup() throws Exception {
-                 StaticRefs.sceneManager.removeThing(t);
+                 StaticRefs.getSceneManager().removeThing(t);
                  t.instantDelete();
             }
 

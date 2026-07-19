@@ -55,13 +55,13 @@ public class CameraInfoCmd extends Subcommand {
         }
 
         String rot = "rot(" +
-                StaticRefs.camera.getRotation().getPitch() + ", "
-                + StaticRefs.camera.getRotation().getYaw() + ", "
-                + StaticRefs.camera.getRotation().getRoll() + ")";
+                StaticRefs.getCamera().getRotation().getPitch() + ", "
+                + StaticRefs.getCamera().getRotation().getYaw() + ", "
+                + StaticRefs.getCamera().getRotation().getRoll() + ")";
         String pos = "pos(" +
-                StaticRefs.camera.getPosition().getX() + ", "
-                + StaticRefs.camera.getPosition().getY() + ", "
-                + StaticRefs.camera.getPosition().getZ() + ")";
+                StaticRefs.getCamera().getPosition().getX() + ", "
+                + StaticRefs.getCamera().getPosition().getY() + ", "
+                + StaticRefs.getCamera().getPosition().getZ() + ")";
 
         String content = args.length == 0 ?
                 pos + " " + rot : switch ((String)args[0]) {

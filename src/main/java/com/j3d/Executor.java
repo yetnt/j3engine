@@ -48,11 +48,11 @@ public class Executor {
      * Runs the executor.
      */
     public void run(Graphics2D graphics2D) {
-        StaticRefs.sceneManager.layers.add(layer);
+        StaticRefs.getSceneManager().layers.add(layer);
 
         Thing ngon = ngon(3);
         Thing cub = cube();
-        StaticRefs.camera.lookAt(ngon.getCentroid());
+        StaticRefs.getCamera().lookAt(ngon.getCentroid());
         Thing tris = threeTris();
 
         Thing solid = Solids.prism(
@@ -121,7 +121,7 @@ public class Executor {
             tris.add(tri);
         }
 
-        return new Thing(StaticRefs.sceneManager, layer, "Cone")
+        return new Thing(StaticRefs.getSceneManager(), layer, "Cone")
                 .addObjs(centre)
                 .addObjs(points.toArray(new GPoint[0]))
                 .addObjs(lines.toArray(new GLine[0]))
@@ -159,7 +159,7 @@ public class Executor {
             Solids.topFaceTri(lines, p1, p2, centre, tris);
         }
 
-        return new Thing(StaticRefs.sceneManager, layer, "Circle")
+        return new Thing(StaticRefs.getSceneManager(), layer, "Circle")
                 .addObjs(centre)
                 .addObjs(points.toArray(new GPoint[0]))
                 .addObjs(lines.toArray(new GLine[0]))
@@ -185,7 +185,7 @@ public class Executor {
                 newkeyStroke
         );
         // rebind the keystroke
-        KeyBindings.UpdatedJ3Key updatedJ3Key = StaticRefs.keybinds.rebindJ3KeyKeystroke(
+        KeyBindings.UpdatedJ3Key updatedJ3Key = StaticRefs.getGlobalKeybinds().rebindJ3KeyKeystroke(
                 oldkeyStroke,
                 SELECT_SUB.getKey()
         );
@@ -245,7 +245,7 @@ public class Executor {
 
         GTri PRT = new GTri(Color.PINK, P, R, T);
 
-        return new Thing(StaticRefs.sceneManager, null, "Letter")
+        return new Thing(StaticRefs.getSceneManager(), null, "Letter")
                 .addObjs(
                         P, Q, S, R, U, T,
                         SPR, PRQ, PQT, PUT, PRT,
@@ -272,7 +272,7 @@ public class Executor {
                 g ->
                         sceneManager.drawText3D(
                                 g, point.getPivot(),
-                                label, StaticRefs.camera
+                                label, StaticRefs.getCamera()
                         )
                 );
     }

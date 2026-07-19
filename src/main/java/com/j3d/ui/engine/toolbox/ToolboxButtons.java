@@ -32,15 +32,15 @@ public class ToolboxButtons {
 
     static {
         registerComplex("Transform", new Subbox(s -> s
-                .add("translate", e -> StaticRefs.commandParser.runCommand(
+                .add("translate", e -> StaticRefs.getCommandParser().runCommand(
                         CommandsManager.commands.transform, "transform",
                         new ArrayList<>(List.of("translate")), new ArrayList<>()
                 ), "translate.png")
-                .add("rotate", e -> StaticRefs.commandParser.runCommand(
+                .add("rotate", e -> StaticRefs.getCommandParser().runCommand(
                         CommandsManager.commands.transform, "transform",
                         new ArrayList<>(List.of("rotate")), new ArrayList<>()
                 ), "rotate.png")
-                .add("scale", e -> StaticRefs.commandParser.runCommand(
+                .add("scale", e -> StaticRefs.getCommandParser().runCommand(
                         CommandsManager.commands.transform, "transform",
                         new ArrayList<>(List.of("scale")), new ArrayList<>()
                 ), "scale.png")), "transform.png");
@@ -48,7 +48,7 @@ public class ToolboxButtons {
             // Toggle props mode
             StaticRefs.getPropertiesPanel().toggleHidden();
         }, "properties.png");
-        register("Orbit", e -> StaticRefs.commandParser.runCommand(
+        register("Orbit", e -> StaticRefs.getCommandParser().runCommand(
                 CommandsManager.commands.orbit, "orbit",
                 new ArrayList<>(), new ArrayList<>()), "orbit.png");
         register("History",
@@ -90,7 +90,7 @@ public class ToolboxButtons {
         });
         register("Dump to Debug", e -> {
             long current = System.currentTimeMillis();
-            Camera cam = StaticRefs.camera;
+            Camera cam = StaticRefs.getCamera();
             try (PrintWriter out = StaticRefs.getEngineFiles().debugDump.writer(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss")) + ".csv")) {
                 DebugDump.print(out, current, cam);
                 Desktop.getDesktop().open(StaticRefs.getEngineFiles().debugDump.getFolder());
@@ -126,19 +126,19 @@ public class ToolboxButtons {
                     if (currentViewableSubbox instanceof Subbox other)
                         other.delete();
                     sub.setBounds(
-                            StaticRefs.mainFrame.getWidth() / 2 - (sub.getPreferredSize().width / 2),
-                            (StaticRefs.mainFrame.getHeight() / 2 - (sub.getPreferredSize().height / 2)) - 30,
+                            StaticRefs.getMainFrame().getWidth() / 2 - (sub.getPreferredSize().width / 2),
+                            (StaticRefs.getMainFrame().getHeight() / 2 - (sub.getPreferredSize().height / 2)) - 30,
                             sub.getPreferredSize().width,
                             sub.getPreferredSize().height + 10
                     );
-                    StaticRefs.mainFrame.getLayeredPane().add(sub, JLayeredPane.DRAG_LAYER +1);
+                    StaticRefs.getMainFrame().getLayeredPane().add(sub, JLayeredPane.DRAG_LAYER +1);
 
                     s.setEnabled(true);
                     s.setVisible(true);
                     currentViewableSubbox = s;
                 }
-                StaticRefs.mainFrame.repaint();
-                StaticRefs.mainFrame.revalidate();
+                StaticRefs.getMainFrame().repaint();
+                StaticRefs.getMainFrame().revalidate();
             }
         });
         l.addMouseListener(new MouseAdapter() {

@@ -53,7 +53,7 @@ public class ObjectProperty<T extends GObject> extends JPanel implements Propert
                 public void mouseClicked(MouseEvent e) {
                     if (e.getClickCount() == 2) {
                         // add the UUID to the command palette
-                        StaticRefs.commandParser.injectArgument(
+                        StaticRefs.getCommandParser().injectArgument(
                                 type.second
                         );
                     }

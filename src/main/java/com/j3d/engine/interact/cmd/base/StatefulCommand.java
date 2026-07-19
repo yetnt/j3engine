@@ -73,8 +73,8 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
                 )
         );
 
-        StaticRefs.mainFrame.requestFocusInWindow(); // get out of the command window focus. very important
-        StaticRefs.commandParser.disable(); // disable the command pallete input field.
+        StaticRefs.getMainFrame().requestFocusInWindow(); // get out of the command window focus. very important
+        StaticRefs.getCommandParser().disable(); // disable the command pallete input field.
 
         onStart(object, label); // Fire the starting stuff
         UUID esckey = java.util.UUID.randomUUID();
@@ -87,14 +87,14 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 onEnter(e, object, label);
-                                StaticRefs.mainFrame.repaint();
-                                StaticRefs.commandParser.enable();
+                                StaticRefs.getMainFrame().repaint();
+                                StaticRefs.getCommandParser().enable();
                                 CommandsManager.clearCurrent();
-                                StaticRefs.hoverLabel.clear();
-                                StaticRefs.keybinds.removeJ3Key(esckey);
+                                StaticRefs.getHoverLabel().clear();
+                                StaticRefs.getGlobalKeybinds().removeJ3Key(esckey);
                             }
                         });
-        StaticRefs.keybinds.registerJ3Key(enter);
+        StaticRefs.getGlobalKeybinds().registerJ3Key(enter);
 
         // keystroke for when they bail with escape
         // Escape is already binded to something so it cant be a oneshot in practice
@@ -109,14 +109,14 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
                             public void actionPerformed(ActionEvent e) {
                                 if (!CommandsManager.isCurrentStatefulRunning(t)) return;
                                 onEsc(e, object, label);
-                                StaticRefs.keybinds.removeJ3Key(enter.getId());
-                                StaticRefs.mainFrame.repaint();
-                                StaticRefs.commandParser.enable();
+                                StaticRefs.getGlobalKeybinds().removeJ3Key(enter.getId());
+                                StaticRefs.getMainFrame().repaint();
+                                StaticRefs.getCommandParser().enable();
                                 CommandsManager.clearCurrent();
-                                StaticRefs.hoverLabel.clear();
+                                StaticRefs.getHoverLabel().clear();
                             }
                         }
                 ).setId(esckey);
-        StaticRefs.keybinds.registerJ3Key(key);
+        StaticRefs.getGlobalKeybinds().registerJ3Key(key);
     }
 }

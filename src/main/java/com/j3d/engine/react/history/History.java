@@ -145,6 +145,6 @@ public class History extends ArrayList<Action<?>> {
             }
         }
 
-        StaticRefs.mainPanel.repaint();
+        StaticRefs.getMainPanel().repaint();
     }
 }

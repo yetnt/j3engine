@@ -94,12 +94,12 @@ public class TypingHints {
                                 c.getType() != CmdToken.Type.TAGGED && c.getType() != null
                 )
                 .collect(Collectors.toCollection(ArrayList::new));
-        StaticRefs.commandParser.safeJLabel().clearLower();
+        StaticRefs.getCommandParser().safeJLabel().clearLower();
         // If the tokens are empty. Do nothing
         if (tokens.isEmpty()) return;
 
         if (tokens.getFirst().getType() != CmdToken.Type.CMD_NAME) {
-            StaticRefs.commandParser.safeJLabel().setText(
+            StaticRefs.getCommandParser().safeJLabel().setText(
                     new JLabelRichText("The first argument (command name) is usually a string bro")
                             .italic().wrapHTML()
             );
@@ -119,7 +119,7 @@ public class TypingHints {
                     partial.append(matches.second.get(i)).append(" ");
             }
 
-            StaticRefs.commandParser.safeJLabel().setLower(
+            StaticRefs.getCommandParser().safeJLabel().setLower(
                     JLabelRichText.htmlOf(likely.toString(), partial.toString())
             );
 
@@ -129,7 +129,7 @@ public class TypingHints {
         String commandAlias = tokens.getFirst().getInput();
         Command command = CommandsManager.getCommand(commandAlias);
         if (command == null) {
-            StaticRefs.commandParser.safeJLabel().setText(
+            StaticRefs.getCommandParser().safeJLabel().setText(
                     "This shouldn't happen... No command " + commandAlias + " found..."
             );
             return;
@@ -138,7 +138,7 @@ public class TypingHints {
         String[] usages = command.getAllUsages(commandAlias);
 
         if (!taggedArgErr)
-            StaticRefs.commandParser.safeJLabel().setText(
+            StaticRefs.getCommandParser().safeJLabel().setText(
                     new JLabelRichText(command.description).bold().wrapHTML()
             );
 
@@ -146,13 +146,13 @@ public class TypingHints {
 
         // Just take the first element
         if (usag.isEmpty()) {
-            StaticRefs.commandParser.safeJLabel().setLower(
+            StaticRefs.getCommandParser().safeJLabel().setLower(
                     "No usage found.... Try removing some characters"
             );
             return;
         }
 
-        StaticRefs.commandParser.safeJLabel().setLower(
+        StaticRefs.getCommandParser().safeJLabel().setLower(
                 colourTaggedArgs(
                         colourGivenUsage(usag.getFirst(), tokens),
                         command,
@@ -346,7 +346,7 @@ public class TypingHints {
                         .orElse(alias);
 
 
-                StaticRefs.commandParser.setInputField(
+                StaticRefs.getCommandParser().setInputField(
                         longestMatchedAlias + " " // Space so the typing hint can kick in.
                 );
 

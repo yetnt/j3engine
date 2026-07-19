@@ -52,16 +52,16 @@ public class LookAtCmd extends Command {
 
         switch (args[0]) {
             case String thing -> {
-                Thing t = StaticRefs.sceneManager.findThing(thing);
+                Thing t = StaticRefs.getSceneManager().findThing(thing);
                 if (t == null) {
                     logLabel.setText("No thing found with the name " + thing);
                     return;
                 }
 
-                StaticRefs.camera.lookAt(t.getCentroid());
+                StaticRefs.getCamera().lookAt(t.getCentroid());
             }
-            case Vector3 v3 -> StaticRefs.camera.lookAt(v3);
-            case Thing thing -> StaticRefs.camera.lookAt(thing.getCentroid());
+            case Vector3 v3 -> StaticRefs.getCamera().lookAt(v3);
+            case Thing thing -> StaticRefs.getCamera().lookAt(thing.getCentroid());
             default -> {
             }
         }

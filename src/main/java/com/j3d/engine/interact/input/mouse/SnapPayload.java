@@ -17,7 +17,7 @@ public class SnapPayload extends EventPayload<SnapMouseOwner> {
      * @param snap The object to snap to.
      */
     public SnapPayload(SnapMouseOwner e, GObject snap) {
-        super(e, StaticRefs.sceneManager);
+        super(e, StaticRefs.getSceneManager());
         this.snap = snap;
     }
 

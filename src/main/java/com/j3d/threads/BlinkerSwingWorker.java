@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import static com.j3d.StaticRefs.sceneManager;
+import static com.j3d.StaticRefs.getSceneManager();
 
 /**
  * A SwingWorker implementation designed to perform a blinking effect on a UI component.
@@ -51,7 +51,7 @@ public class BlinkerSwingWorker extends SwingWorker<Void, Void> {
      * <ol>
      *      <li>Sleeps for {@code waitMs} milliseconds.</li>
      *      <li>Executes the provided {@code runnable}.</li>
-     *      <li>Repaints the {@code StaticRefs.mainPanel}.</li>
+     *      <li>Repaints the {@code StaticRefs.getMainPanel()}.</li>
      * </ol>
      * If the thread is interrupted during sleep, the exception is caught and ignored.
      */
@@ -60,7 +60,7 @@ public class BlinkerSwingWorker extends SwingWorker<Void, Void> {
             try {
                 Thread.sleep(waitMs);
                 runnable.run();
-                StaticRefs.mainPanel.repaint();
+                StaticRefs.getMainPanel().repaint();
             } catch (InterruptedException e) {
 
             }

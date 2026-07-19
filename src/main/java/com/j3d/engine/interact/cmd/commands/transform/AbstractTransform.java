@@ -149,14 +149,14 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
                                 Vector3 aPos = a.getPivot();
                                 Vector3 bPos = b.getPivot();
                                 return Double.compare(
-                                        aPos.distance(StaticRefs.camera.getPosition()),
-                                        bPos.distance(StaticRefs.camera.getPosition())
+                                        aPos.distance(StaticRefs.getCamera().getPosition()),
+                                        bPos.distance(StaticRefs.getCamera().getPosition())
                                 );
                             }
                     )
                     .filter(
                             a -> {
-                                ScreenPoint Asp = a.getPivot().toPoint(StaticRefs.camera).toScreen(StaticRefs.sceneManager);
+                                ScreenPoint Asp = a.getPivot().toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager());
                                 // a matching points is within 5 up down left or right of the target
                                 return Math.abs(Asp.x - target.x) < 5 && Math.abs(Asp.y - target.y) < 5;
                             }
@@ -205,27 +205,27 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
             };
         }
 
-        Stream<GTri> tris = StaticRefs.sceneManager.getSelected().stream()
+        Stream<GTri> tris = StaticRefs.getSceneManager().getSelected().stream()
                 .filter(obj -> obj instanceof GTri)
                 .map(obj -> (GTri) obj);
 
         if (tris.findAny().isEmpty()) faceMode = FaceMode.POINTS;
 
         references = switch (faceMode) {
-            case TRIANGLES -> new ArrayList<>(StaticRefs.sceneManager.getSelected().stream()
+            case TRIANGLES -> new ArrayList<>(StaticRefs.getSceneManager().getSelected().stream()
                     .filter(obj -> obj instanceof GTri)
                     .map(obj -> (GTri) obj)
                     .flatMap(GTri::getLegStream)
                     .flatMap(GLine::getPointStream)
                     .collect(Collectors.toSet()));
-            case POINTS -> StaticRefs.sceneManager.getSelected()
+            case POINTS -> StaticRefs.getSceneManager().getSelected()
                     .stream()
                     .filter(obj -> obj instanceof GPoint)
                     .map(obj -> (GPoint) obj)
                     .collect(Collectors.toCollection(ArrayList::new));
-            case THING ->  StaticRefs.sceneManager.getSelected()
+            case THING ->  StaticRefs.getSceneManager().getSelected()
                     .stream()
-                    .map(g -> StaticRefs.sceneManager.findParentThing(g))
+                    .map(g -> StaticRefs.getSceneManager().findParentThing(g))
                     .filter(Objects::nonNull)
                     .flatMap(thing -> thing.getObjects().stream())
                     .filter(obj -> obj instanceof GPoint)
@@ -244,7 +244,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
     @Override
     public void onStart(Void object, SafeJLabel label) {
         mouseOwner.requestOwnership();
-        keys.forEach(StaticRefs.keybinds::registerJ3Key);
+        keys.forEach(StaticRefs.getGlobalKeybinds()::registerJ3Key);
 
         center = calculateCentre();
 
@@ -317,7 +317,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
             // draw X at the centre.
             g.setColor(new Color(148, 0, 0));
             g.setStroke(new BasicStroke(3));
-            ScreenPoint sp = center.toPoint(StaticRefs.camera).toScreen(StaticRefs.sceneManager);
+            ScreenPoint sp = center.toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager());
             int crossSize = 10; // Size of the 'X' cross
             g.drawLine(sp.x - crossSize, sp.y - crossSize, sp.x + crossSize, sp.y + crossSize);
             g.drawLine(sp.x + crossSize, sp.y - crossSize, sp.x - crossSize, sp.y + crossSize);
@@ -329,7 +329,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
 
         overlapId = UUID.randomUUID();
 
-        StaticRefs.sceneManager.scheduleOverlap(overlapId, drawScaleHandle);
+        StaticRefs.getSceneManager().scheduleOverlap(overlapId, drawScaleHandle);
     }
 
     private Vector3 calculateCentre() {
@@ -349,11 +349,11 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
         mouseOwner.handles.forEach(Handle::clear);
         selectionPivot = null;
         centreIsSelectionPivot = true;
-        keys.forEach(key -> StaticRefs.keybinds.removeJ3Key(key.getId()));
-        StaticRefs.sceneManager.removeOverlap(overlapId);
+        keys.forEach(key -> StaticRefs.getGlobalKeybinds().removeJ3Key(key.getId()));
+        StaticRefs.getSceneManager().removeOverlap(overlapId);
         lbl.clear();
-        StaticRefs.sceneManager.deselectAll();
-        StaticRefs.mainFrame.repaint();
+        StaticRefs.getSceneManager().deselectAll();
+        StaticRefs.getMainFrame().repaint();
     }
 
     /**

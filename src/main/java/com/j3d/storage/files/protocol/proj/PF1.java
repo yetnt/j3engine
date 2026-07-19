@@ -237,7 +237,7 @@ public class PF1 extends ProjectFile {
         final HashMultiMap<String, GTri> trisParentsMap = new HashMultiMap<>();
         final HashMap<String, GTri> trisMap = new HashMap<>();
 
-        StaticRefs.sceneManager.layers.removeIf(l -> !Objects.equals(l.getIdentifier(), Layer.BACKGROUND_ID));
+        StaticRefs.getSceneManager().layers.removeIf(l -> !Objects.equals(l.getIdentifier(), Layer.BACKGROUND_ID));
 
         IOSupplier<DataInputStream> fileReader = dis -> {
             try {
@@ -362,7 +362,7 @@ public class PF1 extends ProjectFile {
                         boolean thingHidden = dis.readBoolean();
                         msg("\t\tHidden: " + thingHidden);
 
-                        Thing thing = Thing.fromRaw(thingName, thingUUID, thingHidden, l, StaticRefs.sceneManager);
+                        Thing thing = Thing.fromRaw(thingName, thingUUID, thingHidden, l, StaticRefs.getSceneManager());
                         thing.addObjs(
                                         pointsParentsMap.getValues(thingUUID).toArray(new GPoint[0])
                                 );
@@ -382,7 +382,7 @@ public class PF1 extends ProjectFile {
 
                 throbber.setTaskTitle("Finalizing");
 
-                StaticRefs.sceneManager.layers.addAll(layerOrder);
+                StaticRefs.getSceneManager().layers.addAll(layerOrder);
 
                 StaticRefs.getLog().println("Project file loaded successfully from " + path);
                 msg("Project file loaded successfully");

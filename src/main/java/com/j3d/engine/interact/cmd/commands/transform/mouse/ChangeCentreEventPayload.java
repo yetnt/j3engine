@@ -13,7 +13,7 @@ public class ChangeCentreEventPayload extends EventPayload<TransformMouseOwner> 
      * @param position Mouse position
      */
     public ChangeCentreEventPayload(TransformMouseOwner e, ScreenPoint position) {
-        super(e, StaticRefs.sceneManager);
+        super(e, StaticRefs.getSceneManager());
         this.mousePos = position;
     }
 

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.UUID;
 
-import static com.j3d.StaticRefs.sceneManager;
+import static com.j3d.StaticRefs.getSceneManager();
 
 public class PropertiesUI {
 

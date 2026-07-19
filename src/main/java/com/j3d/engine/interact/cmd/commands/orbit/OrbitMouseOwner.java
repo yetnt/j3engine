@@ -59,32 +59,32 @@ public class OrbitMouseOwner extends MouseOwner {
 
         if (locked) {
             double lockedScale = 2;
-            StaticRefs.camera.setPosition(
-                    StaticRefs.camera.getPosition().rotateAroundAxis(
+            StaticRefs.getCamera().setPosition(
+                    StaticRefs.getCamera().getPosition().rotateAroundAxis(
                             Vector3.Y(1),
                             dxScaled * lockedScale
                     )
             );
-            double dyLockedScale = (StaticRefs.camera.getPosition().getZ() <= 0
+            double dyLockedScale = (StaticRefs.getCamera().getPosition().getZ() <= 0
                     ? lockedScale : -lockedScale) * 1.4;
-            StaticRefs.camera.setPosition(
-                    StaticRefs.camera.getPosition().rotateAroundAxis(
+            StaticRefs.getCamera().setPosition(
+                    StaticRefs.getCamera().getPosition().rotateAroundAxis(
                             Vector3.X(1),
                             dyScaled * dyLockedScale
                     )
             );
-            StaticRefs.camera.lookAt(Vector3.ZERO);
+            StaticRefs.getCamera().lookAt(Vector3.ZERO);
         } else {
 
-            StaticRefs.camera.getRotation().setPitch(StaticRefs.camera.getRotation().getPitch() - dyScaled);
-            StaticRefs.camera.getRotation().setYaw(StaticRefs.camera.getRotation().getYaw() - dxScaled);
+            StaticRefs.getCamera().getRotation().setPitch(StaticRefs.getCamera().getRotation().getPitch() - dyScaled);
+            StaticRefs.getCamera().getRotation().setYaw(StaticRefs.getCamera().getRotation().getYaw() - dxScaled);
 
         }
 
         startX = e.getX();
         startY = e.getY();
 
-        StaticRefs.mainPanel.repaint();
+        StaticRefs.getMainPanel().repaint();
     }
 
     /**

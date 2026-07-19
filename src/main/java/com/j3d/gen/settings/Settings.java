@@ -58,7 +58,7 @@ public class Settings implements SettingsParent {
                                 cf.setSelectedFile(f2);
                             }
                         },
-                        StaticRefs.mainFrame
+                        StaticRefs.getMainFrame()
                 );
 
                 Function<File, File> isDir = f -> new File(f, "new.j3p");

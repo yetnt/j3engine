@@ -12,8 +12,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import static com.j3d.StaticRefs.camera;
-import static com.j3d.StaticRefs.sceneManager;
+import static com.j3d.StaticRefs.getCamera();
+import static com.j3d.StaticRefs.getSceneManager();
 
 /**
  * A subcommand of {@link MeasureCmd} that calculates and displays the distance between two points.

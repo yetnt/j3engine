@@ -47,39 +47,124 @@ import java.net.URL;
  * @author Lehlogonolo Poole
  */
 public class StaticRefs {
-    private static PF1 projectFileV1 = new PF1();
-    public static PF1 getProjectFileV1() {
-        if (projectFileV1 == null) {
-            projectFileV1 = new PF1();
-        }
-        return projectFileV1;
-    }
-
-    private static PF2 projectFileV2 = new PF2();
-    public static PF2 getProjectFileV2() {
-        if (projectFileV2 == null) {
-            projectFileV2 = new PF2();
-        }
-        return projectFileV2;
-    }
-
+    // References below are all initialised by EngineFrame and have a setter method that only EngineFrame should usz
     /**
      * The SceneManager Instance. A very important class initialized by {@link EngineFrame}
      * who's job it is to store all information and references to the scene.
      */
-    public static SceneManager sceneManager = null;
+    private static SceneManager sceneManager = null;
+    public static SceneManager getSceneManager() {
+        return sceneManager;
+    }
+
+    /**
+     * @implSpec This should only be called by {@link EngineFrame}
+     * @param instance The instance.
+     */
+    public static void registerSceneManager(SceneManager instance) {
+        sceneManager = instance;
+    }
     /**
      * The Executor Instance. A once off scene initialiser which populates the scene with some test
      * triangles and other stuff. Only via {@link EngineFrame#EngineFrame(boolean)} (set to {@code true}).
      * This is also initialised by {@link EngineFrame} but then only called once and never again.
      */
-    public static Executor executor = null;
+    private static Executor executor = null;
+    public static Executor getExecutor() {
+        return executor;
+    }
+    /**
+     * @implSpec This should only be called by {@link EngineFrame}
+     * @param instance The instance.
+     */
+    public static void registerExecutor(Executor instance) {
+        executor = instance;
+    }
+
     /**
      * The Main Frame that is displayed. {@link EngineFrame}
      * @implSpec
      *  {@link StaticRefs#mainPanel}.repaint() instead of mainFrame.repaint() for better performance.
      */
-    public static EngineFrame mainFrame = null;
+    private static EngineFrame mainFrame = null;
+    public static EngineFrame getMainFrame() {
+        return mainFrame;
+    }
+    /**
+     * @implSpec This should only be called by {@link EngineFrame}
+     * @param instance The instance.
+     */
+    public static void registerMainFrame(EngineFrame instance) {
+        mainFrame = instance;
+    }
+
+    /**
+     * The Command Parser Instance. Initialised by {@link EngineFrame} and is mainly a parsing
+     * utility and manager for the {@link CommandPalette}. The engine that parses commands.
+     * Initialised and owned by {@link EngineFrame}
+     */
+    private static CommandParser commandParser;
+    public static CommandParser getCommandParser() {
+        return commandParser;
+    }
+    /**
+     * @implSpec This should only be called by {@link EngineFrame}
+     * @param instance The instance.
+     */
+    public static void registerCommandParser(CommandParser instance) {
+        commandParser = instance;
+    }
+
+    /**
+     * The Main Draw Panel. This is where all geometry is calculated and drawn onto.
+     * Initialised by {@link EngineFrame}
+     */
+    private static J3DPanel mainPanel;
+    public static J3DPanel getMainPanel() {
+        return mainPanel;
+    }
+    /**
+     * @implSpec This should only be called by {@link EngineFrame}
+     * @param instance The instance.
+     */
+    public static void registerMainPanel(J3DPanel instance) {
+        mainPanel = instance;
+    }
+    /**
+     * The Key Binds Manager, where all keybinds (Not {@link JMenu} accelerators) are stored.
+     * Used in conjunction with {@link J3Key}. Initialised by {@link EngineFrame}
+     * @see J3Key
+     */
+    private static KeyBindings globalKeybinds;
+    public static KeyBindings getGlobalKeybinds() {
+        return globalKeybinds;
+    }
+    /**
+     * @implSpec This should only be called by {@link EngineFrame}
+     * @param instance The instance.
+     */
+    public static void registerGlobalKeybinds(KeyBindings instance) {
+        globalKeybinds = instance;
+    }
+
+    /**
+     * The hover label. Literally just a hovering {@link JLabel} below the cursor.
+     * Initialised by {@link EngineFrame}
+     */
+    private static HoverJLabel hoverLabel;
+    public static HoverJLabel getHoverLabel() {
+        return hoverLabel;
+    }
+    /**
+     * @implSpec This should only be called by {@link EngineFrame}
+     * @param instance The instance.
+     */
+    public static void registerHoverLabel(HoverJLabel instance) {
+        hoverLabel = instance;
+    }
+
+    // Below are all references who are either lazily loaded or just final in general
+
     /**
      * The Camera Instance. The main camera used to view the scene, which is immediately
      * initialised statically and can be changed by say {@link GlobalKeybinds#MOVE_CAM_FORWARD}
@@ -89,11 +174,15 @@ public class StaticRefs {
      *      with a focal length of {@code 37.0} (Defined by {@link CameraProperties#focalLength})
      *  </p>
      */
-    public static Camera camera = new Camera()
+    private static final Camera camera = new Camera()
             .setPosition(new Vector3(20, 50, -90))
             .setProjectionPlane(
                     new Vector3(0, 0, Settings.cameraProperties.focalLength.getValue())
             );
+    public static Camera getCamera() {
+        return camera;
+    }
+
     /**
      * The Debug Panel. The panel that holds debug stuff. Initialized by StaticRefs
      * and can be accessed via it's {@link FloatingPanel} by the user within the {@link Toolbox}.
@@ -105,6 +194,12 @@ public class StaticRefs {
 
         return debugPanel;
     }
+
+    /**
+     * The Properties Panel. This panel displays and allows editing of properties for selected
+     * objects. Initialised by StaticRefs and can be accessed via it's {@link FloatingPanel} by the
+     * user within the {@link Toolbox}.
+     */
     private static PropertiesPanel propertiesPanel;
     public static PropertiesPanel getPropertiesPanel() {
         if (propertiesPanel == null)
@@ -112,12 +207,30 @@ public class StaticRefs {
 
         return propertiesPanel;
     }
+
     /**
-     * The Command Parser Instance. Initialised by {@link EngineFrame} and is mainly a parsing
-     * utility and manager for the {@link CommandPalette}. The engine that parses commands.
-     * Initialised and owned by {@link EngineFrame}
+     * The Project File V1 instance. Used for reading and writing project files in version 1 format.
+     * Lazily initialised.
      */
-    public static CommandParser commandParser;
+    private static PF1 projectFileV1 = new PF1();
+    public static PF1 getProjectFileV1() {
+        if (projectFileV1 == null) {
+            projectFileV1 = new PF1();
+        }
+        return projectFileV1;
+    }
+    /**
+     * The Project File V2 instance. Used for reading and writing project files in version 2 format.
+     * Lazily initialised.
+     */
+    private static PF2 projectFileV2 = new PF2();
+    public static PF2 getProjectFileV2() {
+        if (projectFileV2 == null) {
+            projectFileV2 = new PF2();
+        }
+        return projectFileV2;
+    }
+
     /**
      * The layer tree instance which holds the tree view of {@link Layer} and {@link Thing}s.
      * The user can access this panel via it's wrapped {@link FloatingPanel} version within
@@ -130,66 +243,51 @@ public class StaticRefs {
 
         return layerTree;
     }
-    /**
-     * The Main Draw Panel. This is where all geometry is calculated and drawn onto.
-     * Initialised by {@link EngineFrame}
-     */
-    public static J3DPanel mainPanel;
-    /**
-     * The Key Binds Manager, where all keybinds (Not {@link JMenu} accelerators) are stored.
-     * Used in conjunction with {@link J3Key}. Initialised by {@link EngineFrame}
-     * @see J3Key
-     */
-    public static KeyBindings keybinds;
+
     /**
      * The Logger Instance, which simply encapsulates the logging to the {@link DebugPanel#logTextArea}
      * and to the output file defined by  {@link LogFile} within {@link EngineFiles}.
      * Lazily initialised by {@link EngineFrame}
      */
     private static Logger log;
-
-    /**
-     * Initialises the logger instance.
-     * @return The logger instance, otherwise sets it if null.
-     */
     public static Logger getLog() {
         if (log == null)
             log = new Logger();
         return log;
     }
     /**
-     * The Settings Instance. Usually all code accesses settings within {@link Settings}
-     * statically. This instance is only really used to access it's UI. Initialised by StaticRefs
-     */
-    public static Settings settings = new Settings();
-    /**
-     * New help generator. No docs yet. lmao. Initialised by StaticRefs
-     */
-    public static HelpGenerator help = new HelpGenerator();
-    /**
-     * The commands manager which just holds the current running {@link SemiStatefulCommand}
-     * and gets all the commands otherwise. Initialised by StaticRefs
-     */
-    public static CommandsManager commandManager = new CommandsManager();
-    /**
-     * The hover label. Literally just a hovering {@link JLabel} below the cursor.
-     * Initialised by {@link EngineFrame}
-     */
-    public static HoverJLabel hoverLabel;
-    /**
      * The Engine Files instances. This encapsulates all the files stored in
      * {@code user.dir/J3Engine}. Lazily initialised by StaticRefs.
      */
     private static EngineFiles engineFiles;
-
-    /**
-     * Initialises the engine files instance.
-     * @return The logger instance, otherwise sets it if null.
-     */
     public static EngineFiles getEngineFiles() {
         if (engineFiles == null)
             engineFiles = new EngineFiles();
         return engineFiles;
+    }
+
+    /**
+     * The Settings Instance. Usually all code accesses settings within {@link Settings}
+     * statically. This instance is only really used to access it's UI. Initialised by StaticRefs
+     */
+    private static final Settings settings = new Settings();
+    public static Settings getSettings() {
+        return settings;
+    }
+    /**
+     * New help generator. No docs yet. lmao. Initialised by StaticRefs
+     */
+    private static final HelpGenerator helpGenerator = new HelpGenerator();
+    public static HelpGenerator getHelpGenerator() {
+        return helpGenerator;
+    }
+    /**
+     * The commands manager which just holds the current running {@link SemiStatefulCommand}
+     * and gets all the commands otherwise. Initialised by StaticRefs
+     */
+    private static final CommandsManager commandManager = new CommandsManager();
+    public static CommandsManager getCommandManager() {
+        return commandManager;
     }
 
     /**

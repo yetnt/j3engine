@@ -17,8 +17,6 @@ import com.j3d.storage.db.users.User;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-import static com.j3d.StaticRefs.sceneManager;
-
 /**
  * While apart from settings, core settings are the modernied versio.
  * Settings who the user should not be able to access and thus is not available on the UI.
@@ -110,7 +108,7 @@ public abstract class StaticConfig {
 
     public static void setShowNormals(boolean showNormals) {
         if (!showNormals) {
-            sceneManager.layers.stream()
+            StaticRefs.getSceneManager().layers.stream()
                     .flatMap(Layer::usableLayersStream)
                     .flatMap(Thing::objectsStream)
                     .filter(t -> t instanceof GTri)

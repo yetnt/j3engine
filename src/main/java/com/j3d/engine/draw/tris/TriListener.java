@@ -59,7 +59,7 @@ public class TriListener implements EventListener {
         this.triID = tri.getId();
         this.lastPosition = tri.getPivot();
         this.tri = tri;
-        this.lastDistanceFromCamera = tri.getPivot().sub(StaticRefs.camera.getPosition()).magnitude();
+        this.lastDistanceFromCamera = tri.getPivot().sub(StaticRefs.getCamera().getPosition()).magnitude();
         this.depth = tri.calcDepth();
     }
 
@@ -84,7 +84,7 @@ public class TriListener implements EventListener {
             return;
 
         // When a tri is updated, recalculate its distance from the camera to ensure proper rendering order.
-        Camera cam = StaticRefs.camera;
+        Camera cam = StaticRefs.getCamera();
         GTri tri = (GTri) properties.emitter;
 
         this.lastPosition = tri.getPivot();

@@ -307,7 +307,7 @@ public class KeyBindings {
     };
 
     public static boolean commandPaletteFocusOwner(CommandPalette cmdP) {
-        return cmdP.inputField.isFocusOwner() && !StaticRefs.mainPanel.isFocusOwner();
+        return cmdP.inputField.isFocusOwner() && !StaticRefs.getMainPanel().isFocusOwner();
     }
 
     /**

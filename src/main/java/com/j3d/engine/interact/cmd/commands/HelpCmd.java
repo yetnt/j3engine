@@ -57,7 +57,7 @@ public class HelpCmd extends Command {
                         .append(new JLabelRichText("and like " + (commands.size()-10) + " more...").italic());
             }
 
-            StaticRefs.hoverLabel.setText(
+            StaticRefs.getHoverLabel().setText(
                     new JLabelRichText(stringBuilder.toString()).wrapHTML()
             );
             return;
@@ -68,7 +68,7 @@ public class HelpCmd extends Command {
             return;
         }
 
-        Command cmd = StaticRefs.commandManager.commandsAliasMap.get(cmdName);
+        Command cmd = StaticRefs.getCommandManager().commandsAliasMap.get(cmdName);
 
         if (cmd == null) {
             logLabel.setText("No command with the name \"" + cmdName + "\" exists.");
@@ -105,7 +105,7 @@ public class HelpCmd extends Command {
 
         // print
 
-        StaticRefs.hoverLabel.setText(new JLabelRichText(stringBuilder.toString()).wrapHTML());
+        StaticRefs.getHoverLabel().setText(new JLabelRichText(stringBuilder.toString()).wrapHTML());
     }
 
     private static ArrayList<Command> getCommands(AtomicInteger maxCmd, StringBuilder stringBuilder) {

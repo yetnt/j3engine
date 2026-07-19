@@ -49,7 +49,7 @@ public class Setting<T> implements SettingsChild, EventEmitterInterface {
         broadcast(EventType.SETTINGS_CODE_UPDATED,new SettingUpdatedPayload<T>(
                 this, old, value
         ));
-        StaticRefs.mainPanel.repaint();
+        StaticRefs.getMainPanel().repaint();
     }
 
     public T setValueNoBroadcast(T value) {

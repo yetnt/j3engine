@@ -305,7 +305,7 @@ public class DebugPanel extends javax.swing.JPanel {
         } else {
             StaticConfig.setShowNormals(false);
         }
-        mainPanel.repaint();
+        StaticRefs.getMainPanel().repaint();
     }//GEN-LAST:event_showTriNormalsCheckBoxActionPerformed
 
     private void showTriDepthCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTriDepthCheckBoxActionPerformed
@@ -315,7 +315,7 @@ public class DebugPanel extends javax.swing.JPanel {
         } else {
             StaticConfig.setShowDepth(false);
         }
-        mainPanel.repaint();
+        StaticRefs.getMainPanel().repaint();
     }//GEN-LAST:event_showTriDepthCheckBoxActionPerformed
 
     private void showTriDistCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTriDistCheckBoxActionPerformed
@@ -336,7 +336,7 @@ public class DebugPanel extends javax.swing.JPanel {
             if (showTriDepthCheckBox.isSelected()) showTriDepthCheckBox.doClick();
             if (showTriNormalsCheckBox.isSelected()) showTriNormalsCheckBox.doClick();
         }
-        mainPanel.repaint();
+        StaticRefs.getMainPanel().repaint();
     }//GEN-LAST:event_NoneRadioButtonActionPerformed
 
     private void randomTriBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomTriBtnActionPerformed
@@ -361,7 +361,7 @@ public class DebugPanel extends javax.swing.JPanel {
         );
 
         Thing g = new Thing(
-                sceneManager, null,
+                getSceneManager(), null,
                 "Random Tri " + t.getId().toString().substring(0, 4)).addObjs(
                         t, gps[0], gps[1], gps[2],
                 // the fix
@@ -370,21 +370,21 @@ public class DebugPanel extends javax.swing.JPanel {
 
         StaticRefs.getLog().println("Added random tri " + t.getId() + " to layer " + g);
 
-        mainPanel.repaint();
+        StaticRefs.getMainPanel().repaint();
     }//GEN-LAST:event_randomTriBtnActionPerformed
 
     private void drawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawButtonActionPerformed
-        mainPanel.repaint();
+        StaticRefs.getMainPanel().repaint();
     }//GEN-LAST:event_drawButtonActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        AreYouSure ays = new AreYouSure(mainFrame, true, "This will clear all layers.");
+        AreYouSure ays = new AreYouSure(getMainFrame(), true, "This will clear all layers.");
         ays.setVisible(true);
         if (!ays.canProceed()) return;
-        sceneManager.layers.forEach(frame -> {
+        getSceneManager().layers.forEach(frame -> {
             if (!frame.getIdentifier().equals(Layer.BACKGROUND_ID)) frame.clear();
         });
-        mainPanel.repaint();
+        StaticRefs.getMainPanel().repaint();
     }//GEN-LAST:event_clearButtonActionPerformed
 
     public void startStatisticsThread() {
@@ -396,7 +396,7 @@ public class DebugPanel extends javax.swing.JPanel {
         );
         statsLabelMap.put(StatisticsThread.IdEnum.REPAINTS_PER_SECOND.getId(), repaintsPerSecondLabel);
         statisticsThread.registerStatistic(StatisticsThread.IdEnum.REPAINTS_PER_SECOND.getId());
-        mainPanel.registerRunnable(
+        StaticRefs.getMainPanel().registerRunnable(
                 () -> statisticsThread.increment(StatisticsThread.IdEnum.REPAINTS_PER_SECOND.getId())
         );
         statisticsThread.execute();

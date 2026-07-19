@@ -45,7 +45,6 @@ import java.util.function.BiConsumer;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 
-import static com.j3d.StaticConfig.jMenuBarOffsetY;
 import static com.j3d.engine.interact.input.keyboard.KeyBindings.commandPaletteFocusOwner;
 
 import com.j3d.engine.draw.ViewType;
@@ -103,7 +102,7 @@ public class EngineFrame extends javax.swing.JFrame {
      * The command palette instance.
      * @see CommandParser
      */
-    public static final CommandPalette COMMAND_PALETTE = new CommandPalette();
+    public static final CommandPalette COMMAND_PALETTE = new CommandPalette(); // TODO: refactor to a getter from prolly command palette.
 
     /**
      * Sets the mouse owner.
@@ -183,9 +182,9 @@ public class EngineFrame extends javax.swing.JFrame {
         Runnable r = () -> {
             if (p.isHidden()) p.hideThis();
             p.setBounds(lastLocation.x, lastLocation.y, p.getPreferredSize().width, p.getPreferredSize().height);
-            StaticRefs.mainFrame.getLayeredPane().add(p, JLayeredPane.POPUP_LAYER);
-            StaticRefs.mainFrame.revalidate();
-            StaticRefs.mainFrame.repaint();
+            StaticRefs.getMainFrame().getLayeredPane().add(p, JLayeredPane.POPUP_LAYER);
+            StaticRefs.getMainFrame().revalidate();
+            StaticRefs.getMainFrame().repaint();
         };
         if (run) floats.add(r);
         else r.run();
@@ -196,9 +195,9 @@ public class EngineFrame extends javax.swing.JFrame {
      * @param p The floating panel
      */
     public static void bringForward(FloatingPanel p) {
-        StaticRefs.mainFrame.getLayeredPane().moveToFront(p);
-        StaticRefs.mainFrame.revalidate();
-        StaticRefs.mainFrame.repaint();
+        StaticRefs.getMainFrame().getLayeredPane().moveToFront(p);
+        StaticRefs.getMainFrame().revalidate();
+        StaticRefs.getMainFrame().repaint();
     }
 
     /**
@@ -206,9 +205,9 @@ public class EngineFrame extends javax.swing.JFrame {
      * @param p The floating panel
      */
     public static void removeFloater(FloatingPanel p) {
-        StaticRefs.mainFrame.getLayeredPane().remove(p);
-        StaticRefs.mainFrame.revalidate();
-        StaticRefs.mainFrame.repaint();
+        StaticRefs.getMainFrame().getLayeredPane().remove(p);
+        StaticRefs.getMainFrame().revalidate();
+        StaticRefs.getMainFrame().repaint();
     }
 
     /**
@@ -222,7 +221,7 @@ public class EngineFrame extends javax.swing.JFrame {
         // create the layered pane where all the panels will be layered on top of each other.
         JLayeredPane layeredPane = this.getLayeredPane();
         // initialise the menu bar offset
-        final int menuBarOffsetY = (this.getJMenuBar().getSize().height + jMenuBarOffsetY);
+        final int menuBarOffsetY = (this.getJMenuBar().getSize().height + StaticConfig.jMenuBarOffsetY);
         // initialise extra properties of this frame
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(StaticConfig.screenSize.width, StaticConfig.screenSize.height);
@@ -230,21 +229,22 @@ public class EngineFrame extends javax.swing.JFrame {
 
         // Add to the StaticRefs references and allow the draw panel to be focusable
         // and do a lot of other window shenanigans. Swing is the best. (sarcasm)
-        StaticRefs.mainPanel = (J3DPanel) mainPanel;
-        StaticRefs.mainPanel.setFocusable(true);
-        StaticRefs.mainPanel.requestFocusInWindow();
-        StaticRefs.mainPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN));
-        StaticRefs.mainPanel.setBounds(0, menuBarOffsetY, StaticConfig.screenSize.width, StaticConfig.screenSize.height);
-        StaticRefs.mainPanel.setPreferredSize(new Dimension(StaticConfig.screenSize.width, StaticConfig.screenSize.height));
+        StaticRefs.registerMainPanel((J3DPanel) mainPanel); // Cast to custom panel for drawing capabilities
+        mainPanel.setFocusable(true);
+        mainPanel.requestFocusInWindow();
+        mainPanel.setBorder(BorderFactory.createLineBorder(Color.GREEN));
+        mainPanel.setBounds(0, menuBarOffsetY, StaticConfig.screenSize.width, StaticConfig.screenSize.height);
+        mainPanel.setPreferredSize(new Dimension(StaticConfig.screenSize.width, StaticConfig.screenSize.height));
 
         // initialise the StaticRefs reference to this frame and set it to be maximised both vertically and horizontally
-        StaticRefs.mainFrame = this;
-        StaticRefs.mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        StaticRefs.registerMainFrame(this);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         // initialise the scene manager with the screen size.
-        StaticRefs.sceneManager = new SceneManager(StaticConfig.screenSize);
+        SceneManager sceneManager = new SceneManager(StaticConfig.screenSize);
+        StaticRefs.registerSceneManager(sceneManager);
         // If we can run the executor, initialise it.
         if (runExecutor)
-            StaticRefs.executor = new Executor(StaticRefs.sceneManager);
+            StaticRefs.registerExecutor(new Executor(sceneManager));
         // initialise the debug panel's components.
         StaticRefs.getDebugPanel().startStatisticsThread();
         // create and set the bounds for the hover JLabel's panel.
@@ -254,12 +254,12 @@ public class EngineFrame extends javax.swing.JFrame {
         layeredPane.add(lbl, JLayeredPane.DRAG_LAYER);
         lbl.setVisible(true);
         // Add to the StaticRefs references.
-        StaticRefs.hoverLabel = new HoverJLabel(lbl.getLabel());
+        StaticRefs.registerHoverLabel(new HoverJLabel(lbl.getLabel()));
 
-        // Initialize all keybinds to be part of the mainPanel and add to the static references
-        InputMap im = StaticRefs.mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        ActionMap am = StaticRefs.mainPanel.getActionMap();
-        StaticRefs.keybinds = new KeyBindings(im, am, true);
+        // Initialise all keybinds to be part of the mainPanel and add to the static references
+        InputMap im = mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = mainPanel.getActionMap();
+        StaticRefs.registerGlobalKeybinds(new KeyBindings(im, am, true));
 
         // Initialise the toolbox (at layer 200)
         Toolbox toolbox = new Toolbox();
@@ -272,7 +272,7 @@ public class EngineFrame extends javax.swing.JFrame {
 
         // Calculate offset for the command pallet.
         // ideal offset should be sort of at the bottom of the frame, but centered horizontally.
-        Rectangle bounds = StaticRefs.mainFrame.getBounds();
+        Rectangle bounds = this.getBounds();
         Dimension size = COMMAND_PALETTE.getPreferredSize();
         int x = ((bounds.width - size.width) / 2) - 60;
         int y = bounds.height - size.height - 200;
@@ -283,7 +283,7 @@ public class EngineFrame extends javax.swing.JFrame {
         COMMAND_PALETTE.setVisible(true);
         // Add to layer 300
         layeredPane.add(COMMAND_PALETTE, JLayeredPane.POPUP_LAYER);
-        StaticRefs.commandParser = new CommandParser(COMMAND_PALETTE);
+        StaticRefs.registerCommandParser(new CommandParser(COMMAND_PALETTE));
 
         // Set the main panel to be focusable and immediately set the user's focus to it.
         mainPanel.getRootPane().setFocusable(true);
@@ -291,30 +291,25 @@ public class EngineFrame extends javax.swing.JFrame {
 
         // Component Listener that triggers whenever the entire frame is resized to
         // reposition the command palette.
-        StaticRefs.mainFrame.addComponentListener(new ComponentListener() {
+        this.addComponentListener(new ComponentListener() {
             @Override
             public void componentResized(ComponentEvent e) {
                 // Set values so other stuff know these values changed.
-                StaticConfig.screenSize = new Dim(StaticRefs.mainFrame.getSize());
-                StaticRefs.sceneManager.screenSize = StaticConfig.screenSize;
+                StaticConfig.screenSize = new Dim(StaticRefs.getMainFrame().getSize());
+                StaticRefs.getSceneManager().screenSize = StaticConfig.screenSize;
                 toolbox.setBounds(0, menuBarOffsetY, StaticConfig.screenSize.width - 10, toolbox.getPreferredSize().height);
-                StaticRefs.mainPanel.setBounds(0, menuBarOffsetY, StaticConfig.screenSize.width, StaticConfig.screenSize.height);
+                StaticRefs.getMainPanel().setBounds(0, menuBarOffsetY, StaticConfig.screenSize.width, StaticConfig.screenSize.height);
 
-//                StaticRefs.layerTree.setBounds(
-//                        J3DSettings.screenSize.width - 260 -(StaticRefs.layerTree.getPreferredSize().width),
-//                        toolbox.getPreferredSize().height + menuBarOffsetY,
-//                        StaticRefs.layerTree.getPreferredSize().width,
-//                        StaticRefs.layerTree.getPreferredSize().height);
 
                 // Calculate new offsets (TODO: Idnetical to the previous offset calculation, extract?)
-                Rectangle bounds = StaticRefs.mainFrame.getBounds();
+                Rectangle bounds = StaticRefs.getMainFrame().getBounds();
                 Dimension size = COMMAND_PALETTE.getPreferredSize();
                 int x = ((bounds.width - size.width) / 2) - 10;
                 int y = bounds.height - size.height - 50;
                 COMMAND_PALETTE.setBounds(x, y, size.width, size.height);
 
-                StaticRefs.mainFrame.repaint(); // repaint the frame
-                StaticRefs.mainPanel.repaint(); // repaint the panel too.
+                StaticRefs.getMainFrame().repaint(); // repaint the frame
+                StaticRefs.getMainPanel().repaint(); // repaint the panel too.
             }
 
             @Override
@@ -334,7 +329,7 @@ public class EngineFrame extends javax.swing.JFrame {
         });
 
         // Initialise the custom cursors to be for the entire frame. and set it to the default.
-        CursorManager.init(StaticRefs.mainFrame);
+        CursorManager.init(this);
         CursorManager.setDefault();
 
         // Add all the floaters safely.
@@ -470,13 +465,13 @@ public class EngineFrame extends javax.swing.JFrame {
             public void windowClosing(WindowEvent e) {
                 boolean saved = StaticConfig.hasSaved;
                 if (saved) {
-                    StaticRefs.mainFrame.dispose();
+                    StaticRefs.getMainFrame().dispose();
                     System.exit(0);
                 }
-                AreYouSure ays = new AreYouSure(StaticRefs.mainFrame, true, "You have not saved this project. Progress will be lost.");
+                AreYouSure ays = new AreYouSure(StaticRefs.getMainFrame(), true, "You have not saved this project. Progress will be lost.");
                 ays.setVisible(true);
                 if (ays.canProceed()) {
-                    StaticRefs.mainFrame.dispose();
+                    StaticRefs.getMainFrame().dispose();
                     System.exit(0);
                 }
             }
@@ -521,9 +516,9 @@ public class EngineFrame extends javax.swing.JFrame {
             }
             COMMAND_PALETTE.revalidate();
             COMMAND_PALETTE.repaint();
-            if (StaticRefs.mainFrame != null) {
-                StaticRefs.mainFrame.revalidate();
-                StaticRefs.mainFrame.repaint();
+            if (StaticRefs.getMainFrame() != null) { // it cant be null if we're in this call. but you know java.
+                StaticRefs.getMainFrame().revalidate();
+                StaticRefs.getMainFrame().repaint();
             }
         });
     }
@@ -744,49 +739,49 @@ public class EngineFrame extends javax.swing.JFrame {
 
     private void resetPositionJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetPositionJMenuItemActionPerformed
         if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
-        StaticRefs.camera.setPosition(new Vector3(0, 0, 0));
-        StaticRefs.mainFrame.repaint();
+        StaticRefs.getCamera().setPosition(new Vector3(0, 0, 0));
+        this.repaint();
     }//GEN-LAST:event_resetPositionJMenuItemActionPerformed
 
     private void undoJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoJMenuItemActionPerformed
         SceneManager.history.undo();
-        StaticRefs.mainFrame.repaint();
+        this.repaint();
     }//GEN-LAST:event_undoJMenuItemActionPerformed
 
     private void redoJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoJMenuItemActionPerformed
         SceneManager.history.redo();
-        StaticRefs.mainFrame.repaint();
+        this.repaint();
     }//GEN-LAST:event_redoJMenuItemActionPerformed
 
     private void resetOrientationJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetOrientationJMenuItemActionPerformed
         if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
-        StaticRefs.camera.setRotation(new Rotation(0, 0, 0));
-        StaticRefs.mainFrame.repaint();
+        StaticRefs.getCamera().setRotation(new Rotation(0, 0, 0));
+        this.repaint();
     }//GEN-LAST:event_resetOrientationJMenuItemActionPerformed
 
     private void resetCameraJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetCameraJMenuItemActionPerformed
         if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
-        StaticRefs.camera.setPosition(new Vector3(0, 0, 0));
-        StaticRefs.camera.setRotation(new Rotation(0, 0, 0));
-        StaticRefs.mainFrame.repaint();
+        StaticRefs.getCamera().setPosition(new Vector3(0, 0, 0));
+        StaticRefs.getCamera().setRotation(new Rotation(0, 0, 0));
+        this.repaint();
     }//GEN-LAST:event_resetCameraJMenuItemActionPerformed
 
     private void redrawJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redrawJMenuItemActionPerformed
-        // TODO add your handling code here:
+        // no.
     }//GEN-LAST:event_redrawJMenuItemActionPerformed
 
     private void viewAsWireframeJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewAsWireframeJMenuItemActionPerformed
         StaticConfig.setViewType(ViewType.WIREFRAME);
-        StaticRefs.mainFrame.repaint();
+        this.repaint();
     }//GEN-LAST:event_viewAsWireframeJMenuItemActionPerformed
 
     private void viewAsNormalJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewAsNormalJMenuItemActionPerformed
         StaticConfig.setViewType(ViewType.NORMAL);
-        StaticRefs.mainFrame.repaint();
+        this.repaint();
     }//GEN-LAST:event_viewAsNormalJMenuItemActionPerformed
 
     private void openProjectMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openProjectMenuItemActionPerformed
-        AreYouSure ays = new AreYouSure(StaticRefs.mainFrame, true,
+        AreYouSure ays = new AreYouSure(this, true,
                 "Whatever is on screen currently will be discarded.");
         ays.setVisible(true);
 
@@ -809,9 +804,9 @@ public class EngineFrame extends javax.swing.JFrame {
                         }
                     }
             );
-        }, StaticRefs.mainFrame);
+        }, this);
         if (file == null) return;
-        StaticRefs.sceneManager.resetScene();
+        StaticRefs.getSceneManager().resetScene();
         readProjectFile(file);
     }//GEN-LAST:event_openProjectMenuItemActionPerformed
 
@@ -824,7 +819,7 @@ public class EngineFrame extends javax.swing.JFrame {
                             : fileName
             ) + ".j3p";
 
-            File folder = FilesUtility.folderChooser(StaticRefs.mainFrame);
+            File folder = FilesUtility.folderChooser(this);
 
             if (folder == null)
                 return;
@@ -837,7 +832,7 @@ public class EngineFrame extends javax.swing.JFrame {
 
         new PF2().writeFile(
                 Settings.projectOutputFile.getValue().getParent(),
-                Settings.projectOutputFile.getValue().getName(), StaticRefs.sceneManager.layers);
+                Settings.projectOutputFile.getValue().getName(), StaticRefs.getSceneManager().layers);
     }//GEN-LAST:event_saveProjectJMenuItemActionPerformed
 
     private void newProjectJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newProjectJMenuItemActionPerformed
@@ -855,7 +850,7 @@ public class EngineFrame extends javax.swing.JFrame {
         }
         if (!canProceed) return;
         Settings.projectOutputFile.setValue(null);
-        StaticRefs.sceneManager.resetScene();
+        StaticRefs.getSceneManager().resetScene();
     }//GEN-LAST:event_newProjectJMenuItemActionPerformed
 
     private void exportAsPNGJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportAsPNGJMenuItemActionPerformed
@@ -876,17 +871,15 @@ public class EngineFrame extends javax.swing.JFrame {
                         }
                     });
                 },
-                StaticRefs.mainFrame
+                this
         );
 
         if (o == null)
             return;
         File file = !o.isFile() ? new File(o, "export.png") : o;
 
-        J3DPanel panel = (J3DPanel) mainPanel;
-
         try {
-            panel.exportAs("png", file);
+            StaticRefs.getMainPanel().exportAs("png", file);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -895,14 +888,14 @@ public class EngineFrame extends javax.swing.JFrame {
 
     private void settingsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsMenuItemActionPerformed
         // Open PreferencesFrame JFrame on top of this frame at the centre of the screen.
-        PreferencesFrame preferencesFrame = StaticRefs.settings.panel();
+        PreferencesFrame preferencesFrame = StaticRefs.getSettings().panel();
         CursorManager.set(CursorNames.DEFAULT, preferencesFrame);
-        preferencesFrame.setLocationRelativeTo(StaticRefs.mainFrame);
+        preferencesFrame.setLocationRelativeTo(this);
         preferencesFrame.setVisible(true);
     }//GEN-LAST:event_settingsMenuItemActionPerformed
 
     private void logOutJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutJMenuItemActionPerformed
-        // TODO add your handling code here:
+        // log out one day
     }//GEN-LAST:event_logOutJMenuItemActionPerformed
 
     /**
@@ -945,7 +938,7 @@ public class EngineFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                StaticRefs.mainFrame.setVisible(true);
+                StaticRefs.getMainFrame().setVisible(true);
             }
         });
     }

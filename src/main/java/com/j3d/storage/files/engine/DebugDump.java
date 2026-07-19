@@ -29,7 +29,7 @@ public class DebugDump {
     public static void print(PrintWriter out, long current, Camera cam) {
         out.println("time,cx,cy,cz,cpitch,cyaw,croll,layerID,layerVisible,thingName,thingID,triID,tridist,trix,triy,triz,trinx,triny,trinz,tricol,triVisible");
 
-        StaticRefs.sceneManager.layers.forEach(
+        StaticRefs.getSceneManager().layers.forEach(
                 l -> l.forEach(thing -> thing.getObjects().stream()
                         .filter(GTri.class::isInstance)
                         .map(GTri.class::cast)

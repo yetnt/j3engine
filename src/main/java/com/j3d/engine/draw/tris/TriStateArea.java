@@ -119,14 +119,14 @@ public class TriStateArea {
      * @param g The Graphics2D context.
      */
     public static void draw(Graphics2D g) {
-        ArrayList<GObject> unparented = StaticRefs.sceneManager.getUnparented().stream()
+        ArrayList<GObject> unparented = StaticRefs.getSceneManager().getUnparented().stream()
                 .map(o -> (GObject) o)
                 .collect(Collectors.toCollection(ArrayList::new));
         unparented.forEach(
                 u -> {
                     // draw these fools first since we cant use TriStateArea methods for sorting.
                     // upper todo for optimizaiton but this may stay.
-                    if (StaticRefs.sceneManager.getSelected().contains(u)) {
+                    if (StaticRefs.getSceneManager().getSelected().contains(u)) {
                         u.drawSelected(g);
                     } else {
                         u.draw(g);
@@ -135,7 +135,7 @@ public class TriStateArea {
         );
         for  (GTri tri : queue) {
             if (tri.isHidden()) continue;
-            if (StaticRefs.sceneManager.getSelected().contains(tri)) {
+            if (StaticRefs.getSceneManager().getSelected().contains(tri)) {
                 tri.drawSelected(g);
             } else {
                 tri.draw(g);

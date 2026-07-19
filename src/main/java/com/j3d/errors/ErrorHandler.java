@@ -22,14 +22,14 @@ public class ErrorHandler {
             case J3DWarning j3w -> {
                 // Warnings get printed to the log, user debug log and also a little box to the user.
                 StaticRefs.getLog().error(err);
-                JOptionPane.showMessageDialog(StaticRefs.mainFrame, err.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(StaticRefs.getMainFrame(), err.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
             }
             case J3DFatal j3f -> {
                 // Fatal errors are unrecoverable.
                 StaticRefs.getLog().error(err);
-                JOptionPane.showMessageDialog(StaticRefs.mainFrame, err.getMessage(), "Fatal Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(StaticRefs.getMainFrame(), err.getMessage(), "Fatal Error", JOptionPane.ERROR_MESSAGE);
                 if (j3f.terminate()) {
-                    JOptionPane.showMessageDialog(StaticRefs.mainFrame,
+                    JOptionPane.showMessageDialog(StaticRefs.getMainFrame(),
                             "Due to the nature of the previous error, the app cannot continue in this state and will shut down.",
                             "Fatal Error", JOptionPane.ERROR_MESSAGE);
                     System.exit(1);

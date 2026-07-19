@@ -49,7 +49,7 @@ public class RandomUUIDCmd extends Subcommand {
     @Override
     public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(logLabel, aliasUsed, args, taggedArgs);
-        List<GObject> objects = StaticRefs.sceneManager.layers
+        List<GObject> objects = StaticRefs.getSceneManager().layers
                 .stream()
                 .flatMap(Layer::stream)
                 .flatMap(Thing::objectsStream)

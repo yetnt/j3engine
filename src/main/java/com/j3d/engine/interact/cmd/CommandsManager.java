@@ -104,7 +104,7 @@ public class CommandsManager {
      * @see #commandsAliasMap
      */
     public static Command getCommand(String name) {
-        return StaticRefs.commandManager.commandsAliasMap.getOrDefault(name, null);
+        return StaticRefs.getCommandManager().commandsAliasMap.getOrDefault(name, null);
     }
 
     /**

@@ -4,9 +4,6 @@
  */
 package com.j3d.ui.engine.floating.properties.panels;
 
-import static com.j3d.StaticRefs.mainFrame;
-import static com.j3d.StaticRefs.mainPanel;
-
 import com.j3d.StaticRefs;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandsManager;
@@ -33,7 +30,7 @@ public class Vector3Dialogue extends javax.swing.JDialog {
     }
     
     public Vector3Dialogue(Vector3 v, JButton editBtn) {
-        super(mainFrame, true);
+        super(StaticRefs.getMainFrame(), true);
         initComponents();
         xLabel.setText(v.getX() + "");
         yLabel.setText(v.getY() + "");
@@ -189,10 +186,10 @@ public class Vector3Dialogue extends javax.swing.JDialog {
         StaticRefs.getPropertiesPanel().toggleHidden();
 
         // make sure the focus is on the main panel
-        mainPanel.requestFocus();
+        StaticRefs.getMainPanel().requestFocus();
 
         // run the command.
-        StaticRefs.commandParser.runCommand(
+        StaticRefs.getCommandParser().runCommand(
                 CommandsManager.commands.transform,
                 "transform",
                 new ArrayList<>(List.of("translate", "p")),

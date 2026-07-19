@@ -11,7 +11,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import static com.j3d.StaticRefs.camera;
+import static com.j3d.StaticRefs.getCamera();
 import static com.j3d.engine.interact.input.keyboard.KeyBindings.commandPaletteFocusOwner;
 import static com.j3d.ui.engine.EngineFrame.COMMAND_PALETTE;
 
@@ -34,7 +34,7 @@ public enum GlobalKeybinds {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (StaticRefs.commandParser.commandPalette.isDisabled()) return;
+                            if (StaticRefs.getCommandParser().commandPalette.isDisabled()) return;
                             COMMAND_PALETTE.inputField.requestFocusInWindow();
                         }
                     }
@@ -58,7 +58,7 @@ public enum GlobalKeybinds {
                                             camera.getForward().mult(mvSpeed)
                                     )
                             );
-                            StaticRefs.mainFrame.repaint();
+                            StaticRefs.getMainFrame().repaint();
                         }
                     }
             )
@@ -80,7 +80,7 @@ public enum GlobalKeybinds {
                                             camera.getForward().mult(mvSpeed)
                                     )
                             );
-                            StaticRefs.mainFrame.repaint();
+                            StaticRefs.getMainFrame().repaint();
                         }
                     }
             )
@@ -102,7 +102,7 @@ public enum GlobalKeybinds {
                                             camera.getRight().mult(mvSpeed)
                                     )
                             );
-                            StaticRefs.mainFrame.repaint();
+                            StaticRefs.getMainFrame().repaint();
                         }
                     }
             )
@@ -124,7 +124,7 @@ public enum GlobalKeybinds {
                                             camera.getRight().mult(mvSpeed)
                                     )
                             );
-                            StaticRefs.mainFrame.repaint();
+                            StaticRefs.getMainFrame().repaint();
                         }
                     }
             )
@@ -146,7 +146,7 @@ public enum GlobalKeybinds {
                                             camera.getUp().mult(mvSpeed)
                                     )
                             );
-                            StaticRefs.mainFrame.repaint();
+                            StaticRefs.getMainFrame().repaint();
                         }
                     }
             )
@@ -168,7 +168,7 @@ public enum GlobalKeybinds {
                                             camera.getUp().mult(mvSpeed)
                                     )
                             );
-                            StaticRefs.mainFrame.repaint();
+                            StaticRefs.getMainFrame().repaint();
                         }
                     }
             )
@@ -245,10 +245,10 @@ public enum GlobalKeybinds {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            StaticRefs.commandParser.commandPalette.setDisabled(
-                                    !StaticRefs.commandParser.commandPalette.isDisabled()
+                            StaticRefs.getCommandParser().commandPalette.setDisabled(
+                                    !StaticRefs.getCommandParser().commandPalette.isDisabled()
                             );
-                            StaticRefs.mainFrame.repaint();
+                            StaticRefs.getMainFrame().repaint();
                         }
                     }
             )

@@ -55,8 +55,8 @@ public class CameraProperties implements SettingsParent {
             i -> i/100.0,
             0.01
     ).onSetValue((Double d) -> {
-        StaticRefs.camera.setFocalLength(d);
-        StaticRefs.mainPanel.repaint();
+        StaticRefs.getCamera().setFocalLength(d);
+        StaticRefs.getMainPanel().repaint();
         return null;
     });
     public IntSetting nearZeroProjectionPower = new IntSetting(

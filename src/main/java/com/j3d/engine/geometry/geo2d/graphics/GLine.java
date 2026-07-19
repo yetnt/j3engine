@@ -20,8 +20,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.j3d.StaticRefs.camera;
-import static com.j3d.StaticRefs.sceneManager;
+import static com.j3d.StaticRefs.getCamera();
+import static com.j3d.StaticRefs.getSceneManager();
 
 /**
  * GLine represents, you guessed it, a line.
@@ -132,7 +132,7 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
         B.attach(this);
         B.addParent(this);
 
-        StaticRefs.sceneManager.hasNoParent(this);
+        StaticRefs.getSceneManager().hasNoParent(this);
         A.addParent(this);
         B.attach(this);
         addProps();
@@ -217,13 +217,13 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
     @Override
     public void addParent(GTri parent) {
         parents.add(parent);
-        StaticRefs.sceneManager.hasParent(this);
+        StaticRefs.getSceneManager().hasParent(this);
     }
 
     @Override
     public void removeParent(GTri parent) {
         boolean su = parents.remove(parent);
-        StaticRefs.sceneManager.hasNoParent(this);
+        StaticRefs.getSceneManager().hasNoParent(this);
     }
 
     @Override

@@ -44,7 +44,7 @@ public class IDProperty extends javax.swing.JPanel implements PropertyPanel<UUID
                         public void mouseClicked(MouseEvent e) {
                             if (e.getClickCount() == 2) {
                                 // add the UUID to the command palette
-                                StaticRefs.commandParser.injectArgument(
+                                StaticRefs.getCommandParser().injectArgument(
                                         getSingleProperty().getValueSupplier().get()
                                 );
                             }

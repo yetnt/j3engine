@@ -271,7 +271,7 @@ public class Layer extends ArrayList<Thing> implements Interactable, HasProperti
      */
     public void draw(Graphics2D graphics2D) {
         if (!getIdentifier().equals(BACKGROUND_ID))
-            sort(Comparator.comparingDouble(t -> t.getCentroid().distance(StaticRefs.camera.getPosition())));
+            sort(Comparator.comparingDouble(t -> t.getCentroid().distance(StaticRefs.getCamera().getPosition())));
         if (isHidden() || isForDeletion()) return;
         for (Thing o : this.reversed()) {
             o.draw(graphics2D);
@@ -280,7 +280,7 @@ public class Layer extends ArrayList<Thing> implements Interactable, HasProperti
 
     @Override
     public void instantDelete() {
-        StaticRefs.sceneManager.layers.remove(this);
+        StaticRefs.getSceneManager().layers.remove(this);
         for (Thing t : this) {
             t.instantDelete();
         }

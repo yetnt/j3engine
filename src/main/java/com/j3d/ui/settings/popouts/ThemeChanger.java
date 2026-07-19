@@ -324,7 +324,7 @@ public class ThemeChanger extends javax.swing.JFrame {
         );
         StaticConfig.user.save();
 
-        StaticRefs.settings.panel().dispose();
+        StaticRefs.getSettings().panel().dispose();
 
         this.dispose();
         Settings.themeChanger = null;
@@ -336,7 +336,7 @@ public class ThemeChanger extends javax.swing.JFrame {
 
     private void changeAndCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeAndCloseActionPerformed
         enterThemeChangeActionPerformed(evt);
-        StaticRefs.commandParser.runCommand(
+        StaticRefs.getCommandParser().runCommand(
                 CommandsManager.commands.engine,
                 "engine",
                 new ArrayList<>(Collections.singleton("exit")),

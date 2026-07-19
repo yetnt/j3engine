@@ -51,7 +51,7 @@ public class ExitCmd extends Subcommand {
         }
         boolean force = args.length != 0 && (boolean) args[0];
         if (!force) {
-            AreYouSure ays = new AreYouSure(StaticRefs.mainFrame, true, "This will save nothing. Its a hard exit.");
+            AreYouSure ays = new AreYouSure(StaticRefs.getMainFrame(), true, "This will save nothing. Its a hard exit.");
             ays.setVisible(true);
             if (ays.canProceed())
                 System.exit(0);

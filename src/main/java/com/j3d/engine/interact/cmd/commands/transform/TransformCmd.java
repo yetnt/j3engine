@@ -84,7 +84,7 @@ public class TransformCmd extends Command implements SemiStatefulCommand {
                     SelectionManager.selectionMouseOwner.clearSelectionSquare();
                 }
         );
-        StaticRefs.mainFrame.requestFocusInWindow(); // Remove focus from the command pallete
+        StaticRefs.getMainFrame().requestFocusInWindow(); // Remove focus from the command pallete
         this.subcommandName = subcommandNamei;
         this.logLabel = logLabel;
         this._args = args;

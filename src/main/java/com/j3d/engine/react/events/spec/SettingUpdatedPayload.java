@@ -9,7 +9,7 @@ public class SettingUpdatedPayload<T> extends EventPayload<Setting<T>> {
     private final T oldValue;
 
     public SettingUpdatedPayload(Setting<T> e, T old, T newValue) {
-        super(e, StaticRefs.sceneManager);
+        super(e, StaticRefs.getSceneManager());
         this.newValue = newValue;
         this.oldValue = old;
     }

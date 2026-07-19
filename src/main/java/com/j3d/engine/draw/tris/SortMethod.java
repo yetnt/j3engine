@@ -47,7 +47,7 @@ public abstract class SortMethod extends ArrayList<GTri> {
         if (tri.isDoubleSided()) return false;
         if (!Settings.sceneProperties.useBackFaceCulling.getValue()) return false;
         Vector3 N = tri.normal();
-        Vector3 P = StaticRefs.camera.getPosition().sub(tri.getLegA().getA().getPivot());
+        Vector3 P = StaticRefs.getCamera().getPosition().sub(tri.getLegA().getA().getPivot());
         return N.dot(P) < 0;
     }
 }

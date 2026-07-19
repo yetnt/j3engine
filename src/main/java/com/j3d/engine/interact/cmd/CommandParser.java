@@ -275,10 +275,10 @@ public class CommandParser {
      * @param uuid The UUID of the GObject or Thing to find.
      */
     private void argAddUUID(CmdToken tok, UUID uuid, boolean injected) {
-        GObject g = StaticRefs.sceneManager.findObjectByUUID(uuid);
+        GObject g = StaticRefs.getSceneManager().findObjectByUUID(uuid);
         if (g == null) {
             // try to find a Thing with the given UUID
-            Thing t = StaticRefs.sceneManager.findThingByUUID(uuid);
+            Thing t = StaticRefs.getSceneManager().findThingByUUID(uuid);
             if (t == null) {
                 label.error("No object or thing found with UUID: " + SafeJLabel.EMPH, uuid);
             } else {
@@ -471,8 +471,8 @@ public class CommandParser {
      */
     public boolean runCommand(Command cmd, String cmdName, ArrayList<Object> arguments, ArrayList<TaggedArgValue<?>> taggedArguments) {
         if (CommandsManager.commandIsRunning()) {
-            StaticRefs.hoverLabel.error("Command is currently running: " + SafeJLabel.EMPH, CommandsManager.getCurrentCommandName());
-            StaticRefs.mainFrame.requestFocusInWindow();
+            StaticRefs.getHoverLabel().error("Command is currently running: " + SafeJLabel.EMPH, CommandsManager.getCurrentCommandName());
+            StaticRefs.getMainFrame().requestFocusInWindow();
             return false;
         }
         if (cmd instanceof StatefulCommand statefulCommand)
@@ -480,7 +480,7 @@ public class CommandParser {
 
         cmd.run(label, cmdName, arguments.toArray(), taggedArguments);
         if (!(cmd instanceof HelpCmd))
-            StaticRefs.hoverLabel.clear();
+            StaticRefs.getHoverLabel().clear();
         return true;
     }
 
@@ -635,7 +635,7 @@ public class CommandParser {
                         new AbstractAction() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                StaticRefs.mainFrame.requestFocusInWindow();
+                                StaticRefs.getMainFrame().requestFocusInWindow();
                             }
                         }
                 )

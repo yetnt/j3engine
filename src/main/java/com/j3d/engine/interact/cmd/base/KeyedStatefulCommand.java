@@ -112,7 +112,7 @@ public interface KeyedStatefulCommand extends StatefulCommand<Void> {
 
                                 application.accept(sharedVar);
 
-                                StaticRefs.mainPanel.repaint();
+                                StaticRefs.getMainPanel().repaint();
                             }
                         }
                 )

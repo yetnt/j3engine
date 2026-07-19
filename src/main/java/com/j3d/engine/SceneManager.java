@@ -56,7 +56,7 @@ public class SceneManager {
     /**
      * The history manager for undo/redo functionality.
      */
-    public static History history = new History();
+    public static final History history = new History();
 
     /**
      * Default Constructor
@@ -505,7 +505,7 @@ public class SceneManager {
         currentSelection.clear();
         unparented.clear();
         history.clear(); // also clears backup.
-        StaticRefs.mainPanel.repaint();
+        StaticRefs.getMainPanel().repaint();
     }
 
     public void removeOverlap(UUID id) {

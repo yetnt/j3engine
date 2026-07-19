@@ -13,7 +13,6 @@ import com.j3d.utility.generators.JLabelRichText;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import static com.j3d.StaticRefs.mainFrame;
 
 /**
  *
@@ -117,11 +116,11 @@ public class ColourProperty extends javax.swing.JPanel implements PropertyPanel<
 
     private void setBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setBtnActionPerformed
         if (CommandsManager.commandIsRunning()) {
-            StaticRefs.hoverLabel.error("Finish running command first");
+            StaticRefs.getHoverLabel().error("Finish running command first");
             return;
         }
         Color chosen = JColorChooser.showDialog(
-                mainFrame,
+                StaticRefs.getMainFrame(),
                 "Choose a colour man",
                 getSingleProperty().getValueSupplier().get()
         );

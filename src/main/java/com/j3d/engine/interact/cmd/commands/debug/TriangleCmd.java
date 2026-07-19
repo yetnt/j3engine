@@ -9,7 +9,7 @@ import com.j3d.ui.SafeJLabel;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.j3d.StaticRefs.sceneManager;
+import static com.j3d.StaticRefs.getSceneManager();
 
 /**
  * A no-arg subcommand of {@link DebugCmd} which simply toggles the normal of a selected triangle or triangles.

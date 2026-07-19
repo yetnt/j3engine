@@ -120,7 +120,7 @@ public class Vector3Property extends javax.swing.JPanel implements PropertyPanel
     private void setBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setBtnActionPerformed
         if (singleProperty()) {
             if (CommandsManager.commandIsRunning()) {
-                StaticRefs.hoverLabel.error("Finish running command first");
+                StaticRefs.getHoverLabel().error("Finish running command first");
                 return;
             }
             new Vector3Dialogue(getSingleProperty().getValueSupplier().get(), setBtn);

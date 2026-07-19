@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
-import static com.j3d.StaticRefs.sceneManager;
+import static com.j3d.StaticRefs.getSceneManager();
 
 /**
  * A command which makes the explodes the geometry structure of whatever.
@@ -69,7 +69,7 @@ public class ExplodeCmd extends Command{
     public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(logLabel, aliasUsed, args, taggedArgs);
         AreYouSure aysDialogue = new AreYouSure(
-                StaticRefs.mainFrame, true // sets to modal
+                StaticRefs.getMainFrame(), true // sets to modal
                 , JLabelRichText.htmlOf(
                         new JLabelRichText(
                                 "This command CANNOT be undone."

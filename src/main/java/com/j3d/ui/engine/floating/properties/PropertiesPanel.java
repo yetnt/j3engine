@@ -14,7 +14,7 @@ import com.j3d.ui.generic.J3DScrollBarUI;
 import javax.swing.*;
 import java.util.ArrayList;
 
-import static com.j3d.StaticRefs.sceneManager;
+import static com.j3d.StaticRefs.getSceneManager();
 import com.j3d.ui.generic.J3DTheme;
 
 

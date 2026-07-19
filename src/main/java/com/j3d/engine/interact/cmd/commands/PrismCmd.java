@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import static com.j3d.StaticRefs.sceneManager;
+import static com.j3d.StaticRefs.getSceneManager();
 
 /**
  * A command to create a prism.
@@ -235,13 +235,13 @@ public class PrismCmd extends Command implements KeyedStatefulCommand {
 
     @Override
     public void onStart(Void object, SafeJLabel label) {
-        keys.forEach(StaticRefs.keybinds::registerJ3Key);
+        keys.forEach(StaticRefs.getGlobalKeybinds()::registerJ3Key);
 
         Consumer<Graphics2D> drawGhosts = g -> {
             g.setColor(Color.WHITE);
             // Draw a line connecting the 2 centres
             sceneManager.drawLine3D(
-                    g, bottomFaceCenter, topFaceCenter, StaticRefs.camera
+                    g, bottomFaceCenter, topFaceCenter, StaticRefs.getCamera()
             );
             // Draw 2 n-gons on the top and bottom face.
             ArrayList<Vector3> bottomFace = Sampler.ngon(
@@ -301,7 +301,7 @@ public class PrismCmd extends Command implements KeyedStatefulCommand {
         radius = 5;
         sceneManager.removeOverlap(overlapId);
         label.clear();
-        keys.forEach(key -> StaticRefs.keybinds.removeJ3Key(key.getId()));
+        keys.forEach(key -> StaticRefs.getGlobalKeybinds().removeJ3Key(key.getId()));
     }
 
     @Override

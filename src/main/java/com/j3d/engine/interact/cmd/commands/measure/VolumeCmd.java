@@ -72,12 +72,12 @@ public class VolumeCmd extends Subcommand {
     private void registerGhost(Thing t, double volume) {
         UUID id = UUID.randomUUID();
 
-        sceneManager.scheduleOverlap(id, (c) -> {
+        getSceneManager().scheduleOverlap(id, (c) -> {
             ghost(t, c);
             Vector3 v = closestPoint(t).getPivot();
-            sceneManager.drawText3D(
+            getSceneManager().drawText3D(
                     c, v, String.format("%.2f units cubed", volume),
-                    camera
+                    getCamera()
             );
         });
 
@@ -105,7 +105,7 @@ public class VolumeCmd extends Subcommand {
         return t.objectsStream()
                 .filter(o -> o instanceof GPoint)
                 .map(o -> (GPoint) o).min((a, b) -> {
-                    Vector3 cameraPos = StaticRefs.camera.getPosition();
+                    Vector3 cameraPos = StaticRefs.getCamera().getPosition();
                     double distA = a.getPivot().distance(cameraPos);
                     double distB = b.getPivot().distance(cameraPos);
                     return Double.compare(distA, distB);

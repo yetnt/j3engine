@@ -38,7 +38,7 @@ public class RecentProjectsFile extends ProjectsFile {
     public void writeProj(File project) {
         try {
             File image = projectsFolder.toPath().resolve(project.getName() + ".png").toFile();
-            ((J3DPanel) StaticRefs.mainPanel).exportAs("png", image);
+            ((J3DPanel) StaticRefs.getMainPanel()).exportAs("png", image);
 
             if (existsInFile(file, project)) return;
             PrintWriter pw = new PrintWriter(new FileWriter(file, true));

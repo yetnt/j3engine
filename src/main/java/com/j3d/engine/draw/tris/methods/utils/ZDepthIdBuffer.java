@@ -70,8 +70,8 @@ public class ZDepthIdBuffer {
 
     // Rasterizes a line using Bresenham's algorithm with depth interpolation
     public void line(GLine line) {
-        Point p1 = line.getA().getPivot().toPoint(StaticRefs.camera).toScreen(StaticRefs.sceneManager).toSwingPoint();
-        Point p2 = line.getB().getPivot().toPoint(StaticRefs.camera).toScreen(StaticRefs.sceneManager).toSwingPoint();
+        Point p1 = line.getA().getPivot().toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager()).toSwingPoint();
+        Point p2 = line.getB().getPivot().toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager()).toSwingPoint();
         float z1 = (float) line.getA().getPivot().getZ();
         float z2 = (float) line.getB().getPivot().getZ();
 
@@ -114,7 +114,7 @@ public class ZDepthIdBuffer {
 
     // Rasterizes a single point
     public void point(GPoint pt) {
-        Point screenPt = pt.getPivot().toPoint(StaticRefs.camera).toScreen(StaticRefs.sceneManager).toSwingPoint();
+        Point screenPt = pt.getPivot().toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager()).toSwingPoint();
         int x = screenPt.x;
         int y = screenPt.y;
         float z = (float) pt.getPivot().getZ();
@@ -132,9 +132,9 @@ public class ZDepthIdBuffer {
      * This avoids costly floating-point operations per pixel.
      */
     public void tri(GTri triangle) {
-        Point p1 = triangle.getLegA().getA().getPivot().toPoint(StaticRefs.camera).toScreen(StaticRefs.sceneManager).toSwingPoint();
-        Point p2 = triangle.getLegB().getA().getPivot().toPoint(StaticRefs.camera).toScreen(StaticRefs.sceneManager).toSwingPoint();
-        Point p3 = triangle.getLegC().getA().getPivot().toPoint(StaticRefs.camera).toScreen(StaticRefs.sceneManager).toSwingPoint();
+        Point p1 = triangle.getLegA().getA().getPivot().toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager()).toSwingPoint();
+        Point p2 = triangle.getLegB().getA().getPivot().toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager()).toSwingPoint();
+        Point p3 = triangle.getLegC().getA().getPivot().toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager()).toSwingPoint();
 
         float z1 = (float) triangle.getLegA().getA().getPivot().getZ();
         float z2 = (float) triangle.getLegB().getA().getPivot().getZ();

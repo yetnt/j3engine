@@ -19,7 +19,7 @@ public class PreferencesFrame extends javax.swing.JFrame {
      */
     public PreferencesFrame() {
         initComponents();
-        StaticRefs.settings.getAllChildren().forEach(child -> {
+        StaticRefs.getSettings().getAllChildren().forEach(child -> {
             System.out.println("Adding + " + child);
             jPanel1.add(child.panel());
             System.out.println("Added");

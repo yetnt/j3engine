@@ -1,5 +1,7 @@
 package com.j3d.ui.engine.floating.properties.panels;
 
+import com.j3d.StaticConfig;
+import com.j3d.StaticRefs;
 import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.gen.properties.Property;
 import com.j3d.ui.engine.floating.properties.PropertiesPanel;
@@ -11,7 +13,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.j3d.StaticRefs.getPropertiesPanel;
-import static com.j3d.StaticRefs.mainPanel;
 import static com.j3d.engine.SceneManager.history;
 
 /**
@@ -136,6 +137,6 @@ public interface PropertyPanel<T> {
         };
         action.run();
         history.add(action);
-        mainPanel.repaint();
+        StaticRefs.getMainPanel().repaint();
     }
 }

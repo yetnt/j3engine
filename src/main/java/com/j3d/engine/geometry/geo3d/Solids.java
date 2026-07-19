@@ -145,7 +145,7 @@ public class Solids {
             tris.add(new GTri(col, BC, diagonalBD, CD, new Winding(B, D, C)));
         }
 
-        Thing circleThing = new Thing(StaticRefs.sceneManager, parentLayer, "Prism-"+radius);
+        Thing circleThing = new Thing(StaticRefs.getSceneManager(), parentLayer, "Prism-"+radius);
         circleThing.addObjs(centre, centre2)
                 .addObjs(points.toArray(new GPoint[0]))
                 .addObjs(points2.toArray(new GPoint[0]))

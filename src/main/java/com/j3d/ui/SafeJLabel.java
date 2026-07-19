@@ -33,7 +33,7 @@ public class SafeJLabel {
             @Override
             public void run() {
                 label.setText(text);
-                StaticRefs.mainFrame.repaint();
+                StaticRefs.getMainFrame().repaint();
             }
         });
     }
@@ -81,7 +81,7 @@ public class SafeJLabel {
             @Override
             public void run() {
                 label2.setText(text);
-                StaticRefs.mainFrame.repaint();
+                StaticRefs.getMainFrame().repaint();
             }
         });
     }
@@ -91,7 +91,7 @@ public class SafeJLabel {
             @Override
             public void run() {
                 label2.setText("");
-                StaticRefs.mainFrame.repaint();
+                StaticRefs.getMainFrame().repaint();
             }
         });
     }
@@ -101,7 +101,7 @@ public class SafeJLabel {
             @Override
             public void run() {
                 label.setText("");
-                StaticRefs.mainFrame.repaint();
+                StaticRefs.getMainFrame().repaint();
             }
         });
     }

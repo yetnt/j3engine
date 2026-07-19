@@ -46,6 +46,6 @@ public class TeleportCmd extends Command {
             return;
         }
 
-        StaticRefs.camera.setPosition(v3);
+        StaticRefs.getCamera().setPosition(v3);
     }
 }

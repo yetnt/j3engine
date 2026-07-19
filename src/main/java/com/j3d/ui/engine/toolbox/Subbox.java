@@ -90,7 +90,7 @@ public class Subbox extends javax.swing.JPanel {
     public void delete() {
         this.setVisible(false);
         this.setEnabled(false);
-        StaticRefs.mainFrame.getLayeredPane().remove(this);
+        StaticRefs.getMainFrame().getLayeredPane().remove(this);
         ToolboxButtons.currentViewableSubbox = null;
     }
 

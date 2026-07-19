@@ -54,7 +54,7 @@ public class RotateMouseOwner extends TransformMouseOwner {
                         // the handle we choose doesnt matter. we need to create point A and B from the centre.
                         Vector3 A = center.add(axis.mult(axisLength));
                         Vector3 B = center.sub(axis.mult(axisLength));
-                        StaticRefs.sceneManager.drawLine3D(g, A, B, StaticRefs.camera);
+                        StaticRefs.getSceneManager().drawLine3D(g, A, B, StaticRefs.getCamera());
                         Color col = new Color(126, 0, 126);
                         g.setColor(col);
                         drawCircFromAxis(axis, g, center, null);
@@ -84,7 +84,7 @@ public class RotateMouseOwner extends TransformMouseOwner {
                         }
                         drawCircFromAxis(axis, g, center, h.handleType());
                         Vector3 B = center.add((A.sub(center)).rotateAroundAxis(axis, 180));
-                        StaticRefs.sceneManager.drawLine3D(g, A, B, StaticRefs.camera);
+                        StaticRefs.getSceneManager().drawLine3D(g, A, B, StaticRefs.getCamera());
                         g.setColor(Color.WHITE);
                     }
                     );
@@ -107,7 +107,7 @@ public class RotateMouseOwner extends TransformMouseOwner {
         for (int i = 0; i < circle.size(); i++) {
             Vector3 a = circle.get(i);
             Vector3 b = circle.get((i + 1) % circle.size());
-            StaticRefs.sceneManager.drawLine3D(g, a, b, StaticRefs.camera);
+            StaticRefs.getSceneManager().drawLine3D(g, a, b, StaticRefs.getCamera());
         }
     }
 
