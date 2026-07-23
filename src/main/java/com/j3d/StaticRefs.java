@@ -6,6 +6,7 @@ import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandParser;
+import com.j3d.engine.interact.cmd.Commands;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.base.SemiStatefulCommand;
 import com.j3d.engine.interact.cmd.commands.orbit.OrbitCmd;
@@ -13,6 +14,7 @@ import com.j3d.engine.interact.input.keyboard.GlobalKeybinds;
 import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.engine.layer.Layer;
+import com.j3d.errors.ErrorHandler;
 import com.j3d.gen.docs.HelpGenerator;
 import com.j3d.gen.settings.Settings;
 import com.j3d.gen.settings.classes.CameraProperties;
@@ -279,24 +281,35 @@ public class StaticRefs {
      * The Settings Instance. Usually all code accesses settings within {@link Settings}
      * statically. This instance is only really used to access it's UI. Initialised by StaticRefs
      */
-    private static final Settings settings = new Settings();
+    private static Settings settings;
     public static Settings getSettings() {
+        if (settings == null)
+            settings = new Settings();
         return settings;
     }
     /**
      * New help generator. No docs yet. lmao. Initialised by StaticRefs
      */
-    private static final HelpGenerator helpGenerator = new HelpGenerator();
+    private static HelpGenerator helpGenerator;
     public static HelpGenerator getHelpGenerator() {
+        if (helpGenerator == null)
+            helpGenerator = new HelpGenerator();
         return helpGenerator;
     }
     /**
      * The commands manager which just holds the current running {@link SemiStatefulCommand}
      * and gets all the commands otherwise. Initialised by StaticRefs
      */
-    private static final CommandsManager commandManager = new CommandsManager();
+    private static CommandsManager commandManager;
     public static CommandsManager getCommandManager() {
+        if (commandManager == null)
+            commandManager = new CommandsManager();
         return commandManager;
+    }
+
+    private static final ErrorHandler errs = new ErrorHandler();
+    public static ErrorHandler getErrs() {
+        return errs;
     }
 
     /**
@@ -318,5 +331,32 @@ public class StaticRefs {
      * Does absolutely shit.
      */
     public static void none() {
+    }
+
+    public static void clear() {
+        // clear engine frame set stuff.
+        sceneManager    = null;
+        executor        = null;
+        mainFrame       = null;
+        commandParser   = null;
+        mainPanel       = null;
+        globalKeybinds  = null;
+        hoverLabel      = null;
+        
+        // clear lazily instantiayed stuff.
+        debugPanel = null;
+        propertiesPanel = null;
+        projectFileV1 = null;
+        projectFileV2 = null;
+        layerTree = null;
+        grid2DPanel = null;
+//        engineFiles = null;   // Engine files should preferably not be remade.
+        settings.clearState();
+        settings = null;      // Settings are always made on the fly.
+        helpGenerator = null;
+        commandManager = null;
+
+        log.println("[ST-REFS] Cleared all static references.");
+        log = null;
     }
 }

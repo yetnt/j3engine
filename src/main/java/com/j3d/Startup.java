@@ -53,12 +53,12 @@ public class Startup {
             throw new RuntimeException(e);
         }
         FakeLongTask flt = getFakeLongTask(o);
-        flt.iAmImpatient();
-//        try {
-//            flt.run();
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
+//        flt.iAmImpatient();
+        try {
+            flt.run();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static FakeLongTask getFakeLongTask(Object o) {

@@ -8,12 +8,14 @@ import com.j3d.gen.settings.types.ComplexSetting;
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.files.FilesUtility;
 import com.j3d.ui.settings.PreferencesFrame;
+import com.j3d.ui.settings.panels.SettingPanel;
 import com.j3d.ui.settings.popouts.ThemeChanger;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 public class Settings implements SettingsParent {
     
@@ -21,8 +23,6 @@ public class Settings implements SettingsParent {
     public static CameraProperties cameraProperties = new CameraProperties();
     public static SceneProperties sceneProperties = new SceneProperties();
     public static EditorProperties editorProperties = new EditorProperties();
-    public static SettingsParent debugProperties;
-    public static SettingsParent viewProperties;
     public static ThemeChanger themeChanger;
     public static ComplexSetting<String> changeTheme = new ComplexSetting<>(
             "Change Theme",
@@ -123,6 +123,24 @@ public class Settings implements SettingsParent {
         }};
     }
 
+    /**
+     * Recursively retrieves all children settings, including those nested within {@link SettingsParent} objects.
+     * This method flattens the hierarchy into a single stream of {@link SettingsChild} objects.
+     *
+     * @param sc The starting {@link SettingsChild} from which to begin the recursive retrieval.
+     * @return A {@link Stream} of all {@link SettingsChild} objects found recursively.
+     */
+    public static Stream<SettingsChild> getChildrenRecursive(SettingsChild sc) {
+        if (sc instanceof SettingsParent settingsParent) {
+            return settingsParent
+                    .getAllChildren()
+                    .stream()
+                    .flatMap(Settings::getChildrenRecursive);
+        } else {
+            return Stream.of(sc);
+        }
+    }
+
     @Override
     public ArrayList<SettingsParent> getChildSettingsFolder() {
         return new ArrayList<>() {{
@@ -146,5 +164,14 @@ public class Settings implements SettingsParent {
     public PreferencesFrame panel() {
         if (preferencesFrame == null) preferencesFrame = new PreferencesFrame();
         return preferencesFrame;
+    }
+
+    public void clearState() {
+        getChildrenRecursive(this)
+                .map(s -> (Setting<?>)s)
+                .forEach(s -> {
+                    s.detachAll();
+                    s.setValue(s.getDefaultValue());
+                });
     }
 }

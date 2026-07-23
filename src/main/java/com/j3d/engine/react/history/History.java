@@ -8,6 +8,7 @@ import com.j3d.ui.engine.floating.HistoryPanel;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 
 /**
@@ -104,8 +105,20 @@ public class History extends ArrayList<Action<?>> {
 
     @Override
     public void clear() {
+        Consumer<Action<?>> cons = h -> {
+            if (h instanceof CleanableAction c) {
+                try {
+                    c.cleanup();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+        this.forEach(cons);
+        backup.forEach(cons);
         super.clear();
         backup.clear();
+        updateHistory();
     }
 
     /**
@@ -125,7 +138,7 @@ public class History extends ArrayList<Action<?>> {
      * from the history until the target action is reached.
      * @param action The action to apply.
      */
-    public void apply(Action action) {
+    public void apply(Action<?> action) {
         // Find the action in the history and backup.
         int index = this.indexOf(action);
         int backupIndex = backup.indexOf(action);

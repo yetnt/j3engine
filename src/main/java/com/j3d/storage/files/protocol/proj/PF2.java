@@ -121,7 +121,7 @@ public class PF2 extends ProjectFile {
                         dos.writeUTF(layer.getIdentifier()); // Write layer identifier
                         dos.writeBoolean(layer.isHidden()); // Write layer hidden state
                     } catch (IOException e) {
-                        ErrorHandler.handle(
+                        StaticRefs.getErrs().handle(
                                 new ProjectFileException("Error writing layer data to project file", e)
                         );
                     }
@@ -205,14 +205,14 @@ public class PF2 extends ProjectFile {
                             dos.writeUTF(thing.getName());
                             dos.writeBoolean(thing.isHidden());
                         } catch (IOException e) {
-                            ErrorHandler.handle(
+                            StaticRefs.getErrs().handle(
                                     new ProjectFileException("Error writing thing data to project file", e)
                             );
                         }
                     });
                 }
             } catch (IOException e) {
-                ErrorHandler.handle(
+                StaticRefs.getErrs().handle(
                         new ProjectFileException("Error writing project file data.", e)
                 );
             }
@@ -299,7 +299,7 @@ public class PF2 extends ProjectFile {
                 int numLines = dis.readInt(); // Read number of lines
                 msg(numLines + " lines");
                 if (numPoints == 0 && numLines != 0)
-                    ErrorHandler.handle(
+                    StaticRefs.getErrs().handle(
                             new ProjectFileException("Invalid project file: missing points")
                     );
 
@@ -316,7 +316,7 @@ public class PF2 extends ProjectFile {
                         GPoint startPoint = pointsMap.get(startPointUUID);
                         GPoint endPoint = pointsMap.get(endPointUUID);
                         if (startPoint == null || endPoint == null)
-                            ErrorHandler.handle(
+                            StaticRefs.getErrs().handle(
                                     new ProjectFileException("Invalid line definition: missing points")
                             );
 
@@ -349,7 +349,7 @@ public class PF2 extends ProjectFile {
                         GLine legB = linesMap.get(legBUUID);
                         GLine legC = linesMap.get(legCUUID);
                         if (legA == null || legB == null || legC == null) {
-                            ErrorHandler.handle(
+                            StaticRefs.getErrs().handle(
                                     new ProjectFileException("Invalid triangle definition: missing lines")
                             );
                         }
@@ -405,7 +405,7 @@ public class PF2 extends ProjectFile {
             } catch (UnsupportedVersionException f) {
                 throw f;
             } catch (IOException e) {
-                ErrorHandler.handle(
+                StaticRefs.getErrs().handle(
                         new ProjectFileException("Error reading project file data.", e)
                 );
             }

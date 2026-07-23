@@ -1,5 +1,6 @@
 package com.j3d.storage.db.users;
 
+import com.j3d.StaticRefs;
 import com.j3d.errors.ErrorHandler;
 import com.j3d.storage.db.ConnectionReason;
 import com.j3d.storage.db.DatabaseManager;
@@ -111,7 +112,7 @@ public class UsersTable implements Table<User, CUsers> {
                     );
                 }
             } catch (SQLException e) {
-                ErrorHandler.handle(
+                StaticRefs.getErrs().handle(
                         new DBException(
                                 "An SQL exception was encountered whilst trying to insert a new user",
                                 cr, e
@@ -119,7 +120,7 @@ public class UsersTable implements Table<User, CUsers> {
                 );
             }
         } catch (SQLException e) {
-            ErrorHandler.handle(
+            StaticRefs.getErrs().handle(
                     new DBException(
                             "An SQL exception was encountered whilst trying to insert or find a new user",
                             cr, e

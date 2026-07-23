@@ -4,8 +4,10 @@
  */
 package com.j3d.ui.engine;
 
+import com.j3d.Startup;
 import com.j3d.StaticRefs;
 import com.j3d.Executor;
+import com.j3d.engine.DefaultObjectDeletionException;
 import com.j3d.engine.geometry.Dim;
 import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.interact.cmd.commands.engine.ExitCmd;
@@ -21,6 +23,7 @@ import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.input.mouse.*;
 import com.j3d.engine.interact.selection.*;
 import com.j3d.StaticConfig;
+import com.j3d.errors.ErrorHandler;
 import com.j3d.gen.settings.Settings;
 import com.j3d.storage.files.FilesUtility;
 import com.j3d.storage.files.protocol.proj.PF1;
@@ -208,6 +211,15 @@ public class EngineFrame extends javax.swing.JFrame {
         StaticRefs.getMainFrame().getLayeredPane().remove(p);
         StaticRefs.getMainFrame().revalidate();
         StaticRefs.getMainFrame().repaint();
+    }
+    
+    @Override
+    public void dispose() {
+        StaticRefs.getLog().println("[ENGINE-DISPOSAL] EngineFrame disposed.");
+        StaticRefs.getErrs().ignore(DefaultObjectDeletionException.class);
+        StaticRefs.getSceneManager().resetScene();
+        StaticRefs.clear();
+        super.dispose();
     }
 
     /**
@@ -498,8 +510,11 @@ public class EngineFrame extends javax.swing.JFrame {
         owners.add(RotateSelection.rotateMouseOwner);
         owners.add(OrbitCmd.orbitMouseOwner);
 
-        owners.forEach(this::addMouseListener);
-        owners.forEach(this::addMouseMotionListener);
+        owners.forEach(m -> {
+            this.addMouseMotionListener(m);
+            this.addMouseListener(m);
+            this.addMouseWheelListener(m);
+        });
     }
 
     /**
@@ -896,6 +911,23 @@ public class EngineFrame extends javax.swing.JFrame {
 
     private void logOutJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutJMenuItemActionPerformed
         // log out one day
+        boolean canProceed = true;
+        if (!StaticConfig.hasSaved) {
+            AreYouSure ays = new AreYouSure(
+                    this, true,
+                    new JLabelRichText(
+                            "You haven't saved this project! Click Nah Fam then use"
+                    ).addLn("CTRL+S to save, or click Hell Yeah to proceed anyway.")
+                            .wrapHTML()
+            );
+            ays.setVisible(true);
+            canProceed = ays.canProceed();
+        }
+        if (!canProceed) return;
+
+        this.dispose();
+
+        Startup.run();
     }//GEN-LAST:event_logOutJMenuItemActionPerformed
 
     /**

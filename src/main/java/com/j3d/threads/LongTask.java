@@ -26,7 +26,7 @@ public class LongTask<T> {
      public LongTask(Function<Spinner, T> task, TriConsumer<Spinner, T, Boolean> cleanup) {
          this.task = task;
          this.cleanup = cleanup;
-         this.onErr = e -> ErrorHandler.handle(
+         this.onErr = e -> StaticRefs.getErrs().handle(
                  new LongTaskException("Task could not complete due to an unrecoverable error", e)
          );
      }
@@ -58,7 +58,7 @@ public class LongTask<T> {
                  try {
                      cleanup.accept(throbber, o, isDone());
                  } catch (Exception e) {
-                     ErrorHandler.handle(
+                     StaticRefs.getErrs().handle(
                              new LongTaskException("Task could not complete due to an unrecoverable error", e)
                      );
                  }

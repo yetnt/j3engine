@@ -1,5 +1,6 @@
 package com.j3d.storage.db.api;
 
+import com.j3d.StaticRefs;
 import com.j3d.errors.ErrorHandler;
 import com.j3d.storage.db.ConnectionReason;
 import com.j3d.storage.db.DatabaseManager;
@@ -105,7 +106,7 @@ public interface Table<T extends DBRecord<?>, C extends TableColumns> {
 
 
         } catch (SQLException e) {
-            ErrorHandler.handle(
+            StaticRefs.getErrs().handle(
                     new DBException(
                             "An SQL exception was encountered!",
                             cr,

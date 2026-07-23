@@ -1,5 +1,6 @@
 package com.j3d.storage.files;
 
+import com.j3d.StaticRefs;
 import com.j3d.errors.ErrorHandler;
 import com.j3d.storage.errs.GenericIOException;
 
@@ -37,7 +38,7 @@ public class FilesUtility {
             consumer.accept(scanner);
             scanner.close();
         } catch (IOException e) {
-            ErrorHandler.handle(
+            StaticRefs.getErrs().handle(
                     new GenericIOException(
                             "Error reading from file:" + path,
                             e
@@ -75,7 +76,7 @@ public class FilesUtility {
             writer.close();
             w.close();
         } catch (IOException e) {
-            ErrorHandler.handle(
+            StaticRefs.getErrs().handle(
                     new GenericIOException(
                             "Error writing to file:" + path + name,
                             e
@@ -118,7 +119,7 @@ public class FilesUtility {
             consumer.accept(out);
 
         } catch (IOException e) {
-            ErrorHandler.handle(
+            StaticRefs.getErrs().handle(
                     new GenericIOException(
                             "Error writing binary to file:" + path + name,
                             e

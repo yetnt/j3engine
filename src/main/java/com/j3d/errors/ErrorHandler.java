@@ -7,13 +7,36 @@ import com.j3d.errors.severity.J3DWarning;
 import com.j3d.errors.severity.J3Err;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class ErrorHandler {
-    public static void handle(J3DError err) {
+    private final ArrayList<Class<?>> ignored = new ArrayList<>();
+    public <T extends J3DError> void ignore(Class<T> err) {
+        if (ignored.size() >= 10) {
+            throw new RuntimeException(
+                    "Too many exceptions are being ignored... rethink strategy."
+            );
+        }
+        ignored.add(err);
+        StaticRefs.getLog().println(
+                "[IGNORE-ERR(registered)] The next "
+                + err.getSimpleName() +
+                " Error has been registered to be ignored."
+        );
+    }
+    public void handle(J3DError err) {
         if (!(err instanceof J3Err j3err)) return;
         String logHead = " " + j3err.logHead() + " ";
 //        String msg = logHead+ err.getMessage() + " - " +  ( err.cause != null ? err.cause.getMessage() : "");
 
+        if (ignored.contains(err.getClass())) {
+            ignored.remove(err.getClass());
+            StaticRefs.getLog().println(
+                    "[IGNORE-ERR(consumed)] " + err.getClass().getSimpleName()
+                    + " has been consumed."
+            );
+            return;
+        }
         switch (err) {
             case J3DMild j3m -> {
                 // mild errors only get printed to the log as the user need not know of this.

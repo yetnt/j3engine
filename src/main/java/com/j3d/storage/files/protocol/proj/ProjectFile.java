@@ -99,7 +99,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                 dataOutputStream.writeUTF(getProtocolHeader());
                 dataOutputStream.writeInt(getProtocolVersion());
             } catch (IOException e) {
-                ErrorHandler.handle(
+                StaticRefs.getErrs().handle(
                         new ProjectFileException("Error writing project file header", e)
                 );
             }
@@ -114,13 +114,13 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                 int version = dataInputStream.readInt();
 
                 if (!head.equals(getProtocolHeader())) {
-                    ErrorHandler.handle(
+                    StaticRefs.getErrs().handle(
                             new ProjectFileException("Unsupported Project file header: " + head)
                     );
                 }
                 if (version > getProtocolVersion()) {
                     // No version can read or possibly convert to a higher version.
-                    ErrorHandler.handle(
+                    StaticRefs.getErrs().handle(
                             new ProjectFileException("Unsupported Project file version: " + version)
                     );
                 } else if (version < getProtocolVersion()) {
@@ -128,7 +128,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                     throw new UnsupportedVersionException("An unsupported version ("+version+") was used to load a project file of version (2)", version);
                 }
             } catch (IOException e) {
-                ErrorHandler.handle(
+                StaticRefs.getErrs().handle(
                         new ProjectFileException("Error reading project file header", e)
                 );
             }
@@ -140,7 +140,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
             case 1 -> StaticRefs.getProjectFileV1();
             case 2 -> StaticRefs.getProjectFileV2();
             default -> {
-                ErrorHandler.handle(
+                StaticRefs.getErrs().handle(
                         new J3DFileException("Attempt to find a J3D project version which does not exist")
                 );
                 yield null;
@@ -165,7 +165,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
     public static void handleErr(ProjectFile vers, Exception err, BiConsumer<Integer, ProjectFile> loadable) {
 
         if (!(err instanceof RuntimeException rt)) {
-            ErrorHandler.handle(
+            StaticRefs.getErrs().handle(
                     new ProjectFileException(err.getMessage(), err)
             );
             return;
@@ -186,7 +186,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                             v -> v.getProtocolVersion() == vOld
                     ).findFirst().orElse(null);
             if (!(convTo instanceof ProjectFile pj)) {
-                ErrorHandler.handle(
+                StaticRefs.getErrs().handle(
                         new ProjectFileException(
                                 "Attempt to load a project file version which cannot be loaded" +
                                         " on this version of J3Engine."

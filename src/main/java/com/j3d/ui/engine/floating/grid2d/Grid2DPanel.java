@@ -101,7 +101,7 @@ public class Grid2DPanel extends javax.swing.JPanel {
     public static void drawMouse(Graphics2D g, CartesianPoint mousePos, AxisPlane plane) {
         int arrowSize = 1;
         double sideLength = 0.25;
-        // not really the side length since this is mroe the offset to make the diagonal
+        // not really the side length since this is more the offset to make the diagonal
         // which is the actual line we care about.
         // the actual side length will be sqrt(4)
         double x = mousePos.x;

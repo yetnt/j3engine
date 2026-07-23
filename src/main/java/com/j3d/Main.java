@@ -189,6 +189,7 @@ public class Main extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         StaticRefs.none(); // force java to init the StaticRefs class.
+        StaticRefs.getLog().println("Main");
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |

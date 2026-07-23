@@ -1,5 +1,6 @@
 package com.j3d.gen.docs.tokens.wrappers;
 
+import com.j3d.StaticRefs;
 import com.j3d.errors.ErrorHandler;
 import com.j3d.gen.docs.DocsGenException;
 import com.j3d.gen.docs.tokens.TWrapper;
@@ -33,7 +34,7 @@ public class TWhtmlTag extends TWrapper {
                 content.indexOf("</")+2,
                 content.length()-1);
         if (!tag.equals(closingTag)) {
-            ErrorHandler.handle(
+            StaticRefs.getErrs().handle(
                     new DocsGenException(
                             "The following content has "
                             + "different opening and closing tag: "
@@ -44,7 +45,7 @@ public class TWhtmlTag extends TWrapper {
 
         this.tag = HTMLTags.fromTagName(tag);
         if (this.tag == null) {
-            ErrorHandler.handle(
+            StaticRefs.getErrs().handle(
                     new DocsGenException(
                             "The following tag name is not a valid HTML tag: "
                             + tag
@@ -68,7 +69,7 @@ public class TWhtmlTag extends TWrapper {
         for (String attribute : attributesList) {
             String[] property = attribute.split("=");
             if (property.length != 2) {
-                ErrorHandler.handle(
+                StaticRefs.getErrs().handle(
                         new DocsGenException(
                             "Malformed HTML attribute: " + attribute
                         )

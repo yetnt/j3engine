@@ -1,6 +1,7 @@
 package com.j3d.engine.layer;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.DefaultObjectDeletionException;
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
@@ -10,6 +11,7 @@ import com.j3d.engine.react.actions.DirtyAction;
 import com.j3d.engine.react.actions.DirtyVoidAction;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.ConstructorAction;
+import com.j3d.errors.ErrorHandler;
 import com.j3d.gen.properties.HasProperties;
 import com.j3d.gen.properties.Property;
 import com.j3d.ui.engine.floating.tree.TreeNodeIdentity;
@@ -160,7 +162,12 @@ public class Layer extends ArrayList<Thing> implements Interactable, HasProperti
                 new ConstructorAction() {
                     @Override
                     public void cleanup() {
-                        throw new IllegalStateException("The main layer should never have to be cleaned up.");
+                        StaticRefs.getErrs().handle(
+                                new DefaultObjectDeletionException(
+                                        identifier,
+                                        "layer"
+                                )
+                        );
                     }
                     @Override
                     public boolean isReversible() {

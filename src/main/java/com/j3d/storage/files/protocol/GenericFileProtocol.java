@@ -1,5 +1,6 @@
 package com.j3d.storage.files.protocol;
 
+import com.j3d.StaticRefs;
 import com.j3d.errors.ErrorHandler;
 import com.j3d.storage.errs.J3DFileException;
 
@@ -31,7 +32,7 @@ public class GenericFileProtocol {
             dos.writeUTF(HEADER_TOP);
             dos.writeInt(VERSION);
         } catch (IOException e) {
-            ErrorHandler.handle(
+            StaticRefs.getErrs().handle(
                     new J3DFileException(
                             "Error writing file header. This file may be corrupted.", e
                     )
@@ -49,21 +50,21 @@ public class GenericFileProtocol {
             String header = dis.readUTF();
             int version = dis.readInt();
             if (!HEADER_TOP.equals(header)) {
-                ErrorHandler.handle(
+                StaticRefs.getErrs().handle(
                         new J3DFileException(
                                 "Unsupported file header: " + header
                         )
                 );
             }
             if (version != VERSION) {
-                ErrorHandler.handle(
+                StaticRefs.getErrs().handle(
                         new J3DFileException(
                                 "Unsupported file version: " + version
                         )
                 );
             }
         } catch (IOException e) {
-            ErrorHandler.handle(
+            StaticRefs.getErrs().handle(
                     new J3DFileException(
                             "Error reading file header. This file may be corrupted.", e
                     )

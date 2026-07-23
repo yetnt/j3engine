@@ -1,6 +1,6 @@
 package com.j3d.storage.db.api;
 
-import com.j3d.errors.ErrorHandler;
+import com.j3d.StaticRefs;
 import com.j3d.storage.db.ConnectionReason;
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.errs.DBException;
@@ -77,7 +77,7 @@ public interface DBRecord<I extends Table> {
             psmt.setInt(i.get(), getRecordId());
             psmt.executeUpdate();
         } catch (SQLException e) {
-            ErrorHandler.handle(
+            StaticRefs.getErrs().handle(
                     new DBException(
                             "An SQL exception was encountered whilst trying to update a record.",
                         cr, e
