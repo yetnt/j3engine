@@ -61,7 +61,7 @@ public enum J3DTheme {
      * @return the {@link Color} instance representing this theme's color
      */
     public Color color() {
-        return colorMap.getOrDefault(toDbFieldName(), new Color(0xffffff));
+        return colorMap.getOrDefault(toDbFieldName(), Default.from(toDbFieldName()));
     }
 
     /**
@@ -106,7 +106,24 @@ public enum J3DTheme {
         currentLoadedTheme = id;
     }
 
-//    static {
-//        loadTheme(1);
-//    }
+    public static class Default {
+        public static Color from(String st) {
+            return switch (st) {
+                case "textPrimary" ->
+                        new Color(0xcad2c5);
+                case "textSecondary" ->
+                        new Color(0xc5e0c6);
+                case "accentPrimary" ->
+                        new Color(0x84a98c);
+                case "accentSecondary" ->
+                        new Color(0x52796f);
+                case "uiSurface" ->
+                        new Color(0x354f52);
+                case "background" ->
+                        new Color(0x2f3e46);
+                default ->
+                        new Color(0xFFFFFF);
+            };
+        }
+    }
 }

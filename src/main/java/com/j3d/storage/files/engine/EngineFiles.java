@@ -1,5 +1,8 @@
 package com.j3d.storage.files.engine;
 
+import com.j3d.storage.files.engine.projects.PinnedProjectsFile;
+import com.j3d.storage.files.engine.projects.RecentProjectsFile;
+
 import java.io.File;
 import java.net.URISyntaxException;
 import java.nio.file.Path;

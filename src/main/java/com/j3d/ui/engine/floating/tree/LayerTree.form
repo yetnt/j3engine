@@ -53,10 +53,10 @@
       <SubComponents>
         <Component class="javax.swing.JTree" name="listJTree">
           <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor" postCode="SceneTreeRenderer str = new SceneTreeRenderer();">
               <Connection code="J3DTheme.UI_SURFACE.color()" type="code"/>
             </Property>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor" postCode="listJTree.setCellRenderer(new TreeCellRenderer());">
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor" postCode="listJTree.setCellRenderer(str);">
               <Connection code="J3DTheme.TEXT_PRIMARY.color()" type="code"/>
             </Property>
             <Property name="model" type="javax.swing.tree.TreeModel" editor="org.netbeans.modules.form.editors2.TreeModelEditor">
@@ -66,7 +66,7 @@
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTree()"/>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="root = treeNode1;&#xa;model = (DefaultTreeModel) listJTree.getModel();&#xa;&#xa;listJTree.addTreeSelectionListener(&#xa;    e -&gt; {&#xa;        DefaultMutableTreeNode node = (DefaultMutableTreeNode) listJTree.getLastSelectedPathComponent();&#xa;        &#xa;        if (listJTree.getSelectionPaths() == null) return;&#xa;        Arrays.stream(listJTree.getSelectionPaths())&#xa;            .filter(Objects::nonNull)&#xa;            .map(TreePath::getLastPathComponent)&#xa;            .map(o -&gt; (DefaultMutableTreeNode) o)&#xa;            .forEach(n -&gt; {&#xa;                if (n == null) return;&#xa;&#xa;                Object obj = node.getUserObject();&#xa;                if (obj instanceof TreeNodeIdentity tni) {&#xa;                    if (tni.onSelect != null)&#xa;                        tni.onSelect.accept(tni.value, n);&#xa;                }&#xa;            });&#xa;&#xa;});"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="root = treeNode1;&#xa;model = (DefaultTreeModel) listJTree.getModel();&#xa;str.init(listJTree);&#xa;listJTree.addTreeSelectionListener(&#xa;    e -&gt; {&#xa;        DefaultMutableTreeNode node = (DefaultMutableTreeNode) listJTree.getLastSelectedPathComponent();&#xa;        &#xa;        if (listJTree.getSelectionPaths() == null) return;&#xa;        Arrays.stream(listJTree.getSelectionPaths())&#xa;            .filter(Objects::nonNull)&#xa;            .map(TreePath::getLastPathComponent)&#xa;            .map(o -&gt; (DefaultMutableTreeNode) o)&#xa;            .forEach(n -&gt; {&#xa;                if (n == null) return;&#xa;&#xa;                Object obj = node.getUserObject();&#xa;                if (obj instanceof TreeNodeIdentity tni) {&#xa;                    if (tni.onSelect != null)&#xa;                        tni.onSelect.accept(tni.value, n);&#xa;                }&#xa;            });&#xa;&#xa;});"/>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
           </AuxValues>
         </Component>

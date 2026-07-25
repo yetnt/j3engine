@@ -54,7 +54,7 @@ public class J3DocsReader {
                     if (c == '#') amount++;
                     else break;
                 }
-                wrappers.add(new TWHeader(line.substring(amount), amount));
+                wrappers.add(new TWHeader(line.substring(amount).trim(), amount));
             } else if (line.startsWith("<")) {
                 // handle html. delegate to the
                 wrappers.add(new TWhtmlTag(line));

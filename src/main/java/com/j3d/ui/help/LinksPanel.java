@@ -4,42 +4,35 @@
  */
 package com.j3d.ui.help;
 
-import com.j3d.gen.docs.api.ImageTag;
+import com.j3d.gen.docs.reader.tokens.TLink;
 import com.j3d.ui.generic.J3DTheme;
 
-import javax.swing.*;
-import java.awt.*;
-import java.io.File;
+import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
  * @author yetnt
  */
-public class TextPanel extends javax.swing.JPanel {
+public class LinksPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form TextPanel
      */
-    public TextPanel(String cont) {
+    public LinksPanel(HelpFrame parent, ArrayList<TLink> links, int width) {
         initComponents();
-        jLabel1.setText(cont);
+        int totalHeight = 0;
+        for (int i = 0; i < links.size(); i++) {
+            LinkPanel lp = new LinkPanel(parent, i + 1, links.get(i), width);
+            add(lp);
+            totalHeight += lp.getPreferredSize().height;
+        }
+        setMaximumSize(new java.awt.Dimension(getMaximumSize().width, totalHeight));
     }
-
-    public TextPanel(ImageTag imageTag) {
+    public LinksPanel(LinkPanel lp) {
         initComponents();
-        jLabel1.setText("");
-        File image = imageTag.getImagePath();
-        double scale = imageTag.getScale();
-        // set the image
-        ImageIcon icon = new ImageIcon(image.getAbsolutePath());
-
-        Image scaled = icon.getImage().getScaledInstance(
-                (int) (icon.getIconWidth() * scale),
-                (int) (icon.getIconHeight() * scale),
-                Image.SCALE_SMOOTH
-        );
-
-        jLabel1.setIcon(new ImageIcon(scaled));
+        add(lp);
+        setMaximumSize(new java.awt.Dimension(getMaximumSize().width, lp.getSize().height));
     }
 
     /**
@@ -51,19 +44,13 @@ public class TextPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-
         setBackground(J3DTheme.UI_SURFACE.color());
         setForeground(J3DTheme.TEXT_PRIMARY.color());
-        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
-
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("dfdff");
-        add(jLabel1);
+        setMaximumSize(new java.awt.Dimension(558, 294));
+        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.PAGE_AXIS));
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

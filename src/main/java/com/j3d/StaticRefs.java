@@ -14,7 +14,7 @@ import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.engine.layer.Layer;
 import com.j3d.errors.ErrorHandler;
-import com.j3d.gen.docs.reader.HelpGenerator;
+import com.j3d.gen.docs.HelpGenerator;
 import com.j3d.gen.settings.Settings;
 import com.j3d.gen.settings.classes.CameraProperties;
 import com.j3d.storage.files.engine.EngineFiles;
@@ -353,7 +353,7 @@ public class StaticRefs {
         if (settings != null)
             settings.clearState();
         settings = null;      // Settings are always made on the fly.
-        helpGenerator = null;
+//        helpGenerator = null;
         commandManager = null;
 
         log.println("[ST-REFS] Cleared all static references.");

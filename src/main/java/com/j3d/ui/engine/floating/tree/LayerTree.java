@@ -119,14 +119,15 @@ public class LayerTree extends javax.swing.JPanel {
         jScrollPane1.setOpaque(false);
 
         listJTree.setBackground(J3DTheme.UI_SURFACE.color());
+        SceneTreeRenderer str = new SceneTreeRenderer();
         listJTree.setForeground(J3DTheme.TEXT_PRIMARY.color());
-        listJTree.setCellRenderer(new TreeCellRenderer());
+        listJTree.setCellRenderer(str);
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Layers");
         listJTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         listJTree.setOpaque(false);
         root = treeNode1;
         model = (DefaultTreeModel) listJTree.getModel();
-
+        str.init(listJTree);
         listJTree.addTreeSelectionListener(
             e -> {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) listJTree.getLastSelectedPathComponent();

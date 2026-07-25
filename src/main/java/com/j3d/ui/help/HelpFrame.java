@@ -6,17 +6,22 @@ package com.j3d.ui.help;
 
 import com.j3d.StaticRefs;
 import com.j3d.gen.docs.api.HeaderIdentifier;
+import com.j3d.gen.docs.api.ImageTag;
 import com.j3d.gen.docs.reader.*;
 import com.j3d.gen.docs.reader.tokens.*;
 import com.j3d.gen.docs.reader.tokens.wrappers.*;
 import com.j3d.ui.generic.J3DScrollBarUI;
 import com.j3d.ui.generic.J3DTheme;
+import com.j3d.ui.generic.TreeCellRenderer;
 import com.j3d.utility.generators.JLabelRichText;
+import com.j3d.utility.generic.Pair;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.swing.*;
@@ -26,6 +31,8 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
+import static com.j3d.StaticRefs.getEngineFiles;
+
 /**
  *
  * @author yetnt
@@ -34,19 +41,37 @@ public class HelpFrame extends javax.swing.JFrame {
 
     private final int size = 400;
     private final ArrayList<HeaderIdentifier> tempHeaderHierachy = new ArrayList<>();
+    private final LinkedHashMap<String, HeaderIdentifier> headerIdentifiers = new LinkedHashMap<>();
     private HeaderIdentifier rootHeader;
 
     /**
-     * Creates new form HelpFrame
+     * Creates a new HelpFrame that displays a list of available help documents.
      */
-    public HelpFrame(String fileName) {
+    public HelpFrame() {
         initComponents();
-        jLabel1.setText(fileName);
-        setTree(fileName);
+        getEngineFiles().docsFolder.getFileHashMap().forEach((key, value) -> contentPanel.add(
+                new LinkPanel(key,value, size)
+        ));
+        J3DScrollBarUI.setBars(contentScrollPane);
+        J3DScrollBarUI.setBars(jScrollPane2);
+
+        jPanel2.remove(jPanel3);
+    }
+
+    /**
+     * Creates a new HelpFrame that displays the content of a specific help document.
+     * @param fileIdentifier The identifier of the help document to display.
+     */
+    public HelpFrame(String fileIdentifier) {
+        initComponents();
+        Pair<String, File> pair = getEngineFiles().docsFolder.getFileHashMap().get(fileIdentifier);
+        String helpContentName = pair.first;
+        jLabel1.setText(helpContentName);
+        setTree("Top");
         J3DScrollBarUI.setBars(contentScrollPane);
         J3DScrollBarUI.setBars(jScrollPane2);
         try {
-            test();
+            parse(pair.second);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -61,6 +86,10 @@ public class HelpFrame extends javax.swing.JFrame {
     private void setTree(String title) {
         BasicTreeUI treeUi = (BasicTreeUI)headerTree.getUI();
         treeUi.setLeftChildIndent(4);
+
+        TreeCellRenderer rend = new TreeCellRenderer();
+        headerTree.setCellRenderer(rend);
+        rend.init(headerTree);
 
         rootHeader = new HeaderIdentifier(title);
 
@@ -119,6 +148,8 @@ public class HelpFrame extends javax.swing.JFrame {
      * @param child The {@link HeaderIdentifier} representing the child node to be added.
      */
     private void addTreeNode(HeaderIdentifier parent, HeaderIdentifier child) {
+        child.parseId(headerIdentifiers);
+        headerIdentifiers.put(child.getParsedId(), child);
         DefaultTreeModel model = (DefaultTreeModel) headerTree.getModel();
         model.insertNodeInto(
                 child.getNode(), parent.getNode(), parent.getNode().getChildCount()
@@ -185,11 +216,19 @@ public class HelpFrame extends javax.swing.JFrame {
         addHeader(child);
     }
 
-    private void test() throws FileNotFoundException {
+    public HelpFrame scrollToHeader(String header) {
+        HeaderIdentifier h = headerIdentifiers.get(header);
+        if (h != null) {
+            h.getScrollTo().accept(contentPanel, contentScrollPane);
+        }
+        return this;
+    }
+
+    private void parse(File file) throws FileNotFoundException {
 //        testStuff();
 
         ArrayList<TWrapper> wrappers = J3DocsReader.parseFile(
-                StaticRefs.getEngineFiles().docsFolder.about
+                file
         );
 
         JLabelRichText div = new JLabelRichText()
@@ -203,17 +242,12 @@ public class HelpFrame extends javax.swing.JFrame {
                                 .wrapHTML()
                 ));
             } else if (wrapper instanceof TWHeader header) {
-                if (!linksPerParagraph.isEmpty()) {
-                    // add here
-                    contentPanel.add(
-                            new TextPanel(
-                                    JLabelRichText.from("links", div).wrapHTML()
-                            )
-                    );
-                }
+                addLinks(linksPerParagraph);
                 TextPanel p = new TextPanel(
                         JLabelRichText.from(
-                                        header.getContent(),
+                                        new JLabelRichText(header.getContent())
+                                                .font(J3DTheme.TEXT_PRIMARY.color())
+                                                .toString(),
                                         div
                                 )
                                 .heading(JLabelRichText.Heading.fromInt(header.getHeaderLevel()))
@@ -236,14 +270,18 @@ public class HelpFrame extends javax.swing.JFrame {
             } else if (wrapper instanceof TWParagraph paragraph) {
                 StringBuilder content = new StringBuilder();
                 paragraph.getParagraph().forEach(text -> {
-                    if (text instanceof TLink l) {
-                        linksPerParagraph.add(l);
-                    }
                     JLabelRichText text1 = new JLabelRichText(
                             text.getContent() + (text instanceof TLink ?
-                                    "[" + linksPerParagraph.size() + "]"
+                                    new JLabelRichText(" [" + (linksPerParagraph.size()+1) + "]")
+                                            .bold().subscript()
                             : "")
-                    );
+
+                    )
+                            .font(J3DTheme.TEXT_PRIMARY.color(), "4");
+                    if (text instanceof TLink l) {
+                        linksPerParagraph.add(l);
+                        text1.underline();
+                    }
                     if (text.isBold()) text1.bold();
                     if (text.isItalic()) text1.italic();
                     if (text.isInlineCode()) text1.wrapTag("code", new LinkedHashMap<>());
@@ -259,13 +297,39 @@ public class HelpFrame extends javax.swing.JFrame {
                         )
                 );
                 // TODO: add links via buttons here at end of paragraph.
+            } else if (wrapper instanceof TWhtmlTag tw) {
+                ImageTag t = ImageTag.getInstance(tw);
+                if (t != null) {
+                    contentPanel.add(new TextPanel(t));
+                }
             }
         });
+
+        addLinks(linksPerParagraph);
 
         expandAll(
                 headerTree,
                 new TreePath(headerTree.getModel().getRoot())
         );
+    }
+
+    private void addLinks(ArrayList<TLink> linksPerParagraph) {
+        if (!linksPerParagraph.isEmpty()) {
+            // add here
+//                    contentPanel.add(
+//                            new TextPanel(
+//                                    JLabelRichText.from("links", div).wrapHTML()
+//                            )
+//                    );
+            contentPanel.add(new TextPanel(
+                    new JLabelRichText(JLabelRichText.HORIZONTAL_LINE)
+                            .wrapHTML()
+            ));
+            contentPanel.add(
+                    new LinksPanel(this, linksPerParagraph, size+100)
+            );
+            linksPerParagraph.clear();
+        }
     }
 
     private void testStuff() {
@@ -321,10 +385,13 @@ public class HelpFrame extends javax.swing.JFrame {
         jLabel1.setForeground(J3DTheme.TEXT_PRIMARY.color());
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Help Menu");
+        jLabel1.setOpaque(true);
         getContentPane().add(jLabel1, java.awt.BorderLayout.NORTH);
 
+        jPanel2.setBackground(J3DTheme.UI_SURFACE.color());
         jPanel2.setLayout(new java.awt.BorderLayout());
 
+        jPanel3.setBackground(J3DTheme.UI_SURFACE.color());
         jPanel3.setLayout(new java.awt.BorderLayout());
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
@@ -337,6 +404,7 @@ public class HelpFrame extends javax.swing.JFrame {
 
         jPanel2.add(jPanel3, java.awt.BorderLayout.WEST);
 
+        contentPanel.setBackground(J3DTheme.UI_SURFACE.color());
         contentPanel.setLayout(new javax.swing.BoxLayout(contentPanel, javax.swing.BoxLayout.Y_AXIS));
         contentScrollPane.setViewportView(contentPanel);
 
@@ -377,7 +445,8 @@ public class HelpFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new HelpFrame("TEST").setVisible(true);
+                StaticRefs.none();
+                new HelpFrame().setVisible(true);
             }
         });
     }
