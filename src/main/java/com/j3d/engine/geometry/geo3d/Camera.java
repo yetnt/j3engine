@@ -122,7 +122,7 @@ public class Camera {
     /**
      * Calculates the camera's forward-facing direction vector in world space.
      * This is determined by transforming a local "forward" vector (0, 0, 1)
-     * using the camera's current yaw and pitch. Roll is ignored to maintain a stable horizon.
+     * using the camera's current yaw and pitch.
      *
      * @return A normalized {@link Vector3} representing the direction the camera is pointing.
      */
@@ -142,7 +142,7 @@ public class Camera {
     /**
      * Calculates the camera's right-facing direction vector in world space.
      * This is determined by transforming a local "right" vector (1, 0, 0)
-     * using the camera's current yaw and pitch. Roll is ignored.
+     * using the camera's current yaw and pitch.
      * @return A normalized {@link Vector3} representing the direction the camera is pointing.
      */
     public Vector3 getRight() {
@@ -178,25 +178,40 @@ public class Camera {
     }
 
     /**
-     * Orients the camera to face a specific target point in world space.
+     * Orients the camera to look at a specific target point in world space.
      * This method calculates the necessary pitch and yaw to align the camera's forward vector
      * with the direction from its current position to the target. The camera's roll is set to 0.
      *
      * @param target The world-space {@link Vector3} point to look at.
      */
     public void lookAt(Vector3 target) {
-        Vector3 dir = target.sub(this.position).normalize();
+        Vector3 dir = target.sub(getPosition()).normalize();
 
         // Calculate yaw (horizontal angle) from the X and Z components
         double yaw = Math.toDegrees(Math.atan2(dir.getX(), dir.getZ()));
         // Calculate pitch (vertical angle) from the Y component and the horizontal distance
-        double pitch = Math.toDegrees(Math.atan2(
-                -dir.getY(),
-                Math.sqrt(dir.getX() * dir.getX() + dir.getZ() * dir.getZ())
-        ));
+        double pitch = Math.toDegrees(
+                // don't know the significance of atan2 but yeah apparently it's that deep
+                Math.atan2(
+                        -dir.getY(),
+                        Math.sqrt(dir.getX() * dir.getX() + dir.getZ() * dir.getZ())
+                )
+        );
 
-        // Set the new rotation, keeping roll at 0 for a stable horizon and cuz u dont need to set it.
-        this.rotation = new Rotation(pitch, yaw, 0);
+        // Set the new rotation, keeping roll at 0 for a stable horizon and cuz u dont need allat
+        setRotation(new Rotation(pitch, yaw, 0));
+    }
+
+    /**
+     * Returns a {@link NormalPlane} representing the camera's view plane.
+     * This plane is defined by the camera's position and its forward-facing direction.
+     * @return A {@link NormalPlane} representing the camera's view plane.
+     */
+    public NormalPlane viewPlane() {
+        return new NormalPlane(
+                position,
+                getForward()
+        );
     }
 
     @Override

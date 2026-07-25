@@ -44,17 +44,8 @@ To use the engine, clone this repository and compile the Java files using your p
 
 [//]: # (```)
 
-## Features
+## Build
 
-- 3D rendering using software rasterization
-- Camera movement and rotation
-- History of transformations for objects
-- Command Line Interface
-- GUI (wrapper around CLI) using Swing
-- Real time rendering*
-- Object serialization into project files
-- And more to come!
+Since this is a school project, theres a bunch of files that you'd naturally not have.
 
-> Real time rendering means there is not a "rendering loop" like in most 3D engines.
-> Instead, the scene is re-rendered only when there is a change (e.g., camera movement, object transformation).
-> Why? Ask the souls who made Java's Swing library... It repaints when it feels like it.
+### Database

@@ -1,7 +1,7 @@
-package com.j3d.gen.docs.tokens.wrappers;
+package com.j3d.gen.docs.reader.tokens.wrappers;
 
-import com.j3d.gen.docs.tokens.TWrapper;
-import com.j3d.gen.docs.tokens.WrapperType;
+import com.j3d.gen.docs.reader.tokens.TWrapper;
+import com.j3d.gen.docs.reader.tokens.WrapperType;
 
 import java.util.ArrayList;
 import java.util.Collections;

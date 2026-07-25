@@ -6,7 +6,6 @@ import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandParser;
-import com.j3d.engine.interact.cmd.Commands;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.base.SemiStatefulCommand;
 import com.j3d.engine.interact.cmd.commands.orbit.OrbitCmd;
@@ -15,7 +14,7 @@ import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.engine.layer.Layer;
 import com.j3d.errors.ErrorHandler;
-import com.j3d.gen.docs.HelpGenerator;
+import com.j3d.gen.docs.reader.HelpGenerator;
 import com.j3d.gen.settings.Settings;
 import com.j3d.gen.settings.classes.CameraProperties;
 import com.j3d.storage.files.engine.EngineFiles;
@@ -351,7 +350,8 @@ public class StaticRefs {
         layerTree = null;
         grid2DPanel = null;
 //        engineFiles = null;   // Engine files should preferably not be remade.
-        settings.clearState();
+        if (settings != null)
+            settings.clearState();
         settings = null;      // Settings are always made on the fly.
         helpGenerator = null;
         commandManager = null;

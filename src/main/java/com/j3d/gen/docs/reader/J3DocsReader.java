@@ -1,9 +1,9 @@
-package com.j3d.gen.docs;
+package com.j3d.gen.docs.reader;
 
-import com.j3d.gen.docs.tokens.TLink;
-import com.j3d.gen.docs.tokens.TText;
-import com.j3d.gen.docs.tokens.TWrapper;
-import com.j3d.gen.docs.tokens.wrappers.*;
+import com.j3d.gen.docs.reader.tokens.TLink;
+import com.j3d.gen.docs.reader.tokens.TText;
+import com.j3d.gen.docs.reader.tokens.TWrapper;
+import com.j3d.gen.docs.reader.tokens.wrappers.*;
 import com.j3d.utility.Parsing;
 
 import java.io.File;
@@ -78,7 +78,11 @@ public class J3DocsReader {
                         paragraphText.add(text);
                     }
                 }
-                wrappers.add(new TWParagraph(paragraphText));
+                if (wrappers.getLast() instanceof TWParagraph twp) {
+                    twp.getParagraph().addAll(paragraphText);
+                } else {
+                    wrappers.add(new TWParagraph(paragraphText));
+                }
                 paragraphText.clear();
             }
 

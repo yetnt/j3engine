@@ -1,4 +1,4 @@
-package com.j3d.gen.docs.tokens;
+package com.j3d.gen.docs.reader.tokens;
 
 import java.util.ArrayList;
 

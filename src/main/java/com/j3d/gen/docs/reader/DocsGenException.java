@@ -1,4 +1,4 @@
-package com.j3d.gen.docs;
+package com.j3d.gen.docs.reader;
 
 import com.j3d.errors.J3DError;
 import com.j3d.errors.severity.J3DFatal;

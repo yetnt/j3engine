@@ -1,4 +1,4 @@
-package com.j3d.gen.docs.tokens;
+package com.j3d.gen.docs.reader.tokens;
 
 public class TLink extends TText {
     private final String url;

@@ -1,4 +1,4 @@
-package com.j3d.gen.docs;
+package com.j3d.gen.docs.reader;
 
 /**
  * Beginnings of the Helpogenerator for the later help UI frame describing the app and anything to do with or in relation

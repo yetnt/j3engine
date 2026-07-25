@@ -1,4 +1,4 @@
-import com.j3d.gen.docs.J3DocsReader;
+import com.j3d.gen.docs.reader.J3DocsReader;
 
 import java.io.File;
 import java.io.FileNotFoundException;

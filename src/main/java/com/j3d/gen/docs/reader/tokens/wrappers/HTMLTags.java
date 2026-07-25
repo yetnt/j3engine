@@ -1,4 +1,4 @@
-package com.j3d.gen.docs.tokens.wrappers;
+package com.j3d.gen.docs.reader.tokens.wrappers;
 
 public enum HTMLTags {
     IMG("img");
