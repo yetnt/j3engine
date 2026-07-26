@@ -63,8 +63,14 @@ public abstract class StaticConfig {
      */
     public static ViewType viewType = ViewType.NORMAL;
 
+    /// Literally could be set by [com.j3d.ui.home.Projects] or something else.
+    public static void defaultLogin() {
+        if (user == null) {
+            user = DatabaseManager.tblUsers.findById(1);
+        }
+    }
+
     static {
-        user = DatabaseManager.tblUsers.findById(1);
         try {
             StaticConfig.lock =
                     Toolkit.getDefaultToolkit().getLockingKeyState(KeyEvent.VK_CAPS_LOCK);

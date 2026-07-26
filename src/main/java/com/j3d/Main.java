@@ -128,6 +128,7 @@ public class Main extends javax.swing.JFrame {
 
     private void openEngineButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openEngineButtonActionPerformed
         StaticRefs.getLog().stPrintln("Splash Screen Engine Access");
+        StaticConfig.defaultLogin();
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
@@ -157,6 +158,7 @@ public class Main extends javax.swing.JFrame {
 
     private void openEngineQuickActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openEngineQuickActionPerformed
         StaticRefs.getLog().stPrintln("Direct Engine Access");
+        StaticConfig.defaultLogin();
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |

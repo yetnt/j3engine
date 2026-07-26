@@ -13,18 +13,12 @@ public class ConnectionReason {
         UPDATE("U");
 
         private final String str;
-        private String sqlString;
         Reason(String str) {
             this.str = str;
         }
 
-        public Reason setSqlString(String s) {
-            this.sqlString = s;
-            return this;
-        }
-
-        public String getSqlString() {
-            return sqlString;
+        public String sql(String s) {
+            return s;
         }
 
         @Override
@@ -36,10 +30,12 @@ public class ConnectionReason {
     private final Table<?, ?> table;
     private final Reason reason;
     private final LocalDateTime timestamp = LocalDateTime.now();
+    private final String sqlString;
 
-    public ConnectionReason(Table<?, ?> table, Reason reason) {
+    public ConnectionReason(Table<?, ?> table, Reason reason, String sql) {
         this.table = table;
         this.reason = reason;
+        this.sqlString = sql;
     }
 
     public Table<?, ?> getTable() {
@@ -55,10 +51,10 @@ public class ConnectionReason {
     }
 
     private String truncatedSqlString() {
-        if (reason.getSqlString() == null) return "";
+        if (sqlString == null) return "";
         int maxLength = 70;
-        if (reason.getSqlString().length() <= maxLength) return reason.getSqlString();
-        return reason.getSqlString().substring(0, maxLength) + "...";
+        if (sqlString.length() <= maxLength) return sqlString;
+        return sqlString.substring(0, maxLength) + "...";
     }
 
     @Override

@@ -59,7 +59,8 @@ public interface DBRecord<I extends Table> {
 
         ConnectionReason cr = new ConnectionReason(
                 getTable(),
-                ConnectionReason.Reason.UPDATE.setSqlString(sql)
+                ConnectionReason.Reason.UPDATE,
+                ConnectionReason.Reason.UPDATE.sql(sql)
         );
 
         try (Connection conn = DatabaseManager.connect(cr); PreparedStatement psmt = conn.prepareStatement(sql)) {

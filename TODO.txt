@@ -1,6 +1,6 @@
 TO-DO: (Refactoring draw and ordering ipeline)
 
-1. DONE - Create the draw() method in TriStateArea to just yank the queue and draw
+1. [DONE] - Create the draw() method in TriStateArea to just yank the queue and draw
 2. [DONE] Change queue to ArrayList
 3. [DONE] make a base class for the queue that extends ArrayList so when tris are added they're immediately sorted by whatever method
 4. [DONE] Update GTri to draw lines itself and updatesd Gline to draw points itself. Essentialy GTri.draw calls GLine.draw and calls GPoint.draw.
@@ -20,16 +20,16 @@ Future ToDo (Important)
 6. [DONE] Startup login panel
 7. Via Main.main() open a file directly and skip the login/signup panel. (the only way to access the app in an unlogged-in state)
 8. [DONE] Settings Frame
-9. The Constrtaint system overhaul.
+9. (CURRENT) Help docs
 10. Macros
 11. [DONE] Access DB Integration and usage (ties to 6 and 7)
 12. [DONE] "orbit" command, which makes use of MouseOwner and allows panning the camera rotation.
 13. [DONE] Colour to Db integeration via Phase 1 documentation
-14. (CURRENT) Help Menu and its decentralizatrion
+14. [DONE] Help Menu and its decentralizatrion
 15. [DONE] complex toolbox buttons
-16. Properties Menu
-17. Help Menu
-18. (Phase 2 docs) re-add geometryA and geometry-B class diagrams (remove constraint references)
+16. [DONE] Properties Menu
+17. [DONE] Help Menu
+18. [DONE] (Phase 2 docs) re-add geometryA and geometry-B class diagrams (remove constraint references)
 
 Future ToDo (optional, these are more convenience and nice-to-have. might implement after submitting the PAT when this goes back to being a personal project)
 

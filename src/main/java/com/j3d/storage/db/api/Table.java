@@ -67,7 +67,8 @@ public interface Table<T extends DBRecord<?>, C extends TableColumns> {
 
         ConnectionReason cr = new ConnectionReason(
                 this,
-                ConnectionReason.Reason.QUERY.setSqlString(sql)
+                ConnectionReason.Reason.QUERY,
+                ConnectionReason.Reason.QUERY.sql(sql)
         );
 
         try (Connection con = DatabaseManager.connect(cr); PreparedStatement psmt = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {

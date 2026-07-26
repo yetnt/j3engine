@@ -82,7 +82,8 @@ public class UsersTable implements Table<User, CUsers> {
 
         ConnectionReason cr = new ConnectionReason(
                 DatabaseManager.tblUsers,
-                ConnectionReason.Reason.INSERT.setSqlString(sql)
+                ConnectionReason.Reason.INSERT,
+                ConnectionReason.Reason.INSERT.sql(sql)
         );
 
         try (Connection conn = DatabaseManager.connect(cr);
