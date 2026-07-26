@@ -10,6 +10,19 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.util.Objects;
 
+/**
+ * A utility class for parsing and representing {@code <img>} HTML tags found within J3Engine documentation.
+ * <p>
+ * This class extracts relevant attributes such as {@code src}, {@code alt}, and {@code scale}
+ * from a {@link TWhtmlTag} object, validates them, and provides access to the parsed information.
+ * It ensures that image paths are relative to the application's resources and that the image
+ * files exist and are of supported types (.png, .jpg).
+ * </p>
+ * @author Lehlogonolo Poole
+ * @see TWhtmlTag
+ * @see DocsGenException
+ * @see ErrorHandler
+ */
 public class ImageTag {
     private TWhtmlTag tag;
     private String altText;

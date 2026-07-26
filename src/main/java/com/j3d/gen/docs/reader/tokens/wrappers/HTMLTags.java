@@ -1,6 +1,13 @@
 package com.j3d.gen.docs.reader.tokens.wrappers;
 
+/**
+ * Enum representing common HTML tags.
+ * Each enum constant stores the string representation of the HTML tag name.
+ */
 public enum HTMLTags {
+    /**
+     * Represents the {@code <img>} HTML tag.
+     */
     IMG("img");
 
     private final String tagName;
@@ -9,6 +16,11 @@ public enum HTMLTags {
         this.tagName = tagName;
     }
 
+    /**
+     * Returns the string representation of the HTML tag name.
+     *
+     * @return The HTML tag name as a String.
+     */
     public String getTagName() {
         return tagName;
     }

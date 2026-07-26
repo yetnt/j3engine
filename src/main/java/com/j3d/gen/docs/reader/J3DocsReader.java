@@ -4,6 +4,7 @@ import com.j3d.gen.docs.reader.tokens.TLink;
 import com.j3d.gen.docs.reader.tokens.TText;
 import com.j3d.gen.docs.reader.tokens.TWrapper;
 import com.j3d.gen.docs.reader.tokens.wrappers.*;
+import com.j3d.ui.docs.DocsFrame;
 import com.j3d.utility.Parsing;
 
 import java.io.File;
@@ -11,7 +12,38 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * A utility class for parsing J3Engine's custom markdown-like documentation files (.j3.md).
+ * It reads the file content and converts it into a structured list of {@link TWrapper} objects,
+ * representing headers, paragraphs, code blocks, and other elements to be read by
+ * {@link DocsFrame}
+ * <p>
+ * The parser supports:
+ * <ul>
+ *     <li>Headers (e.g., {@code # Header 1}, {@code ## Header 2})</li>
+ *     <li>Horizontal rules ({@code ---})</li>
+ *     <li>Code blocks (fenced with {@code ```})</li>
+ *     <li>Inline HTML tags (e.g., {@code <tag src="...">})</li>
+ *     <li>Paragraphs with inline formatting (bold {@code **text**}, italic {@code _text_}, inline code {@code `code`})</li>
+ *     <li>Links ({@code [label](url)})</li>
+ * </ul>
+ * </p>
+ * @see DocsFrame
+ * @see TWrapper
+ * @see TWHeader
+ * @see TWParagraph
+ * @see TWCodeBlock
+ * @see TWLineSeparator
+ * @see TWhtmlTag
+ * @author Lehlogonolo Poole
+ */
 public class J3DocsReader {
+    /**
+     * Parses a given file and returns a list of TWrapper objects representing the document structure.
+     * @param file The file to parse.
+     * @return An ArrayList of TWrapper objects.
+     * @throws FileNotFoundException If the file does not exist.
+     */
     public static ArrayList<TWrapper> parseFile(File file) throws FileNotFoundException {
         if (!file.isFile()) return new ArrayList<>();
         if (!file.getPath().endsWith(".j3.md")) return new ArrayList<>();

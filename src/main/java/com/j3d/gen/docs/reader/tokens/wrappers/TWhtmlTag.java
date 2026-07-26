@@ -2,6 +2,7 @@ package com.j3d.gen.docs.reader.tokens.wrappers;
 
 import com.j3d.StaticRefs;
 import com.j3d.gen.docs.reader.DocsGenException;
+import com.j3d.gen.docs.reader.J3DocsReader;
 import com.j3d.gen.docs.reader.tokens.TWrapper;
 import com.j3d.gen.docs.reader.tokens.WrapperType;
 import com.j3d.utility.Parsing;
@@ -9,7 +10,14 @@ import com.j3d.utility.Parsing;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-
+/**
+ * Represents an HTML tag token wrapper.
+ * This class parses an HTML string, extracts the tag name, attributes, and content,
+ * and provides methods to access them.
+ * @see TWrapper
+ * @see J3DocsReader
+ * @author Lehlogonolo Poole
+ */
 public class TWhtmlTag extends TWrapper {
 
     private HTMLTags tag;
@@ -21,6 +29,12 @@ public class TWhtmlTag extends TWrapper {
         read(content);
     }
 
+    /**
+     * Parses the given HTML string to extract the tag name, attributes, and content.
+     * It performs basic validation for matching opening and closing tags and valid HTML tag names.
+     *
+     * @param content The HTML string representing a single tag, e.g., {@code <font t="d" what=10>hi</font>}.
+     */
     private void read(String content) {
         // given a html string like
         // <font t="d" what=10>hi</font>
@@ -92,14 +106,29 @@ public class TWhtmlTag extends TWrapper {
         );
     }
 
+    /**
+     * Returns the {@link HTMLTags} enum representing the HTML tag name.
+     *
+     * @return The HTML tag enum.
+     */
     public HTMLTags getTag() {
         return tag;
     }
 
+    /**
+     * Returns a map of attributes found in the HTML tag.
+     * The keys are attribute names (e.g., "t", "what") and values are their corresponding values (e.g., "d", "10").
+     *
+     * @return A {@link HashMap} where keys are attribute names and values are attribute values.
+     */
     public HashMap<String, String> getAttributes() {
         return attributes;
     }
 
+    /**
+     * Returns the content enclosed within the HTML tag.
+     * @return The string content of the tag, or {@code null} if no content was found.
+     */
     public String getTagContent() {
         return tagContent;
     }

@@ -34,6 +34,16 @@ import static com.j3d.StaticRefs.getEngineFiles;
 
 /**
  *
+ * The {@code DocsFrame} class represents a JFrame for displaying documentation within the J3Engine.
+ * It can display a list of available documentation files or the content of a specific document,
+ * including formatted text, images, and navigable headers.
+ * <p>
+ * This frame dynamically parses J3Engine's custom markdown-like documentation files (.j3.md)
+ * and renders them using Swing components. It supports hierarchical navigation through headers
+ * via a JTree and handles internal and external links.
+ * </p>
+ * @see com.j3d.gen.docs.DocsProvider
+ * @see com.j3d.gen.docs.reader.J3DocsReader
  * @author yetnt
  */
 public class DocsFrame extends javax.swing.JFrame {
