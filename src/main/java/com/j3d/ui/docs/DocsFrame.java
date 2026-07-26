@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.j3d.ui.help;
+package com.j3d.ui.docs;
 
 import com.j3d.StaticRefs;
 import com.j3d.gen.docs.api.HeaderIdentifier;
@@ -21,7 +21,6 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.swing.*;
@@ -37,7 +36,7 @@ import static com.j3d.StaticRefs.getEngineFiles;
  *
  * @author yetnt
  */
-public class HelpFrame extends javax.swing.JFrame {
+public class DocsFrame extends javax.swing.JFrame {
 
     private final int size = 400;
     private final ArrayList<HeaderIdentifier> tempHeaderHierachy = new ArrayList<>();
@@ -47,7 +46,7 @@ public class HelpFrame extends javax.swing.JFrame {
     /**
      * Creates a new HelpFrame that displays a list of available help documents.
      */
-    public HelpFrame() {
+    public DocsFrame() {
         initComponents();
         getEngineFiles().docsFolder.getFileHashMap().forEach((key, value) -> contentPanel.add(
                 new LinkPanel(key,value, size)
@@ -62,7 +61,7 @@ public class HelpFrame extends javax.swing.JFrame {
      * Creates a new HelpFrame that displays the content of a specific help document.
      * @param fileIdentifier The identifier of the help document to display.
      */
-    public HelpFrame(String fileIdentifier) {
+    public DocsFrame(String fileIdentifier) {
         initComponents();
         Pair<String, File> pair = getEngineFiles().docsFolder.getFileHashMap().get(fileIdentifier);
         String helpContentName = pair.first;
@@ -216,7 +215,7 @@ public class HelpFrame extends javax.swing.JFrame {
         addHeader(child);
     }
 
-    public HelpFrame scrollToHeader(String header) {
+    public DocsFrame scrollToHeader(String header) {
         HeaderIdentifier h = headerIdentifiers.get(header);
         if (h != null) {
             h.getScrollTo().accept(contentPanel, contentScrollPane);
@@ -378,7 +377,6 @@ public class HelpFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(J3DTheme.UI_SURFACE.color());
         setMinimumSize(new java.awt.Dimension(870, 500));
-        setPreferredSize(new java.awt.Dimension(286, 410));
 
         jLabel1.setBackground(J3DTheme.UI_SURFACE.color());
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
@@ -432,21 +430,22 @@ public class HelpFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(HelpFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DocsFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(HelpFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DocsFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(HelpFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DocsFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(HelpFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DocsFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 StaticRefs.none();
-                new HelpFrame().setVisible(true);
+                new DocsFrame().setVisible(true);
             }
         });
     }

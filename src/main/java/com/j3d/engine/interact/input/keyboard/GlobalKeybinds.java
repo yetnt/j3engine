@@ -264,6 +264,20 @@ public enum GlobalKeybinds {
                         }
                     }
             )
+    ),
+    F1(
+            new J3Key(
+                    "f1",
+                    KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0),
+                    new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            StaticRefs.getDocsProvider()
+                                    .provideMain()
+                                    .setVisible(true);
+                        }
+                    }
+            )
     );
 
 

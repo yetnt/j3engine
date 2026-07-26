@@ -1,8 +1,8 @@
 package com.j3d.gen.docs.api;
 
 import com.j3d.gen.docs.reader.tokens.wrappers.TWHeader;
-import com.j3d.ui.help.HelpFrame;
-import com.j3d.ui.help.TextPanel;
+import com.j3d.ui.docs.DocsFrame;
+import com.j3d.ui.docs.TextPanel;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -11,7 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.function.BiConsumer;
 
 /**
- * Represents a {@link TWHeader} within a {@link HelpFrame}'s {@link JTree}.
+ * Represents a {@link TWHeader} within a {@link DocsFrame}'s {@link JTree}.
  *  * <p>
  *     This class is used to identify a header within the help documentation,
  *     allowing for navigation and hierarchical representation in a {@link JTree}.

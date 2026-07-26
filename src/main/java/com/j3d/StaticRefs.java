@@ -14,7 +14,7 @@ import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.engine.layer.Layer;
 import com.j3d.errors.ErrorHandler;
-import com.j3d.gen.docs.HelpGenerator;
+import com.j3d.gen.docs.DocsProvider;
 import com.j3d.gen.settings.Settings;
 import com.j3d.gen.settings.classes.CameraProperties;
 import com.j3d.storage.files.engine.EngineFiles;
@@ -289,11 +289,11 @@ public class StaticRefs {
     /**
      * New help generator. No docs yet. lmao. Initialised by StaticRefs
      */
-    private static HelpGenerator helpGenerator;
-    public static HelpGenerator getHelpGenerator() {
-        if (helpGenerator == null)
-            helpGenerator = new HelpGenerator();
-        return helpGenerator;
+    private static DocsProvider docsProvider;
+    public static DocsProvider getDocsProvider() {
+        if (docsProvider == null)
+            docsProvider = new DocsProvider();
+        return docsProvider;
     }
     /**
      * The commands manager which just holds the current running {@link SemiStatefulCommand}
@@ -353,7 +353,7 @@ public class StaticRefs {
         if (settings != null)
             settings.clearState();
         settings = null;      // Settings are always made on the fly.
-//        helpGenerator = null;
+//        docsProvider = null;
         commandManager = null;
 
         log.println("[ST-REFS] Cleared all static references.");

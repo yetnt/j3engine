@@ -2,13 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package com.j3d.ui.help;
+package com.j3d.ui.docs;
 
 import com.j3d.gen.docs.reader.tokens.TLink;
 import com.j3d.ui.generic.J3DTheme;
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
@@ -19,7 +18,7 @@ public class LinksPanel extends javax.swing.JPanel {
     /**
      * Creates new form TextPanel
      */
-    public LinksPanel(HelpFrame parent, ArrayList<TLink> links, int width) {
+    public LinksPanel(DocsFrame parent, ArrayList<TLink> links, int width) {
         initComponents();
         int totalHeight = 0;
         for (int i = 0; i < links.size(); i++) {
