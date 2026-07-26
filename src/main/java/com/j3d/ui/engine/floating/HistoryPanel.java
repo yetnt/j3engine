@@ -6,6 +6,7 @@ package com.j3d.ui.engine.floating;
 
 import com.j3d.ui.theme.J3DScrollBarUI;
 import com.j3d.ui.engine.FloatingPanel;
+import com.j3d.ui.theme.J3DTheme;
 
 import javax.swing.*;
 
@@ -28,6 +29,9 @@ public class HistoryPanel extends javax.swing.JPanel {
             p.setVisible(true);
         });
         J3DScrollBarUI.setBars(jScrollPane1);
+        J3DTheme.commitAsGenericLbl(jLabel1, true);
+        J3DTheme.commit(J3DTheme.BACKGROUND, jSeparator1::setBackground);
+
     }
 
     public void toggleHidden() {
@@ -49,18 +53,21 @@ public class HistoryPanel extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         actionsPanel = new javax.swing.JPanel();
 
+        jLabel1.setBackground(J3DTheme.UI_SURFACE.color());
         jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
+        jLabel1.setForeground(J3DTheme.ACCENT_PRIMARY.color());
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("History");
+        jLabel1.setOpaque(true);
 
-        jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
+        jSeparator1.setBackground(J3DTheme.BACKGROUND.color());
+        jSeparator1.setOpaque(true);
 
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 

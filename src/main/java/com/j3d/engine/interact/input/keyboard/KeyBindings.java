@@ -8,12 +8,16 @@ import com.j3d.ui.engine.EngineFrame;
 import com.j3d.utility.generic.Pair;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.UUID;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A class that manages the key bindings for the application. It allows for easy addition and removal
@@ -34,74 +38,84 @@ public class KeyBindings {
     /**
      * List of registered keys.
      */
-    private ArrayList<J3Key> keys = new ArrayList<>();
+    private final ArrayList<J3Key> keys = new ArrayList<>();
 
     /**
      * A list of prohibited key bindings that should not be added to the input and action maps. This is used to prevent
      * common key bindings that would interfere with the application's functionality from being added by the user.
      * <p>
-     *     These are defined by {@link com.j3d.ui.engine.EngineFrame#jMenuBar1} using accelerators.
+     *     These are defined by {@link EngineFrame#jMenuBar1} using accelerators.
      * </p>
      */
-    private ArrayList<KeyStroke> prohibited = new ArrayList<>(
-            List.of(
-                    // TODO: Programmatically go through the JMenuBar and make this list.
-                    KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK), // Copy
-                    KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK), // Paste
-                    KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK), // Cut
-                    KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK), // Undo
-                    KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK), // Redo
-                    KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK), // Save
-                    KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK), // Open
-                    KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK), // New
-                    KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.ALT_DOWN_MASK),  // Settings
-                    KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.SHIFT_DOWN_MASK),// Redraw
-                    KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.SHIFT_DOWN_MASK),// Reset Cam
-                    KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.SHIFT_DOWN_MASK),// Reset Position
-                    KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.SHIFT_DOWN_MASK),// Reset Orientation
-                    // Export Scene as PNG
-                    KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK)
+    private ArrayList<KeyStroke> prohibited = new ArrayList<>();
 
-            )
-    );
+    public static Stream<JMenuItem> flatten(MenuElement m) {
+        if (m instanceof JMenu jm) {
+            return Arrays.stream(jm.getSubElements())
+                    .flatMap(KeyBindings::flatten);
+        }
+        if (m instanceof JPopupMenu popup) {
+            return Arrays.stream(popup.getSubElements())
+                    .flatMap(KeyBindings::flatten);
+        }
+        if (m instanceof JMenuItem item) {
+            return Stream.of(item);
+        }
+
+        return Stream.empty();
+    }
+
+    public KeyBindings(EngineFrame e) {
+        this(e.getDrawPanel().getInputMap(), e.getDrawPanel().getActionMap());
+
+        StringBuilder sb = new StringBuilder();
+        prohibited = Arrays
+                .stream(
+                        e.getJMenuBar().getSubElements()
+                ).flatMap(KeyBindings::flatten)
+                .map(JMenuItem::getAccelerator)
+                .filter(Objects::nonNull)
+                .peek((s) -> sb.append("\t").append(s).append("\n"))
+                .collect(Collectors.toCollection(ArrayList::new));
+        // remove last \n
+        sb.deleteCharAt(sb.length() - 1);
+        StaticRefs.getLog().println("prohibited keys: \n" + sb);
+
+        // TODO: Wherever keybinds can be changed Enforce only SELECT_SUBTRACT_DOWN as changeable and cannot have the SHIFT_DOWN_MASK as its links use it.
+        GlobalKeybinds.SELECT_SUBTRACT_DOWN.getKey().linkTo(
+                GlobalKeybinds.SELECT_SUBTRACT_UP.getKey(),
+                0
+        );
+        GlobalKeybinds.SELECT_SUBTRACT_UP.getKey().linkTo(
+                GlobalKeybinds.SELECT_ADD_DOWN.getKey(),
+                KeyEvent.SHIFT_DOWN_MASK
+        );
+        GlobalKeybinds.SELECT_ADD_DOWN.getKey().linkTo(
+                GlobalKeybinds.SELECT_ADD_UP.getKey(),
+                KeyEvent.SHIFT_DOWN_MASK
+        );
+
+        for (GlobalKeybinds key : GlobalKeybinds.values()) {
+            rJ3Key(
+                    key.getKey()
+            );
+        }
+    }
 
     /** Initialises the key bindings for the application.
      * @param im the input map to use for key bindings
      * @param am the action map to use for key bindings
      */
-    public KeyBindings(InputMap im, ActionMap am, boolean global) {
+    public KeyBindings(InputMap im, ActionMap am) {
         inputMap = im;
         actionMap = am;
-
-        if (global) {
-
-            // TODO: Wherever keybinds can be changed Enforce only SELECT_SUBTRACT_DOWN as changeable and cannot have the SHIFT_DOWN_MASK as its links use it.
-            GlobalKeybinds.SELECT_SUBTRACT_DOWN.getKey().linkTo(
-                    GlobalKeybinds.SELECT_SUBTRACT_UP.getKey(),
-                    0
-            );
-            GlobalKeybinds.SELECT_SUBTRACT_UP.getKey().linkTo(
-                    GlobalKeybinds.SELECT_ADD_DOWN.getKey(),
-                    KeyEvent.SHIFT_DOWN_MASK
-            );
-            GlobalKeybinds.SELECT_ADD_DOWN.getKey().linkTo(
-                    GlobalKeybinds.SELECT_ADD_UP.getKey(),
-                    KeyEvent.SHIFT_DOWN_MASK
-            );
-
-            for (GlobalKeybinds key : GlobalKeybinds.values()) {
-                rJ3Key(
-                        key.getKey()
-                );
-            }
-        }
     }
 
 
     /**
      * Registers a J3Key. unsafely.
      * @implSpec This bypasses all the hecks and guard rails. Specifically for when they've already been
-     * checked or if we're in {@link #KeyBindings(InputMap, ActionMap, boolean)}
+     * checked or if we're in {@link #KeyBindings(InputMap, ActionMap)}
      * where we're implementing the default trusted keys.
      * @param key the J3Key to register
      */
@@ -306,8 +320,9 @@ public class KeyBindings {
         }
     };
 
-    public static boolean commandPaletteFocusOwner(CommandPalette cmdP) {
-        return cmdP.inputField.isFocusOwner() && !StaticRefs.getMainPanel().isFocusOwner();
+    public static boolean commandPaletteFocusOwner() {
+        return StaticRefs.getMainFrame().getCommandPalette()
+                .inputField.isFocusOwner() && !StaticRefs.getMainPanel().isFocusOwner();
     }
 
     /**

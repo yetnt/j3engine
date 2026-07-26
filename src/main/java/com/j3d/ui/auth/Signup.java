@@ -42,15 +42,13 @@ public class Signup extends javax.swing.JFrame {
         keyBindings.add(
                 new KeyBindings(
                         jPanel1.getInputMap(),
-                        jPanel1.getActionMap(),
-                        false
+                        jPanel1.getActionMap()
                 )
         );
         keyBindings.add(
                 new KeyBindings(
                         jPanel2.getInputMap(),
-                        jPanel2.getActionMap(),
-                        false
+                        jPanel2.getActionMap()
                 )
         );
         keyBindings.forEach(

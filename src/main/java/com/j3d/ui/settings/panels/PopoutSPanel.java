@@ -33,6 +33,10 @@ public class PopoutSPanel<T> extends javax.swing.JPanel implements SettingPanel 
         this.setToolTipText(setting.getDescription());
         this.onOpen = onOpen;
         this.setting = setting;
+        J3DTheme.commitAsGenericLbl(settingLabel4, false);
+        J3DTheme.commitAsGenericUi(this);
+        J3DTheme.commitAsGenericLbl(jButton1, true);
+        J3DTheme.commitAsGenericLbl(valueLabel, true);
     }
 
     /**

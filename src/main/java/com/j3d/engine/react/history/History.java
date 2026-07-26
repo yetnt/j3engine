@@ -3,10 +3,12 @@ package com.j3d.engine.react.history;
 import com.j3d.StaticRefs;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.CleanableAction;
+import com.j3d.ui.engine.floating.ActionPanel;
 import com.j3d.ui.engine.floating.HistoryPanel;
 
 import java.io.Serial;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -114,6 +116,7 @@ public class History extends ArrayList<Action<?>> {
                 }
             }
         };
+        clearLocators();
         this.forEach(cons);
         backup.forEach(cons);
         super.clear();
@@ -121,11 +124,23 @@ public class History extends ArrayList<Action<?>> {
         updateHistory();
     }
 
+    private static void clearLocators() {
+        Arrays.stream(panel.actionsPanel.getComponents())
+                .filter(
+                        c -> c instanceof ActionPanel
+                )
+                .map(
+                        c -> (ActionPanel) c
+                )
+                .forEach(ActionPanel::removeAllLocators);
+    }
+
     /**
      * Updates the history panel with the current actions in the history and backup.
      * This method clears the existing panels and repopulates them.
      */
     private void updateHistory() {
+        clearLocators();
         panel.actionsPanel.removeAll();
         panel.repaint();
         this.forEach(a -> panel.addPanel(a.getPanel(), false));

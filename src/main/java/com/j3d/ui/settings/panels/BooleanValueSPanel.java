@@ -29,6 +29,9 @@ public class BooleanValueSPanel extends javax.swing.JPanel implements SettingPan
         jCheckBox3.addChangeListener(
                 e -> setting.setValueNoBroadcast(jCheckBox3.isSelected())
         );
+        J3DTheme.commitAsGenericLbl(settingLabel2, false);
+        J3DTheme.commitAsGenericUi(this);
+        J3DTheme.commitAsGenericLbl(jCheckBox3, false);
     }
 
     /**

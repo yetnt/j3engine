@@ -37,9 +37,16 @@ public class PropertiesPanel extends javax.swing.JPanel {
             lt.setVisible(true);
         });
         J3DScrollBarUI.setBars(jScrollPane1);
+        J3DTheme.commitAsGenericLbl(jLabel1, false);
+        J3DTheme.commitAsGenericUi(jPanel3);
+        J3DTheme.commitAsGenericUi(jScrollPane1);
+        J3DTheme.commitAsGenericUi(propertiesPanel);
+        J3DTheme.commitAsGenericUi(this);
+        J3DTheme.commitAsGenericLbl(jLabel2, false);
+        J3DTheme.commitAsGenericLbl(comboBox, true);
     }
 
-    public static void propertiesPanel() {
+    public static void load() {
         StaticRefs.getPropertiesPanel().clear();
         ArrayList<GObject> selected = getSceneManager().getSelected();
         ArrayList<GObject> filtered =
@@ -179,7 +186,7 @@ public class PropertiesPanel extends javax.swing.JPanel {
             case "tri" -> SelectionPropertiesFilter.TRI;
             default -> SelectionPropertiesFilter.DEFAULT;
         };
-        propertiesPanel();
+        load();
     }//GEN-LAST:event_comboBoxActionPerformed
 
 

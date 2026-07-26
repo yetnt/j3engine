@@ -23,6 +23,7 @@ public class TextPanel extends javax.swing.JPanel {
     public TextPanel(String cont) {
         initComponents();
         jLabel1.setText(cont);
+        theme();
     }
 
     public TextPanel(ImageTag imageTag) {
@@ -40,6 +41,12 @@ public class TextPanel extends javax.swing.JPanel {
         );
 
         jLabel1.setIcon(new ImageIcon(scaled));
+        theme();
+    }
+
+    public void theme() {
+        J3DTheme.commitAsGenericLbl(jLabel1, false);
+        J3DTheme.commitAsGenericUi(this);
     }
 
     /**

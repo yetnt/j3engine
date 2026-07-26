@@ -37,6 +37,12 @@ public class Subbox extends javax.swing.JPanel {
         initComponents();
         init.accept(this);
         J3DScrollBarUI.setBars(toolboxScrollpane);
+        J3DTheme.commitAsGenericUi(
+                this
+        );
+        J3DTheme.commitAsGenericUi(toolboxScrollpane);
+        J3DTheme.commitAsGenericUi(toolboxInnerPanel);
+
     }
 
     public Subbox add(String label, ActionListener aL, String imageFileName) {
@@ -83,6 +89,9 @@ public class Subbox extends javax.swing.JPanel {
         buttonPanel.add(label1);
 
         toolboxInnerPanel.add(buttonPanel);
+        J3DTheme.commitAsGenericUi(buttonPanel);
+        J3DTheme.commitAsGenericUi(btnA);
+        J3DTheme.commitAsGenericLbl(label1, false);
         buttons++;
         return btnA;
     }

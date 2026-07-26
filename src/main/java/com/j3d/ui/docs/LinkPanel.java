@@ -38,6 +38,8 @@ public class LinkPanel extends javax.swing.JPanel {
         jLabel1.setText("[" + refNum + "] " + link.getContent());
         isMainHelp = false;
         id = "";
+
+        theme();
     }
 
     public LinkPanel(String id, Pair<String, File> pair, int width) {
@@ -81,6 +83,14 @@ public class LinkPanel extends javax.swing.JPanel {
         parentFrame = null;
         isMainHelp = true;
         this.id = id;
+
+        theme();
+    }
+
+    private void theme() {
+        J3DTheme.commitAsGenericLbl(jLabel1, false);
+        J3DTheme.commitAsGenericLbl(jButton1, true);
+        J3DTheme.commitAsGenericUi(this);
     }
 
     /**

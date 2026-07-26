@@ -18,6 +18,7 @@ public class HoverJLabelPanel extends javax.swing.JPanel {
      */
     public HoverJLabelPanel() {
         initComponents();
+        J3DTheme.commitAsGenericLbl(label, false);
     }
 
     public JLabel getLabel() {

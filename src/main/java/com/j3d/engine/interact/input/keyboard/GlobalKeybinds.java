@@ -13,7 +13,6 @@ import java.awt.event.KeyEvent;
 
 import static com.j3d.StaticRefs.getCamera;
 import static com.j3d.engine.interact.input.keyboard.KeyBindings.commandPaletteFocusOwner;
-import static com.j3d.ui.engine.EngineFrame.COMMAND_PALETTE;
 
 /**
  * The default key binds within J3Engine.
@@ -35,7 +34,8 @@ public enum GlobalKeybinds {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             if (StaticRefs.getCommandParser().commandPalette.isDisabled()) return;
-                            COMMAND_PALETTE.inputField.requestFocusInWindow();
+                            StaticRefs.getMainFrame().getCommandPalette()
+                                    .inputField.requestFocusInWindow();
                         }
                     }
             )
@@ -51,7 +51,7 @@ public enum GlobalKeybinds {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
+                            if (commandPaletteFocusOwner()) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
                             getCamera().setPosition(
                                     getCamera().getPosition().add(
@@ -73,7 +73,7 @@ public enum GlobalKeybinds {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
+                            if (commandPaletteFocusOwner()) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
                             getCamera().setPosition(
                                     getCamera().getPosition().sub(
@@ -95,7 +95,7 @@ public enum GlobalKeybinds {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
+                            if (commandPaletteFocusOwner()) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
                             getCamera().setPosition(
                                     getCamera().getPosition().sub(
@@ -117,7 +117,7 @@ public enum GlobalKeybinds {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
+                            if (commandPaletteFocusOwner()) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
                             getCamera().setPosition(
                                     getCamera().getPosition().add(
@@ -139,7 +139,7 @@ public enum GlobalKeybinds {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
+                            if (commandPaletteFocusOwner()) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
                             getCamera().setPosition(
                                     getCamera().getPosition().add(
@@ -161,7 +161,7 @@ public enum GlobalKeybinds {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
+                            if (commandPaletteFocusOwner()) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
                             getCamera().setPosition(
                                     getCamera().getPosition().sub(

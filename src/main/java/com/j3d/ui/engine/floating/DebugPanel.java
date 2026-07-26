@@ -66,6 +66,27 @@ public class DebugPanel extends javax.swing.JPanel {
         floatingPanel.finish(this, (c) -> {});
         J3DScrollBarUI.setBars(jScrollPane1);
         J3DScrollBarUI.setBars(jScrollPane2);
+        J3DTheme.commitAsGenericLbl(logLabel, false);
+        J3DTheme.commitAsGenericLbl(debugLabel, false);
+        J3DTheme.commitAsGenericLbl(randomTriBtn, true);
+        J3DTheme.commitAsGenericLbl(NoneRadioButton, true);
+        J3DTheme.commitAsGenericLbl(jLabel2, false);
+        J3DTheme.commitAsGenericLbl(showTriDistCheckBox, true);
+        J3DTheme.commitAsGenericLbl(showTriDepthCheckBox, true);
+        J3DTheme.commitAsGenericLbl(showTriNormalsCheckBox, true);
+        J3DTheme.commitAsGenericLbl(drawButton, true);
+        J3DTheme.commitAsGenericLbl(clearButton, true);
+        J3DTheme.commitAsGenericUi(jPanel1);
+        J3DTheme.commitAsGenericUi(jScrollPane2);
+        J3DTheme.commitAsGenericUi(jScrollPane1);
+        J3DTheme.commitAsGenericLbl(logTextArea, true);
+        J3DTheme.commitAsGenericLbl(repaintsPerSecondLabel, true);
+        J3DTheme.commitAsGenericLbl(jLabel4, false);
+        J3DTheme.commitAsGenericLbl(jLabel5, false);
+        J3DTheme.commitAsGenericLbl(jLabel6, false);
+        J3DTheme.commitAsGenericLbl(trianglesInSceneLabel, false);
+        J3DTheme.commitAsGenericUi(this);
+
     }
 
     public void toggleHidden() {

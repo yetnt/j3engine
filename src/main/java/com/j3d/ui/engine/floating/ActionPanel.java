@@ -7,7 +7,11 @@ package com.j3d.ui.engine.floating;
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.ui.theme.J3DTheme;
+import com.j3d.ui.theme.ThemeUpdater;
+
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -16,6 +20,10 @@ import java.time.format.DateTimeFormatter;
 public class ActionPanel extends javax.swing.JPanel {
     
     private Action action;
+    private ThemeUpdater.Locator jumpBg;
+    private ThemeUpdater.Locator thisBg;
+
+    private ArrayList<ThemeUpdater.Locator> locators = new ArrayList<>();
 
     /**
      * Creates new form ActionPanel
@@ -26,11 +34,40 @@ public class ActionPanel extends javax.swing.JPanel {
         timeBtn.setText(action.getTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
         this.action = action;
         if (!action.isReversible()) jumpToBtn.setEnabled(false);
+
+        jumpBg = new ThemeUpdater.Locator(
+                J3DTheme.BACKGROUND,
+                jumpToBtn::setBackground
+        );
+        thisBg = new ThemeUpdater.Locator(
+                J3DTheme.UI_SURFACE,
+                this::setBackground
+        );
+        locators.addAll(List.of(
+                jumpBg, thisBg,
+                J3DTheme.commitAsGenericUi(this)
+        ));
+        locators.addAll(
+                J3DTheme.commitAsGenericLbl(jLabel3, false)
+        );
+        locators.addAll(
+                J3DTheme.commitAsGenericLbl(timeBtn, true)
+        );
+    }
+
+    public ArrayList<ThemeUpdater.Locator> getLocators() {
+        return locators;
     }
 
     public void setAsGreyed() {
         this.setBackground(J3DTheme.BACKGROUND.color());
+        thisBg.setThemeProperty(J3DTheme.BACKGROUND);
         jumpToBtn.setBackground(J3DTheme.UI_SURFACE.color());
+        jumpBg.setThemeProperty(J3DTheme.UI_SURFACE);
+    }
+
+    public void removeAllLocators() {
+        locators.forEach(J3DTheme.themeUpdater::remove);
     }
 
     /**

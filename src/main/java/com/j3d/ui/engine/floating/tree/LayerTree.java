@@ -39,6 +39,8 @@ public class LayerTree extends javax.swing.JPanel {
             lt.listJTree.setVisible(true);
         });
         J3DScrollBarUI.setBars(jScrollPane1);
+
+        J3DTheme.commitAsGenericUi(this);
     }
 
     /**

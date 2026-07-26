@@ -45,7 +45,18 @@ public class ButtonGroupSPanel extends javax.swing.JPanel implements SettingPane
             this.add(btn);
             buttonGroup1.add(btn);
             buttons.add(btn);
+
+            J3DTheme.commitAsGenericLbl(
+                    btn,
+                    false
+            );
         }
+
+        J3DTheme.commitAsGenericLbl(settingLabel3, false);
+        J3DTheme.commitAsGenericUi(this);
+        J3DTheme.commitAsGenericUi(radioPanel);
+        J3DTheme.commitAsGenericUi(jPanel1);
+        J3DTheme.commitAsGenericUi(jScrollPane1);
     }
 
     /**

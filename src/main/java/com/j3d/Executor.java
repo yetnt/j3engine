@@ -50,36 +50,37 @@ public class Executor {
     public void run(Graphics2D graphics2D) {
         StaticRefs.getSceneManager().layers.add(layer);
 
-        Thing ngon = ngon(3);
-        Thing cub = cube();
-        StaticRefs.getCamera().lookAt(ngon.getCentroid());
+//        Thing ngon = ngon(3);
+//        Thing cub = cube();
+//        StaticRefs.getCamera().lookAt(cube.getCentroid());
         Thing tris = threeTris();
-
-        Thing solid = Solids.prism(
-                20,4, layer,
-                new AxisPlane(
-                        Vector3.ZERO,
-                        new Vector3(0, 0.2, 0.6),
-                        new Vector3(0.1, 0.4, 0)
-                ).sameAxes(Vector3.X(-10), Vector3.X(-2))
-        );
-        Thing genericSolid = Solids.prism(
-                10,40, layer,
-                AxisPlane.ZY(Vector3.ZERO)
-                        .sameAxes(Vector3.X(-30), Vector3.X(-22))
-        );
-        Thing cone = cone(20, 20);
+        StaticRefs.getCamera().lookAt(tris.getCentroid());
+//
+//        Thing solid = Solids.prism(
+//                20,4, layer,
+//                new AxisPlane(
+//                        Vector3.ZERO,
+//                        new Vector3(0, 0.2, 0.6),
+//                        new Vector3(0.1, 0.4, 0)
+//                ).sameAxes(Vector3.X(-10), Vector3.X(-2))
+//        );
+//        Thing genericSolid = Solids.prism(
+//                10,40, layer,
+//                AxisPlane.ZY(Vector3.ZERO)
+//                        .sameAxes(Vector3.X(-30), Vector3.X(-22))
+//        );
+//        Thing cone = cone(20, 20);
 
         ArrayList<Action<?>> actions = new ArrayList<>(List.of(
-                cub.rotate(Vector3.Z, 45),
-                cub.translate(new Vector3(4, 2, 3)),
-                cub.scale(0.4),
-                tris.translate(Vector3.X(14)),
-                cub.rotate(new Vector3(2, 3, 1), 2),
-                solid.translate(Vector3.X(-20)),
-                ngon.rotate(Vector3.Y, 20), // 20 degrees
-                ngon.translate(Vector3.X(40)),
-                cone.rotate(Vector3.X(5), 5)
+//                cub.rotate(Vector3.Z, 45),
+//                cub.translate(new Vector3(4, 2, 3)),
+//                cub.scale(0.4),
+                tris.translate(Vector3.X(14))
+//                cub.rotate(new Vector3(2, 3, 1), 2),
+//                solid.translate(Vector3.X(-20)),
+//                ngon.rotate(Vector3.Y, 20), // 20 degrees
+//                ngon.translate(Vector3.X(40)),
+//                cone.rotate(Vector3.X(5), 5)
         ));
         actions.forEach(Action::run);
         actions.forEach(SceneManager.history::add);

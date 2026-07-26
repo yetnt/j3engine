@@ -128,8 +128,7 @@ public class CommandParser {
         this.label = new SafeJLabel(commandPalette.logLabel, commandPalette.logLabel2);
         commandPaletteBinds = new KeyBindings(
                 commandPalette.inputField.getInputMap(),
-                commandPalette.inputField.getActionMap(),
-                false
+                commandPalette.inputField.getActionMap()
         );
         registerKeys();
         commandPalette.inputField.getDocument().addDocumentListener(new DocumentListener() {

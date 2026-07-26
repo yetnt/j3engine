@@ -54,6 +54,8 @@ public class PropertyEntry extends javax.swing.JPanel {
                 .forEach(
                         c -> c.setToolTipText(str)
                 );
+//        J3DTheme.commitAsGenericLbl(propertyLabel, false);
+//        J3DTheme.commitAsGenericUi(this);
     }
 
     /**

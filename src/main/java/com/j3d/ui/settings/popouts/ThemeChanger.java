@@ -10,6 +10,7 @@ import com.j3d.StaticConfig;
 import com.j3d.gen.settings.Settings;
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.themes.Theme;
+import com.j3d.ui.engine.floating.properties.PropertiesPanel;
 import com.j3d.ui.theme.J3DTheme;
 
 import javax.swing.*;
@@ -324,7 +325,16 @@ public class ThemeChanger extends javax.swing.JFrame {
         );
         StaticConfig.user.save();
 
+        J3DTheme.loadTheme(selectedId);
+
+        J3DTheme.themeUpdater.update();
+
+        StaticRefs.getMainPanel().repaint();
+
         StaticRefs.getSettings().panel().dispose();
+
+        if (!StaticRefs.getPropertiesPanel().floatingPanel.isHidden())
+            PropertiesPanel.load(); // reload properties panel if its open
 
         this.dispose();
         Settings.themeChanger = null;

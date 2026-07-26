@@ -195,6 +195,9 @@ public class ToolboxButtons {
         buttonPanel.add(label1);
 
         toolboxButtons.add(buttonPanel);
+        J3DTheme.commitAsGenericUi(buttonPanel);
+        J3DTheme.commitAsGenericUi(btnA);
+        J3DTheme.commitAsGenericLbl(label1, false);
         return btnA;
     }
 

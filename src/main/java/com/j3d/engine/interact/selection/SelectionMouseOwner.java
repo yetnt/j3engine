@@ -65,7 +65,7 @@ public class SelectionMouseOwner extends MouseOwner {
         if (selectionArea[0] != null && selectionArea[1] != null) {
             StaticRefs.getLog().println("Final Selection Area: " + selectionArea[0] + " to " + selectionArea[1]);
             getLog().println("Selected " + getSceneManager().getSelected().size() + " objects.");
-            PropertiesPanel.propertiesPanel();
+            PropertiesPanel.load();
         }
     }
 

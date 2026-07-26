@@ -21,6 +21,15 @@ public class Toolbox extends javax.swing.JPanel {
         J3DScrollBarUI.setBars(toolboxScrollpane);
         repaint();
         revalidate();
+        J3DTheme.commitAsGenericUi(
+                this
+        );
+        J3DTheme.commitAsGenericUi(toolboxScrollpane);
+        J3DTheme.commitAsGenericUi(toolboxInnerPanel);
+        J3DTheme.commitAsGenericUi(btnA_panel);
+        J3DTheme.commitAsGenericUi(btnA);
+        J3DTheme.commitAsGenericLbl(btnA_label, false);
+
     }
 
     /**

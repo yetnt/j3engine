@@ -3,8 +3,11 @@ package com.j3d.ui.theme;
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.themes.ThemesTable;
 
+import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Consumer;
 
 
 /**
@@ -82,6 +85,30 @@ public enum J3DTheme {
 
     public Color defaultCol() {
         return new Color(0xffffff);
+    }
+
+    public static volatile ThemeUpdater themeUpdater = new ThemeUpdater();
+    public static ThemeUpdater.Locator commit(J3DTheme themeProperty, Consumer<Color> propertySetter) {
+        return themeUpdater.add(themeProperty, propertySetter);
+    }
+    public static ThemeUpdater.Locator commitAsGenericUi(Component component) {
+        return themeUpdater.add(
+                J3DTheme.UI_SURFACE,
+                component::setBackground
+        );
+    }
+    public static ArrayList<ThemeUpdater.Locator> commitAsGenericLbl(Component component, boolean setBackground) {
+        ArrayList<ThemeUpdater.Locator> locators = new ArrayList<>();
+        locators.add(themeUpdater.add(
+                J3DTheme.TEXT_PRIMARY,
+                component::setForeground
+        ));
+        if (setBackground)
+            locators.add(themeUpdater.add(
+                    J3DTheme.BACKGROUND,
+                    component::setBackground
+            ));
+        return locators;
     }
 
     private static volatile HashMap<String, Color> colorMap = new HashMap<>();

@@ -333,6 +333,8 @@ public class StaticRefs {
     }
 
     public static void clear() {
+        if (settings != null)
+            settings.clearState();
         // clear engine frame set stuff.
         sceneManager    = null;
         executor        = null;
@@ -350,8 +352,6 @@ public class StaticRefs {
         layerTree = null;
         grid2DPanel = null;
 //        engineFiles = null;   // Engine files should preferably not be remade.
-        if (settings != null)
-            settings.clearState();
         settings = null;      // Settings are always made on the fly.
 //        docsProvider = null;
         commandManager = null;

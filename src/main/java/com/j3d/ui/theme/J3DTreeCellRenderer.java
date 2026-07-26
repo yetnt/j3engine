@@ -5,6 +5,7 @@ import com.j3d.ui.engine.floating.tree.SceneTreeRenderer;
 import javax.swing.*;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.*;
+import java.util.function.Consumer;
 
 /**
  * Makes all {@link JTree}'s consistent with theming. Since swing just lies about setting
@@ -17,18 +18,28 @@ import java.awt.*;
  * @author Lehlogonolo Poole
  */
 public class J3DTreeCellRenderer extends DefaultTreeCellRenderer {
+
     public void init(JTree tree) {
-        setBackgroundSelectionColor(J3DTheme.UI_SURFACE.color());
-        setBackgroundNonSelectionColor(J3DTheme.UI_SURFACE.color());
-
-        setTextSelectionColor(J3DTheme.TEXT_SECONDARY.color());
-        setTextNonSelectionColor(J3DTheme.TEXT_PRIMARY.color());
-
         tree.setOpaque(true);
-        tree.setBackground(J3DTheme.UI_SURFACE.color());
-        tree.setForeground(J3DTheme.UI_SURFACE.color());
 
-        setBackground(J3DTheme.UI_SURFACE.color());
+        Consumer<Color> t = (c) -> {
+            setBackgroundSelectionColor(J3DTheme.UI_SURFACE.color());
+            setBackgroundNonSelectionColor(J3DTheme.UI_SURFACE.color());
+
+            setTextSelectionColor(J3DTheme.TEXT_SECONDARY.color());
+            setTextNonSelectionColor(J3DTheme.TEXT_PRIMARY.color());
+
+            tree.setBackground(J3DTheme.UI_SURFACE.color());
+            tree.setForeground(J3DTheme.UI_SURFACE.color());
+
+            setBackground(J3DTheme.UI_SURFACE.color());
+        };
+        t.accept(Color.RED);
+
+        J3DTheme.themeUpdater.add(
+                J3DTheme.BACKGROUND,
+                t
+        );
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.j3d.engine.geometry.geo3d.AxisPlane;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.ui.engine.FloatingPanel;
+import com.j3d.ui.theme.J3DTheme;
 import com.j3d.utility.generic.SamePair;
 
 import javax.swing.*;
@@ -50,7 +51,7 @@ public class Grid2DPanel extends javax.swing.JPanel {
      */
     public Grid2DPanel() {
         initComponents();
-        keyBindings = new KeyBindings(this.getInputMap(), this.getActionMap(), false);
+        keyBindings = new KeyBindings(this.getInputMap(), this.getActionMap());
         floatingPanel.finish(this, (c) -> {
             if (!(c instanceof JPanel p)) return;
             p.setBounds(0, 0, p.getPreferredSize().width, p.getPreferredSize().height);

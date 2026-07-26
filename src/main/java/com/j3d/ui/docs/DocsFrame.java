@@ -63,8 +63,9 @@ public class DocsFrame extends javax.swing.JFrame {
         ));
         J3DScrollBarUI.setBars(contentScrollPane);
         J3DScrollBarUI.setBars(jScrollPane2);
-
         jPanel2.remove(jPanel3);
+
+        colors();
     }
 
     /**
@@ -84,6 +85,19 @@ public class DocsFrame extends javax.swing.JFrame {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+
+        colors();
+    }
+
+    private void colors() {
+        J3DTheme.commitAsGenericLbl(jLabel1, false);
+        J3DTheme.commitAsGenericUi(jPanel2);
+        J3DTheme.commitAsGenericUi(jPanel3);
+        J3DTheme.commitAsGenericUi(jScrollPane2);
+        J3DTheme.commitAsGenericUi(headerTree);
+        J3DTheme.commitAsGenericUi(contentScrollPane);
+        J3DTheme.commitAsGenericUi(contentPanel);
+
     }
     
     /**
@@ -386,6 +400,7 @@ public class DocsFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(J3DTheme.UI_SURFACE.color());
+        setIconImage(StaticRefs.logo());
         setMinimumSize(new java.awt.Dimension(870, 500));
 
         jLabel1.setBackground(J3DTheme.UI_SURFACE.color());

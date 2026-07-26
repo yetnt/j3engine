@@ -27,11 +27,8 @@ public class LinksPanel extends javax.swing.JPanel {
             totalHeight += lp.getPreferredSize().height;
         }
         setMaximumSize(new java.awt.Dimension(getMaximumSize().width, totalHeight));
-    }
-    public LinksPanel(LinkPanel lp) {
-        initComponents();
-        add(lp);
-        setMaximumSize(new java.awt.Dimension(getMaximumSize().width, lp.getSize().height));
+
+        J3DTheme.commitAsGenericUi(this);
     }
 
     /**

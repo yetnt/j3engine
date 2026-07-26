@@ -29,6 +29,9 @@ public class EnterValueSPanel extends javax.swing.JPanel implements SettingPanel
                 // TODO: Use button instead.
                 e -> setting.setValueNoBroadcast(jTextField1.getText())
         );
+        J3DTheme.commitAsGenericUi(this);
+        J3DTheme.commitAsGenericLbl(settingLabel, false);
+        J3DTheme.commitAsGenericLbl(jTextField1, true);
     }
 
     /**

@@ -81,6 +81,12 @@ public class NumberValueSPanel<T extends Number> extends javax.swing.JPanel impl
                     e -> jSpinner1.setValue(is.getDefaultValue())
             );
         }
+
+        J3DTheme.commitAsGenericLbl(settingLabel1, false);
+        J3DTheme.commitAsGenericUi(this);
+        J3DTheme.commitAsGenericUi(jSlider1);
+        J3DTheme.commitAsGenericUi(jSpinner1);
+        J3DTheme.commitAsGenericLbl(resetButton, true);
     }
 
     /**

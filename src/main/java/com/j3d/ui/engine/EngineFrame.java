@@ -23,7 +23,6 @@ import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.input.mouse.*;
 import com.j3d.engine.interact.selection.*;
 import com.j3d.StaticConfig;
-import com.j3d.errors.ErrorHandler;
 import com.j3d.gen.settings.Settings;
 import com.j3d.storage.files.FilesUtility;
 import com.j3d.storage.files.protocol.proj.PF1;
@@ -105,7 +104,11 @@ public class EngineFrame extends javax.swing.JFrame {
      * The command palette instance.
      * @see CommandParser
      */
-    public static final CommandPalette COMMAND_PALETTE = new CommandPalette(); // TODO: refactor to a getter from prolly command palette.
+    private CommandPalette commandPalette;
+
+    public CommandPalette getCommandPalette() {
+        return commandPalette;
+    }
 
     /**
      * Sets the mouse owner.
@@ -268,11 +271,6 @@ public class EngineFrame extends javax.swing.JFrame {
         // Add to the StaticRefs references.
         StaticRefs.registerHoverLabel(new HoverJLabel(lbl.getLabel()));
 
-        // Initialise all keybinds to be part of the mainPanel and add to the static references
-        InputMap im = mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        ActionMap am = mainPanel.getActionMap();
-        StaticRefs.registerGlobalKeybinds(new KeyBindings(im, am, true));
-
         // Initialise the toolbox (at layer 200)
         Toolbox toolbox = new Toolbox();
         // Toolbox at the top and extends full width but not very tall
@@ -284,18 +282,19 @@ public class EngineFrame extends javax.swing.JFrame {
 
         // Calculate offset for the command pallet.
         // ideal offset should be sort of at the bottom of the frame, but centered horizontally.
+        commandPalette = new CommandPalette();
         Rectangle bounds = this.getBounds();
-        Dimension size = COMMAND_PALETTE.getPreferredSize();
+        Dimension size = commandPalette.getPreferredSize();
         int x = ((bounds.width - size.width) / 2) - 60;
         int y = bounds.height - size.height - 200;
-        COMMAND_PALETTE.setBounds(x, y, size.width, size.height);
+        commandPalette.setBounds(x, y, size.width, size.height);
         // Set extra properties of the command palette
-        COMMAND_PALETTE.setOpaque(true);
-        COMMAND_PALETTE.setBackground(new Color(30, 30, 30, 8));
-        COMMAND_PALETTE.setVisible(true);
+        commandPalette.setOpaque(true);
+        commandPalette.setBackground(new Color(30, 30, 30, 8));
+        commandPalette.setVisible(true);
         // Add to layer 300
-        layeredPane.add(COMMAND_PALETTE, JLayeredPane.POPUP_LAYER);
-        StaticRefs.registerCommandParser(new CommandParser(COMMAND_PALETTE));
+        layeredPane.add(commandPalette, JLayeredPane.POPUP_LAYER);
+        StaticRefs.registerCommandParser(new CommandParser(commandPalette));
 
         // Set the main panel to be focusable and immediately set the user's focus to it.
         mainPanel.getRootPane().setFocusable(true);
@@ -315,10 +314,10 @@ public class EngineFrame extends javax.swing.JFrame {
 
                 // Calculate new offsets (TODO: Idnetical to the previous offset calculation, extract?)
                 Rectangle bounds = StaticRefs.getMainFrame().getBounds();
-                Dimension size = COMMAND_PALETTE.getPreferredSize();
+                Dimension size = commandPalette.getPreferredSize();
                 int x = ((bounds.width - size.width) / 2) - 10;
                 int y = bounds.height - size.height - 50;
-                COMMAND_PALETTE.setBounds(x, y, size.width, size.height);
+                commandPalette.setBounds(x, y, size.width, size.height);
 
                 StaticRefs.getMainFrame().repaint(); // repaint the frame
                 StaticRefs.getMainPanel().repaint(); // repaint the panel too.
@@ -368,6 +367,12 @@ public class EngineFrame extends javax.swing.JFrame {
                 layeredPane.revalidate();
             }
         });
+
+        // Initialise all keybinds to be part of the mainPanel and add to the static references
+        InputMap im = mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = mainPanel.getActionMap();
+        StaticRefs.registerGlobalKeybinds(new KeyBindings(this));
+
         StaticRefs.getLog().uiPrintLn("EngineFrame completed building");
     }
 
@@ -529,13 +534,17 @@ public class EngineFrame extends javax.swing.JFrame {
                 StaticRefs.getDebugPanel().revalidate();
                 StaticRefs.getDebugPanel().repaint();
             }
-            COMMAND_PALETTE.revalidate();
-            COMMAND_PALETTE.repaint();
+            StaticRefs.getMainFrame().getCommandPalette().revalidate();
+            StaticRefs.getMainFrame().getCommandPalette().repaint();
             if (StaticRefs.getMainFrame() != null) { // it cant be null if we're in this call. but you know java.
                 StaticRefs.getMainFrame().revalidate();
                 StaticRefs.getMainFrame().repaint();
             }
         });
+    }
+
+    public J3DPanel getDrawPanel() {
+        return (J3DPanel) mainPanel;
     }
 
     /**
@@ -553,6 +562,7 @@ public class EngineFrame extends javax.swing.JFrame {
         saveProjectJMenuItem = new javax.swing.JMenuItem();
         openProjectMenuItem = new javax.swing.JMenuItem();
         newProjectJMenuItem = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         settingsMenuItem = new javax.swing.JMenuItem();
         editJMenu = new javax.swing.JMenu();
         undoJMenuItem = new javax.swing.JMenuItem();
@@ -621,6 +631,16 @@ public class EngineFrame extends javax.swing.JFrame {
             }
         });
         jMenu1.add(newProjectJMenuItem);
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItem1.setMnemonic('C');
+        jMenuItem1.setText("Close Project");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
 
         settingsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_DOWN_MASK));
         settingsMenuItem.setText("Settings");
@@ -753,7 +773,7 @@ public class EngineFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void resetPositionJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetPositionJMenuItemActionPerformed
-        if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
+        if (commandPaletteFocusOwner()) return;
         StaticRefs.getCamera().setPosition(new Vector3(0, 0, 0));
         this.repaint();
     }//GEN-LAST:event_resetPositionJMenuItemActionPerformed
@@ -769,13 +789,13 @@ public class EngineFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_redoJMenuItemActionPerformed
 
     private void resetOrientationJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetOrientationJMenuItemActionPerformed
-        if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
+        if (commandPaletteFocusOwner()) return;
         StaticRefs.getCamera().setRotation(new Rotation(0, 0, 0));
         this.repaint();
     }//GEN-LAST:event_resetOrientationJMenuItemActionPerformed
 
     private void resetCameraJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetCameraJMenuItemActionPerformed
-        if (commandPaletteFocusOwner(COMMAND_PALETTE)) return;
+        if (commandPaletteFocusOwner()) return;
         StaticRefs.getCamera().setPosition(new Vector3(0, 0, 0));
         StaticRefs.getCamera().setRotation(new Rotation(0, 0, 0));
         this.repaint();
@@ -927,8 +947,31 @@ public class EngineFrame extends javax.swing.JFrame {
 
         this.dispose();
 
+        StaticConfig.user = null;
+
         Startup.run();
     }//GEN-LAST:event_logOutJMenuItemActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+
+        boolean canProceed = true;
+        if (!StaticConfig.hasSaved) {
+            AreYouSure ays = new AreYouSure(
+                    this, true,
+                    new JLabelRichText(
+                            "You haven't saved this project! Click Nah Fam then use"
+                    ).addLn("CTRL+S to save, or click Hell Yeah to proceed anyway.")
+                            .wrapHTML()
+            );
+            ays.setVisible(true);
+            canProceed = ays.canProceed();
+        }
+        if (!canProceed) return;
+
+        this.dispose();
+
+        Startup.runnable.run();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -983,6 +1026,7 @@ public class EngineFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     public javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem logOutJMenuItem;
     public static javax.swing.JPanel mainPanel;
     private javax.swing.JMenu mouseJMenu;

@@ -29,6 +29,11 @@ public class PreferencesFrame extends javax.swing.JFrame {
         this.repaint();
         this.revalidate();
         StaticRefs.getLog().uiPrintLn("PreferencesFrame completed building");
+
+        J3DTheme.commitAsGenericUi(this);
+        J3DTheme.commitAsGenericLbl(jLabel1, false);
+        J3DTheme.commitAsGenericUi(jPanel1);
+        J3DTheme.commitAsGenericUi(jScrollPane1);
     }
 
     /**

@@ -45,8 +45,7 @@ public class ForgotPassword extends javax.swing.JFrame {
         final KeyBindings keyBindings;
         keyBindings = new KeyBindings(
                 jPanel1.getInputMap(),
-                jPanel1.getActionMap(),
-                false
+                jPanel1.getActionMap()
         );
         keyBindings.registerJ3Key(
                 GlobalKeybinds.F1.getKey()

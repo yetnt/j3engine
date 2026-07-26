@@ -23,7 +23,10 @@ public class SettingsParentPanel extends javax.swing.JPanel {
         initComponents();
         settingsTitleLabel.setText(sp.getName());
         settingsDescriptionLabel.setText(sp.getDescription());
-
+        J3DTheme.commitAsGenericLbl(settingsTitleLabel, false);
+        J3DTheme.commitAsGenericLbl(settingsDescriptionLabel, false);
+        J3DTheme.commitAsGenericUi(this);
+        J3DTheme.commitAsGenericUi(innerSettingsPanel);
     }
 
     public SettingsParentPanel addChildren(ArrayList<SettingsChild> settings) {
