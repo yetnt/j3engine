@@ -6,9 +6,9 @@ import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.engine.react.history.History;
 import com.j3d.storage.files.engine.DebugDump;
 import com.j3d.threads.LongTask;
-import com.j3d.ui.generic.CursorManager;
-import com.j3d.ui.generic.CursorNames;
-import com.j3d.ui.generic.J3DTheme;
+import com.j3d.ui.theme.CursorManager;
+import com.j3d.ui.theme.CursorNames;
+import com.j3d.ui.theme.J3DTheme;
 
 import javax.swing.*;
 import java.awt.*;

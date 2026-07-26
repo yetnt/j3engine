@@ -11,9 +11,9 @@ import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.storage.db.users.Password;
 import com.j3d.storage.db.users.User;
 import com.j3d.storage.db.users.UsersTable;
-import com.j3d.ui.generic.CursorManager;
-import com.j3d.ui.generic.CursorNames;
-import com.j3d.ui.generic.J3DTheme;
+import com.j3d.ui.theme.CursorManager;
+import com.j3d.ui.theme.CursorNames;
+import com.j3d.ui.theme.J3DTheme;
 import com.j3d.utility.generic.Pair;
 import com.j3d.utility.PasswordHasher;
 

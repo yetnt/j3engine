@@ -1,4 +1,4 @@
-package com.j3d.ui.generic;
+package com.j3d.ui.theme;
 
 import com.j3d.ui.engine.EngineFrame;
 

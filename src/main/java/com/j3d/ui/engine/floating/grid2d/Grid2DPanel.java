@@ -9,11 +9,8 @@ import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
 import com.j3d.engine.geometry.geo3d.AxisPlane;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
-import com.j3d.engine.interact.cmd.CmdToken;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
-import com.j3d.ui.SafeJLabel;
 import com.j3d.ui.engine.FloatingPanel;
-import com.j3d.ui.generic.J3DTheme;
 import com.j3d.utility.generic.SamePair;
 
 import javax.swing.*;
@@ -24,7 +21,6 @@ import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.Vector;
 import java.util.stream.Collectors;
 
 import static com.j3d.StaticRefs.*;

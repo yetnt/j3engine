@@ -6,7 +6,7 @@ import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.engine.interact.input.mouse.MouseOwner;
 import com.j3d.ui.engine.floating.properties.PropertiesPanel;
-import com.j3d.ui.generic.CursorManager;
+import com.j3d.ui.theme.CursorManager;
 
 import java.awt.event.MouseEvent;
 

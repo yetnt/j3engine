@@ -10,9 +10,9 @@ import com.j3d.gen.docs.api.ImageTag;
 import com.j3d.gen.docs.reader.*;
 import com.j3d.gen.docs.reader.tokens.*;
 import com.j3d.gen.docs.reader.tokens.wrappers.*;
-import com.j3d.ui.generic.J3DScrollBarUI;
-import com.j3d.ui.generic.J3DTheme;
-import com.j3d.ui.generic.J3DTreeCellRenderer;
+import com.j3d.ui.theme.J3DScrollBarUI;
+import com.j3d.ui.theme.J3DTheme;
+import com.j3d.ui.theme.J3DTreeCellRenderer;
 import com.j3d.utility.generators.JLabelRichText;
 import com.j3d.utility.generic.Pair;
 

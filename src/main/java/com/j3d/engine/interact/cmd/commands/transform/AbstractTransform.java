@@ -20,7 +20,7 @@ import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.StaticConfig;
 import com.j3d.gen.settings.Settings;
-import com.j3d.ui.generic.J3DTheme;
+import com.j3d.ui.theme.J3DTheme;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.engine.interact.cmd.commands.transform.handles.Handle;
 import com.j3d.engine.interact.cmd.commands.transform.handles.HandleType;

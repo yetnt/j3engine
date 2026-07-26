@@ -5,7 +5,7 @@
 package com.j3d.ui.docs;
 
 import com.j3d.gen.docs.reader.tokens.TLink;
-import com.j3d.ui.generic.J3DTheme;
+import com.j3d.ui.theme.J3DTheme;
 
 import java.util.ArrayList;
 

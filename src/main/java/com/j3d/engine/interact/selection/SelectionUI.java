@@ -2,8 +2,8 @@ package com.j3d.engine.interact.selection;
 
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.ScreenPoint;
-import com.j3d.ui.generic.CursorManager;
-import com.j3d.ui.generic.CursorNames;
+import com.j3d.ui.theme.CursorManager;
+import com.j3d.ui.theme.CursorNames;
 
 import java.awt.*;
 

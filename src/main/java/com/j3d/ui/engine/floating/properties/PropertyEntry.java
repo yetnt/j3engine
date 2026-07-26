@@ -7,7 +7,7 @@ package com.j3d.ui.engine.floating.properties;
 import com.j3d.gen.properties.Property;
 import com.j3d.gen.properties.PropertyKey;
 import com.j3d.ui.engine.floating.properties.panels.PropertyPanel;
-import com.j3d.ui.generic.J3DTheme;
+import com.j3d.ui.theme.J3DTheme;
 
 import javax.swing.*;
 import java.util.*;

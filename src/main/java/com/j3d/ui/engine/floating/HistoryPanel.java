@@ -4,7 +4,7 @@
  */
 package com.j3d.ui.engine.floating;
 
-import com.j3d.ui.generic.J3DScrollBarUI;
+import com.j3d.ui.theme.J3DScrollBarUI;
 import com.j3d.ui.engine.FloatingPanel;
 
 import javax.swing.*;

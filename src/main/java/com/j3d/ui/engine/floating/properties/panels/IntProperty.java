@@ -5,7 +5,7 @@
 package com.j3d.ui.engine.floating.properties.panels;
 
 import com.j3d.gen.properties.Property;
-import com.j3d.ui.generic.J3DTheme;
+import com.j3d.ui.theme.J3DTheme;
 
 import javax.swing.*;
 import java.util.ArrayList;

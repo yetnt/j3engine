@@ -21,7 +21,7 @@ import com.j3d.gen.properties.Property;
 import com.j3d.StaticConfig;
 import com.j3d.storage.files.protocol.proj.PF1;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
-import com.j3d.ui.generic.J3DTheme;
+import com.j3d.ui.theme.J3DTheme;
 import com.j3d.ui.dialog.Spinner;
 import com.j3d.ui.engine.floating.tree.TreeNodeIdentity;
 

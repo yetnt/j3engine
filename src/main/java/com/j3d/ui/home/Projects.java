@@ -8,8 +8,8 @@ import com.j3d.Startup;
 import com.j3d.StaticRefs;
 import com.j3d.StaticConfig;
 import com.j3d.storage.files.util.ProjectImagePair;
-import com.j3d.ui.generic.J3DScrollBarUI;
-import com.j3d.ui.generic.J3DTheme;
+import com.j3d.ui.theme.J3DScrollBarUI;
+import com.j3d.ui.theme.J3DTheme;
 import com.j3d.utility.ImageUtils;
 import com.j3d.utility.generators.JLabelRichText;
 

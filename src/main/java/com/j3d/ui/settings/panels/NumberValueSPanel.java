@@ -10,7 +10,7 @@ import com.j3d.engine.react.events.spec.SettingUpdatedPayload;
 import com.j3d.gen.settings.Setting;
 import com.j3d.gen.settings.types.DoubleSetting;
 import com.j3d.gen.settings.types.IntSetting;
-import com.j3d.ui.generic.J3DTheme;
+import com.j3d.ui.theme.J3DTheme;
 
 import javax.swing.*;
 import java.util.function.Function;

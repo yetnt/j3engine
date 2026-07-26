@@ -4,9 +4,9 @@
  */
 package com.j3d.ui.engine.floating.tree;
 
-import com.j3d.ui.generic.J3DScrollBarUI;
+import com.j3d.ui.theme.J3DScrollBarUI;
 import com.j3d.ui.engine.FloatingPanel;
-import com.j3d.ui.generic.J3DTheme;
+import com.j3d.ui.theme.J3DTheme;
 
 import java.util.Arrays;
 import java.util.Objects;

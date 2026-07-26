@@ -7,7 +7,7 @@ package com.j3d;
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.users.User;
 import com.j3d.threads.FakeLongTask;
-import com.j3d.ui.generic.J3DTheme;
+import com.j3d.ui.theme.J3DTheme;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.ui.engine.J3Splash;
 

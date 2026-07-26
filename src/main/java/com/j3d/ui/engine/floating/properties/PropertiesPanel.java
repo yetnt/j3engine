@@ -9,13 +9,13 @@ import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.gen.properties.SelectionPropertiesFilter;
 import com.j3d.gen.properties.PropertiesUI;
 import com.j3d.ui.engine.FloatingPanel;
-import com.j3d.ui.generic.J3DScrollBarUI;
+import com.j3d.ui.theme.J3DScrollBarUI;
 
 import javax.swing.*;
 import java.util.ArrayList;
 
 import static com.j3d.StaticRefs.getSceneManager;
-import com.j3d.ui.generic.J3DTheme;
+import com.j3d.ui.theme.J3DTheme;
 
 
 /**

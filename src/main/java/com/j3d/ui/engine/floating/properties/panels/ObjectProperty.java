@@ -10,7 +10,7 @@ import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.gen.properties.Property;
-import com.j3d.ui.generic.J3DTheme;
+import com.j3d.ui.theme.J3DTheme;
 import com.j3d.utility.generic.Pair;
 
 import javax.swing.*;

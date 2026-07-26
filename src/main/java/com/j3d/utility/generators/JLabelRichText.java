@@ -1,6 +1,6 @@
 package com.j3d.utility.generators;
 
-import com.j3d.ui.generic.J3DTheme;
+import com.j3d.ui.theme.J3DTheme;
 
 import javax.swing.*;
 import java.awt.*;

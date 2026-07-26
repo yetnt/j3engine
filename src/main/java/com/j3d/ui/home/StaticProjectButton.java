@@ -8,9 +8,9 @@ package com.j3d.ui.home;
 import javax.swing.*;
 import java.awt.*;
 
-import com.j3d.ui.generic.CursorManager;
-import com.j3d.ui.generic.CursorNames;
-import com.j3d.ui.generic.J3DTheme;
+import com.j3d.ui.theme.CursorManager;
+import com.j3d.ui.theme.CursorNames;
+import com.j3d.ui.theme.J3DTheme;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.function.Consumer;

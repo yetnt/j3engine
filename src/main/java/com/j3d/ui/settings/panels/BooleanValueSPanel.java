@@ -4,7 +4,7 @@
  */
 package com.j3d.ui.settings.panels;
 
-import com.j3d.ui.generic.J3DTheme;
+import com.j3d.ui.theme.J3DTheme;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.react.events.spec.SettingUpdatedPayload;

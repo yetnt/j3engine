@@ -1,21 +1,28 @@
-package com.j3d.ui.generic;
+package com.j3d.ui.theme;
 
 import com.j3d.storage.db.DatabaseManager;
+import com.j3d.storage.db.themes.ThemesTable;
 
 import java.awt.*;
 import java.util.HashMap;
 
 
 /**
- * The Theme class contains a set of predefined color themes for the UI.
+ * The Main Theme enum where all theme properties are accessed
+ * <p>
+ *     Almost all UI classes use this for consistent theming so changing this will just mean death.
+ * </p>
+ * @implSpec This, isn't a normal enum. In that it's usually loaded on Startup via {@link com.j3d.Main}
+ * with it's properties from {@link ThemesTable} via the {@link DatabaseManager}. Hence the multiple
+ * methods to check what the current ID of the theme that is loaded. However if the database cannot run
+ * or has no reason to, it defaults to giving the colours of the default theme which ahs an id of
+ * {@code 1}.
+ * @author Lehlogonolo Poole
  */
 public enum J3DTheme {
 
     /**
-     * Text Colour.
-     * <p>
-     *     Preview: <div style="background-color:#cad2c5; width:150px; height:50px; border:1px solid black;"></div>
-     * </p>
+     * Base Text Colour.
      */
     TEXT_PRIMARY,
     /**
@@ -24,30 +31,18 @@ public enum J3DTheme {
     TEXT_SECONDARY,
     /**
      * Even lighter colour
-     * <p>
-     *     Preview: <div style="background-color:#84a98c; width:150px; height:50px; border:1px solid black;"></div>
-     * </p>
      */
     ACCENT_PRIMARY,
     /**
      * Lighter colour.
-     * <p>
-     *     Preview: <div style="background-color:#52796f; width:150px; height:50px; border:1px solid black;"></div>
-     * </p>
      */
     ACCENT_SECONDARY,
     /**
-     * Dark colour for button or any UI element backgrounds but not too dark
-     * <p>
-     *     Preview: <div style="background-color:#354f52; width:150px; height:50px; border:1px solid black;"></div>
-     * </p>
+     * Dark colour for panels and other UI elements.
      */
     UI_SURFACE,
     /**
-     * Darkest shade. Used for panel backgrounds and the entire scene background
-     * <p>
-     *     Preview: <div style="background-color:#2f3e46; width:150px; height:50px; border:1px solid black;"></div>
-     * </p>
+     * Darkest shade. Used for button backgrounds and the entire scene background
      */
     BACKGROUND;
 
@@ -106,6 +101,10 @@ public enum J3DTheme {
         currentLoadedTheme = id;
     }
 
+    /**
+     * Provides default {@link Color} values for each theme property.
+     * These are used when a theme is not loaded from the database or a specific property is missing.
+     */
     public static class Default {
         public static Color from(String st) {
             return switch (st) {
