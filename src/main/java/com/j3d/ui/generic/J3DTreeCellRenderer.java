@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.*;
 
-public class TreeCellRenderer extends DefaultTreeCellRenderer {
+public class J3DTreeCellRenderer extends DefaultTreeCellRenderer {
     public void init(JTree tree) {
         setBackgroundSelectionColor(J3DTheme.UI_SURFACE.color());
         setBackgroundNonSelectionColor(J3DTheme.UI_SURFACE.color());

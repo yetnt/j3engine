@@ -6,6 +6,8 @@ package com.j3d.ui.auth;
 
 import com.j3d.StaticRefs;
 import com.j3d.StaticConfig;
+import com.j3d.engine.interact.input.keyboard.GlobalKeybinds;
+import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.api.SQLOperator;
 import com.j3d.storage.db.users.CUsers;
@@ -28,11 +30,29 @@ public class Login extends javax.swing.JFrame {
     private final char echoChar = '•';
     private final Runnable postLogin;
     private int attempts = 0;
+    private final ArrayList<KeyBindings> keyBindings = new ArrayList<>();
     /**
      * Creates new form Login
      */
     public Login(Runnable postLogin) {
         initComponents();
+        keyBindings.add(
+                new KeyBindings(
+                        jPanel1.getInputMap(),
+                        jPanel1.getActionMap(),
+                        false
+                )
+        );
+        keyBindings.add(
+                new KeyBindings(
+                        jPanel2.getInputMap(),
+                        jPanel2.getActionMap(),
+                        false
+                )
+        );
+        keyBindings.forEach(
+                ks -> ks.registerJ3Key(GlobalKeybinds.F1.getKey())
+        );
         this.setCursor(CursorManager.get(CursorNames.DEFAULT));
         this.postLogin = postLogin;
         StaticRefs.getLog().uiPrintLn("Login completed building");

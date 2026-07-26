@@ -6,6 +6,8 @@ package com.j3d.ui.auth;
 
 import com.j3d.Startup;
 import com.j3d.StaticRefs;
+import com.j3d.engine.interact.input.keyboard.GlobalKeybinds;
+import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.api.SQLOperator;
 import com.j3d.storage.db.users.CUsers;
@@ -27,18 +29,34 @@ public class ForgotPassword extends javax.swing.JFrame {
     private final Runnable postPasswordChange;
     private boolean showChar = false;
     private final char echoChar = '•';
+    private final KeyBindings keyBindings;
 
     /**
      * Creates new form ForgotPassword
      */
     public ForgotPassword(Runnable postPasswordChange) {
         initComponents();
+        keyBindings = getKeyBindings();
         this.postPasswordChange = postPasswordChange;
         StaticRefs.getLog().uiPrintLn("ForgotPassword completed building");
     }
 
+    private KeyBindings getKeyBindings() {
+        final KeyBindings keyBindings;
+        keyBindings = new KeyBindings(
+                jPanel1.getInputMap(),
+                jPanel1.getActionMap(),
+                false
+        );
+        keyBindings.registerJ3Key(
+                GlobalKeybinds.F1.getKey()
+        );
+        return keyBindings;
+    }
+
     public ForgotPassword(String email, Runnable postPasswordChange) {
         initComponents();
+        keyBindings = getKeyBindings();
         emailTextField.setText(email);
         this.postPasswordChange = postPasswordChange;
         StaticRefs.getLog().uiPrintLn("ForgotPassword completed building");

@@ -6,6 +6,8 @@ package com.j3d.ui.auth;
 
 import com.j3d.StaticRefs;
 import com.j3d.StaticConfig;
+import com.j3d.engine.interact.input.keyboard.GlobalKeybinds;
+import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.storage.db.users.Password;
 import com.j3d.storage.db.users.User;
 import com.j3d.storage.db.users.UsersTable;
@@ -30,12 +32,30 @@ public class Signup extends javax.swing.JFrame {
     private boolean showChar = false;
     private final char echoChar = '•';
     private final Runnable postSignup;
+    private final ArrayList<KeyBindings> keyBindings = new ArrayList<>();
 
     /**
      * Creates new form Signup
      */
     public Signup(Runnable postsignup) {
         initComponents();
+        keyBindings.add(
+                new KeyBindings(
+                        jPanel1.getInputMap(),
+                        jPanel1.getActionMap(),
+                        false
+                )
+        );
+        keyBindings.add(
+                new KeyBindings(
+                        jPanel2.getInputMap(),
+                        jPanel2.getActionMap(),
+                        false
+                )
+        );
+        keyBindings.forEach(
+                ks -> ks.registerJ3Key(GlobalKeybinds.F1.getKey())
+        );
         this.setCursor(CursorManager.get(CursorNames.DEFAULT));
         this.postSignup = postsignup;
         StaticRefs.getLog().uiPrintLn("Signup completed building");

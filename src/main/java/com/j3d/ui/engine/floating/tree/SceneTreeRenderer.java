@@ -2,14 +2,13 @@ package com.j3d.ui.engine.floating.tree;
 
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.layer.Layer;
-import com.j3d.ui.generic.TreeCellRenderer;
+import com.j3d.ui.generic.J3DTreeCellRenderer;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import java.util.Objects;
 
-public class SceneTreeRenderer extends TreeCellRenderer {
+public class SceneTreeRenderer extends J3DTreeCellRenderer {
     private static final ImageIcon LAYER_ICON = new ImageIcon(Objects.requireNonNull(SceneTreeRenderer.class.getResource("/art/icons/layer.png")));
     private static final ImageIcon LAYER_EXPANDED_ICON = new ImageIcon(Objects.requireNonNull(SceneTreeRenderer.class.getResource("/art/icons/expanded.png")));
     private static final ImageIcon THING_ICON = new ImageIcon(Objects.requireNonNull(SceneTreeRenderer.class.getResource("/art/icons/thing.png")));
