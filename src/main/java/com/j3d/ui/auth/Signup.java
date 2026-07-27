@@ -32,28 +32,18 @@ public class Signup extends javax.swing.JFrame {
     private boolean showChar = false;
     private final char echoChar = '•';
     private final Runnable postSignup;
-    private final ArrayList<KeyBindings> keyBindings = new ArrayList<>();
+    private final KeyBindings ks;
 
     /**
      * Creates new form Signup
      */
     public Signup(Runnable postsignup) {
         initComponents();
-        keyBindings.add(
-                new KeyBindings(
-                        jPanel1.getInputMap(),
-                        jPanel1.getActionMap()
-                )
+        ks = new KeyBindings(
+                jPanel1.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW),
+                jPanel1.getActionMap()
         );
-        keyBindings.add(
-                new KeyBindings(
-                        jPanel2.getInputMap(),
-                        jPanel2.getActionMap()
-                )
-        );
-        keyBindings.forEach(
-                ks -> ks.registerJ3Key(GlobalKeybinds.F1.getKey())
-        );
+        ks.registerJ3Key(GlobalKeybinds.F1.getKey());
         this.setCursor(CursorManager.get(CursorNames.DEFAULT));
         this.postSignup = postsignup;
         StaticRefs.getLog().uiPrintLn("Signup completed building");

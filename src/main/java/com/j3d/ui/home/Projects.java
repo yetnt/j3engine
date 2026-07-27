@@ -7,6 +7,8 @@ package com.j3d.ui.home;
 import com.j3d.Startup;
 import com.j3d.StaticRefs;
 import com.j3d.StaticConfig;
+import com.j3d.engine.interact.input.keyboard.GlobalKeybinds;
+import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.storage.files.util.ProjectImagePair;
 import com.j3d.ui.theme.J3DScrollBarUI;
 import com.j3d.ui.theme.J3DTheme;
@@ -29,6 +31,7 @@ import java.util.stream.Collectors;
 public class Projects extends javax.swing.JFrame {
 
     HashSet<ProjectButton> pinned = new HashSet<>();
+    KeyBindings ks;
 
     /**
      * Creates new form Projects
@@ -57,6 +60,11 @@ public class Projects extends javax.swing.JFrame {
         J3DScrollBarUI.setBars(pinnedScrollPane);
         J3DScrollBarUI.setBars(recentsScrollPane);
         StaticRefs.getLog().uiPrintLn("Projects completed building");
+        ks = new KeyBindings(
+                pinnedProjectsPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW),
+                pinnedProjectsPanel.getActionMap()
+        );
+        ks.registerJ3Key(GlobalKeybinds.F1.getKey());
     }
 
     public ImageIcon scaleImage(File image) {

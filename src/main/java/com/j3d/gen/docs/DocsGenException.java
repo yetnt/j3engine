@@ -1,7 +1,8 @@
-package com.j3d.gen.docs.reader;
+package com.j3d.gen.docs;
 
 import com.j3d.errors.J3DError;
 import com.j3d.errors.severity.J3DFatal;
+import com.j3d.gen.GenException;
 
 /**
  *  An exception class specifically for errors encountered during the documentation generation process.
@@ -13,7 +14,7 @@ import com.j3d.errors.severity.J3DFatal;
  * @see J3DFatal
 
  */
-public class DocsGenException extends J3DError implements J3DFatal {
+public class DocsGenException extends GenException implements J3DFatal {
     public DocsGenException(String message) {
         super(message);
     }

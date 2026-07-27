@@ -29,33 +29,30 @@ public class ForgotPassword extends javax.swing.JFrame {
     private final Runnable postPasswordChange;
     private boolean showChar = false;
     private final char echoChar = '•';
-    private final KeyBindings keyBindings;
+    private final KeyBindings ks;
 
     /**
      * Creates new form ForgotPassword
      */
     public ForgotPassword(Runnable postPasswordChange) {
         initComponents();
-        keyBindings = getKeyBindings();
+        ks = getKeyBindings();
         this.postPasswordChange = postPasswordChange;
         StaticRefs.getLog().uiPrintLn("ForgotPassword completed building");
     }
 
     private KeyBindings getKeyBindings() {
-        final KeyBindings keyBindings;
-        keyBindings = new KeyBindings(
-                jPanel1.getInputMap(),
+        final KeyBindings keyBindings = new KeyBindings(
+                jPanel1.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW),
                 jPanel1.getActionMap()
         );
-        keyBindings.registerJ3Key(
-                GlobalKeybinds.F1.getKey()
-        );
+        ks.registerJ3Key(GlobalKeybinds.F1.getKey());
         return keyBindings;
     }
 
     public ForgotPassword(String email, Runnable postPasswordChange) {
         initComponents();
-        keyBindings = getKeyBindings();
+        ks = getKeyBindings();
         emailTextField.setText(email);
         this.postPasswordChange = postPasswordChange;
         StaticRefs.getLog().uiPrintLn("ForgotPassword completed building");

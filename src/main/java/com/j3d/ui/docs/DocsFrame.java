@@ -323,7 +323,23 @@ public class DocsFrame extends javax.swing.JFrame {
             } else if (wrapper instanceof TWhtmlTag tw) {
                 ImageTag t = ImageTag.getInstance(tw);
                 if (t != null) {
-                    contentPanel.add(new TextPanel(t));
+                    String alt = t.getAltText();
+                    if (t.isInvalid())
+                        contentPanel.add(
+                            // just add some generic text with the image alt text instead
+
+                            new TextPanel(
+                                    JLabelRichText.from(
+                                            new JLabelRichText("Image not found or invalid: " + alt)
+                                                    .font(J3DTheme.TEXT_PRIMARY.color())
+                                                    .toString(),
+                                            div
+                                    )
+                                            .wrapHTML()
+                            )
+
+                        );
+                    else contentPanel.add(new TextPanel(t));
                 }
             }
         });

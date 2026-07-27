@@ -2,7 +2,8 @@ package com.j3d.gen.docs.api;
 
 import com.j3d.StaticRefs;
 import com.j3d.errors.ErrorHandler;
-import com.j3d.gen.docs.reader.DocsGenException;
+import com.j3d.gen.docs.DocsGenException;
+import com.j3d.gen.docs.ImgGenException;
 import com.j3d.gen.docs.reader.tokens.wrappers.HTMLTags;
 import com.j3d.gen.docs.reader.tokens.wrappers.TWhtmlTag;
 
@@ -28,12 +29,18 @@ public class ImageTag {
     private String altText;
     private File imagePath;
     private double scale;
+    private boolean invalid = false;
 
     private ImageTag(TWhtmlTag tag, File imagePath, String altText, double scale) {
         this.tag = tag;
         this.imagePath = imagePath;
         this.altText = altText;
         this.scale = scale;
+    }
+
+    private ImageTag() {
+        invalid = true;
+        altText = "No alt text";
     }
 
     public static ImageTag getInstance(TWhtmlTag tag) {
@@ -43,22 +50,30 @@ public class ImageTag {
         String alt = tag.getAttributes().get("alt");
         String scale = tag.getAttributes().get("scale");
 
+        ImageTag imageTag = new ImageTag();
+
         if (fp == null || alt == null) {
             StaticRefs.getErrs().handle(
-                    new DocsGenException(
+                    new ImgGenException(
                             "Image tag has no src or no alt attribute: " + tag.getRawContent().getFirst()
                     )
             );
-            return null;
+            return imageTag;
         }
 
+        imageTag.setAltText(
+                alt.isBlank() ? "No alt text" : alt
+        );
+
         // if this file is an absolute path, error. (only trust paths from resources folder)
-        if (new File(fp).isAbsolute())
+        if (new File(fp).isAbsolute()) {
             StaticRefs.getErrs().handle(
-                    new DocsGenException(
+                    new ImgGenException(
                             "Image tag has an absolute path for src: " + tag.getRawContent().getFirst()
                     )
             );
+            return imageTag;
+        }
 
         // file path starts with ../art then its valid.
 
@@ -75,19 +90,20 @@ public class ImageTag {
                     )).toURI());
         } catch (URISyntaxException | NullPointerException f) {
             StaticRefs.getErrs().handle(
-                    new DocsGenException(
+                    new ImgGenException(
                             "Image tag has an invalid path for src: " + tag.getRawContent().getFirst()
                     )
             );
-            return null;
+            return imageTag;
         }
 
         if (!(image.getAbsolutePath().endsWith(".png") || image.getAbsolutePath().endsWith(".jpg"))) {
             StaticRefs.getErrs().handle(
-                    new DocsGenException(
+                    new ImgGenException(
                             "Image tag has an invalid file type for src (only .png and .jpg are supported): " + tag.getRawContent().getFirst()
                     )
             );
+            return imageTag;
         }
 
         double s = 1;
@@ -107,11 +123,19 @@ public class ImageTag {
         return altText;
     }
 
+    public void setAltText(String altText) {
+        this.altText = altText;
+    }
+
     public File getImagePath() {
         return imagePath;
     }
 
     public double getScale() {
         return scale;
+    }
+
+    public boolean isInvalid() {
+        return invalid;
     }
 }

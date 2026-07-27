@@ -1,0 +1,15 @@
+10XXX -> Generation Exceptions
+20XXX -> Database Exceptions
+30XXX -> Threading Exceptions
+40XXX -> Scene Exceptions
+50XXX -> IO Exceptions
+
+
+10100 -> Preferences Frame encountered a generic exception with a cause (Fatal)
+10201 -> DocsProvider attempted to find a non-existent help document (Fatal)
+10211 -> Invalid HTML Tag: Different Opening and closing tags
+10212 -> Invalid HTML Tag: Unaccepted HTML Tag was given
+10213 -> Invalid HTML Tag: Malformed attributes
+10221 -> #-links: Malformed link-to-header (within same document or other .j3.md document) written.
+10222 -> #-links: Attempt to link to some arbitrary file (isn't .j3.md)
+10231 -> 

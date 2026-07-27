@@ -5,7 +5,7 @@
 package com.j3d.ui.docs;
 
 import com.j3d.StaticRefs;
-import com.j3d.gen.docs.reader.DocsGenException;
+import com.j3d.gen.docs.DocsGenException;
 import com.j3d.gen.docs.reader.tokens.TLink;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.utility.Parsing;
@@ -162,7 +162,7 @@ public class LinkPanel extends javax.swing.JPanel {
                     StaticRefs.getErrs().handle(
                             new DocsGenException(
                                     "Invalid link format: " + url
-                            )
+                            ).code(221)
                     );
                 }
                 String otherFile = toks.getFirst();
@@ -171,8 +171,8 @@ public class LinkPanel extends javax.swing.JPanel {
                 if (!otherFile.contains(".j3.md")) {
                     StaticRefs.getErrs().handle(
                             new DocsGenException(
-                                    "Attempt to link to anon j3md file " + otherFile
-                            ));
+                                    "Invalid link format: " + url + ". Expected a .j3.md file extension."
+                            ).code(222));
                 }
 
                 // remove .j3.md extension

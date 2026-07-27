@@ -53,20 +53,16 @@ public class KeyBindings {
         if (m instanceof JMenu jm) {
             return Arrays.stream(jm.getSubElements())
                     .flatMap(KeyBindings::flatten);
-        }
-        if (m instanceof JPopupMenu popup) {
+        } else if (m instanceof JPopupMenu popup) {
             return Arrays.stream(popup.getSubElements())
                     .flatMap(KeyBindings::flatten);
-        }
-        if (m instanceof JMenuItem item) {
+        }else if (m instanceof JMenuItem item) {
             return Stream.of(item);
-        }
-
-        return Stream.empty();
+        } else return Stream.empty();
     }
 
     public KeyBindings(EngineFrame e) {
-        this(e.getDrawPanel().getInputMap(), e.getDrawPanel().getActionMap());
+        this(e.getDrawPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW), e.getDrawPanel().getActionMap());
 
         StringBuilder sb = new StringBuilder();
         prohibited = Arrays
@@ -147,7 +143,11 @@ public class KeyBindings {
             return;
         }
         if (keys.stream().anyMatch(k -> k.getKeyStroke().equals(key.getKeyStroke()))) {
-            StaticRefs.getLog().error("Attempted to add duplicate key binding: " + key.getKeyStroke());
+            StaticRefs.getLog().error("Attempted to add duplicate key binding: " + key.getKeyStroke() + " matches with " + (
+                    keys.stream().filter(k -> k.getKeyStroke().equals(key.getKeyStroke()))
+                            .map(J3Key::getName)
+                            .collect(Collectors.joining(", "))
+                    ));
             return;
         }
         if (keys.stream().anyMatch(k -> k.getName().equals(key.getName()))) {

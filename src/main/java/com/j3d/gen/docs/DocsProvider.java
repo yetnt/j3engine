@@ -1,7 +1,6 @@
 package com.j3d.gen.docs;
 
 import com.j3d.StaticRefs;
-import com.j3d.gen.docs.reader.DocsGenException;
 import com.j3d.ui.docs.DocsFrame;
 
 import java.util.HashMap;
@@ -43,7 +42,7 @@ public class DocsProvider {
                 StaticRefs.getErrs().handle(
                         new DocsGenException(
                                 "Attempt to get help frame for non existent file: " + id
-                        )
+                        ).code(201)
                 );
             }
             // create it.

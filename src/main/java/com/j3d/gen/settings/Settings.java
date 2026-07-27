@@ -79,7 +79,12 @@ public class Settings implements SettingsParent {
                             return file;
                         }
                     } catch (IOException ex) {
-                        throw new RuntimeException(ex);
+                        StaticRefs.getErrs().handle(
+                                new PrefsGenException(
+                                        "Could not create new project file: " + file.getAbsolutePath(),
+                                        ex
+                                ).code(100)
+                        );
                     }
                 }
                 if (file.isDirectory())
