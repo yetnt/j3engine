@@ -3,19 +3,13 @@ package com.j3d.engine.interact.input.keyboard;
 import com.j3d.StaticRefs;
 import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.interact.selection.SelectionUtils;
-import com.j3d.ui.engine.CommandPalette;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.utility.generic.Pair;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.*;
-import java.util.List;
-import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -86,12 +80,9 @@ public class KeyBindings {
                 GlobalKeybinds.SELECT_SUBTRACT_UP.getKey(),
                 0
         );
-        GlobalKeybinds.SELECT_SUBTRACT_UP.getKey().linkTo(
-                GlobalKeybinds.SELECT_ADD_DOWN.getKey(),
-                KeyEvent.SHIFT_DOWN_MASK
-        );
-        GlobalKeybinds.SELECT_ADD_DOWN.getKey().linkTo(
-                GlobalKeybinds.SELECT_ADD_UP.getKey(),
+
+        GlobalKeybinds.SELECT_UNION_DOWN.getKey().linkTo(
+                GlobalKeybinds.SELECT_UNION_UP.getKey(),
                 KeyEvent.SHIFT_DOWN_MASK
         );
 

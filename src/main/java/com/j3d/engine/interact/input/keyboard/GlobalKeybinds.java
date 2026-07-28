@@ -203,16 +203,10 @@ public enum GlobalKeybinds {
                     KeyBindings.clearInferredSelectionType
             )
     ),
-    /**
-     * Paired with {@link SelectionMouseOwner} where if the user holds down Shift + I while making a selection
-     * it will switch to the add selection mode. This is then reset by {@link GlobalKeybinds#SELECT_ADD_UP}
-     * @implSpec This is a child link to {@link GlobalKeybinds#SELECT_SUBTRACT_UP}
-     * @see GlobalKeybinds#SELECT_SUBTRACT_DOWN
-     */
-    SELECT_ADD_DOWN(
+    SELECT_UNION_DOWN(
             new J3Key(
                     "selectAdd",
-                    KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.SHIFT_DOWN_MASK, false),
+                    KeyStroke.getKeyStroke(KeyEvent.VK_U, 0, false),
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -221,17 +215,10 @@ public enum GlobalKeybinds {
                     }
             )
     ),
-    /**
-     * Wrapper of {@link KeyBindings#clearInferredSelectionType}
-     * @see GlobalKeybinds#SELECT_ADD_DOWN
-     * @see GlobalKeybinds#SELECT_SUBTRACT_DOWN
-     * @implSpec This is a child link to {@link GlobalKeybinds#SELECT_ADD_DOWN} and is the last child in the
-     * {@link GlobalKeybinds#SELECT_ADD_DOWN} chain.
-     */
-    SELECT_ADD_UP(
+    SELECT_UNION_UP(
             new J3Key(
                     "selectAddUp",
-                    KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.SHIFT_DOWN_MASK, true),
+                    KeyStroke.getKeyStroke(KeyEvent.VK_U, 0, true),
                     KeyBindings.clearInferredSelectionType
             )
     ),
