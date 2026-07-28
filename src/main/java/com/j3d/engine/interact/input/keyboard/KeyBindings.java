@@ -49,16 +49,20 @@ public class KeyBindings {
      */
     private ArrayList<KeyStroke> prohibited = new ArrayList<>();
 
+     /**
+     * Flattens a {@link MenuElement} into a stream of {@link JMenuItem}s.
+     * @param m The menu element to flatten.
+     * @return A stream of JMenuItems.
+     */
     public static Stream<JMenuItem> flatten(MenuElement m) {
-        if (m instanceof JMenu jm) {
-            return Arrays.stream(jm.getSubElements())
+        return switch (m) {
+            case JMenu jm -> Arrays.stream(jm.getSubElements())
                     .flatMap(KeyBindings::flatten);
-        } else if (m instanceof JPopupMenu popup) {
-            return Arrays.stream(popup.getSubElements())
+            case JPopupMenu popup -> Arrays.stream(popup.getSubElements())
                     .flatMap(KeyBindings::flatten);
-        }else if (m instanceof JMenuItem item) {
-            return Stream.of(item);
-        } else return Stream.empty();
+            case JMenuItem item -> Stream.of(item);
+            case null, default -> Stream.empty();
+        };
     }
 
     public KeyBindings(EngineFrame e) {

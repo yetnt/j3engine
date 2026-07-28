@@ -297,11 +297,11 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
      * @return The area.
      */
     public double area() {
-        Vector3 A = LegA.getA().getPivot();
-        Vector3 B = LegB.getA().getPivot();
-        Vector3 C = LegC.getA().getPivot();
-
-        return Math.abs((B.getX() - A.getX()) * (C.getY() - A.getY()) - (B.getY() - A.getY()) * (C.getX() - A.getX())) / 2;
+        return Vector3.area(
+                winding.first().getPivot(),
+                winding.second().getPivot(),
+                winding.third().getPivot()
+        );
     }
 
     /**

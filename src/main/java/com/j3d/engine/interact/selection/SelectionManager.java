@@ -1,5 +1,6 @@
 package com.j3d.engine.interact.selection;
 
+import com.j3d.StaticRefs;
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
@@ -61,7 +62,7 @@ public class SelectionManager {
                                     .filter(o -> !selected.contains(o))
                                     .forEach(selected::add);
                             boolean wasSelected = getSceneManager().getSelected().contains(obj);
-                            boolean inBox = selectionQuery.has(obj, true);
+                            boolean inBox = selectionQuery.has(obj, false);
 
                             if (!wasSelected && inBox)
                                 selected.add(obj); // add

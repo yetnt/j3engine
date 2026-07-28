@@ -24,6 +24,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * SceneManager is the class. The main class that handles the rendering of 3D objects onto a 2D screen.
@@ -240,6 +241,23 @@ public class SceneManager {
         g.fillRect(p.x, p.y - height, width, height);
         g.setColor(fgColor);
         g.drawString(text, p.x, p.y - 2);
+    }
+
+    public void drawPoly3D(Graphics2D g, ArrayList<Vector3> points) {
+        int nPoints = points.size();
+        int[] xPoints = new int[nPoints];
+        int[] yPoints = new int[nPoints];
+        for (int i = 0; i < nPoints; i++) {
+            Vector3 v = points.get(i);
+            ScreenPoint sp = v
+                    .toPoint(StaticRefs.getCamera())
+                    .toScreen(this);
+
+            xPoints[i] = sp.x;
+            yPoints[i] = sp.y;
+        }
+
+        g.fillPolygon(xPoints, yPoints, nPoints);
     }
 
     /**
