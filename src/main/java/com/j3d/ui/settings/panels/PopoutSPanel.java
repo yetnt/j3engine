@@ -27,7 +27,7 @@ public class PopoutSPanel<T> extends javax.swing.JPanel implements SettingPanel 
      */
     public PopoutSPanel(String initalValue, ComplexSetting<T> setting, BiFunction<ActionEvent, JLabel, T> onOpen) {
         initComponents();
-        setting.attach(this);
+        setting.attachListener(this);
         valueLabel.setText(initalValue);
         settingLabel4.setText(setting.getName());
         this.setToolTipText(setting.getDescription());

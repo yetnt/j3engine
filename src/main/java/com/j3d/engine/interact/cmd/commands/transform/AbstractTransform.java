@@ -133,7 +133,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
         this.gearTrain = gearTrain;
         this.gear = newGearKey(commandName);
         keys.add(gear);
-        mouseOwner.attach(this);
+        mouseOwner.attachListener(this);
     }
 
     @Override

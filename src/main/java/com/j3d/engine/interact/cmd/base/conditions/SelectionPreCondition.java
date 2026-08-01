@@ -97,8 +97,8 @@ public class SelectionPreCondition implements PreCommandExecution {
             StaticRefs.getGlobalKeybinds().removeJ3Key(quitKey.getId());
         };
         commandEndCleanup = () -> {
-            getEventEmitterToAttachTo().detach(failListener);
-            getEventEmitterToAttachTo().detach(passListener);
+            getEventEmitterToAttachTo().detachListener(failListener);
+            getEventEmitterToAttachTo().detachListener(passListener);
         };
     }
 

@@ -10,12 +10,12 @@ public interface EventEmitterInterface {
      * Registers an event listener into the list of listeners.
      * @param event The listener to attach
      */
-    void attach(EventListener event);
+    void attachListener(EventListener event);
     /**
      * Deregisters an event listener.
      * @param event The listener to detach.
      */
-    void detach(EventListener event);
+    void detachListener(EventListener event);
     /**
      * Deregisters all event listeners.
      */

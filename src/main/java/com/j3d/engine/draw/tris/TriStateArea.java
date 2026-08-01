@@ -86,7 +86,7 @@ public class TriStateArea {
      */
     public static void register(GTri tri) {
         TriListener listener = new TriListener(tri);
-        tri.attach(listener);
+        tri.attachListener(listener);
         registered.add(listener);
         queue.add(tri);
     }

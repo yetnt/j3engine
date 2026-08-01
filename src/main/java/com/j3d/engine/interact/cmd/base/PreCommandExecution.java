@@ -73,7 +73,7 @@ public interface PreCommandExecution {
         if (!getCondition().get()) {
             logLabel.setText(getLogText());
             if (!getEventEmitterToAttachTo().isAttached(getPassListener()))
-                getEventEmitterToAttachTo().attach(getPassListener());
+                getEventEmitterToAttachTo().attachListener(getPassListener());
             return false;
         }
         else {

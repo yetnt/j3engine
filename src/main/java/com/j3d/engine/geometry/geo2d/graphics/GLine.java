@@ -129,14 +129,14 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
         // set the pivot to the midpoint of the line
         setPivot(A.getPivot().add(B.getPivot()).div(2));
 
-        A.attach(this);
+        A.attachListener(this);
         A.addParent(this);
-        B.attach(this);
+        B.attachListener(this);
         B.addParent(this);
 
         StaticRefs.getSceneManager().hasNoParent(this);
         A.addParent(this);
-        B.attach(this);
+        B.attachListener(this);
         addProps();
     }
 
@@ -266,8 +266,8 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
         pointsList.forEach(point -> {
             if (point != null) {
                 point.explode(this);
-                detach(point);
-                point.detach(this);
+                detachListener(point);
+                point.detachListener(this);
             }
         });
         getSceneManager().hasParent(this);

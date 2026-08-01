@@ -94,12 +94,12 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
     }
 
     @Override
-    public void attach(EventListener event) {
+    public void attachListener(EventListener event) {
         EventEmitter.genericAttach(registered, event);
     }
 
     @Override
-    public void detach(EventListener event) {
+    public void detachListener(EventListener event) {
         EventEmitter.genericDetach(registered, event);
     }
 

@@ -133,9 +133,9 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         B.addParents(LegA, LegB);
         C.addParents(LegB, LegC);
 
-        A.attach(this);
-        B.attach(this);
-        C.attach(this);
+        A.attachListener(this);
+        B.attachListener(this);
+        C.attachListener(this);
 
         setPivot(A.getPivot().add(B.getPivot()).add(C.getPivot()).div(3));
 
@@ -189,7 +189,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         LegC.addParent(this);
 
         Arrays.stream(points).collect(Collectors.toSet()).forEach(
-                p -> p.attach(this)
+                p -> p.attachListener(this)
         );
 
         setWinding(points[0], points[2], points[4]);
@@ -432,13 +432,13 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
            ArrayList<GPoint> pointStream = line.explode(parent);
            line.removeParent(this);
            points.addAll(pointStream);
-           detach(line);
-           line.getPointStream().forEach(this::detach);
+           detachListener(line);
+           line.getPointStream().forEach(this::detachListener);
         });
         points.forEach(p -> {
             if (p != null) {
-                this.detach(p);
-                p.detach(this);
+                this.detachListener(p);
+                p.detachListener(this);
                 p.hasParent();
             }
         });

@@ -26,7 +26,7 @@ public class ButtonGroupSPanel extends javax.swing.JPanel implements SettingPane
      */
     public <E extends Enum> ButtonGroupSPanel(EnumSetting<E> setting) {
         initComponents();
-        setting.attach(this);
+        setting.attachListener(this);
         settingLabel3.setText(setting.getName());
         this.setToolTipText(setting.getDescription());
 

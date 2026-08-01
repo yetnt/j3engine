@@ -22,7 +22,7 @@ public class BooleanValueSPanel extends javax.swing.JPanel implements SettingPan
      */
     public BooleanValueSPanel(BooleanSetting setting, boolean defaultValue) {
         initComponents();
-        setting.attach(this);
+        setting.attachListener(this);
         settingLabel2.setText(setting.getName());
         this.setToolTipText(setting.getDescription());
         jCheckBox3.setSelected(defaultValue);

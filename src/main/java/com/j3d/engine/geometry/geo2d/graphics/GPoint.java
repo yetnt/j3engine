@@ -4,7 +4,6 @@ import com.j3d.StaticRefs;
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.geometry.geo2d.HasParents;
-import com.j3d.engine.geometry.geo2d.copy.CanCopy;
 import com.j3d.engine.geometry.geo2d.copy.CopyProperties;
 import com.j3d.engine.geometry.geo2d.copy.InvalidCopyException;
 import com.j3d.engine.geometry.geo3d.Thing;
@@ -184,8 +183,8 @@ public class GPoint extends GObject implements HasParents<GLine> {
     }
 
     public void explode(GLine line) {
-        line.detach(this);
-        this.detach(line);
+        line.detachListener(this);
+        this.detachListener(line);
         removeParent(line);
     }
 
@@ -196,7 +195,7 @@ public class GPoint extends GObject implements HasParents<GLine> {
 
     public static class GPointMovedEvent extends EventPayload<GPoint> {
         public GPointMovedEvent(GPoint e, SceneManager r) {
-            super(e, r);
+            super(e);
         }
     }
 

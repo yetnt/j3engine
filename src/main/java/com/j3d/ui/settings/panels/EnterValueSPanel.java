@@ -22,7 +22,7 @@ public class EnterValueSPanel extends javax.swing.JPanel implements SettingPanel
      */
     public EnterValueSPanel(StringSetting setting, String defaultValue) {
         initComponents();
-        setting.attach(this);
+        setting.attachListener(this);
         settingLabel.setText(setting.getName());
         this.setToolTipText(setting.getDescription());
         jTextField1.addActionListener(

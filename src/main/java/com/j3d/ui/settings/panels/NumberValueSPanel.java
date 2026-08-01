@@ -30,7 +30,7 @@ public class NumberValueSPanel<T extends Number> extends javax.swing.JPanel impl
      */
     public NumberValueSPanel(Setting setting, T defaultValue, T min, T max, T steps, Function<T, Integer> toInt, Function<Integer, T> toT) {
         initComponents();
-        setting.attach(this);
+        setting.attachListener(this);
         this.toInt = toInt;
         this.toT = toT;
         settingLabel1.setText(setting.getName());

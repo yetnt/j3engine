@@ -16,6 +16,6 @@ public class TriUpdatedBroadcast extends EventPayload<GTri> {
      * @param r The SceneManager instance.
      */
     public TriUpdatedBroadcast(GTri e, SceneManager r) {
-        super(e, r);
+        super(e);
     }
 }

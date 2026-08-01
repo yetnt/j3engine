@@ -1,6 +1,5 @@
 package com.j3d.engine.interact.input.mouse;
 
-import com.j3d.StaticRefs;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.react.events.EventPayload;
 
@@ -17,7 +16,7 @@ public class SnapPayload extends EventPayload<SnapMouseOwner> {
      * @param snap The object to snap to.
      */
     public SnapPayload(SnapMouseOwner e, GObject snap) {
-        super(e, StaticRefs.getSceneManager());
+        super(e);
         this.snap = snap;
     }
 

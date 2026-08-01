@@ -23,7 +23,7 @@ public abstract class EventEmitter implements EventEmitterInterface {
      * Attaches a listener to the event emitter.
      * @param event The listener to attach
      */
-    public void attach(EventListener event) {
+    public void attachListener(EventListener event) {
         genericAttach(registered, event);
     }
 
@@ -32,7 +32,7 @@ public abstract class EventEmitter implements EventEmitterInterface {
      * Detaches a listener from the event emitter.
      * @param event The listener to detach.
      */
-    public void detach(EventListener event) {
+    public void detachListener(EventListener event) {
         genericDetach(registered, event);
     }
 

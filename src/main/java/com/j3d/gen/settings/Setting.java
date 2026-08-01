@@ -72,12 +72,12 @@ public class Setting<T> implements SettingsChild, EventEmitterInterface {
     }
 
     @Override
-    public void attach(EventListener event) {
+    public void attachListener(EventListener event) {
         genericAttach(registered, event);
     }
 
     @Override
-    public void detach(EventListener event) {
+    public void detachListener(EventListener event) {
         genericDetach(registered, event);
     }
 
