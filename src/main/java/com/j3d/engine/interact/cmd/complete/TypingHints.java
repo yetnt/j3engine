@@ -136,7 +136,7 @@ public class TypingHints {
             return;
         }
         ArrayList<CmdToken> argsList = new ArrayList<>(tokens.subList(1, tokens.size()));
-        String[] usages = command.getAllUsages(commandAlias);
+        ArrayList<String> usages = command.usages(commandAlias);
 
         if (!taggedArgErr)
             StaticRefs.getCommandParser().safeJLabel().setText(
@@ -173,8 +173,8 @@ public class TypingHints {
      * @param tokens An {@link ArrayList} of {@link CmdToken} objects representing the user's input arguments.
      * @return An {@link ArrayList} of {@link String} containing the usage strings that are compatible with the given tokens.
      */
-    public ArrayList<String> findUsages(String alias, String[] usages, ArrayList<CmdToken> tokens) {
-        ArrayList<String> use = new ArrayList<>(List.of(usages));
+    public ArrayList<String> findUsages(String alias, ArrayList<String> usages, ArrayList<CmdToken> tokens) {
+        ArrayList<String> use = new ArrayList<>(usages);
         boolean firstPass = true;
         for (int i = 0; i < tokens.size(); i++) {
             if (!firstPass && use.isEmpty()) {

@@ -31,7 +31,7 @@ import static com.j3d.StaticRefs.getSceneManager;
 public class TriangleCmd extends Subcommand {
     public TriangleCmd() {
         super("tri", "Toggles the normal of a selected triangle or triangles.");
-        aliases("triangle").parseUsages().noArgs();
+        aliases("triangle").addNoArgUsage().parseUsages();
     }
 
     @Override

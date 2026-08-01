@@ -100,7 +100,7 @@ public class HelpCmd extends Command {
 
         // usages
 
-        cmd.getUsages().values().forEach(
+        cmd.getUsages().forEach(
                 usage -> stringBuilder.append(new JLabelRichText(cmdName + " " + usage, true).italic())
                         .append(JLabelRichText.LINE_BREAK)
         );

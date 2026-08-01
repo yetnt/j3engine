@@ -156,7 +156,7 @@ public class PrismCmd extends Command implements KeyedStatefulCommand {
         if (args.length < 2) {
             logLabel.setText("Not enough arguments given. Usage: "
                     + aliasUsed + " "
-                    + getUsages().values().stream().findAny().orElse(""));
+                    + getUsages().stream().findAny().orElse(""));
             CommandsManager.clearCurrent();
             return;
         }

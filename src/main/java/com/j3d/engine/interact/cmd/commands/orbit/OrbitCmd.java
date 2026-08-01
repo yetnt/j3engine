@@ -50,7 +50,7 @@ public class OrbitCmd extends Command implements StatefulCommand<Pair<Vector3, R
 
     public OrbitCmd() {
         super("orbit", "Orbits the camera around itself");
-        this.aliases("o", "rot").parseUsages().noArgs();
+        this.aliases("o", "rot").parseUsages().addNoArgUsage();
     }
 
     @Override

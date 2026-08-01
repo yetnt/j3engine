@@ -39,10 +39,7 @@ public class RandomUUIDCmd extends Subcommand {
     public RandomUUIDCmd() {
         super("id", "returns a random object uuid");
         aliases("rand", "random", "r", "uuid", "u")
-                .args(
-                        new TypedArg("bool", "random bool so this doesnt clash with another subcommand",
-                                true, Boolean.class)
-                )
+                .addNoArgUsage()
                 .parseUsages();
     }
 

@@ -16,7 +16,7 @@ public class CopyCmd extends Subcommand {
                 "copy",
                 "Copies a selection"
         );
-        this.aliases("cp", "c", "cpy").noArgs().parseUsages();
+        this.aliases("cp", "c", "cpy").addNoArgUsage().parseUsages();
     }
 
     @Override

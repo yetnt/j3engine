@@ -60,7 +60,7 @@ public class ExplodeCmd extends Command{
     public ExplodeCmd() {
         super("explode", "Destroy given geometry of triangles and lines into constituent points. (Uses tagged arguments)");
         this.aliases("expl", "ex", "destruct").parseUsages();
-        this.noArgs();
+        this.addNoArgUsage();
     }
 
     @Override

@@ -30,7 +30,7 @@ public class PasteCmd extends Subcommand {
                 new TypedArg(
                         "severConnections", "Whether connections should be severed", true,
                         Boolean.class)
-        ).noArgs().parseUsages();
+        ).addNoArgUsage().parseUsages();
     }
 
     @Override

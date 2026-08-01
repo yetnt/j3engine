@@ -34,8 +34,7 @@ public class EchoCmd extends Subcommand {
     public EchoCmd() {
         super("echo", "Echoes the input string.");
         this.aliases("e", "print", "p").args(
-                new TypedArg("message", "The message to echo", false, String.class),
-                new TypedArg("boolean", "Boolean", true, Boolean.class)
+                new TypedArg("message", "The message to echo", false, String.class)
         ).parseUsages();
     }
 

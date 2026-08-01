@@ -43,7 +43,8 @@ public class ToggleCmd extends Subcommand {
             "layers", "l",
             "history", "h",
             "debug", "dbg", "d",
-            "properties", "prop", "p");
+            "properties", "prop", "p",
+            "grid2d", "grid", "g");
 
     public ToggleCmd() {
         super("toggle", "Toggles a floating panel to be visible or hidden.");
@@ -68,6 +69,8 @@ public class ToggleCmd extends Subcommand {
                 StaticRefs.getDebugPanel().toggleHidden();
             case "p", "properties", "prop" ->
                 StaticRefs.getPropertiesPanel().toggleHidden();
+            case "g", "grid", "grid2d" ->
+                    StaticRefs.getGrid2DPanel().toggleHidden();
         }
 
     }

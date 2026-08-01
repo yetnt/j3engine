@@ -1,12 +1,12 @@
 package com.j3d.engine.interact.cmd.base;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.interact.cmd.Any;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.args.*;
 import com.j3d.ui.SafeJLabel;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -19,7 +19,7 @@ import java.util.stream.Stream;
  *     <li>Defining the command's identity and structure.</li>
  *     <li>Providing a {@link #run} method for subclasses to implement their specific logic.</li>
  *     <li>Supporting a hierarchy of commands through subcommand dispatching.</li>
- *     <li>A sophisticated mechanism ({@link #parseUsages}) to automatically generate
+ *     <li>A mechanism ({@link #parseUsages}) to automatically generate
  *         detailed usage strings based on its arguments, which is crucial for
  *         providing dynamic help and command suggestions to the user.</li>
  * </ul>
@@ -38,30 +38,14 @@ public class Command {
      * A user-friendly description of what the command does.
      */
     public String description;
-    public String usage = "This will be auto-generated.";
     public ArrayList<Argument> args = new ArrayList<>();
-    private boolean noArgs = false;
+    private boolean hasNoArgUsage = false;
     /**
      * A flag indicating whether this command accepts a variable number of tagged arguments (e.g., key:value pairs).
      */
     private boolean variadicTaggedArgs = true;
 
-    /**
-     * A map to hold different usages based on argument types.
-     * Where for a command which may have multiple types for one argument,
-     * the key is an ArrayList of Classes representing the types of the arguments,
-     * and the value is a String representing the usage for that specific combination of argument types.
-     * <p>
-     *     For example, for a command that can take either an Integer or a String as its first argument,
-     *     and a Double as its second argument, you might have two entries in the usages map:
-     *     <ul>
-     *         <li>Key: [Integer.class, Double.class], Value: "command &lt;int&gt; &lt;double&gt;"</li>
-     *         <li>Key: [String.class, Double.class], Value: "command &lt;string&gt; &lt;double&gt;"</li>
-     *     </ul>
-     *     This allows the command to provide specific usage instructions based on the types of arguments provided
-     * </p>
-     */
-    protected HashMap<ArrayList<Class<?>>, String> usages = new HashMap<>();
+    protected ArrayList<String> usages = new ArrayList<>();
 
     /**
      * Constructs a new Command.
@@ -96,10 +80,9 @@ public class Command {
         return this;
     }
 
-    public Command noArgs() {
-        noArgs = true;
-        usages.put(
-                new ArrayList<>(List.of(Void.class)),
+    public Command addNoArgUsage() {
+        hasNoArgUsage = true;
+        usages.add(
                 "...key:value"
         );
         return this;
@@ -151,10 +134,10 @@ public class Command {
 
     /**
      * Parses the usages of the command based on its arguments.
-     * This method populates the usages map with all possible usages of the command,
+     * This method populates the usages list with all possible usages of the command,
      * taking into account subcommands and typed arguments.
      * @implSpec
-     *     If an inheriting class does some special shenanigans with it's arguments.
+     *     If an inheriting class does some special shenanigans with its arguments.
      *     It should handle the parsing itself.
      * @return The Command instance with populated usages.
      */
@@ -162,18 +145,14 @@ public class Command {
         // This method is going to be long as hell I can already feel it.
         // For each returned usage, don't prefix the command name, just the arguments.
         // So later the suggestions can prefix the command name or the given alias for said command.
-        ArrayList<ArrayList<Class<?>>> typeAccumulator = new ArrayList<>();
         ArrayList<StringBuilder> usageAccumulator = new ArrayList<>();
         for (Argument arg : args) {
             if (arg instanceof Subcommand sub) {
                 // Step 1: If the argument is a Subcommand, get all it's usages and add
                 // them to this command's usages.
-                for (var entry : sub.getUsages().entrySet()) {
-                    ArrayList<Class<?>> key = new ArrayList<>();
-                    key.addFirst(String.class); // The first argument is always the subcommand name
-                    key.addAll(entry.getKey());
-                    String value = sub.aliases.getFirst() + " " + entry.getValue();
-                    usages.put(key, value);
+                for (var entry : sub.getUsages()) {
+                    String value = sub.aliases.getFirst() + " " + entry;
+                    usages.add(value);
                 }
                 continue; // If a command has subcommands, it can't have anything else. So exit early.
                 // Not bad. That was simple its just recursion.
@@ -193,12 +172,9 @@ public class Command {
                 for (int i = 0; i < tArg.getType().size(); i++) {
                     Class<?> cls = tArg.getType().get(i);
                     // If the accumulators are empty at the index, we need to add a new entry.
-                    if (typeAccumulator.size() <= i) {
-                        typeAccumulator.add(new ArrayList<>());
+                    if (usageAccumulator.size() <= i) {
                         usageAccumulator.add(new StringBuilder());
                     }
-                    ArrayList<Class<?>> clsList = typeAccumulator.get(i);
-                    clsList.add(cls);
                     StringBuilder usageAccumulatorEntry = usageAccumulator.get(i);
                     switch (cls.getSimpleName()) {
                         case "Thing" -> usageAccumulatorEntry.append("<thing").append(tArg.isOptional() ? "?" : "").append("> ");
@@ -223,13 +199,9 @@ public class Command {
                 // Another simple one, An ArgSet is always a set of predefined strings.
                 // However, we need to add this arg to every usage within the accumulator and typeAccumulator
                 // If the accumulators are empty, we need to add a new entry.
-                if (typeAccumulator.isEmpty()) {
-                    typeAccumulator.add(new ArrayList<>(List.of(String.class)));
+                if (usageAccumulator.isEmpty()) {
                     usageAccumulator.add(new StringBuilder("[" + String.join("|", setArg.getAllowedValues()) + "] "));
                 } else {
-                    for (ArrayList<Class<?>> clsList : typeAccumulator) {
-                        clsList.add(String.class);
-                    }
                     for (StringBuilder usage : usageAccumulator) {
                         usage.append("[").append(String.join("|", setArg.getAllowedValues())).append(setArg.isOptional() ? "?" : "").append("] ");
                     }
@@ -239,63 +211,26 @@ public class Command {
             }
         }
 
-        // Now we need to combine the typeAccumulator and usageAccumulator into the usages map.
-        for (int i = 0; i < typeAccumulator.size(); i++) {
-            ArrayList<Class<?>> key = typeAccumulator.get(i);
-            String value = usageAccumulator.get(i).toString().trim()
+        // Now we need to combine the usageAccumulator into the usages map.
+        for (StringBuilder stringBuilder : usageAccumulator) {
+            String value = stringBuilder.toString().trim()
                     + (variadicTaggedArgs ? " ...key:value" : "");
-            usages.put(key, value);
+            usages.add(value);
         }
 
         return this;
     }
 
-    /**
-     * Retrieves the map of all parsed usages for this command.
-     * The key is a list of argument types, and the value is the corresponding usage string.
-     *
-     * @return A {@link HashMap} containing all possible usage patterns.
-     */
-    public HashMap<ArrayList<Class<?>>, String> getUsages() {
-        return usages;
+    public ArrayList<String> getUsages() {
+        return new ArrayList<>(usages); // i tend to mutate this arry...
     }
 
-    /**
-     * Returns all usages that match or partially match the given argument types.
-     * This is useful for providing dynamic usage suggestions based on the types of arguments provided.
-     * @param alias The alias of the command to prefix the usage with.
-     * @param types The argument types to match against.
-     * @return An array of usage strings that match the given argument types.
-     */
-    public String[] returnUsagesWhere(String alias, Class<?> ...types) {
-        if (noArgs) return new String[]{alias + " ...key:value"};
-        ArrayList<String> matchedUsages = new ArrayList<>();
-        for (var entry : usages.entrySet()) {
-            ArrayList<Class<?>> key = entry.getKey();
-            String value = entry.getValue();
-            // Check if the key matches or partially matches the given types
-            boolean matches = true;
-            for (int i = 0; i < types.length; i++) {
-                if ((i >= key.size() || !key.get(i).isAssignableFrom(types[i])) &&
-                        (i < key.size() && key.get(i) != Any.class)) {
-                    matches = false;
-                    break;
-                }
-            }
-            if (matches) {
-                matchedUsages.add(alias + " " +value);
-            }
-        }
-        return matchedUsages.toArray(new String[0]);
-    }
-
-    public String[] getAllUsages(String alias) {
-        if (noArgs) return new String[]{alias + " ...key:value"};
-        String[] usages = getUsages().values().toArray(new String[0]);
-        for (int i = 0; i < usages.length; i++) {
-            usages[i] = alias + " " + usages[i];
-        }
-        return usages;
+    public ArrayList<String> usages(String alias) {
+//        if (noArgs) return new String[]{alias + " ...key:value"};
+        return usages
+                .stream()
+                .map(s -> alias + " " + s)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public boolean varTaggedArgs() {
@@ -303,6 +238,6 @@ public class Command {
     }
 
     public boolean hasNoArgs() {
-        return noArgs;
+        return hasNoArgUsage;
     }
 }

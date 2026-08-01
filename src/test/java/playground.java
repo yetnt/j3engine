@@ -6,7 +6,7 @@ public class playground {
     public static void main(String[] args) {
         PasteCmd p = new PasteCmd();
         System.out.println(
-                Arrays.toString(p.getUsages().values().toArray(new String[0]))
+                Arrays.toString(p.getUsages().toArray(new String[0]))
         );
     }
 }
