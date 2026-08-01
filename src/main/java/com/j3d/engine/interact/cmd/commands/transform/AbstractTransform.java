@@ -300,9 +300,10 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
                 case TranslateSelection ignored -> "Distance";
                 default -> throw new IllegalStateException("Unexpected value: " + this);
             });
-            label.setText(
+            label.setTextWithSeconds(
                     SafeJLabel.EMPH + " " + SafeJLabel.EMPH + SafeJLabel.EMPH +" using arrow keys and handles. | "
                             + SafeJLabel.EMPH + SafeJLabel.EMPH + " (Click "+SafeJLabel.EMPH+" to change)",
+                    -1,
                     capitalizedName,
                     new JLabelRichText(switch (faceMode) {
                         case THING -> "things";

@@ -14,4 +14,4 @@
 10222 -> #-links: Attempt to link to some arbitrary file (isn't .j3.md)
 10231 -> 
 
-50101 -> Copy exception
+40101 -> Copy Exception - Connection severed.

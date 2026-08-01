@@ -240,6 +240,15 @@ public class JLabelRichText {
         return String.format("#%02x%02x%02x", col.getRed(), col.getGreen(), col.getBlue());
     }
 
+    /**
+     * Applies a specific colour, size, and background colour to the font of the content.
+     * The colours are converted to hexadecimal RGB strings.
+     *
+     * @param col The font Colour object to apply.
+     * @param size The font size as a string (e.g., "1", "+2", "-3").
+     * @param backgroundCol The background Colour object to apply.
+     * @return The current JLabelRichText instance for method chaining.
+     */
     public JLabelRichText font(Color col, String size, Color backgroundCol) {
         LinkedHashMap<String, String> attributes = new LinkedHashMap<>();
         attributes.put("color", colToStr(col));
@@ -348,12 +357,26 @@ public class JLabelRichText {
     }
 
     /**
+     * Applies the opening and closing tags from another {@code JLabelRichText} instance
+     * to the current instance. The tags from {@code other} are added {@code before} the current
+     * instance's own tags, effectively wrapping the current instance's content and styling.
+     * @param other The {@code JLabelRichText} instance whose tags are to be applied.
+     * @return The current {@code JLabelRichText} instance for method chaining.
+     */
+    public JLabelRichText wrapUsing(JLabelRichText other) {
+        // add tags from other BEFORE current opening and closing
+        other.getOpen().reversed().forEach(o -> open.addFirst(o));
+        other.getClose().reversed().forEach(o -> close.addFirst(o));
+        return this;
+    }
+
+    /**
      * Wraps the generated HTML string with {@code <html>} tags.
      *
      * @return The complete HTML string, including the {@code <html>} and {@code </html>} tags.
      */
     public String wrapHTML() {
-        return "<html>" + toString() + "</html>";
+        return "<html>" + this + "</html>";
     }
 
     /**

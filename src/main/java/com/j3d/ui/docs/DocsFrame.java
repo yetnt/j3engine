@@ -267,16 +267,13 @@ public class DocsFrame extends javax.swing.JFrame {
             } else if (wrapper instanceof TWHeader header) {
                 addLinks(linksPerParagraph);
                 TextPanel p = new TextPanel(
-                        JLabelRichText.from(
-                                        new JLabelRichText(header.getContent())
-                                                .font(J3DTheme.TEXT_PRIMARY.color())
-                                                .toString(),
-                                        div
-                                )
+                        new JLabelRichText(header.getContent())
                                 .heading(JLabelRichText.Heading.fromInt(header.getHeaderLevel()))
                                 .addStyle(new LinkedHashMap<>(Map.of(
                                         "text-align", "center"
                                 )))
+                                .font(J3DTheme.TEXT_PRIMARY.color())
+                                .wrapUsing(div)
                                 .wrapHTML()
                 );
                 HeaderIdentifier headerIdentifier = new HeaderIdentifier(
@@ -312,10 +309,7 @@ public class DocsFrame extends javax.swing.JFrame {
                 });
                 contentPanel.add(
                         new TextPanel(
-                                JLabelRichText.from(
-                                        content.toString(),
-                                        div
-                                )
+                                new JLabelRichText(content.toString()).wrapUsing(div)
                                         .wrapHTML()
                         )
                 );
@@ -329,12 +323,9 @@ public class DocsFrame extends javax.swing.JFrame {
                             // just add some generic text with the image alt text instead
 
                             new TextPanel(
-                                    JLabelRichText.from(
-                                            new JLabelRichText("Image not found or invalid: " + alt)
-                                                    .font(J3DTheme.TEXT_PRIMARY.color())
-                                                    .toString(),
-                                            div
-                                    )
+                                    new JLabelRichText("Image not found or invalid: " + alt)
+                                            .font(J3DTheme.TEXT_PRIMARY.color())
+                                            .wrapUsing(div)
                                             .wrapHTML()
                             )
 

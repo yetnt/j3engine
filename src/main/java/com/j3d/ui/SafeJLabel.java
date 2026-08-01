@@ -116,6 +116,20 @@ public class SafeJLabel {
         setText(html);
     }
 
+    public void setTextWithSeconds(String text, int seconds, Object... emphasize) {
+        ArrayList<JLabelRichText> emphasized = Arrays.stream(emphasize).map(
+                t -> new JLabelRichText(t.toString()).underline().italic().font(J3DTheme.TEXT_PRIMARY.color())
+        ).collect(Collectors.toCollection(ArrayList::new));
+        String html = JLabelRichText.htmlOf(new JLabelRichText(text).font(J3DTheme.TEXT_SECONDARY.color()).bold().paragraph());
+        for (JLabelRichText emph : emphasized) {
+            html = html.replaceFirst(
+                    EMPH,
+                    emph.toString()
+            );
+        }
+        setText(html, seconds);
+    }
+
     public void clearLower() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
