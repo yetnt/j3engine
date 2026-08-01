@@ -70,7 +70,7 @@ public class Solids {
      * on the specified bottom and top planes, and then connecting their corresponding vertices to form the side faces.
      */
 
-    public static Thing prism(int radius, int sideFaceAmts, Layer parentLayer, SamePair<AxisPlane> planes) {
+    public static Thing prism(double radius, int sideFaceAmts, Layer parentLayer, SamePair<AxisPlane> planes) {
         Vector3 bottomCentre = planes.first.origin();
         Vector3 topCentre = planes.second.origin();
         AxisPlane bottomAxisPlane = planes.first;

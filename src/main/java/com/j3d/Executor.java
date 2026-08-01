@@ -16,6 +16,7 @@ import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.react.actions.Action;
+import com.j3d.utility.generic.SamePair;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,6 +57,7 @@ public class Executor {
 //        Thing cub = cube();
 //        StaticRefs.getCamera().lookAt(cube.getCentroid());
         Thing tris = threeTris();
+//        Thing name = name();
         StaticRefs.getCamera().lookAt(tris.getCentroid());
 //
 //        Thing solid = Solids.prism(
@@ -88,6 +90,42 @@ public class Executor {
         actions.forEach(SceneManager.history::add);
 
 
+    }
+
+    public Thing name() {
+        int length = 5;
+        double height = 10;
+        // K
+        // create a long cuub for long strafe of K
+        Thing K1 = Solids.prism(
+                0.5,
+                4,
+                layer,
+                AxisPlane.XZ(Vector3.ZERO).sameAxes(Vector3.Y, Vector3.Y(height))
+        );
+        Thing K2 = Solids.prism(
+                0.5,
+                4,
+                layer,
+                AxisPlane.XZ(Vector3.ZERO).sameAxes(Vector3.Y, Vector3.Y(height/2))
+        );
+        K2.rotate(
+                Vector3.Y((double) 10 /2),
+                new Vector3(1, 1, 0),
+                45
+        ).run();
+        Thing K3 = Solids.prism(
+                0.5,
+                4,
+                layer,
+                AxisPlane.XZ(Vector3.ZERO).sameAxes(Vector3.Y(height/2), Vector3.Y(height))
+        );
+        K3.rotate(
+                Vector3.Y((double) 10 /2),
+                new Vector3(1, 1, 0),
+                -45
+        ).run();
+        return K1;
     }
 
     public Thing cone(int max, int height) {

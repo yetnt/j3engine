@@ -618,6 +618,55 @@ public class Thing implements Interactable, HasProperties {
     }
 
     /**
+     * Rotates the Thing around a given axis by a given angle.
+     * @param centre The rotation centre.
+     * @param axis The rotation axis.
+     * @param angleDegrees The rotation angle in degrees.
+     * @return An Action which performs the rotation operation.
+     */
+    public VoidAction rotate(Vector3 centre, Vector3 axis, double angleDegrees) {
+        toggleSaved();
+        return new VoidAction() {
+            private final ArrayList<Vector3> originalPositions = new ArrayList<>();
+            @Override
+            public Void run() {
+                for (GPoint p : points) {
+                    originalPositions.add(p.getPivot().copy());
+                    Vector3 dir = p.getPivot().sub(centre);
+                    dir = dir.rotateAroundAxis(axis, angleDegrees);
+                    p.setPivot(centroid.add(dir));
+                }
+                notifyTris();
+                return null;
+            }
+
+            @Override
+            public void undo() {
+                for (int i = 0; i < points.size(); i++) {
+                    points.get(i).setPivot(originalPositions.get(i));
+                }
+                notifyTris();
+            }
+
+            @Override
+            public boolean isReversible() {
+                return true;
+            }
+
+            @Override
+            public String getDescription() {
+                return "Thing:Rotate";
+            }
+
+            private final LocalTime now = LocalTime.now();
+            @Override
+            public LocalTime getTime() {
+                return now;
+            }
+        };
+    }
+
+    /**
      * @implSpec Deletes all underlying GObjects. This overrides all history functionality
      * and should never be used by a user.
      */

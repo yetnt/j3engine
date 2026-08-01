@@ -21,9 +21,9 @@ public abstract class SelectionUtils {
          */
         SUBTRACT,
         /**
-         * VK_I and VK_SHIFT were pressed. Add to existing selections
+         * VK_U was pressed. Add to existing selections
          */
-        ADD
+        UNION
     }
 
     /**
@@ -40,7 +40,7 @@ public abstract class SelectionUtils {
      */
     public static <T> T usingSelectionVariant(InferredSelectionType st, boolean isStrict, T addCase, T subCase, T strictCase, T softCase) {
         return switch (st) {
-            case ADD -> addCase;
+            case UNION -> addCase;
             case SUBTRACT -> subCase;
             case NONE -> isStrict ? strictCase : softCase;
         };

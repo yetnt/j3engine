@@ -203,6 +203,10 @@ public enum GlobalKeybinds {
                     KeyBindings.clearInferredSelectionType
             )
     ),
+    /**
+     * Paired with {@link SelectionMouseOwner} where if the user holds down U while making a selection
+     * it will switch to the add selection mode. This is then reset by {@link GlobalKeybinds#SELECT_UNION_UP}
+     */
     SELECT_UNION_DOWN(
             new J3Key(
                     "selectAdd",
@@ -210,11 +214,14 @@ public enum GlobalKeybinds {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            SelectionUI.inferredSelection = SelectionUtils.InferredSelectionType.ADD;
+                            SelectionUI.inferredSelection = SelectionUtils.InferredSelectionType.UNION;
                         }
                     }
             )
     ),
+    /**
+     * Wrapper of {@link KeyBindings#clearInferredSelectionType}
+     */
     SELECT_UNION_UP(
             new J3Key(
                     "selectAddUp",
