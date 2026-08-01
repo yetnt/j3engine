@@ -1,5 +1,8 @@
 package com.j3d.engine.geometry.geo2d.graphics;
 
+import com.j3d.engine.geometry.geo2d.copy.CanCopy;
+import com.j3d.engine.geometry.geo2d.copy.CopyProperties;
+import com.j3d.engine.geometry.geo2d.copy.InvalidCopyException;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventEmitter;
 import com.j3d.engine.react.events.EventListener;
@@ -32,7 +35,7 @@ import java.util.*;
  * @see GLine
  * @see GTri
  */
-public abstract class GObject extends EventEmitter implements EventListener, HasProperties {
+public abstract class GObject extends EventEmitter implements EventListener, HasProperties, CanCopy {
     protected Color col = Color.BLACK;
     /**
      * The pivot point of this geometry. Unless a {@link GPoint} where this represents the actual location
@@ -172,6 +175,11 @@ public abstract class GObject extends EventEmitter implements EventListener, Has
      */
     public void setId(UUID id) {
         Id = id;
+    }
+
+    @Override
+    public void copy(CopyProperties props) throws InvalidCopyException {
+        // implementors override.
     }
 
     @Override

@@ -5,11 +5,14 @@ import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.draw.tris.SortMethod;
 import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.geometry.geo2d.Winding;
+import com.j3d.engine.geometry.geo2d.copy.CopyProperties;
+import com.j3d.engine.geometry.geo2d.copy.InvalidCopyException;
 import com.j3d.engine.geometry.geo3d.Thing;
 
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -326,6 +329,33 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
     }
     public Winding getWinding() {
         return winding;
+    }
+
+    @Override
+    public void copy(CopyProperties props) throws InvalidCopyException {
+        // c
+    }
+
+    private GTri copy(GLine lnA, GLine lnB, GLine lnC, Winding winding) {
+        GTri tri = new GTri(getColour(), lnA, lnB, lnC, winding);
+        tri.setHidden(isHidden());
+        return tri;
+    }
+
+    private Winding getWindingFromCopy(CopyProperties properties) {
+        Function<UUID, GPoint> getter = id -> {
+            GObject o = properties.getCopies().stream()
+                    .filter(copy -> copy.original().equals(id))
+                    .collect(Collectors.toCollection(ArrayList::new))
+                    .getFirst()
+                    .copy();
+            return (GPoint) o;
+        };
+        GPoint a = getter.apply(winding.first().getId());
+        GPoint b = getter.apply(winding.second().getId());
+        GPoint c = getter.apply(winding.third().getId());
+
+        return new Winding(a, b, c);
     }
 
     @Override

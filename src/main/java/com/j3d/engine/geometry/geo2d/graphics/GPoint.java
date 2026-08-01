@@ -4,6 +4,9 @@ import com.j3d.StaticRefs;
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.geometry.geo2d.HasParents;
+import com.j3d.engine.geometry.geo2d.copy.CanCopy;
+import com.j3d.engine.geometry.geo2d.copy.CopyProperties;
+import com.j3d.engine.geometry.geo2d.copy.InvalidCopyException;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
@@ -167,6 +170,18 @@ public class GPoint extends GObject implements HasParents<GLine> {
         StaticRefs.getSceneManager().hasNoParent(this);
     }
 
+    @Override
+    public void copy(CopyProperties props) throws InvalidCopyException {
+        //
+    }
+
+    public GPoint copy() {
+        GPoint p = new GPoint(
+                getPivot()
+        );
+        p.setColour(getColour());
+        return p;
+    }
 
     public void explode(GLine line) {
         line.detach(this);

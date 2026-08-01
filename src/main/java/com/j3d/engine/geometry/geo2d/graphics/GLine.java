@@ -3,6 +3,8 @@ package com.j3d.engine.geometry.geo2d.graphics;
 import com.j3d.StaticRefs;
 import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.geometry.geo2d.HasParents;
+import com.j3d.engine.geometry.geo2d.copy.CopyProperties;
+import com.j3d.engine.geometry.geo2d.copy.InvalidCopyException;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.react.events.IdempotentEventListener;
@@ -241,6 +243,20 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
     public void handlePossibleDuplicates(EventType type, GPoint.GPointMovedEvent payload) {
         Vector3 piv = getA().getPivot().add(getB().getPivot()).div(2);
         if (!piv.equals(getDupeObjectToCheck()))  setPivot(piv);
+    }
+
+    @Override
+    public void copy(CopyProperties props) throws InvalidCopyException {
+        // c
+    }
+
+    protected GLine copy(GPoint copyA, GPoint copyB) {
+        GLine line = new GLine(
+                copyA,
+                copyB
+        );
+        line.setColour(getColour());
+        return line;
     }
 
     public ArrayList<GPoint> explode(Thing parent) {
