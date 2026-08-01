@@ -129,7 +129,7 @@ public class SelectionPreCondition implements PreCommandExecution {
     public String getLogText() {
         return JLabelRichText.htmlOf(
                 new JLabelRichText("Make a selection then "),
-                new JLabelRichText("left click to continue").bold().underline(),
+                new JLabelRichText("left click to continue ").bold().underline(),
                 new JLabelRichText("this command. "),
                 new JLabelRichText("(Or, hit escape to abort)").underline()
         );

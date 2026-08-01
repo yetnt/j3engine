@@ -11,8 +11,8 @@
  *     If generic copying via selection is needed, rather
  *     <ol>
  *         <li>Select the GObjects in the scene</li>
- *         <li>Call {@link com.j3d.engine.interact.cmd.commands.copyPaste.CopyCmd}</li>
- *         <li>Call {@link com.j3d.engine.interact.cmd.commands.copyPaste.PasteCmd}</li>
+ *         <li>Call {@link com.j3d.engine.interact.cmd.commands.clipboard.CopyCmd}</li>
+ *         <li>Call {@link com.j3d.engine.interact.cmd.commands.clipboard.PasteCmd}</li>
  *     </ol>
  *     <br>
  *     Otherwise the setup is as follows:

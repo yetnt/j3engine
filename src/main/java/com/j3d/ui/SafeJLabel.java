@@ -2,6 +2,7 @@ package com.j3d.ui;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.CommandParser;
+import com.j3d.threads.TimeoutWorker;
 import com.j3d.ui.engine.CommandPalette;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.utility.generators.JLabelRichText;
@@ -10,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -22,19 +24,57 @@ import java.util.stream.Collectors;
 public class SafeJLabel {
     private JLabel label;
     private JLabel label2;
+    private TimeoutWorker higher;
+    private TimeoutWorker lower;
 
     public SafeJLabel(JLabel label, JLabel label2) {
         this.label = label;
         this.label2 = label2;
     }
 
+    private void addTimeoutWorker(boolean higher, Runnable runnable, int seconds) {
+        if (higher) {
+            if (this.higher != null)
+                this.higher.cancel(true);
+
+            if (seconds < 0) return;
+
+            this.higher = new TimeoutWorker(seconds, runnable);
+            this.higher.execute();
+        } else {
+            if (this.lower != null)
+                this.lower.cancel(true);
+
+            if (seconds < 0) return;
+
+            this.lower = new TimeoutWorker(seconds, runnable);
+            this.lower.execute();
+        }
+    }
+
+    public static final int ERROR_SECONDS = 10;
+
     public void setText(String text) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                label.setText(text);
-                StaticRefs.getMainFrame().repaint();
-            }
+        setText(text, 5);
+    }
+
+    public void setText(String text, int seconds) {
+        SwingUtilities.invokeLater(() -> {
+            label.setText(text);
+            StaticRefs.getMainFrame().repaint();
+            addTimeoutWorker(true, SafeJLabel.this::clearHigher, seconds);
+        });
+    }
+
+    public void setLower(String text) {
+        setLower(text, 5);
+    }
+
+    public void setLower(String text, int seconds) {
+        SwingUtilities.invokeLater(() -> {
+            label2.setText(text);
+            StaticRefs.getMainFrame().repaint();
+            addTimeoutWorker(false, SafeJLabel.this::clearLower, seconds);
         });
     }
 
@@ -42,7 +82,7 @@ public class SafeJLabel {
         setText(
                 JLabelRichText.htmlOf(
                         new JLabelRichText(text).font(Color.RED)
-                )
+                ), ERROR_SECONDS
         );
     }
 
@@ -59,7 +99,7 @@ public class SafeJLabel {
                     emph.toString()
             );
         }
-        setText(html);
+        setText(html, ERROR_SECONDS);
     }
 
     public void setText(String text, Object... emphasize) {
@@ -74,16 +114,6 @@ public class SafeJLabel {
             );
         }
         setText(html);
-    }
-
-    public void setLower(String text) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                label2.setText(text);
-                StaticRefs.getMainFrame().repaint();
-            }
-        });
     }
 
     public void clearLower() {

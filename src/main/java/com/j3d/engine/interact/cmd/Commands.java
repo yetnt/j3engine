@@ -3,8 +3,7 @@ package com.j3d.engine.interact.cmd;
 import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.commands.*;
-import com.j3d.engine.interact.cmd.commands.copyPaste.CopyCmd;
-import com.j3d.engine.interact.cmd.commands.copyPaste.PasteCmd;
+import com.j3d.engine.interact.cmd.commands.clipboard.*;
 import com.j3d.engine.interact.cmd.commands.debug.DebugCmd;
 import com.j3d.engine.interact.cmd.commands.engine.EngineCmd;
 import com.j3d.engine.interact.cmd.commands.measure.MeasureCmd;
@@ -38,9 +37,7 @@ public class Commands {
     public HelpCmd helpCmd = new HelpCmd();
     public PrismCmd prismCmd = new PrismCmd();
     public MeasureCmd measureCmd = new MeasureCmd();
-    public CopyCmd copyCmd = new CopyCmd();
-    public PasteCmd pasteCmd = new PasteCmd();
-    public SelectCmd selectCmd = new SelectCmd();
+    public ClipboardCmd clipboardCmd = new ClipboardCmd();
 
     /**
      * Default (empty) constructor
@@ -66,9 +63,7 @@ public class Commands {
                 debug, transform, lookAt,
                 teleport, orbit, engine,
                 explodeCmd, uiCmd, helpCmd,
-                prismCmd, measureCmd,
-                copyCmd, pasteCmd,
-                selectCmd
+                prismCmd, measureCmd, clipboardCmd
         ));
     }
 }

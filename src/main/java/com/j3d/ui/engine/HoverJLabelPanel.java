@@ -19,6 +19,8 @@ public class HoverJLabelPanel extends javax.swing.JPanel {
     public HoverJLabelPanel() {
         initComponents();
         J3DTheme.commitAsGenericLbl(label, false);
+        this.setBackground(J3DTheme.BACKGROUND.color());
+        J3DTheme.commit(J3DTheme.BACKGROUND, this::setBackground);
     }
 
     public JLabel getLabel() {
@@ -36,7 +38,6 @@ public class HoverJLabelPanel extends javax.swing.JPanel {
 
         label = new javax.swing.JLabel();
 
-        setOpaque(false);
         setLayout(new java.awt.GridLayout(1, 0));
 
         label.setForeground(J3DTheme.TEXT_SECONDARY.color());

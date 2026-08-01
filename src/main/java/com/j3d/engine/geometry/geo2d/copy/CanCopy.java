@@ -1,6 +1,6 @@
 package com.j3d.engine.geometry.geo2d.copy;
 
-import com.j3d.engine.interact.cmd.commands.copyPaste.*;
+import com.j3d.engine.interact.cmd.commands.clipboard.*;
 
 /**
  * Interface for objects that can be copied.

@@ -1,22 +1,22 @@
-package com.j3d.engine.interact.cmd.commands.copyPaste;
+package com.j3d.engine.interact.cmd.commands.clipboard;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
+import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
-import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.ui.SafeJLabel;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class CopyCmd extends Command {
+public class CopyCmd extends Subcommand {
 
     public CopyCmd() {
         super(
                 "copy",
                 "Copies a selection"
         );
-        this.aliases("cp", "c").noArgs().parseUsages();
+        this.aliases("cp", "c", "cpy").noArgs().parseUsages();
     }
 
     @Override

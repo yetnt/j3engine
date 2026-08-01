@@ -35,5 +35,5 @@ public enum MOwner {
     /**
      * Owner for orbit the camera
      */
-    ORBIT,
+    ORBIT, ALWAYS,
 }

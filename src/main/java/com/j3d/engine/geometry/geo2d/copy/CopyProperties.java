@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
  * @see CanCopy
  * @see CopyPropertiesBuilder
  * @see InvalidCopyException
- * @see com.j3d.engine.interact.cmd.commands.copyPaste.CopyCmd
- * @see com.j3d.engine.interact.cmd.commands.copyPaste.PasteCmd
+ * @see com.j3d.engine.interact.cmd.commands.clipboard.CopyCmd
+ * @see com.j3d.engine.interact.cmd.commands.clipboard.PasteCmd
  */
 public class CopyProperties {
     private boolean softDependencies = false;

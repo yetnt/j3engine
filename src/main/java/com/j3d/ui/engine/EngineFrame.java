@@ -44,6 +44,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiConsumer;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -106,7 +107,10 @@ public class EngineFrame extends javax.swing.JFrame {
      * @see CommandParser
      */
     private CommandPalette commandPalette;
-
+    private ContextMenu contextMenu;
+    public void showContextMenu(int x, int y) {
+        contextMenu.show(this, x, y);
+    }
     public CommandPalette getCommandPalette() {
         return commandPalette;
     }
@@ -172,6 +176,7 @@ public class EngineFrame extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
+        buildContextMenu();
         initMouseOwners();
         initComponents();
         complete(runExecutor);
@@ -370,11 +375,44 @@ public class EngineFrame extends javax.swing.JFrame {
         });
 
         // Initialise all keybinds to be part of the mainPanel and add to the static references
-        InputMap im = mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        ActionMap am = mainPanel.getActionMap();
         StaticRefs.registerGlobalKeybinds(new KeyBindings(this));
 
         StaticRefs.getLog().uiPrintLn("EngineFrame completed building");
+    }
+
+    private void buildContextMenu() {
+        contextMenu = new ContextMenu()
+                .item("Copy", KeyEvent.VK_C,
+                        KeyStroke.getKeyStroke(KeyEvent.VK_C, 0),
+                        () -> copyMenuItemActionPerformed(null)
+                )
+                .item("Paste", KeyEvent.VK_P,
+                        KeyStroke.getKeyStroke(KeyEvent.VK_P, 0),
+                        () -> pasteMenuItemActionPerformed(null)
+                )
+                .separator()
+                .item("Translate", KeyEvent.VK_T,
+                        KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.ALT_DOWN_MASK),
+                        () -> transformCommand("translate")
+                )
+                .item("Rotate", KeyEvent.VK_R,
+                        KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_DOWN_MASK),
+                        () -> transformCommand("rotate")
+                )
+                .item("Scale", KeyEvent.VK_S,
+                        KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.ALT_DOWN_MASK),
+                        () -> transformCommand("scale")
+                );
+    }
+
+    private void transformCommand(String subcommand) {
+        StaticRefs.getCommandParser()
+                .runCommand(
+                        CommandsManager.commands.transform,
+                        "transform",
+                        new ArrayList<>(List.of(subcommand, "p")),
+                        new ArrayList<>()
+                );
     }
 
     /**
@@ -511,6 +549,7 @@ public class EngineFrame extends javax.swing.JFrame {
         ArrayList<MouseOwner> owners = new ArrayList<>();
         owners.add(SelectionManager.selectionMouseOwner);
         owners.add(new NoMouseOwner());
+        owners.add(new AlwaysMouseOwner());
         owners.add(ScaleSelection.scaleMouseOwner);
         owners.add(TranslateSelection.translateMouseOwner);
         owners.add(RotateSelection.rotateMouseOwner);
@@ -997,18 +1036,18 @@ public class EngineFrame extends javax.swing.JFrame {
     private void pasteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteMenuItemActionPerformed
         StaticRefs.getCommandParser()
                 .runCommand(
-                        CommandsManager.commands.pasteCmd,
-                        "paste",
-                        new ArrayList<>(), new ArrayList<>()
+                        CommandsManager.commands.clipboardCmd,
+                        "clip",
+                        new ArrayList<>(List.of("paste")), new ArrayList<>()
                 );
     }//GEN-LAST:event_pasteMenuItemActionPerformed
 
     private void copyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyMenuItemActionPerformed
         StaticRefs.getCommandParser()
                 .runCommand(
-                        CommandsManager.commands.copyCmd,
-                        "copy",
-                        new ArrayList<>(), new ArrayList<>()
+                        CommandsManager.commands.clipboardCmd,
+                        "clip",
+                        new ArrayList<>(List.of("copy")), new ArrayList<>()
                 );
     }//GEN-LAST:event_copyMenuItemActionPerformed
 

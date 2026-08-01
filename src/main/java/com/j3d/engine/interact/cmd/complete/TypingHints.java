@@ -120,7 +120,8 @@ public class TypingHints {
             }
 
             StaticRefs.getCommandParser().safeJLabel().setLower(
-                    JLabelRichText.htmlOf(likely.toString(), partial.toString())
+                    JLabelRichText.htmlOf(likely.toString(), partial.toString()),
+                    20
             );
 
             return;
@@ -139,7 +140,8 @@ public class TypingHints {
 
         if (!taggedArgErr)
             StaticRefs.getCommandParser().safeJLabel().setText(
-                    new JLabelRichText(command.description).bold().wrapHTML()
+                    new JLabelRichText(command.description).bold().wrapHTML(),
+                    20
             );
 
         ArrayList<String> usag = findUsages(commandAlias, usages, argsList);
@@ -157,7 +159,8 @@ public class TypingHints {
                         colourGivenUsage(usag.getFirst(), tokens),
                         command,
                         init
-                ).wrapHTML()
+                ).wrapHTML(),
+                20
         );
     }
 

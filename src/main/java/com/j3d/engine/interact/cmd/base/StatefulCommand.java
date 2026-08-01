@@ -70,7 +70,7 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
                 JLabelRichText.htmlOf(
                         new JLabelRichText("hit ENTER to confirm command, otherwise escape using ESC")
                                 .bold().italic().font(J3DTheme.TEXT_PRIMARY.color())
-                )
+                ), -1
         );
 
         StaticRefs.getMainFrame().requestFocusInWindow(); // get out of the command window focus. very important

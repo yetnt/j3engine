@@ -49,12 +49,14 @@ public class HelpCmd extends Command {
                     .append(JLabelRichText.LINE_BREAK).append(JLabelRichText.LINE_BREAK);
             // show 10 commands only
             AtomicInteger maxCmd = new AtomicInteger();
-            ArrayList<Command> commands = getCommands(maxCmd, stringBuilder);
+            int max = 20;
+            ArrayList<Command> commands = getCommands(maxCmd, max, stringBuilder);
 
-            if (maxCmd.get() == 10) {
+
+            if (maxCmd.get() == max) {
                 stringBuilder
                         .append(JLabelRichText.LINE_BREAK).append(JLabelRichText.LINE_BREAK)
-                        .append(new JLabelRichText("and like " + (commands.size()-10) + " more...").italic());
+                        .append(new JLabelRichText("and like " + (commands.size()-max) + " more...").italic());
             }
 
             StaticRefs.getHoverLabel().setText(
@@ -108,12 +110,12 @@ public class HelpCmd extends Command {
         StaticRefs.getHoverLabel().setText(new JLabelRichText(stringBuilder.toString()).wrapHTML());
     }
 
-    private static ArrayList<Command> getCommands(AtomicInteger maxCmd, StringBuilder stringBuilder) {
+    private static ArrayList<Command> getCommands(AtomicInteger maxCmd, int max, StringBuilder stringBuilder) {
         ArrayList<Command> commands = CommandsManager.commands.getCommands();
         commands.forEach(
                 cmd -> {
-                    if (maxCmd.get() < 10) maxCmd.getAndIncrement();
-                    if (maxCmd.get() == 10) return;
+                    if (maxCmd.get() < max) maxCmd.getAndIncrement();
+                    if (maxCmd.get() == max) return;
 
                     stringBuilder.append(
                             new JLabelRichText(cmd.aliases.getFirst()).bold()

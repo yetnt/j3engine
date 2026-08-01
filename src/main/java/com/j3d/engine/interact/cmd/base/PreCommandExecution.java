@@ -71,7 +71,7 @@ public interface PreCommandExecution {
      */
     default boolean execute(SafeJLabel logLabel) {
         if (!getCondition().get()) {
-            logLabel.setText(getLogText());
+            logLabel.setText(getLogText(), -1);
             if (!getEventEmitterToAttachTo().isAttached(getPassListener()))
                 getEventEmitterToAttachTo().attachListener(getPassListener());
             return false;

@@ -1,4 +1,4 @@
-package com.j3d.engine.interact.cmd.commands.copyPaste;
+package com.j3d.engine.interact.cmd.commands.clipboard;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.geometry.geo2d.copy.CopyProperties;
@@ -10,9 +10,9 @@ import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandsManager;
+import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.args.TypedArg;
-import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.utility.buckets.Buckets;
@@ -20,7 +20,7 @@ import com.j3d.utility.buckets.Buckets;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PasteCmd extends Command {
+public class PasteCmd extends Subcommand {
     public PasteCmd() {
         super(
                 "paste",

@@ -15,4 +15,3 @@
 10231 -> 
 
 50101 -> Copy exception
-50102 -> Copy exception: Tri cannot exist
