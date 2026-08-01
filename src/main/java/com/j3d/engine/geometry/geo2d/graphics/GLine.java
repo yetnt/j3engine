@@ -247,7 +247,9 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
 
     @Override
     public void copy(CopyProperties props) throws InvalidCopyException {
-        // c
+        GPoint a = props.existsOrElse(pointA.getId(), pointA::copySelf);
+        GPoint b = props.existsOrElse(pointB.getId(), pointB::copySelf);
+        props.add(getId(), copy(a, b));
     }
 
     protected GLine copy(GPoint copyA, GPoint copyB) {
@@ -256,6 +258,19 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
                 copyB
         );
         line.setColour(getColour());
+        return line;
+    }
+
+    public static GLine getOrCreateCopy(CopyProperties copyProperties, GLine original) {
+        // check if the line already exists
+        if (copyProperties.exists(original.getId()))
+            return (GLine) copyProperties.get(original.getId());
+
+        // if it doesnt the points are guarnteed already existing
+        GPoint a = (GPoint) copyProperties.get(original.getA().getId());
+        GPoint b = (GPoint) copyProperties.get(original.getB().getId());
+        GLine line = original.copy(a, b);
+        copyProperties.add(original.getId(), line);
         return line;
     }
 

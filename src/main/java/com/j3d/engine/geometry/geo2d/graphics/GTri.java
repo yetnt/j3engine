@@ -5,6 +5,7 @@ import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.draw.tris.SortMethod;
 import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.geometry.geo2d.Winding;
+import com.j3d.engine.geometry.geo2d.copy.Copy;
 import com.j3d.engine.geometry.geo2d.copy.CopyProperties;
 import com.j3d.engine.geometry.geo2d.copy.InvalidCopyException;
 import com.j3d.engine.geometry.geo3d.Thing;
@@ -333,7 +334,10 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
     @Override
     public void copy(CopyProperties props) throws InvalidCopyException {
-        // c
+        GLine A = GLine.getOrCreateCopy(props, LegA);
+        GLine B = GLine.getOrCreateCopy(props, LegB);
+        GLine C = GLine.getOrCreateCopy(props, LegC);
+        props.add(getId(), copy(A, B, C, getWindingFromCopy(props)));
     }
 
     private GTri copy(GLine lnA, GLine lnB, GLine lnC, Winding winding) {

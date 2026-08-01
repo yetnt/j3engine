@@ -42,6 +42,7 @@ public class SceneManager {
 
     public ArrayDeque<GPoint> points = new ArrayDeque<>();
     private HashSet<HasParents<? extends GObject>> unparented = new HashSet<>();
+    private ArrayList<GObject> copied = new ArrayList<>();
 
     /**
      * The current selection made by the user.
@@ -69,6 +70,23 @@ public class SceneManager {
         layers.add(bg); // the default layer
         bg.add(new Thing(this, bg, "bg"));
         layers.add(new Layer()); // testing layer.
+    }
+
+    private final String usable = "Usable";
+    public Layer usableLayer() {
+        boolean l = layers.stream()
+                .anyMatch(la -> la.getIdentifier().equals(usable));
+        if (l) {
+            return layers.stream()
+                    .filter(layer -> layer.getIdentifier().equals(usable))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("Usable layer not found despite anyMatch returning true"));
+        } else {
+            Layer newUsableLayer = new Layer(usable);
+            layers.add(newUsableLayer);
+            return newUsableLayer;
+        }
+
     }
 
     /**
@@ -433,7 +451,7 @@ public class SceneManager {
         return currentSelection;
     }
 
-    public ArrayList<GObject> getSelected() {
+    public HashSet<GObject> getSelected() {
         return currentSelection.getSelected();
     }
 
@@ -564,5 +582,21 @@ public class SceneManager {
             }
         }
         return null;
+    }
+
+    public void setCopied(ArrayList<GObject> copied) {
+        this.copied = copied;
+    }
+
+    public void clearCopied() {
+        copied.clear();
+    }
+
+    public ArrayList<GObject> getCopied() {
+        return new ArrayList<>(copied);
+    }
+
+    public void select(GObject gobject) {
+        currentSelection.getSelected().add(gobject);
     }
 }

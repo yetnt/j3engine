@@ -10,6 +10,7 @@ import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.ui.SafeJLabel;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 /**
@@ -38,7 +39,7 @@ public class MeasureCmd extends Command {
     public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(logLabel, aliasUsed, args, taggedArgs);
         if (args.length < 1) {
-            ArrayList<GObject> selected = StaticRefs.getSceneManager().getSelected();
+            HashSet<GObject> selected = StaticRefs.getSceneManager().getSelected();
             if (selected.isEmpty()) {
                 logLabel.setText("Select object(s) to infer a measurement on.");
                 return;
@@ -50,7 +51,7 @@ public class MeasureCmd extends Command {
         dispatchToSubcommands(alias, logLabel, args, taggedArgs);
     }
 
-    public void infer(ArrayList<GObject> selected, SafeJLabel logLabel) {
+    public void infer(HashSet<GObject> selected, SafeJLabel logLabel) {
         // see if there's 2 points and a line
         if (selected.size() == 3 || selected.size() == 2) {
             // check that there's a single line in the list.

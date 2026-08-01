@@ -10,6 +10,7 @@ import com.j3d.Executor;
 import com.j3d.engine.DefaultObjectDeletionException;
 import com.j3d.engine.geometry.Dim;
 import com.j3d.engine.interact.Interactable;
+import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.commands.engine.ExitCmd;
 import com.j3d.engine.interact.cmd.commands.orbit.*;
 import com.j3d.engine.interact.cmd.commands.transform.*;
@@ -565,6 +566,8 @@ public class EngineFrame extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         settingsMenuItem = new javax.swing.JMenuItem();
         editJMenu = new javax.swing.JMenu();
+        copyMenuItem = new javax.swing.JMenuItem();
+        pasteMenuItem = new javax.swing.JMenuItem();
         undoJMenuItem = new javax.swing.JMenuItem();
         redoJMenuItem = new javax.swing.JMenuItem();
         mouseJMenu = new javax.swing.JMenu();
@@ -632,7 +635,7 @@ public class EngineFrame extends javax.swing.JFrame {
         });
         jMenu1.add(newProjectJMenuItem);
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem1.setMnemonic('C');
         jMenuItem1.setText("Close Project");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
@@ -654,6 +657,24 @@ public class EngineFrame extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         editJMenu.setText("Edit");
+
+        copyMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        copyMenuItem.setText("Copy");
+        copyMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                copyMenuItemActionPerformed(evt);
+            }
+        });
+        editJMenu.add(copyMenuItem);
+
+        pasteMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        pasteMenuItem.setText("Paste");
+        pasteMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pasteMenuItemActionPerformed(evt);
+            }
+        });
+        editJMenu.add(pasteMenuItem);
 
         undoJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         undoJMenuItem.setText("Undo");
@@ -973,6 +994,24 @@ public class EngineFrame extends javax.swing.JFrame {
         Startup.runnable.run();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void pasteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteMenuItemActionPerformed
+        StaticRefs.getCommandParser()
+                .runCommand(
+                        CommandsManager.commands.pasteCmd,
+                        "paste",
+                        new ArrayList<>(), new ArrayList<>()
+                );
+    }//GEN-LAST:event_pasteMenuItemActionPerformed
+
+    private void copyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyMenuItemActionPerformed
+        StaticRefs.getCommandParser()
+                .runCommand(
+                        CommandsManager.commands.copyCmd,
+                        "copy",
+                        new ArrayList<>(), new ArrayList<>()
+                );
+    }//GEN-LAST:event_copyMenuItemActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1019,6 +1058,7 @@ public class EngineFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JMenuItem deleteAccountJMenuItem;
     private javax.swing.JMenu editJMenu;
     private javax.swing.JMenuItem exportAsPNGJMenuItem;
@@ -1032,6 +1072,7 @@ public class EngineFrame extends javax.swing.JFrame {
     private javax.swing.JMenu mouseJMenu;
     private javax.swing.JMenuItem newProjectJMenuItem;
     private javax.swing.JMenuItem openProjectMenuItem;
+    private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JMenuItem redoJMenuItem;
     private javax.swing.JMenuItem redrawJMenuItem;
     private javax.swing.JMenuItem resetCameraJMenuItem;

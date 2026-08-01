@@ -31,6 +31,7 @@ import java.time.LocalTime;
 import java.util.*;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -381,6 +382,24 @@ public class Thing implements Interactable, HasProperties {
         name = s;
         getIdentity().setLabel(s);
         toggleSaved();
+    }
+
+    public static void moveObjects(ArrayList<GObject> stuff, Thing to) {
+        // find all parent Thing where the stuff live.
+        HashSet<Thing> things = stuff
+                .stream()
+                .map(StaticRefs.getSceneManager()::findParentThing)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toCollection(HashSet::new));
+        for (Thing t : things) {
+            t.removeObjects(stuff);
+        }
+
+        to.addObjs(stuff.toArray(GObject[]::new));
+    }
+
+    private void removeObjects(ArrayList<GObject> stuff) {
+        objects.removeAll(stuff);
     }
 
     /**

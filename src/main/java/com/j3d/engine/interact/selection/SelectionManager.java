@@ -2,11 +2,14 @@ package com.j3d.engine.interact.selection;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.SceneManager;
+import com.j3d.engine.geometry.geo2d.graphics.GLine;
+import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo3d.Thing;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.function.Predicate;
 
 import static com.j3d.StaticRefs.getSceneManager;
@@ -28,7 +31,7 @@ import static com.j3d.StaticRefs.getSceneManager;
  * @author Lehlogonolo Poole
  */
 public class SelectionManager {
-    private final ArrayList<GObject> selected = new ArrayList<>();
+    private final HashSet<GObject> selected = new HashSet<>();
     public static SelectionMouseOwner selectionMouseOwner = new SelectionMouseOwner();
 
     /**
@@ -40,6 +43,7 @@ public class SelectionManager {
         for (Layer layer : objects) {
             for (Thing t : layer) {
                 for (GObject obj : t.getObjects()) {
+                    HashSet<GObject> objectsToSelect = new HashSet<>();
                     switch (selectionQuery.type) {
                         case BOUNDS_STRICT -> {
                             // If the entire object is within the selection, it is considered selected.
@@ -47,7 +51,16 @@ public class SelectionManager {
                         }
                         case BOUNDS_SOFT -> {
                             // If any part of the object is within the selection, it is considered selected.
-                            if (selectionQuery.has(obj, true)) selected.add(obj);
+                            if (selectionQuery.has(obj, true)) {
+                                selected.add(obj);
+                                if (obj instanceof GLine l) {
+                                    objectsToSelect.add(l.getA());
+                                    objectsToSelect.add(l.getB());
+                                } else if (obj instanceof GTri tri) {
+                                    tri.getLegStream().forEach(objectsToSelect::add);
+                                    tri.getWinding().stream().forEach(objectsToSelect::add);
+                                }
+                            }
                         }
                         case SUBTRACT -> {
                             boolean wasSelected = getSceneManager().getSelected().contains(obj);
@@ -70,6 +83,8 @@ public class SelectionManager {
                         case ALL, EXCLUDE, INCLUDE -> // Due to creating a new selection via this constructor, all the above just return whatever we got.
                                 selected.add(obj);
                     }
+                    selected.addAll(objectsToSelect);
+                    objectsToSelect.clear();
                 }
             }
         }
@@ -138,7 +153,7 @@ public class SelectionManager {
      *
      * @return An ArrayList of GObjects that are currently selected.
      */
-    public ArrayList<GObject> getSelected() {
+    public HashSet<GObject> getSelected() {
         return selected;
     }
 

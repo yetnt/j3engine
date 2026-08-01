@@ -29,6 +29,7 @@ public class TaggedArgValue<T> {
 
     public TaggedArgValue(T v) {
         value = v;
+        this.type = v.getClass();
     }
 
     /**

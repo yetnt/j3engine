@@ -41,7 +41,7 @@ import java.util.function.Supplier;
  *     trans sc p           - Scale Points Uniformly
  *     t size f             - Scale Faces Uniformly
  *     transform sc v       - Scale Points Uniformly
- *     sel scale t          - Scale Faces Uniformly
+ *     selection scale t    - Scale Faces Uniformly
  *     }</pre>
  * </p>
  * See {@link AbstractTransform} for more information onthe distinction between point mode and face mode.

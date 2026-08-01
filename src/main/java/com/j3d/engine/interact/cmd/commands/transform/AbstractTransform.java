@@ -12,6 +12,7 @@ import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.args.ArgSet;
 import com.j3d.engine.interact.cmd.args.Subcommand;
+import com.j3d.engine.interact.cmd.args.TaggedArgUtil;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.*;
 import com.j3d.engine.interact.cmd.commands.transform.mouse.ChangeCentreEventPayload;
@@ -116,6 +117,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
 
     private boolean centreIsSelectionPivot = true;
     private GPoint selectionPivot = null;
+    private String label1 = "";
 
     /**
      * Constructs the abstract base for a transformation command.
@@ -192,6 +194,11 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
         if (args.length > 0 && !(args[0] instanceof String)) {
             logLabel.setText("Second argument has to be a string! [p|v|f|t|thing]");
             return;
+        }
+
+        if (!taggedArgs.isEmpty()) {
+            TaggedArgValue<String> str = TaggedArgUtil.getTaggedArg(taggedArgs, "string", String.class);
+            if (str != null) label1 = str.value;
         }
 
         CommandsManager.setAsCurrent(this);
@@ -294,7 +301,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
                 default -> throw new IllegalStateException("Unexpected value: " + this);
             });
             label.setText(
-                    SafeJLabel.EMPH + " " + SafeJLabel.EMPH + " using arrow keys and handles. | "
+                    SafeJLabel.EMPH + " " + SafeJLabel.EMPH + SafeJLabel.EMPH +" using arrow keys and handles. | "
                             + SafeJLabel.EMPH + SafeJLabel.EMPH + " (Click "+SafeJLabel.EMPH+" to change)",
                     capitalizedName,
                     new JLabelRichText(switch (faceMode) {
@@ -303,6 +310,8 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
                         case TRIANGLES -> "triangles";
                     })
                             .font(J3DTheme.TEXT_SECONDARY.color().darker(), "6"),
+                    new JLabelRichText(label1.isBlank() ? "" : "(" + label1 + ")")
+                            .font(J3DTheme.TEXT_SECONDARY.color().darker(), "3"),
                     stepsTitle + ": ",
                     new JLabelRichText(getCurrentStepSize() +
                             (this instanceof ScaleSelection s ? "/" + Double.toString(s.getInverseStepSize()) : "") +
@@ -349,6 +358,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
         mouseOwner.handles.forEach(Handle::clear);
         selectionPivot = null;
         centreIsSelectionPivot = true;
+        label1 = "";
         keys.forEach(key -> StaticRefs.getGlobalKeybinds().removeJ3Key(key.getId()));
         StaticRefs.getSceneManager().removeOverlap(overlapId);
         lbl.clear();

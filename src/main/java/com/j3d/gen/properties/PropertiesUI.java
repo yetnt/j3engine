@@ -52,7 +52,7 @@ public class PropertiesUI {
      * before being passed into {@link #get(ArrayList)} such that stuff like Thing and layer can participate
      * and that there aren't any duplicate objects.
      */
-    public static <T extends HasProperties> ArrayList<T> getFilteredObjects(ArrayList<GObject> objects) {
+    public static <T extends HasProperties> ArrayList<T> getFilteredObjects(HashSet<GObject> objects) {
         HashSet<T> filtered = new HashSet<>();
         objects.forEach(
                 o -> {

@@ -24,7 +24,7 @@ import java.util.ArrayList;
  *     {@link RotateSelection}, {@link TranslateSelection} and {@link ScaleSelection}
  * </p>
  * <p>
- *     Aliases: {@code sel}, {@code s}, {@code selection}, {@code trans}, {@code t}, {@code tr}
+ *     Aliases: {@code selection}, {@code trans}, {@code t}, {@code tr}
  * </p>
  * @see SelectionPreCondition
  * @see SemiStatefulCommand
@@ -40,7 +40,7 @@ public class TransformCmd extends Command implements SemiStatefulCommand {
 
     public TransformCmd() {
         super("transform", "Transform a selection of objects");
-        this.aliases("sel", "s", "trans", "t", "tr", "selection").args(
+        this.aliases("trans", "t", "tr", "selection").args(
                 new RotateSelection(),
                 new TranslateSelection(),
                 new ScaleSelection()

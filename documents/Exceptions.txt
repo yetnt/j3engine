@@ -13,3 +13,6 @@
 10221 -> #-links: Malformed link-to-header (within same document or other .j3.md document) written.
 10222 -> #-links: Attempt to link to some arbitrary file (isn't .j3.md)
 10231 -> 
+
+50101 -> Copy exception
+50102 -> Copy exception: Tri cannot exist

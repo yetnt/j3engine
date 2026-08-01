@@ -171,10 +171,11 @@ public class GPoint extends GObject implements HasParents<GLine> {
 
     @Override
     public void copy(CopyProperties props) throws InvalidCopyException {
-        //
+        // no special logic.s
+        props.add(getId(), copySelf());
     }
 
-    public GPoint copy() {
+    protected GPoint copySelf() {
         GPoint p = new GPoint(
                 getPivot()
         );

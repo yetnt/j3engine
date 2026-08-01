@@ -1,12 +1,14 @@
 package com.j3d.engine.geometry.geo2d;
 
 import com.j3d.engine.draw.tris.SortMethod;
+import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  * Represents a winding of three {@link GPoint}s, typically used to define a triangle or a face in 2D geometry.
@@ -93,5 +95,9 @@ public record Winding(GPoint first, GPoint second, GPoint third) {
     @Override
     public int hashCode() {
         return Objects.hash(first(), second(), third());
+    }
+
+    public Stream<GPoint> stream() {
+        return Stream.of(first, second, third);
     }
 }

@@ -13,6 +13,7 @@ import com.j3d.ui.theme.J3DScrollBarUI;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import static com.j3d.StaticRefs.getSceneManager;
 import com.j3d.ui.theme.J3DTheme;
@@ -48,7 +49,7 @@ public class PropertiesPanel extends javax.swing.JPanel {
 
     public static void load() {
         StaticRefs.getPropertiesPanel().clear();
-        ArrayList<GObject> selected = getSceneManager().getSelected();
+        HashSet<GObject> selected = getSceneManager().getSelected();
         ArrayList<GObject> filtered =
                 PropertiesUI.getFilteredObjects(selected);
         StaticRefs.getPropertiesPanel().addAll(

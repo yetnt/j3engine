@@ -49,7 +49,7 @@ import java.util.function.Supplier;
  *     transform rotate             - Rotate Faces
  *     trans rot p                  - Rotate Points
  *     trans rot f (0, 0.2, 1.42)   - Rotate Faces around the Vector3 axis (0, 0.2, 1.42)
- *     sel r v (1, 0.3, 0.5)        - Rotate Points around the Vector3 axis (1, 0.3, 0.5)
+ *     selection r v (1, 0.3, 0.5)  - Rotate Points around the Vector3 axis (1, 0.3, 0.5)
  *     }</pre>
  * </p>
  * See {@link AbstractTransform} for more information onthe distinction between point mode and face mode.

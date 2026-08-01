@@ -67,6 +67,7 @@ public class TaggedArgUtil {
      */
     public static final HashMap<String, TaggedArgValue<?>> acceptedTags = new HashMap<>();
     static {
+        acceptedTags.put("string", new TaggedArgValue<String>(String.class).setName("string"));
         acceptedTags.put("type", new TaggedArgValue<String>(String.class).setName("type"));
         acceptedTags.put("layer", new TaggedArgValue<String>(String.class).setName("layer"));
         acceptedTags.put("thing", new TaggedArgValue<String>(String.class).setName("thing"));
