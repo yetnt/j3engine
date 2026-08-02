@@ -11,5 +11,5 @@ import com.j3d.engine.react.events.EventListener;
  * @author ACER
  */
 public interface SettingPanel extends EventListener {
-    
+    void calculate();
 }

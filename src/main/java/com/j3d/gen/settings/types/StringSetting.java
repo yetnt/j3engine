@@ -12,12 +12,17 @@ public class StringSetting extends Setting<String> {
     }
 
     @Override
-    public Component panel() {
+    public EnterValueSPanel panel() {
         return new EnterValueSPanel(this, getDefaultValue());
     }
 
     @Override
     public StringSetting onSetValue(Function<String, Void> callback) {
         return (StringSetting) super.onSetValue(callback);
+    }
+
+    @Override
+    public String fromString(String str) {
+        return str;
     }
 }

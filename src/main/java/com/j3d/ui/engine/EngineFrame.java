@@ -377,6 +377,9 @@ public class EngineFrame extends javax.swing.JFrame {
         // Initialise all keybinds to be part of the mainPanel and add to the static references
         StaticRefs.registerGlobalKeybinds(new KeyBindings(this));
 
+        // Initialise settings so it can fetch the user's stored settings if any exist.
+        StaticRefs.getSettings();
+
         StaticRefs.getLog().uiPrintLn("EngineFrame completed building");
     }
 

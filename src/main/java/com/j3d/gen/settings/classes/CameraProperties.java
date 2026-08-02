@@ -3,7 +3,6 @@ package com.j3d.gen.settings.classes;
 import com.j3d.StaticRefs;
 import com.j3d.gen.settings.SettingsChild;
 import com.j3d.gen.settings.types.DoubleSetting;
-import com.j3d.gen.settings.Setting;
 import com.j3d.gen.settings.SettingsParent;
 import com.j3d.gen.settings.types.IntSetting;
 import com.j3d.ui.settings.SettingsParentPanel;
@@ -48,7 +47,7 @@ public class CameraProperties implements SettingsParent {
             "Focal Length",
             37.0,
             "The focal length of the camera, affecting perspective distortion.",
-            1.0,
+            0.001,
             200.0
     ).setValues(
             d -> (int)(d * 100),
@@ -83,22 +82,6 @@ public class CameraProperties implements SettingsParent {
 
     @Override
     public ArrayList<SettingsChild> getAllChildren() {
-        return new ArrayList<>() {{
-            add(fieldOfView);
-            add(movementSpeed);
-            add(orbitSensitivity);
-            add(focalLength);
-            add(nearZeroProjectionPower);
-        }};
-    }
-
-    @Override
-    public ArrayList<SettingsParent> getChildSettingsFolder() {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public ArrayList<Setting<?>> getChildSettings() {
         return new ArrayList<>() {{
             add(fieldOfView);
             add(movementSpeed);

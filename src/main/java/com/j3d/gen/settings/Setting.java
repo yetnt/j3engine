@@ -6,9 +6,11 @@ import com.j3d.engine.react.events.EventListener;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.react.events.spec.SettingUpdatedPayload;
+import com.j3d.ui.settings.panels.AbstractPanel;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 import static com.j3d.engine.react.events.EventEmitter.*;
@@ -36,6 +38,44 @@ public class Setting<T> implements SettingsChild, EventEmitterInterface {
         this.defaultValue = value;
     }
 
+    public String valueToString(T value) {
+        return value.toString();
+    }
+    public T fromString(String str) {
+        return (T) str;
+    }
+
+    @Override
+    public ArrayList<String> serialize() {
+        return new ArrayList<>(
+                List.of(
+                        serializedName() + " = " + valueToString(value)
+                )
+        );
+    }
+
+    @Override
+    public void deserialize(ArrayList<String> leftover) {
+        // find the string which contains this thing as a label
+        String match =
+                leftover.stream()
+                        .filter(s -> s.contains(serializedName()))
+                        .findFirst()
+                        .orElse(null);
+        if (match == null) {
+            setValueNoBroadcast(defaultValue);
+            return;
+        }
+        String[] parts = match.split("=");
+        if (parts.length != 2) {
+            setValueNoBroadcast(defaultValue);
+            return;
+        }
+        String strValue = parts[1].trim();
+        setValue(fromString(strValue));
+        ((AbstractPanel<?, T>)panel()).calculate();
+    }
+
     public String getName() {
         return name;
     }
@@ -53,6 +93,7 @@ public class Setting<T> implements SettingsChild, EventEmitterInterface {
     }
 
     public T setValueNoBroadcast(T value) {
+        Settings.setPreferencesSaved(false);
         if (callback != null) callback.apply(value);
         T old = this.value;
         this.value = value;
@@ -67,7 +108,7 @@ public class Setting<T> implements SettingsChild, EventEmitterInterface {
         return description;
     }
 
-    public Component panel() {
+    public <R extends Component> R panel() {
         return null; // Classes should implement.
     }
 

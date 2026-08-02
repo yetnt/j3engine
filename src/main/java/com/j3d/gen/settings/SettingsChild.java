@@ -1,6 +1,9 @@
 package com.j3d.gen.settings;
 
+import com.j3d.utility.Parsing;
+
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * An interface for a child of a settings folder.
@@ -15,5 +18,10 @@ import java.awt.*;
 public interface SettingsChild {
     String getDescription();
     String getName();
-    Component panel();
+    default String serializedName() {
+        return Parsing.toCamelCase(getName());
+    }
+    ArrayList<String> serialize();
+    void deserialize(ArrayList<String> leftover);
+    <R extends Component> R panel();
 }

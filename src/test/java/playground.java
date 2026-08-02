@@ -3,26 +3,15 @@ import com.j3d.utility.Parsing;
 import com.j3d.utility.generators.JLabelRichText;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class playground {
     public static void main(String[] args) {
-        String html = new JLabelRichText(" this")
-                .font(Color.GREEN, "43", Color.GREEN)
-                .subscript()
-                .wrapUsing(
-                        new JLabelRichText(" boom")
-                                .wrapDiv(40)
-                ).add(
-                        new JLabelRichText("fr").font(Color.GREEN, "43", Color.GREEN)
-                                .subscript()
-                                .wrapUsing(
-                                        new JLabelRichText("g")
-                                                .wrapDiv(40)
-                                )
-                )
-                .wrapHTML();
-        System.out.println(html);
-        System.out.println(Parsing.removeHTML(html));
+        String a=  "sdsdfsd.sdfs";
+        String n= "dfgf";
+
+        System.out.println((a+n).substring(a.length()));
     }
 }

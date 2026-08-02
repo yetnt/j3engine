@@ -14,6 +14,16 @@ public class EnumSetting<T extends Enum> extends Setting<T> {
         this.values = values;
     }
 
+    @Override
+    public T fromString(String str) {
+        for (T value : values) {
+            if (value.name().equalsIgnoreCase(str)) {
+                return value;
+            }
+        }
+        return getDefaultValue();
+    }
+
     public T[] getValues() {
         return values;
     }

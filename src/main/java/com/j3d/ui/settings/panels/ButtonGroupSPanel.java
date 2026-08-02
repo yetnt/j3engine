@@ -17,16 +17,16 @@ import java.util.ArrayList;
  *
  * @author ACER
  */
-public class ButtonGroupSPanel extends javax.swing.JPanel implements SettingPanel {
+public class ButtonGroupSPanel<E extends Enum> extends AbstractPanel<EnumSetting<E>, E> {
 
     private ArrayList<JRadioButton> buttons = new ArrayList<>();
 
     /**
      * Creates new form ButtonGroupSPanel
      */
-    public <E extends Enum> ButtonGroupSPanel(EnumSetting<E> setting) {
+    public ButtonGroupSPanel(EnumSetting<E> setting) {
+        super(setting);
         initComponents();
-        setting.attachListener(this);
         settingLabel3.setText(setting.getName());
         this.setToolTipText(setting.getDescription());
 
@@ -57,6 +57,13 @@ public class ButtonGroupSPanel extends javax.swing.JPanel implements SettingPane
         J3DTheme.commitAsGenericUi(radioPanel);
         J3DTheme.commitAsGenericUi(jPanel1);
         J3DTheme.commitAsGenericUi(jScrollPane1);
+    }
+
+    @Override
+    public void calculate() {
+        for (JRadioButton btn : buttons) {
+            btn.setSelected(btn.getName().equals(setting.getValue().name()));
+        }
     }
 
     /**

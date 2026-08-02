@@ -15,14 +15,14 @@ import com.j3d.gen.settings.types.BooleanSetting;
  *
  * @author ACER
  */
-public class BooleanValueSPanel extends javax.swing.JPanel implements SettingPanel {
+public class BooleanValueSPanel extends AbstractPanel<BooleanSetting, Boolean> {
 
     /**
      * Creates new form BooleanValueSPanel
      */
     public BooleanValueSPanel(BooleanSetting setting, boolean defaultValue) {
+        super(setting);
         initComponents();
-        setting.attachListener(this);
         settingLabel2.setText(setting.getName());
         this.setToolTipText(setting.getDescription());
         jCheckBox3.setSelected(defaultValue);
@@ -32,6 +32,11 @@ public class BooleanValueSPanel extends javax.swing.JPanel implements SettingPan
         J3DTheme.commitAsGenericLbl(settingLabel2, false);
         J3DTheme.commitAsGenericUi(this);
         J3DTheme.commitAsGenericLbl(jCheckBox3, false);
+    }
+
+    @Override
+    public void calculate() {
+        jCheckBox3.setSelected(setting.getValue());
     }
 
     /**

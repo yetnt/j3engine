@@ -12,12 +12,21 @@ public class BooleanSetting extends Setting<Boolean> {
     }
 
     @Override
-    public Component panel() {
+    public BooleanValueSPanel panel() {
         return new BooleanValueSPanel(this, getValue());
     }
 
     @Override
     public BooleanSetting onSetValue(Function<Boolean, Void> callback) {
         return (BooleanSetting) super.onSetValue(callback);
+    }
+
+    @Override
+    public Boolean fromString(String str) {
+        return switch (str.toLowerCase()) {
+            case "true", "yes", "yebo" -> true;
+            case "false", "no", "aowa" -> false;
+            default -> getDefaultValue();
+        };
     }
 }

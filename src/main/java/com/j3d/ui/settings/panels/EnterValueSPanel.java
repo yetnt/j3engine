@@ -15,14 +15,14 @@ import com.j3d.ui.theme.J3DTheme;
  *
  * @author ACER
  */
-public class EnterValueSPanel extends javax.swing.JPanel implements SettingPanel {
+public class EnterValueSPanel extends AbstractPanel<StringSetting, String> {
 
     /**
      * Creates new form EnterValueSPanel
      */
     public EnterValueSPanel(StringSetting setting, String defaultValue) {
+        super(setting);
         initComponents();
-        setting.attachListener(this);
         settingLabel.setText(setting.getName());
         this.setToolTipText(setting.getDescription());
         jTextField1.addActionListener(
@@ -32,6 +32,11 @@ public class EnterValueSPanel extends javax.swing.JPanel implements SettingPanel
         J3DTheme.commitAsGenericUi(this);
         J3DTheme.commitAsGenericLbl(settingLabel, false);
         J3DTheme.commitAsGenericLbl(jTextField1, true);
+    }
+
+    @Override
+    public void calculate() {
+        jTextField1.setText(setting.getValue());
     }
 
     /**

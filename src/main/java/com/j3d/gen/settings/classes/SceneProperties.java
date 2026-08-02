@@ -4,7 +4,6 @@ import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.draw.tris.TriangleSortMethod;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
-import com.j3d.gen.settings.Setting;
 import com.j3d.gen.settings.SettingsChild;
 import com.j3d.gen.settings.SettingsParent;
 import com.j3d.gen.settings.types.BooleanSetting;
@@ -59,20 +58,6 @@ public class SceneProperties implements SettingsParent {
     @Override
     public String getName() {
         return "Scene Properties";
-    }
-
-    @Override
-    public ArrayList<Setting<?>> getChildSettings() {
-        return new ArrayList<>() {{
-            add(useBackFaceCulling);
-            add(scale);
-            add(triangleSortMethod);
-        }};
-    }
-
-    @Override
-    public ArrayList<SettingsParent> getChildSettingsFolder() {
-        return new ArrayList<>();
     }
 
     @Override

@@ -17,7 +17,7 @@ import javax.swing.JLabel;
  *
  * @author ACER
  */
-public class PopoutSPanel<T> extends javax.swing.JPanel implements SettingPanel {
+public class PopoutSPanel<T> extends AbstractPanel<ComplexSetting<T>, T> {
 
     BiFunction<ActionEvent, JLabel, T> onOpen;
     ComplexSetting<T> setting;
@@ -26,8 +26,8 @@ public class PopoutSPanel<T> extends javax.swing.JPanel implements SettingPanel 
      * Creates new form PopoutSPanel
      */
     public PopoutSPanel(String initalValue, ComplexSetting<T> setting, BiFunction<ActionEvent, JLabel, T> onOpen) {
+        super(setting);
         initComponents();
-        setting.attachListener(this);
         valueLabel.setText(initalValue);
         settingLabel4.setText(setting.getName());
         this.setToolTipText(setting.getDescription());
@@ -37,6 +37,11 @@ public class PopoutSPanel<T> extends javax.swing.JPanel implements SettingPanel 
         J3DTheme.commitAsGenericUi(this);
         J3DTheme.commitAsGenericLbl(jButton1, true);
         J3DTheme.commitAsGenericLbl(valueLabel, true);
+    }
+
+    @Override
+    public void calculate() {
+        valueLabel.setText(setting.getValue().toString());
     }
 
     /**

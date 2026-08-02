@@ -8,7 +8,6 @@ import com.j3d.gen.settings.types.ComplexSetting;
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.files.FilesUtility;
 import com.j3d.ui.settings.PreferencesFrame;
-import com.j3d.ui.settings.panels.SettingPanel;
 import com.j3d.ui.settings.popouts.ThemeChanger;
 
 import java.io.File;
@@ -18,7 +17,19 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 public class Settings implements SettingsParent {
-    
+
+    private static boolean savedPreferences = true;
+    public static boolean isPreferencesSaved() {
+        return savedPreferences;
+    }
+
+    public static void setPreferencesSaved(boolean savedPreferences) {
+        Settings.savedPreferences = savedPreferences;
+        if (!savedPreferences && preferencesFrame != null) {
+            preferencesFrame.onChange();
+        }
+    }
+
     public static PreferencesFrame preferencesFrame;
     public static CameraProperties cameraProperties = new CameraProperties();
     public static SceneProperties sceneProperties = new SceneProperties();
@@ -102,7 +113,7 @@ public class Settings implements SettingsParent {
     );
 
     public Settings() {
-
+        read();
     }
 
     @Override
@@ -147,25 +158,6 @@ public class Settings implements SettingsParent {
     }
 
     @Override
-    public ArrayList<SettingsParent> getChildSettingsFolder() {
-        return new ArrayList<>() {{
-            add(cameraProperties);
-            add(editorProperties);
-            add(sceneProperties);
-//            add(debugProperties);
-//            add(viewProperties);
-        }};
-    }
-
-    @Override
-    public ArrayList<Setting<?>> getChildSettings() {
-        return new ArrayList<>() {{
-            add(changeTheme);
-            add(projectOutputFile);
-        }};
-    }
-
-    @Override
     public PreferencesFrame panel() {
         if (preferencesFrame == null) preferencesFrame = new PreferencesFrame();
         return preferencesFrame;
@@ -178,5 +170,22 @@ public class Settings implements SettingsParent {
                     s.detachAll();
                     s.setValue(s.getDefaultValue());
                 });
+    }
+
+    public void toDefault() {
+        getChildrenRecursive(this)
+                .map(s -> (Setting<?>)s)
+                .forEach(s -> s.setValue(s.getDefaultValue()));
+    }
+
+    public void write() {
+        setPreferencesSaved(true);
+        StaticRefs.getEngineFiles().preferencesFile.write(
+                serialize()
+        );
+    }
+
+    public void read() {
+        deserialize(StaticRefs.getEngineFiles().preferencesFile.read());
     }
 }

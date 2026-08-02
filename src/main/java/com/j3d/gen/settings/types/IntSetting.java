@@ -3,7 +3,6 @@ package com.j3d.gen.settings.types;
 import com.j3d.gen.settings.Setting;
 import com.j3d.ui.settings.panels.NumberValueSPanel;
 
-import java.awt.*;
 import java.util.function.Function;
 
 public class IntSetting extends Setting<Integer> {
@@ -32,8 +31,17 @@ public class IntSetting extends Setting<Integer> {
     }
 
     @Override
-    public Component panel() {
-        return new NumberValueSPanel<>(this, getDefaultValue(), min, max, 1, (Integer i) -> i, (Integer i) -> i);
+    public Integer fromString(String str) {
+        try {
+            return Integer.parseInt(str);
+        } catch (NumberFormatException e) {
+            return getDefaultValue();
+        }
+    }
+
+    @Override
+    public NumberValueSPanel<?> panel() {
+        return new NumberValueSPanel<>(this, min, max, 1, (Integer i) -> i, (Integer i) -> i);
     }
 
     @Override

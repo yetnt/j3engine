@@ -4,6 +4,7 @@ import com.j3d.storage.files.engine.projects.PinnedProjectsFile;
 import com.j3d.storage.files.engine.projects.RecentProjectsFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 
@@ -14,6 +15,7 @@ public class EngineFiles {
     public final LogFile logFile;
     public final DebugDump debugDump;
     public final DocsFolder docsFolder;
+    public final PrefsFile preferencesFile;
 
 
     public EngineFiles() {
@@ -24,6 +26,11 @@ public class EngineFiles {
         pinned = new PinnedProjectsFile();
         logFile = new LogFile();
         debugDump = new DebugDump();
+        try {
+            preferencesFile = new PrefsFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         try {
             docsFolder = new DocsFolder();
         } catch (URISyntaxException e) {

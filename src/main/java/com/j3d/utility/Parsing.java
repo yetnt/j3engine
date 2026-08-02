@@ -80,6 +80,29 @@ public class Parsing {
         return new BracePairs(finalArr, stack);
     }
 
+
+    /**
+     * Converts a given string to camelCase.
+     * It handles spaces and underscores as delimiters, converting the character following them to uppercase.
+     * @param input The string to convert to camelCase.
+     * @return The camelCase version of the input string.
+     */
+    public static String toCamelCase(String input) {
+        StringBuilder sb = new StringBuilder();
+        boolean isFirst = false;
+        for (char c : input.toCharArray()) {
+            if (isFirst && !(c == '_' || c == ' ')) {
+                sb.append(Character.isLowerCase(c) ? Character.toUpperCase(c) : c);
+                isFirst = false;
+            } else if (c == '_' || c == ' '){
+                isFirst = true;
+            } else {
+                sb.append(Character.toLowerCase(c));
+            }
+        }
+        return sb.toString();
+    }
+
     /**
      * A record to hold the results of the {@link #bracePairs(String)} method.
      *

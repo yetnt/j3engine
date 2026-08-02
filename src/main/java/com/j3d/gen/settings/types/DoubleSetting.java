@@ -3,7 +3,6 @@ package com.j3d.gen.settings.types;
 import com.j3d.gen.settings.Setting;
 import com.j3d.ui.settings.panels.NumberValueSPanel;
 
-import java.awt.*;
 import java.util.function.Function;
 
 public class DoubleSetting extends Setting<Double> {
@@ -27,6 +26,15 @@ public class DoubleSetting extends Setting<Double> {
         return this;
     }
 
+    @Override
+    public Double fromString(String str) {
+        try {
+            return Double.parseDouble(str);
+        } catch (NumberFormatException e) {
+            return getDefaultValue();
+        }
+    }
+
     public double getMin() {
         return min;
     }
@@ -43,8 +51,8 @@ public class DoubleSetting extends Setting<Double> {
     }
 
     @Override
-    public Component panel() {
-        return new NumberValueSPanel<>(this, getDefaultValue(), min, max, stepSize, toInt, toDouble);
+    public NumberValueSPanel<Double> panel() {
+        return new NumberValueSPanel<>(this, min, max, stepSize, toInt, toDouble);
     }
 
     @Override

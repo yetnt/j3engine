@@ -19,7 +19,7 @@ import java.util.function.Function;
  *
  * @author ACER
  */
-public class NumberValueSPanel<T extends Number> extends javax.swing.JPanel implements SettingPanel {
+public class NumberValueSPanel<T extends Number> extends AbstractPanel<Setting<T>, T> {
 
     private Function<T, Integer> toInt;
     private Function<Integer, T> toT;
@@ -28,19 +28,19 @@ public class NumberValueSPanel<T extends Number> extends javax.swing.JPanel impl
     /**
      * Creates new form numberValueSPanel
      */
-    public NumberValueSPanel(Setting setting, T defaultValue, T min, T max, T steps, Function<T, Integer> toInt, Function<Integer, T> toT) {
+    public NumberValueSPanel(Setting<T> setting, T min, T max, T steps, Function<T, Integer> toInt, Function<Integer, T> toT) {
+        super(setting);
         initComponents();
-        setting.attachListener(this);
         this.toInt = toInt;
         this.toT = toT;
         settingLabel1.setText(setting.getName());
         this.setToolTipText(setting.getDescription());
         jSlider1.setMinimum(toInt.apply(min));
         jSlider1.setMaximum(toInt.apply(max));
-        jSlider1.setValue(toInt.apply(defaultValue));
+        jSlider1.setValue(toInt.apply(setting.getValue()));
         jSlider1.setMajorTickSpacing(toInt.apply(steps));
 
-        jSpinner1.setValue(defaultValue);
+        jSpinner1.setValue(setting.getValue());
 
         jSlider1.addChangeListener(
                 e -> jSpinner1.setValue(
@@ -65,28 +65,35 @@ public class NumberValueSPanel<T extends Number> extends javax.swing.JPanel impl
         if (setting instanceof DoubleSetting ds) {
             jSpinner1.setModel(
                     new SpinnerNumberModel(
-                            ds.getDefaultValue().doubleValue(), ds.getMin(), ds.getMax(), (double)steps
+                            ds.getValue().doubleValue(), ds.getMin(), ds.getMax(), (double)steps
                     )
-            );
-            resetButton.addActionListener(
-                    e -> jSpinner1.setValue(ds.getDefaultValue())
             );
         } else if (setting instanceof IntSetting is) {
             jSpinner1.setModel(
                     new SpinnerNumberModel(
-                            is.getDefaultValue().intValue(), is.getMin(), is.getMax(), (int)steps
+                            is.getValue().intValue(), is.getMin(), is.getMax(), (int)steps
                     )
             );
-            resetButton.addActionListener(
-                    e -> jSpinner1.setValue(is.getDefaultValue())
-            );
         }
+        resetButton.addActionListener(
+                e -> {
+                    jSpinner1.setValue(setting.getDefaultValue());
+                    jSlider1.setValue(toInt.apply(setting.getDefaultValue()));
+                    setting.setValueNoBroadcast(setting.getDefaultValue());
+                }
+        );
 
         J3DTheme.commitAsGenericLbl(settingLabel1, false);
         J3DTheme.commitAsGenericUi(this);
         J3DTheme.commitAsGenericUi(jSlider1);
         J3DTheme.commitAsGenericUi(jSpinner1);
         J3DTheme.commitAsGenericLbl(resetButton, true);
+    }
+
+    @Override
+    public void calculate() {
+        jSlider1.setValue(toInt.apply(setting.getValue()));
+        jSpinner1.setValue(setting.getValue());
     }
 
     /**

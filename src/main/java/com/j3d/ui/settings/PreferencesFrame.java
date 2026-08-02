@@ -5,8 +5,12 @@
 package com.j3d.ui.settings;
 
 import com.j3d.StaticRefs;
+import com.j3d.gen.settings.Settings;
+import com.j3d.ui.dialog.AreYouSure;
 import com.j3d.ui.theme.J3DScrollBarUI;
 import com.j3d.ui.theme.J3DTheme;
+
+import javax.swing.*;
 
 /**
  *
@@ -19,6 +23,7 @@ public class PreferencesFrame extends javax.swing.JFrame {
      */
     public PreferencesFrame() {
         initComponents();
+        saveBtn.setVisible(false);
         StaticRefs.getSettings().getAllChildren().forEach(child -> {
             System.out.println("Adding + " + child);
             jPanel1.add(child.panel());
@@ -34,6 +39,33 @@ public class PreferencesFrame extends javax.swing.JFrame {
         J3DTheme.commitAsGenericLbl(jLabel1, false);
         J3DTheme.commitAsGenericUi(jPanel1);
         J3DTheme.commitAsGenericUi(jScrollPane1);
+        J3DTheme.commitAsGenericUi(preferencesPanel);
+        J3DTheme.commitAsGenericLbl(saveBtn, true);
+        J3DTheme.commitAsGenericLbl(defualtBtn, true);
+
+        JFrame t = this;
+
+        // when window closing
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                if (!Settings.isPreferencesSaved()) {
+                    AreYouSure ays = new AreYouSure(
+                            t, true, "You have unsaved preferences!"
+                    );
+                    ays.setVisible(true);
+                    if (ays.canProceed()) {
+                        // continue normal close operation
+                        super.windowClosing(windowEvent);
+                    }
+                }
+            }
+        });
+    }
+
+    public void onChange() {
+        jLabel1.setText("Preferences*");
+        saveBtn.setVisible(true);
     }
 
     /**
@@ -45,14 +77,52 @@ public class PreferencesFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        preferencesPanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        saveBtn = new javax.swing.JButton();
+        defualtBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
 
         setTitle("J3D Settings Mfwethu");
         setBackground(J3DTheme.UI_SURFACE.color());
         setIconImage(StaticRefs.logo());
         setMinimumSize(new java.awt.Dimension(300, 0));
+
+        preferencesPanel.setBackground(J3DTheme.UI_SURFACE.color());
+        preferencesPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 40, 5));
+
+        jLabel1.setBackground(J3DTheme.UI_SURFACE.color());
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 36)); // NOI18N
+        jLabel1.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Preferences");
+        jLabel1.setOpaque(true);
+        preferencesPanel.add(jLabel1);
+
+        saveBtn.setBackground(J3DTheme.BACKGROUND.color());
+        saveBtn.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        saveBtn.setText("Save");
+        saveBtn.setPreferredSize(new java.awt.Dimension(75, 40));
+        saveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveBtnActionPerformed(evt);
+            }
+        });
+        preferencesPanel.add(saveBtn);
+
+        defualtBtn.setBackground(J3DTheme.BACKGROUND.color());
+        defualtBtn.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        defualtBtn.setText("Default");
+        defualtBtn.setPreferredSize(new java.awt.Dimension(75, 40));
+        defualtBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                defualtBtnActionPerformed(evt);
+            }
+        });
+        preferencesPanel.add(defualtBtn);
+
+        getContentPane().add(preferencesPanel, java.awt.BorderLayout.PAGE_START);
 
         jScrollPane1.setBackground(J3DTheme.UI_SURFACE.color());
         jScrollPane1.setForeground(J3DTheme.UI_SURFACE.color());
@@ -66,17 +136,26 @@ public class PreferencesFrame extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jLabel1.setBackground(J3DTheme.UI_SURFACE.color());
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 36)); // NOI18N
-        jLabel1.setForeground(J3DTheme.TEXT_PRIMARY.color());
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Preferences");
-        jLabel1.setOpaque(true);
-        getContentPane().add(jLabel1, java.awt.BorderLayout.NORTH);
-
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
+        StaticRefs.getSettings().write();
+        saveBtn.setVisible(false);
+        jLabel1.setText("Preferences");
+    }//GEN-LAST:event_saveBtnActionPerformed
+
+    private void defualtBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defualtBtnActionPerformed
+        PreferencesFrame t = this;
+        AreYouSure ays = new AreYouSure(
+                t, true, "This will reset all the preferences to engine defaults."
+        );
+        ays.setVisible(true);
+        if (ays.canProceed())
+            StaticRefs.getSettings().toDefault();
+
+    }//GEN-LAST:event_defualtBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -114,8 +193,11 @@ public class PreferencesFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton defualtBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel preferencesPanel;
+    private javax.swing.JButton saveBtn;
     // End of variables declaration//GEN-END:variables
 }

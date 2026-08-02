@@ -2,7 +2,6 @@ package com.j3d.gen.settings.classes;
 
 import com.j3d.gen.settings.SettingsChild;
 import com.j3d.gen.settings.types.DoubleSetting;
-import com.j3d.gen.settings.Setting;
 import com.j3d.gen.settings.SettingsParent;
 import com.j3d.gen.settings.types.IntSetting;
 import com.j3d.ui.settings.SettingsParentPanel;
@@ -47,19 +46,6 @@ public class EditorProperties implements SettingsParent {
 
     @Override
     public ArrayList<SettingsChild> getAllChildren() {
-        return new ArrayList<>() {{
-            add(handleSize);
-            add(handleDist);
-        }};
-    }
-
-    @Override
-    public ArrayList<SettingsParent> getChildSettingsFolder() {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public ArrayList<Setting<?>> getChildSettings() {
         return new ArrayList<>() {{
             add(handleSize);
             add(handleDist);

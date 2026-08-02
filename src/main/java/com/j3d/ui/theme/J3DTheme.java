@@ -2,8 +2,8 @@ package com.j3d.ui.theme;
 
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.themes.ThemesTable;
+import com.j3d.utility.Parsing;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,28 +59,7 @@ public enum J3DTheme {
      * @return the {@link Color} instance representing this theme's color
      */
     public Color color() {
-        return colorMap.getOrDefault(toDbFieldName(), Default.from(toDbFieldName()));
-    }
-
-    /**
-     * Converts names such as TEXT_PRIMARY to textPrimary
-     * @return The converted name
-     */
-    public String toDbFieldName() {
-        String input = name();
-        StringBuilder sb = new StringBuilder();
-        boolean isFirst = false;
-        for (char c : input.toCharArray()) {
-            if (isFirst && Character.isUpperCase(c)) {
-                sb.append(c);
-                isFirst = false;
-            } else if (c == '_'){
-                isFirst = true;
-            } else {
-                sb.append(Character.toLowerCase(c));
-            }
-        }
-        return sb.toString();
+        return colorMap.getOrDefault(Parsing.toCamelCase(name()), Default.from(Parsing.toCamelCase(name())));
     }
 
     public Color defaultCol() {
@@ -118,7 +97,7 @@ public enum J3DTheme {
     }
 
     public static Color colorFromMap(J3DTheme key, HashMap<String, Color> c) {
-        return c.getOrDefault(key.toDbFieldName(), key.color());
+        return c.getOrDefault(Parsing.toCamelCase(key.name()), key.color());
     }
 
     public static void loadTheme(int id) {
