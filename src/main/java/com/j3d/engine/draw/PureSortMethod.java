@@ -1,4 +1,4 @@
-package com.j3d.engine.draw.tris;
+package com.j3d.engine.draw;
 
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.gen.settings.classes.SceneProperties;
@@ -9,11 +9,11 @@ import com.j3d.gen.settings.classes.SceneProperties;
  * {@link SceneProperties#triangleSortMethod}
  * @author Lehlogonolo Poole
  * @see SceneProperties#triangleSortMethod
- * @see TriStateArea
+ * @see Renderer
  * @see SortMethod
  * @see GTri
  */
-public enum TriangleSortMethod {
+public enum PureSortMethod {
 
     /**
      * No sorting is applied to the triangles.

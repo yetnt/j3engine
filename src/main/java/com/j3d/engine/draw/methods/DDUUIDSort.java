@@ -1,11 +1,14 @@
-package com.j3d.engine.draw.tris.methods;
+package com.j3d.engine.draw.methods;
 
-import com.j3d.engine.draw.tris.SortMethod;
-import com.j3d.engine.draw.tris.TriListener;
-import com.j3d.engine.draw.tris.TriStateArea;
+import com.j3d.engine.draw.Renderer;
+import com.j3d.engine.draw.SortMethod;
+import com.j3d.engine.draw.PureListener;
+import com.j3d.engine.geometry.geo2d.graphics.Drawable;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 
 import java.util.ArrayList;
+
+import static com.j3d.engine.draw.methods.CamDepthSort.calcDepth;
 
 /**
  * This is a merge of {@link CamDistSort} and {@link CamDepthSort}.
@@ -17,18 +20,19 @@ import java.util.ArrayList;
  * @see CamDistSort
  * @see java.util.UUID
  * @see SortMethod
- * @see TriListener
- * @see TriStateArea
+ * @see PureListener
+ * @see Renderer
  */
 public class DDUUIDSort extends SortMethod {
 
-    public DDUUIDSort(ArrayList<TriListener> registered) {
+    public DDUUIDSort(ArrayList<PureListener> registered) {
         super(registered);
     }
 
     @Override
-    public boolean add(GTri gTri) {
-        if (backFaceCulled(gTri)) return false;
+    public boolean add(Drawable gTri) {
+        if (gTri instanceof GTri t)
+            if (backFaceCulled(t)) return false;
         if (this.contains(gTri)) {
             sort();
             return false;
@@ -57,23 +61,23 @@ public class DDUUIDSort extends SortMethod {
      */
     private void sort() {
         this.sort((tri1, tri2) -> {
-//            TriListener listener1 = registered.stream().filter(
+//            PureListener listener1 = registered.stream().filter(
 //                    listener -> listener.triID.equals(tri1.getId())
 //            ).findFirst().orElse(null);
-//            TriListener listener2 = registered.stream().filter(
+//            PureListener listener2 = registered.stream().filter(
 //                    listener -> listener.triID.equals(tri2.getId())
 //            ).findFirst().orElse(null);
 //            if (listener1 == null || listener2 == null)
 //                return 0;
-            double dist1 = tri1.calcDepth();
-            double dist2 = tri2.calcDepth();
+            double dist1 = calcDepth(tri1);
+            double dist2 = calcDepth(tri2);
             if (Double.compare(dist1, dist2) == 0) {
                 // fall back to euclideanDist() if depths are equal
                 double euclidDist1 = tri1.getPivot().magnitude();
                 double euclidDist2 = tri2.getPivot().magnitude();
                 if  (Double.compare(euclidDist1, euclidDist2) == 0) {
                     // final fallback to ID comparison to ensure consistent ordering
-                    return tri1.getId().compareTo(tri2.getId());
+                    return tri1.rendererUUID().compareTo(tri2.rendererUUID());
                 }
                 return Double.compare(euclidDist2, euclidDist1); // Sort in descending order (farthest first)
             }

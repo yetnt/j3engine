@@ -2,10 +2,9 @@ package com.j3d.engine.geometry.geo2d.graphics;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.draw.ViewType;
-import com.j3d.engine.draw.tris.SortMethod;
-import com.j3d.engine.draw.tris.TriStateArea;
+import com.j3d.engine.draw.SortMethod;
+import com.j3d.engine.draw.Renderer;
 import com.j3d.engine.geometry.geo2d.Winding;
-import com.j3d.engine.geometry.geo2d.copy.Copy;
 import com.j3d.engine.geometry.geo2d.copy.CopyProperties;
 import com.j3d.engine.geometry.geo2d.copy.InvalidCopyException;
 import com.j3d.engine.geometry.geo3d.Thing;
@@ -42,13 +41,13 @@ import static com.j3d.StaticRefs.getSceneManager;
  * </p>
  * <p>
  *     A GTri, is stored by reference like any other GObject within a {@link Thing}.
- *     it is also stored within {@link TriStateArea} for draw ordering.
+ *     it is also stored within {@link Renderer} for draw ordering.
  * </p>
  * @implSpec Triangles rely on {@link Winding} order to define normal calculations and
  * back face culling via {@link SortMethod#backFaceCulled(GTri)}.
  * Normals are expected to point outward from solids.
  * @author Lehlogonolo Poole
- * @see TriStateArea
+ * @see Renderer
  * @see Thing
  * @see GPoint
  * @see GLine
@@ -142,7 +141,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
         normal();
 
-        TriStateArea.register(this);
+        Renderer.register(this);
         drawDist();
         addProps();
     }
@@ -200,7 +199,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
                 winding.toVector3List()
                 , Vector3::add).div(3));
         normal();
-        TriStateArea.register(this);
+        Renderer.register(this);
         drawDist();
         addProps();
     }
@@ -229,7 +228,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
         setPivot(Vector3.reduceToVector3(winding.toVector3List(), Vector3::add).div(3));
         normal();
-        TriStateArea.register(this);
+        Renderer.register(this);
         drawDist();
         addProps();
     }
@@ -369,7 +368,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
     /**
      * @implNote This also deletes it's child lines (if they arent parented to anything else) and unregisters itself
-     * from the {@link TriStateArea}
+     * from the {@link Renderer}
      */
     @Override
     public boolean deleteSelf() {
@@ -380,7 +379,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
                     if (!line.hasParent()) line.deleteSelf();
                 }
         );
-        TriStateArea.unregister(this);
+        Renderer.unregister(this);
         getSceneManager().removeOverlap(getId());
         return true;
     }
@@ -451,7 +450,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         LegC = null;
 
         // without lines, this triangle cannot exist. It must be deleted.
-        TriStateArea.unregister(this);
+        Renderer.unregister(this);
         parent.getObjects().remove(this);
 
         return points;
@@ -473,7 +472,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
     /**
      * Draws this triangle to the screen in its selected state.
-     * @implSpec This is only called by {@link TriStateArea#draw(Graphics2D)}
+     * @implSpec This is only called by {@link Renderer#draw(Graphics2D)}
      * @implNote This respects {@link ViewType} and may or may not draw
      * itself depending on the type.
      * @param graphics2D The Graphics2D instance
@@ -515,7 +514,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
     /**
      * Draws this triangle to the screen.
-     * @implSpec This is only called by {@link TriStateArea#draw(Graphics2D)}
+     * @implSpec This is only called by {@link Renderer#draw(Graphics2D)}
      * @implNote This respects {@link ViewType} and may or may not draw
      * itself depending on the type.
      * @param graphics2D The Graphics2D instance

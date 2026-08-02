@@ -1,29 +1,35 @@
-package com.j3d.engine.draw.tris.methods;
+package com.j3d.engine.draw.methods;
 
-import com.j3d.engine.draw.tris.SortMethod;
-import com.j3d.engine.draw.tris.TriListener;
-import com.j3d.engine.draw.tris.TriStateArea;
+import com.j3d.StaticRefs;
+import com.j3d.engine.draw.PureListener;
+import com.j3d.engine.draw.SortMethod;
+import com.j3d.engine.draw.Renderer;
+import com.j3d.engine.geometry.geo2d.graphics.Drawable;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
+import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 
 import java.util.ArrayList;
 
 /**
- * CamDistSort is a sorting method that sorts GTri objects based on their distance from the camera.
+ * CamDepthSort is a sorting method that sorts GTri objects based on their depth values.
  * GTri objects farther from the camera are placed before those closer to the camera.
+ * This is calculated by {@link GTri#calcDepth()}.
  * @author Lehlogonolo Poole
+ * @see GTri#calcDepth()
  * @see SortMethod
- * @see TriListener
- * @see TriStateArea
+ * @see PureListener
+ * @see Renderer
  */
-public class CamDistSort extends SortMethod {
+public class CamDepthSort extends SortMethod {
 
-    public CamDistSort(ArrayList<TriListener> registered) {
+    public CamDepthSort(ArrayList<PureListener> registered) {
         super(registered);
     }
 
     @Override
-    public boolean add(GTri gTri) {
-        if (backFaceCulled(gTri)) return false;
+    public boolean add(Drawable gTri) {
+        if (gTri instanceof GTri t)
+            if (backFaceCulled(t)) return false;
         if (this.contains(gTri)) {
             sort();
             return false;
@@ -52,18 +58,22 @@ public class CamDistSort extends SortMethod {
      */
     private void sort() {
         this.sort((tri1, tri2) -> {
-//            TriListener listener1 = registered.stream().filter(
+//            PureListener listener1 = registered.stream().filter(
 //                    listener -> listener.triID.equals(tri1.getId())
 //            ).findFirst().orElse(null);
-//            TriListener listener2 = registered.stream().filter(
+//            PureListener listener2 = registered.stream().filter(
 //                    listener -> listener.triID.equals(tri2.getId())
 //            ).findFirst().orElse(null);
 //            if (listener1 == null || listener2 == null)
 //                return 0;
-                // fall back to euclideanDist() if depths are equal
-                double euclidDist1 = tri1.euclideanDist();
-                double euclidDist2 = tri2.euclideanDist();
-                return Double.compare(euclidDist2, euclidDist1); // Sort in descending order (farthest first)
+            double dist1 = calcDepth(tri1);
+            double dist2 = calcDepth(tri2);
+            return Double.compare(dist2, dist1); // Sort in descending order (farthest first)
         });
+    }
+
+    public static double calcDepth(Drawable drawable) {
+        Vector3 toTri = drawable.getPivot().sub(StaticRefs.getCamera().getPosition());
+        return toTri.dot(StaticRefs.getCamera().getForward().normalize());
     }
 }

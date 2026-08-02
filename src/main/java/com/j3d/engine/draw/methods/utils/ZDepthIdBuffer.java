@@ -1,7 +1,7 @@
-package com.j3d.engine.draw.tris.methods.utils;
+package com.j3d.engine.draw.methods.utils;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.draw.tris.methods.VisibleSort;
+import com.j3d.engine.draw.methods.VisibleSort;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;

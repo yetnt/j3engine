@@ -1,7 +1,7 @@
 package com.j3d.engine;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.draw.tris.TriStateArea;
+import com.j3d.engine.draw.Renderer;
 import com.j3d.engine.find.Finder;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.*;
@@ -267,7 +267,7 @@ public class SceneManager {
 //        ArrayList<UUID> visibleObjects = buff.draw(layers);
 //        ArrayList<UUID> visibleObjects = new ArrayList<>();
         layers.forEach(layer -> layer.draw(graphics));
-        TriStateArea.draw(graphics);
+        Renderer.draw(graphics);
         // Draw overlaps
         for (Consumer<Graphics2D> r : overlaps.values()) {
             r.accept(graphics);
@@ -400,7 +400,7 @@ public class SceneManager {
     }
 
     /**
-     * Resets the entire scene by clearing all layers, selections, and unregistering all triangles from the {@link TriStateArea}.
+     * Resets the entire scene by clearing all layers, selections, and unregistering all triangles from the {@link Renderer}.
      * This effectively returns the sceneManager to an empty state, ready for a new project or scene.
      */
     public void resetScene() {
@@ -420,8 +420,8 @@ public class SceneManager {
                             .forEach(GTri::deleteSelf);
                     thing.getObjects().clear();
                 });
-        TriStateArea.clearQueue();
-        TriStateArea.clearRegistered();
+        Renderer.clearQueue();
+        Renderer.clearRegistered();
         layers.clear();
         points.clear();
         overlaps.clear();

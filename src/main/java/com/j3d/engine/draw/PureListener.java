@@ -1,8 +1,9 @@
-package com.j3d.engine.draw.tris;
+package com.j3d.engine.draw;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.draw.tris.methods.CamDepthSort;
-import com.j3d.engine.draw.tris.methods.CamDistSort;
+import com.j3d.engine.draw.methods.CamDepthSort;
+import com.j3d.engine.draw.methods.CamDistSort;
+import com.j3d.engine.geometry.geo2d.graphics.Drawable;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventListener;
 import com.j3d.engine.react.events.EventType;
@@ -13,7 +14,7 @@ import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import java.util.UUID;
 
 /**
- * TriListener is an event listener who listens for any relevant updates
+ * PureListener is an event listener who listens for any relevant updates
  * given to it to recalculate GTri properties. This listener is part of
  * {@link SortMethod} and is how an implementor of SortMethod should
  * lazily reload triangles.
@@ -27,7 +28,7 @@ import java.util.UUID;
  * @see GTri
  * @see EventType#OBJ_UPDATED
  */
-public class TriListener implements EventListener {
+public class PureListener implements EventListener {
 
     /**
      * The UUID of the triangle. Although this is the same UUID stored
@@ -37,7 +38,7 @@ public class TriListener implements EventListener {
     /**
      * GTri reference.
      */
-    public GTri tri;
+    public Drawable tri;
     /**
      * The last position (centre) it was at.
      */
@@ -47,20 +48,15 @@ public class TriListener implements EventListener {
      */
     public double lastDistanceFromCamera;
     /**
-     * The depth of the triangle.
-     */
-    public double depth;
-    /**
      * The dirty state of the triangle. if it updated it's marked as dirty.
      */
     private boolean isDirty = false;
 
-    public TriListener(GTri tri) {
-        this.triID = tri.getId();
+    public PureListener(Drawable tri) {
+        this.triID = tri.rendererUUID();
         this.lastPosition = tri.getPivot();
         this.tri = tri;
         this.lastDistanceFromCamera = tri.getPivot().sub(StaticRefs.getCamera().getPosition()).magnitude();
-        this.depth = tri.calcDepth();
     }
 
     /**
@@ -89,7 +85,6 @@ public class TriListener implements EventListener {
 
         this.lastPosition = tri.getPivot();
         this.lastDistanceFromCamera = tri.getPivot().sub(cam.getPosition()).magnitude();
-        this.depth = tri.calcDepth();
 
         isDirty = true;
     }

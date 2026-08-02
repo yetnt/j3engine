@@ -2,11 +2,11 @@ package com.j3d.engine.geometry.geo3d;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.SceneManager;
+import com.j3d.engine.draw.Renderer;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.layer.Layer;
-import com.j3d.engine.draw.tris.TriStateArea;
 import com.j3d.engine.react.actions.DirtyVoidAction;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.react.events.spec.TriUpdatedBroadcast;
@@ -185,7 +185,7 @@ public class Thing implements Interactable, HasProperties {
                         objectsStream()
                                 .filter(s -> s instanceof GTri)
                                 .map(g -> (GTri)g)
-                                .forEach(TriStateArea::register);
+                                .forEach(Renderer::register);
                         return null;
                     }
 
@@ -196,7 +196,7 @@ public class Thing implements Interactable, HasProperties {
                         objectsStream()
                                 .filter(s -> s instanceof GTri)
                                 .map(g -> (GTri)g)
-                                .forEach(TriStateArea::unregister);
+                                .forEach(Renderer::unregister);
                     }
 
                     @Override
@@ -304,7 +304,7 @@ public class Thing implements Interactable, HasProperties {
         if (isForDeletion() || isHidden()) return;
         for (GObject o : objects) {
             if (o instanceof GTri t) {
-                TriStateArea.addToQueue(t);
+                Renderer.addToQueue(t);
             }
         }
     }

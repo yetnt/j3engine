@@ -87,6 +87,11 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
         pointB.draw(graphics2D);
     }
 
+    @Override
+    public boolean isDeletedState() {
+        return deletedState;
+    }
+
     public void swingDraw(Graphics2D graphics2D) {
         graphics2D.drawLine(
                 pointA.getPivot().toPoint(getCamera()).toScreen(getSceneManager()).x,

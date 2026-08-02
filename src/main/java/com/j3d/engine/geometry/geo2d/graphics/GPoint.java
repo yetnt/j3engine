@@ -41,7 +41,7 @@ import java.util.UUID;
  * @see GLine
  * @see GTri
  */
-public class GPoint extends GObject implements HasParents<GLine> {
+public class GPoint extends GObject implements HasParents<GObject> {
 
     /**
      * The diameter of the point when drawn on screen.
@@ -50,7 +50,7 @@ public class GPoint extends GObject implements HasParents<GLine> {
      * </p>
      */
     public static final int DIAMETER = 7;
-    private HashSet<GLine> parents = new HashSet<>();
+    private HashSet<GObject> parents = new HashSet<>();
 
     /**
      * Constructs a GPoint.
@@ -152,18 +152,18 @@ public class GPoint extends GObject implements HasParents<GLine> {
     }
 
     @Override
-    public HashSet<GLine> getParents() {
+    public HashSet<GObject> getParents() {
         return parents;
     }
 
     @Override
-    public void addParent(GLine parent) {
+    public void addParent(GObject parent) {
         parents.add(parent);
         StaticRefs.getSceneManager().hasParent(this);
     }
 
     @Override
-    public void removeParent(GLine parent) {
+    public void removeParent(GObject parent) {
         boolean su = parents.remove(parent);
         StaticRefs.getSceneManager().hasNoParent(this);
     }

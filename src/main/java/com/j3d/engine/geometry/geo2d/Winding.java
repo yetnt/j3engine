@@ -1,7 +1,6 @@
 package com.j3d.engine.geometry.geo2d;
 
-import com.j3d.engine.draw.tris.SortMethod;
-import com.j3d.engine.geometry.geo2d.graphics.GObject;
+import com.j3d.engine.draw.SortMethod;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;

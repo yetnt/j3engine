@@ -1,6 +1,7 @@
-package com.j3d.engine.draw.tris;
+package com.j3d.engine.draw;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.geometry.geo2d.graphics.Drawable;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.gen.settings.Settings;
@@ -17,21 +18,21 @@ import java.util.ArrayList;
  * @author Lehlogonolo Poole
  * @see ArrayList
  * @see GTri
- * @see TriListener
- * @see TriStateArea
+ * @see PureListener
+ * @see Renderer
  */
-public abstract class SortMethod extends ArrayList<GTri> {
+public abstract class SortMethod extends ArrayList<Drawable> {
     /**
-     * A static list of registered TriListener objects.
+     * A static list of registered PureListener objects.
      */
-    protected final ArrayList<TriListener> registered;
+    protected final ArrayList<PureListener> registered;
 
     /**
      * Constructor for SortMethod
      *
-     * @param registered The list of TriListener objects to be registered.
+     * @param registered The list of PureListener objects to be registered.
      */
-    public SortMethod(ArrayList<TriListener> registered) {
+    public SortMethod(ArrayList<PureListener> registered) {
         super();
         this.registered = registered;
     }

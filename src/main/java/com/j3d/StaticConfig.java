@@ -2,8 +2,8 @@ package com.j3d;
 
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.draw.ViewType;
-import com.j3d.engine.draw.tris.TriStateArea;
-import com.j3d.engine.draw.tris.TriangleSortMethod;
+import com.j3d.engine.draw.Renderer;
+import com.j3d.engine.draw.PureSortMethod;
 import com.j3d.engine.geometry.Dim;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
@@ -79,9 +79,9 @@ public abstract class StaticConfig {
         }
     }
 
-    public static void setTriangleSortMethod(TriangleSortMethod method) {
+    public static void setTriangleSortMethod(PureSortMethod method) {
         Settings.sceneProperties.triangleSortMethod.setValue(method);
-        TriStateArea.setSortMethod(method);
+        Renderer.setSortMethod(method);
     }
 
     public static boolean isUseBackFaceCulling() {

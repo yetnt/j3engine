@@ -36,7 +36,7 @@ import java.util.*;
  * @see GLine
  * @see GTri
  */
-public abstract class GObject extends EventEmitter implements EventListener, HasProperties, CanCopy, SceneObject {
+public abstract class GObject extends EventEmitter implements EventListener, HasProperties, CanCopy, SceneObject, Drawable {
     protected Color col = Color.BLACK;
     /**
      * The pivot point of this geometry. Unless a {@link GPoint} where this represents the actual location
@@ -50,24 +50,6 @@ public abstract class GObject extends EventEmitter implements EventListener, Has
     protected ArrayList<Property<?, ?>> properties = new ArrayList<>();
 
     /**
-     * Draws this geometry to the screen.
-     * @param graphics2D The Graphics2D instance
-     * @implSpec This is meant to be overridden by child classes.
-     */
-    public void draw(Graphics2D graphics2D) {
-        return;
-    }
-
-    /**
-     * Draws this geometry to the screen, but in a selected state.
-     * @param graphics2D The Graphics2D instance
-     * @implSpec This is meant to be overridden by child classes.
-     */
-    public void drawSelected(Graphics2D graphics2D) {
-        return;
-    }
-
-    /**
      * Default Constructor.
      */
     public GObject() {
@@ -75,6 +57,25 @@ public abstract class GObject extends EventEmitter implements EventListener, Has
         addProps();
     }
 
+    @Override
+    public UUID rendererUUID() {
+        return Id;
+    }
+
+    @Override
+    public GObject objectParent() {
+        return this;
+    }
+
+    @Override
+    public void draw(Graphics2D graphics2D) {
+
+    }
+
+    @Override
+    public void drawSelected(Graphics2D graphics2D) {
+
+    }
 
     /**
      * Default Constructor. with color
@@ -218,5 +219,9 @@ public abstract class GObject extends EventEmitter implements EventListener, Has
     @Override
     public void onEvent(EventType event, EventPayload properties) {
 
+    }
+
+    public boolean isDeletedState() {
+        return false;
     }
 }

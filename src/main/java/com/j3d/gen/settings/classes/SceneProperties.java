@@ -1,7 +1,7 @@
 package com.j3d.gen.settings.classes;
 
-import com.j3d.engine.draw.tris.TriStateArea;
-import com.j3d.engine.draw.tris.TriangleSortMethod;
+import com.j3d.engine.draw.PureSortMethod;
+import com.j3d.engine.draw.Renderer;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
 import com.j3d.gen.settings.SettingsChild;
@@ -31,13 +31,13 @@ public class SceneProperties implements SettingsParent {
             i -> i * 1.0,
             1
     );
-    public EnumSetting<TriangleSortMethod> triangleSortMethod = new EnumSetting<>(
+    public EnumSetting<PureSortMethod> triangleSortMethod = new EnumSetting<>(
             "Triangle Sort Method",
-            TriangleSortMethod.CAMDISTSORT,
+            PureSortMethod.CAMDISTSORT,
             "The method the sceneManager should make use of to sort triangles.",
-            TriangleSortMethod.values()
-    ).onSetValue((TriangleSortMethod l) -> {
-        TriStateArea.setSortMethod(l);
+            PureSortMethod.values()
+    ).onSetValue((PureSortMethod l) -> {
+        Renderer.setSortMethod(l);
         return null;
     });
     public BooleanSetting useBackFaceCulling = new BooleanSetting(
