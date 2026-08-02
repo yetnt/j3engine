@@ -9,6 +9,7 @@ import com.j3d.engine.geometry.geo2d.graphics.*;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -49,7 +50,7 @@ public class Renderer {
      * but rather a subclass of {@link SortMethod}. Which is how the triangle
      * sorting is done.
      */
-    private static ArrayList<Drawable> queue;
+    private static ArrayList<RenderState<?, ?>> queue;
 
     static {
         // later set bucket sort to
@@ -81,7 +82,7 @@ public class Renderer {
      * should ever have to call this method.
      * @param tri The GTri to register.
      */
-    public static void register(Drawable tri) {
+    public static void register(RenderState<?, ?> tri) {
         PureListener listener = new PureListener(tri);
 //        tri.attachListener(listener);
         registered.add(listener);
@@ -95,11 +96,20 @@ public class Renderer {
      * however here only {@link GTri#deleteSelf()} may call this method or
      * any other destructive method.
      */
-    public static void unregister(Drawable tri) {
+    public static void unregister(RenderState<?, ?> tri) {
         // finder listener that matches tri id
         registered.stream().filter(
-                listener -> listener.triID.equals(tri.rendererUUID())
+                listener -> listener.triID.equals(tri.getId())
         ).findFirst().ifPresent(
+                registered::remove
+        );
+    }
+
+    public static void unregister(UUID uuid) {
+        // finder listener that matches tri id
+        registered.stream().filter(
+                listener -> listener.triID.equals(uuid)
+        ).forEach(
                 registered::remove
         );
     }
@@ -116,31 +126,31 @@ public class Renderer {
      * @param g The Graphics2D context.
      */
     public static void draw(Graphics2D g) {
-        ArrayList<GObject> unparented = StaticRefs.getSceneManager().getUnparented().stream()
-                .map(o -> (GObject) o)
-                .collect(Collectors.toCollection(ArrayList::new));
-        unparented.forEach(
-                u -> {
-                    // draw these fools first since we cant use Renderer methods for sorting.
-                    // upper todo remove later. primitives.
-                    if (StaticRefs.getSceneManager().getSelected().contains(u)) {
-                        u.drawSelected(g);
-                    } else {
-                        u.draw(g);
-                    }
-                }
-        );
-        for  (Drawable drawable : queue) {
-            if (drawable instanceof GTri tri)
+//        ArrayList<GObject> unparented = StaticRefs.getSceneManager().getUnparented().stream()
+//                .map(o -> (GObject) o)
+//                .collect(Collectors.toCollection(ArrayList::new));
+//        unparented.forEach(
+//                u -> {
+//                    // draw these fools first since we cant use Renderer methods for sorting.
+//                    // upper todo remove later. primitives.
+//                    if (StaticRefs.getSceneManager().getSelected().contains(u)) {
+//                        u.drawSelected(g);
+//                    } else {
+//                        u.draw(g);
+//                    }
+//                }
+//        );
+        for  (RenderState<?, ?> drawable : queue) {
+            if (drawable.getPure() instanceof GTri tri)
                 if (tri.isHidden()) continue;
             // todo remove drawig parent,
-            if (drawable instanceof GCurve gc) {
-                if (StaticRefs.getSceneManager().getSelected().contains(drawable.objectParent())) {
-                    gc.objectParent().drawSelected(g);
+            if (drawable.getPure() instanceof GCurve gc) {
+                if (StaticRefs.getSceneManager().getSelected().contains(drawable.getParent())) {
+                    drawable.drawSelected(g);
                 } else
                     drawable.draw(g);
             }
-            if (StaticRefs.getSceneManager().getSelected().contains(drawable.objectParent())) {
+            if (StaticRefs.getSceneManager().getSelected().contains(drawable.getParent())) {
                 drawable.drawSelected(g);
             } else {
                 drawable.draw(g);
@@ -153,7 +163,7 @@ public class Renderer {
      * Adds a GTri to the queue.
      * @param tri The GTri to add.
      */
-    public static void addToQueue(Drawable tri) {
+    public static void addToQueue(RenderState<?, ?> tri) {
         if (registered.stream().anyMatch(
                 l -> l.tri == tri
         )) {

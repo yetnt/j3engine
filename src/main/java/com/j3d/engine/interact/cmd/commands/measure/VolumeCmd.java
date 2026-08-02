@@ -97,7 +97,7 @@ public class VolumeCmd extends Subcommand {
                 .map(o -> (GLine) o)
                 .forEach(g -> {
                     if (draw)
-                        g.swingDraw(graphics2D);
+                        g.toSegment().swingDraw(graphics2D);
                 });
     }
 

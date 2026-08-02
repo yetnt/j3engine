@@ -1,9 +1,11 @@
 package com.j3d.engine.geometry.geo2d.graphics;
 
 import com.j3d.engine.SceneObject;
+import com.j3d.engine.draw.RenderState;
 import com.j3d.engine.geometry.geo2d.copy.CanCopy;
 import com.j3d.engine.geometry.geo2d.copy.CopyProperties;
 import com.j3d.engine.geometry.geo2d.copy.InvalidCopyException;
+import com.j3d.engine.geometry.geo2d.graphics.pure.Pure;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventEmitter;
 import com.j3d.engine.react.events.EventListener;
@@ -36,7 +38,7 @@ import java.util.*;
  * @see GLine
  * @see GTri
  */
-public abstract class GObject extends EventEmitter implements EventListener, HasProperties, CanCopy, SceneObject, Drawable {
+public abstract class GObject extends EventEmitter implements EventListener, HasProperties, CanCopy, SceneObject {
     protected Color col = Color.BLACK;
     /**
      * The pivot point of this geometry. Unless a {@link GPoint} where this represents the actual location
@@ -57,26 +59,6 @@ public abstract class GObject extends EventEmitter implements EventListener, Has
         addProps();
     }
 
-    @Override
-    public UUID rendererUUID() {
-        return Id;
-    }
-
-    @Override
-    public GObject objectParent() {
-        return this;
-    }
-
-    @Override
-    public void draw(Graphics2D graphics2D) {
-
-    }
-
-    @Override
-    public void drawSelected(Graphics2D graphics2D) {
-
-    }
-
     /**
      * Default Constructor. with color
      * @param colour The colour.
@@ -85,6 +67,10 @@ public abstract class GObject extends EventEmitter implements EventListener, Has
         this();
         col = colour;
         // addprops()
+    }
+
+    public <T extends Pure> ArrayList<RenderState<T, GObject>> genericRenderStateList() {
+        return new ArrayList<>();
     }
 
     // GLine and GTri make this constant.

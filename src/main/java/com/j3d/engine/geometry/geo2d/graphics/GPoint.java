@@ -2,24 +2,21 @@ package com.j3d.engine.geometry.geo2d.graphics;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.SceneManager;
-import com.j3d.engine.draw.ViewType;
+import com.j3d.engine.draw.RenderState;
+import com.j3d.engine.geometry.geo2d.DecomposeWhenDrawn;
 import com.j3d.engine.geometry.geo2d.HasParents;
 import com.j3d.engine.geometry.geo2d.copy.CopyProperties;
 import com.j3d.engine.geometry.geo2d.copy.InvalidCopyException;
+import com.j3d.engine.geometry.geo2d.graphics.pure.Point;
+import com.j3d.engine.geometry.geo2d.graphics.pure.Pure;
 import com.j3d.engine.geometry.geo3d.Thing;
-import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
-import com.j3d.engine.layer.Layer;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
-import com.j3d.StaticConfig;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.ui.dialog.Spinner;
 
-import java.awt.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * GPoint is a class that represents a single point in 3D space.
@@ -41,7 +38,7 @@ import java.util.UUID;
  * @see GLine
  * @see GTri
  */
-public class GPoint extends GObject implements HasParents<GObject> {
+public class GPoint extends GObject implements HasParents<GObject>, DecomposeWhenDrawn<Point> {
 
     /**
      * The diameter of the point when drawn on screen.
@@ -65,57 +62,10 @@ public class GPoint extends GObject implements HasParents<GObject> {
         return gp;
     }
 
-    /**
-     * Draws this point to the screen.
-     * @implSpec This is only called by {@link GLine#draw(Graphics2D)}
-     * @implNote As defined by {@link ViewType}, the point may or may not
-     * be drawn. e.g. If not defined as {@link ViewType#WIREFRAME} then the point
-     * skips drawing itself.
-     * @param graphics2D The Graphics2D instance
-     */
-    @Override
-    public void draw(Graphics2D graphics2D) {
-        super.draw(graphics2D);
-        if (hasParent() && parents.stream().anyMatch(s -> s instanceof GCurve)) {
-            System.out.println("sdfsdf");
-        }
-        if (StaticConfig.getViewType() != ViewType.WIREFRAME)
-            if (hasParent() /*&& getParents().stream().findAny().get().hasParent()*/)
-                return;
-
-        if (StaticRefs.getSceneManager().getSelected().contains(this)) {
-            drawSelected(graphics2D);
-            return;
-        }
-        graphics2D.setColor(col);
-        ScreenPoint p = this.getPivot().toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager());
-        graphics2D.fillOval(p.x - DIAMETER / 2, p.y - DIAMETER / 2, DIAMETER, DIAMETER);
-    }
-
-    /**
-     * Draws this point to the screen in its selected state.
-     * @implSpec This is only called by {@link GLine#drawSelected(Graphics2D)}
-     * @implNote As defined by {@link ViewType}, the point may or may not
-     * be drawn. e.g. If not defined as {@link ViewType#WIREFRAME} then the point
-     * skips drawing itself.
-     * @param graphics2D The Graphics2D instance
-     */
-    @Override
-    public void drawSelected(Graphics2D graphics2D) {
-        super.drawSelected(graphics2D);
-        if (StaticConfig.getViewType() != ViewType.WIREFRAME)
-            if (hasParent() /*&& getParents().stream().findAny().get().hasParent() */) {
-                return;
-            }
-        graphics2D.setColor(Color.WHITE);
-        ScreenPoint p = this.getPivot().toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager());
-        graphics2D.fillOval(p.x - (DIAMETER+1) / 2, p.y - (DIAMETER+1) / 2, (DIAMETER+1), (DIAMETER+1));
-//        draw(graphics2D);
-    }
-
     @Override
     public void setPivot(Vector3 pivot) {
         super.setPivot(pivot);
+        decompose();
         this.broadcast(EventType.GPOINT_RECALC_PIVOT, new GPointMovedEvent(this, StaticRefs.getSceneManager()));
     }
 
@@ -128,6 +78,12 @@ public class GPoint extends GObject implements HasParents<GObject> {
         setPivot(v3);
         StaticRefs.getSceneManager().hasNoParent(this);
         addProps();
+    }
+
+    public Point toPure() {
+        return new Point(
+                getPivot()
+        );
     }
 
     private void addProps() {
@@ -194,6 +150,25 @@ public class GPoint extends GObject implements HasParents<GObject> {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode());
+    }
+
+    private RenderState<Point, GObject> renderState;
+    @Override
+    public void decompose() {
+        if (renderState == null || !renderState.isValid()) {
+            renderState = toPure().toRenderState(this);
+        }
+    }
+
+    @Override
+    public ArrayList<RenderState<Point, GObject>> getDecomposeList() {
+        return new ArrayList<>(Collections.singletonList(renderState));
+    }
+
+    @Override
+    public ArrayList genericRenderStateList() {
+        decompose();
+        return getDecomposeList();
     }
 
     public static class GPointMovedEvent extends EventPayload<GPoint> {

@@ -1,12 +1,16 @@
 package com.j3d.engine.geometry.geo2d.graphics;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.draw.RenderState;
 import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.draw.SortMethod;
 import com.j3d.engine.draw.Renderer;
+import com.j3d.engine.geometry.geo2d.DecomposeWhenDrawn;
 import com.j3d.engine.geometry.geo2d.Winding;
 import com.j3d.engine.geometry.geo2d.copy.CopyProperties;
 import com.j3d.engine.geometry.geo2d.copy.InvalidCopyException;
+import com.j3d.engine.geometry.geo2d.graphics.pure.Segment;
+import com.j3d.engine.geometry.geo2d.graphics.pure.Triangle;
 import com.j3d.engine.geometry.geo3d.Thing;
 
 import java.awt.*;
@@ -52,7 +56,7 @@ import static com.j3d.StaticRefs.getSceneManager;
  * @see GPoint
  * @see GLine
  */
-public class GTri extends GObject implements IdempotentEventListener<GPoint.GPointMovedEvent, Vector3> {
+public class GTri extends GObject implements IdempotentEventListener<GPoint.GPointMovedEvent, Vector3>, DecomposeWhenDrawn<Triangle> {
     /**
      * Leg A, connected to Leg B and Leg C
      */
@@ -141,9 +145,23 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
         normal();
 
-        Renderer.register(this);
+        Renderer.register(toRenderState());
         drawDist();
         addProps();
+    }
+
+    public Triangle toPure() {
+        return new Triangle(
+                winding.first().getPivot(),
+                winding.second().getPivot(),
+                winding.third().getPivot()
+        );
+    }
+
+    private RenderState<Triangle, GObject> renderState;
+    public RenderState<Triangle, GObject> toRenderState() {
+        renderState = toPure().toRenderState(this);
+        return renderState;
     }
 
     /**
@@ -199,7 +217,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
                 winding.toVector3List()
                 , Vector3::add).div(3));
         normal();
-        Renderer.register(this);
+        Renderer.register(toRenderState());
         drawDist();
         addProps();
     }
@@ -228,7 +246,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
         setPivot(Vector3.reduceToVector3(winding.toVector3List(), Vector3::add).div(3));
         normal();
-        Renderer.register(this);
+        Renderer.register(toRenderState());
         drawDist();
         addProps();
     }
@@ -379,7 +397,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
                     if (!line.hasParent()) line.deleteSelf();
                 }
         );
-        Renderer.unregister(this);
+        Renderer.unregister(this.getId());
         getSceneManager().removeOverlap(getId());
         return true;
     }
@@ -450,7 +468,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         LegC = null;
 
         // without lines, this triangle cannot exist. It must be deleted.
-        Renderer.unregister(this);
+        Renderer.unregister(getId());
         parent.getObjects().remove(this);
 
         return points;
@@ -469,84 +487,28 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
     public int hashCode() {
         return Objects.hash(super.hashCode(), deletedState, isHidden(), doubleSided);
     }
-
-    /**
-     * Draws this triangle to the screen in its selected state.
-     * @implSpec This is only called by {@link Renderer#draw(Graphics2D)}
-     * @implNote This respects {@link ViewType} and may or may not draw
-     * itself depending on the type.
-     * @param graphics2D The Graphics2D instance
-     */
-    @Override
-    public void drawSelected(Graphics2D graphics2D) {
-        super.drawSelected(graphics2D);
-        if (deletedState) return;
-        setPivot(LegA.getA().getPivot().add(LegB.getA().getPivot()).add(LegC.getA().getPivot()).div(3));
-        normal();
-        if (StaticConfig.getViewType() == ViewType.NORMAL) {
-            graphics2D.setColor(col.brighter());
-            graphics2D.setStroke(new BasicStroke(2));
-            graphics2D.fillPolygon(new int[]{
-                            LegA.getA().getPivot().toPoint(StaticRefs.getCamera()).toScreen(getSceneManager()).x,
-                            LegA.getB().getPivot().toPoint(StaticRefs.getCamera()).toScreen(getSceneManager()).x,
-                            LegB.getB().getPivot().toPoint(StaticRefs.getCamera()).toScreen(getSceneManager()).x
-                    },
-                    new int[]{
-                            LegA.getA().getPivot().toPoint(StaticRefs.getCamera()).toScreen(getSceneManager()).y,
-                            LegA.getB().getPivot().toPoint(StaticRefs.getCamera()).toScreen(getSceneManager()).y,
-                            LegB.getB().getPivot().toPoint(StaticRefs.getCamera()).toScreen(getSceneManager()).y
-                    },
-                    3
-            );
-            graphics2D.setStroke(new BasicStroke(1));
-            draw(graphics2D);
-            // dispatch to lines
-        }
-        LegA.drawSelected(graphics2D);
-        LegB.drawSelected(graphics2D);
-        LegC.drawSelected(graphics2D);
-        getSceneManager().drawText3D(
-                graphics2D,
-                getPivot().sub(Vector3.UNIT),
-                "Tri-" + getId().toString().substring(0, 4),
-                StaticRefs.getCamera());
-    }
-
-    /**
-     * Draws this triangle to the screen.
-     * @implSpec This is only called by {@link Renderer#draw(Graphics2D)}
-     * @implNote This respects {@link ViewType} and may or may not draw
-     * itself depending on the type.
-     * @param graphics2D The Graphics2D instance
-     */
-    @Override
-    public void draw(Graphics2D graphics2D) {
-        super.drawSelected(graphics2D);
-        if (deletedState) return;
-        setPivot(LegA.getA().getPivot().add(LegB.getA().getPivot()).add(LegC.getA().getPivot()).div(3));
-        normal();
-        if (StaticConfig.getViewType() == ViewType.NORMAL) {
-            graphics2D.setColor(col);
-            graphics2D.fillPolygon(new int[]{
-                            LegA.getA().getPivot().toPoint(StaticRefs.getCamera()).toScreen(getSceneManager()).x,
-                            LegA.getB().getPivot().toPoint(StaticRefs.getCamera()).toScreen(getSceneManager()).x,
-                            LegB.getB().getPivot().toPoint(StaticRefs.getCamera()).toScreen(getSceneManager()).x
-                    },
-                    new int[]{
-                            LegA.getA().getPivot().toPoint(StaticRefs.getCamera()).toScreen(getSceneManager()).y,
-                            LegA.getB().getPivot().toPoint(StaticRefs.getCamera()).toScreen(getSceneManager()).y,
-                            LegB.getB().getPivot().toPoint(StaticRefs.getCamera()).toScreen(getSceneManager()).y
-                    },
-                    3
-            );
-        }
-        // dispatch to lines
-        LegA.draw(graphics2D);
-        LegB.draw(graphics2D);
-        LegC.draw(graphics2D);
-    }
     public boolean showNorm = false;
 
+    @Override
+    public boolean isDeletedState() {
+        return deletedState;
+    }
+
+    @Override
+    public void decompose() {
+        toRenderState();
+    }
+
+    @Override
+    public ArrayList<RenderState<Triangle, GObject>> getDecomposeList() {
+        return new ArrayList<>(Collections.singletonList(renderState));
+    }
+
+    @Override
+    public ArrayList genericRenderStateList() {
+        decompose();
+        return getDecomposeList();
+    }
     /**
      * Private method to draw the triangle's distance depth and normal overlays.
      */

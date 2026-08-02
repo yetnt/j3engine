@@ -1,5 +1,6 @@
 package com.j3d.engine.draw.methods;
 
+import com.j3d.engine.draw.RenderState;
 import com.j3d.engine.draw.Renderer;
 import com.j3d.engine.draw.SortMethod;
 import com.j3d.engine.draw.PureListener;
@@ -30,8 +31,8 @@ public class DDUUIDSort extends SortMethod {
     }
 
     @Override
-    public boolean add(Drawable gTri) {
-        if (gTri instanceof GTri t)
+    public boolean add(RenderState<?, ?> gTri) {
+        if (gTri.getPure() instanceof GTri t)
             if (backFaceCulled(t)) return false;
         if (this.contains(gTri)) {
             sort();
@@ -77,7 +78,7 @@ public class DDUUIDSort extends SortMethod {
                 double euclidDist2 = tri2.getPivot().magnitude();
                 if  (Double.compare(euclidDist1, euclidDist2) == 0) {
                     // final fallback to ID comparison to ensure consistent ordering
-                    return tri1.rendererUUID().compareTo(tri2.rendererUUID());
+                    return tri1.getId().compareTo(tri2.getId());
                 }
                 return Double.compare(euclidDist2, euclidDist1); // Sort in descending order (farthest first)
             }

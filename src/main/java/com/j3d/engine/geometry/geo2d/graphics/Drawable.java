@@ -22,10 +22,4 @@ public interface Drawable {
      * @implSpec This is meant to be overridden by child classes.
      */
     void drawSelected(Graphics2D graphics2D);
-
-    UUID rendererUUID();
-
-    GObject objectParent();
-
-    Vector3 getPivot();
 }

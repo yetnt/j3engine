@@ -2,6 +2,7 @@ package com.j3d.engine.geometry.geo3d;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.SceneManager;
+import com.j3d.engine.draw.RenderState;
 import com.j3d.engine.draw.Renderer;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
@@ -185,6 +186,7 @@ public class Thing implements Interactable, HasProperties {
                         objectsStream()
                                 .filter(s -> s instanceof GTri)
                                 .map(g -> (GTri)g)
+                                .map(GTri::toRenderState)
                                 .forEach(Renderer::register);
                         return null;
                     }
@@ -196,7 +198,7 @@ public class Thing implements Interactable, HasProperties {
                         objectsStream()
                                 .filter(s -> s instanceof GTri)
                                 .map(g -> (GTri)g)
-                                .forEach(Renderer::unregister);
+                                .forEach(s -> Renderer.unregister(s.getId()));
                     }
 
                     @Override
@@ -302,9 +304,12 @@ public class Thing implements Interactable, HasProperties {
         }
 
         if (isForDeletion() || isHidden()) return;
-        for (GObject o : objects) {
-            Renderer.addToQueue(o);
-        }
+        objects.stream()
+                .map(GObject::genericRenderStateList)
+                .flatMap(ArrayList::stream)
+                .forEach(Renderer::register);
+//        for (GObject o : objects) {
+//        }
     }
 
     /**

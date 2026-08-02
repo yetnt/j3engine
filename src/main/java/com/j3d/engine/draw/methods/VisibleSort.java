@@ -1,5 +1,6 @@
 package com.j3d.engine.draw.methods;
 
+import com.j3d.engine.draw.RenderState;
 import com.j3d.engine.draw.Renderer;
 import com.j3d.engine.draw.SortMethod;
 import com.j3d.engine.draw.PureListener;
@@ -42,8 +43,8 @@ public class VisibleSort extends SortMethod {
     }
 
     @Override
-    public boolean add(Drawable gTri) {
-        if (gTri instanceof GTri t)
+    public boolean add(RenderState<?, ?> gTri) {
+        if (gTri.getPure() instanceof GTri t)
             if (backFaceCulled(t)) return false;
         if (this.contains(gTri)) {
             updateVisibilityAndSort();
@@ -79,7 +80,7 @@ public class VisibleSort extends SortMethod {
         for (PureListener tl : registered) {
             if (tl == null || tl.tri == null) continue;
             try {
-                if (tl.tri instanceof GTri t)
+                if (tl.tri.getPure() instanceof GTri t)
                     zb.tri(t);
             } catch (Throwable ignored) {
                 // Defensive: don't let one bad triangle stop visibility determination
@@ -96,11 +97,11 @@ public class VisibleSort extends SortMethod {
         }
 
         // Build the visible triangle list in a deterministic way and sort by depth
-        List<GTri> visibleTris = registered.stream()
-                .filter(l -> l != null && l.tri != null && visibleIds.contains(l.tri.rendererUUID()))
+        List<? extends RenderState<?, ?>> visibleTris = registered.stream()
+                .filter(l -> l != null && l.tri != null && visibleIds.contains(l.tri.getId()))
                 .map(l -> l.tri)
-                .filter(s -> s instanceof GTri)
-                .map(s -> (GTri) s).sorted((tri1, tri2) -> {
+                .filter(s -> s.getPure() instanceof GTri)
+                .map(s -> (GTri) s.getPure()).sorted((tri1, tri2) -> {
                     double dist1 = tri1.calcDepth();
                     double dist2 = tri2.calcDepth();
                     if (Double.compare(dist1, dist2) == 0) {
@@ -112,7 +113,10 @@ public class VisibleSort extends SortMethod {
                         return Double.compare(euclid2, euclid1); // farthest first
                     }
                     return Double.compare(dist2, dist1); // farthest first
-                }).toList();
+                })
+                .map(GTri::toRenderState)
+                .map(s -> (RenderState<?, ?>)s)
+                .toList();
 
         // Replace current contents with the filtered & sorted visible triangles
         super.clear();

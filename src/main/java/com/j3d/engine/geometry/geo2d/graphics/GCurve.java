@@ -1,9 +1,9 @@
 package com.j3d.engine.geometry.geo2d.graphics;
 
+import com.j3d.engine.draw.RenderState;
 import com.j3d.engine.geometry.geo2d.DecomposeWhenDrawn;
 import com.j3d.engine.geometry.geo2d.copy.CopyProperties;
 import com.j3d.engine.geometry.geo2d.copy.InvalidCopyException;
-import com.j3d.engine.geometry.geo2d.graphics.pure.Pure;
 import com.j3d.engine.geometry.geo2d.graphics.pure.Segment;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.react.events.EventPayload;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-public class GCurve extends GObject implements IdempotentEventListener<GPoint.GPointMovedEvent, SamePair<Double>>, DecomposeWhenDrawn<Segment<GCurve>> {
+public class GCurve extends GObject implements IdempotentEventListener<GPoint.GPointMovedEvent, SamePair<Double>>, DecomposeWhenDrawn<Segment> {
 
     private GPoint start;
     private GPoint controlPoint;
@@ -94,29 +94,11 @@ public class GCurve extends GObject implements IdempotentEventListener<GPoint.GP
         return controlPoint;
     }
 
-    // TODO: currently points are only visible due to GObject implementing Drawable
-    @Override
-    public void draw(Graphics2D graphics2D) {
-        // dispatch to points
-        start.draw(graphics2D);
-        controlPoint.draw(graphics2D);
-        end.draw(graphics2D);
-    }
-
-    @Override
-    public void drawSelected(Graphics2D graphics2D) {
-        // dispatch to points
-        start.drawSelected(graphics2D);
-        controlPoint.drawSelected(graphics2D);
-        end.drawSelected(graphics2D);
-
-    }
-
-    ArrayList<Segment<GCurve>> segments = new ArrayList<>();
+    ArrayList<RenderState<Segment, GObject>> segments = new ArrayList<>();
 
     @Override
     public void decompose() {
-        segments.forEach(Pure::invalidate);
+        segments.forEach(RenderState::invalidate);
         segments.clear();
         Vector3 prev = point(0);
 
@@ -124,19 +106,21 @@ public class GCurve extends GObject implements IdempotentEventListener<GPoint.GP
             double t = (double) i / AMOUNT;
             Vector3 next = point(t);
 
-            segments.add(new Segment<>(prev, next, this));
+            segments.add(new Segment(prev, next).toRenderState(this));
 
             prev = next;
         }
     }
 
     @Override
-    public ArrayList<Segment<GCurve>> getDecomposeList() {
+    public ArrayList<RenderState<Segment, GObject>> getDecomposeList() {
         return segments;
     }
 
-    public void swingDraw(Graphics2D graphics2D) {
-//        graphics2D.draw
+    @Override
+    public ArrayList genericRenderStateList() {
+        decompose();
+        return getDecomposeList();
     }
 
     double lengthA = 0.00;

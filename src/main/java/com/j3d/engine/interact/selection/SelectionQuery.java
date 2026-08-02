@@ -1,6 +1,7 @@
 package com.j3d.engine.interact.selection;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.draw.RenderState;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.graphics.*;
 import com.j3d.engine.geometry.geo2d.graphics.pure.Segment;
@@ -54,18 +55,20 @@ public class SelectionQuery extends Rectangle {
     }
 
     public boolean has(GCurve curve, boolean soft) {
-        ArrayList<Segment<GCurve>> segments = curve.getDecomposeList();
+        ArrayList<RenderState<Segment, GObject>> segments = curve.getDecomposeList();
         if (soft) {
             // any segment can match to be valid
             return
                     segments
                             .stream()
+                            .map(RenderState::getPure)
                             .anyMatch(s -> has(s, false));
         } else {
             // all segments must be within
             return
                     segments
                             .stream()
+                            .map(RenderState::getPure)
                             .allMatch(s -> has(s, false));
         }
     }
@@ -111,7 +114,7 @@ public class SelectionQuery extends Rectangle {
         return has(line.toSegment(), soft);
     }
 
-    public boolean has(Segment<?> line, boolean soft) {
+    public boolean has(Segment line, boolean soft) {
         if (soft) {
             if (intersectsWith(line)) return true;
         }
@@ -132,7 +135,7 @@ public class SelectionQuery extends Rectangle {
         return contains(point.toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager()).toSwingPoint());
     }
 
-    public boolean intersectsWith(Segment<?> line) {
+    public boolean intersectsWith(Segment line) {
         ScreenPoint A = line.getStart().toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager());
         ScreenPoint B = line.getEnd().toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager());
 

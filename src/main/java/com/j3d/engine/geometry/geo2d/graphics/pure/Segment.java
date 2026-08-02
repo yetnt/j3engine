@@ -1,5 +1,6 @@
 package com.j3d.engine.geometry.geo2d.graphics.pure;
 
+import com.j3d.engine.draw.RenderState;
 import com.j3d.engine.draw.Renderer;
 import com.j3d.engine.geometry.geo2d.DecomposeWhenDrawn;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
@@ -7,50 +8,31 @@ import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 
 import java.awt.*;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 import static com.j3d.StaticRefs.getCamera;
 import static com.j3d.StaticRefs.getSceneManager;
 
-public class Segment<T extends GObject> implements Pure {
+public class Segment implements Pure {
 
     private Vector3 start;
     private Vector3 end;
-    private T parent;
-    private UUID id = UUID.randomUUID();
     private boolean isValid = true;
 
-    public Segment(Vector3 start, Vector3 end, T parent) {
+    public Segment(Vector3 start, Vector3 end) {
         this.start = start;
         this.end = end;
-        this.parent = parent;
-        if (parent != null)
-            Renderer.register(this);
     }
 
     @Override
-    public void invalidate() {
-        isValid = false;
-    }
-
-    @Override
-    public boolean isValid() {
-        return isValid;
+    public UUID getId() {
+        return UUID.randomUUID();
     }
 
     @Override
     public Vector3 getPivot() {
         return
                 start.add(end).div(2);
-    }
-
-    @Override
-    public GObject objectParent() {
-        return parent;
-    }
-
-    @Override
-    public UUID rendererUUID() {
-        return id;
     }
 
     public Vector3 getStart() {
@@ -62,15 +44,38 @@ public class Segment<T extends GObject> implements Pure {
     }
 
     @Override
-    public void draw(Graphics2D graphics2D) {
-        if (parent == null) return;
-        if (parent.isDeletedState()) return;
-        if (getSceneManager().getSelected().contains(parent)) {
-            drawSelected(graphics2D);return;
-        }
-        graphics2D.setColor(parent.getColour());
-        swingDraw(graphics2D);
+    public RenderState<Segment, GObject> toRenderState(GObject parent) {
+        Consumer<Graphics2D> swingDraw = (graphics2D) -> {
+            graphics2D.drawLine(
+                    start.toPoint(getCamera()).toScreen(getSceneManager()).x,
+                    start.toPoint(getCamera()).toScreen(getSceneManager()).y,
+                    end.toPoint(getCamera()).toScreen(getSceneManager()).x,
+                    end.toPoint(getCamera()).toScreen(getSceneManager()).y
+            );
+        };
+        RenderState<Segment, GObject> rs = Pure.super.toRenderState(parent);
+        rs.setConsumers(
+                (g) -> {
+                    if (parent == null) return;
+                    if (parent.isDeletedState()) return;
+//                            if (getSceneManager().getSelected().contains(parent)) {
+//                                drawSelected(graphics2D);return;
+//                            }
+                    g.setColor(parent.getColour());
+                    swingDraw.accept(g);
+                },
+                (g) -> {
+                    if (parent == null) return;
+                    if (parent.isDeletedState()) return;
+                    g.setColor(parent.getColour().brighter());
+                    g.setStroke(new BasicStroke(4));
+                    swingDraw.accept(g);
+                    g.setStroke(new BasicStroke(1));
+                }
+        );
+        return rs;
     }
+
 
     public void swingDraw(Graphics2D graphics2D) {
         graphics2D.drawLine(
@@ -79,15 +84,5 @@ public class Segment<T extends GObject> implements Pure {
                 end.toPoint(getCamera()).toScreen(getSceneManager()).x,
                 end.toPoint(getCamera()).toScreen(getSceneManager()).y
         );
-    }
-
-    @Override
-    public void drawSelected(Graphics2D graphics2D) {
-        if (parent == null) return;
-        if (parent.isDeletedState()) return;
-        graphics2D.setColor(parent.getColour().brighter());
-        graphics2D.setStroke(new BasicStroke(4));
-        swingDraw(graphics2D);
-        graphics2D.setStroke(new BasicStroke(1));
     }
 }

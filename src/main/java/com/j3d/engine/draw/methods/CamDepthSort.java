@@ -2,6 +2,7 @@ package com.j3d.engine.draw.methods;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.draw.PureListener;
+import com.j3d.engine.draw.RenderState;
 import com.j3d.engine.draw.SortMethod;
 import com.j3d.engine.draw.Renderer;
 import com.j3d.engine.geometry.geo2d.graphics.Drawable;
@@ -27,8 +28,8 @@ public class CamDepthSort extends SortMethod {
     }
 
     @Override
-    public boolean add(Drawable gTri) {
-        if (gTri instanceof GTri t)
+    public boolean add(RenderState<?, ?> gTri) {
+        if (gTri.getPure() instanceof GTri t)
             if (backFaceCulled(t)) return false;
         if (this.contains(gTri)) {
             sort();
@@ -72,7 +73,7 @@ public class CamDepthSort extends SortMethod {
         });
     }
 
-    public static double calcDepth(Drawable drawable) {
+    public static double calcDepth(RenderState<?, ?> drawable) {
         Vector3 toTri = drawable.getPivot().sub(StaticRefs.getCamera().getPosition());
         return toTri.dot(StaticRefs.getCamera().getForward().normalize());
     }

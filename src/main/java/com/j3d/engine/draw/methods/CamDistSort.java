@@ -2,6 +2,7 @@ package com.j3d.engine.draw.methods;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.draw.PureListener;
+import com.j3d.engine.draw.RenderState;
 import com.j3d.engine.draw.Renderer;
 import com.j3d.engine.draw.SortMethod;
 import com.j3d.engine.geometry.geo2d.graphics.Drawable;
@@ -25,8 +26,8 @@ public class CamDistSort extends SortMethod {
     }
 
     @Override
-    public boolean add(Drawable gTri) {
-        if (gTri instanceof GTri t)
+    public boolean add(RenderState<?, ?> gTri) {
+        if (gTri.getPure() instanceof GTri t)
             if (backFaceCulled(t)) return false;
         if (this.contains(gTri)) {
             sort();
@@ -76,7 +77,7 @@ public class CamDistSort extends SortMethod {
         });
     }
 
-    public double euclideanDist(Drawable d) {
+    public double euclideanDist(RenderState<?, ?> d) {
         return d.getPivot().sub(StaticRefs.getCamera().getPosition()).magnitude();
     }
 }

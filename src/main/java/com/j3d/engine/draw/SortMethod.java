@@ -24,7 +24,7 @@ import java.util.ArrayList;
  * @see PureListener
  * @see Renderer
  */
-public abstract class SortMethod extends ArrayList<Drawable> {
+public abstract class SortMethod extends ArrayList<RenderState<?, ?>> {
     /**
      * A static list of registered PureListener objects.
      */
@@ -41,24 +41,24 @@ public abstract class SortMethod extends ArrayList<Drawable> {
     }
 
     @Override
-    public boolean add(Drawable drawable) {
+    public boolean add(RenderState<?, ?> drawable) {
         SortMethod sm = this;
-        if (drawable instanceof Pure s) {
-            if (s.isValid())
-                return super.add(drawable);
-            else {
-                Renderer.unregister(s);
-                this.remove(s);
-                return false;
-            }
-        }
+//        if (drawable instanceof Pure s) {
+//            if (s.isValid())
+//                return super.add(drawable);
+//            else {
+//                Renderer.unregister(s);
+//                this.remove(s);
+//                return false;
+//            }
+//        }
         if (drawable instanceof DecomposeWhenDrawn<?> d) {
             d.getDecomposeList().forEach(r-> {
                 if (r.isValid())
-                    sm.add(r);
+                    sm.add(drawable);
                 else {
-                    Renderer.unregister(r);
-                    sm.remove(r);
+                    Renderer.unregister(drawable);
+                    sm.remove(d);
                 }
             });
             return true;

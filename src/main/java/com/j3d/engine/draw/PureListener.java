@@ -38,7 +38,7 @@ public class PureListener implements EventListener {
     /**
      * GTri reference.
      */
-    public Drawable tri;
+    public RenderState tri;
     /**
      * The last position (centre) it was at.
      */
@@ -52,8 +52,8 @@ public class PureListener implements EventListener {
      */
     private boolean isDirty = false;
 
-    public PureListener(Drawable tri) {
-        this.triID = tri.rendererUUID();
+    public PureListener(RenderState tri) {
+        this.triID = tri.getId();
         this.lastPosition = tri.getPivot();
         this.tri = tri;
         this.lastDistanceFromCamera = tri.getPivot().sub(StaticRefs.getCamera().getPosition()).magnitude();

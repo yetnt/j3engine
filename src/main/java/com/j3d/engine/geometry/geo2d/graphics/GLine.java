@@ -1,10 +1,13 @@
 package com.j3d.engine.geometry.geo2d.graphics;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.draw.RenderState;
 import com.j3d.engine.draw.ViewType;
+import com.j3d.engine.geometry.geo2d.DecomposeWhenDrawn;
 import com.j3d.engine.geometry.geo2d.HasParents;
 import com.j3d.engine.geometry.geo2d.copy.CopyProperties;
 import com.j3d.engine.geometry.geo2d.copy.InvalidCopyException;
+import com.j3d.engine.geometry.geo2d.graphics.pure.Point;
 import com.j3d.engine.geometry.geo2d.graphics.pure.Segment;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
@@ -16,10 +19,8 @@ import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.ui.dialog.Spinner;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -41,7 +42,7 @@ import static com.j3d.StaticRefs.getSceneManager;
  * @see GPoint
  * @see GTri
  */
-public class GLine extends GObject implements HasParents<GTri>, IdempotentEventListener<GPoint.GPointMovedEvent, Vector3> {
+public class GLine extends GObject implements HasParents<GTri>, IdempotentEventListener<GPoint.GPointMovedEvent, Vector3>, DecomposeWhenDrawn<Segment> {
     /**
      * The startpoint of this line
      */
@@ -67,59 +68,9 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
         return gl;
     }
 
-    /**
-     * Draws this line to the screen.
-     * @implSpec This is only called by {@link GTri#draw(Graphics2D)}
-     * @implNote This respects {@link ViewType} and may or may not draw
-     * itself depending on the type.
-     * @param graphics2D The Graphics2D instance
-     */
-    @Override
-    public void draw(Graphics2D graphics2D) {
-        super.draw(graphics2D);
-        if (deletedState) return;
-        if (getSceneManager().getSelected().contains(this)) {
-            drawSelected(graphics2D);return;
-        }
-        graphics2D.setColor(col);
-        swingDraw(graphics2D);
-        // dispatch to points
-        pointA.draw(graphics2D);
-        pointB.draw(graphics2D);
-    }
-
     @Override
     public boolean isDeletedState() {
         return deletedState;
-    }
-
-    public void swingDraw(Graphics2D graphics2D) {
-        graphics2D.drawLine(
-                pointA.getPivot().toPoint(getCamera()).toScreen(getSceneManager()).x,
-                pointA.getPivot().toPoint(getCamera()).toScreen(getSceneManager()).y,
-                pointB.getPivot().toPoint(getCamera()).toScreen(getSceneManager()).x,
-                pointB.getPivot().toPoint(getCamera()).toScreen(getSceneManager()).y
-        );
-    }
-
-    /**
-     * Draws this line to the screen in its selected state.
-     * @implSpec This is only called by {@link GTri#drawSelected(Graphics2D)}
-     * @implNote This respects {@link ViewType} and may or may not draw
-     * itself depending on the type.
-     * @param graphics2D The Graphics2D instance
-     */
-    @Override
-    public void drawSelected(Graphics2D graphics2D) {
-        super.drawSelected(graphics2D);
-        if (deletedState) return;
-        graphics2D.setColor(col.brighter());
-        graphics2D.setStroke(new BasicStroke(4));
-        swingDraw(graphics2D);
-        graphics2D.setStroke(new BasicStroke(1));
-        // dispatch to points
-        pointA.drawSelected(graphics2D);
-        pointB.drawSelected(graphics2D);
     }
 
     /**
@@ -338,11 +289,27 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
         return super.hashCode();
     }
 
-    public Segment<?> toSegment() {
-        return new Segment<>(
+    public Segment toSegment() {
+        return new Segment(
                 pointA.getPivot(),
-                pointB.getPivot(),
-                null
+                pointB.getPivot()
         );
+    }
+
+    private RenderState<Segment, GObject> renderState;
+    @Override
+    public void decompose() {
+        renderState = toSegment().toRenderState(this);
+    }
+
+    @Override
+    public ArrayList genericRenderStateList() {
+        decompose();
+        return getDecomposeList();
+    }
+
+    @Override
+    public ArrayList<RenderState<Segment, GObject>> getDecomposeList() {
+        return new ArrayList<>(Collections.singletonList(renderState));
     }
 }
