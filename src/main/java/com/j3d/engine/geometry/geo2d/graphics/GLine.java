@@ -5,6 +5,7 @@ import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.geometry.geo2d.HasParents;
 import com.j3d.engine.geometry.geo2d.copy.CopyProperties;
 import com.j3d.engine.geometry.geo2d.copy.InvalidCopyException;
+import com.j3d.engine.geometry.geo2d.graphics.pure.Segment;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.react.events.IdempotentEventListener;
@@ -335,5 +336,13 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
     @Override
     public int hashCode() {
         return super.hashCode();
+    }
+
+    public Segment<?> toSegment() {
+        return new Segment<>(
+                pointA.getPivot(),
+                pointB.getPivot(),
+                null
+        );
     }
 }

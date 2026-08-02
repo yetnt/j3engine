@@ -303,9 +303,7 @@ public class Thing implements Interactable, HasProperties {
 
         if (isForDeletion() || isHidden()) return;
         for (GObject o : objects) {
-            if (o instanceof GTri t) {
-                Renderer.addToQueue(t);
-            }
+            Renderer.addToQueue(o);
         }
     }
 

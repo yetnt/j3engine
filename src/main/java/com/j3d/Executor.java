@@ -1,6 +1,7 @@
 package com.j3d;
 
 import com.j3d.engine.geometry.geo2d.Winding;
+import com.j3d.engine.geometry.geo2d.graphics.GCurve;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
@@ -8,7 +9,6 @@ import com.j3d.engine.geometry.geo3d.AxisPlane;
 import com.j3d.engine.geometry.geo3d.Sampler;
 import com.j3d.engine.geometry.geo3d.Solids;
 import com.j3d.engine.interact.input.keyboard.GlobalKeybinds;
-import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.engine.layer.Layer;
@@ -16,11 +16,9 @@ import com.j3d.engine.SceneManager;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.react.actions.Action;
-import com.j3d.utility.generic.SamePair;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -53,79 +51,41 @@ public class Executor {
     public void run(Graphics2D graphics2D) {
         StaticRefs.getSceneManager().layers.add(layer);
 
-//        Thing ngon = ngon(3);
-//        Thing cub = cube();
-//        StaticRefs.getCamera().lookAt(cube.getCentroid());
+        Thing ngon = ngon(3);
+        Thing cub = cube();
+        StaticRefs.getCamera().lookAt(cub.getCentroid());
         Thing tris = threeTris();
-//        Thing name = name();
-        StaticRefs.getCamera().lookAt(tris.getCentroid());
 //
-//        Thing solid = Solids.prism(
-//                20,4, layer,
-//                new AxisPlane(
-//                        Vector3.ZERO,
-//                        new Vector3(0, 0.2, 0.6),
-//                        new Vector3(0.1, 0.4, 0)
-//                ).sameAxes(Vector3.X(-10), Vector3.X(-2))
-//        );
-//        Thing genericSolid = Solids.prism(
-//                10,40, layer,
-//                AxisPlane.ZY(Vector3.ZERO)
-//                        .sameAxes(Vector3.X(-30), Vector3.X(-22))
-//        );
-//        Thing cone = cone(20, 20);
+        Thing solid = Solids.prism(
+                20,4, layer,
+                new AxisPlane(
+                        Vector3.ZERO,
+                        new Vector3(0, 0.2, 0.6),
+                        new Vector3(0.1, 0.4, 0)
+                ).sameAxes(Vector3.X(-10), Vector3.X(-2))
+        );
+        Thing genericSolid = Solids.prism(
+                10,40, layer,
+                AxisPlane.ZY(Vector3.ZERO)
+                        .sameAxes(Vector3.X(-30), Vector3.X(-22))
+        );
+        Thing cone = cone(20, 20);
 
         ArrayList<Action<?>> actions = new ArrayList<>(List.of(
-//                cub.rotate(Vector3.Z, 45),
-//                cub.translate(new Vector3(4, 2, 3)),
-//                cub.scale(0.4),
-                tris.translate(Vector3.X(14))
-//                cub.rotate(new Vector3(2, 3, 1), 2),
-//                solid.translate(Vector3.X(-20)),
-//                ngon.rotate(Vector3.Y, 20), // 20 degrees
-//                ngon.translate(Vector3.X(40)),
-//                cone.rotate(Vector3.X(5), 5)
+                cub.rotate(Vector3.Z, 45),
+                cub.translate(new Vector3(4, 2, 3)),
+                cub.scale(0.4),
+                tris.translate(Vector3.X(14)),
+                cub.rotate(new Vector3(2, 3, 1), 2),
+                solid.translate(Vector3.X(-20)),
+                ngon.rotate(Vector3.Y, 20), // 20 degrees
+                ngon.translate(Vector3.X(40)),
+                cone.rotate(Vector3.X(5), 5)
         ));
         actions.forEach(Action::run);
         actions.forEach(SceneManager.history::add);
 
 
-    }
-
-    public Thing name() {
-        int length = 5;
-        double height = 10;
-        // K
-        // create a long cuub for long strafe of K
-        Thing K1 = Solids.prism(
-                0.5,
-                4,
-                layer,
-                AxisPlane.XZ(Vector3.ZERO).sameAxes(Vector3.Y, Vector3.Y(height))
-        );
-        Thing K2 = Solids.prism(
-                0.5,
-                4,
-                layer,
-                AxisPlane.XZ(Vector3.ZERO).sameAxes(Vector3.Y, Vector3.Y(height/2))
-        );
-        K2.rotate(
-                Vector3.Y((double) 10 /2),
-                new Vector3(1, 1, 0),
-                45
-        ).run();
-        Thing K3 = Solids.prism(
-                0.5,
-                4,
-                layer,
-                AxisPlane.XZ(Vector3.ZERO).sameAxes(Vector3.Y(height/2), Vector3.Y(height))
-        );
-        K3.rotate(
-                Vector3.Y((double) 10 /2),
-                new Vector3(1, 1, 0),
-                -45
-        ).run();
-        return K1;
     }
 
     public Thing cone(int max, int height) {
@@ -260,13 +220,18 @@ public class Executor {
         tris.add(tri2);
         tris.add(tri3);
 
+        GCurve curve = new GCurve(
+                C, A1, A2
+        );
+
         return new Thing(sceneManager, layer, "Three Tris").addObjs(tri1, tri2, tri3,
                 tri1.getLegA(), tri1.getLegB(), tri1.getLegC(),
                 tri2.getLegA(), tri2.getLegB(), tri2.getLegC(),
                 tri3.getLegA(), tri3.getLegB(), tri3.getLegC(),
                 A, B, C,
                 A1, B1, C1,
-                A2, B2, C2
+                A2, B2, C2,
+                curve
         );
     }
 

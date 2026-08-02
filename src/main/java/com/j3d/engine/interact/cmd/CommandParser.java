@@ -2,9 +2,7 @@ package com.j3d.engine.interact.cmd;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.find.Finder;
-import com.j3d.engine.geometry.geo2d.graphics.GLine;
-import com.j3d.engine.geometry.geo2d.graphics.GPoint;
-import com.j3d.engine.geometry.geo2d.graphics.GTri;
+import com.j3d.engine.geometry.geo2d.graphics.*;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgUtil;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
@@ -14,7 +12,6 @@ import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.ui.engine.CommandPalette;
 import com.j3d.ui.engine.EngineFrame;
-import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.base.Command;
@@ -298,6 +295,7 @@ public class CommandParser {
                     case GLine l -> CmdToken.Type.ID_LINE;
                     case GTri t -> CmdToken.Type.ID_TRI;
                     case GPoint p -> CmdToken.Type.ID_POINT;
+                    case GCurve c -> CmdToken.Type.ID_CURVE;
                     default -> throw new IllegalArgumentException("Unknown argument type: " + g);
                 }, injected);
     }

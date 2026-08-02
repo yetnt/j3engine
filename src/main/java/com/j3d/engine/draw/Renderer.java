@@ -146,7 +146,7 @@ public class Renderer {
      * Adds a GTri to the queue.
      * @param tri The GTri to add.
      */
-    public static void addToQueue(GTri tri) {
+    public static void addToQueue(Drawable tri) {
         if (registered.stream().anyMatch(
                 l -> l.tri == tri
         )) {

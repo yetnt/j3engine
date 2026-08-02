@@ -1,5 +1,6 @@
 package com.j3d.engine.geometry.geo2d.graphics.pure;
 
+import com.j3d.engine.draw.Renderer;
 import com.j3d.engine.geometry.geo2d.DecomposeWhenDrawn;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
@@ -16,11 +17,24 @@ public class Segment<T extends GObject> implements Pure {
     private Vector3 end;
     private T parent;
     private UUID id = UUID.randomUUID();
+    private boolean isValid = true;
 
     public Segment(Vector3 start, Vector3 end, T parent) {
         this.start = start;
         this.end = end;
         this.parent = parent;
+        if (parent != null)
+            Renderer.register(this);
+    }
+
+    @Override
+    public void invalidate() {
+        isValid = false;
+    }
+
+    @Override
+    public boolean isValid() {
+        return isValid;
     }
 
     @Override
@@ -49,6 +63,7 @@ public class Segment<T extends GObject> implements Pure {
 
     @Override
     public void draw(Graphics2D graphics2D) {
+        if (parent == null) return;
         if (parent.isDeletedState()) return;
         if (getSceneManager().getSelected().contains(parent)) {
             drawSelected(graphics2D);return;
@@ -68,6 +83,7 @@ public class Segment<T extends GObject> implements Pure {
 
     @Override
     public void drawSelected(Graphics2D graphics2D) {
+        if (parent == null) return;
         if (parent.isDeletedState()) return;
         graphics2D.setColor(parent.getColour().brighter());
         graphics2D.setStroke(new BasicStroke(4));

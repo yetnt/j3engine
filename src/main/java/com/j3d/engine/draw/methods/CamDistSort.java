@@ -8,6 +8,7 @@ import com.j3d.engine.geometry.geo2d.graphics.Drawable;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * CamDistSort is a sorting method that sorts GTri objects based on their distance from the camera.
@@ -42,8 +43,13 @@ public class CamDistSort extends SortMethod {
     @Override
     public void clear() {
         super.clear();
-        registered.stream().filter(
-                triListener -> !triListener.isDirty()
+        new ArrayList<>(registered).stream()
+                .peek(s -> {
+                    if (s == null)
+                        registered.remove(s);
+                })
+                .filter(Objects::nonNull)
+                .filter(triListener -> !triListener.isDirty()
         ).forEach(
                 listener -> this.add(listener.tri)
         );

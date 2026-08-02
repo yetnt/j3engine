@@ -1,5 +1,6 @@
 package com.j3d.engine.interact.cmd;
 
+import com.j3d.engine.geometry.geo2d.graphics.GCurve;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
@@ -43,6 +44,7 @@ public class CmdToken {
         ID_LINE(GLine.class, "line"),
         ID_TRI(GTri.class, "tri"),
         ID_THING(Thing.class, "thing"),
+        ID_CURVE(GCurve.class, "curve"),
         COLOUR(Color.class, "#col"),
         STRING(String.class, "string"),
         INT(Integer.class, "num"),

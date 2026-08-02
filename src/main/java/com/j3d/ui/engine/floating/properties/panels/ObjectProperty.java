@@ -5,10 +5,7 @@
 package com.j3d.ui.engine.floating.properties.panels;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.geometry.geo2d.graphics.GLine;
-import com.j3d.engine.geometry.geo2d.graphics.GObject;
-import com.j3d.engine.geometry.geo2d.graphics.GPoint;
-import com.j3d.engine.geometry.geo2d.graphics.GTri;
+import com.j3d.engine.geometry.geo2d.graphics.*;
 import com.j3d.gen.properties.Property;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.utility.generic.Pair;
@@ -71,6 +68,7 @@ public class ObjectProperty<T extends GObject> extends JPanel implements Propert
             case GTri t -> new Pair<>("(tri)", t.getId());
             case GLine l -> new Pair<>("(line)", l.getId());
             case GPoint p -> new Pair<>("(point)", p.getId());
+            case GCurve c -> new Pair<>("(curve)", c.getId());
             default ->
                     throw new IllegalStateException("Unexpected value: " + getSingleProperty().getValueSupplier().get());
         };

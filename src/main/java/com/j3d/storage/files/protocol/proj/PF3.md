@@ -76,6 +76,17 @@ Italics - V3 addition
   - ...
 - _`Padding C`_
 - _`Padding A`_
+- _Number of GCurve `int`_
+  - _`Padding B`_
+  - _Curve UUID `UTF-8`_
+  - _Parent Thing UUID `UTF-8`_
+  - _Colour `#AARRGGBB signed int32`_
+  - _Start Point UUID `UTF-8`_
+  - _Control Point UUID `UTF-8`_
+  - _End Point UUID `UTF-8`_
+  - ...
+- _`Padding C`_
+- _`Padding A`_
 - Number of Things `int`
   - _`Padding B`_
   - Thing UUID `UTF-8`

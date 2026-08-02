@@ -2,12 +2,12 @@ package com.j3d.engine.interact.selection;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.geometry.ScreenPoint;
-import com.j3d.engine.geometry.geo2d.graphics.GLine;
-import com.j3d.engine.geometry.geo2d.graphics.GObject;
-import com.j3d.engine.geometry.geo2d.graphics.GPoint;
-import com.j3d.engine.geometry.geo2d.graphics.GTri;
+import com.j3d.engine.geometry.geo2d.graphics.*;
+import com.j3d.engine.geometry.geo2d.graphics.pure.Segment;
+import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * A SelectionQuery represents a selection made by the user.
@@ -48,8 +48,26 @@ public class SelectionQuery extends Rectangle {
             case GTri t -> has(t, soft);
             case GLine l -> has(l, soft);
             case GPoint p -> has(p);
+            case GCurve curve -> has(curve, soft);
             default -> throw new IllegalStateException("Unexpected value: " + obj);
         };
+    }
+
+    public boolean has(GCurve curve, boolean soft) {
+        ArrayList<Segment<GCurve>> segments = curve.getDecomposeList();
+        if (soft) {
+            // any segment can match to be valid
+            return
+                    segments
+                            .stream()
+                            .anyMatch(s -> has(s, false));
+        } else {
+            // all segments must be within
+            return
+                    segments
+                            .stream()
+                            .allMatch(s -> has(s, false));
+        }
     }
 
     /**
@@ -90,12 +108,14 @@ public class SelectionQuery extends Rectangle {
      * @return true if the selection has the line. False otherwise.
      */
     public boolean has(GLine line, boolean soft) {
+        return has(line.toSegment(), soft);
+    }
+
+    public boolean has(Segment<?> line, boolean soft) {
         if (soft) {
             if (intersectsWith(line)) return true;
-            return has(line.getA()) || has(line.getB());
-        } else {
-            return has(line.getA()) && has(line.getB());
         }
+        return has(line.getStart()) && has(line.getEnd());
     }
 
     /**
@@ -105,12 +125,16 @@ public class SelectionQuery extends Rectangle {
      * @return true if the selection has the point. False otherwise.
      */
     public boolean has(GPoint point) {
-        return contains(point.getPivot().toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager()).toSwingPoint());
+        return has(point.getPivot());
     }
 
-    public boolean intersectsWith(GLine line) {
-        ScreenPoint A = line.getA().getPivot().toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager());
-        ScreenPoint B = line.getB().getPivot().toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager());
+    public boolean has(Vector3 point) {
+        return contains(point.toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager()).toSwingPoint());
+    }
+
+    public boolean intersectsWith(Segment<?> line) {
+        ScreenPoint A = line.getStart().toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager());
+        ScreenPoint B = line.getEnd().toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager());
 
         ScreenPoint rectA = points[0];
         ScreenPoint rectB = new ScreenPoint(points[0].x, points[1].y);

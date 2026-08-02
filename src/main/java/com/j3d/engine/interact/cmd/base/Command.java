@@ -181,6 +181,7 @@ public class Command {
                         case "GPoint" -> usageAccumulatorEntry.append("<point").append(tArg.isOptional() ? "?" : "").append("> ");
                         case "GLine" -> usageAccumulatorEntry.append("<line").append(tArg.isOptional() ? "?" : "").append("> ");
                         case "GTri" -> usageAccumulatorEntry.append("<tri").append(tArg.isOptional() ? "?" : "").append("> ");
+                        case "GCurve" -> usageAccumulatorEntry.append("<curve").append(tArg.isOptional() ? "?" : "").append("> ");
                         case "Color" -> usageAccumulatorEntry.append("<#color").append(tArg.isOptional() ? "?" : "").append("#> ");
                         case "Vector3" -> usageAccumulatorEntry.append("<vector3").append(tArg.isOptional() ? "?" : "").append("> ");
                         case "String" -> usageAccumulatorEntry.append("<string").append(tArg.isOptional() ? "?" : "").append("> ");

@@ -236,7 +236,8 @@ public class TypingHints {
                     (usage.contains("point")
                             || usage.contains("line")
                             || usage.contains("tri")
-                            || usage.contains("thing"))
+                            || usage.contains("thing")
+                            || usage.contains("curve"))
                     && token.getInput().length() > 5//TODO: add UUID like syntax
             )
                 return true;
@@ -423,6 +424,7 @@ public class TypingHints {
                     sb.append(numberMatch(arg, token)).append(" ");
                 } else if (usage.contains("point")
                         || usage.contains("line")
+                        || usage.contains("curve")
                         || (usage.contains("tri") && !usage.contains("string"))
                         || usage.contains("thing")) {
                     // uuid reference
@@ -544,7 +546,7 @@ public class TypingHints {
             // it works. im not changing it. damn you if you dare change
             // this beautiful piece of code.
             return switch (token.getType().toUsage().substring(0, 2) + arg.substring(1, 3)) {
-                case "popo", "trtr", "thth", "lili" -> correctType(arg);
+                case "popo", "trtr", "thth", "lili", "cucu" -> correctType(arg);
                 default -> incorrectType(arg);
             };
         }

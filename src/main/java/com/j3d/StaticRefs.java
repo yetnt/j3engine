@@ -48,7 +48,7 @@ import java.net.URL;
  * </p>
  * @author Lehlogonolo Poole
  */
-public class StaticRefs {
+public abstract class StaticRefs {
     // References below are all initialised by EngineFrame and have a setter method that only EngineFrame should usz
     /**
      * The SceneManager Instance. A very important class initialized by {@link EngineFrame}
