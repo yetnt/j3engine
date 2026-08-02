@@ -320,7 +320,7 @@ public class StaticRefs {
         if (imgURL != null) {
             return new ImageIcon(imgURL).getImage();
         } else {
-            System.err.println("Couldn't find file.");
+            System.err.println("Couldn't finder file.");
             return null;
         }
     }

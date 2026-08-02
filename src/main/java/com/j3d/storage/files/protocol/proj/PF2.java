@@ -9,7 +9,6 @@ import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.Interactable;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.layer.LayerList;
-import com.j3d.errors.ErrorHandler;
 import com.j3d.StaticConfig;
 import com.j3d.storage.errs.ProjectFileException;
 import com.j3d.storage.files.FilesUtility;
@@ -118,7 +117,7 @@ public class PF2 extends ProjectFile {
                 dos.writeInt(layers.size()); // Write number of layers
                 layers.forEach((layer) -> {
                     try {
-                        dos.writeUTF(layer.getIdentifier()); // Write layer identifier
+                        dos.writeUTF(layer.getName()); // Write layer identifier
                         dos.writeBoolean(layer.isHidden()); // Write layer hidden state
                     } catch (IOException e) {
                         StaticRefs.getErrs().handle(
@@ -250,7 +249,7 @@ public class PF2 extends ProjectFile {
         final HashMultiMap<String, GTri> trisParentsMap = new HashMultiMap<>();
         final HashMap<String, GTri> trisMap = new HashMap<>();
 
-        StaticRefs.getSceneManager().layers.removeIf(l -> !Objects.equals(l.getIdentifier(), Layer.BACKGROUND_ID));
+        StaticRefs.getSceneManager().layers.removeIf(l -> !Objects.equals(l.getName(), Layer.BACKGROUND_ID));
 
         IOSupplier<DataInputStream> fileReader = dis -> {
             try {
@@ -369,7 +368,7 @@ public class PF2 extends ProjectFile {
                     msg("\t"+numThingsInLayer + " things");
                     if (numThingsInLayer == 0) continue;
 
-                    throbber.progressStart("Reading things in layer " + l.getIdentifier(), numThingsInLayer);
+                    throbber.progressStart("Reading things in layer " + l.getName(), numThingsInLayer);
                     for (int j = 0; j < numThingsInLayer; j++) {
                         String thingUUID = dis.readUTF();
                         msg("\tReading thing " + thingUUID);

@@ -71,7 +71,7 @@
  *     <li>
  *         {@link com.j3d.gen.properties.SelectionPropertiesFilter}, an enum representing the options for a combo box
  *         with options such as to allow the user to target the properties of a specific object. e.g. instead of targeting
- *         {@link com.j3d.gen.properties.SelectionPropertiesFilter#DEFAULT} which tries to find all common properties
+ *         {@link com.j3d.gen.properties.SelectionPropertiesFilter#DEFAULT} which tries to finder all common properties
  *         from {@code GObject}s, it can be changed to target only specifically {@link com.j3d.gen.properties.SelectionPropertiesFilter#TRI}
  *         and likewise.
  *     </li>

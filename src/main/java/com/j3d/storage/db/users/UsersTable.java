@@ -32,7 +32,7 @@ public class UsersTable implements Table<User, CUsers> {
 
     /**
      * Finds and creates a new user object.
-     * @param id The id of the user to find.
+     * @param id The id of the user to finder.
      * @return The user object or null if the user does not exist.
      * @see DatabaseManager#tblUsers
      * @see Table#findById(int)
@@ -123,7 +123,7 @@ public class UsersTable implements Table<User, CUsers> {
         } catch (SQLException e) {
             StaticRefs.getErrs().handle(
                     new DBException(
-                            "An SQL exception was encountered whilst trying to insert or find a new user",
+                            "An SQL exception was encountered whilst trying to insert or finder a new user",
                             cr, e
                     )
             );

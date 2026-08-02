@@ -106,7 +106,7 @@ public class TypingHints {
             return;
         }
 
-        // if there is a single token. it's the command name try find matches.
+        // if there is a single token. it's the command name try finder matches.
         if (tokens.size() == 1 && !endsWithSpace) {
             CmdToken token = tokens.getFirst();
             SamePair<ArrayList<JLabelRichText>> matches = possibleCommandAliasMatches(token);
@@ -327,7 +327,7 @@ public class TypingHints {
                 return;
             }
 
-            // if there is a single token. its the command name try find matches.
+            // if there is a single token. its the command name try finder matches.
             if (tokens.size() == 1) {
                 CmdToken token = tokens.getFirst();
 
@@ -700,7 +700,7 @@ public class TypingHints {
 
     /**
      * @implSpec This method expects that there is at least one match already.
-     * Given a list of options, find the first match and colour it partially.
+     * Given a list of options, finder the first match and colour it partially.
      * @param options The list of options
      * @param input The input the user gave
      * @return A styled {@link JLabelRichText} consisting of a partially coloured match.

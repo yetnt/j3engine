@@ -1,5 +1,6 @@
 package com.j3d.engine.interact;
 
+import com.j3d.engine.SceneObject;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.react.actions.Action;
@@ -32,7 +33,7 @@ import java.util.function.BiConsumer;
  * @see #invokeSwingHooks()
  * @author Lehlogonolo Poole
  */
-public interface Interactable {
+public interface Interactable extends SceneObject {
     /**
      * Whether the given object is hidden or not
      * @return true if hidden, false otherwise

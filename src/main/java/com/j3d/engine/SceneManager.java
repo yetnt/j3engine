@@ -2,10 +2,10 @@ package com.j3d.engine;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.draw.tris.TriStateArea;
+import com.j3d.engine.find.Finder;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.*;
 import com.j3d.engine.geometry.Dim;
-import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
@@ -24,7 +24,6 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * SceneManager is the class. The main class that handles the rendering of 3D objects onto a 2D screen.
@@ -43,6 +42,10 @@ public class SceneManager {
     public ArrayDeque<GPoint> points = new ArrayDeque<>();
     private HashSet<HasParents<? extends GObject>> unparented = new HashSet<>();
     private ArrayList<GObject> copied = new ArrayList<>();
+    public final Finder finder = new Finder(() -> layers);
+    public Finder finder() {
+        return finder;
+    }
 
     /**
      * The current selection made by the user.
@@ -75,10 +78,10 @@ public class SceneManager {
     private final String usable = "Usable";
     public Layer usableLayer() {
         boolean l = layers.stream()
-                .anyMatch(la -> la.getIdentifier().equals(usable));
+                .anyMatch(la -> la.getName().equals(usable));
         if (l) {
             return layers.stream()
-                    .filter(layer -> layer.getIdentifier().equals(usable))
+                    .filter(layer -> layer.getName().equals(usable))
                     .findFirst()
                     .orElseThrow(() -> new IllegalStateException("Usable layer not found despite anyMatch returning true"));
         } else {
@@ -88,38 +91,6 @@ public class SceneManager {
         }
 
     }
-
-    /**
-     * Schedules an overlap Runnable to be executed after rendering.
-     * @param r The Runnable to execute.
-     */
-    public void scheduleOverlap(UUID id, Consumer<Graphics2D> r) {
-        overlaps.put(id, r);
-    }
-
-    /**
-     * Create a new GLine from 2 CartesianPoints
-     * @param A Point 1
-     * @param B Point 2
-     * @param l The layer. if null, the default layer is used.
-     * @return A new GLine.
-     */
-    public GLine line(Vector3 A, Vector3 B, Layer l) {
-        l = l == null ? layers.get(1) : l;
-        GPoint gPointA = findOrCreatePoint(A, l);
-        GPoint gPointB = findOrCreatePoint(B, l);
-        return new GLine(gPointA, gPointB);
-    }
-
-    /**
-     * Create a new point from one CartesianPoint
-     * @param point Point 1
-     * @return A new GPoint
-     */
-    public GPoint point(Vector3 point) {
-        return new GPoint(point);
-    }
-
 
     public void axisGrid(Graphics2D g, Camera camera) {
         int start = 50;
@@ -288,35 +259,11 @@ public class SceneManager {
 
 
     /**
-     * Finds an existing {@link GPoint} in the specified layer that matches the target {@link CartesianPoint}.
-     * If no such point exists, a new {@link GPoint} is created and returned.
-     * @param target The {@link CartesianPoint} to search for or create.
-     * @param l The {@link Layer} to search within. If {@code null}, the first layer is used.
-     * @return An existing or newly created {@link GPoint} corresponding to the target {@link CartesianPoint}.
-     */
-    public GPoint findOrCreatePoint(Vector3 target, Layer l) {
-        // Iterate through existing objects to find a matching point
-        for (Thing t : l == null ? layers.getFirst() : l) {
-            for (GObject obj : t.getObjects()) {
-                if (obj instanceof GPoint gp && gp.getPivot().equals(target)) {
-                    // Found an existing point, return it.
-                    return gp;
-                }
-            }
-        }
-        GPoint point = new GPoint(target);
-        // parent it to the first Thing
-        layers.getFirst().getFirst().addObjs(point);
-        return point;
-    }
-    
-    /**
      * Draws all objects in all layers to the screen.
      *
      * @param graphics The Graphics2D object to draw on.
-     * @param camera The camera instance.
      */
-    public void draw(Graphics2D graphics, Camera camera) {
+    public void draw(Graphics2D graphics) {
 //        ArrayList<UUID> visibleObjects = buff.draw(layers);
 //        ArrayList<UUID> visibleObjects = new ArrayList<>();
         layers.forEach(layer -> layer.draw(graphics));
@@ -327,81 +274,28 @@ public class SceneManager {
         }
     }
 
+
     /**
-     * Finds a {@link GPoint} near the given cursor position within a specified snap radius.
-     * @param mousePos The current position of the mouse cursor in Cartesian coordinates.
-     * @param snapRadius The maximum distance from the cursor for a point to be considered "near".
-     * @return The {@link GPoint} found near the cursor, or {@code null} if no point is within the snap radius.
+     * Schedules an overlap Runnable to be executed after rendering.
+     * @param r The Runnable to execute.
      */
-    public GPoint findPointNearCursor(CartesianPoint mousePos, double snapRadius) {
-        double snapRadiusSquared = snapRadius * snapRadius;
-        for (Layer layer : layers) {
-            for (Thing t : layer) {
-                for (GObject obj : t.getObjects()) {
-                    if (obj instanceof GPoint point) {
-                        double distanceSq = point.getPivot().distanceSquaredTo(mousePos);
-                        if (distanceSq <= snapRadiusSquared) {
-                            return point; // Found a point to drag!
-                        }
-                    }
-                }
-            }
-        }
-        return null; // No point found in snap radius
+    public void scheduleOverlap(UUID id, Consumer<Graphics2D> r) {
+        overlaps.put(id, r);
+    }
+    public void removeOverlap(UUID id) {
+        overlaps.remove(id);
     }
 
     /**
-     * Moves a given GPoint to a new Cartesian position.
-     *
-     * @param point The GPoint to move.
-     * @param newPosition The new CartesianPoint position for the GPoint.
+     * Removes a {@link Thing} from its containing {@link Layer}.
+     * @param thing The {@link Thing} to be removed.
      */
-    public void movePointTo(GPoint point, Vector3 newPosition) {
-        point.setPivot(newPosition);
-    }
-
-    /**
-     * Moves a {@link Thing} from its current {@link Layer} to a {@code differentLayer}.
-     * @param obj The {@link Thing} to move.
-     * @param differentLayer The target {@link Layer} to move the object to.
-     * @return {@code true} if the object was successfully moved, {@code false} otherwise (e.g., if the object was not found in any layer).
-     */
-    public boolean moveObjTo(Thing obj, Layer differentLayer) {
+    public void removeThing(Thing thing) {
         for (Layer layer : layers) {
-            if (layer.remove(obj)) {
-                differentLayer.add(obj);
-                return true;
+            if (layer.remove(thing)) {
+                return;
             }
         }
-        return false;
-    }
-
-    /**
-     * Finds a {@link GObject} by its unique ID across all layers.
-     * @param Id The unique ID of the object to find.
-     * @return The {@link GObject} with the matching ID, or {@code null} if no such object is found.
-     */
-    public GObject findGObject(String Id) {
-        for (Layer layer : layers) {
-            for (Thing t : layer) {
-                for (GObject obj : t.getObjects()) {
-                    if (obj.getId().equals(Id)) {
-                        return obj;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    public Thing findThing(String name) {
-        for (Layer layer : layers) {
-            for (Thing t : layer) {
-                if (t.getName().equals(name))
-                    return t;
-            }
-        }
-        return null;
     }
 
     /**
@@ -455,61 +349,54 @@ public class SceneManager {
         return currentSelection.getSelected();
     }
 
-    /**
-     * Finds a {@link GObject} by its UUID across all layers.
-     * @param id The UUID of the object to find.
-     * @return The {@link GObject} with the matching UUID, or {@code null} if no such object is found.
-     */
-    public GObject findObjectByUUID(UUID id) {
-        for (Layer layer : layers) {
-            for (Thing t : layer) {
-                for (GObject obj : t.getObjects()) {
-                    if (obj.getId().equals(id)) {
-                        return obj;
-                    }
-                }
-            }
-        }
-        return null;
+    public void deselectAll() {
+        currentSelection.clear();
     }
 
-    public Thing findThingByUUID(UUID id) {
-        for (Layer layer : layers) {
-            for (Thing t : layer) {
-                if (t.getId().equals(id)) {
-                    return t;
-                }
-            }
-        }
-        return null;
+    public void select(GObject gobject) {
+        currentSelection.getSelected().add(gobject);
     }
 
-    /**
-     * Finds the parent {@link Thing} of a given {@link GObject}.
-     * @param o The {@link GObject} whose parent {@link Thing} is to be found.
-     * @return The parent {@link Thing} containing the specified {@link GObject}, or {@code null} if no such parent is found.
-     */
+    public HashSet<HasParents<? extends GObject>> getUnparented() {
+        return unparented;
+    }
+
+    public void hasNoParent(HasParents<? extends GObject> g) {
+        unparented.add(g);
+    }
+
+    public void hasParent(HasParents<? extends GObject> gObject) {
+        unparented.remove(gObject);
+    }
+
+    public void setCopied(ArrayList<GObject> copied) {
+        this.copied = copied;
+    }
+
+    public ArrayList<GObject> getCopied() {
+        return new ArrayList<>(copied);
+    }
+
+    public void clearCopied() {
+        copied.clear();
+    }
+
+    public Thing findThing(String name) {
+        return finder
+                .findFirst(Thing.class, Finder.nameQuery(), name)
+                .getThing();
+    }
+
     public Thing findObjectParent(GObject o) {
-        for (Layer layer : layers) {
-            for (Thing t : layer) {
-                if (t.getObjects().contains(o)) {
-                    return t;
-                }
-            }
-        }
-        return null;
+        return finder
+                .findFirst(GObject.class, Finder.instanceQuery(), o)
+                .getThing();
     }
 
-    /**
-     * Removes a {@link Thing} from its containing {@link Layer}.
-     * @param thing The {@link Thing} to be removed.
-     */
-    public void removeThing(Thing thing) {
-        for (Layer layer : layers) {
-            if (layer.remove(thing)) {
-                return;
-            }
-        }
+    public Layer findThingLayer(Thing objectParent) {
+        return finder
+                .findFirst(Thing.class, Finder.instanceQuery(), objectParent)
+                .getLayer();
     }
 
     /**
@@ -542,61 +429,5 @@ public class SceneManager {
         unparented.clear();
         history.clear(); // also clears backup.
         StaticRefs.getMainPanel().repaint();
-    }
-
-    public void removeOverlap(UUID id) {
-        overlaps.remove(id);
-    }
-
-    public void deselectAll() {
-        currentSelection.clear();
-    }
-
-    public HashSet<HasParents<? extends GObject>> getUnparented() {
-        return unparented;
-    }
-
-    public void hasNoParent(HasParents<? extends GObject> g) {
-        unparented.add(g);
-    }
-
-    public void hasParent(HasParents<? extends GObject> gObject) {
-        unparented.remove(gObject);
-    }
-
-    public Thing findParentThing(GObject g) {
-        for (Layer layer : layers) {
-            for (Thing t : layer) {
-                if (t.getObjects().contains(g))
-                    return t;
-            }
-        }
-        return null;
-    }
-
-    public Layer findThingLayer(Thing objectParent) {
-        for (Layer l : layers) {
-            for (Thing t : l) {
-                if (objectParent.getId().equals(t.getId()))
-                    return l;
-            }
-        }
-        return null;
-    }
-
-    public void setCopied(ArrayList<GObject> copied) {
-        this.copied = copied;
-    }
-
-    public void clearCopied() {
-        copied.clear();
-    }
-
-    public ArrayList<GObject> getCopied() {
-        return new ArrayList<>(copied);
-    }
-
-    public void select(GObject gobject) {
-        currentSelection.getSelected().add(gobject);
     }
 }

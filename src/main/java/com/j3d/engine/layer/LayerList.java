@@ -30,12 +30,12 @@ public class LayerList extends ArrayList<Layer> {
 
     /**
      * Finds a {@link Layer} by its identifier.
-     * @param id The identifier of the layer to find.
+     * @param id The identifier of the layer to finder.
      * @return The {@link Layer} with the matching identifier, or {@code null} if no such layer is found.
      */
     public Layer find(String id) {
         for (Layer layer : this) {
-            if (layer.getIdentifier().equals(id)) {
+            if (layer.getName().equals(id)) {
                 return layer;
             }
         }

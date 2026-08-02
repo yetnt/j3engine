@@ -48,7 +48,7 @@ public class ThemesTable implements Table<Theme, CThemes> {
 
     /**
      * Finds and creates a new theme object.
-     * @param id The id of the theme to find.
+     * @param id The id of the theme to finder.
      * @return The theme object or null if the theme does not exist.
      * @see DatabaseManager#tblThemes
      * @see Table#findById(int)

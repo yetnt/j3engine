@@ -99,7 +99,7 @@ public class TriStateArea {
      * any other destructive method.
      */
     public static void unregister(GTri tri) {
-        // find listener that matches tri id
+        // finder listener that matches tri id
         registered.stream().filter(
                 listener -> listener.triID.equals(tri.getId())
         ).findFirst().ifPresent(

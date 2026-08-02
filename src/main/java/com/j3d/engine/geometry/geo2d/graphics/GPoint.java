@@ -37,7 +37,6 @@ import java.util.UUID;
  * <p>
  *     A GPoint is also stored within {@link SceneManager#points} for redundancy.
  * </p>
- * @see SceneManager#findOrCreatePoint(Vector3, Layer)
  * @see Thing
  * @see GLine
  * @see GTri

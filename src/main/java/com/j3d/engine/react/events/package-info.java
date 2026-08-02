@@ -2,7 +2,7 @@
  * Holds all subclasses and interfaces related to the event system.
  * <h1>Events</h1>
  * <p>
- *     The engine, in most cases instead of trying to find a specific class instance and method to
+ *     The engine, in most cases instead of trying to finder a specific class instance and method to
  *     call, makes use of "events" which allow any parts of the engine to fire events to any other
  *     part at any time of execution.
  * </p>

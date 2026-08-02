@@ -41,7 +41,7 @@ public class DebugDump {
                                     cam.getRotation().getPitch() + "," +
                                     cam.getRotation().getYaw() + "," +
                                     cam.getRotation().getRoll() + "," +
-                                    l.getIdentifier() + "," +
+                                    l.getName() + "," +
                                     !l.isHidden() + "," +
                                     thing.getName() + "," +
                                     thing.getId() + "," +

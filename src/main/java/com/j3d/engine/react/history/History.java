@@ -154,7 +154,7 @@ public class History extends ArrayList<Action<?>> {
      * @param action The action to apply.
      */
     public void apply(Action<?> action) {
-        // Find the action in the history and backup.
+        // Finder the action in the history and backup.
         int index = this.indexOf(action);
         int backupIndex = backup.indexOf(action);
 

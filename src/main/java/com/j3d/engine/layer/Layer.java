@@ -11,7 +11,6 @@ import com.j3d.engine.react.actions.DirtyAction;
 import com.j3d.engine.react.actions.DirtyVoidAction;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.ConstructorAction;
-import com.j3d.errors.ErrorHandler;
 import com.j3d.gen.properties.HasProperties;
 import com.j3d.gen.properties.Property;
 import com.j3d.ui.engine.floating.tree.TreeNodeIdentity;
@@ -51,10 +50,11 @@ import java.util.stream.Stream;
 public class Layer extends ArrayList<Thing> implements Interactable, HasProperties {
 
     private final String identifier;
+    private final UUID UUIDidentifer = UUID.randomUUID();
 
     public static final String BACKGROUND_ID = "BACKG";
     private final BiConsumer<Layer, DefaultMutableTreeNode> onSelectCallback = (o, t) -> {
-        StaticRefs.getLog().println("Layer " + o.getIdentifier() + " was selected in the tree.");
+        StaticRefs.getLog().println("Layer " + o.getName() + " was selected in the tree.");
     };
 
     private boolean hidden = false;
@@ -192,8 +192,18 @@ public class Layer extends ArrayList<Thing> implements Interactable, HasProperti
      * Returns the identifier of this layer
      * @return The identifier of this layer
      */
-    public String getIdentifier() {
+    @Override
+    public String getName() {
         return identifier;
+    }
+
+    /**
+     * The ID of a layer is irrelevant as it's label is used as it's identifier
+     * @return The UUID of this layer
+     */
+    @Override
+    public UUID getId() {
+        return UUIDidentifer;
     }
 
     @Override
@@ -203,7 +213,7 @@ public class Layer extends ArrayList<Thing> implements Interactable, HasProperti
 
     private void addProps() {
         properties.add(
-                new Property<>("Layer Identifier", this::getIdentifier, Layer.class)
+                new Property<>("Layer Identifier", this::getName, Layer.class)
                         .holds(String.class)
                         .setDescription("The name given to this Layer")
                         .constant()
@@ -257,7 +267,7 @@ public class Layer extends ArrayList<Thing> implements Interactable, HasProperti
 
             @Override
             public String getDescription() {
-                return "Layer-"+ current.getIdentifier() + ":SquashWith-" + other.getIdentifier();
+                return "Layer-"+ current.getName() + ":SquashWith-" + other.getName();
             }
 
             private final LocalTime now = LocalTime.now();
@@ -277,7 +287,7 @@ public class Layer extends ArrayList<Thing> implements Interactable, HasProperti
      * @param graphics2D The {@code Graphics2D} context used for drawing.
      */
     public void draw(Graphics2D graphics2D) {
-        if (!getIdentifier().equals(BACKGROUND_ID))
+        if (!getName().equals(BACKGROUND_ID))
             sort(Comparator.comparingDouble(t -> t.getCentroid().distance(StaticRefs.getCamera().getPosition())));
         if (isHidden() || isForDeletion()) return;
         for (Thing o : this.reversed()) {

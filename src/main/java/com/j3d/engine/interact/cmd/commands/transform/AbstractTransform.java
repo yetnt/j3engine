@@ -232,7 +232,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
                     .collect(Collectors.toCollection(ArrayList::new));
             case THING ->  StaticRefs.getSceneManager().getSelected()
                     .stream()
-                    .map(g -> StaticRefs.getSceneManager().findParentThing(g))
+                    .map(g -> StaticRefs.getSceneManager().findObjectParent(g))
                     .filter(Objects::nonNull)
                     .flatMap(thing -> thing.getObjects().stream())
                     .filter(obj -> obj instanceof GPoint)

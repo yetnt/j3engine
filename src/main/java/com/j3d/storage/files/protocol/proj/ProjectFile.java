@@ -141,7 +141,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
             case 2 -> StaticRefs.getProjectFileV2();
             default -> {
                 StaticRefs.getErrs().handle(
-                        new J3DFileException("Attempt to find a J3D project version which does not exist")
+                        new J3DFileException("Attempt to finder a J3D project version which does not exist")
                 );
                 yield null;
             }
@@ -155,7 +155,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
      * @param err The exception that occurred during loading.
      * @param loadable A {@link BiConsumer} that accepts the current protocol version and the convertible protocol
      *                 if an {@link UnsupportedVersionException} is caught and a conversion is possible.
-     * @implSpec This is intended to catch errors within a {@link LongTask}, an example can be find
+     * @implSpec This is intended to catch errors within a {@link LongTask}, an example can be finder
      * within {@link EngineFrame#readFileUsingVers(File, int)}. Where a {@link UnsupportedVersionException}
      * is wrapped within {@link RuntimeException#getCause()}.
      * This is because, the specific {@link ProjectFile} itself will throw {@link UnsupportedVersionException}

@@ -56,7 +56,7 @@ public class Setting<T> implements SettingsChild, EventEmitterInterface {
 
     @Override
     public void deserialize(ArrayList<String> leftover) {
-        // find the string which contains this thing as a label
+        // finder the string which contains this thing as a label
         String match =
                 leftover.stream()
                         .filter(s -> s.contains(serializedName()))

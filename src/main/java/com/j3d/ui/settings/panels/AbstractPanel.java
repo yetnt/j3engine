@@ -21,12 +21,11 @@ public class AbstractPanel<T extends Setting<R>, R> extends JPanel implements Se
 
     /**
      * The {@link Setting} object that this panel represents and interacts with.
-     * This field is {@code protected} to allow subclasses to access the setting directly,
-     * and {@code final} because the setting cannot be changed after panel creation.
      */
     protected final T setting;
 
     public AbstractPanel(T setting) {
+        super();
         this.setting = setting;
         setting.attachListener(this);
     }

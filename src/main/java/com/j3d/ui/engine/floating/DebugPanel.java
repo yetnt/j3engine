@@ -403,7 +403,7 @@ public class DebugPanel extends javax.swing.JPanel {
         ays.setVisible(true);
         if (!ays.canProceed()) return;
         getSceneManager().layers.forEach(frame -> {
-            if (!frame.getIdentifier().equals(Layer.BACKGROUND_ID)) frame.clear();
+            if (!frame.getName().equals(Layer.BACKGROUND_ID)) frame.clear();
         });
         StaticRefs.getMainPanel().repaint();
     }//GEN-LAST:event_clearButtonActionPerformed

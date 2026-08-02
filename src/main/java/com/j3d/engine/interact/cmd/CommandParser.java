@@ -1,6 +1,7 @@
 package com.j3d.engine.interact.cmd;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.find.Finder;
 import com.j3d.engine.geometry.geo2d.graphics.GLine;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
@@ -267,17 +268,24 @@ public class CommandParser {
     }
 
     /**
-     * Attempts to find a GObject or Thing with the given UUID and adds it to the arguments list.
+     * Attempts to finder a GObject or Thing with the given UUID and adds it to the arguments list.
      * <p>
      *     This will be used by the command parser to convert UUID strings into actual objects when parsing command arguments.
      * </p>
-     * @param uuid The UUID of the GObject or Thing to find.
+     * @param uuid The UUID of the GObject or Thing to finder.
      */
     private void argAddUUID(CmdToken tok, UUID uuid, boolean injected) {
-        GObject g = StaticRefs.getSceneManager().findObjectByUUID(uuid);
+        GObject g = StaticRefs.getSceneManager().finder()
+                .findFirst(GObject.class, Finder.idQuery(), uuid)
+                .getgObject();
         if (g == null) {
-            // try to find a Thing with the given UUID
-            Thing t = StaticRefs.getSceneManager().findThingByUUID(uuid);
+            // try to finder a Thing with the given UUID
+            Thing t = StaticRefs.getSceneManager().finder()
+                    .findFirst(
+                            Thing.class,
+                            Finder.idQuery(),
+                            uuid
+                    ).getThing();
             if (t == null) {
                 label.error("No object or thing found with UUID: " + SafeJLabel.EMPH, uuid);
             } else {
@@ -369,11 +377,11 @@ public class CommandParser {
             Color col = parseColor(accumulator.substring(1, accumulator.length() - 1));
             if (col != null) addArg(token, col, CmdToken.Type.COLOUR, false);
         } else {
-            // Otherwise, it may be a UUID, if so parse as UUID, find the given GObject, and pass it into the arguments
+            // Otherwise, it may be a UUID, if so parse as UUID, finder the given GObject, and pass it into the arguments
             // Otherwise, just pass it as a string
             try {
                 UUID uuid = UUID.fromString(accumulator.trim());
-                // Find the GObject with the given UUID
+                // Finder the GObject with the given UUID
                 argAddUUID(token, uuid, false);
             } catch (IllegalArgumentException e) {
                 parseAsNumberOrBool(token, accumulator, acc -> {

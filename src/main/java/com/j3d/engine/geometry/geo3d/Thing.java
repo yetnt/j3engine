@@ -87,6 +87,7 @@ public class Thing implements Interactable, HasProperties {
      * Gets the name of this Thing.
      * @return The name of this Thing.
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -222,7 +223,7 @@ public class Thing implements Interactable, HasProperties {
     public Thing(SceneManager sceneManager, Layer l, String name, boolean invokeSwingHooks) {
         toggleSaved();
         l = l == null ? sceneManager.layers.get(1) : l;
-        if (l.getIdentifier().equals(Layer.BACKGROUND_ID)) {
+        if (l.getName().equals(Layer.BACKGROUND_ID)) {
             isBg = true;
         }
         l.add(this);
@@ -245,7 +246,7 @@ public class Thing implements Interactable, HasProperties {
     public Thing(SceneManager sceneManager, Layer l, String name) {
         toggleSaved();
         l = l == null ? sceneManager.layers.get(1) : l;
-        if (l.getIdentifier().equals(Layer.BACKGROUND_ID)) {
+        if (l.getName().equals(Layer.BACKGROUND_ID)) {
             isBg = true;
         }
         l.add(this);
@@ -312,6 +313,7 @@ public class Thing implements Interactable, HasProperties {
      * Returns the unique identifier of this Thing.
      * @return The UUID of this Thing.
      */
+    @Override
     public UUID getId() {
         return id;
     }
@@ -385,10 +387,10 @@ public class Thing implements Interactable, HasProperties {
     }
 
     public static void moveObjects(ArrayList<GObject> stuff, Thing to) {
-        // find all parent Thing where the stuff live.
+        // finder all parent Thing where the stuff live.
         HashSet<Thing> things = stuff
                 .stream()
-                .map(StaticRefs.getSceneManager()::findParentThing)
+                .map(StaticRefs.getSceneManager()::findObjectParent)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toCollection(HashSet::new));
         for (Thing t : things) {

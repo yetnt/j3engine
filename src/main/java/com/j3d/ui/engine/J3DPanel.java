@@ -64,7 +64,7 @@ public class J3DPanel extends JPanel {
                 StaticRefs.getExecutor().run((Graphics2D) g);
             run = false;
         }
-        StaticRefs.getSceneManager().draw((Graphics2D) g, StaticRefs.getCamera());
+        StaticRefs.getSceneManager().draw((Graphics2D) g);
         // draw selection area ontop of all render things.
         if (selectionArea[0] != null && selectionArea[1] != null)
             SelectionUI.run((Graphics2D)g, applySelectionAreaOffset(selectionArea), StaticRefs.getSceneManager());

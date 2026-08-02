@@ -80,7 +80,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
     protected boolean deletedState = false;
 
-    // TODO: I actually have no clue where the fuck this is used?? Uhm find this out??
+    // TODO: I actually have no clue where the fuck this is used?? Uhm finder this out??
     private boolean hidden = false;
 
     /**
