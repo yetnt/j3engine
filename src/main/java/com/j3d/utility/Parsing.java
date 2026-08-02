@@ -92,6 +92,34 @@ public class Parsing {
     ) {}
 
     /**
+     * Removes HTML tags from the input string.
+     * This method iterates through the string and appends characters to the result
+     * only if they are not enclosed within '&lt;' and '&gt;' characters.
+     * @param input The string from which to remove HTML tags.
+     * @return A new string with all HTML tags removed.
+     * @implSpec (Might want to replace &lt;br&gt; with a new line to preserve line breaks)
+     */
+    public static String removeHTML(String input) {
+        StringBuilder result = new StringBuilder();
+        boolean inside = false;
+        char open = '<', close = '>';
+        for (char c : input.toCharArray()) {
+            if (c == open) {
+                inside = true;
+                continue;
+            } else if (c == close) {
+                inside = false;
+                continue;
+            }
+            if (inside) {
+                continue;
+            }
+            result.append(c);
+        }
+        return result.toString();
+    }
+
+    /**
      * Splits a string by a given character, ignoring delimiters within quotation marks or brace pairs.
      * This method handles nested braces and quotes.
      *

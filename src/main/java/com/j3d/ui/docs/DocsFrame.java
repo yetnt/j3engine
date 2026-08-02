@@ -5,6 +5,7 @@
 package com.j3d.ui.docs;
 
 import com.j3d.StaticRefs;
+import com.j3d.gen.docs.Documentation;
 import com.j3d.gen.docs.api.HeaderIdentifier;
 import com.j3d.gen.docs.api.ImageTag;
 import com.j3d.gen.docs.reader.*;
@@ -16,6 +17,7 @@ import com.j3d.ui.theme.J3DTreeCellRenderer;
 import com.j3d.utility.generators.JLabelRichText;
 import com.j3d.utility.generic.Pair;
 
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -58,7 +60,7 @@ public class DocsFrame extends javax.swing.JFrame {
      */
     public DocsFrame() {
         initComponents();
-        getEngineFiles().docsFolder.getFileHashMap().forEach((key, value) -> contentPanel.add(
+        Documentation.toMap().forEach((key, value) -> contentPanel.add(
                 new LinkPanel(key,value, size)
         ));
         J3DScrollBarUI.setBars(contentScrollPane);
@@ -74,7 +76,7 @@ public class DocsFrame extends javax.swing.JFrame {
      */
     public DocsFrame(String fileIdentifier) {
         initComponents();
-        Pair<String, File> pair = getEngineFiles().docsFolder.getFileHashMap().get(fileIdentifier);
+        Pair<String, File> pair = Documentation.toMap().get(fileIdentifier);
         String helpContentName = pair.first;
         jLabel1.setText(helpContentName);
         setTree("Top");
@@ -260,10 +262,7 @@ public class DocsFrame extends javax.swing.JFrame {
 
         wrappers.forEach(wrapper -> {
             if (wrapper instanceof TWLineSeparator) {
-                contentPanel.add(new TextPanel(
-                        new JLabelRichText(JLabelRichText.HORIZONTAL_LINE)
-                                .wrapHTML()
-                ));
+                lineSeparator();
             } else if (wrapper instanceof TWHeader header) {
                 addLinks(linksPerParagraph);
                 TextPanel p = new TextPanel(
@@ -332,6 +331,36 @@ public class DocsFrame extends javax.swing.JFrame {
                         );
                     else contentPanel.add(new TextPanel(t));
                 }
+            } else if (wrapper instanceof TWCodeBlock tc) {
+                Color textCol = Color.WHITE;
+                Color backCol = Color.DARK_GRAY;
+
+                StringBuilder lines = new StringBuilder();
+                for (int i = 0; i < tc.getLines().size(); i++) {
+                    String line = tc.getLines().get(i);
+                    lines.append(i+1).append(". ").append(line);
+                    if (i+1 != tc.getLines().size())
+                        lines.append(JLabelRichText.LINE_BREAK);
+                }
+
+                lineSeparator();
+
+                contentPanel.add(
+                        new TextPanel(
+                                new JLabelRichText(lines.toString())
+                                        .font(textCol, "+0", backCol)
+                                        .wrapUsing(div)
+                                        .addStyle(new LinkedHashMap<>(Map.of(
+                                                // add background
+                                                "padding", "10px",
+                                                "border-radius", "5px",
+                                                "background-color", JLabelRichText.colToStr(backCol)
+                                        )))
+                                        .wrapHTML()
+                        ).asCodeBlock(backCol, tc, true)
+                );
+
+                lineSeparator();
             }
         });
 
@@ -343,6 +372,13 @@ public class DocsFrame extends javax.swing.JFrame {
         );
     }
 
+    private void lineSeparator() {
+        contentPanel.add(new TextPanel(
+                new JLabelRichText(JLabelRichText.HORIZONTAL_LINE)
+                        .wrapHTML()
+        ));
+    }
+
     private void addLinks(ArrayList<TLink> linksPerParagraph) {
         if (!linksPerParagraph.isEmpty()) {
             // add here
@@ -351,10 +387,7 @@ public class DocsFrame extends javax.swing.JFrame {
 //                                    JLabelRichText.from("links", div).wrapHTML()
 //                            )
 //                    );
-            contentPanel.add(new TextPanel(
-                    new JLabelRichText(JLabelRichText.HORIZONTAL_LINE)
-                            .wrapHTML()
-            ));
+            lineSeparator();
             contentPanel.add(
                     new LinksPanel(this, linksPerParagraph, size+100)
             );

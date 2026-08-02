@@ -95,6 +95,28 @@ hello this is a
 
 `[me](link)` to link to another doc
 
+## Codeblocks
+
+All codeblocks work as normal but due to obvious limitations no code colouring is available.
+
+````
+```language
+code here
+preservers line indentation
+and shows line numbers
+```
+````
+
+Mostly all languages are useless, except for `cmd` and `command` which tell the reader that this code block
+represents a single executable command which if the user double-clicks with the EngineFrame open, can
+immediately insert said command ready to be edited or invoked.
+
+````
+```cmd
+transform rotate points (0, 0, 1)
+```
+````
+
 ## HTML Tags
 
 All HTML tags _can_ be parsed but must be accepted within 

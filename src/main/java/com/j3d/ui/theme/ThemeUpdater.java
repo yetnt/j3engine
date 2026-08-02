@@ -13,6 +13,10 @@ public class ThemeUpdater {
 
     }
 
+    public void remove(ArrayList<Locator> l2) {
+        entries.removeAll(l2);
+    }
+
     public static final class Locator {
         private J3DTheme themeProperty;
         private Consumer<Color> propertySetter;

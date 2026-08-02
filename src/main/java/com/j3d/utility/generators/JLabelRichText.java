@@ -236,7 +236,7 @@ public class JLabelRichText {
         );
     }
 
-    private String colToStr(Color col) {
+    public static String colToStr(Color col) {
         return String.format("#%02x%02x%02x", col.getRed(), col.getGreen(), col.getBlue());
     }
 

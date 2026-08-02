@@ -429,6 +429,14 @@ public class CommandParser {
     }
 
     /**
+     * Checks if the command parser currently has no tokens.
+     * @return {@code true} if the tokens list is empty, {@code false} otherwise.
+     */
+    public boolean isEmpty() {
+        return tokens.isEmpty();
+    }
+
+    /**
      * Execute the parsed command using the collected {@link #arguments}.
      *
      * <p>The first argument is expected to be the command name (a {@link String}). The

@@ -4,18 +4,33 @@
  */
 package com.j3d.ui.docs;
 
+import com.j3d.StaticRefs;
+import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.gen.docs.api.ImageTag;
+import com.j3d.gen.docs.reader.tokens.wrappers.TWCodeBlock;
 import com.j3d.ui.theme.J3DTheme;
+import com.j3d.ui.theme.ThemeUpdater;
+import com.j3d.utility.ClipboardUtil;
+import com.j3d.utility.Parsing;
+import com.j3d.utility.generators.JLabelRichText;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  *
  * @author yetnt
  */
 public class TextPanel extends javax.swing.JPanel {
+
+    private ThemeUpdater.Locator l;
+    private ArrayList<ThemeUpdater.Locator> l2;
+    private boolean isCodeblock = false, hasLineNum = true;
+    private TWCodeBlock tc;
 
     /**
      * Creates new form TextPanel
@@ -24,6 +39,7 @@ public class TextPanel extends javax.swing.JPanel {
         initComponents();
         jLabel1.setText(cont);
         theme();
+        setMouseListener();
     }
 
     public TextPanel(ImageTag imageTag) {
@@ -44,9 +60,72 @@ public class TextPanel extends javax.swing.JPanel {
         theme();
     }
 
+    private void setMouseListener() {
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+//                super.mouseClicked(e);
+                // when clicked twice.
+                String originalText;
+                if (isCodeblock) {
+                    originalText = Parsing.removeHTML(jLabel1.getText().replace(
+                            JLabelRichText.LINE_BREAK, "\n"
+                    ));
+                    if (hasLineNum) {
+                        StringBuilder code = new StringBuilder();
+                        originalText.lines().forEach(ln -> {
+                            // if the lines start with a number followed by a dot, remove it (regex)
+                            // regex = (match any number)(match a single dot)(match any length of text after)
+                            if (ln.matches("\\d+\\..*")) {
+                                code.append(ln.replaceFirst("\\d+\\.", ""));
+                            } else {
+                                code.append(ln);
+                            }
+                            code.append("\n");
+                        });
+                        originalText = code.toString();
+                    }
+                } else {
+                    originalText = Parsing.removeHTML(jLabel1.getText());
+                }
+                if (e.getClickCount() == 2) {
+                    ClipboardUtil.copyToClipboard(originalText.trim());
+                    JOptionPane.showMessageDialog(
+                            StaticRefs.getMainFrame(),
+                            "Text copied to clipboard!",
+                            "Copied",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
+                    if (isCodeblock && tc.isCommand()) {
+                        if (StaticRefs.getMainFrame() == null) return; // no main frame, no command parser.
+                        CommandParser commandParser = StaticRefs.getCommandParser();
+                        if (commandParser.isEmpty()) // we dont wanna override their args.
+                            commandParser.setInputField(originalText.trim());
+                    }
+                }
+            }
+        });
+    }
+
     public void theme() {
-        J3DTheme.commitAsGenericLbl(jLabel1, false);
-        J3DTheme.commitAsGenericUi(this);
+        l2 = J3DTheme.commitAsGenericLbl(jLabel1, false);
+        l = J3DTheme.commitAsGenericUi(this);
+    }
+
+    public TextPanel asCodeBlock(Color backCol, TWCodeBlock tc, boolean hasLineNum) {
+        isCodeblock = true;
+        this.tc = tc;
+        this.hasLineNum = hasLineNum;
+        jLabel1.setFont(
+                new Font(Font.MONOSPACED, Font.PLAIN, 14)
+        );
+        this.setBackground(backCol);
+        this.setOpaque(true);
+        J3DTheme.themeUpdater.remove(l);
+        J3DTheme.themeUpdater.remove(l2);
+        if (tc.isCommand())
+            this.setToolTipText("Double click this to paste it directly into the command palette!");
+        return this;
     }
 
     /**

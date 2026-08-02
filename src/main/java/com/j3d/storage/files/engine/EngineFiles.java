@@ -9,11 +9,11 @@ import java.nio.file.Path;
 
 public class EngineFiles {
     public static File engineFolder = Path.of(System.getProperty("user.home"), "J3Engine").toFile();
-    public RecentProjectsFile recents;
-    public PinnedProjectsFile pinned;
-    public LogFile logFile;
-    public DebugDump debugDump;
-    public DocsFolder docsFolder;
+    public final RecentProjectsFile recents;
+    public final PinnedProjectsFile pinned;
+    public final LogFile logFile;
+    public final DebugDump debugDump;
+    public final DocsFolder docsFolder;
 
 
     public EngineFiles() {
