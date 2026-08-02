@@ -220,9 +220,15 @@ public class Executor {
         tris.add(tri2);
         tris.add(tri3);
 
+        GPoint a = new GPoint(new Vector3(30, -13, 20));
+        GPoint b = new GPoint(new Vector3(-2, 51, 18));
+        GPoint c = new GPoint(new Vector3(40, 2, -1));
+
         GCurve curve = new GCurve(
-                C, A1, A2
+                a,b,c
         );
+
+        curve.setColour(Color.ORANGE);
 
         return new Thing(sceneManager, layer, "Three Tris").addObjs(tri1, tri2, tri3,
                 tri1.getLegA(), tri1.getLegB(), tri1.getLegC(),
@@ -231,7 +237,7 @@ public class Executor {
                 A, B, C,
                 A1, B1, C1,
                 A2, B2, C2,
-                curve
+                curve, a,b,c
         );
     }
 

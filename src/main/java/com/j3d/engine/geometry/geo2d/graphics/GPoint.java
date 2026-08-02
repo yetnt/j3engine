@@ -76,6 +76,9 @@ public class GPoint extends GObject implements HasParents<GObject> {
     @Override
     public void draw(Graphics2D graphics2D) {
         super.draw(graphics2D);
+        if (hasParent() && parents.stream().anyMatch(s -> s instanceof GCurve)) {
+            System.out.println("sdfsdf");
+        }
         if (StaticConfig.getViewType() != ViewType.WIREFRAME)
             if (hasParent() /*&& getParents().stream().findAny().get().hasParent()*/)
                 return;

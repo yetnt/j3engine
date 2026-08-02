@@ -133,6 +133,13 @@ public class Renderer {
         for  (Drawable drawable : queue) {
             if (drawable instanceof GTri tri)
                 if (tri.isHidden()) continue;
+            // todo remove drawig parent,
+            if (drawable instanceof GCurve gc) {
+                if (StaticRefs.getSceneManager().getSelected().contains(drawable.objectParent())) {
+                    gc.objectParent().drawSelected(g);
+                } else
+                    drawable.draw(g);
+            }
             if (StaticRefs.getSceneManager().getSelected().contains(drawable.objectParent())) {
                 drawable.drawSelected(g);
             } else {

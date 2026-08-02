@@ -40,11 +40,11 @@ public class GCurve extends GObject implements IdempotentEventListener<GPoint.GP
         setPivot(controlPoint.getPivot()); // set the pivot to the control point
 
         start.attachListener(this);
-        start.addParent(this);
+//        start.addParent(this);
         controlPoint.attachListener(this);
-        controlPoint.addParent(this);
+//        controlPoint.addParent(this);
         end.attachListener(this);
-        end.addParent(this);
+//        end.addParent(this);
         addProps();
         decompose();
     }
@@ -94,14 +94,22 @@ public class GCurve extends GObject implements IdempotentEventListener<GPoint.GP
         return controlPoint;
     }
 
+    // TODO: currently points are only visible due to GObject implementing Drawable
     @Override
     public void draw(Graphics2D graphics2D) {
-        // decompose.
+        // dispatch to points
+        start.draw(graphics2D);
+        controlPoint.draw(graphics2D);
+        end.draw(graphics2D);
     }
 
     @Override
     public void drawSelected(Graphics2D graphics2D) {
-        // decompose.
+        // dispatch to points
+        start.drawSelected(graphics2D);
+        controlPoint.drawSelected(graphics2D);
+        end.drawSelected(graphics2D);
+
     }
 
     ArrayList<Segment<GCurve>> segments = new ArrayList<>();
