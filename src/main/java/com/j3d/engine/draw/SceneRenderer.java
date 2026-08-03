@@ -11,17 +11,16 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
- * Renderer is a static class that manages all GTri objects in the scene
+ * SceneRenderer is a static class that manages all GTri objects in the scene
  * and their rendering order based on their distance from the camera.
  * The main purpose of this class is to optimize the rendering process by
  * maintaining a sorted list of GTri objects, allowing for efficient rendering
  * based on whichever method is chosen as this class will have multiple methods for
  * sorting GTri in the future.
  * <p>
- *     The inner package "methods" contains the different sorting methods that Renderer can use.
+ *     The inner package "methods" contains the different sorting methods that SceneRenderer can use.
  *     It's configured by the SceneManager (or debug settings) to choose which method to use for sorting GTri objects.
  *     This is mostly for testing and performance comparison purposes, as when a method is chosen,
  *     it will be used for all rendering cycles until changed.
@@ -36,14 +35,14 @@ import java.util.stream.Collectors;
  * @see DDUUIDSort
  * @see VisibleSort
  */
-public class Renderer {
+public class SceneRenderer {
     /**
      * Holds all registered TriListeners. These are registered when a GTri is created
      * and unregistered when a GTri is deleted.
      */
-    private static final ArrayList<PureListener> registered = new  ArrayList<>();
+    private final ArrayList<PureListener> registered = new  ArrayList<>();
     /**
-     * A list used for sorting GTri based on whichever method Renderer uses.
+     * A list used for sorting GTri based on whichever method SceneRenderer uses.
      * The list is cleared after each render cycle.
      * @implNote This more references a deque but for reusability and clarity
      * an ArrayList was used instead.
@@ -51,18 +50,17 @@ public class Renderer {
      * but rather a subclass of {@link SortMethod}. Which is how the triangle
      * sorting is done.
      */
-    private static ArrayList<RenderState<?, ?>> queue;
+    private ArrayList<RenderState<?, ?>> queue;
 
-    static {
+    public SceneRenderer() {
         // later set bucket sort to
         setSortMethod(PureSortMethod.CAMDISTSORT);
     }
-
     /**
-     * Sets the sort method for Renderer.
+     * Sets the sort method for SceneRenderer.
      * @param method The PureSortMethod to set.
      */
-    public static void setSortMethod(PureSortMethod method) {
+    public void setSortMethod(PureSortMethod method) {
         queue = switch (method) {
             case NONE -> new ArrayList<>();
             case CAMDISTSORT -> new CamDistSort(registered);
@@ -75,15 +73,15 @@ public class Renderer {
     }
 
     /**
-     * Registers a GTri with Renderer.
+     * Registers a GTri with SceneRenderer.
      * @implSpec This method should only be called when a GTri is instantiated.
      * This is due to the fact that it will live its entirely lifetime within
-     * Renderer. Therefore only {@link GTri#GTri(Color, GLine, GLine, GLine)}
+     * SceneRenderer. Therefore only {@link GTri#GTri(Color, GLine, GLine, GLine)}
      * or the other constructor {@link GTri#GTri(Color, GPoint, GPoint, GPoint)}
      * should ever have to call this method.
      * @param tri The GTri to register.
      */
-    public static void register(RenderState<?, ?> tri) {
+    public void register(RenderState<?, ?> tri) {
         PureListener listener = new PureListener(tri);
 //        tri.attachListener(listener);
         registered.add(listener);
@@ -91,13 +89,13 @@ public class Renderer {
     }
 
     /**
-     * Unregisters a triangle from Renderer
+     * Unregisters a triangle from SceneRenderer
      * @param tri The triangle to unregister.
-     * @implSpec Much like the docs within {@link Renderer#register(RenderState)}
+     * @implSpec Much like the docs within {@link SceneRenderer#register(RenderState)}
      * however here only {@link GTri#deleteSelf()} may call this method or
      * any other destructive method.
      */
-    public static void unregister(RenderState<?, ?> tri) {
+    public void unregister(RenderState<?, ?> tri) {
         // finder listener that matches tri id
         new ArrayList<>(registered).stream().filter(
                 listener -> listener.triID.equals(tri.getId())
@@ -106,7 +104,7 @@ public class Renderer {
         );
     }
 
-    public static void unregister(UUID uuid) {
+    public void unregister(UUID uuid) {
         // finder listener that matches tri id
         new ArrayList<>(registered).stream()
                 .filter(Objects::nonNull)
@@ -118,9 +116,9 @@ public class Renderer {
     }
 
     /**
-     * Clears the Renderer queue.
+     * Clears the SceneRenderer queue.
      */
-    public static void clearQueue() {
+    public void clearQueue() {
         queue.clear();
     }
 
@@ -128,7 +126,7 @@ public class Renderer {
      * Draws all the triangles that have been sorted within the queue.
      * @param g The Graphics2D context.
      */
-    public static void draw(Graphics2D g) {
+    public void draw(Graphics2D g) {
         for  (RenderState<?, ?> drawable : queue) {
             if (!drawable.isValid()) {
                 unregister(drawable);
@@ -156,7 +154,7 @@ public class Renderer {
      * Adds a GTri to the queue.
      * @param tri The GTri to add.
      */
-    public static void addToQueue(RenderState<?, ?> tri) {
+    public void addToQueue(RenderState<?, ?> tri) {
         if (registered.stream().anyMatch(
                 l -> l.tri == tri
         )) {
@@ -167,11 +165,11 @@ public class Renderer {
     /**
      * Clears all registered TriListeners.
      */
-    public static void clearRegistered() {
+    public void clearRegistered() {
         registered.clear();
     }
 
-    public static int trisRegistered() {
+    public int trisRegistered() {
         return registered.size();
     }
 }

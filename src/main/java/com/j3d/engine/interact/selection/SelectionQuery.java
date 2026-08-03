@@ -4,10 +4,12 @@ import com.j3d.StaticRefs;
 import com.j3d.engine.draw.RenderState;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.graphics.*;
+import com.j3d.engine.geometry.geo2d.graphics.pure.Point;
 import com.j3d.engine.geometry.geo2d.graphics.pure.Segment;
+import com.j3d.engine.geometry.geo2d.graphics.pure.Triangle;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 
 /**
@@ -46,9 +48,9 @@ public class SelectionQuery extends Rectangle {
      */
     public boolean has(GObject obj, boolean soft) {
         return switch (obj) {
-            case GTri t -> has(t, soft);
-            case GLine l -> has(l, soft);
-            case GPoint p -> has(p);
+            case GTri t -> has(t.toTriangle(), soft);
+            case GLine l -> has(l.toSegment(), soft);
+            case GPoint p -> has(p.toPoint());
             case GCurve curve -> has(curve, soft);
             default -> throw new IllegalStateException("Unexpected value: " + obj);
         };
@@ -81,37 +83,26 @@ public class SelectionQuery extends Rectangle {
      *             intersect with ay of the lines of the triangle.
      * @return true if all the points are within the triangle
      */
-    public boolean has(GTri triangle, boolean soft) {
-        GPoint[] pts = new GPoint[3];
-        pts[0] = triangle.getLegA().getA();
-        pts[1] = triangle.getLegB().getA();
-        pts[2] = triangle.getLegC().getA();
+    public boolean has(Triangle triangle, boolean soft) {
+        Vector3[] pts = new Vector3[3];
+        pts[0] = triangle.getP1();
+        pts[1] = triangle.getP2();
+        pts[2] = triangle.getP3();
         if (soft) {
-            if (has(triangle.getLegA(), true) ||
-                    has(triangle.getLegB(), true) ||
-                    has(triangle.getLegC(), true)) return true;
+            if (has(new Segment(pts[0], pts[1]), true) ||
+                    has(new Segment(pts[1], pts[2]), true) ||
+                    has(new Segment(pts[2], pts[0]), true)) return true;
 
-            for (GPoint pt : pts) {
+            for (Vector3 pt : pts) {
                 if (has(pt)) return true;
             }
             return false;
         }
 
-        for (GPoint pt : pts) {
+        for (Vector3 pt : pts) {
             if (!has(pt)) return false;
         }
         return true;
-    }
-
-    /**
-     * Whether the selection has the given line.
-     * @param line The line to check.
-     * @param soft If false, we strictly check whether the line is fully contained within the selection.
-     *             Otherwise, we check if the line intersects with any of the lines of the selection.
-     * @return true if the selection has the line. False otherwise.
-     */
-    public boolean has(GLine line, boolean soft) {
-        return has(line.toSegment(), soft);
     }
 
     public boolean has(Segment line, boolean soft) {
@@ -119,16 +110,6 @@ public class SelectionQuery extends Rectangle {
             if (intersectsWith(line)) return true;
         }
         return has(line.getStart()) && has(line.getEnd());
-    }
-
-    /**
-     * Whether the selection has the given point.
-     * Unlike the other overrides which have a soft parameter. A point is either inside or outside the selection.
-     * @param point The point to check.
-     * @return true if the selection has the point. False otherwise.
-     */
-    public boolean has(GPoint point) {
-        return has(point.getPivot());
     }
 
     public boolean has(Vector3 point) {

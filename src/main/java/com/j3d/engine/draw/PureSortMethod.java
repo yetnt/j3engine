@@ -9,7 +9,7 @@ import com.j3d.gen.settings.classes.SceneProperties;
  * {@link SceneProperties#triangleSortMethod}
  * @author Lehlogonolo Poole
  * @see SceneProperties#triangleSortMethod
- * @see Renderer
+ * @see SceneRenderer
  * @see SortMethod
  * @see GTri
  */

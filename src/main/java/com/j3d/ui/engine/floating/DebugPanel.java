@@ -5,7 +5,7 @@
 package com.j3d.ui.engine.floating;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.draw.Renderer;
+import com.j3d.engine.draw.SceneRenderer;
 import com.j3d.engine.layer.Layer;
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
@@ -411,7 +411,7 @@ public class DebugPanel extends javax.swing.JPanel {
     public void startStatisticsThread() {
         stealStatsThreadRun = style -> trianglesInSceneLabel.setText(
                 JLabelRichText.from(
-                        "" + Renderer.trisRegistered(),
+                        "" + StaticRefs.getSceneManager().getRenderer().trisRegistered(),
                         style
                 ).wrapHTML()
         );

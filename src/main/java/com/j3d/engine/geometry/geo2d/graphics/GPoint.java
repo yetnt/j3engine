@@ -8,7 +8,6 @@ import com.j3d.engine.geometry.geo2d.HasParents;
 import com.j3d.engine.geometry.geo2d.copy.CopyProperties;
 import com.j3d.engine.geometry.geo2d.copy.InvalidCopyException;
 import com.j3d.engine.geometry.geo2d.graphics.pure.Point;
-import com.j3d.engine.geometry.geo2d.graphics.pure.Pure;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.react.events.EventPayload;
@@ -80,10 +79,8 @@ public class GPoint extends GObject implements HasParents<GObject>, DecomposeWhe
         addProps();
     }
 
-    public Point toPure() {
-        return new Point(
-                getPivot()
-        );
+    public Point toPoint() {
+        return Point.from(getPivot());
     }
 
     private void addProps() {
@@ -157,7 +154,7 @@ public class GPoint extends GObject implements HasParents<GObject>, DecomposeWhe
     public void decompose() {
         if (renderState != null) renderState.invalidate();
         if (renderState == null || !renderState.isValid()) {
-            renderState = toPure().toRenderState(this);
+            renderState = toPoint().toRenderState(this);
         }
     }
 

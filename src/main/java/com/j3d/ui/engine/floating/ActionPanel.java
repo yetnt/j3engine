@@ -4,6 +4,7 @@
  */
 package com.j3d.ui.engine.floating;
 
+import com.j3d.StaticRefs;
 import com.j3d.engine.SceneManager;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.ui.theme.J3DTheme;
@@ -114,6 +115,7 @@ public class ActionPanel extends javax.swing.JPanel {
 
     private void jumpToBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jumpToBtnActionPerformed
         SceneManager.history.apply(action);
+        StaticRefs.getMainPanel().repaint();
     }//GEN-LAST:event_jumpToBtnActionPerformed
 
 

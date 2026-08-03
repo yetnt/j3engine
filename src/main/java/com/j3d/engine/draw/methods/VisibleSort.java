@@ -1,11 +1,10 @@
 package com.j3d.engine.draw.methods;
 
 import com.j3d.engine.draw.RenderState;
-import com.j3d.engine.draw.Renderer;
+import com.j3d.engine.draw.SceneRenderer;
 import com.j3d.engine.draw.SortMethod;
 import com.j3d.engine.draw.PureListener;
 import com.j3d.engine.draw.methods.utils.ZDepthIdBuffer;
-import com.j3d.engine.geometry.geo2d.graphics.Drawable;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 
 import java.util.*;
@@ -33,7 +32,7 @@ import java.util.*;
  * @see ZDepthIdBuffer
  * @see PureListener
  * @see SortMethod
- * @see Renderer
+ * @see SceneRenderer
  */
 public class VisibleSort extends SortMethod {
     ZDepthIdBuffer zb = new ZDepthIdBuffer();

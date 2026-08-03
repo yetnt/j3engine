@@ -23,7 +23,7 @@ public class GCurve extends GObject implements IdempotentEventListener<GPoint.GP
     private GPoint start;
     private GPoint controlPoint;
     private GPoint end;
-    public static final int AMOUNT = 50;
+    public int AMOUNT = 50;
 
     public static GCurve fromRaw(String id, GPoint st, GPoint cp, GPoint en) {
         GCurve gp = new GCurve(st, cp, en);

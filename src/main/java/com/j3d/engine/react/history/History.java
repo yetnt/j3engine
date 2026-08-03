@@ -58,6 +58,7 @@ public class History extends ArrayList<Action<?>> {
         backup.add(action);
         StaticRefs.getLog().println(logHead + "Undo -> " + action.getDescription());
         updateHistory();
+        repaint();
     }
 
     /**
@@ -70,7 +71,16 @@ public class History extends ArrayList<Action<?>> {
         bypassAdd(action);
         StaticRefs.getLog().println(logHead + "Redo -> " + action.getDescription());
         updateHistory();
+        repaint();
     }
+
+    private static void repaint() {
+        StaticRefs.getMainPanel().repaint();
+    }
+
+    // YOU ARE CHEATING.
+    // YES YES THEN HOW DO YOU win mutliple times??????????!!!!!!!!!!!! <--
+    // ur using hacks HACKLS
 
     /**
      * Adds an action to the history, bypassing the size limit and backup clearing.
@@ -102,6 +112,7 @@ public class History extends ArrayList<Action<?>> {
                 +"] -> " + action.getDescription());
         boolean a = super.add(action);
         updateHistory();
+        repaint();
         return a;
     }
 
@@ -122,6 +133,7 @@ public class History extends ArrayList<Action<?>> {
         super.clear();
         backup.clear();
         updateHistory();
+        repaint();
     }
 
     private static void clearLocators() {
@@ -146,6 +158,7 @@ public class History extends ArrayList<Action<?>> {
         this.forEach(a -> panel.addPanel(a.getPanel(), false));
         backup.reversed().forEach(a -> panel.addPanel(a.getPanel(), true));
         panel.repaint();
+        repaint();
     }
 
     /**
@@ -173,6 +186,6 @@ public class History extends ArrayList<Action<?>> {
             }
         }
 
-        StaticRefs.getMainPanel().repaint();
+        repaint();
     }
 }

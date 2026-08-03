@@ -1,8 +1,8 @@
 package com.j3d;
 
 import com.j3d.engine.SceneManager;
+import com.j3d.engine.draw.SceneRenderer;
 import com.j3d.engine.draw.ViewType;
-import com.j3d.engine.draw.Renderer;
 import com.j3d.engine.draw.PureSortMethod;
 import com.j3d.engine.geometry.Dim;
 import com.j3d.engine.geometry.ScreenPoint;
@@ -81,7 +81,7 @@ public abstract class StaticConfig {
 
     public static void setTriangleSortMethod(PureSortMethod method) {
         Settings.sceneProperties.triangleSortMethod.setValue(method);
-        Renderer.setSortMethod(method);
+        StaticRefs.getSceneManager().getRenderer().setSortMethod(method);
     }
 
     public static boolean isUseBackFaceCulling() {

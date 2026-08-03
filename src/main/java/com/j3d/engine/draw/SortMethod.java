@@ -2,10 +2,7 @@ package com.j3d.engine.draw;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.geometry.geo2d.DecomposeWhenDrawn;
-import com.j3d.engine.geometry.geo2d.graphics.Drawable;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
-import com.j3d.engine.geometry.geo2d.graphics.pure.Pure;
-import com.j3d.engine.geometry.geo2d.graphics.pure.Segment;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.gen.settings.Settings;
 
@@ -22,7 +19,7 @@ import java.util.ArrayList;
  * @see ArrayList
  * @see GTri
  * @see PureListener
- * @see Renderer
+ * @see SceneRenderer
  */
 public abstract class SortMethod extends ArrayList<RenderState<?, ?>> {
     /**
@@ -47,7 +44,7 @@ public abstract class SortMethod extends ArrayList<RenderState<?, ?>> {
 //            if (s.isValid())
 //                return super.add(drawable);
 //            else {
-//                Renderer.unregister(s);
+//                SceneRenderer.unregister(s);
 //                this.remove(s);
 //                return false;
 //            }
@@ -57,7 +54,7 @@ public abstract class SortMethod extends ArrayList<RenderState<?, ?>> {
                 if (r.isValid())
                     sm.add(drawable);
                 else {
-                    Renderer.unregister(drawable);
+                    StaticRefs.getSceneManager().getRenderer().unregister(drawable);
                     sm.remove(d);
                 }
             });

@@ -1,7 +1,6 @@
 package com.j3d.engine.geometry.geo3d.matrix;
 
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
-import com.j3d.engine.geometry.geo2d.Winding;
 import com.j3d.engine.geometry.geo3d.Camera;
 import com.j3d.gen.settings.Settings;
 
@@ -82,11 +81,6 @@ public class Vector3 implements MatrixInterface {
             y = 0;
             z = 0;
         }
-    }
-
-    public static double area(Vector3 A, Vector3 B, Vector3 C) {
-        return
-                B.sub(A).cross(C.sub(A)).magnitude() / 2;
     }
 
     /**

@@ -4,8 +4,7 @@ import com.j3d.StaticRefs;
 import com.j3d.engine.draw.PureListener;
 import com.j3d.engine.draw.RenderState;
 import com.j3d.engine.draw.SortMethod;
-import com.j3d.engine.draw.Renderer;
-import com.j3d.engine.geometry.geo2d.graphics.Drawable;
+import com.j3d.engine.draw.SceneRenderer;
 import com.j3d.engine.geometry.geo2d.graphics.GTri;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 
@@ -19,7 +18,7 @@ import java.util.ArrayList;
  * @see GTri#calcDepth()
  * @see SortMethod
  * @see PureListener
- * @see Renderer
+ * @see SceneRenderer
  */
 public class CamDepthSort extends SortMethod {
 

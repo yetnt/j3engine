@@ -1,7 +1,7 @@
 package com.j3d.engine.interact.cmd.commands.measure;
 
 import com.j3d.engine.geometry.geo2d.graphics.GPoint;
-import com.j3d.engine.geometry.geo2d.graphics.GTri;
+import com.j3d.engine.geometry.geo2d.graphics.pure.Triangle;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
@@ -63,7 +63,7 @@ public class AreaCmd extends Subcommand {
             return;
         }
 
-        double area = Vector3.area(A, B, C);
+        double area = Triangle.area(A, B, C);
         logLabel.setText(area + " units^2");
         ghost(A, B, C, area);
     }

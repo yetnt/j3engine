@@ -1,7 +1,7 @@
 package com.j3d.engine;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.draw.Renderer;
+import com.j3d.engine.draw.SceneRenderer;
 import com.j3d.engine.find.Finder;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.*;
@@ -45,6 +45,10 @@ public class SceneManager {
     public final Finder finder = new Finder(() -> layers);
     public Finder finder() {
         return finder;
+    }
+    private SceneRenderer renderer = new SceneRenderer();
+    public SceneRenderer getRenderer() {
+        return renderer;
     }
 
     /**
@@ -267,7 +271,7 @@ public class SceneManager {
 //        ArrayList<UUID> visibleObjects = buff.draw(layers);
 //        ArrayList<UUID> visibleObjects = new ArrayList<>();
         layers.forEach(layer -> layer.draw(graphics));
-        Renderer.draw(graphics);
+        getRenderer().draw(graphics);
         // Draw overlaps
         for (Consumer<Graphics2D> r : overlaps.values()) {
             r.accept(graphics);
@@ -400,7 +404,7 @@ public class SceneManager {
     }
 
     /**
-     * Resets the entire scene by clearing all layers, selections, and unregistering all triangles from the {@link Renderer}.
+     * Resets the entire scene by clearing all layers, selections, and unregistering all triangles from the {@link SceneRenderer}.
      * This effectively returns the sceneManager to an empty state, ready for a new project or scene.
      */
     public void resetScene() {
@@ -420,8 +424,8 @@ public class SceneManager {
                             .forEach(GTri::deleteSelf);
                     thing.getObjects().clear();
                 });
-        Renderer.clearQueue();
-        Renderer.clearRegistered();
+        getRenderer().clearQueue();
+        getRenderer().clearRegistered();
         layers.clear();
         points.clear();
         overlaps.clear();

@@ -2,14 +2,12 @@ package com.j3d.engine.geometry.geo2d.graphics;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.draw.RenderState;
-import com.j3d.engine.draw.ViewType;
+import com.j3d.engine.draw.SceneRenderer;
 import com.j3d.engine.draw.SortMethod;
-import com.j3d.engine.draw.Renderer;
 import com.j3d.engine.geometry.geo2d.DecomposeWhenDrawn;
 import com.j3d.engine.geometry.geo2d.Winding;
 import com.j3d.engine.geometry.geo2d.copy.CopyProperties;
 import com.j3d.engine.geometry.geo2d.copy.InvalidCopyException;
-import com.j3d.engine.geometry.geo2d.graphics.pure.Segment;
 import com.j3d.engine.geometry.geo2d.graphics.pure.Triangle;
 import com.j3d.engine.geometry.geo3d.Thing;
 
@@ -45,13 +43,13 @@ import static com.j3d.StaticRefs.getSceneManager;
  * </p>
  * <p>
  *     A GTri, is stored by reference like any other GObject within a {@link Thing}.
- *     it is also stored within {@link Renderer} for draw ordering.
+ *     it is also stored within {@link SceneRenderer} for draw ordering.
  * </p>
  * @implSpec Triangles rely on {@link Winding} order to define normal calculations and
  * back face culling via {@link SortMethod#backFaceCulled(GTri)}.
  * Normals are expected to point outward from solids.
  * @author Lehlogonolo Poole
- * @see Renderer
+ * @see SceneRenderer
  * @see Thing
  * @see GPoint
  * @see GLine
@@ -145,12 +143,12 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
         normal();
 
-//        Renderer.register(toRenderState());
+//        SceneRenderer.register(toRenderState());
         drawDist();
         addProps();
     }
 
-    public Triangle toPure() {
+    public Triangle toTriangle() {
         return new Triangle(
                 winding.first().getPivot(),
                 winding.second().getPivot(),
@@ -162,7 +160,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
     public RenderState<Triangle, GObject> toRenderState() {
         if (renderState != null) renderState.invalidate();
         if (renderState == null || !renderState.isValid()) {
-            renderState = toPure().toRenderState(this);
+            renderState = toTriangle().toRenderState(this);
         }
         return renderState;
     }
@@ -220,7 +218,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
                 winding.toVector3List()
                 , Vector3::add).div(3));
         normal();
-        Renderer.register(toRenderState());
+        StaticRefs.getSceneManager().getRenderer().register(toRenderState());
         drawDist();
         addProps();
     }
@@ -249,7 +247,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
         setPivot(Vector3.reduceToVector3(winding.toVector3List(), Vector3::add).div(3));
         normal();
-        Renderer.register(toRenderState());
+        StaticRefs.getSceneManager().getRenderer().register(toRenderState());
         drawDist();
         addProps();
     }
@@ -321,7 +319,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
      * @return The area.
      */
     public double area() {
-        return Vector3.area(
+        return Triangle.area(
                 winding.first().getPivot(),
                 winding.second().getPivot(),
                 winding.third().getPivot()
@@ -389,7 +387,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
     /**
      * @implNote This also deletes it's child lines (if they arent parented to anything else) and unregisters itself
-     * from the {@link Renderer}
+     * from the {@link SceneRenderer}
      */
     @Override
     public boolean deleteSelf() {

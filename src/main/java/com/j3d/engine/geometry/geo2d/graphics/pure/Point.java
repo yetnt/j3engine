@@ -17,13 +17,15 @@ import static com.j3d.StaticRefs.getCamera;
 import static com.j3d.StaticRefs.getSceneManager;
 import static com.j3d.engine.geometry.geo2d.graphics.GPoint.DIAMETER;
 
-public class Point implements Pure {
-
-    private Vector3 pivot;
+public class Point extends Vector3 implements Pure {
     private boolean isValid = true;
 
-    public Point(Vector3 p) {
-        this.pivot = p;
+    public Point(double x, double y, double z) {
+        super(x, y, z);
+    }
+
+    public static Point from(Vector3 v) {
+        return new Point(v.getX(), v.getY(), v.getZ());
     }
 
     @Override
@@ -33,7 +35,7 @@ public class Point implements Pure {
 
     @Override
     public Vector3 getPivot() {
-        return pivot;
+        return this;
     }
 
     @Override

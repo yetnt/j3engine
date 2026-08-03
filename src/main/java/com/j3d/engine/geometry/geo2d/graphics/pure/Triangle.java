@@ -27,6 +27,14 @@ public class Triangle implements Pure {
         this.p3 = p3;
     }
 
+    public double area() {
+        return area(p1, p2, p3);
+    }
+    public static double area(Vector3 A, Vector3 B, Vector3 C) {
+        return
+                B.sub(A).cross(C.sub(A)).magnitude() / 2;
+    }
+
     @Override
     public UUID getId() {
         return UUID.randomUUID();

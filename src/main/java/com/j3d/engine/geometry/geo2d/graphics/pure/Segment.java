@@ -1,8 +1,6 @@
 package com.j3d.engine.geometry.geo2d.graphics.pure;
 
 import com.j3d.engine.draw.RenderState;
-import com.j3d.engine.draw.Renderer;
-import com.j3d.engine.geometry.geo2d.DecomposeWhenDrawn;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 

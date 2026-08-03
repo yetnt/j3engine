@@ -1,7 +1,8 @@
 package com.j3d.gen.settings.classes;
 
+import com.j3d.StaticRefs;
 import com.j3d.engine.draw.PureSortMethod;
-import com.j3d.engine.draw.Renderer;
+import com.j3d.engine.draw.SceneRenderer;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.CartesianPoint;
 import com.j3d.gen.settings.SettingsChild;
@@ -37,7 +38,7 @@ public class SceneProperties implements SettingsParent {
             "The method the sceneManager should make use of to sort triangles.",
             PureSortMethod.values()
     ).onSetValue((PureSortMethod l) -> {
-        Renderer.setSortMethod(l);
+        StaticRefs.getSceneManager().getRenderer().setSortMethod(l);
         return null;
     });
     public BooleanSetting useBackFaceCulling = new BooleanSetting(

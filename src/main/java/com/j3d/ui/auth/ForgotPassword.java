@@ -37,6 +37,7 @@ public class ForgotPassword extends javax.swing.JFrame {
     public ForgotPassword(Runnable postPasswordChange) {
         initComponents();
         ks = getKeyBindings();
+        ks.registerJ3Key(GlobalKeybinds.F1.getKey());
         this.postPasswordChange = postPasswordChange;
         StaticRefs.getLog().uiPrintLn("ForgotPassword completed building");
     }
@@ -46,7 +47,6 @@ public class ForgotPassword extends javax.swing.JFrame {
                 jPanel1.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW),
                 jPanel1.getActionMap()
         );
-        ks.registerJ3Key(GlobalKeybinds.F1.getKey());
         return keyBindings;
     }
 
