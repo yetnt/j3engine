@@ -131,16 +131,10 @@ public class SceneRenderer {
             if (!drawable.isValid()) {
                 unregister(drawable);
                 unregister(drawable.getId());
+                continue;
             }
             if (drawable.getPure() instanceof GTri tri)
                 if (tri.isHidden()) continue;
-            // todo remove drawig parent,
-            if (drawable.getPure() instanceof GCurve gc) {
-                if (StaticRefs.getSceneManager().getSelected().contains(drawable.getParent())) {
-                    drawable.drawSelected(g);
-                } else
-                    drawable.draw(g);
-            }
             if (StaticRefs.getSceneManager().getSelected().contains(drawable.getParent())) {
                 drawable.drawSelected(g);
             } else {
@@ -151,25 +145,13 @@ public class SceneRenderer {
     }
 
     /**
-     * Adds a GTri to the queue.
-     * @param tri The GTri to add.
-     */
-    public void addToQueue(RenderState<?, ?> tri) {
-        if (registered.stream().anyMatch(
-                l -> l.tri == tri
-        )) {
-            queue.add(tri);
-        }
-    }
-
-    /**
      * Clears all registered TriListeners.
      */
     public void clearRegistered() {
         registered.clear();
     }
 
-    public int trisRegistered() {
+    public int pureRegistered() {
         return registered.size();
     }
 }

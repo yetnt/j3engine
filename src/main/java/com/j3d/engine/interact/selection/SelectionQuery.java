@@ -4,9 +4,8 @@ import com.j3d.StaticRefs;
 import com.j3d.engine.draw.RenderState;
 import com.j3d.engine.geometry.ScreenPoint;
 import com.j3d.engine.geometry.geo2d.graphics.*;
-import com.j3d.engine.geometry.geo2d.graphics.pure.Point;
-import com.j3d.engine.geometry.geo2d.graphics.pure.Segment;
-import com.j3d.engine.geometry.geo2d.graphics.pure.Triangle;
+import com.j3d.engine.geometry.geo2d.pure.Segment;
+import com.j3d.engine.geometry.geo2d.pure.Triangle;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 
 import java.awt.Rectangle;

@@ -5,7 +5,7 @@ import com.j3d.engine.draw.RenderState;
 import com.j3d.engine.geometry.geo2d.copy.CanCopy;
 import com.j3d.engine.geometry.geo2d.copy.CopyProperties;
 import com.j3d.engine.geometry.geo2d.copy.InvalidCopyException;
-import com.j3d.engine.geometry.geo2d.graphics.pure.Pure;
+import com.j3d.engine.geometry.geo2d.pure.Pure;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventEmitter;
 import com.j3d.engine.react.events.EventListener;

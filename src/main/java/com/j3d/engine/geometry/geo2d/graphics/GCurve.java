@@ -4,7 +4,7 @@ import com.j3d.engine.draw.RenderState;
 import com.j3d.engine.geometry.geo2d.DecomposeWhenDrawn;
 import com.j3d.engine.geometry.geo2d.copy.CopyProperties;
 import com.j3d.engine.geometry.geo2d.copy.InvalidCopyException;
-import com.j3d.engine.geometry.geo2d.graphics.pure.Segment;
+import com.j3d.engine.geometry.geo2d.pure.Segment;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
@@ -12,7 +12,6 @@ import com.j3d.engine.react.events.IdempotentEventListener;
 import com.j3d.gen.properties.Property;
 import com.j3d.utility.generic.SamePair;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -23,7 +22,7 @@ public class GCurve extends GObject implements IdempotentEventListener<GPoint.GP
     private GPoint start;
     private GPoint controlPoint;
     private GPoint end;
-    public int AMOUNT = 50;
+    private int amount = 50;
 
     public static GCurve fromRaw(String id, GPoint st, GPoint cp, GPoint en) {
         GCurve gp = new GCurve(st, cp, en);
@@ -65,9 +64,23 @@ public class GCurve extends GObject implements IdempotentEventListener<GPoint.GP
                         "End Point",
                         this::getEnd,
                         GCurve.class
-                ).holds(GPoint.class).setDescription("End Point").constant()
+                ).holds(GPoint.class).setDescription("End Point").constant(),
+                new Property<>(
+                        "Edge Amount",
+                        this::getAmount,
+                        GCurve.class
+                ).holds(Integer.class).setDescription("The edge amount of this curve")
+                        .setNewValueConsumer((i) -> {
+                            invalidaAll();
+                            amount = i;
+                            decompose();
+                        })
         ));
         pivotProperty.constant(); // the pivot cannot be edited.
+    }
+
+    private int getAmount() {
+        return amount;
     }
 
     public Vector3 point(double t) {
@@ -102,8 +115,8 @@ public class GCurve extends GObject implements IdempotentEventListener<GPoint.GP
         segments.clear();
         Vector3 prev = point(0);
 
-        for (int i = 0; i < AMOUNT; i++) {
-            double t = (double) i / AMOUNT;
+        for (int i = 0; i < amount; i++) {
+            double t = (double) i / amount;
             Vector3 next = point(t);
 
             segments.add(new Segment(prev, next).toRenderState(this));
@@ -141,6 +154,7 @@ public class GCurve extends GObject implements IdempotentEventListener<GPoint.GP
     @Override
     public void handlePossibleDuplicates(EventType type, GPoint.GPointMovedEvent payload) {
         setPivot(controlPoint.getPivot());
+        invalidaAll();
         decompose();
 //        double reLengthA = start.getPivot().distance(controlPoint.getPivot());
 //        double reLengthB = end.getPivot().distance(controlPoint.getPivot());

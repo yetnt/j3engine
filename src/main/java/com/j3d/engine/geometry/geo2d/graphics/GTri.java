@@ -8,7 +8,7 @@ import com.j3d.engine.geometry.geo2d.DecomposeWhenDrawn;
 import com.j3d.engine.geometry.geo2d.Winding;
 import com.j3d.engine.geometry.geo2d.copy.CopyProperties;
 import com.j3d.engine.geometry.geo2d.copy.InvalidCopyException;
-import com.j3d.engine.geometry.geo2d.graphics.pure.Triangle;
+import com.j3d.engine.geometry.geo2d.pure.Triangle;
 import com.j3d.engine.geometry.geo3d.Thing;
 
 import java.awt.*;
@@ -443,6 +443,8 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         if (!piv.equals(getDupeObjectToCheck())) {
             setPivot(piv);
             normal();
+            invalidaAll();
+            decompose();
         }
     }
 
@@ -500,6 +502,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
     @Override
     public ArrayList<RenderState<Triangle, GObject>> getDecomposeList() {
+        if (renderState == null) return new ArrayList<>();
         return new ArrayList<>(Collections.singletonList(renderState));
     }
 

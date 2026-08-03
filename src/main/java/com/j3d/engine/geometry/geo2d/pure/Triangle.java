@@ -1,4 +1,4 @@
-package com.j3d.engine.geometry.geo2d.graphics.pure;
+package com.j3d.engine.geometry.geo2d.pure;
 
 import com.j3d.StaticConfig;
 import com.j3d.StaticRefs;
@@ -10,7 +10,6 @@ import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import java.awt.*;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 import static com.j3d.StaticRefs.*;
 

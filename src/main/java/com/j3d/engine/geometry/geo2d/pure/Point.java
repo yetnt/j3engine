@@ -1,4 +1,4 @@
-package com.j3d.engine.geometry.geo2d.graphics.pure;
+package com.j3d.engine.geometry.geo2d.pure;
 
 import com.j3d.StaticConfig;
 import com.j3d.StaticRefs;
@@ -11,10 +11,7 @@ import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 
 import java.awt.*;
 import java.util.UUID;
-import java.util.function.Consumer;
 
-import static com.j3d.StaticRefs.getCamera;
-import static com.j3d.StaticRefs.getSceneManager;
 import static com.j3d.engine.geometry.geo2d.graphics.GPoint.DIAMETER;
 
 public class Point extends Vector3 implements Pure {

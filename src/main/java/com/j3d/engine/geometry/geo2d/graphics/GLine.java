@@ -2,13 +2,11 @@ package com.j3d.engine.geometry.geo2d.graphics;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.draw.RenderState;
-import com.j3d.engine.draw.ViewType;
 import com.j3d.engine.geometry.geo2d.DecomposeWhenDrawn;
 import com.j3d.engine.geometry.geo2d.HasParents;
 import com.j3d.engine.geometry.geo2d.copy.CopyProperties;
 import com.j3d.engine.geometry.geo2d.copy.InvalidCopyException;
-import com.j3d.engine.geometry.geo2d.graphics.pure.Point;
-import com.j3d.engine.geometry.geo2d.graphics.pure.Segment;
+import com.j3d.engine.geometry.geo2d.pure.Segment;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.react.events.IdempotentEventListener;
@@ -18,13 +16,11 @@ import com.j3d.gen.properties.Property;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.ui.dialog.Spinner;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.j3d.StaticRefs.getCamera;
 import static com.j3d.StaticRefs.getSceneManager;
 
 /**
@@ -199,7 +195,11 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
     @Override
     public void handlePossibleDuplicates(EventType type, GPoint.GPointMovedEvent payload) {
         Vector3 piv = getA().getPivot().add(getB().getPivot()).div(2);
-        if (!piv.equals(getDupeObjectToCheck()))  setPivot(piv);
+        if (!piv.equals(getDupeObjectToCheck())) {
+            setPivot(piv);
+            invalidaAll();
+            decompose();
+        }
     }
 
     @Override
@@ -313,6 +313,7 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
 
     @Override
     public ArrayList<RenderState<Segment, GObject>> getDecomposeList() {
+        if (renderState == null) return new ArrayList<>();
         return new ArrayList<>(Collections.singletonList(renderState));
     }
 }

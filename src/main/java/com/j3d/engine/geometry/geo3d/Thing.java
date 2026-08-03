@@ -303,8 +303,6 @@ public class Thing implements Interactable, HasProperties {
                 .map(GObject::genericRenderStateList)
                 .flatMap(ArrayList::stream)
                 .forEach(StaticRefs.getSceneManager().getRenderer()::register);
-//        for (GObject o : objects) {
-//        }
     }
 
     /**

@@ -7,7 +7,7 @@ import com.j3d.engine.geometry.geo2d.DecomposeWhenDrawn;
 import com.j3d.engine.geometry.geo2d.HasParents;
 import com.j3d.engine.geometry.geo2d.copy.CopyProperties;
 import com.j3d.engine.geometry.geo2d.copy.InvalidCopyException;
-import com.j3d.engine.geometry.geo2d.graphics.pure.Point;
+import com.j3d.engine.geometry.geo2d.pure.Point;
 import com.j3d.engine.geometry.geo3d.Thing;
 import com.j3d.engine.geometry.geo3d.matrix.Vector3;
 import com.j3d.engine.react.events.EventPayload;
@@ -64,6 +64,7 @@ public class GPoint extends GObject implements HasParents<GObject>, DecomposeWhe
     @Override
     public void setPivot(Vector3 pivot) {
         super.setPivot(pivot);
+        invalidaAll();
         decompose();
         this.broadcast(EventType.GPOINT_RECALC_PIVOT, new GPointMovedEvent(this, StaticRefs.getSceneManager()));
     }
@@ -160,6 +161,7 @@ public class GPoint extends GObject implements HasParents<GObject>, DecomposeWhe
 
     @Override
     public ArrayList<RenderState<Point, GObject>> getDecomposeList() {
+        if (renderState == null) return new ArrayList<>();
         return new ArrayList<>(Collections.singletonList(renderState));
     }
 

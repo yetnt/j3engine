@@ -1,4 +1,4 @@
-package com.j3d.engine.geometry.geo2d.graphics.pure;
+package com.j3d.engine.geometry.geo2d.pure;
 
 import com.j3d.engine.draw.RenderState;
 import com.j3d.engine.geometry.geo2d.graphics.GObject;

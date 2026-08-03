@@ -6,7 +6,7 @@ import java.awt.*;
 import java.util.UUID;
 
 /**
- * Interface that lets use know something can be drawn. this should later be moved into Pure and hence
+ * Interface that lets use know something can be drawn.
  */
 public interface Drawable {
     /**
