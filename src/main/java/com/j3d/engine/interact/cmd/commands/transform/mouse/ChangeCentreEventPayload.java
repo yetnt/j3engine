@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.cmd.commands.transform.mouse;
 
-import com.j3d.engine.geometry.ScreenPoint;
+import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.react.events.EventPayload;
 
 public class ChangeCentreEventPayload extends EventPayload<TransformMouseOwner> {

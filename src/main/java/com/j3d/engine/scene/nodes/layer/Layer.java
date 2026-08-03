@@ -1,0 +1,430 @@
+package com.j3d.engine.scene.nodes.layer;
+
+import com.j3d.StaticRefs;
+import com.j3d.engine.scene.DefaultObjectDeletionException;
+import com.j3d.engine.scene.SceneManager;
+import com.j3d.engine.scene.nodes.geometry.GObject;
+import com.j3d.engine.scene.nodes.geometry.GTri;
+import com.j3d.engine.scene.nodes.Thing;
+import com.j3d.engine.scene.nodes.SceneObjectList;
+import com.j3d.engine.react.actions.DirtyAction;
+import com.j3d.engine.react.actions.DirtyVoidAction;
+import com.j3d.engine.react.actions.Action;
+import com.j3d.engine.react.actions.ConstructorAction;
+import com.j3d.gen.properties.Property;
+import com.j3d.ui.engine.floating.tree.TreeNodeIdentity;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+import java.awt.*;
+import java.time.LocalTime;
+import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.stream.Stream;
+
+/**
+ * A {@code Layer} is a fundamental concept in the rendering pipeline, representing a
+ * collection of {@link Thing} instances that are rendered together. The
+ * {@link SceneManager} processes these layers in a specific order, drawing the
+ * contents of each layer to the screen. By organizing {@code Thing}s into
+ * layers, you can control their stacking order and visibility.
+ * <p>
+ * The {@code Layer} class extends {@link ArrayList}, providing a versatile and
+ * efficient way to manage the objects within it. You can add, remove, and
+ * reorder objects in a layer to dynamically change the scene's composition.
+ *
+ * <h3>Key Features:</h3>
+ * <ul>
+ *     <li>
+ *         <b>Object Grouping:</b> Layers allow you to group related
+ *         {@link GObject}s, making it easier to manage complex scenes. For
+ *         example, you could have separate layers for the background, main
+ *         characters, and UI elements.
+ *     </li>
+ * </ul>
+ *
+ * @see SceneManager
+ * @see GObject
+ * @see ArrayDeque
+ */
+public class Layer extends ArrayList<Thing> implements SceneObjectList {
+
+    private final String identifier;
+    private final UUID UUIDidentifer = UUID.randomUUID();
+
+    public static final String BACKGROUND_ID = "BACKG";
+    private final BiConsumer<Layer, DefaultMutableTreeNode> onSelectCallback = (o, t) -> {
+        StaticRefs.getLog().println("Layer " + o.getName() + " was selected in the tree.");
+    };
+
+    private boolean hidden = false;
+    private boolean forDeletion = false;
+    private ArrayList<Property<?, ?>> properties = new ArrayList<>();
+
+    private TreeNodeIdentity<Layer> treeNodeIdentity;
+    private DefaultMutableTreeNode treeNode;
+
+    /**
+     * Creates a Layer from raw data. Specifically used for loading from files.
+     * @param id The identifier of the layer.
+     * @param hidden Whether the layer is hidden.
+     * @return The created Layer.
+     */
+    public static Layer fromRaw(String id, boolean hidden) {
+        Layer layer = new Layer(id, false);
+        layer.setHidden(hidden);
+        return layer;
+    }
+
+    public Stream<Thing> usableLayersStream() {
+        return stream().filter(t -> t.getIdentity() != null);
+    }
+
+    @Override
+    public void invokeSwingHooks() {
+        treeNodeIdentity = new TreeNodeIdentity<>(
+                identifier, this, onSelectCallback);
+        treeNode = StaticRefs.getLayerTree().addNode(null, treeNodeIdentity);
+        addProps();
+        SceneManager.history.add(
+                new ConstructorAction() {
+                    @Override
+                    public void cleanup() {
+                        // Layer was fully discarded, instantDelete everything within it.
+                        if (isForDeletion())
+                            layer.instantDelete();
+                    }
+
+                    final Layer layer = Layer.this;
+                    @Override
+                    public Void run() {
+                        layer.setForDeletion(false);
+                        layer.treeNode = StaticRefs.getLayerTree().addNode(null, treeNodeIdentity);
+                        return null;
+                    }
+
+                    @Override
+                    public void undo() {
+                        layer.setForDeletion(true);
+                        StaticRefs.getLayerTree().removeNode(layer.treeNode);
+                    }
+
+                    @Override
+                    public String getDescription() {
+                        return "Construct:Layer-" + identifier;
+                    }
+
+                    private final LocalTime now = LocalTime.now();
+                    @Override
+                    public LocalTime getTime() {
+                        return now;
+                    }
+                }
+        );
+    }
+
+    /**
+     * Default Constructor
+     * @param id The identifier of the layer.
+     * @param invokeSwingHooks Whether to invoke swing hooks
+     */
+    public Layer(String id, boolean invokeSwingHooks) {
+        identifier = id;
+        final String idFinal = id;
+        if (id.equals(BACKGROUND_ID))
+            return; // Do not follow through.
+        if (invokeSwingHooks)
+            invokeSwingHooks();
+    }
+
+    /**
+     * Default Constructor
+     * @param id The identifier of the layer.
+     */
+    public Layer(String id) {
+        identifier = id;
+        final String idFinal = id;
+        if (id.equals(BACKGROUND_ID))
+            return; // Do not follow through.
+        invokeSwingHooks();
+    }
+
+    /**
+     * Default Constructor. This constructor should not be used by a user as this instantiates the default layer.
+     */
+    public Layer() {
+        identifier = "LAYER-0";
+        treeNodeIdentity = new TreeNodeIdentity<>(
+                "LAYER-0", this, onSelectCallback
+        );
+        treeNode = StaticRefs.getLayerTree().addNode(null, treeNodeIdentity);
+        SceneManager.history.add(
+                new ConstructorAction() {
+                    @Override
+                    public void cleanup() {
+                        StaticRefs.getErrs().handle(
+                                new DefaultObjectDeletionException(
+                                        identifier,
+                                        "layer"
+                                )
+                        );
+                    }
+                    @Override
+                    public boolean isReversible() {
+                        return false;
+                    }
+
+                    @Override
+                    public String getDescription() {
+                        return "Construct:Layer-Default";
+                    }
+
+                    private final LocalTime now = LocalTime.now();
+                    @Override
+                    public LocalTime getTime() {
+                        return now;
+                    }
+                }
+        );
+    }
+
+    /**
+     * Returns the identifier of this layer
+     * @return The identifier of this layer
+     */
+    @Override
+    public String getName() {
+        return identifier;
+    }
+
+    /**
+     * The ID of a layer is irrelevant as it's label is used as it's identifier
+     * @return The UUID of this layer
+     */
+    @Override
+    public UUID getId() {
+        return UUIDidentifer;
+    }
+
+    @Override
+    public ArrayList<Property<?, ?>> getProperties() {
+        return properties;
+    }
+
+    private void addProps() {
+        properties.add(
+                new Property<>("Layer Identifier", this::getName, Layer.class)
+                        .holds(String.class)
+                        .setDescription("The name given to this Layer")
+                        .constant()
+        );
+        properties.add(
+                new Property<>("Thing Amount", this::size, Layer.class)
+                        .holds(Integer.class)
+                        .setDescription("The amount of Thing(s) within this Layer")
+                        .constant()
+        );
+    }
+
+    /**
+     * Merges the contents of another {@code Layer} into this layer. All
+     * {@link GObject}s from the {@code otherlayer} are added to this layer.
+     * The {@code otherlayer} itself remains unchanged.
+     *
+     * @param otherlayer The {@code Layer} whose contents are to be merged into this layer.
+     * @return An {@link Action} representing the squash operation, which can be undone if needed.
+     */
+    public DirtyAction<Layer> squashWith(Layer otherlayer) {
+        final Layer current = this;
+        final Layer other = otherlayer;
+        toggleSaved();
+        return new DirtyAction<>() {
+            @Override
+            public void cleanup() throws Exception {
+                if (other.isForDeletion())
+                    other.instantDelete();
+            }
+
+            // Keep the objects that were added for undo functionality
+            private ArrayList<Thing> addedObjects = new ArrayList<>(otherlayer);
+            @Override
+            public Layer run() {
+                current.addAll(otherlayer);
+                other.setForDeletion(true); // To the user it won't be available.
+                return current;
+            }
+
+            @Override
+            public void undo() {
+                current.removeAll(addedObjects);
+                other.setForDeletion(false);
+            }
+
+            @Override
+            public boolean isReversible() {
+                return true;
+            }
+
+            @Override
+            public String getDescription() {
+                return "Layer-"+ current.getName() + ":SquashWith-" + other.getName();
+            }
+
+            private final LocalTime now = LocalTime.now();
+            @Override
+            public LocalTime getTime() {
+                return now;
+            }
+        };
+    }
+
+    /**
+     * Draws all {@link Thing} instances in this layer using the provided
+     * {@link Graphics2D} context. The drawing order is determined by the
+     * distance of each {@code Thing}'s centroid from the camera position,
+     * ensuring proper depth representation in the rendered scene.
+     *
+     * @param graphics2D The {@code Graphics2D} context used for drawing.
+     */
+    public void draw(Graphics2D graphics2D) {
+        if (!getName().equals(BACKGROUND_ID))
+            sort(Comparator.comparingDouble(t -> t.getCentroid().distance(StaticRefs.getCamera().getPosition())));
+        if (isHidden() || isForDeletion()) return;
+        for (Thing o : this.reversed()) {
+            o.draw(graphics2D);
+        }
+    }
+
+    @Override
+    public void instantDelete() {
+        StaticRefs.getSceneManager().layers.remove(this);
+        for (Thing t : this) {
+            t.instantDelete();
+        }
+    }
+
+    public TreeNodeIdentity<Layer> getIdentity() {
+        return treeNodeIdentity;
+    }
+
+    @Override
+    public DefaultMutableTreeNode getTreeNode() {
+        return treeNode;
+    }
+
+    @Override
+    public BiConsumer<? extends SceneObjectList, DefaultMutableTreeNode> getOnSelect() {
+        return onSelectCallback;
+    }
+
+    @Override
+    public String toString() {
+        return identifier;
+    }
+
+    @Override
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    @Override
+    public boolean isForDeletion() {
+        return forDeletion;
+    }
+
+    @Override
+    public void setForDeletion(boolean forDeletion) {
+        this.forDeletion = forDeletion;
+    }
+
+    @Override
+    public Action<Boolean> toggleVisibility() {
+        final Layer l = this;
+        toggleSaved();
+        return new Action<>() {
+            final boolean oldState = l.hidden;
+            @Override
+            public Boolean run() {
+                l.setHidden(!l.hidden);
+                stream().map(Thing::getObjects)
+                        .flatMap(Collection::stream)
+                        .filter(o -> o instanceof GTri)
+                        .map(o -> (GTri) o)
+                        .forEach(o -> o.setHidden(l.hidden));
+                return l.hidden;
+            }
+
+            @Override
+            public void undo() {
+                l.setHidden(oldState);
+                stream().map(Thing::getObjects)
+                        .flatMap(Collection::stream)
+                        .filter(o -> o instanceof GTri)
+                        .map(o -> (GTri) o)
+                        .forEach(o -> o.setHidden(oldState));
+
+            }
+
+            @Override
+            public boolean isReversible() {
+                return true;
+            }
+
+            @Override
+            public String getDescription() {
+                return "Layer:VisibilityToggle";
+            }
+
+            private final LocalTime now = LocalTime.now();
+            @Override
+            public LocalTime getTime() {
+                return now;
+            }
+        };
+    }
+
+    @Override
+    public DirtyVoidAction deleteLater() {
+        final Layer l = this;
+        toggleSaved();
+        return new DirtyVoidAction() {
+            @Override
+            public void cleanup() throws Exception {
+                if (isForDeletion()) l.instantDelete();
+            }
+
+            @Override
+            public Void run() {
+                l.setForDeletion(true);
+                StaticRefs.getLayerTree().removeNode(l.treeNode);
+                return null;
+            }
+
+            @Override
+            public void undo() {
+                l.setForDeletion(false);
+                l.treeNode = StaticRefs.getLayerTree().addNode(null, l.treeNodeIdentity);
+            }
+
+            @Override
+            public boolean isReversible() {
+                return true;
+            }
+
+            @Override
+            public String getDescription() {
+                return "Layer:Delete";
+            }
+
+            private final LocalTime now = LocalTime.now();
+            @Override
+            public LocalTime getTime() {
+                return now;
+            }
+        };
+    }
+
+    @Override
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
+}

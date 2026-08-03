@@ -1,9 +1,7 @@
 package com.j3d.engine.interact.cmd.commands.transform;
 
-import com.j3d.engine.geometry.geo2d.graphics.GLine;
-import com.j3d.engine.geometry.geo2d.graphics.GObject;
-import com.j3d.engine.geometry.geo2d.graphics.GPoint;
-import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.engine.scene.nodes.geometry.GObject;
+import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.interact.cmd.args.ArgSet;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.args.TypedArg;

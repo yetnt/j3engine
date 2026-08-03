@@ -1,7 +1,7 @@
 package com.j3d.engine.interact.cmd.commands;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;

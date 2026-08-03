@@ -1,10 +1,10 @@
 package com.j3d.engine.interact.cmd.commands.orbit;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.geometry.geo3d.matrix.Vector3;
-import com.j3d.engine.geometry.geo3d.rot.Rotation;
+import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.math.rot.Rotation;
 import com.j3d.engine.interact.cmd.CommandsManager;
-import com.j3d.engine.layer.Layer;
+import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;

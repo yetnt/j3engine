@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.input.mouse;
 
-import com.j3d.engine.SceneManager;
+import com.j3d.engine.scene.SceneManager;
 import com.j3d.ui.engine.EngineFrame;
 
 /**

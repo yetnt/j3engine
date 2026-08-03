@@ -14,10 +14,10 @@ import com.j3d.storage.files.FilesUtility;
  */
 public class GenericIOException extends J3DError implements J3DFatal {
     public GenericIOException(String message) {
-        super(message, 5);
+        super(message, 50);
     }
 
     public GenericIOException(String message, Throwable cause) {
-        super(message, cause, 5);
+        super(message, cause, 50);
     }
 }

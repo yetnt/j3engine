@@ -1,7 +1,7 @@
 package com.j3d.engine.interact.cmd.commands.transform.mouse;
 
-import com.j3d.engine.geometry.ScreenPoint;
-import com.j3d.engine.geometry.geo2d.graphics.GPoint;
+import com.j3d.engine.math.ScreenPoint;
+import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.engine.interact.cmd.commands.transform.AbstractTransform;
 import com.j3d.engine.interact.cmd.commands.transform.handles.Handle;
 import com.j3d.engine.interact.cmd.commands.transform.handles.HandleType;

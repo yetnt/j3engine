@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.input.mouse;
 
-import com.j3d.engine.geometry.ScreenPoint;
+import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.interact.selection.SelectionMouseOwner;
 import com.j3d.engine.react.events.*;
 import com.j3d.StaticConfig;

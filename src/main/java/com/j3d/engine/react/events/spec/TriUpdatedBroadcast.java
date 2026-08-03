@@ -1,8 +1,8 @@
 package com.j3d.engine.react.events.spec;
 
-import com.j3d.engine.SceneManager;
+import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.react.events.EventPayload;
-import com.j3d.engine.geometry.geo2d.graphics.GTri;
+import com.j3d.engine.scene.nodes.geometry.GTri;
 
 /**
  * TriUpdatedBroadcast is an EventPayload that is used to represent the properties

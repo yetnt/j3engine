@@ -1,20 +1,20 @@
 package com.j3d;
 
-import com.j3d.engine.geometry.geo2d.Winding;
-import com.j3d.engine.geometry.geo2d.graphics.GCurve;
-import com.j3d.engine.geometry.geo2d.graphics.GLine;
-import com.j3d.engine.geometry.geo2d.graphics.GPoint;
-import com.j3d.engine.geometry.geo2d.graphics.GTri;
-import com.j3d.engine.geometry.geo3d.AxisPlane;
-import com.j3d.engine.geometry.geo3d.Sampler;
-import com.j3d.engine.geometry.geo3d.Solids;
+import com.j3d.engine.scene.nodes.geometry.base.Winding;
+import com.j3d.engine.scene.nodes.geometry.GCurve;
+import com.j3d.engine.scene.nodes.geometry.GLine;
+import com.j3d.engine.scene.nodes.geometry.GPoint;
+import com.j3d.engine.scene.nodes.geometry.GTri;
+import com.j3d.engine.math.plane.AxisPlane;
+import com.j3d.engine.scene.nodes.util.Sampler;
+import com.j3d.engine.scene.nodes.util.Solids;
 import com.j3d.engine.interact.input.keyboard.GlobalKeybinds;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.ui.engine.EngineFrame;
-import com.j3d.engine.layer.Layer;
-import com.j3d.engine.SceneManager;
-import com.j3d.engine.geometry.geo3d.Thing;
-import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.engine.scene.nodes.layer.Layer;
+import com.j3d.engine.scene.SceneManager;
+import com.j3d.engine.scene.nodes.Thing;
+import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.react.actions.Action;
 
 import javax.swing.*;

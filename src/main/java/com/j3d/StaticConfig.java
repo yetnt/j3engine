@@ -1,15 +1,14 @@
 package com.j3d;
 
-import com.j3d.engine.SceneManager;
-import com.j3d.engine.draw.SceneRenderer;
-import com.j3d.engine.draw.ViewType;
-import com.j3d.engine.draw.PureSortMethod;
-import com.j3d.engine.geometry.Dim;
-import com.j3d.engine.geometry.ScreenPoint;
-import com.j3d.engine.geometry.geo2d.CartesianPoint;
-import com.j3d.engine.geometry.geo2d.graphics.GTri;
-import com.j3d.engine.geometry.geo3d.Thing;
-import com.j3d.engine.layer.Layer;
+import com.j3d.engine.scene.SceneManager;
+import com.j3d.engine.scene.draw.ViewType;
+import com.j3d.engine.scene.draw.PureSortMethod;
+import com.j3d.engine.math.Dim;
+import com.j3d.engine.math.ScreenPoint;
+import com.j3d.engine.math.CartesianPoint;
+import com.j3d.engine.scene.nodes.geometry.GTri;
+import com.j3d.engine.scene.nodes.Thing;
+import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.gen.settings.Settings;
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.users.User;

@@ -1,12 +1,9 @@
 package com.j3d.ui.engine.floating.grid2d;
 
-import com.j3d.engine.geometry.Dim;
-import com.j3d.engine.geometry.ScreenPoint;
+import com.j3d.engine.math.Dim;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.function.Consumer;
 
 class Grid extends JPanel {

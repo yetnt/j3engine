@@ -1,11 +1,11 @@
 package com.j3d.engine.interact.cmd;
 
-import com.j3d.engine.geometry.geo2d.graphics.GCurve;
-import com.j3d.engine.geometry.geo2d.graphics.GLine;
-import com.j3d.engine.geometry.geo2d.graphics.GPoint;
-import com.j3d.engine.geometry.geo2d.graphics.GTri;
-import com.j3d.engine.geometry.geo3d.Thing;
-import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.engine.scene.nodes.geometry.GCurve;
+import com.j3d.engine.scene.nodes.geometry.GLine;
+import com.j3d.engine.scene.nodes.geometry.GPoint;
+import com.j3d.engine.scene.nodes.geometry.GTri;
+import com.j3d.engine.scene.nodes.Thing;
+import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 
 import java.awt.*;

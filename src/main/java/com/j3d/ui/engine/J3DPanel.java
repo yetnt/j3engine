@@ -1,7 +1,7 @@
 package com.j3d.ui.engine;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.geometry.ScreenPoint;
+import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.interact.selection.SelectionUI;
 
 import javax.imageio.ImageIO;

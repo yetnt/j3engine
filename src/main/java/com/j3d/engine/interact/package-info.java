@@ -13,7 +13,7 @@
  *         All selection related classes and helpers {@link com.j3d.engine.interact.selection}
  *     </li>
  * </ul>
- * @see com.j3d.engine.interact.Interactable
+ * @see com.j3d.engine.scene.nodes.SceneObjectList
  * @author Lehlogonolo Poole
  */
 package com.j3d.engine.interact;

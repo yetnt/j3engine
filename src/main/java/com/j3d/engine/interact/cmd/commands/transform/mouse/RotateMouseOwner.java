@@ -1,10 +1,10 @@
 package com.j3d.engine.interact.cmd.commands.transform.mouse;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.geometry.geo2d.graphics.GPoint;
-import com.j3d.engine.geometry.geo3d.AxisPlane;
-import com.j3d.engine.geometry.geo3d.Sampler;
-import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.engine.scene.nodes.geometry.GPoint;
+import com.j3d.engine.math.plane.AxisPlane;
+import com.j3d.engine.scene.nodes.util.Sampler;
+import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.interact.cmd.commands.transform.RotateSelection;
 import com.j3d.engine.interact.cmd.commands.transform.handles.Handle;
 import com.j3d.engine.interact.cmd.commands.transform.handles.HandleType;

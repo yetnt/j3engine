@@ -7,19 +7,19 @@ package com.j3d.ui.engine;
 import com.j3d.Startup;
 import com.j3d.StaticRefs;
 import com.j3d.Executor;
-import com.j3d.engine.DefaultObjectDeletionException;
-import com.j3d.engine.geometry.Dim;
-import com.j3d.engine.interact.Interactable;
+import com.j3d.engine.scene.DefaultObjectDeletionException;
+import com.j3d.engine.math.Dim;
+import com.j3d.engine.scene.nodes.SceneObjectList;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.commands.engine.ExitCmd;
 import com.j3d.engine.interact.cmd.commands.orbit.*;
 import com.j3d.engine.interact.cmd.commands.transform.*;
 import com.j3d.engine.interact.cmd.commands.transform.mouse.*;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
-import com.j3d.engine.SceneManager;
-import com.j3d.engine.geometry.ScreenPoint;
-import com.j3d.engine.geometry.geo3d.rot.Rotation;
-import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.engine.scene.SceneManager;
+import com.j3d.engine.math.ScreenPoint;
+import com.j3d.engine.math.rot.Rotation;
+import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.input.mouse.*;
 import com.j3d.engine.interact.selection.*;
@@ -51,7 +51,7 @@ import javax.swing.filechooser.FileFilter;
 
 import static com.j3d.engine.interact.input.keyboard.KeyBindings.commandPaletteFocusOwner;
 
-import com.j3d.engine.draw.ViewType;
+import com.j3d.engine.scene.draw.ViewType;
 import com.j3d.ui.dialog.AreYouSure;
 import com.j3d.ui.HoverJLabel;
 import com.j3d.utility.generators.JLabelRichText;
@@ -425,7 +425,7 @@ public class EngineFrame extends javax.swing.JFrame {
      * @param file The file to read.
      * @see LongTask
      * @see PF2
-     * @see Interactable
+     * @see SceneObjectList
      */
     private void readProjectFile(File file) {
         readFileUsingVers(file, 2);
@@ -452,7 +452,7 @@ public class EngineFrame extends javax.swing.JFrame {
      * @see ProjectFile#handleErr(ProjectFile, Exception, BiConsumer) 
      * @see Settings#projectOutputFile
      * @see StaticRefs#getLog()
-     * @see Interactable#invokeSwingHooks()
+     * @see SceneObjectList#invokeSwingHooks()
      * @implNote This method utilizes the {@link #LOADED_OLD} flag to prevent infinite loops or
      *           redundant processing when a fallback to an older version has already been handled.
      *           The `LOADED_OLD` flag is reset at the beginning of the success callback.
@@ -474,9 +474,9 @@ public class EngineFrame extends javax.swing.JFrame {
             // Java. Otherwise in case weird stuff happen TODO: it might be here.
         }
 
-        LongTask<ArrayList<Interactable>> t = new LongTask<>(
+        LongTask<ArrayList<SceneObjectList>> t = new LongTask<>(
                 ta -> {
-                    ArrayList<Interactable> a = null;
+                    ArrayList<SceneObjectList> a = null;
                     try {
                         a = using.readFile(fileDir, fileName, ta);
                     } catch (Exception e) {
@@ -490,7 +490,7 @@ public class EngineFrame extends javax.swing.JFrame {
                         LOADED_OLD = false;
                         return;
                     }
-                    i.forEach(Interactable::invokeSwingHooks);
+                    i.forEach(SceneObjectList::invokeSwingHooks);
                 },
                 (err) -> {
                     BiConsumer<Integer, ProjectFile> loadable = (currentV, convertTo) -> {

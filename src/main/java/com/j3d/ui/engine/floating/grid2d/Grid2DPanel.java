@@ -4,11 +4,11 @@
  */
 package com.j3d.ui.engine.floating.grid2d;
 
-import com.j3d.engine.geometry.Dim;
-import com.j3d.engine.geometry.ScreenPoint;
-import com.j3d.engine.geometry.geo2d.CartesianPoint;
-import com.j3d.engine.geometry.geo3d.AxisPlane;
-import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.engine.math.Dim;
+import com.j3d.engine.math.ScreenPoint;
+import com.j3d.engine.math.CartesianPoint;
+import com.j3d.engine.math.plane.AxisPlane;
+import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.ui.engine.FloatingPanel;
 import com.j3d.ui.theme.J3DTheme;

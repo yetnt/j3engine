@@ -1,14 +1,14 @@
 package com.j3d.engine.interact.cmd.commands.clipboard;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.geometry.geo2d.copy.CopyProperties;
-import com.j3d.engine.geometry.geo2d.copy.InvalidCopyException;
-import com.j3d.engine.geometry.geo2d.graphics.GLine;
-import com.j3d.engine.geometry.geo2d.graphics.GObject;
-import com.j3d.engine.geometry.geo2d.graphics.GPoint;
-import com.j3d.engine.geometry.geo2d.graphics.GTri;
-import com.j3d.engine.geometry.geo3d.Thing;
-import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.engine.scene.copy.CopyProperties;
+import com.j3d.engine.scene.copy.InvalidCopyException;
+import com.j3d.engine.scene.nodes.geometry.GLine;
+import com.j3d.engine.scene.nodes.geometry.GObject;
+import com.j3d.engine.scene.nodes.geometry.GPoint;
+import com.j3d.engine.scene.nodes.geometry.GTri;
+import com.j3d.engine.scene.nodes.Thing;
+import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;

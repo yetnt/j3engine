@@ -1,0 +1,164 @@
+package com.j3d.engine.math;
+
+import com.j3d.engine.scene.SceneManager;
+import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.StaticConfig;
+import com.j3d.gen.settings.Settings;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
+
+/**
+ * CartesianPoint, not to be confused with {@link ScreenPoint}, represents
+ * a point in 2D space.
+ * (On the Cartesian AxisPlane, where (0, 0) is the centre of the window.)
+ * <p>
+ * All 2d points should be calculated in {@link CartesianPoint}, but when you
+ * want to show it on the screen, converted to a {@link ScreenPoint}
+ * @author Lehlogonolo Poole
+ * @see ScreenPoint
+ * @see CartesianPoint#toScreen(SceneManager)
+ * @see BasePoint
+ * @see Vector3
+ */
+public class CartesianPoint extends BasePoint<Double> {
+
+    /**
+     * used for comparing double values without running into
+     * floating point errors.
+     */
+    private static final double EPSILON = 0.01;
+
+    /**
+     * Default Constructor.
+     * Constructs a null CartesianPoint. This is probably a bad idea.
+     */
+    public CartesianPoint() {
+        super(null, null);
+    }
+
+    /**
+     * If this Cartesian Point is empty
+     * @return boolean
+     */
+    public boolean isNotEmpty() {
+        return x != null || y != null;
+    }
+
+    /**
+     * Constructor with X and Y
+     * @param X X-coordiante
+     * @param Y Y-coordinate
+     */
+    public CartesianPoint(double X, double Y) {
+        super(X, Y);
+    }
+
+    /**
+     * Converts the Cartesian Point to a {@link ScreenPoint} such that it can be viewed on the user's window.
+     * @param sceneManager The sceneManager instance.
+     * @return A ScreenPoint
+     */
+    public ScreenPoint toScreen(SceneManager sceneManager) {
+//        double adjustedX = x * Settings.sceneProperties.scale.getValue();
+//        double adjustedY = y * Settings.sceneProperties.scale.getValue();
+//
+//        int screenX = (int) (adjustedX + (double) sceneManager.screenSize.width / 2);
+//        int screenY = (int) ((double) sceneManager.screenSize.height / 2 - adjustedY);
+//
+//
+//        return new ScreenPoint(screenX - StaticConfig.OFFSET_X, screenY);
+
+        ScreenPoint s = toScreenWithProps(
+                Settings.sceneProperties.scale.getValue(),
+                sceneManager.screenSize
+        );
+        return new ScreenPoint(s.x - StaticConfig.OFFSET_X, s.y);
+    }
+
+
+    /**
+     * Converts the Cartesian Point to a {@link ScreenPoint} using provided scale and dimension properties.
+     * @param scale The scaling factor to apply to the Cartesian coordinates.
+     * @param size The dimensions (width and height) of the screen or target area.
+     * @return A ScreenPoint representing the converted coordinates.
+     */
+    public ScreenPoint toScreenWithProps(double scale, Dim size) {
+        double adjustedX = x * scale;
+        double adjustedY = y * scale;
+
+        int screenX = (int) (adjustedX + (double) size.width / 2);
+        int screenY = (int) ((double) size.height / 2 - adjustedY);
+
+
+        return new ScreenPoint(screenX, screenY);
+    }
+
+    /**
+     * Converts a 2 dimensional array into a cartesian point.
+     * <p>
+     * Generally used by Jaiva Implementation where points can be represented by [X, Y]
+     * @param arr The array.
+     * @return The new cartesian point
+     */
+    public static CartesianPoint fromList(ArrayList<? extends Number> arr) {
+        if (arr == null || arr.size() != 2) {
+            throw new IllegalArgumentException("Input list must contain exactly 2 numbers.");
+        }
+        // Use doubleValue() to preserve floating-point precision
+        return new CartesianPoint(arr.get(0).doubleValue(), arr.get(1).doubleValue());
+    }
+
+    /**
+     * Reverse of {@link CartesianPoint#fromList(ArrayList)}
+     * @return A 2 Dimensional ArrayList of doubles.
+     */
+    public ArrayList<Double> toArray() {
+        return new ArrayList<>(Arrays.asList(x, y));
+    }
+
+    @Override
+    public String toString() {
+        return ("{" + x + "; " + y + "}");
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof CartesianPoint other)) return false;
+        return Math.abs(x - other.x) < EPSILON && Math.abs(y - other.y) < EPSILON;
+    }
+
+    @Override
+    public int hashCode() {
+        // Use the same epsilon rounding for consistent hashing
+        return Objects.hash(Math.round(x / EPSILON), Math.round(y / EPSILON));
+    }
+
+    /**
+     * Calculates the distance between this point and another point.
+     * @param other The other point.
+     * @return The distance.
+     */
+    public double distanceTo(CartesianPoint other) {
+        double dx = this.x - other.x;
+        double dy = this.y - other.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    /**
+     * Calculates the distance between this point and another point without the square root.
+     * @param other The other point.
+     * @return The distance.
+     */
+    public double distanceSquaredTo(CartesianPoint other) {
+        double dx = this.x - other.x;
+        double dy = this.y - other.y;
+        return dx * dx + dy * dy;
+    }
+
+    public String friendlyString() {
+        return String.format("(%.2f, %.2f)", x, y);
+    }
+}

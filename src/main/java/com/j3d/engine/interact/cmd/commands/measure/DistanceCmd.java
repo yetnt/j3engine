@@ -1,7 +1,7 @@
 package com.j3d.engine.interact.cmd.commands.measure;
 
-import com.j3d.engine.geometry.geo2d.graphics.GPoint;
-import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.engine.scene.nodes.geometry.GPoint;
+import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.args.TypedArg;

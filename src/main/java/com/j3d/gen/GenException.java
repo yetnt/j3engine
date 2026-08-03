@@ -6,10 +6,10 @@ import com.j3d.errors.J3DError;
 public abstract class GenException extends J3DError {
 
     public GenException(String message) {
-        super(message, 1);
+        super(message, 10);
     }
 
     public GenException(String message, Throwable cause) {
-        super(message, cause, 1);
+        super(message, cause, 10);
     }
 }

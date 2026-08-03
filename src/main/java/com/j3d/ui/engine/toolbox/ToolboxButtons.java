@@ -2,7 +2,7 @@ package com.j3d.ui.engine.toolbox;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.CommandsManager;
-import com.j3d.engine.geometry.geo3d.Camera;
+import com.j3d.engine.scene.Camera;
 import com.j3d.engine.react.history.History;
 import com.j3d.storage.files.engine.DebugDump;
 import com.j3d.threads.LongTask;

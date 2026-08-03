@@ -1,7 +1,9 @@
 10XXX -> Generation Exceptions
 20XXX -> Database Exceptions
 30XXX -> Threading Exceptions
-40XXX -> Scene Exceptions
+40XXX -> Engine Exceptions
+41XXX -> Scene Exceptions
+42XXX -> Engine (Math) Exceptions
 50XXX -> IO Exceptions
 
 

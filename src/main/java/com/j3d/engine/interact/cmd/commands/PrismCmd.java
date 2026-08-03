@@ -1,11 +1,11 @@
 package com.j3d.engine.interact.cmd.commands;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.geometry.geo3d.AxisPlane;
-import com.j3d.engine.geometry.geo3d.Sampler;
-import com.j3d.engine.geometry.geo3d.Solids;
-import com.j3d.engine.geometry.geo3d.Thing;
-import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.engine.math.plane.AxisPlane;
+import com.j3d.engine.scene.nodes.util.Sampler;
+import com.j3d.engine.scene.nodes.util.Solids;
+import com.j3d.engine.scene.nodes.Thing;
+import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.args.TaggedArgUtil;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
@@ -13,7 +13,7 @@ import com.j3d.engine.interact.cmd.args.TypedArg;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.KeyedStatefulCommand;
 import com.j3d.engine.interact.input.keyboard.J3Key;
-import com.j3d.engine.layer.Layer;
+import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.utility.generators.JLabelRichText;

@@ -5,7 +5,7 @@
 package com.j3d.ui.engine.floating.properties;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.geometry.geo2d.graphics.GObject;
+import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.gen.properties.SelectionPropertiesFilter;
 import com.j3d.gen.properties.PropertiesUI;
 import com.j3d.ui.engine.FloatingPanel;

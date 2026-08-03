@@ -5,16 +5,16 @@
  * </p>
  * <h1>Properties</h1>
  * <p>
- *     "properties" are defined by any {@link com.j3d.engine.geometry.geo2d.graphics.GObject}., {@link com.j3d.engine.geometry.geo3d.Thing}
- *     or {@link com.j3d.engine.layer.Layer}.
+ *     "properties" are defined by any {@link com.j3d.engine.scene.nodes.geometry.GObject}., {@link com.j3d.engine.scene.nodes.Thing}
+ *     or {@link com.j3d.engine.scene.nodes.layer.Layer}.
  *     They are different from fields as they are not used by code and are purely a way for the user to "see" a
  *     object's internal property and possibly edit it. The object itself defines what is a property within its constructor
  *     how the UI can access said property and any other semantics for property intersection logic.
  * </p>
  * <p>
  *     Properties themselves aren't difficult, in that they can just be thought of as a user-friendly accessor to
- *     whatever the object defines the property as. However, for a something like {@link com.j3d.engine.geometry.geo2d.graphics.GObject} which
- *     has concrete extendors, e.g. {@link com.j3d.engine.geometry.geo2d.graphics.GTri}, those extendors may inherit properties
+ *     whatever the object defines the property as. However, for a something like {@link com.j3d.engine.scene.nodes.geometry.GObject} which
+ *     has concrete extendors, e.g. {@link com.j3d.engine.scene.nodes.geometry.GTri}, those extendors may inherit properties
  *     from the base class and add extra properties special to this child class. (See {@link com.j3d.gen.properties.Property} and
  *     {@link com.j3d.gen.properties.PropertyKey})
  * </p>

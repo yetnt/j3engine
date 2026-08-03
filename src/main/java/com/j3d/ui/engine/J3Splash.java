@@ -5,7 +5,8 @@
 package com.j3d.ui.engine;
 
 import com.j3d.StaticRefs;
-import com.j3d.ui.theme.J3DTheme;
+
+import java.awt.*;
 
 /**
  *
@@ -20,6 +21,15 @@ public class J3Splash extends javax.swing.JFrame {
         initComponents();
     }
 
+    public void transparency() {
+        setUndecorated(true);
+        setBackground(new Color(0, 0, 0, 0));
+
+        jLabel1.setOpaque(false);
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+    }
+
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,14 +43,13 @@ public class J3Splash extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
-        setBackground(J3DTheme.BACKGROUND.defaultCol());
         setIconImage(StaticRefs.logo());
         getContentPane().setLayout(new java.awt.GridLayout(1, 0));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\ACER\\Documents\\code\\Jaiva3dEngine\\src\\main\\resources\\art\\logo\\Adobe Express - 0001-0193.gif")); // NOI18N
-        jLabel1.setOpaque(true);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/art/logo/anim2.gif"))); // NOI18N
         getContentPane().add(jLabel1);
+        transparency();
 
         pack();
         setLocationRelativeTo(null);

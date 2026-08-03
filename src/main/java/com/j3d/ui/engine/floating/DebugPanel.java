@@ -5,11 +5,11 @@
 package com.j3d.ui.engine.floating;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.layer.Layer;
-import com.j3d.engine.geometry.geo2d.graphics.GPoint;
-import com.j3d.engine.geometry.geo2d.graphics.GTri;
-import com.j3d.engine.geometry.geo3d.Thing;
-import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.engine.scene.nodes.layer.Layer;
+import com.j3d.engine.scene.nodes.geometry.GPoint;
+import com.j3d.engine.scene.nodes.geometry.GTri;
+import com.j3d.engine.scene.nodes.Thing;
+import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.StaticConfig;
 import com.j3d.threads.StatisticsThread;
 import com.j3d.ui.theme.J3DScrollBarUI;

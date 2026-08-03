@@ -1,12 +1,11 @@
 package com.j3d.engine.interact.cmd.args;
 
-import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.utility.Parsing;
 import com.j3d.utility.generic.SamePair;
-import org.apache.poi.ss.formula.functions.T;
 
 import java.util.ArrayList;
 import java.util.HashMap;

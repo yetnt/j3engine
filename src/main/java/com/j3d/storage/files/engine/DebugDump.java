@@ -1,8 +1,8 @@
 package com.j3d.storage.files.engine;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.geometry.geo2d.graphics.GTri;
-import com.j3d.engine.geometry.geo3d.Camera;
+import com.j3d.engine.scene.nodes.geometry.GTri;
+import com.j3d.engine.scene.Camera;
 
 import java.io.File;
 import java.io.IOException;

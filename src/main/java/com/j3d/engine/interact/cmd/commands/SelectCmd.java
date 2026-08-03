@@ -1,7 +1,7 @@
 package com.j3d.engine.interact.cmd.commands;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.geometry.geo2d.graphics.GObject;
+import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.interact.cmd.Any;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.args.TypedArg;

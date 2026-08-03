@@ -1,8 +1,8 @@
 package com.j3d.gen.properties;
 
-import com.j3d.engine.geometry.geo2d.graphics.GObject;
-import com.j3d.engine.geometry.geo3d.Thing;
-import com.j3d.engine.layer.Layer;
+import com.j3d.engine.scene.nodes.geometry.GObject;
+import com.j3d.engine.scene.nodes.Thing;
+import com.j3d.engine.scene.nodes.layer.Layer;
 
 import java.util.ArrayList;
 

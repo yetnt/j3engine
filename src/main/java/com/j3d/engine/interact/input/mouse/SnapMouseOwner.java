@@ -1,12 +1,12 @@
 package com.j3d.engine.interact.input.mouse;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.SceneManager;
-import com.j3d.engine.geometry.ScreenPoint;
-import com.j3d.engine.geometry.geo2d.graphics.GLine;
-import com.j3d.engine.geometry.geo2d.graphics.GObject;
-import com.j3d.engine.geometry.geo2d.graphics.GTri;
-import com.j3d.engine.geometry.geo3d.matrix.Vector3;
+import com.j3d.engine.scene.SceneManager;
+import com.j3d.engine.math.ScreenPoint;
+import com.j3d.engine.scene.nodes.geometry.GLine;
+import com.j3d.engine.scene.nodes.geometry.GObject;
+import com.j3d.engine.scene.nodes.geometry.GTri;
+import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.interact.selection.SelectionManager;
 import com.j3d.engine.interact.selection.SelectionQuery;
 import com.j3d.engine.interact.selection.SelectionType;

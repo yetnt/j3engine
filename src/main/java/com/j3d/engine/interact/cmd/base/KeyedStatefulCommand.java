@@ -1,7 +1,7 @@
 package com.j3d.engine.interact.cmd.base;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.geometry.geo2d.graphics.GObject;
+import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.interact.cmd.commands.transform.AbstractTransform;
 import com.j3d.engine.interact.cmd.commands.transform.TranslateSelection;
 import com.j3d.engine.interact.input.keyboard.J3Key;

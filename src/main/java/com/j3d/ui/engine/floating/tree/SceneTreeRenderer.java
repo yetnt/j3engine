@@ -1,7 +1,7 @@
 package com.j3d.ui.engine.floating.tree;
 
-import com.j3d.engine.geometry.geo3d.Thing;
-import com.j3d.engine.layer.Layer;
+import com.j3d.engine.scene.nodes.Thing;
+import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.ui.theme.J3DTreeCellRenderer;
 
 import javax.swing.*;

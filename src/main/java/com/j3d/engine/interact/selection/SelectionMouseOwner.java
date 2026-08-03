@@ -1,8 +1,8 @@
 package com.j3d.engine.interact.selection;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.SceneManager;
-import com.j3d.engine.geometry.ScreenPoint;
+import com.j3d.engine.scene.SceneManager;
+import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.engine.interact.input.mouse.MouseOwner;
 import com.j3d.ui.engine.floating.properties.PropertiesPanel;
