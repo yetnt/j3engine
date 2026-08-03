@@ -299,7 +299,10 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
     private RenderState<Segment, GObject> renderState;
     @Override
     public void decompose() {
-        renderState = toSegment().toRenderState(this);
+        if (renderState != null) renderState.invalidate();
+        if (renderState == null || !renderState.isValid()) {
+            renderState = toSegment().toRenderState(this);
+        }
     }
 
     @Override

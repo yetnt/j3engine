@@ -155,6 +155,7 @@ public class GPoint extends GObject implements HasParents<GObject>, DecomposeWhe
     private RenderState<Point, GObject> renderState;
     @Override
     public void decompose() {
+        if (renderState != null) renderState.invalidate();
         if (renderState == null || !renderState.isValid()) {
             renderState = toPure().toRenderState(this);
         }

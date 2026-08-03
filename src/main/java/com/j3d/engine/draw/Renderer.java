@@ -9,6 +9,7 @@ import com.j3d.engine.geometry.geo2d.graphics.*;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -92,13 +93,13 @@ public class Renderer {
     /**
      * Unregisters a triangle from Renderer
      * @param tri The triangle to unregister.
-     * @implSpec Much like the docs within {@link Renderer#register(Drawable)}
+     * @implSpec Much like the docs within {@link Renderer#register(RenderState)}
      * however here only {@link GTri#deleteSelf()} may call this method or
      * any other destructive method.
      */
     public static void unregister(RenderState<?, ?> tri) {
         // finder listener that matches tri id
-        registered.stream().filter(
+        new ArrayList<>(registered).stream().filter(
                 listener -> listener.triID.equals(tri.getId())
         ).findFirst().ifPresent(
                 registered::remove
@@ -107,7 +108,9 @@ public class Renderer {
 
     public static void unregister(UUID uuid) {
         // finder listener that matches tri id
-        registered.stream().filter(
+        new ArrayList<>(registered).stream()
+                .filter(Objects::nonNull)
+                .filter(
                 listener -> listener.triID.equals(uuid)
         ).forEach(
                 registered::remove
@@ -126,21 +129,11 @@ public class Renderer {
      * @param g The Graphics2D context.
      */
     public static void draw(Graphics2D g) {
-//        ArrayList<GObject> unparented = StaticRefs.getSceneManager().getUnparented().stream()
-//                .map(o -> (GObject) o)
-//                .collect(Collectors.toCollection(ArrayList::new));
-//        unparented.forEach(
-//                u -> {
-//                    // draw these fools first since we cant use Renderer methods for sorting.
-//                    // upper todo remove later. primitives.
-//                    if (StaticRefs.getSceneManager().getSelected().contains(u)) {
-//                        u.drawSelected(g);
-//                    } else {
-//                        u.draw(g);
-//                    }
-//                }
-//        );
         for  (RenderState<?, ?> drawable : queue) {
+            if (!drawable.isValid()) {
+                unregister(drawable);
+                unregister(drawable.getId());
+            }
             if (drawable.getPure() instanceof GTri tri)
                 if (tri.isHidden()) continue;
             // todo remove drawig parent,

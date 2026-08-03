@@ -145,7 +145,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
         normal();
 
-        Renderer.register(toRenderState());
+//        Renderer.register(toRenderState());
         drawDist();
         addProps();
     }
@@ -160,7 +160,10 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
     private RenderState<Triangle, GObject> renderState;
     public RenderState<Triangle, GObject> toRenderState() {
-        renderState = toPure().toRenderState(this);
+        if (renderState != null) renderState.invalidate();
+        if (renderState == null || !renderState.isValid()) {
+            renderState = toPure().toRenderState(this);
+        }
         return renderState;
     }
 
@@ -397,7 +400,6 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
                     if (!line.hasParent()) line.deleteSelf();
                 }
         );
-        Renderer.unregister(this.getId());
         getSceneManager().removeOverlap(getId());
         return true;
     }
@@ -468,7 +470,6 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         LegC = null;
 
         // without lines, this triangle cannot exist. It must be deleted.
-        Renderer.unregister(getId());
         parent.getObjects().remove(this);
 
         return points;

@@ -55,7 +55,7 @@ public class Executor {
         Thing cub = cube();
         StaticRefs.getCamera().lookAt(cub.getCentroid());
         Thing tris = threeTris();
-//
+
         Thing solid = Solids.prism(
                 20,4, layer,
                 new AxisPlane(

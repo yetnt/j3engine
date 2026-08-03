@@ -195,10 +195,6 @@ public class Thing implements Interactable, HasProperties {
                     public void undo() {
                         setForDeletion(true);
                         StaticRefs.getLayerTree().removeNode(thing.treeNode);
-                        objectsStream()
-                                .filter(s -> s instanceof GTri)
-                                .map(g -> (GTri)g)
-                                .forEach(s -> Renderer.unregister(s.getId()));
                     }
 
                     @Override
