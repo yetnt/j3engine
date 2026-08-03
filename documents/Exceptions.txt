@@ -1,10 +1,17 @@
+JCCXXX -> J3DErr (prefixed J cuz why not)
+
+(CC from 00 to 09 are unused due to small domain
+
 10XXX -> Generation Exceptions
 20XXX -> Database Exceptions
 30XXX -> Threading Exceptions
-40XXX -> Engine Exceptions
-41XXX -> Scene Exceptions
-42XXX -> Engine (Math) Exceptions
-50XXX -> IO Exceptions
+4?XXX -> Engine Exceptions
+	40XXX -> Generic Engine Exception
+	41XXX -> Scene Exceptions
+	42XXX -> Engine (Math) Exceptions
+50XXX -> I/O Exceptions
+
+(XXX is domain specific)
 
 
 10100 -> Preferences Frame encountered a generic exception with a cause (Fatal)
@@ -16,4 +23,4 @@
 10222 -> #-links: Attempt to link to some arbitrary file (isn't .j3.md)
 10231 -> 
 
-40101 -> Copy Exception - Connection severed.
+41101 -> Copy Exception - Connection severed.

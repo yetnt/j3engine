@@ -37,7 +37,7 @@ public class J3DError extends RuntimeException {
     }
 
     public String codeToStr() {
-        return String.format("%05d", buildCode());
+        return "J" + String.format("%05d", buildCode());
     }
 
     public String getMessage() {

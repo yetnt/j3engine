@@ -1,5 +1,6 @@
 package com.j3d.storage.errs;
 
+import com.j3d.errors.ErrorCodes;
 import com.j3d.errors.J3DError;
 import com.j3d.errors.severity.J3DFatal;
 import com.j3d.storage.files.FilesUtility;
@@ -14,10 +15,10 @@ import com.j3d.storage.files.FilesUtility;
  */
 public class GenericIOException extends J3DError implements J3DFatal {
     public GenericIOException(String message) {
-        super(message, 50);
+        super(message, ErrorCodes.IO.getBaseCode());
     }
 
     public GenericIOException(String message, Throwable cause) {
-        super(message, cause, 50);
+        super(message, cause, ErrorCodes.IO.getBaseCode());
     }
 }
