@@ -290,14 +290,11 @@ public class CommandParser {
             }
             return;
         }
-        CmdToken.Type type = GObjectRegistry.expectedObjs(
-                g, null,
-                CmdToken.Type.ID_POINT, CmdToken.Type.ID_LINE, CmdToken.Type.ID_TRI, CmdToken.Type.ID_CURVE
-        );
-        if (type == null) {
+        GObjectRegistry gt = GObjectRegistry.fromClass(g.getClass());
+        if (gt == null) {
             throw new IllegalArgumentException("Unknown argument type: " + g);
         }
-        addArg(tok, g, type, injected);
+        addArg(tok, g, gt.getType(), injected);
     }
 
 

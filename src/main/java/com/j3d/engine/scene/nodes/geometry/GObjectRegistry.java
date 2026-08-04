@@ -1,5 +1,7 @@
 package com.j3d.engine.scene.nodes.geometry;
 
+import com.j3d.engine.interact.cmd.CmdToken;
+
 /**
  * Defines the main registry for checking for GObjects, primarily used by these subsystems:
  * <ul>
@@ -20,19 +22,19 @@ public enum GObjectRegistry {
     /**
      * a point.
      */
-    POINT(GPoint.class, "point"),
+    POINT(GPoint.class, "point", CmdToken.Type.ID_POINT),
     /**
      * a curve
      */
-    LINE(GLine.class, "line"),
+    LINE(GLine.class, "line", CmdToken.Type.ID_LINE),
     /**
      * a triangle
      */
-    TRI(GTri.class, "tri"),
+    TRI(GTri.class, "tri", CmdToken.Type.ID_TRI),
     /**
      * a curve
      */
-    CURVE(GCurve.class, "curve");
+    CURVE(GCurve.class, "curve", CmdToken.Type.ID_CURVE);
 
     /**
      * The actual class
@@ -43,10 +45,16 @@ public enum GObjectRegistry {
      * menu.
      */
     private final String simpleName;
+    /**
+     * the command token type associated with this gobject.
+     */
+    private final CmdToken.Type type;
 
-    GObjectRegistry(Class<? extends GObject> clazz, String simpleName) {
+    GObjectRegistry(Class<? extends GObject> clazz, String simpleName, CmdToken.Type type) {
         this.clazz = clazz;
         this.simpleName = simpleName;
+        this.type = type;
+
     }
 
     public Class<? extends GObject> getClazz() {
@@ -59,6 +67,14 @@ public enum GObjectRegistry {
      */
     public String getSimpleName() {
         return simpleName;
+    }
+
+    /**
+     * Retrieves the command token type associated with this GObject.
+     * @return The command token type.
+     */
+    public CmdToken.Type getType() {
+        return type;
     }
 
     /**
@@ -101,28 +117,6 @@ public enum GObjectRegistry {
             }
         }
         return null;
-    }
-
-    /**
-     * Provides a type-safe way to return a specific value based on the runtime type of a {@link GObject} instance.
-     * This method acts as a type-dispatch mechanism for registered GObjects.
-     * @param obj The object to check its type.
-     * @param defaultReturn The value to return if {@code obj} does not match any known GObject type.
-     * @param point The value to return if {@code obj} is a {@link GPoint}.
-     * @param line The value to return if {@code obj} is a {@link GLine}.
-     * @param tri The value to return if {@code obj} is a {@link GTri}.
-     * @param curve The value to return if {@code obj} is a {@link GCurve}.
-     * @param <T> The type of the return value.
-     * @return The value corresponding to the type of {@code obj}, or {@code defaultReturn} if no match.
-     */
-    public static <T> T expectedObjs(Object obj, T defaultReturn, T point, T line, T tri, T curve) {
-        return switch (obj) {
-            case GPoint p -> point;
-            case GLine l -> line;
-            case GTri t -> tri;
-            case GCurve c -> curve;
-            default -> defaultReturn;
-        };
     }
 
     /**
