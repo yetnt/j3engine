@@ -290,14 +290,14 @@ public class CommandParser {
             }
             return;
         }
-        addArg(tok, g,
-                switch (g) {
-                    case GLine l -> CmdToken.Type.ID_LINE;
-                    case GTri t -> CmdToken.Type.ID_TRI;
-                    case GPoint p -> CmdToken.Type.ID_POINT;
-                    case GCurve c -> CmdToken.Type.ID_CURVE;
-                    default -> throw new IllegalArgumentException("Unknown argument type: " + g);
-                }, injected);
+        CmdToken.Type type = GObjectRegistry.expectedObjs(
+                g, null,
+                CmdToken.Type.ID_POINT, CmdToken.Type.ID_LINE, CmdToken.Type.ID_TRI, CmdToken.Type.ID_CURVE
+        );
+        if (type == null) {
+            throw new IllegalArgumentException("Unknown argument type: " + g);
+        }
+        addArg(tok, g, type, injected);
     }
 
 

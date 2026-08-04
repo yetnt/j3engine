@@ -2,6 +2,7 @@ package com.j3d.engine.interact.cmd.complete;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.scene.nodes.geometry.GObject;
+import com.j3d.engine.scene.nodes.geometry.GObjectRegistry;
 import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.math.matrix.Vector3;
@@ -232,12 +233,7 @@ public class TypingHints {
                             token.getInput().startsWith("y") || token.getInput().startsWith("a")
                     ) )
                 return true;
-            else if (
-                    (usage.contains("point")
-                            || usage.contains("line")
-                            || usage.contains("tri")
-                            || usage.contains("thing")
-                            || usage.contains("curve"))
+            else if ((GObjectRegistry.fuzzyMatch(usage) || usage.contains("thing"))
                     && token.getInput().length() > 5//TODO: add UUID like syntax
             )
                 return true;
@@ -422,11 +418,9 @@ public class TypingHints {
                 } else if (arg.contains("int") || arg.contains("number")) {
                     // int or double
                     sb.append(numberMatch(arg, token)).append(" ");
-                } else if (usage.contains("point")
-                        || usage.contains("line")
-                        || usage.contains("curve")
-                        || (usage.contains("tri") && !usage.contains("string"))
-                        || usage.contains("thing")) {
+                } else if (
+                        (GObjectRegistry.fuzzyMatch(usage) && !usage.contains("string"))
+                                || usage.contains("thing")) {
                     // uuid reference
                     sb.append(idReferenceMatch(arg, token)).append(" ");
                 } else if (usage.contains("string")) {
@@ -545,10 +539,11 @@ public class TypingHints {
         } else {
             // it works. im not changing it. damn you if you dare change
             // this beautiful piece of code.
-            return switch (token.getType().toUsage().substring(0, 2) + arg.substring(1, 3)) {
-                case "popo", "trtr", "thth", "lili", "cucu" -> correctType(arg);
-                default -> incorrectType(arg);
-            };
+            String input = token.getType().toUsage().substring(0, 2) + arg.substring(1, 3);
+            if (GObjectRegistry.tHintsUsageStringTypeMatch(input))
+                return correctType(arg);
+            else
+                return incorrectType(arg);
         }
     }
 

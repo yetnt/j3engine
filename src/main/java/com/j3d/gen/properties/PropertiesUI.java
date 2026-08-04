@@ -169,7 +169,7 @@ public class PropertiesUI {
      */
     private static <T extends HasProperties>
         boolean commonPropertiesBool(Class<?> provider, Class<?> expected) {
-        if (expected == GLine.class || expected == GTri.class || expected == GPoint.class || expected == GCurve.class) {
+        if (GObjectRegistry.isGObject(expected)) {
             return provider == expected || provider == GObject.class;
         } else {
             return provider == expected;

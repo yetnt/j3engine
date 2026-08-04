@@ -64,14 +64,27 @@ public class ObjectProperty<T extends GObject> extends JPanel implements Propert
     }
     
     private Pair<String, UUID> setType() {
-        return switch (getSingleProperty().getValueSupplier().get()) {
-            case GTri t -> new Pair<>("(tri)", t.getId());
-            case GLine l -> new Pair<>("(line)", l.getId());
-            case GPoint p -> new Pair<>("(point)", p.getId());
-            case GCurve c -> new Pair<>("(curve)", c.getId());
-            default ->
-                    throw new IllegalStateException("Unexpected value: " + getSingleProperty().getValueSupplier().get());
-        };
+        T t = getSingleProperty().getValueSupplier().get();
+        Pair<String, UUID> pair = GObjectRegistry.expectedObjs(
+                t,
+                null,
+                new Pair<>("(point)", UUID.randomUUID()),
+                new Pair<>("(line)", UUID.randomUUID()),
+                new Pair<>("(tri)", UUID.randomUUID()),
+                new Pair<>("(curve)", UUID.randomUUID())
+        );
+        if (pair == null) {
+            throw new IllegalStateException("Unexpected value: " + t);
+        }
+        return pair;
+//        return switch (t) {
+//            case GTri t -> new Pair<>("(tri)", t.getId());
+//            case GLine l -> new Pair<>("(line)", l.getId());
+//            case GPoint p -> new Pair<>("(point)", p.getId());
+//            case GCurve c -> new Pair<>("(curve)", c.getId());
+//            default ->
+//                    throw new IllegalStateException("Unexpected value: " + t);
+//        };
     }
 
     @Override
