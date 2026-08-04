@@ -24,3 +24,11 @@ JCCXXX -> J3DErr (prefixed J cuz why not)
 10231 -> 
 
 41101 -> Copy Exception - Connection severed.
+
+42101 -> Matrix Math: Invalid 2D array input
+42102 -> Matrix Math: Row lengths do not match
+42103 -> Matrix Math: Contains NaN values
+42104 -> Matrix Math: Dimensions do not match (additon/subtraction/etc..)
+42105 -> Matrix Math: Multiplication not defined for the input matrices.
+42106 -> Input matrix does not match expected dimensions
+42107 -> Matrix Resolve: Row/Column Index out of bounds

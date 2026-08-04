@@ -1,30 +1,18 @@
 package com.j3d.engine.math.matrix;
 
+import com.j3d.StaticRefs;
+import com.j3d.errors.ErrorHandler;
+
 /**
  * Provides a collection of static utility methods for performing mathematical operations
  * on matrices that implement the {@link MatrixInterface}. This class includes methods
  * for matrix creation, validation, addition, subtraction, and multiplication.
  * <p>
  * This is an abstract utility class and cannot be instantiated.
- * <p>
- *     This also has its own custom exception wrapping ArithmeticException thrown
- *     when specifically matrix related errors occur.
- * </p>
  * @author Lehlogonolo Poole
  * @see MatrixInterface
- * @see MatrixMath.MatrixException
  */
 public abstract class MatrixMath {
-
-    /**
-     * A specialized {@link ArithmeticException} thrown to indicate an error during a
-     * matrix operation, such as a dimension mismatch in multiplication.
-     */
-    public static class MatrixException extends ArithmeticException {
-        public MatrixException(String message) {
-            super(message);
-        }
-    }
 
     /**
      * Validates the structure of a 2D double array to ensure it can represent a valid matrix.
@@ -41,7 +29,11 @@ public abstract class MatrixMath {
     protected static void validate(double[][] m) {
         // 1. is an array with another array in it
         if (m == null || m.length == 0 || !m[0].getClass().isArray()) {
-            throw new IllegalStateException("Input is not a valid 2D array.");
+            StaticRefs.getErrs().handle(
+                    new MatrixException("Input is not a valid 2D array.")
+                            .code(101)
+            );
+            return;
         }
 
         // 2. No NaN elements.
@@ -49,11 +41,15 @@ public abstract class MatrixMath {
         int rowLength = m[0].length;
         for (double[] doubles : m) {
             if (doubles.length != rowLength) {
-                throw new IllegalStateException("Row lengths do not match.");
+                StaticRefs.getErrs().handle(
+                        new MatrixException("Row lengths do not match.").code(102)
+                );
             }
             for (double aDouble : doubles) {
                 if (Double.isNaN(aDouble)) {
-                    throw new IllegalStateException("Matrix contains NaN values.");
+                    StaticRefs.getErrs().handle(
+                            new MatrixException("Matrix contains NaN values.").code(103)
+                    );
                 }
             }
         }
@@ -142,7 +138,9 @@ public abstract class MatrixMath {
      * @throws MatrixException if the matrices do not have the same dimensions.
      */
     public static MatrixInterface add(MatrixInterface m1, MatrixInterface m2) {
-        if (!equalsRowsEqualCols(m1, m2)) throw new MatrixException("Matrices must have the same dimensions for addition.");
+        if (!equalsRowsEqualCols(m1, m2)) StaticRefs.getErrs().handle(
+                MatrixException.sameDimensionsException("addition")
+        );
         final double[][] m = new double[m1.rows()][m2.cols()];
 
         for (int i = 0; i < m1.rows(); i++) {
@@ -163,7 +161,9 @@ public abstract class MatrixMath {
      * @throws MatrixException if the matrices do not have the same dimensions.
      */
     public static MatrixInterface sub(MatrixInterface m1, MatrixInterface m2) {
-        if (!equalsRowsEqualCols(m1, m2)) throw new MatrixException("Matrices must have the same dimensions for subtraction.");
+        if (!equalsRowsEqualCols(m1, m2)) StaticRefs.getErrs().handle(
+                MatrixException.sameDimensionsException("subtraction")
+        );
         final double[][] m = new double[m1.rows()][m2.cols()];
 
         for (int i = 0; i < m1.rows(); i++) {
@@ -185,7 +185,10 @@ public abstract class MatrixMath {
      * @throws MatrixException if the number of columns in m1 does not equal the number of rows in m2.
      */
     public static MatrixInterface mult(MatrixInterface m1, MatrixInterface m2) {
-        if (m1.cols() != m2.rows()) throw new MatrixException("Matrix multiplication is not defined for the 2 matrices");
+        if (m1.cols() != m2.rows()) StaticRefs.getErrs().handle(
+                new MatrixException("Matrix multiplication is not defined for the 2 matrices")
+                        .code(105)
+        );
         final double[][] m = new double[m1.rows()][m2.cols()];
 
         for (int i = 0; i < m1.rows(); i++) {

@@ -1,5 +1,6 @@
 package com.j3d.engine.math.matrix;
 
+import com.j3d.StaticRefs;
 import com.j3d.engine.math.CartesianPoint;
 import com.j3d.engine.scene.Camera;
 import com.j3d.gen.settings.Settings;
@@ -104,8 +105,9 @@ public class Vector3 implements MatrixInterface {
      * @throws RuntimeException if the matrix is not 3x1.
      */
     public static Vector3 of(MatrixInterface m) {
-        //TODO: Custom Matrix Error
-        if (m.rows() != 3 || m.cols() != 1) throw new RuntimeException("Matrix must be 3x1 to be converted to a Vector3");
+        if (m.rows() != 3 || m.cols() != 1) StaticRefs.getErrs().handle(
+                MatrixException.exactDimensionException(Vector3.Y, m)
+        );
         return new Vector3(m.get(0, 0), m.get(1, 0), m.get(2, 0));
     }
 
@@ -413,12 +415,23 @@ public class Vector3 implements MatrixInterface {
      */
     @Override
     public double get(int row, int col) {
-        if (col != 0) throw new IndexOutOfBoundsException("Column index must be 0 for a Vector3.");
+        if (col != 0) StaticRefs.getErrs().handle(
+                MatrixException.indexOutOfBounds(
+                        this, "column", col, 0, 0
+                )
+        );
         return switch (row) {
             case 0 -> x;
             case 1 -> y;
             case 2 -> z;
-            default -> throw new IndexOutOfBoundsException("Row index must be between 0 and 2 for a Vector3.");
+            default -> {
+                StaticRefs.getErrs().handle(
+                        MatrixException.indexOutOfBounds(
+                                this, "row", row, 0, 2
+                        )
+                );
+                yield -1;
+            }
         };
     }
 

@@ -1,5 +1,7 @@
 package com.j3d.engine.math.matrix;
 
+import com.j3d.StaticRefs;
+
 /**
  * Represents a final, specialized 3x3 matrix.
  * <p>
@@ -11,7 +13,6 @@ package com.j3d.engine.math.matrix;
  * @see MatrixMath
  * @see MatrixInterface
  * @see Vector3
- * @see Matrix4
  */
 public final class Matrix3 implements MatrixInterface {
     /**
@@ -52,7 +53,11 @@ public final class Matrix3 implements MatrixInterface {
      * @throws RuntimeException if the input matrix is not 3x3.
      */
     public static Matrix3 of(MatrixInterface m) {
-        if (m.rows() != 3 || m.cols() != 3) throw new RuntimeException("Matrix must be 3x3");
+        if (m.rows() != 3 || m.cols() != 3) StaticRefs.getErrs().handle(
+                MatrixException.exactDimensionException(
+                        identity(), m
+                )
+        );
         return new Matrix3(m.get());
     }
 
@@ -82,6 +87,16 @@ public final class Matrix3 implements MatrixInterface {
 
     @Override
     public double get(int row, int col) {
+        if (row < 0 || row > 2) StaticRefs.getErrs().handle(
+                MatrixException.indexOutOfBounds(
+                        this, "row", row, 0, 2
+                )
+        );
+        if (col < 0 || col > 2) StaticRefs.getErrs().handle(
+                MatrixException.indexOutOfBounds(
+                        this, "column", col, 0, 2
+                )
+        );
         return data[row][col];
     }
 
