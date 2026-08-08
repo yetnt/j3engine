@@ -4,6 +4,7 @@
  */
 package com.j3d.ui.auth;
 
+import com.j3d.Startup;
 import com.j3d.StaticRefs;
 import com.j3d.StaticConfig;
 import com.j3d.engine.interact.input.keyboard.GlobalKeybinds;
@@ -455,6 +456,8 @@ public class Signup extends javax.swing.JFrame {
 
             StaticConfig.user = wasRegistered.second;
             this.dispose();
+
+            Startup.saveUser(wasRegistered.second.id);
             postSignup.run();
 
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {

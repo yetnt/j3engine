@@ -180,6 +180,7 @@ public class Main extends javax.swing.JFrame {
     private void loginAslehlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginAslehlActionPerformed
         StaticRefs.getLog().stPrintln("Projects Path (LoginAsLehlogonolo)");
         User user = DatabaseManager.tblUsers.findById(3);
+        Startup.saveUser(3);
         StaticConfig.user = user;
         J3DTheme.loadTheme(user.themeId.getValue());
         this.dispose();

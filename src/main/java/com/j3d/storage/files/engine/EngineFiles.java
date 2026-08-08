@@ -16,6 +16,7 @@ public class EngineFiles {
     public final DebugDump debugDump;
     public final DocsFolder docsFolder;
     public final PrefsFile preferencesFile;
+    public final UserFile userFile;
 
 
     public EngineFiles() {
@@ -28,6 +29,7 @@ public class EngineFiles {
         debugDump = new DebugDump();
         try {
             preferencesFile = new PrefsFile();
+            userFile = new UserFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -36,5 +38,9 @@ public class EngineFiles {
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public File getEngineFolder() {
+        return engineFolder;
     }
 }

@@ -22,18 +22,20 @@ import java.util.ArrayList;
  *     Typical Usage:
  *     <pre>{@code
  *     engine exit       - Initiate shutdown sequence.
+ *     engine files      - Opens the J3Engine folder.
  *     }</pre>
  * </p>
  * @see Command
  * @see CommandsManager
  * @see ExitCmd
+ * @see FilesCmd
  * @author Lehlogonolo Poole
  */
 public class EngineCmd extends Command {
     public EngineCmd() {
         super("engine", "Engine related commands");
         this.aliases("eng").args(
-                new ExitCmd()
+                new ExitCmd(), new FilesCmd()
         ).parseUsages();
     }
 
@@ -41,7 +43,7 @@ public class EngineCmd extends Command {
     public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(logLabel, aliasUsed, args, taggedArgs);
         if (args.length < 1 || !(args[0] instanceof String subcommandName)) {
-            logLabel.setText("Invalid arguments. Usage: debug <subcommand> ...");
+            logLabel.setText("Invalid arguments. Usage: engine <subcommand> ...");
             return;
         }
         dispatchToSubcommands(subcommandName, logLabel, args, taggedArgs);

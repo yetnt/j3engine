@@ -1014,6 +1014,8 @@ public class EngineFrame extends javax.swing.JFrame {
 
         StaticConfig.user = null;
 
+        Startup.clearUser();
+
         Startup.run();
     }//GEN-LAST:event_logOutJMenuItemActionPerformed
 

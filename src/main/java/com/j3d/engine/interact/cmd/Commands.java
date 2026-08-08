@@ -38,6 +38,7 @@ public class Commands {
     public PrismCmd prismCmd = new PrismCmd();
     public MeasureCmd measureCmd = new MeasureCmd();
     public ClipboardCmd clipboardCmd = new ClipboardCmd();
+    public SelectCmd selectCmd = new SelectCmd();
 
     /**
      * Default (empty) constructor
@@ -63,7 +64,8 @@ public class Commands {
                 debug, transform, lookAt,
                 teleport, orbit, engine,
                 explodeCmd, uiCmd, helpCmd,
-                prismCmd, measureCmd, clipboardCmd
+                prismCmd, measureCmd, clipboardCmd,
+                selectCmd
         ));
     }
 }

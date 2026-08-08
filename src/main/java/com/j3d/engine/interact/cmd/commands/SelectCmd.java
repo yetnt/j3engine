@@ -10,6 +10,26 @@ import com.j3d.ui.SafeJLabel;
 
 import java.util.ArrayList;
 
+/**
+ * A command which selects a given {@link GObject}
+ * <p>
+ *     Provides a required {@link TypedArg} which accepts an {@link Any} type, but expects a {@link GObject}
+ *     (representing a {@link GObject}'s name or UUID)
+ * </p>
+ * <p>
+ *     Aliases: {@code select}, {@code s}, {@code sel}
+ * </p>
+ * <p>
+ *     Typical Usage:
+ *     <pre>{@code
+ *     s 123e4567-e89b-12d3-a456-426614174000 - Selects the object with the given UUID
+ *     }</pre>
+ * </p>
+ * @see Command
+ * @see TypedArg
+ * @see GObject
+ * @author Lehlogonolo Poole
+ */
 public class SelectCmd extends Command {
     public SelectCmd() {
         super(

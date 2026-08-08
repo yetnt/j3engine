@@ -24,6 +24,11 @@ public class AreYouSure extends javax.swing.JDialog {
         setLocationRelativeTo(parent);
     }
 
+    public AreYouSure setDialogName(String name) {
+        jLabel1.setText(name);
+        return this;
+    }
+
     /**
      * Creates new form AreYouSure
      */

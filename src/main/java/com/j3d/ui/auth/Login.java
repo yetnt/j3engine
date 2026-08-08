@@ -4,6 +4,7 @@
  */
 package com.j3d.ui.auth;
 
+import com.j3d.Startup;
 import com.j3d.StaticRefs;
 import com.j3d.StaticConfig;
 import com.j3d.engine.interact.input.keyboard.GlobalKeybinds;
@@ -12,6 +13,7 @@ import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.api.SQLOperator;
 import com.j3d.storage.db.users.CUsers;
 import com.j3d.storage.db.users.User;
+import com.j3d.ui.dialog.AreYouSure;
 import com.j3d.ui.theme.CursorManager;
 import com.j3d.ui.theme.CursorNames;
 import com.j3d.ui.theme.J3DTheme;
@@ -312,6 +314,8 @@ public class Login extends javax.swing.JFrame {
             J3DTheme.loadTheme(user.themeId.getValue());
 
             this.dispose();
+
+            Startup.saveUser(user.id);
 
             postLogin.run();
         } catch (Exception e) {
