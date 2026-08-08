@@ -4,6 +4,7 @@
  */
 package com.j3d.ui.auth;
 
+import com.j3d.Main;
 import com.j3d.Startup;
 import com.j3d.StaticRefs;
 import com.j3d.StaticConfig;
@@ -470,7 +471,7 @@ public class Signup extends javax.swing.JFrame {
     }//GEN-LAST:event_nameJFieldActionPerformed
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        Login login = new Login(postSignup);
+        Main login = new Main(postSignup);
         login.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_loginButtonActionPerformed

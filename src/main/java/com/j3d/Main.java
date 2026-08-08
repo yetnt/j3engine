@@ -4,14 +4,24 @@
  */
 package com.j3d;
 
+import com.j3d.Startup;
+import com.j3d.StaticRefs;
+import com.j3d.StaticConfig;
+import com.j3d.engine.interact.input.keyboard.GlobalKeybinds;
+import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.storage.db.DatabaseManager;
+import com.j3d.storage.db.api.SQLOperator;
+import com.j3d.storage.db.users.CUsers;
 import com.j3d.storage.db.users.User;
-import com.j3d.threads.FakeLongTask;
+import com.j3d.ui.auth.ForgotPassword;
+import com.j3d.ui.auth.Signup;
+import com.j3d.ui.theme.CursorManager;
+import com.j3d.ui.theme.CursorNames;
 import com.j3d.ui.theme.J3DTheme;
-import com.j3d.ui.engine.EngineFrame;
-import com.j3d.ui.engine.J3Splash;
+import com.j3d.utility.PasswordHasher;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -19,12 +29,24 @@ import javax.swing.*;
  */
 public class Main extends javax.swing.JFrame {
 
+    private boolean showChar = false;
+    private final char echoChar = '•';
+    private final Runnable postLogin;
+    private int attempts = 0;
+    private final KeyBindings ks;
     /**
-     * Creates new form Main
+     * Creates new form Login
      */
-    public Main() {
-        J3DTheme.loadTheme(J3DTheme.getCurrentLoadedThemeId());
+    public Main(Runnable postLogin) {
         initComponents();
+        ks = new KeyBindings(
+                        jPanel1.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW),
+                        jPanel1.getActionMap()
+                );
+        ks.registerJ3Key(GlobalKeybinds.F1.getKey());
+        this.setCursor(CursorManager.get(CursorNames.DEFAULT));
+        this.postLogin = postLogin;
+        StaticRefs.getLog().uiPrintLn("Login completed building");
     }
 
     /**
@@ -36,169 +58,295 @@ public class Main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        openEngineButton = new javax.swing.JToggleButton();
-        openEngineQuick = new javax.swing.JToggleButton();
-        openEngineLogin = new javax.swing.JToggleButton();
         jLabel2 = new javax.swing.JLabel();
-        loginAslehl = new javax.swing.JButton();
+        emailJLabel1 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jPanel2 = new javax.swing.JPanel();
+        emailJField = new javax.swing.JTextField();
+        emailJLabel = new javax.swing.JLabel();
+        passwordJLabel = new javax.swing.JLabel();
+        passwordJField = new javax.swing.JPasswordField();
+        seePasswordToggleButton = new javax.swing.JToggleButton();
+        enterButton = new javax.swing.JButton();
+        emailErrorJLabel = new javax.swing.JLabel();
+        passwordErrorJLabel = new javax.swing.JLabel();
+        signupJButton = new javax.swing.JButton();
+        forgotButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("J3Engine Login");
+        setIconImage(StaticRefs.logo());
+        setResizable(false);
+        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel1.setText("(to be removed)");
+        jPanel1.setBackground(J3DTheme.BACKGROUND.color());
 
-        openEngineButton.setText("open engine (splash)");
-        openEngineButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openEngineButtonActionPerformed(evt);
-            }
-        });
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        jLabel1.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        jLabel1.setText("Welcome Back!");
 
-        openEngineQuick.setText("open engine (quickly)");
-        openEngineQuick.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openEngineQuickActionPerformed(evt);
-            }
-        });
+        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\ACER\\Documents\\code\\Jaiva3dEngine\\src\\main\\resources\\art\\logo\\OpeningJ3EngineSmall.png")); // NOI18N
+        jLabel2.setMaximumSize(new java.awt.Dimension(38, 100));
+        jLabel2.setMinimumSize(new java.awt.Dimension(38, 100));
+        jLabel2.setPreferredSize(new java.awt.Dimension(38, 100));
 
-        openEngineLogin.setText("open engine (login)");
-        openEngineLogin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openEngineLoginActionPerformed(evt);
-            }
-        });
+        emailJLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        emailJLabel1.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        emailJLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        emailJLabel1.setText("The engine awaits you.");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
-        jLabel2.setText("J3D (Test StartUp)");
-
-        loginAslehl.setText("Login As Lehlogonolo");
-        loginAslehl.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loginAslehlActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(213, 213, 213)
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(44, Short.MAX_VALUE)
-                .addComponent(openEngineLogin)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(loginAslehl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(openEngineButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addComponent(openEngineQuick)
-                .addGap(70, 70, 70))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(91, 91, 91)
-                    .addComponent(jLabel2)
-                    .addContainerGap(102, Short.MAX_VALUE)))
+                .addGap(27, 27, 27))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(emailJLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(182, 182, 182)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(openEngineButton)
-                    .addComponent(openEngineQuick)
-                    .addComponent(openEngineLogin))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
-                .addComponent(loginAslehl)
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(62, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addComponent(emailJLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(47, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(jPanel1);
+
+        jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
+        jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
+        jSeparator1.setMaximumSize(new java.awt.Dimension(10, 32780));
+        jSeparator1.setMinimumSize(new java.awt.Dimension(10, 0));
+        jSeparator1.setOpaque(true);
+        jSeparator1.setPreferredSize(new java.awt.Dimension(10, 10));
+        getContentPane().add(jSeparator1);
+
+        jPanel2.setBackground(J3DTheme.UI_SURFACE.color());
+
+        emailJField.setBackground(J3DTheme.BACKGROUND.color());
+        emailJField.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        emailJField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                emailOnEnter(evt);
+            }
+        });
+
+        emailJLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        emailJLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        emailJLabel.setText("Email");
+
+        passwordJLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        passwordJLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        passwordJLabel.setText("Password");
+
+        passwordJField.setBackground(J3DTheme.BACKGROUND.color());
+        passwordJField.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        passwordJField.setEchoChar(echoChar);
+
+        seePasswordToggleButton.setBackground(J3DTheme.BACKGROUND.color());
+        seePasswordToggleButton.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        seePasswordToggleButton.setText("👁");
+        seePasswordToggleButton.setMaximumSize(new java.awt.Dimension(25, 20));
+        seePasswordToggleButton.setMinimumSize(new java.awt.Dimension(20, 20));
+        seePasswordToggleButton.setPreferredSize(new java.awt.Dimension(25, 20));
+        seePasswordToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                seePasswordToggleButtonActionPerformed(evt);
+            }
+        });
+
+        enterButton.setBackground(J3DTheme.BACKGROUND.color());
+        enterButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        enterButton.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        enterButton.setText("Asambe!");
+        enterButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enterButtonActionPerformed(evt);
+            }
+        });
+
+        emailErrorJLabel.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        emailErrorJLabel.setForeground(new java.awt.Color(255, 0, 0));
+        emailErrorJLabel.setText(" ");
+
+        passwordErrorJLabel.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        passwordErrorJLabel.setForeground(new java.awt.Color(255, 0, 0));
+        passwordErrorJLabel.setText(" ");
+        passwordErrorJLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
+        signupJButton.setBackground(J3DTheme.BACKGROUND.color());
+        signupJButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        signupJButton.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        signupJButton.setText("Sign up instead");
+        signupJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                signupJButtonActionPerformed(evt);
+            }
+        });
+
+        forgotButton.setBackground(J3DTheme.BACKGROUND.color());
+        forgotButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        forgotButton.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        forgotButton.setText("Forgot Password?");
+        forgotButton.setToolTipText("This button will be visible once you've attempted to login twice");
+        forgotButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                forgotButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(passwordErrorJLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(passwordJLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                            .addComponent(emailJLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(passwordJField)
+                            .addComponent(emailJField, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
+                            .addComponent(emailErrorJLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(seePasswordToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(signupJButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(enterButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(forgotButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 106, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(174, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(emailJField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(emailJLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(46, 46, 46)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(233, Short.MAX_VALUE)))
+                .addComponent(emailErrorJLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(passwordJField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(passwordJLabel))
+                    .addComponent(seePasswordToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(passwordErrorJLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addComponent(forgotButton)
+                .addGap(18, 18, 18)
+                .addComponent(enterButton)
+                .addGap(18, 18, 18)
+                .addComponent(signupJButton)
+                .addContainerGap(39, Short.MAX_VALUE))
         );
+
+        getContentPane().add(jPanel2);
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void openEngineButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openEngineButtonActionPerformed
-        StaticRefs.getLog().stPrintln("Splash Screen Engine Access");
-        StaticConfig.defaultLogin();
+    private void seePasswordToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seePasswordToggleButtonActionPerformed
+        showChar = !showChar;
+        passwordJField.setEchoChar(
+            showChar ? (char)0 : echoChar
+        );
+    }//GEN-LAST:event_seePasswordToggleButtonActionPerformed
+
+    private void enterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterButtonActionPerformed
+
+        passwordErrorJLabel.setText(" ");
+        String email = emailJField.getText();
+
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
-                 UnsupportedLookAndFeelException e) {
+            this.setCursor(CursorManager.get(CursorNames.HOURGLASS));
+            ArrayList<User> queryResult = DatabaseManager.tblUsers.findWhere(
+                    CUsers.EMAIL,
+                    SQLOperator.EQUALS,
+                    email
+            );
+            if (queryResult.isEmpty()) {
+                this.setCursor(CursorManager.get(CursorNames.DEFAULT));
+                JOptionPane.showMessageDialog(this, "No user with that email exists.", "User Not Found", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            User user = queryResult.getFirst();
+            byte[] salt = user.password.directSalt();
+            String hashed = PasswordHasher.hashPassword(passwordJField.getPassword(), salt);
+
+            if (!hashed.equals(user.password.hash().getValue())) {
+                this.setCursor(CursorManager.get(CursorNames.DEFAULT));
+                passwordErrorJLabel.setText("Incorrect password.");
+                attempts++;
+                if (attempts >= 2)
+                    forgotButton.setEnabled(true);
+                return;
+            }
+
+            this.setCursor(CursorManager.get(CursorNames.DEFAULT));
+
+            StaticConfig.user = user;
+
+            JOptionPane.showMessageDialog(this, "Welcome to J3Engine, " + user.firstName.getValue() + "!!!");
+
+            J3DTheme.loadTheme(user.themeId.getValue());
+
+            this.dispose();
+
+            Startup.saveUser(user.id);
+
+            postLogin.run();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "A db error occurred", "err", JOptionPane.ERROR_MESSAGE);
             throw new RuntimeException(e);
         }
-        J3Splash splash = new J3Splash();
-        FakeLongTask flt = new FakeLongTask(() -> {
-            splash.setVisible(true);
-        }, () -> {}, () -> {
-            EngineFrame e = new EngineFrame(true);
-            e.setResizable(true);
-            e.setVisible(true);
-            Timer t = new Timer(3000, ae -> {
-                splash.dispose();
-            });
-            t.setRepeats(false);
-            t.start();
-        }, 9.3);
-        try {
-            flt.run();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        this.dispose();
-    }//GEN-LAST:event_openEngineButtonActionPerformed
 
-    private void openEngineQuickActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openEngineQuickActionPerformed
-        StaticRefs.getLog().stPrintln("Direct Engine Access");
-        StaticConfig.defaultLogin();
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
-                 UnsupportedLookAndFeelException e) {
-            throw new RuntimeException(e);
-        }
-        EngineFrame e = new EngineFrame(true);
-        e.setResizable(true);
-        e.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_openEngineQuickActionPerformed
+    }//GEN-LAST:event_enterButtonActionPerformed
 
-    private void openEngineLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openEngineLoginActionPerformed
-        StaticRefs.getLog().stPrintln("Default Path (Login)");
-        Startup.run();
+    private void signupJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupJButtonActionPerformed
+        Signup signup = new Signup(postLogin);
+        signup.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_openEngineLoginActionPerformed
+    }//GEN-LAST:event_signupJButtonActionPerformed
 
-    private void loginAslehlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginAslehlActionPerformed
-        StaticRefs.getLog().stPrintln("Projects Path (LoginAsLehlogonolo)");
-        User user = DatabaseManager.tblUsers.findById(3);
-        Startup.saveUser(3);
-        StaticConfig.user = user;
-        J3DTheme.loadTheme(user.themeId.getValue());
+    private void forgotButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forgotButtonActionPerformed
         this.dispose();
-        Startup.runnable.run();
-    }//GEN-LAST:event_loginAslehlActionPerformed
+        ForgotPassword forgotPassword = new ForgotPassword(emailJField.getText(), postLogin);
+        forgotPassword.setVisible(true);
+    }//GEN-LAST:event_forgotButtonActionPerformed
+
+    private void emailOnEnter(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailOnEnter
+        passwordJField.requestFocus(); 
+    }//GEN-LAST:event_emailOnEnter
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         StaticRefs.none(); // force java to init the StaticRefs class.
-        StaticRefs.getLog().println("Main");
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
-                 UnsupportedLookAndFeelException e) {
-            throw new RuntimeException(e);
-        }
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -221,21 +369,28 @@ public class Main extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Main().setVisible(true);
-            }
-        });
+        java.awt.EventQueue.invokeLater(Startup::run);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel emailErrorJLabel;
+    private javax.swing.JTextField emailJField;
+    private javax.swing.JLabel emailJLabel;
+    private javax.swing.JLabel emailJLabel1;
+    private javax.swing.JButton enterButton;
+    private javax.swing.JButton forgotButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JButton loginAslehl;
-    private javax.swing.JToggleButton openEngineButton;
-    private javax.swing.JToggleButton openEngineLogin;
-    private javax.swing.JToggleButton openEngineQuick;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel passwordErrorJLabel;
+    private javax.swing.JPasswordField passwordJField;
+    private javax.swing.JLabel passwordJLabel;
+    private javax.swing.JToggleButton seePasswordToggleButton;
+    private javax.swing.JButton signupJButton;
     // End of variables declaration//GEN-END:variables
 }

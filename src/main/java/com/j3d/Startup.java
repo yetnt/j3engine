@@ -10,7 +10,6 @@ import com.j3d.threads.FakeLongTask;
 import com.j3d.ui.dialog.AreYouSure;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.ui.engine.J3Splash;
-import com.j3d.ui.auth.Login;
 import com.j3d.ui.home.Projects;
 import com.j3d.ui.theme.J3DTheme;
 
@@ -40,7 +39,7 @@ public class Startup {
     }
 
     public static void run() {
-        Login login = new Login(runnable);
+        Main login = new Main(runnable);
         login.setVisible(true);
 
         if (StaticRefs.getEngineFiles().userFile.exists()) {
@@ -66,8 +65,14 @@ public class Startup {
     }
 
     public static void run(Runnable runnable) {
-        Login login = new Login(runnable);
+        Main login = new Main(runnable);
         login.setVisible(true);
+    }
+
+    public static void engineDebug() {
+        EngineFrame e = new EngineFrame(true);
+        e.setResizable(true);
+        e.setVisible(true);
     }
 
     public static void engine(Object o) {

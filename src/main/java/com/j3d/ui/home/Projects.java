@@ -8,6 +8,7 @@ import com.j3d.Startup;
 import com.j3d.StaticRefs;
 import com.j3d.StaticConfig;
 import com.j3d.engine.interact.input.keyboard.GlobalKeybinds;
+import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.storage.files.FilesUtility;
 import com.j3d.storage.files.util.ProjectImagePair;
@@ -19,9 +20,7 @@ import com.j3d.utility.generators.JLabelRichText;
 import javax.imageio.IIOException;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -69,6 +68,21 @@ public class Projects extends javax.swing.JFrame {
                 pinnedProjectsPanel.getActionMap()
         );
         ks.registerJ3Key(GlobalKeybinds.F1.getKey());
+        Projects p = this;
+        ks.registerJ3Key(new J3Key(
+                "quickOpenDebug",
+                KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_DOWN_MASK),
+                new AbstractAction() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        StaticRefs.getLog().println(
+                                "Quick Open Debug Scene"
+                        );
+                        p.dispose();
+                        Startup.engineDebug();
+                    }
+                }
+        ));
     }
 
     public ImageIcon scaleImage(File image) {
