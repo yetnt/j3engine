@@ -33,6 +33,7 @@ public class ForgotPassword extends javax.swing.JFrame {
 
     /**
      * Creates new form ForgotPassword
+     * @param postPasswordChange The runnable which runs after the password change frame closes.
      */
     public ForgotPassword(Runnable postPasswordChange) {
         initComponents();
@@ -48,6 +49,11 @@ public class ForgotPassword extends javax.swing.JFrame {
                 jPanel1.getActionMap()
         );
         return keyBindings;
+    }
+    
+    public void disposeAndRun() {
+        this.dispose();
+        Startup.run(postPasswordChange);
     }
 
     public ForgotPassword(String email, Runnable postPasswordChange) {
@@ -75,6 +81,7 @@ public class ForgotPassword extends javax.swing.JFrame {
         emailTextField = new javax.swing.JTextField();
         newPasswordField = new javax.swing.JPasswordField();
         seePasswordToggleButton = new javax.swing.JToggleButton();
+        backBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("How did you forget your password already? 😭");
@@ -124,6 +131,16 @@ public class ForgotPassword extends javax.swing.JFrame {
             }
         });
 
+        backBtn.setBackground(J3DTheme.BACKGROUND.color());
+        backBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        backBtn.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        backBtn.setText("Back");
+        backBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -137,15 +154,18 @@ public class ForgotPassword extends javax.swing.JFrame {
                             .addGap(18, 18, 18)
                             .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(111, 111, 111))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(applyChange, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(151, 151, 151))
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(passwordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(newPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(seePasswordToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(passwordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(newPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(seePasswordToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(applyChange, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(backBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addContainerGap()))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(mainLabel)
@@ -166,7 +186,9 @@ public class ForgotPassword extends javax.swing.JFrame {
                     .addComponent(newPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(seePasswordToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36)
-                .addComponent(applyChange)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(applyChange)
+                    .addComponent(backBtn))
                 .addGap(0, 63, Short.MAX_VALUE))
         );
 
@@ -221,8 +243,7 @@ public class ForgotPassword extends javax.swing.JFrame {
                 JOptionPane.INFORMATION_MESSAGE
         );
 
-        this.dispose();
-        Startup.run(postPasswordChange);
+        disposeAndRun();
 
     }//GEN-LAST:event_applyChangeActionPerformed
 
@@ -232,6 +253,10 @@ public class ForgotPassword extends javax.swing.JFrame {
             showChar ? (char)0 : echoChar
         );
     }//GEN-LAST:event_seePasswordToggleButtonActionPerformed
+
+    private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBtnActionPerformed
+        disposeAndRun();
+    }//GEN-LAST:event_backBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -272,6 +297,7 @@ public class ForgotPassword extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton applyChange;
+    private javax.swing.JButton backBtn;
     private javax.swing.JLabel emailLabel;
     private javax.swing.JTextField emailTextField;
     private javax.swing.JPanel jPanel1;

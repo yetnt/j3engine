@@ -75,7 +75,6 @@ public class KeyBindings {
         sb.deleteCharAt(sb.length() - 1);
         StaticRefs.getLog().println("prohibited keys: \n" + sb);
 
-        // TODO: Wherever keybinds can be changed Enforce only SELECT_SUBTRACT_DOWN as changeable and cannot have the SHIFT_DOWN_MASK as its links use it.
         GlobalKeybinds.SELECT_SUBTRACT_DOWN.getKey().linkTo(
                 GlobalKeybinds.SELECT_SUBTRACT_UP.getKey(),
                 0

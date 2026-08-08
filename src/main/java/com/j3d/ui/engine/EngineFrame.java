@@ -181,6 +181,8 @@ public class EngineFrame extends javax.swing.JFrame {
         initComponents();
         complete(runExecutor);
         setCloseOperations();
+        
+        this.setVisible(true);
     }
 
     /**

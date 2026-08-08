@@ -136,6 +136,11 @@ public class Login extends javax.swing.JFrame {
 
         emailJField.setBackground(J3DTheme.BACKGROUND.color());
         emailJField.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        emailJField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                emailOnEnter(evt);
+            }
+        });
 
         emailJLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         emailJLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
@@ -195,7 +200,6 @@ public class Login extends javax.swing.JFrame {
         forgotButton.setForeground(J3DTheme.TEXT_PRIMARY.color());
         forgotButton.setText("Forgot Password?");
         forgotButton.setToolTipText("This button will be visible once you've attempted to login twice");
-        forgotButton.setEnabled(false);
         forgotButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 forgotButtonActionPerformed(evt);
@@ -328,6 +332,10 @@ public class Login extends javax.swing.JFrame {
         ForgotPassword forgotPassword = new ForgotPassword(emailJField.getText(), postLogin);
         forgotPassword.setVisible(true);
     }//GEN-LAST:event_forgotButtonActionPerformed
+
+    private void emailOnEnter(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailOnEnter
+        passwordJField.requestFocus(); 
+    }//GEN-LAST:event_emailOnEnter
 
     /**
      * @param args the command line arguments

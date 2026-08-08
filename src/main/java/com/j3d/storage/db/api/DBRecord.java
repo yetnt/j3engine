@@ -82,7 +82,7 @@ public interface DBRecord<I extends Table> {
                     new DBException(
                             "An SQL exception was encountered whilst trying to update a record.",
                         cr, e
-                    )
+                    ).code(100)
             );
         }
 

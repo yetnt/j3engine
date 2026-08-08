@@ -6,16 +6,13 @@ import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.ui.engine.EngineFrame;
 
 import java.awt.*;
-
-// TODO: Refactor from EngineFrame into the Settings Object enum. while staying in the JMenuBar
 /**
  * An enum describing how a {@link GTri} should draw itself. This just changes whether a triangle will draw
  * it's legs, points or its area. This can be changed via the JMenuBar
  * within {@link EngineFrame}
  * @author Lehlogonolo Poole
- * @see GTri#draw(Graphics2D)
- * @see GLine#draw(Graphics2D)
- * @see GPoint#draw(Graphics2D)
+ * @see com.j3d.engine.geometry.Drawable#draw(Graphics2D) 
+ * @see com.j3d.engine.geometry.Drawable#drawSelected(Graphics2D)
  * @see EngineFrame
  */
 public enum ViewType {

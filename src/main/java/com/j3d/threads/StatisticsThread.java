@@ -1,5 +1,6 @@
 package com.j3d.threads;
 
+import java.util.ArrayList;
 import javax.swing.*;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +34,7 @@ public class StatisticsThread extends SwingWorker<Void, Map<UUID, Integer>> {
      * The consumer that will receive the statistics map on the EDT for UI updates.
      */
     private final Consumer<Map<UUID, Integer>> uiUpdater;
-
+    
     /**
      * Constructs a new StatisticsThread.
      *
@@ -41,7 +42,15 @@ public class StatisticsThread extends SwingWorker<Void, Map<UUID, Integer>> {
      *                  receiving a map of the latest statistics to update the UI.
      */
     public StatisticsThread(Consumer<Map<UUID, Integer>> uiUpdater) {
+        super();
         this.uiUpdater = uiUpdater;
+        threads.add(this);
+    }
+    
+    private static final ArrayList<StatisticsThread> threads = new ArrayList();
+    
+    public static void clearAll() {
+        threads.forEach(s -> s.cancel(true));
     }
 
     /**

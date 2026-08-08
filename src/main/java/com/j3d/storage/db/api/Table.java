@@ -1,7 +1,6 @@
 package com.j3d.storage.db.api;
 
 import com.j3d.StaticRefs;
-import com.j3d.errors.ErrorHandler;
 import com.j3d.storage.db.ConnectionReason;
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.themes.ThemesTable;
@@ -61,7 +60,9 @@ public interface Table<T extends DBRecord<?>, C extends TableColumns> {
         ArrayList<T>  list = new ArrayList<>();
 
         if (!getColumns().contains(columnName))
-            return list; // TODO: Throw a custom error here for clarity.
+            StaticRefs.getErrs().handle(
+                    new DBException(columnName + " is not a valid column of the following table: " + getName()).code(101)
+            );
 
         String sql = "SELECT * FROM " +  getName() + " WHERE " + columnName.getValue() + " " + op.getValue() + " ?";
 
@@ -95,6 +96,10 @@ public interface Table<T extends DBRecord<?>, C extends TableColumns> {
                                         try {
                                             return rs.getObject(s.getValue());
                                         } catch (SQLException e) {
+                                            StaticRefs.getErrs().handle(
+                                                    DBException.sqlException(e, cr)
+                                            );
+                                            // the following exception wont actually throw.
                                             throw new RuntimeException(e);
                                         }
                                     }
@@ -108,11 +113,7 @@ public interface Table<T extends DBRecord<?>, C extends TableColumns> {
 
         } catch (SQLException e) {
             StaticRefs.getErrs().handle(
-                    new DBException(
-                            "An SQL exception was encountered!",
-                            cr,
-                            e
-                    )
+                    DBException.sqlException(e, cr)
             );
         }
         return list;

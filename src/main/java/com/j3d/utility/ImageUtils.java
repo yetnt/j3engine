@@ -1,9 +1,11 @@
 package com.j3d.utility;
 
+import javax.imageio.IIOException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class ImageUtils {
@@ -45,7 +47,7 @@ public class ImageUtils {
     }
 
 
-    public static ImageIcon createCroppedIcon2(File file, int width, int height, int multiplier) {
+    public static ImageIcon createCroppedIcon2(File file, int width, int height, int multiplier) throws IIOException {
         try {
             BufferedImage original = ImageIO.read(file);
 
@@ -74,6 +76,8 @@ public class ImageUtils {
 
             return new ImageIcon(scaled);
 
+        } catch (IIOException e) {
+            throw e;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -69,7 +69,6 @@ public abstract class SortMethod extends ArrayList<RenderState<?, ?>> {
      * @param tri The triangle to be culled.
      * @return {@code true} if the triangle should be culled, {@code false} otherwise.
      * @implNote If {@link Settings#sceneProperties#backFaceCulled(GTri)} is false, this exits early.
-     * Also quite buggy TODO Fix this or enforce consistent winding of triangles.
      */
     public boolean backFaceCulled(GTri tri) {
         if (tri.isDoubleSided()) return false;

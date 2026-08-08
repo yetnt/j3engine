@@ -64,4 +64,10 @@ public class RecentProjectsFile extends ProjectsFile {
             throw new RuntimeException(e);
         }
     }
+
+    public void remove(ProjectImagePair identity) {
+        remove(identity, readRecents());
+    }
+
+
 }

@@ -21,6 +21,7 @@ import com.j3d.storage.files.engine.EngineFiles;
 import com.j3d.storage.files.engine.LogFile;
 import com.j3d.storage.files.protocol.proj.PF1;
 import com.j3d.storage.files.protocol.proj.PF2;
+import com.j3d.threads.StatisticsThread;
 import com.j3d.ui.engine.CommandPalette;
 import com.j3d.ui.engine.FloatingPanel;
 import com.j3d.ui.engine.J3DPanel;
@@ -333,8 +334,10 @@ public abstract class StaticRefs {
     }
 
     public static void clear() {
+        StatisticsThread.clearAll();
         if (settings != null)
             settings.clearState();
+        
         // clear engine frame set stuff.
         sceneManager    = null;
         executor        = null;

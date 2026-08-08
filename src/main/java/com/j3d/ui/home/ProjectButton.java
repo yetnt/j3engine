@@ -5,6 +5,7 @@
 package com.j3d.ui.home;
 
 import com.j3d.Startup;
+import com.j3d.StaticRefs;
 import com.j3d.storage.files.util.ProjectImagePair;
 import com.j3d.ui.theme.CursorManager;
 import com.j3d.ui.theme.CursorNames;
@@ -27,6 +28,7 @@ public class ProjectButton extends javax.swing.JPanel {
     boolean isPinned = false;
     private JPanel oldParent = null;
     private ProjectButton duplicate = null;
+    private static int MAX_PROJECTNAME_LENGTH = 20;
 
 
     /**
@@ -36,18 +38,37 @@ public class ProjectButton extends javax.swing.JPanel {
         initComponents();
         projectImageLabel.setIcon(icon);
         projectImageLabel.setText("");
-        projectName.setText(pn);
+        projectName.setText(
+                pn.length() > MAX_PROJECTNAME_LENGTH
+                        ? (pn.substring(0, MAX_PROJECTNAME_LENGTH) + "...") 
+                        : pn
+        );
+        projectName.setToolTipText(pn);
         projectImageLabel.setCursor(CursorManager.get(CursorNames.HAND_POINTER));
+        projectImageLabel.setToolTipText("Double click to open " + pn);
         this.setToolTipText(pn);
         identity = projectFile;
         this.parentFrame = parentFrame;
         oldParent = parentpanel;
         complete();
     }
+    
+    public void setLayout(boolean isPinned) {
+            // remove all
+            btnPanel.removeAll();
+        if (isPinned) {
+            // add back pinned
+            btnPanel.add(togglePinned, BorderLayout.CENTER);
+        } else {
+            btnPanel.add(togglePinned, BorderLayout.WEST);
+            btnPanel.add(removeBtn, BorderLayout.EAST);
+        }
+    }
 
     public void setPinned(boolean pinned) {
+        setLayout(pinned);
         if (pinned) {
-            togglePinned.setText("Unpin Project");
+            togglePinned.setText("unpin");
         }
         isPinned = pinned;
     }
@@ -91,24 +112,16 @@ public class ProjectButton extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        togglePinned = new javax.swing.JButton();
         projectName = new javax.swing.JLabel();
         projectImageLabel = new javax.swing.JLabel();
+        btnPanel = new javax.swing.JPanel();
+        togglePinned = new javax.swing.JButton();
+        removeBtn = new javax.swing.JButton();
 
         setBackground(J3DTheme.UI_SURFACE.color());
         setMaximumSize(new java.awt.Dimension(174, 174));
         setMinimumSize(new java.awt.Dimension(174, 174));
         setPreferredSize(new java.awt.Dimension(174, 174));
-
-        togglePinned.setBackground(J3DTheme.BACKGROUND.color());
-        togglePinned.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        togglePinned.setForeground(J3DTheme.TEXT_PRIMARY.color());
-        togglePinned.setText("Pin Project");
-        togglePinned.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                togglePinnedActionPerformed(evt);
-            }
-        });
 
         projectName.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
         projectName.setForeground(J3DTheme.TEXT_PRIMARY.color());
@@ -120,20 +133,51 @@ public class ProjectButton extends javax.swing.JPanel {
         projectImageLabel.setText("jLabel4");
         projectImageLabel.setOpaque(true);
 
+        btnPanel.setBackground(J3DTheme.UI_SURFACE.color());
+        btnPanel.setLayout(new java.awt.BorderLayout());
+
+        togglePinned.setBackground(J3DTheme.BACKGROUND.color());
+        togglePinned.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        togglePinned.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        togglePinned.setText("pin");
+        togglePinned.setMaximumSize(new java.awt.Dimension(85, 23));
+        togglePinned.setMinimumSize(new java.awt.Dimension(85, 23));
+        togglePinned.setPreferredSize(new java.awt.Dimension(85, 23));
+        togglePinned.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                togglePinnedActionPerformed(evt);
+            }
+        });
+        btnPanel.add(togglePinned, java.awt.BorderLayout.WEST);
+
+        removeBtn.setBackground(J3DTheme.BACKGROUND.color());
+        removeBtn.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        removeBtn.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        removeBtn.setText("remove");
+        removeBtn.setMaximumSize(new java.awt.Dimension(85, 23));
+        removeBtn.setMinimumSize(new java.awt.Dimension(85, 23));
+        removeBtn.setPreferredSize(new java.awt.Dimension(85, 23));
+        removeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeBtnActionPerformed(evt);
+            }
+        });
+        btnPanel.add(removeBtn, java.awt.BorderLayout.EAST);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(togglePinned, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
-            .addComponent(projectName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(projectName, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
             .addComponent(projectImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(togglePinned)
+                .addComponent(btnPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(projectImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
+                .addComponent(projectImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(projectName))
         );
@@ -144,7 +188,7 @@ public class ProjectButton extends javax.swing.JPanel {
             parentFrame.pinned.remove(this);
             parentFrame.pinnedProjectsPanel.remove(this);
             parentFrame.pinnedProjectsPanel.remove(filler);
-            togglePinned.setText("Pin Project");
+            togglePinned.setText("pin");
             if (!oldParent.equals(parentFrame.pinnedProjectsPanel)) {
                 oldParent.add(this);
                 oldParent.add(filler);
@@ -163,17 +207,36 @@ public class ProjectButton extends javax.swing.JPanel {
             parentFrame.pinnedProjectsPanel.add(filler);
             oldParent.remove(this);
             oldParent.remove(filler);
-            togglePinned.setText("Unpin Project");
+            togglePinned.setText("unpin");
             isPinned = true;
         }
+        setLayout(isPinned);
         parentFrame.repaint();
         parentFrame.revalidate();
     }//GEN-LAST:event_togglePinnedActionPerformed
 
+    private void removeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBtnActionPerformed
+        if (duplicate != null) {
+            parentFrame.pinned.remove(duplicate);
+            parentFrame.pinnedProjectsPanel.remove(duplicate);
+            parentFrame.pinnedProjectsPanel.remove(duplicate.filler);
+            duplicate.duplicate = null;
+            duplicate = null;
+        }
+        oldParent.remove(this);
+        oldParent.remove(filler);
+        
+        StaticRefs.getEngineFiles().recents.remove(identity);
+        parentFrame.repaint();
+        parentFrame.revalidate();
+    }//GEN-LAST:event_removeBtnActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel btnPanel;
     private javax.swing.JLabel projectImageLabel;
     private javax.swing.JLabel projectName;
+    private javax.swing.JButton removeBtn;
     private javax.swing.JButton togglePinned;
     // End of variables declaration//GEN-END:variables
 }

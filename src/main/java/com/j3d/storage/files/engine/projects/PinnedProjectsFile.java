@@ -47,16 +47,7 @@ public class PinnedProjectsFile extends ProjectsFile {
     }
 
     public void remove(File project) {
-        try {
-            ArrayList<ProjectImagePair> pinned = readPinned();
-            pinned.removeIf(p -> p.second.getAbsolutePath().equals(project.getAbsolutePath()));
-            PrintWriter pw = new PrintWriter(new FileWriter(file, false)); // Overwrite the file
-            for (ProjectImagePair p : pinned)
-                pw.println(p);
-            pw.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        remove(project, readPinned());
     }
 
     public void writeProjs(HashSet<ProjectImagePair> pinned) {

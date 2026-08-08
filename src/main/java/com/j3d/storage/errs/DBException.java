@@ -23,4 +23,17 @@ public class DBException extends J3DError implements J3DWarning {
     public DBException(String message, ConnectionReason connectionReason, Throwable cause) {
         super(message + " {" + connectionReason.toString() + "}", cause, ErrorCodes.DATABASE.getBaseCode());
     }
+
+
+    public DBException(String message) {
+        super(message, ErrorCodes.DATABASE.getBaseCode());
+    }
+    public DBException(String message, Throwable throwable) {
+        super(message, throwable, ErrorCodes.DATABASE.getBaseCode());
+    }
+
+    public static J3DError sqlException(Throwable throwable, ConnectionReason cr) {
+        return new DBException("An SQL exception occurred...", cr, throwable)
+                .code(100);
+    }
 }

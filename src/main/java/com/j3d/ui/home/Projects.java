@@ -9,20 +9,24 @@ import com.j3d.StaticRefs;
 import com.j3d.StaticConfig;
 import com.j3d.engine.interact.input.keyboard.GlobalKeybinds;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
+import com.j3d.storage.files.FilesUtility;
 import com.j3d.storage.files.util.ProjectImagePair;
 import com.j3d.ui.theme.J3DScrollBarUI;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.utility.ImageUtils;
 import com.j3d.utility.generators.JLabelRichText;
 
+import javax.imageio.IIOException;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.stream.Collectors;
+import javax.swing.filechooser.FileFilter;
 
 /**
  *
@@ -56,7 +60,7 @@ public class Projects extends javax.swing.JFrame {
             }
         });
         J3DScrollBarUI.setBars(jScrollPane1);
-        J3DScrollBarUI.setBars(jScrollPane2);
+        J3DScrollBarUI.setBars(starterScrollPane);
         J3DScrollBarUI.setBars(pinnedScrollPane);
         J3DScrollBarUI.setBars(recentsScrollPane);
         StaticRefs.getLog().uiPrintLn("Projects completed building");
@@ -68,7 +72,15 @@ public class Projects extends javax.swing.JFrame {
     }
 
     public ImageIcon scaleImage(File image) {
-        return ImageUtils.createCroppedIcon2(image, 37, 16, 4);
+        try {
+            return ImageUtils.createCroppedIcon2(image, 37, 16, 4);
+        } catch (IIOException e) {
+            try {
+                return ImageUtils.createCroppedIcon2(StaticRefs.getEngineFiles().recents.NO_IMAGE, 37, 16, 4);
+            } catch (IIOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 
     public int genericLoad(ArrayList<ProjectImagePair> projs, JPanel targetPanel, boolean pin) {
@@ -81,13 +93,13 @@ public class Projects extends javax.swing.JFrame {
                 pb.setPinned(true);
                 pinned.add(pb);
             }
-            if (!targetPanel.equals(pinnedProjectsPanel)) {
-                ArrayList<ProjectButton> copy = pinned.stream().filter(
-                        p -> ProjectImagePair.isCopy(p.identity, proj)
-                ).collect(Collectors.toCollection(ArrayList::new));
-                if (!copy.isEmpty()) {
-                    pb.setDuplicate(copy.getFirst());
-                }
+            // If not adding to the pinned panel, check if this project is already pinned
+            // and mark it as a duplicate if it is.
+            if (!pin) {
+                pinned.stream()
+                        .filter(p -> ProjectImagePair.isCopy(p.identity, proj))
+                        .findFirst()
+                        .ifPresent(pb::setDuplicate);
             }
             targetPanel.add(pb);
             targetPanel.add(pb.filler());
@@ -120,23 +132,56 @@ public class Projects extends javax.swing.JFrame {
             Startup.engine(false);
             dispose();
         });
+        StaticProjectButton openProject = new StaticProjectButton("Open Project", this::openProject);
         StaticProjectButton debugScene = new StaticProjectButton("Debug Project", e -> {
             Startup.engine(true);
             dispose();
         });
         int width = 0;
+        
         starterProjectsPanel.add(freshProject);
         width += freshProject.getPreferredSize().width;
         starterProjectsPanel.add(freshProject.filler());
         width += freshProject.filler().getPreferredSize().width;
+        
+        starterProjectsPanel.add(openProject);
+        width += openProject.getPreferredSize().width;
+        starterProjectsPanel.add(openProject.filler());
+        width += openProject.filler().getPreferredSize().width;
+        
         starterProjectsPanel.add(debugScene);
         width += debugScene.getPreferredSize().width;
         starterProjectsPanel.add(debugScene.filler());
         width += debugScene.filler().getPreferredSize().width;
+        
         Dimension dim = new Dimension(width, 20);
         starterProjectsPanel.setPreferredSize(dim);
         starterProjectsPanel.setMaximumSize(dim);
         starterProjectsPanel.setMinimumSize(dim);
+    }
+    
+    public void openProject(MouseEvent e) {
+        File file = FilesUtility.fileChooser(jfcConfig -> {
+            jfcConfig.setDialogTitle("choose a filel");
+            jfcConfig.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            jfcConfig.setAcceptAllFileFilterUsed(false);
+            jfcConfig.setFileFilter(
+                    new FileFilter() {
+                        @Override
+                        public boolean accept(File f) {
+                            return f.getName().endsWith(".j3p") || !f.isFile();
+                        }
+
+                        @Override
+                        public String getDescription() {
+                            return "J3D Project File";
+                        }
+                    }
+            );
+        }, this);
+        if (file == null) return;
+        Startup.engine(file);
+        dispose();
     }
 
     /**
@@ -154,11 +199,11 @@ public class Projects extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         scrollpanepanel = new javax.swing.JPanel();
         pinnedScrollPane = new javax.swing.JScrollPane();
-        pinnedProjectsPanel = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        starterProjectsPanel = new javax.swing.JPanel();
+        pinnedProjectsPanel = new ProjectsScrollPanel();
+        starterScrollPane = new javax.swing.JScrollPane();
+        starterProjectsPanel = new ProjectsScrollPanel();
         recentsScrollPane = new javax.swing.JScrollPane();
-        recentProjectsPanel = new javax.swing.JPanel();
+        recentProjectsPanel = new ProjectsScrollPanel();
         startLabelPanel = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -223,16 +268,16 @@ public class Projects extends javax.swing.JFrame {
         pinnedProjectsPanel.setLayout(new javax.swing.BoxLayout(pinnedProjectsPanel, javax.swing.BoxLayout.LINE_AXIS));
         pinnedScrollPane.setViewportView(pinnedProjectsPanel);
 
-        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        jScrollPane2.setMaximumSize(new java.awt.Dimension(327, 300));
-        jScrollPane2.setPreferredSize(new java.awt.Dimension(120, 20));
+        starterScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        starterScrollPane.setMaximumSize(new java.awt.Dimension(327, 300));
+        starterScrollPane.setPreferredSize(new java.awt.Dimension(120, 20));
 
         starterProjectsPanel.setBackground(J3DTheme.UI_SURFACE.color());
         starterProjectsPanel.setMaximumSize(new java.awt.Dimension(327, 300));
         starterProjectsPanel.setMinimumSize(new java.awt.Dimension(120, 20));
         starterProjectsPanel.setPreferredSize(new java.awt.Dimension(120, 20));
         starterProjectsPanel.setLayout(new javax.swing.BoxLayout(starterProjectsPanel, javax.swing.BoxLayout.LINE_AXIS));
-        jScrollPane2.setViewportView(starterProjectsPanel);
+        starterScrollPane.setViewportView(starterProjectsPanel);
 
         recentsScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         recentsScrollPane.setMaximumSize(new java.awt.Dimension(327, 300));
@@ -358,7 +403,7 @@ public class Projects extends javax.swing.JFrame {
                             .addComponent(recentLabelPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 788, Short.MAX_VALUE)
                             .addComponent(recentsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(pinnedScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(starterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(scrollpanepanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jSeparator1)))
@@ -373,7 +418,7 @@ public class Projects extends javax.swing.JFrame {
             .addGroup(scrollpanepanelLayout.createSequentialGroup()
                 .addComponent(startLabelPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(starterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -445,7 +490,6 @@ public class Projects extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JPanel pinnedLabelPanel;
@@ -457,6 +501,7 @@ public class Projects extends javax.swing.JFrame {
     private javax.swing.JPanel scrollpanepanel;
     private javax.swing.JPanel startLabelPanel;
     public javax.swing.JPanel starterProjectsPanel;
+    private javax.swing.JScrollPane starterScrollPane;
     private javax.swing.JPanel welcomePanelLabels;
     // End of variables declaration//GEN-END:variables
 }

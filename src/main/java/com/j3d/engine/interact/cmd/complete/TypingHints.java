@@ -449,7 +449,7 @@ public class TypingHints {
                 }
                 if (arg.contains("[")) {
                     // arg set
-                    sb.append(argSetMatch(arg, token, i == tokens.size() - 1)).append(" ");
+                    sb.append(argSetMatch(arg, token)).append(" ");
                 } else {
                     // it has to be a subcommand
                     // just partially match, dont give exact matches incase subcommand alias.
@@ -470,12 +470,11 @@ public class TypingHints {
      * @param arg The expected arg string, which is {@code [value1|value2|value3]} and defines the
      *            accepted values.
      * @param token The token to check against
-     * @param lastToken why is this input here. TODO: move.
      * @return A styled {@link JLabelRichText} which colours the given expected argument.
      * This is either, the single fully matched value, a list of partially matched values or otherwise
      * incorrect.
      */
-    private JLabelRichText argSetMatch(String arg, CmdToken token, boolean lastToken) {
+    private JLabelRichText argSetMatch(String arg, CmdToken token) {
         // remove braces
         arg = arg.substring(1, arg.length() - 1);
         // get each accepted value

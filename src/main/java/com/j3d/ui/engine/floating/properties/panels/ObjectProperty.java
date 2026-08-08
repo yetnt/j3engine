@@ -30,7 +30,7 @@ public class ObjectProperty<T extends GObject> extends JPanel implements Propert
     public ObjectProperty(ArrayList<Property<?, ?>> properties) {
         initComponents();
         this.properties = typeConvert(properties);
-        setFields(); //TODO: Implement
+        setFields();
     }
 
     @Override

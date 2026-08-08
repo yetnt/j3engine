@@ -23,6 +23,9 @@ JCCXXX -> J3DErr (prefixed J cuz why not)
 10222 -> #-links: Attempt to link to some arbitrary file (isn't .j3.md)
 10231 -> 
 
+20100 -> Generic SQL Exception
+20101 -> Given column is not apart of the table. (usually should be caught by type safety)
+
 41101 -> Copy Exception - Connection severed.
 
 42101 -> Matrix Math: Invalid 2D array input
