@@ -1,6 +1,7 @@
 package com.j3d.engine.interact.cmd.commands;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.interact.cmd.Any;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
@@ -47,8 +48,8 @@ public class SelectCmd extends Command {
     }
 
     @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
-        super.run(logLabel, aliasUsed, args, taggedArgs);
+    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+        super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
         if (args.length < 1) {
             logLabel.setText(
                     "Usage: " + aliasUsed + " <any>"

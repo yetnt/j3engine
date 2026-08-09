@@ -1,6 +1,7 @@
 package com.j3d.engine.interact.cmd.commands;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
@@ -39,8 +40,8 @@ public class TeleportCmd extends Command {
     }
 
     @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
-        super.run(logLabel, aliasUsed, args, taggedArgs);
+    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+        super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
         if (args.length != 1 || !(args[0] instanceof Vector3 v3)) {
             logLabel.setText("Invalid arguments. Usage: teleport <location: (Vector3)>");
             return;

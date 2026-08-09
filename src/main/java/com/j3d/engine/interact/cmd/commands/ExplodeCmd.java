@@ -1,6 +1,7 @@
 package com.j3d.engine.interact.cmd.commands;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.nodes.geometry.GLine;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
@@ -64,8 +65,8 @@ public class ExplodeCmd extends Command{
     }
 
     @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
-        super.run(logLabel, aliasUsed, args, taggedArgs);
+    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+        super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
         AreYouSure aysDialogue = new AreYouSure(
                 StaticRefs.getMainFrame(), true // sets to modal
                 , JLabelRichText.htmlOf(

@@ -1,12 +1,13 @@
-package com.j3d.engine.interact.cmd.commands.qtrans;
+package com.j3d.engine.interact.cmd.commands.transform.qtrans;
 
 import com.j3d.StaticConfig;
 import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.CommandsManager;
+import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
-import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
+import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.react.actions.VoidAction;
@@ -38,14 +39,21 @@ public class QuickTranslateCmd extends Subcommand implements StatefulCommand<Voi
     ArrayList<GPoint> pointsToTransform = new ArrayList<>();
 
     public QuickTranslateCmd() {
-        super("qtrans", "Translate quickly.");
-        this.aliases("quicktrans", "quick-translate", "move", "displace").parseUsages().addNoArgUsage();
+        super("quick", "Translate quickly.");
+        this.aliases("qtrans", "quicktrans", "quick-translate", "move", "displace").parseUsages().addNoArgUsage();
     }
 
     @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
-        super.run(logLabel, aliasUsed, args, taggedArgs);
-        if (!CommandsManager.isCurrentStatefulRunning(this)) return;
+    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+        super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
+        boolean fromTransformCmd = invoker.getInvokedFromParent() instanceof TransformCmd;
+        boolean isCurrentCommand = CommandsManager.isCurrentStatefulRunning(this);
+
+        if (!fromTransformCmd) {
+            if (!isCurrentCommand) return;
+        }
+
+        CommandsManager.setAsCurrent(this);
 
         if (StaticRefs.getSceneManager().getSelected().isEmpty()) {
             logLabel.setText("No objects selected!");

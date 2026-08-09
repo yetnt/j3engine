@@ -1,6 +1,7 @@
 package com.j3d.engine.interact.cmd.commands.measure;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.scene.nodes.geometry.GLine;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
@@ -36,8 +37,8 @@ public class MeasureCmd extends Command {
     }
 
     @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
-        super.run(logLabel, aliasUsed, args, taggedArgs);
+    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+        super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
         if (args.length < 1) {
             HashSet<GObject> selected = StaticRefs.getSceneManager().getSelected();
             if (selected.isEmpty()) {
@@ -63,7 +64,7 @@ public class MeasureCmd extends Command {
                         .filter(o -> o instanceof GLine)
                         .findFirst().orElse(null);
                 assert line != null; // it wont be null anyway but java.
-                dist.run(logLabel, "distance", new Object[]{
+                dist.run(Invoker.byParentCommand(this), logLabel, "distance", new Object[]{
                         line.getA(),
                         line.getB()
                 }, new ArrayList<>());
@@ -79,13 +80,13 @@ public class MeasureCmd extends Command {
             if (points.size() == 3) {
                 // 3 points?
 
-                area.run(logLabel, "area",
-                        new Object[]{
+                area.run(Invoker.byParentCommand(this), logLabel,
+                        "area", new Object[]{
                                 points.get(0),
                                 points.get(1),
                                 points.get(2)
-                        }, new ArrayList<>()
-                );
+                        },
+                        new ArrayList<>());
                 return;
             }
 
@@ -93,7 +94,7 @@ public class MeasureCmd extends Command {
             if (points.size() != 2)
                 return;
 
-            dist.run(logLabel, "distance", new Object[]{
+            dist.run(Invoker.byParentCommand(this), logLabel, "distance", new Object[]{
                     points.get(0),
                     points.get(1)
             }, new ArrayList<>());
@@ -110,13 +111,13 @@ public class MeasureCmd extends Command {
 
         if (tris.size() == 1) {
             GTri tri = tris.getFirst();
-            area.run(logLabel, "area",
-                    new Object[]{
+            area.run(Invoker.byParentCommand(this), logLabel,
+                    "area", new Object[]{
                             tri.getWinding().first(),
                             tri.getWinding().second(),
                             tri.getWinding().third()
-                    }, new ArrayList<>()
-            );
+                    },
+                    new ArrayList<>());
             return;
         }
     }

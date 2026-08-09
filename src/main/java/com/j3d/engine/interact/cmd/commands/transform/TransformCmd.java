@@ -3,9 +3,10 @@ package com.j3d.engine.interact.cmd.commands.transform;
 import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.CommandsManager;
+import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.interact.cmd.base.SemiStatefulCommand;
 import com.j3d.engine.interact.cmd.base.conditions.SelectionPreCondition;
-import com.j3d.engine.interact.cmd.commands.qtrans.QuickTranslateCmd;
+import com.j3d.engine.interact.cmd.commands.transform.qtrans.QuickTranslateCmd;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
@@ -59,8 +60,8 @@ public class TransformCmd extends Command implements SemiStatefulCommand {
     private ArrayList<TaggedArgValue<?>> _taggedArgs;
 
     @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
-        super.run(logLabel, aliasUsed, args, taggedArgs);
+    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+        super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
         if (args.length < 1 || !(args[0] instanceof String subcommandNamei)) {
             logLabel.setText("Invalid arguments. Usage: "+aliasUsed+" <subcommand> ...");
             return;

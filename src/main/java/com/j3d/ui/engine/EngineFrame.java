@@ -7,7 +7,7 @@ package com.j3d.ui.engine;
 import com.j3d.Startup;
 import com.j3d.StaticRefs;
 import com.j3d.Executor;
-import com.j3d.engine.interact.cmd.commands.qtrans.QuickTranslateCmd;
+import com.j3d.engine.interact.cmd.commands.transform.qtrans.QuickTranslateCmd;
 import com.j3d.engine.scene.DefaultObjectDeletionException;
 import com.j3d.engine.math.Dim;
 import com.j3d.engine.scene.nodes.SceneObjectList;
@@ -413,9 +413,8 @@ public class EngineFrame extends javax.swing.JFrame {
 
     private void transformCommand(String subcommand) {
         StaticRefs.getCommandParser()
-                .runCommand(
+                .run(
                         CommandsManager.commands.transform,
-                        "transform",
                         new ArrayList<>(List.of(subcommand, "p")),
                         new ArrayList<>()
                 );
@@ -1044,18 +1043,16 @@ public class EngineFrame extends javax.swing.JFrame {
 
     private void pasteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteMenuItemActionPerformed
         StaticRefs.getCommandParser()
-                .runCommand(
+                .run(
                         CommandsManager.commands.clipboardCmd,
-                        "clip",
                         new ArrayList<>(List.of("paste")), new ArrayList<>()
                 );
     }//GEN-LAST:event_pasteMenuItemActionPerformed
 
     private void copyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyMenuItemActionPerformed
         StaticRefs.getCommandParser()
-                .runCommand(
+                .run(
                         CommandsManager.commands.clipboardCmd,
-                        "clip",
                         new ArrayList<>(List.of("copy")), new ArrayList<>()
                 );
     }//GEN-LAST:event_copyMenuItemActionPerformed

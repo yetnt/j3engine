@@ -1,6 +1,7 @@
 package com.j3d.engine.interact.cmd.commands.clipboard;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.scene.copy.CopyProperties;
 import com.j3d.engine.scene.copy.InvalidCopyException;
 import com.j3d.engine.scene.nodes.geometry.GLine;
@@ -34,8 +35,8 @@ public class PasteCmd extends Subcommand {
     }
 
     @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
-        super.run(logLabel, aliasUsed, args, taggedArgs);
+    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+        super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
         ArrayList<GObject> copied = StaticRefs.getSceneManager().getClipboard();
         if (copied.isEmpty()) {
             logLabel.setText("Nothing to paste");
@@ -101,9 +102,8 @@ public class PasteCmd extends Subcommand {
         StaticRefs.getSceneManager().select(thing);
 
         // and now run translate!
-        StaticRefs.getCommandParser().runCommand(
+        StaticRefs.getCommandParser().run(
                 CommandsManager.commands.transform,
-                "transform",
                 new ArrayList<>(List.of("translate","p")),
                 new ArrayList<>(List.of(
                         new TaggedArgValue<>("copied").setName("string").setType(String.class)

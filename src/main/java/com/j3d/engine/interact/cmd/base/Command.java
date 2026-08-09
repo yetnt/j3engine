@@ -2,6 +2,7 @@ package com.j3d.engine.interact.cmd.base;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.CommandsManager;
+import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.interact.cmd.args.*;
 import com.j3d.engine.scene.nodes.geometry.GObjectRegistry;
 import com.j3d.ui.SafeJLabel;
@@ -92,16 +93,18 @@ public class Command {
     /**
      * The method to be overridden by subclasses to implement command functionality.
      *
+     * @param invoker    The invoker of this command
      * @param logLabel   The JLabel to display log messages.
      * @param aliasUsed  The alias of the command that was used to invoke it.
      * @param args       The arguments passed to the command.
      * @param taggedArgs Tagged arguments passed to the command.
      */
-    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         // To be overridden by subclasses
         StaticRefs.getLog().cmdPrintln(
                 (this instanceof Subcommand ? "Subcommand" : "Command") +
-                " invoked: \"" + aliasUsed + "\" ("+aliases.getFirst()+"), " + "with an args length of " + args.length + " and " + taggedArgs.size() + " tagged arguments."
+                " invoked: \"" + aliasUsed + "\" ("+aliases.getFirst()+"), " + "with an args length of " + args.length + " and " + taggedArgs.size() + " tagged arguments." +
+                "\n\t(invoked by " + invoker.getString() + ")"
         );
     }
 
@@ -119,7 +122,7 @@ public class Command {
                 Object[] subArgs = new Object[args.length - 1];
                 String alias = (String) args[0];
                 System.arraycopy(args, 1, subArgs, 0, args.length - 1);
-                subcommand.run(logLabel, alias, subArgs, taggedArgs);
+                subcommand.run(Invoker.byParentCommand(this), logLabel, alias, subArgs, taggedArgs);
                 return;
             }
         }
@@ -152,8 +155,11 @@ public class Command {
                 // Step 1: If the argument is a Subcommand, get all it's usages and add
                 // them to this command's usages.
                 for (var entry : sub.getUsages()) {
-                    String value = sub.aliases.getFirst() + " " + entry;
-                    usages.add(value);
+                    sub.aliases.forEach(
+                            alias -> usages.add(alias + " " + entry)
+                    );
+//                    String value = sub.aliases.getFirst() + " " + entry;
+//                    usages.add(value);
                 }
                 continue; // If a command has subcommands, it can't have anything else. So exit early.
                 // Not bad. That was simple its just recursion.

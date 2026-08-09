@@ -36,4 +36,17 @@ public class Invoker {
     public Command getInvokedFromParent() {
         return invokedFromParent;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
+    public String getString() {
+        if (user || engine) {
+            return user ? "USER" : "ENGINE";
+        }
+
+        return invokedFromParent.getClass().getSimpleName();
+    }
 }

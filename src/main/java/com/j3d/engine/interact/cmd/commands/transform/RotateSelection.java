@@ -1,5 +1,6 @@
 package com.j3d.engine.interact.cmd.commands.transform;
 
+import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.interact.cmd.args.ArgSet;
@@ -98,12 +99,12 @@ public class RotateSelection extends AbstractTransform {
     }
 
     @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         axis = new Vector3(true);
         if (args.length > 1 && args[1] instanceof Vector3 a)
             axis = a.normalize();
         rotateMouseOwner.axis = axis;
-        super.run(logLabel, aliasUsed, args, taggedArgs);
+        super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
     }
 
     public void rotateUpKey(Vector3 a, GPoint gPoint) {

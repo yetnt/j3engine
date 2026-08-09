@@ -1,6 +1,7 @@
 package com.j3d.engine.interact.cmd.commands.orbit;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.math.rot.Rotation;
 import com.j3d.engine.interact.cmd.CommandsManager;
@@ -54,8 +55,8 @@ public class OrbitCmd extends Command implements StatefulCommand<Pair<Vector3, R
     }
 
     @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
-        super.run(logLabel, aliasUsed, args, taggedArgs);
+    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+        super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
         if (!CommandsManager.isCurrentStatefulRunning(this)) return;
 
         run(this, "orbitCmd",

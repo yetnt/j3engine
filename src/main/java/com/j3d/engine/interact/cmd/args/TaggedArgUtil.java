@@ -58,7 +58,7 @@ import java.util.stream.Stream;
  * @see Argument
  * @see TaggedArgValue
  * @see CommandParser
- * @see Command#run(SafeJLabel, String, Object[], ArrayList)
+ * @see Command#run(com.j3d.engine.interact.cmd.Invoker, SafeJLabel, String, Object[], ArrayList)
  */
 public class TaggedArgUtil {
     /**

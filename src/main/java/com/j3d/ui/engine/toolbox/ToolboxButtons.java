@@ -31,29 +31,33 @@ public class ToolboxButtons {
     public static final int BUTTON_PANEL_SIZE = 120;
 
     static {
+        register("Documentation", e -> {
+            // Toggle props mode
+            StaticRefs.getDocsProvider().provideMain().setVisible(true);
+        }, "docs.png");
         registerComplex("Transform", new Subbox(s -> s
-                .add("quick translate", e -> StaticRefs.getCommandParser().runCommand(
-                        CommandsManager.commands.quickTranslateCmd, "qtrans",
+                .add("quick translate", e -> StaticRefs.getCommandParser().run(
+                        CommandsManager.commands.quickTranslateCmd,
                         new ArrayList<>(), new ArrayList<>()
-                ), "translate.png")
-                .add("translate", e -> StaticRefs.getCommandParser().runCommand(
-                        CommandsManager.commands.transform, "transform",
+                ), "quicktrans.png")
+                .add("translate", e -> StaticRefs.getCommandParser().run(
+                        CommandsManager.commands.transform,
                         new ArrayList<>(List.of("translate")), new ArrayList<>()
                 ), "translate.png")
-                .add("rotate", e -> StaticRefs.getCommandParser().runCommand(
-                        CommandsManager.commands.transform, "transform",
+                .add("rotate", e -> StaticRefs.getCommandParser().run(
+                        CommandsManager.commands.transform,
                         new ArrayList<>(List.of("rotate")), new ArrayList<>()
                 ), "rotate.png")
-                .add("scale", e -> StaticRefs.getCommandParser().runCommand(
-                        CommandsManager.commands.transform, "transform",
+                .add("scale", e -> StaticRefs.getCommandParser().run(
+                        CommandsManager.commands.transform,
                         new ArrayList<>(List.of("scale")), new ArrayList<>()
                 ), "scale.png")), "transform.png");
         register("Properties", e -> {
             // Toggle props mode
             StaticRefs.getPropertiesPanel().toggleHidden();
         }, "properties.png");
-        register("Orbit", e -> StaticRefs.getCommandParser().runCommand(
-                CommandsManager.commands.orbit, "orbit",
+        register("Orbit", e -> StaticRefs.getCommandParser().run(
+                CommandsManager.commands.orbit,
                 new ArrayList<>(), new ArrayList<>()), "orbit.png");
         register("History",
                 e -> History.panel.toggleHidden(),

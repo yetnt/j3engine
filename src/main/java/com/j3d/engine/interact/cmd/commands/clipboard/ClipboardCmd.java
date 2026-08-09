@@ -1,5 +1,6 @@
 package com.j3d.engine.interact.cmd.commands.clipboard;
 
+import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.ui.SafeJLabel;
@@ -16,8 +17,8 @@ public class ClipboardCmd extends Command {
     }
 
     @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
-        super.run(logLabel, aliasUsed, args, taggedArgs);
+    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+        super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
         if (args.length < 1) {
             logLabel.setText("Clipboard command requires arguments");
             return;

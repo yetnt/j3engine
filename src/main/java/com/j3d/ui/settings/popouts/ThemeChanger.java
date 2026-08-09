@@ -346,9 +346,8 @@ public class ThemeChanger extends javax.swing.JFrame {
 
     private void changeAndCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeAndCloseActionPerformed
         enterThemeChangeActionPerformed(evt);
-        StaticRefs.getCommandParser().runCommand(
+        StaticRefs.getCommandParser().run(
                 CommandsManager.commands.engine,
-                "engine",
                 new ArrayList<>(Collections.singleton("exit")),
                 new ArrayList<>());
     }//GEN-LAST:event_changeAndCloseActionPerformed

@@ -1,5 +1,6 @@
 package com.j3d.engine.interact.cmd.commands.transform;
 
+import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.interact.cmd.args.ArgSet;
@@ -171,7 +172,7 @@ public class TranslateSelection extends AbstractTransform {
     }
 
     @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         mult = 1;
         if (args.length > 1)
             switch (args[1]) {
@@ -179,6 +180,6 @@ public class TranslateSelection extends AbstractTransform {
                 case Double d -> mult = d;
                 default -> mult = 1;
             }
-        super.run(logLabel, aliasUsed, args, taggedArgs);
+        super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
     }
 }

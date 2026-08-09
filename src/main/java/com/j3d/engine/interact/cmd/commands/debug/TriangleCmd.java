@@ -1,5 +1,6 @@
 package com.j3d.engine.interact.cmd.commands.debug;
 
+import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
@@ -35,8 +36,8 @@ public class TriangleCmd extends Subcommand {
     }
 
     @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
-        super.run(logLabel, aliasUsed, args, taggedArgs);
+    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+        super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
 
         if (getSceneManager().getSelected().isEmpty()) {
             logLabel.setText("No objects selected. Normals were cleared instead");

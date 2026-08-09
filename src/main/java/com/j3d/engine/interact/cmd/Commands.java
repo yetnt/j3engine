@@ -8,7 +8,7 @@ import com.j3d.engine.interact.cmd.commands.debug.DebugCmd;
 import com.j3d.engine.interact.cmd.commands.engine.EngineCmd;
 import com.j3d.engine.interact.cmd.commands.measure.MeasureCmd;
 import com.j3d.engine.interact.cmd.commands.orbit.OrbitCmd;
-import com.j3d.engine.interact.cmd.commands.qtrans.QuickTranslateCmd;
+import com.j3d.engine.interact.cmd.commands.transform.qtrans.QuickTranslateCmd;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 import com.j3d.engine.interact.cmd.commands.uicmd.UICmd;
 

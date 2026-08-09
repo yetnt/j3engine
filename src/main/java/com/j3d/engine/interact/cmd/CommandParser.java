@@ -462,7 +462,7 @@ public class CommandParser {
                 return;
             }
             arguments.removeFirst();
-            if (!runCommand(cmd, cmdName, arguments, taggedArguments)) return;
+            if (!runCommand(cmd, cmdName, arguments, taggedArguments, Invoker.byUser())) return;
             taggedArguments.clear();
         } else {
             label.error("Invalid command name.");
@@ -470,16 +470,12 @@ public class CommandParser {
         EngineFrame.repaintL();
     }
 
-    /**
-     * Executes the given command with the provided arguments.
-     *
-     * @param cmd The command to execute.
-     * @param cmdName The name of the command.
-     * @param arguments The list of positional arguments for the command.
-     * @param taggedArguments The list of tagged arguments for the command.
-     * @return {@code true} if the command was executed successfully, {@code false} otherwise.
-     */
-    public boolean runCommand(Command cmd, String cmdName, ArrayList<Object> arguments, ArrayList<TaggedArgValue<?>> taggedArguments) {
+    public boolean run(Command cmd, ArrayList<Object> arguments, ArrayList<TaggedArgValue<?>> taggedArguments) {
+        String alias = cmd.aliases.getFirst();
+        return runCommand(cmd, alias, arguments, taggedArguments, Invoker.byEngine());
+    }
+
+    private boolean runCommand(Command cmd, String cmdName, ArrayList<Object> arguments, ArrayList<TaggedArgValue<?>> taggedArguments, Invoker invoker) {
         if (CommandsManager.commandIsRunning()) {
             StaticRefs.getHoverLabel().error("Command is currently running: " + SafeJLabel.EMPH, CommandsManager.getCurrentCommandName());
             StaticRefs.getMainFrame().requestFocusInWindow();
@@ -488,7 +484,7 @@ public class CommandParser {
         if (cmd instanceof StatefulCommand statefulCommand)
             CommandsManager.setAsCurrent(statefulCommand);
 
-        cmd.run(label, cmdName, arguments.toArray(), taggedArguments);
+        cmd.run(invoker, label, cmdName, arguments.toArray(), taggedArguments);
         if (!(cmd instanceof HelpCmd))
             StaticRefs.getHoverLabel().clear();
         return true;

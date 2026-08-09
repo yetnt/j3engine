@@ -455,7 +455,7 @@ public class TypingHints {
                     // just partially match, dont give exact matches incase subcommand alias.
                     // and since subcommand aliaes really can just be anything. just partial
                     // match and hope for the best
-                    sb.append(correctType(arg).italic()).append(" ");
+                    sb.append(partialStringMatch(new ArrayList<>(List.of(arg)), token.getInput()).italic()).append(" ");
                 }
             }
         }
@@ -711,9 +711,10 @@ public class TypingHints {
                 .min((s1, s2) -> s2.length() - s1.length())
                 .orElse(null);
         if (bestMatch == null) {
-            System.out.println("something....");
-            // TODO: something.....
-            return new JLabelRichText(input);
+            return incorrectType(options.getFirst());
+        }
+        if (bestMatch.length() == input.length()) {
+            return correctType(bestMatch);
         }
         // Style.
         JLabelRichText match = partialType(input);

@@ -189,9 +189,8 @@ public class Vector3Dialogue extends javax.swing.JDialog {
         StaticRefs.getMainPanel().requestFocus();
 
         // run the command.
-        StaticRefs.getCommandParser().runCommand(
+        StaticRefs.getCommandParser().run(
                 CommandsManager.commands.transform,
-                "transform",
                 new ArrayList<>(List.of("translate", "p")),
                 new ArrayList<>()
         );

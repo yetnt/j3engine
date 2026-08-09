@@ -1,6 +1,7 @@
 package com.j3d.engine.interact.cmd.commands.transform;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.scene.nodes.geometry.GLine;
@@ -187,8 +188,8 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
      * initiates the stateful transformation mode.
      */
     @Override
-    public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
-        super.run(logLabel, aliasUsed, args, taggedArgs);
+    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+        super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
         this.label = logLabel;
 
         if (args.length > 0 && !(args[0] instanceof String)) {
