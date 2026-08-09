@@ -28,7 +28,6 @@ import java.util.UUID;
  *     it will be used for all rendering cycles until changed.
  * </p>
  * @author Lehlogonolo Poole
- * @see PureListener
  * @see GTri
  * @see PureSortMethod
  * @see SortMethod
@@ -39,11 +38,6 @@ import java.util.UUID;
  */
 public class SceneRenderer {
     /**
-     * Holds all registered TriListeners. These are registered when a GTri is created
-     * and unregistered when a GTri is deleted.
-     */
-    private final ArrayList<PureListener> registered = new  ArrayList<>();
-    /**
      * A list used for sorting GTri based on whichever method SceneRenderer uses.
      * The list is cleared after each render cycle.
      * @implNote This more references a deque but for reusability and clarity
@@ -52,7 +46,7 @@ public class SceneRenderer {
      * but rather a subclass of {@link SortMethod}. Which is how the triangle
      * sorting is done.
      */
-    private ArrayList<RenderState<?, ?>> queue;
+    private SortMethod queue;
 
     public SceneRenderer() {
         // later set bucket sort to
@@ -64,13 +58,12 @@ public class SceneRenderer {
      */
     public void setSortMethod(PureSortMethod method) {
         queue = switch (method) {
-            case NONE -> new ArrayList<>();
-            case CAMDISTSORT -> new CamDistSort(registered);
-            case VISIBLESORT ->  new VisibleSort(registered);
-            case CAMDEPTHSORT -> new CamDepthSort(registered);
-            case DDUUIDSORT -> new DDUUIDSort(registered);
+            case CAMDISTSORT, NONE -> new CamDistSort();
+            case VISIBLESORT ->  new VisibleSort();
+            case CAMDEPTHSORT -> new CamDepthSort();
+            case DDUUIDSORT -> new DDUUIDSort();
             //case BUCKETSORT ->new BucketSort(registered);
-            default -> new CamDistSort(registered);
+            default -> new CamDistSort();
         };
     }
 
@@ -84,9 +77,6 @@ public class SceneRenderer {
      * @param tri The GTri to register.
      */
     public void register(RenderState<?, ?> tri) {
-        PureListener listener = new PureListener(tri);
-//        tri.attachListener(listener);
-        registered.add(listener);
         queue.add(tri);
     }
 
@@ -99,21 +89,21 @@ public class SceneRenderer {
      */
     public void unregister(RenderState<?, ?> tri) {
         // finder listener that matches tri id
-        new ArrayList<>(registered).stream().filter(
-                listener -> listener.triID.equals(tri.getId())
+        new ArrayList<>(queue).stream().filter(
+                listener -> listener.getId().equals(tri.getId())
         ).findFirst().ifPresent(
-                registered::remove
+                queue::remove
         );
     }
 
     public void unregister(UUID uuid) {
         // finder listener that matches tri id
-        new ArrayList<>(registered).stream()
+        new ArrayList<>(queue).stream()
                 .filter(Objects::nonNull)
                 .filter(
-                listener -> listener.triID.equals(uuid)
+                listener -> listener.getId().equals(uuid)
         ).forEach(
-                registered::remove
+                queue::remove
         );
     }
 
@@ -129,6 +119,7 @@ public class SceneRenderer {
      * @param g The Graphics2D context.
      */
     public void draw(Graphics2D g) {
+        queue.sort();
         for  (RenderState<?, ?> drawable : queue) {
             if (!drawable.isValid()) {
                 unregister(drawable);
@@ -146,14 +137,7 @@ public class SceneRenderer {
         clearQueue();
     }
 
-    /**
-     * Clears all registered TriListeners.
-     */
-    public void clearRegistered() {
-        registered.clear();
-    }
-
     public int pureRegistered() {
-        return registered.size();
+        return queue.size();
     }
 }

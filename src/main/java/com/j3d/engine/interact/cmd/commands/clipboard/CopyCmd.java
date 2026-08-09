@@ -30,6 +30,6 @@ public class CopyCmd extends Subcommand {
 
         logLabel.setText("Copied " + selected.size() + " objects");
 
-        StaticRefs.getSceneManager().setCopied(new ArrayList<>(selected));
+        StaticRefs.getSceneManager().setClipboard(new ArrayList<>(selected));
     }
 }

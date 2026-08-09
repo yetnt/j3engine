@@ -36,7 +36,7 @@ public class PasteCmd extends Subcommand {
     @Override
     public void run(SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(logLabel, aliasUsed, args, taggedArgs);
-        ArrayList<GObject> copied = StaticRefs.getSceneManager().getCopied();
+        ArrayList<GObject> copied = StaticRefs.getSceneManager().getClipboard();
         if (copied.isEmpty()) {
             logLabel.setText("Nothing to paste");
             return;

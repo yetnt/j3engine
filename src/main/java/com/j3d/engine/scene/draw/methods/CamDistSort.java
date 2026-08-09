@@ -1,7 +1,6 @@
 package com.j3d.engine.scene.draw.methods;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.scene.draw.PureListener;
 import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.draw.SceneRenderer;
 import com.j3d.engine.scene.draw.SortMethod;
@@ -15,13 +14,12 @@ import java.util.Objects;
  * GTri objects farther from the camera are placed before those closer to the camera.
  * @author Lehlogonolo Poole
  * @see SortMethod
- * @see PureListener
  * @see SceneRenderer
  */
 public class CamDistSort extends SortMethod {
 
-    public CamDistSort(ArrayList<PureListener> registered) {
-        super(registered);
+    public CamDistSort() {
+        super();
     }
 
     @Override
@@ -29,12 +27,11 @@ public class CamDistSort extends SortMethod {
         if (gTri.getPure() instanceof GTri t)
             if (backFaceCulled(t)) return false;
         if (this.contains(gTri)) {
-            sort();
+//            sort();
             return false;
         }
-        boolean changed = super.add(gTri);
-        sort();
-        return changed;
+        //        sort();
+        return super.add(gTri);
     }
 
     /**
@@ -43,15 +40,15 @@ public class CamDistSort extends SortMethod {
     @Override
     public void clear() {
         super.clear();
-        new ArrayList<>(registered).stream()
+        new ArrayList<>(this).stream()
                 .peek(s -> {
                     if (s == null)
-                        registered.remove(s);
+                        remove(s);
                 })
                 .filter(Objects::nonNull)
-                .filter(triListener -> !triListener.isDirty()
+                .filter(t -> !t.isValid()
         ).forEach(
-                listener -> this.add(listener.tri)
+                        this::add
         );
     }
 
@@ -59,7 +56,8 @@ public class CamDistSort extends SortMethod {
      * Sorts the GTri objects in the list based on their distance from the camera.
      * GTri objects farther from the camera are placed before those closer to the camera.
      */
-    private void sort() {
+    @Override
+    public void sort() {
         this.sort((tri1, tri2) -> {
 //            PureListener listener1 = registered.stream().filter(
 //                    listener -> listener.triID.equals(tri1.getId())

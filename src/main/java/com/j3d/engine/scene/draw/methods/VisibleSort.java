@@ -3,7 +3,6 @@ package com.j3d.engine.scene.draw.methods;
 import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.draw.SceneRenderer;
 import com.j3d.engine.scene.draw.SortMethod;
-import com.j3d.engine.scene.draw.PureListener;
 import com.j3d.engine.scene.draw.methods.utils.ZDepthIdBuffer;
 import com.j3d.engine.scene.nodes.geometry.GTri;
 
@@ -30,15 +29,14 @@ import java.util.*;
  * This implementation does NOT perform back-face culling (left for caller).
  * @author Lehlogonolo Poole
  * @see ZDepthIdBuffer
- * @see PureListener
  * @see SortMethod
  * @see SceneRenderer
  */
 public class VisibleSort extends SortMethod {
     ZDepthIdBuffer zb = new ZDepthIdBuffer();
 
-    public VisibleSort(ArrayList<PureListener> registered) {
-        super(registered);
+    public VisibleSort() {
+        super();
     }
 
     @Override
@@ -46,11 +44,9 @@ public class VisibleSort extends SortMethod {
         if (gTri.getPure() instanceof GTri t)
             if (backFaceCulled(t)) return false;
         if (this.contains(gTri)) {
-            updateVisibilityAndSort();
             return false;
         }
         boolean changed = super.add(gTri);
-        updateVisibilityAndSort();
         return changed;
     }
 
@@ -58,15 +54,20 @@ public class VisibleSort extends SortMethod {
     public void clear() {
         super.clear();
         // Re-add all non-dirty triangles from registered listeners as suggested by SortMethod javadoc
-        registered.stream().filter(
-                triListener -> !triListener.isDirty()
+        stream().filter(
+                t -> !t.isValid()
         ).forEach(
-                listener -> this.add(listener.tri)
+                this::add
         );
     }
 
+    @Override
+    public void sort() {
+        updateVisibilityAndSort();
+    }
+
     /**
-     * Performs a Z-buffer rasterization of all registered triangles and keeps only
+     * Performs a Z-buffer rasterisation of all registered triangles and keeps only
      * those which appear on the final buffer (i.e. are visible). The remaining
      * visible triangles are sorted by depth (farthest first) to be suitable for
      * painter-style rendering if desired.
@@ -76,10 +77,10 @@ public class VisibleSort extends SortMethod {
         zb.clear();
 
         // Rasterize all triangles known to the registered listeners
-        for (PureListener tl : registered) {
-            if (tl == null || tl.tri == null) continue;
+        for (RenderState tl : this) {
+            if (tl == null) continue;
             try {
-                if (tl.tri.getPure() instanceof GTri t)
+                if (tl.getPure() instanceof GTri t)
                     zb.tri(t);
             } catch (Throwable ignored) {
                 // Defensive: don't let one bad triangle stop visibility determination
@@ -96,9 +97,9 @@ public class VisibleSort extends SortMethod {
         }
 
         // Build the visible triangle list in a deterministic way and sort by depth
-        List<? extends RenderState<?, ?>> visibleTris = registered.stream()
-                .filter(l -> l != null && l.tri != null && visibleIds.contains(l.tri.getId()))
-                .map(l -> l.tri)
+        List<? extends RenderState<?, ?>> visibleTris = this.stream()
+                .filter(l -> l != null  && visibleIds.contains(l.getId()))
+                .map(l -> l)
                 .filter(s -> s.getPure() instanceof GTri)
                 .map(s -> (GTri) s.getPure()).sorted((tri1, tri2) -> {
                     double dist1 = tri1.calcDepth();

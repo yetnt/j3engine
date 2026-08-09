@@ -3,7 +3,6 @@ package com.j3d.engine.scene.draw.methods;
 import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.draw.SceneRenderer;
 import com.j3d.engine.scene.draw.SortMethod;
-import com.j3d.engine.scene.draw.PureListener;
 import com.j3d.engine.scene.nodes.geometry.GTri;
 
 import java.util.ArrayList;
@@ -20,13 +19,12 @@ import static com.j3d.engine.scene.draw.methods.CamDepthSort.calcDepth;
  * @see CamDistSort
  * @see java.util.UUID
  * @see SortMethod
- * @see PureListener
  * @see SceneRenderer
  */
 public class DDUUIDSort extends SortMethod {
 
-    public DDUUIDSort(ArrayList<PureListener> registered) {
-        super(registered);
+    public DDUUIDSort() {
+        super();
     }
 
     @Override
@@ -34,11 +32,11 @@ public class DDUUIDSort extends SortMethod {
         if (gTri.getPure() instanceof GTri t)
             if (backFaceCulled(t)) return false;
         if (this.contains(gTri)) {
-            sort();
+//            sort();
             return false;
         }
         boolean changed = super.add(gTri);
-        sort();
+//        sort();
         return changed;
     }
 
@@ -48,10 +46,10 @@ public class DDUUIDSort extends SortMethod {
     @Override
     public void clear() {
         super.clear();
-        registered.stream().filter(
-                triListener -> !triListener.isDirty()
+        stream().filter(
+                t -> !t.isValid()
         ).forEach(
-                listener -> this.add(listener.tri)
+                this::add
         );
     }
 
@@ -59,7 +57,8 @@ public class DDUUIDSort extends SortMethod {
      * Sorts the GTri objects in the list based on their distance from the camera.
      * GTri objects farther from the camera are placed before those closer to the camera.
      */
-    private void sort() {
+    @Override
+    public void sort() {
         this.sort((tri1, tri2) -> {
 //            PureListener listener1 = registered.stream().filter(
 //                    listener -> listener.triID.equals(tri1.getId())

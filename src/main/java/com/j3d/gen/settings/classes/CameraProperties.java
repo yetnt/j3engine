@@ -32,17 +32,6 @@ public class CameraProperties implements SettingsParent {
             i -> i/100.0,
             0.01
     );
-    public DoubleSetting fieldOfView = new DoubleSetting(
-            "Field of View",
-            2.0,
-            "The field of view of the camera, in degrees.",
-            1.0,
-            200.0
-    ).setValues(
-            d -> (int)(d * 100),
-            i -> i/100.0,
-            0.01
-    );
     public DoubleSetting focalLength = new DoubleSetting(
             "Focal Length",
             37.0,
@@ -83,7 +72,6 @@ public class CameraProperties implements SettingsParent {
     @Override
     public ArrayList<SettingsChild> getAllChildren() {
         return new ArrayList<>() {{
-            add(fieldOfView);
             add(movementSpeed);
             add(orbitSensitivity);
             add(focalLength);

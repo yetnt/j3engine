@@ -17,6 +17,7 @@ import com.j3d.engine.scene.nodes.geometry.base.HasParents;
 import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.engine.scene.nodes.layer.LayerList;
 import com.j3d.engine.react.history.History;
+import com.j3d.gen.settings.Settings;
 import com.j3d.ui.theme.J3DTheme;
 
 import java.awt.*;
@@ -40,7 +41,7 @@ public class SceneManager {
 
     public ArrayDeque<GPoint> points = new ArrayDeque<>();
     private HashSet<HasParents<? extends GObject>> unparented = new HashSet<>();
-    private ArrayList<GObject> copied = new ArrayList<>();
+    private ArrayList<GObject> clipboard = new ArrayList<>();
     public final Finder finder = new Finder(() -> layers);
     public Finder finder() {
         return finder;
@@ -96,9 +97,11 @@ public class SceneManager {
     }
 
     public void axisGrid(Graphics2D g, Camera camera) {
-        int start = 50;
+        double mult = Settings.sceneProperties.axisLength.getValue();
+
+        int start = (int) (50*mult);
         int jump = 10;
-        int amt = 10;
+        int amt = (int) (10*mult);
 
         Vector3 vXA = new Vector3(-start, 0, -start);
         Vector3 vXB = new Vector3(-start, 0, start);
@@ -372,16 +375,16 @@ public class SceneManager {
         unparented.remove(gObject);
     }
 
-    public void setCopied(ArrayList<GObject> copied) {
-        this.copied = copied;
+    public void setClipboard(ArrayList<GObject> clipboard) {
+        this.clipboard = clipboard;
     }
 
-    public ArrayList<GObject> getCopied() {
-        return new ArrayList<>(copied);
+    public ArrayList<GObject> getClipboard() {
+        return new ArrayList<>(clipboard);
     }
 
-    public void clearCopied() {
-        copied.clear();
+    public void clearClipboard() {
+        clipboard.clear();
     }
 
     public Thing findThing(String name) {
@@ -424,7 +427,6 @@ public class SceneManager {
                     thing.getObjects().clear();
                 });
         getRenderer().clearQueue();
-        getRenderer().clearRegistered();
         layers.clear();
         points.clear();
         overlaps.clear();

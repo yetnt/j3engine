@@ -22,19 +22,9 @@ import java.util.ArrayList;
  * @see SceneRenderer
  */
 public abstract class SortMethod extends ArrayList<RenderState<?, ?>> {
-    /**
-     * A static list of registered PureListener objects.
-     */
-    protected final ArrayList<PureListener> registered;
 
-    /**
-     * Constructor for SortMethod
-     *
-     * @param registered The list of PureListener objects to be registered.
-     */
-    public SortMethod(ArrayList<PureListener> registered) {
+    public SortMethod() {
         super();
-        this.registered = registered;
     }
 
     @Override
@@ -77,4 +67,6 @@ public abstract class SortMethod extends ArrayList<RenderState<?, ?>> {
         Vector3 P = StaticRefs.getCamera().getPosition().sub(tri.getLegA().getA().getPivot());
         return N.dot(P) < 0;
     }
+
+    public abstract void sort();
 }

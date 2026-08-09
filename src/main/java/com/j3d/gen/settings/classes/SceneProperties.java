@@ -14,6 +14,22 @@ import com.j3d.ui.settings.SettingsParentPanel;
 import java.util.ArrayList;
 
 public class SceneProperties implements SettingsParent {
+    public DoubleSetting axisLength = new DoubleSetting(
+            "Axis Amount",
+            1.0,
+            "How many lines should be shown fpr the axis. This gets messy quick be warned.",
+            0.01,
+            100.0
+    ).setValues(
+            d -> (int)(d * 100),
+            i -> i/100.0,
+            0.0
+    ).onSetValue(
+            (d) -> {
+                StaticRefs.getMainPanel().repaint();
+                return null;
+            }
+    );
     /**
      * Factor to scale the {@link CartesianPoint} vs {@link ScreenPoint} units.
      * <p>
@@ -63,6 +79,7 @@ public class SceneProperties implements SettingsParent {
     @Override
     public ArrayList<SettingsChild> getAllChildren() {
         return new ArrayList<>() {{
+            add(axisLength);
             add(useBackFaceCulling);
             add(scale);
             add(triangleSortMethod);
