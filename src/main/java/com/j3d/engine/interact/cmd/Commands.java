@@ -8,6 +8,7 @@ import com.j3d.engine.interact.cmd.commands.debug.DebugCmd;
 import com.j3d.engine.interact.cmd.commands.engine.EngineCmd;
 import com.j3d.engine.interact.cmd.commands.measure.MeasureCmd;
 import com.j3d.engine.interact.cmd.commands.orbit.OrbitCmd;
+import com.j3d.engine.interact.cmd.commands.qtrans.QuickTranslateCmd;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 import com.j3d.engine.interact.cmd.commands.uicmd.UICmd;
 
@@ -39,6 +40,7 @@ public class Commands {
     public MeasureCmd measureCmd = new MeasureCmd();
     public ClipboardCmd clipboardCmd = new ClipboardCmd();
     public SelectCmd selectCmd = new SelectCmd();
+    public QuickTranslateCmd quickTranslateCmd = new QuickTranslateCmd();
 
     /**
      * Default (empty) constructor
@@ -65,7 +67,7 @@ public class Commands {
                 teleport, orbit, engine,
                 explodeCmd, uiCmd, helpCmd,
                 prismCmd, measureCmd, clipboardCmd,
-                selectCmd
+                selectCmd, quickTranslateCmd
         ));
     }
 }

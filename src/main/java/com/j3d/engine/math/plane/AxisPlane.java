@@ -20,6 +20,13 @@ public record AxisPlane(
         Vector3 v1,
         Vector3 v2
 ) {
+    public static AxisPlane usingOrigin(Vector3 origin, AxisPlane original) {
+        return new AxisPlane(
+                origin,
+                original.v1(),
+                original.v2()
+        );
+    }
 
     public Vector3 toWorld(CartesianPoint point) {
         return origin

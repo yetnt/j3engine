@@ -6,9 +6,11 @@ import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.engine.interact.input.mouse.MouseOwner;
 import com.j3d.StaticConfig;
 import com.j3d.gen.settings.Settings;
+import com.j3d.ui.engine.EngineFrame;
 import com.j3d.ui.theme.CursorManager;
 import com.j3d.ui.theme.CursorNames;
 
+import java.awt.*;
 import java.awt.event.MouseEvent;
 
 /**
@@ -43,6 +45,19 @@ public class OrbitMouseOwner extends MouseOwner {
         startX = 0;
         startY = 0;
         CursorManager.set(CursorNames.HAND_GRAB);
+        // set the mouse to the centre of the screen.
+        try {
+            Robot robot = new Robot();
+            EngineFrame frame = StaticRefs.getMainFrame();
+            int centerX = frame.getX() + frame.getWidth() / 2;
+            int centerY = frame.getY() + frame.getHeight() / 2;
+            robot.mouseMove(centerX, centerY);
+            startX = centerX;
+            startY = centerY;
+        } catch (Exception err) {
+            throw new RuntimeException(err);
+        }
+
     }
 
     @Override

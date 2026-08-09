@@ -1,11 +1,14 @@
 package com.j3d.engine.interact.input.mouse;
 
+import com.j3d.StaticRefs;
 import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.interact.selection.SelectionMouseOwner;
 import com.j3d.engine.react.events.*;
 import com.j3d.StaticConfig;
 import com.j3d.ui.engine.EngineFrame;
+import com.j3d.utility.generators.JLabelRichText;
 
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -40,6 +43,9 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
      * The owner of the mouse input, used to determine if the current MouseOwner is the owner of the mouse input in the sceneManager.
      */
     private final MOwner owner;
+
+    private Point old = new Point(0 ,0);
+    public Mouse physicalMouse = new Mouse(0, 0);
 
     /**
      * Creates a new MouseOwner with the given owner.
@@ -77,20 +83,55 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
         return EngineFrame.getMouseOwner() != owner;
     }
 
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        super.mouseMoved(e);
+    }
+
+    /**
+     * Calculates the adjusted screen point from a given {@link MouseEvent}.
+     * This method applies specific offsets (e.g., for menu bar) to the raw mouse coordinates.
+     *
+     * @param e The {@link MouseEvent} containing the raw mouse coordinates.
+     * @return A {@link ScreenPoint} representing the adjusted mouse location on the screen.
+     */
     protected ScreenPoint getMouseLoc(MouseEvent e) {
         return new ScreenPoint(
                 e.getX() - 4,
                 e.getY() - ((2 * StaticConfig.jMenuBarOffsetY)) - 10);
     }
 
+    /**
+     * Calculates the adjusted screen point from the current physical mouse coordinates.
+     * This method uses the internal {@link #physicalMouse} state and applies specific offsets.
+     *
+     * @return A {@link ScreenPoint} representing the adjusted physical mouse location on the screen.
+     */
+    protected ScreenPoint getMouseLocFromPhysical() {
+        return new ScreenPoint(
+                physicalMouse.getX() - 4,
+                physicalMouse.getY() - ((2 * StaticConfig.jMenuBarOffsetY)) - 10);
+    }
+
+    /**
+     * Calculates the adjusted screen point for selection purposes from a given {@link MouseEvent}.
+     * This method applies different offsets compared to {@link #getMouseLoc(MouseEvent)}.
+     *
+     * @param e The {@link MouseEvent} containing the raw mouse coordinates.
+     * @return A {@link ScreenPoint} representing the adjusted mouse location specifically for selection.
+     */
     protected ScreenPoint getSelectionMouseLoc(MouseEvent e) {
         return new ScreenPoint(
                 e.getX() - 4,
                 e.getY() - 2) ;
     }
 
+    /**
+     * Resets the state of the {@link #physicalMouse} to its default (0,0) position.
+     */
     public void clear() {
-
+        physicalMouse.reset();
     }
 
     @Override
@@ -164,5 +205,66 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
             mousePressed(e);
 
         clickDelay = 0;
+    }
+
+    /**
+     * Handles mouse wrapping behavior, allowing the mouse cursor to "teleport" from one side of the screen
+     * to the other when it reaches the edge. It also updates the internal {@link #physicalMouse} coordinates
+     * and a debug label with mouse information.
+     *
+     * This method is typically used for continuous camera movement or similar interactions where the mouse
+     * should not be constrained by screen boundaries.
+     * @param e The {@link MouseEvent} containing the current mouse coordinates.
+     * @throws RuntimeException if a {@link Robot} cannot be instantiated, which is used to move the mouse cursor.
+     */
+    public void wrap(MouseEvent e) {
+        if (e.getX() + 10 > StaticRefs.getSceneManager().screenSize.width) {
+            // move the mouse to the oppsite side
+            try {
+                Robot robot = new Robot();
+                // If
+                robot.mouseMove(
+                        StaticRefs.getMainFrame().getLocationOnScreen().x -
+                                (StaticRefs.getSceneManager().screenSize.width + 5),
+                        e.getY() /* +
+                                (StaticRefs.getSceneManager().screenSize.height - e.getY() )*/
+                );
+                physicalMouse.addX(5);
+                old = new Point(
+                        5,
+                        e.getPoint().y
+                );
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        } else if (e.getX() - 8 <= 0 && physicalMouse.getX() - StaticRefs.getSceneManager().screenSize.width > 0) {
+            // move the mouse to the oppsite side
+            try {
+                Robot robot = new Robot();
+                // If
+                robot.mouseMove(
+                        StaticRefs.getMainFrame().getLocationOnScreen().x +
+                                (StaticRefs.getSceneManager().screenSize.width - 2),
+                        e.getY() /* +
+                                (StaticRefs.getSceneManager().screenSize.height - e.getY() )*/
+                );
+                physicalMouse.addX(-2);
+                old = new Point(
+                        StaticRefs.getSceneManager().screenSize.width - 2,
+                        e.getPoint().y
+                );
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        } else {
+            physicalMouse.addX(e.getPoint().x - old.x).addY(e.getPoint().y - old.y);
+            old = e.getPoint();
+        }
+
+        StaticRefs.getHoverLabel().setText(
+                new JLabelRichText("PHYS="+physicalMouse)
+                        .addLn("MOUSE="+e.getPoint())
+                        .wrapHTML()
+        );
     }
 }

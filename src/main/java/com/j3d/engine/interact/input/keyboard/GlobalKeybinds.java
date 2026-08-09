@@ -51,7 +51,7 @@ public enum GlobalKeybinds {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (commandPaletteFocusOwner()) return;
+                            if (commandPaletteFocusOwner() || !StaticConfig.movementControls) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
                             getCamera().setPosition(
                                     getCamera().getPosition().add(
@@ -73,7 +73,7 @@ public enum GlobalKeybinds {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (commandPaletteFocusOwner()) return;
+                            if (commandPaletteFocusOwner() || !StaticConfig.movementControls) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
                             getCamera().setPosition(
                                     getCamera().getPosition().sub(
@@ -95,7 +95,7 @@ public enum GlobalKeybinds {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (commandPaletteFocusOwner()) return;
+                            if (commandPaletteFocusOwner() || !StaticConfig.movementControls) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
                             getCamera().setPosition(
                                     getCamera().getPosition().sub(
@@ -117,7 +117,7 @@ public enum GlobalKeybinds {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (commandPaletteFocusOwner()) return;
+                            if (commandPaletteFocusOwner() || !StaticConfig.movementControls) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
                             getCamera().setPosition(
                                     getCamera().getPosition().add(
@@ -139,7 +139,7 @@ public enum GlobalKeybinds {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (commandPaletteFocusOwner()) return;
+                            if (commandPaletteFocusOwner() || !StaticConfig.movementControls) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
                             getCamera().setPosition(
                                     getCamera().getPosition().add(
@@ -161,7 +161,7 @@ public enum GlobalKeybinds {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (commandPaletteFocusOwner()) return;
+                            if (commandPaletteFocusOwner() || !StaticConfig.movementControls) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
                             getCamera().setPosition(
                                     getCamera().getPosition().sub(

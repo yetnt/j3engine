@@ -32,6 +32,10 @@ public class ToolboxButtons {
 
     static {
         registerComplex("Transform", new Subbox(s -> s
+                .add("quick translate", e -> StaticRefs.getCommandParser().runCommand(
+                        CommandsManager.commands.quickTranslateCmd, "qtrans",
+                        new ArrayList<>(), new ArrayList<>()
+                ), "translate.png")
                 .add("translate", e -> StaticRefs.getCommandParser().runCommand(
                         CommandsManager.commands.transform, "transform",
                         new ArrayList<>(List.of("translate")), new ArrayList<>()

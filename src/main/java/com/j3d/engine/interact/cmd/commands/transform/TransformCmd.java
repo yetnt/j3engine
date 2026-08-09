@@ -5,6 +5,7 @@ import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.base.SemiStatefulCommand;
 import com.j3d.engine.interact.cmd.base.conditions.SelectionPreCondition;
+import com.j3d.engine.interact.cmd.commands.qtrans.QuickTranslateCmd;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
@@ -43,7 +44,8 @@ public class TransformCmd extends Command implements SemiStatefulCommand {
         this.aliases("trans", "t", "tr", "selection").args(
                 new RotateSelection(),
                 new TranslateSelection(),
-                new ScaleSelection()
+                new ScaleSelection(),
+                new QuickTranslateCmd()
         ).parseUsages();
 //        this.usages.put(
 //                new ArrayList<>(List.of(String.class, String.class)),

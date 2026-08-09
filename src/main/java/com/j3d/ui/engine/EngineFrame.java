@@ -7,6 +7,7 @@ package com.j3d.ui.engine;
 import com.j3d.Startup;
 import com.j3d.StaticRefs;
 import com.j3d.Executor;
+import com.j3d.engine.interact.cmd.commands.qtrans.QuickTranslateCmd;
 import com.j3d.engine.scene.DefaultObjectDeletionException;
 import com.j3d.engine.math.Dim;
 import com.j3d.engine.scene.nodes.SceneObjectList;
@@ -559,6 +560,7 @@ public class EngineFrame extends javax.swing.JFrame {
         owners.add(TranslateSelection.translateMouseOwner);
         owners.add(RotateSelection.rotateMouseOwner);
         owners.add(OrbitCmd.orbitMouseOwner);
+        owners.add(QuickTranslateCmd.qTranslateMouseOwner);
 
         owners.forEach(m -> {
             this.addMouseMotionListener(m);

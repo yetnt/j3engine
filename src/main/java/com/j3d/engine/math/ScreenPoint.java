@@ -11,7 +11,6 @@ import java.awt.*;
  *     All 2d points should be calculated in {@link CartesianPoint}, but when you want to show it on the screen, converted to a {@link ScreenPoint}
  * </p>
  * @author Lehlogonolo Poole
- * @see #toScreen()
  * @see Vector3
  * @see BasePoint
  */

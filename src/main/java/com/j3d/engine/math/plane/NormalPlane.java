@@ -17,6 +17,7 @@ public record NormalPlane(
         Vector3 normal
 ) {
 
+
     /**
      * Converts this {@code NormalPlane} into an {@code AxisPlane}.
      * This method calculates two orthogonal vectors (x and y) that lie within the plane,

@@ -58,6 +58,7 @@ public abstract class StaticConfig {
      * How the objects should be drawn.
      */
     public static ViewType viewType = ViewType.NORMAL;
+    public static boolean movementControls = true;
 
     /// Literally could be set by [com.j3d.ui.home.Projects] or something else.
     public static void defaultLogin() {
