@@ -65,14 +65,14 @@ public class Triangle implements Pure {
                     if (StaticConfig.getViewType() == ViewType.NORMAL) {
                         g.setColor(parent.getColour());
                         g.fillPolygon(new int[]{
-                                        p1.toPoint(StaticRefs.getCamera()).toScreen(getSceneManager()).x,
-                                        p2.toPoint(StaticRefs.getCamera()).toScreen(getSceneManager()).x,
-                                        p3.toPoint(StaticRefs.getCamera()).toScreen(getSceneManager()).x
+                                        p1.toPoint(StaticRefs.getCamera()).toScreen().x,
+                                        p2.toPoint(StaticRefs.getCamera()).toScreen().x,
+                                        p3.toPoint(StaticRefs.getCamera()).toScreen().x
                                 },
                                 new int[]{
-                                        p1.toPoint(StaticRefs.getCamera()).toScreen(getSceneManager()).y,
-                                        p2.toPoint(StaticRefs.getCamera()).toScreen(getSceneManager()).y,
-                                        p3.toPoint(StaticRefs.getCamera()).toScreen(getSceneManager()).y
+                                        p1.toPoint(StaticRefs.getCamera()).toScreen().y,
+                                        p2.toPoint(StaticRefs.getCamera()).toScreen().y,
+                                        p3.toPoint(StaticRefs.getCamera()).toScreen().y
                                 },
                                 3
                         );
@@ -83,14 +83,14 @@ public class Triangle implements Pure {
                         g.setColor(parent.getColour().brighter());
                         g.setStroke(new BasicStroke(2));
                         g.fillPolygon(new int[]{
-                                        p1.toPoint(StaticRefs.getCamera()).toScreen(getSceneManager()).x,
-                                        p2.toPoint(StaticRefs.getCamera()).toScreen(getSceneManager()).x,
-                                        p3.toPoint(StaticRefs.getCamera()).toScreen(getSceneManager()).x
+                                        p1.toPoint(StaticRefs.getCamera()).toScreen().x,
+                                        p2.toPoint(StaticRefs.getCamera()).toScreen().x,
+                                        p3.toPoint(StaticRefs.getCamera()).toScreen().x
                                 },
                                 new int[]{
-                                        p1.toPoint(StaticRefs.getCamera()).toScreen(getSceneManager()).y,
-                                        p2.toPoint(StaticRefs.getCamera()).toScreen(getSceneManager()).y,
-                                        p3.toPoint(StaticRefs.getCamera()).toScreen(getSceneManager()).y
+                                        p1.toPoint(StaticRefs.getCamera()).toScreen().y,
+                                        p2.toPoint(StaticRefs.getCamera()).toScreen().y,
+                                        p3.toPoint(StaticRefs.getCamera()).toScreen().y
                                 },
                                 3
                         );

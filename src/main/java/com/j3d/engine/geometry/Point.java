@@ -45,7 +45,7 @@ public class Point extends Vector3 implements Pure {
                         if (point.hasParent())
                             return;
                     g.setColor(point.getColour());
-                    ScreenPoint p = getPivot().toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager());
+                    ScreenPoint p = getPivot().toPoint(StaticRefs.getCamera()).toScreen();
                     g.fillOval(p.x - DIAMETER / 2, p.y - DIAMETER / 2, DIAMETER, DIAMETER);
                 },
                 (g) -> {
@@ -54,7 +54,7 @@ public class Point extends Vector3 implements Pure {
                             return;
                         }
                     g.setColor(Color.WHITE);
-                    ScreenPoint p = this.getPivot().toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager());
+                    ScreenPoint p = this.getPivot().toPoint(StaticRefs.getCamera()).toScreen();
                     g.fillOval(p.x - (DIAMETER+1) / 2, p.y - (DIAMETER+1) / 2, (DIAMETER+1), (DIAMETER+1));
                 }
         );

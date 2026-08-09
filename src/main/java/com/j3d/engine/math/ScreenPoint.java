@@ -1,9 +1,6 @@
 package com.j3d.engine.math;
 
-import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.math.matrix.Vector3;
-import com.j3d.StaticConfig;
-import com.j3d.gen.settings.Settings;
 
 import java.awt.*;
 
@@ -14,7 +11,7 @@ import java.awt.*;
  *     All 2d points should be calculated in {@link CartesianPoint}, but when you want to show it on the screen, converted to a {@link ScreenPoint}
  * </p>
  * @author Lehlogonolo Poole
- * @see CartesianPoint#toScreen(SceneManager)
+ * @see #toScreen()
  * @see Vector3
  * @see BasePoint
  */
@@ -31,19 +28,16 @@ public class ScreenPoint extends BasePoint<Integer> {
 
     /**
      * Converts this ScreenPoint back into it's CartesianPoint. (Accuracy is not guaranteed.)
-     * @param sceneManager The SceneManager Instance.
      * @return A CartesianPoint
      */
-    public CartesianPoint toPoint(SceneManager sceneManager) {
-        double adjustedX = ((x + StaticConfig.OFFSET_X) - sceneManager.screenSize.width / 2.0) / Settings.sceneProperties.scale.getValue();
-        double adjustedY = (sceneManager.screenSize.height / 2.0 - y) / Settings.sceneProperties.scale.getValue();
-
-        return new CartesianPoint(adjustedX, adjustedY);
+    public CartesianPoint toPoint() {
+        return
+                toPoint(ConversionProperties.global());
     }
 
-    public CartesianPoint toPointWithProps(double scale, Dim size) {
-        double adjustedX = ((x)- size.width / 2.0) / scale;
-        double adjustedY = (size.height / 2.0 - y) / scale;
+    public CartesianPoint toPoint(ConversionProperties conversionProperties) {
+        double adjustedX = ((x)- conversionProperties.size().width / 2.0) / conversionProperties.scale();
+        double adjustedY = (conversionProperties.size().height / 2.0 - y) / conversionProperties.scale();
         return new CartesianPoint(adjustedX, adjustedY);
     }
 

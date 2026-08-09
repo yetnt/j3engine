@@ -9,7 +9,6 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 import static com.j3d.StaticRefs.getCamera;
-import static com.j3d.StaticRefs.getSceneManager;
 
 public class Segment implements Pure {
 
@@ -45,10 +44,10 @@ public class Segment implements Pure {
     public RenderState<Segment, GObject> toRenderState(GObject parent) {
         Consumer<Graphics2D> swingDraw = (graphics2D) -> {
             graphics2D.drawLine(
-                    start.toPoint(getCamera()).toScreen(getSceneManager()).x,
-                    start.toPoint(getCamera()).toScreen(getSceneManager()).y,
-                    end.toPoint(getCamera()).toScreen(getSceneManager()).x,
-                    end.toPoint(getCamera()).toScreen(getSceneManager()).y
+                    start.toPoint(getCamera()).toScreen().x,
+                    start.toPoint(getCamera()).toScreen().y,
+                    end.toPoint(getCamera()).toScreen().x,
+                    end.toPoint(getCamera()).toScreen().y
             );
         };
         RenderState<Segment, GObject> rs = Pure.super.toRenderState(parent);
@@ -77,10 +76,10 @@ public class Segment implements Pure {
 
     public void swingDraw(Graphics2D graphics2D) {
         graphics2D.drawLine(
-                start.toPoint(getCamera()).toScreen(getSceneManager()).x,
-                start.toPoint(getCamera()).toScreen(getSceneManager()).y,
-                end.toPoint(getCamera()).toScreen(getSceneManager()).x,
-                end.toPoint(getCamera()).toScreen(getSceneManager()).y
+                start.toPoint(getCamera()).toScreen().x,
+                start.toPoint(getCamera()).toScreen().y,
+                end.toPoint(getCamera()).toScreen().x,
+                end.toPoint(getCamera()).toScreen().y
         );
     }
 }

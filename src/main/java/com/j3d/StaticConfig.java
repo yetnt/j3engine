@@ -1,11 +1,8 @@
 package com.j3d;
 
-import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.draw.ViewType;
 import com.j3d.engine.scene.draw.PureSortMethod;
 import com.j3d.engine.math.Dim;
-import com.j3d.engine.math.ScreenPoint;
-import com.j3d.engine.math.CartesianPoint;
 import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.layer.Layer;
@@ -26,11 +23,11 @@ public abstract class StaticConfig {
      */
     public static final int jMenuBarOffsetY = 20;
     /**
-     * A constant offset used within {@link CartesianPoint#toScreen(SceneManager)} and
-     * {@link ScreenPoint#toPoint(SceneManager)} to shift all x values {@code 200} pixels closer to the centre
+     * A constant offset used within {@link #toScreen()} and
+     * {@link #toPoint()} to shift all x values {@code 200} pixels closer to the centre
      * of the screen.
      */
-    public static final int OFFSET_X = 200;
+    public static final int OFFSET_X = 0;
     public static User user;
     public static boolean hasSaved = false;
     /**

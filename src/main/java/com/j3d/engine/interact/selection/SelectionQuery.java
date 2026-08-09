@@ -112,12 +112,12 @@ public class SelectionQuery extends Rectangle {
     }
 
     public boolean has(Vector3 point) {
-        return contains(point.toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager()).toSwingPoint());
+        return contains(point.toPoint(StaticRefs.getCamera()).toScreen().toSwingPoint());
     }
 
     public boolean intersectsWith(Segment line) {
-        ScreenPoint A = line.getStart().toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager());
-        ScreenPoint B = line.getEnd().toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager());
+        ScreenPoint A = line.getStart().toPoint(StaticRefs.getCamera()).toScreen();
+        ScreenPoint B = line.getEnd().toPoint(StaticRefs.getCamera()).toScreen();
 
         ScreenPoint rectA = points[0];
         ScreenPoint rectB = new ScreenPoint(points[0].x, points[1].y);

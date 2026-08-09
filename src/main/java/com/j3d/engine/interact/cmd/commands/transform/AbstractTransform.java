@@ -158,7 +158,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
                     )
                     .filter(
                             a -> {
-                                ScreenPoint Asp = a.getPivot().toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager());
+                                ScreenPoint Asp = a.getPivot().toPoint(StaticRefs.getCamera()).toScreen();
                                 // a matching points is within 5 up down left or right of the target
                                 return Math.abs(Asp.x - target.x) < 5 && Math.abs(Asp.y - target.y) < 5;
                             }
@@ -327,7 +327,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
             // draw X at the centre.
             g.setColor(new Color(148, 0, 0));
             g.setStroke(new BasicStroke(3));
-            ScreenPoint sp = center.toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager());
+            ScreenPoint sp = center.toPoint(StaticRefs.getCamera()).toScreen();
             int crossSize = 10; // Size of the 'X' cross
             g.drawLine(sp.x - crossSize, sp.y - crossSize, sp.x + crossSize, sp.y + crossSize);
             g.drawLine(sp.x + crossSize, sp.y - crossSize, sp.x - crossSize, sp.y + crossSize);

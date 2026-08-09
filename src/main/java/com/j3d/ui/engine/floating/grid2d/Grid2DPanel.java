@@ -4,24 +4,31 @@
  */
 package com.j3d.ui.engine.floating.grid2d;
 
+import com.j3d.StaticRefs;
+import com.j3d.engine.math.ConversionProperties;
 import com.j3d.engine.math.Dim;
 import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.math.CartesianPoint;
 import com.j3d.engine.math.plane.AxisPlane;
 import com.j3d.engine.math.matrix.Vector3;
-import com.j3d.engine.interact.input.keyboard.KeyBindings;
+import com.j3d.engine.scene.find.FindResult;
+import com.j3d.engine.scene.find.Finder;
+import com.j3d.engine.scene.nodes.Thing;
+import com.j3d.engine.scene.nodes.geometry.GObject;
+import com.j3d.gen.grid.GridObject;
+import com.j3d.gen.grid.Line;
+import com.j3d.gen.grid.Point;
 import com.j3d.ui.engine.FloatingPanel;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.utility.generic.SamePair;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.util.ArrayList;
+import java.awt.event.*;
+import java.util.*;
 import java.util.List;
-import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.j3d.StaticRefs.*;
@@ -35,23 +42,27 @@ public class Grid2DPanel extends javax.swing.JPanel {
     public FloatingPanel floatingPanel = new FloatingPanel("History Panel");
     public static CartesianPoint mousePosInPanel = new CartesianPoint(0, 0);
 
+    private ArrayList<GridObject<?>> gridObjects = new ArrayList<>();
     private final int radius = 10;
     private final UUID overlapId = UUID.randomUUID();
+    private HashMap<UUID, Consumer<Graphics2D>> temp = new HashMap<>();
 
     private double scale = 20;
-    private final KeyBindings keyBindings;
 
     // default parameters.
     private Vector3 v1 = Vector3.X;
     private Vector3 v2 = Vector3.Z;
     private Vector3 origin = Vector3.ZERO;
 
+    private boolean deleteMode = false;
+    private CartesianPoint to;
+    private CartesianPoint from;
+
     /**
      * Creates new form Grid2DPanel
      */
     public Grid2DPanel() {
         initComponents();
-        keyBindings = new KeyBindings(this.getInputMap(), this.getActionMap());
         floatingPanel.finish(this, (c) -> {
             if (!(c instanceof JPanel p)) return;
             p.setBounds(0, 0, p.getPreferredSize().width, p.getPreferredSize().height);
@@ -60,14 +71,20 @@ public class Grid2DPanel extends javax.swing.JPanel {
         initMouse();
 
         ((Grid)drawPanel).setConsumer((g) -> {
+            // Draw the origin point
+            ConversionProperties props = new ConversionProperties(
+                    scale,
+                    new Dim(drawPanel.getWidth(), drawPanel.getHeight())
+            );
             CartesianPoint cp = new CartesianPoint(0, 0);
             ScreenPoint sp =
-                    cp.toScreenWithProps(
-                            scale,
-                            new Dim(drawPanel.getWidth(), drawPanel.getHeight())
+                    cp.toScreen(
+                            props
                     );
+            g.setColor(J3DTheme.TEXT_PRIMARY.color());
+            g.fillOval(sp.x - radius/2, sp.y - radius/2, radius, radius);
 
-            g.drawOval(sp.x - radius, sp.y - radius, radius*2, radius*2);
+            // Draw all the grid lines
             pts.forEach(p -> {
                 g.drawLine(
                         p.first.x,
@@ -75,6 +92,12 @@ public class Grid2DPanel extends javax.swing.JPanel {
                         p.second.x,
                         p.second.y
                 );
+            });
+            gridObjects.forEach(
+                    gr -> gr.draw(g, props)
+            );
+            temp.forEach((i, s) -> {
+                s.accept(g);
             });
         });
         getSceneManager().scheduleOverlap(
@@ -86,13 +109,24 @@ public class Grid2DPanel extends javax.swing.JPanel {
                             .toWorld(mousePosInPanel);
                     ScreenPoint sp =
                             point.toPoint(getCamera())
-                                            .toScreen(getSceneManager());
+                                            .toScreen();
                     g.setColor(Color.cyan);
                     g.drawOval(sp.x - radius, sp.y - radius, radius*2, radius*2);
                     g.setColor(Color.white);
                     getMainPanel().repaint();
+                    gridObjects.forEach(gr -> gr.drawWorld(g, new AxisPlane(origin, v1, v2)));
                 }
         );
+        this.addComponentListener(
+                new ComponentAdapter() {
+                    @Override
+                    public void componentResized(ComponentEvent e) {
+                        gridRepaint();
+                    }
+                }
+        );
+        grid();
+        theme();
     }
 
     public static void drawMouse(Graphics2D g, CartesianPoint mousePos, AxisPlane plane) {
@@ -135,7 +169,7 @@ public class Grid2DPanel extends javax.swing.JPanel {
 
     private CartesianPoint toPoint(ScreenPoint p, boolean round) {
         Dim dim = getGrid().sizeDim();
-        CartesianPoint cp = p.toPointWithProps(scale, dim);
+        CartesianPoint cp = p.toPoint(new ConversionProperties(scale, dim));
         if (round) {
             return new CartesianPoint(
                     Math.round(cp.x),
@@ -146,10 +180,13 @@ public class Grid2DPanel extends javax.swing.JPanel {
         return cp;
     }
 
-    private void gridRepaint(MouseEvent e) {
+    private void gridRepaint() {
         pts.clear();
-        grid(new ScreenPoint(e.getX(), e.getY()));
+        grid();
+        drawPanel.repaint();
     }
+
+    UUID drag = UUID.randomUUID();
 
     private void initMouse() {
         final Grid2DPanel t = this;
@@ -160,9 +197,39 @@ public class Grid2DPanel extends javax.swing.JPanel {
                         super.mouseClicked(e);
                         t.requestFocus();
                         ScreenPoint sp = new ScreenPoint(e.getX(), e.getY());
-                        System.out.println(toPoint(sp, false));
+                        CartesianPoint snapped = toPoint(sp, true);
+                        if (deleteMode) {
+                            delete(snapped);
+                        } else existing(() -> new Point(snapped));
+                        System.out.println(snapped);
                         drawPanel.repaint();
                     }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+                        super.mouseReleased(e);
+//                        t.requestFocus();
+                        temp.remove(drag);
+                        ScreenPoint sp = new ScreenPoint(e.getX(), e.getY());
+                        CartesianPoint snapped = toPoint(sp, true);
+
+                        ScreenPoint mousePos = mousePosInPanel.toScreen(new ConversionProperties(
+                                scale,
+                                getGrid().sizeDim()
+                        ));
+                        CartesianPoint cp = toPoint(mousePos, true);
+
+                        System.out.println("From " + cp + " to " + snapped);
+                        Line l = new Line(snapped, cp);
+                        if (deleteMode) {
+                            delete(l);
+                        } else {
+                            existing(() -> new Point(snapped));
+                            existing(() -> new Point(cp));
+                            gridObjects.add(l);
+                        }
+                    }
+
                 }
         );
         drawPanel.addMouseMotionListener(
@@ -172,9 +239,32 @@ public class Grid2DPanel extends javax.swing.JPanel {
                         super.mouseMoved(e);
                         mousePosInPanel =
                                 new ScreenPoint(e.getX(), e.getY())
-                                        .toPointWithProps(scale, getGrid().sizeDim());
-                        gridRepaint(e);
+                                        .toPoint(new ConversionProperties(scale, getGrid().sizeDim()));
                         drawPanel.repaint();
+                    }
+
+                    @Override
+                    public void mouseDragged(MouseEvent e) {
+                        super.mouseDragged(e);
+                        ScreenPoint sp = new ScreenPoint(e.getX(), e.getY());
+                        to = toPoint(sp, true);
+
+                        ConversionProperties cp = new ConversionProperties(
+                                scale,
+                                getGrid().sizeDim()
+                        );
+                        from = toPoint(mousePosInPanel.toScreen(cp), true);
+
+                        gridRepaint();
+                        if (!temp.containsKey(drag)) {
+                            temp.put(drag, (g) -> Line.drawLine(
+                                    () -> deleteMode ? Color.RED : J3DTheme.TEXT_SECONDARY.color(),
+                                    () -> to,
+                                    () -> from,
+                                    g,
+                                    cp
+                            ));
+                        }
                     }
                 }
         );
@@ -183,13 +273,70 @@ public class Grid2DPanel extends javax.swing.JPanel {
                     @Override
                     public void mouseWheelMoved(MouseWheelEvent e) {
                         super.mouseWheelMoved(e);
-//                        scale = Math.max(1, scale+e.getWheelRotation());
                         scale *= Math.pow(1.1, -e.getWheelRotation());
-                        gridRepaint(e);
-                        drawPanel.repaint();
+                        gridRepaint();
                     }
                 }
         );
+    }
+
+    private void existing(Supplier<Point> p) {
+        Point o = p.get();
+        Point p2 = gridObjects
+                .stream()
+                .filter(
+                        o2 -> o2 instanceof Point
+                )
+                .map(
+                        o2 -> (Point)o2
+                )
+                .filter(
+                        point -> point.getPoint().equals(o.getPoint())
+                )
+                .findFirst()
+                .orElse(null);
+        if (p2 == null) {
+            gridObjects.add(o);
+        }
+    }
+
+    private void delete(CartesianPoint snapped) {
+        // look for a point at the current position, if any matches delete said points.
+        new ArrayList<>(gridObjects).stream()
+                .filter(
+                        o -> o instanceof Point
+                )
+                .map(
+                        o -> (Point) o
+                )
+                .filter(
+                        point -> point.getPoint().equals(snapped)
+                )
+                .forEach(gridObjects::remove);
+    }
+
+    private void delete(Line l) {
+        // if this line intersects with any other line in this list, delete that line
+        new ArrayList<>(gridObjects)
+                .stream()
+                .peek(o -> {
+                    if (o instanceof Point p)
+                        if (p.getPoint().equals(l.getP1()) || p.getPoint().equals(l.getP2()))
+                            gridObjects.remove(p);
+                })
+                .filter(
+                        lw -> lw instanceof Line
+                )
+                .map(
+                        lw -> (Line) lw
+                )
+                .filter(
+                        lw ->
+                                (lw.getP1().equals(l.getP1()) && lw.getP2().equals(l.getP2()))
+                        || (lw.getP1().equals(l.getP2()) && lw.getP2().equals(l.getP1()))
+                        || Line.intersects(l, lw)
+                )
+                .forEach(gridObjects::remove);
     }
 
     public void toggleHidden()  {
@@ -203,42 +350,40 @@ public class Grid2DPanel extends javax.swing.JPanel {
         return (Grid) drawPanel;
     }
 
-    private void regInGrid(CartesianPoint p, CartesianPoint s) {
+    private void  regInGrid(CartesianPoint p, CartesianPoint s) {
         Dim dim = getGrid().sizeDim();
+        ConversionProperties conversionProperties = new ConversionProperties(scale, dim);
         pts.add(
                 new SamePair<>(
-                        p.toScreenWithProps(scale, dim),
-                        s.toScreenWithProps(scale, dim)
+                        p.toScreen(conversionProperties),
+                        s.toScreen(conversionProperties)
                 )
         );
     }
 
-    private void grid(ScreenPoint sp) {
-        CartesianPoint cp = toPoint(sp, true);
-        int offset = 4;
-        CartesianPoint rightBottom = new CartesianPoint(
-                cp.x + offset,
-                cp.y - offset
-        );
-        CartesianPoint leftTop = new CartesianPoint(
-                cp.x - offset,
-                cp.y + offset
-        );
-        CartesianPoint rightTop = new CartesianPoint(
-                cp.x + offset,
-                cp.y + offset
-        );
-        for (int i = offset*2; i >= 0; i--) {
-            regInGrid(
-                    new CartesianPoint(leftTop.x, leftTop.y + i - offset),
-                    new CartesianPoint(rightTop.x, rightTop.y + i - offset)
-            );
-            regInGrid(
-                    new CartesianPoint(rightBottom.x - i, rightBottom.y + offset),
-                    new CartesianPoint(rightTop.x - i, rightTop.y + offset)
-            );
+    private void grid() {
+        Dim panelSize = getGrid().sizeDim();
+        if (panelSize.width == 0 || panelSize.height == 0) return;
+
+        // Convert screen corners to Cartesian points to find the bounds
+        ConversionProperties conversionProperties = new ConversionProperties(scale, panelSize);
+        CartesianPoint topLeft = new ScreenPoint(0, 0).toPoint(conversionProperties);
+        CartesianPoint bottomRight = new ScreenPoint(panelSize.width, panelSize.height).toPoint(conversionProperties);
+
+        double startX = Math.floor(topLeft.x);
+        double endX = Math.ceil(bottomRight.x);
+        double startY = Math.floor(bottomRight.y);
+        double endY = Math.ceil(topLeft.y);
+
+        // Draw vertical lines
+        for (double x = startX; x <= endX; x++) {
+            regInGrid(new CartesianPoint(x, startY), new CartesianPoint(x, endY));
         }
-        drawPanel.repaint();
+
+        // Draw horizontal lines
+        for (double y = startY; y <= endY; y++) {
+            regInGrid(new CartesianPoint(startX, y), new CartesianPoint(endX, y));
+        }
     }
 
     private Vector3 parseV3Str(String accumulator) {
@@ -285,6 +430,22 @@ public class Grid2DPanel extends javax.swing.JPanel {
         return v;
     }
 
+    public void theme() {
+        J3DTheme.commitAsGenericLbl(propertiesLbl, false);
+        J3DTheme.commitAsGenericLbl(jLabel1, false);
+        J3DTheme.commitAsGenericLbl(renderBtn, true);
+        J3DTheme.commitAsGenericLbl(xCompBtn, true);
+        J3DTheme.commitAsGenericLbl(yCompBtn, true);
+        J3DTheme.commitAsGenericLbl(setOriginBtn, true);
+        J3DTheme.commitAsGenericLbl(presetComboBox, true);
+        J3DTheme.commitAsGenericLbl(jLabel2, false);
+        J3DTheme.commitAsGenericLbl(jSeparator1, false);
+        J3DTheme.commitAsGenericUi(btnPanel);
+        J3DTheme.commitAsGenericUi(drawPanel);
+        J3DTheme.commitAsGenericUi(floatingPanel);
+        J3DTheme.commitAsGenericLbl(jCheckBox1, true);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -304,10 +465,15 @@ public class Grid2DPanel extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         setOriginBtn = new javax.swing.JButton();
+        jCheckBox1 = new javax.swing.JCheckBox();
         drawPanel = new Grid();
 
         setLayout(new java.awt.BorderLayout());
 
+        btnPanel.setBackground(J3DTheme.UI_SURFACE.color());
+
+        presetComboBox.setBackground(J3DTheme.BACKGROUND.color());
+        presetComboBox.setForeground(J3DTheme.TEXT_PRIMARY.color());
         presetComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "XY", "XZ", "YZ" }));
         presetComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -315,8 +481,11 @@ public class Grid2DPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel1.setForeground(J3DTheme.TEXT_PRIMARY.color());
         jLabel1.setText("Presets");
 
+        renderBtn.setBackground(J3DTheme.BACKGROUND.color());
+        renderBtn.setForeground(J3DTheme.TEXT_PRIMARY.color());
         renderBtn.setText("Render");
         renderBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -324,8 +493,11 @@ public class Grid2DPanel extends javax.swing.JPanel {
             }
         });
 
+        propertiesLbl.setForeground(J3DTheme.TEXT_PRIMARY.color());
         propertiesLbl.setText("Grid Properties Label (like obj count)");
 
+        xCompBtn.setBackground(J3DTheme.BACKGROUND.color());
+        xCompBtn.setForeground(J3DTheme.TEXT_PRIMARY.color());
         xCompBtn.setText("Change X component");
         xCompBtn.setToolTipText("Change the vector of the 2d plane. Rather use presets.");
         xCompBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -334,6 +506,8 @@ public class Grid2DPanel extends javax.swing.JPanel {
             }
         });
 
+        yCompBtn.setBackground(J3DTheme.BACKGROUND.color());
+        yCompBtn.setForeground(J3DTheme.TEXT_PRIMARY.color());
         yCompBtn.setText("Change Y component");
         yCompBtn.setToolTipText("Change the vector of the 2d plane. Rather use presets.");
         yCompBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -342,16 +516,27 @@ public class Grid2DPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel2.setForeground(J3DTheme.TEXT_PRIMARY.color());
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Grid Definition");
 
         jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
         jSeparator1.setOpaque(true);
 
+        setOriginBtn.setBackground(J3DTheme.BACKGROUND.color());
+        setOriginBtn.setForeground(J3DTheme.TEXT_PRIMARY.color());
         setOriginBtn.setText("Set Grid Origin");
         setOriginBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 setOriginBtnActionPerformed(evt);
+            }
+        });
+
+        jCheckBox1.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        jCheckBox1.setText("delete mode");
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
             }
         });
 
@@ -375,11 +560,13 @@ public class Grid2DPanel extends javax.swing.JPanel {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(btnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(btnPanelLayout.createSequentialGroup()
-                        .addGap(93, 93, 93)
+                        .addGap(3, 3, 3)
+                        .addComponent(jCheckBox1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(btnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(renderBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(propertiesLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(7, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(btnPanelLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(setOriginBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -395,7 +582,9 @@ public class Grid2DPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(propertiesLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(renderBtn))
+                        .addGroup(btnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(renderBtn)
+                            .addComponent(jCheckBox1)))
                     .addGroup(btnPanelLayout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -412,6 +601,7 @@ public class Grid2DPanel extends javax.swing.JPanel {
 
         add(btnPanel, java.awt.BorderLayout.NORTH);
 
+        drawPanel.setBackground(J3DTheme.UI_SURFACE.color());
         drawPanel.setMinimumSize(new java.awt.Dimension(496, 397));
         drawPanel.setPreferredSize(new java.awt.Dimension(496, 397));
 
@@ -419,7 +609,7 @@ public class Grid2DPanel extends javax.swing.JPanel {
         drawPanel.setLayout(drawPanelLayout);
         drawPanelLayout.setHorizontalGroup(
             drawPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 547, Short.MAX_VALUE)
+            .addGap(0, 553, Short.MAX_VALUE)
         );
         drawPanelLayout.setVerticalGroup(
             drawPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -448,7 +638,44 @@ public class Grid2DPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_yCompBtnActionPerformed
 
     private void renderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renderBtnActionPerformed
-        // TODO add your handling code here:
+        ArrayList<GridObject<?>> gridObjects1 = new ArrayList<>(gridObjects);
+        gridObjects1.sort((p1, p2) -> {
+            // sort Point over Line
+            if (p1 instanceof Point && p2 instanceof Line) {
+                return -1;
+            } else if (p1 instanceof Line && p2 instanceof Point) {
+                return 1;
+            }
+            return 0;
+        });
+        ArrayList<GObject> objects = new ArrayList<>();
+        for (GridObject<?> g : gridObjects1) {
+            GObject go = g.render(
+                    new AxisPlane(origin, v1, v2),
+                    new ArrayList<>(objects)
+            );
+            if (go == null) continue;
+            objects.add(go);
+        }
+
+        // find all stuff named render within the entire thing
+        ArrayList<FindResult> result = getSceneManager()
+                .finder.find(Thing.class, Finder.nameQuery(), "render");
+
+        // create a new thing.
+        Thing thing = new Thing(
+                StaticRefs.getSceneManager(),
+                StaticRefs.getSceneManager().usableLayer(),
+                "render" + result.size()
+        );
+
+        thing.addObjs(
+                objects.toArray(GObject[]::new)
+        );
+
+        // clear.
+        gridObjects.clear();
+
     }//GEN-LAST:event_renderBtnActionPerformed
 
     private void presetComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_presetComboBoxActionPerformed
@@ -470,10 +697,15 @@ public class Grid2DPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_presetComboBoxActionPerformed
 
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        deleteMode = !deleteMode;
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel btnPanel;
     private javax.swing.JPanel drawPanel;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JSeparator jSeparator1;

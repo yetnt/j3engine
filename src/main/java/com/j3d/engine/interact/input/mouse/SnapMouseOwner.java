@@ -107,7 +107,7 @@ public class SnapMouseOwner extends MouseOwner {
                 GObject obj = snappingCandidates.get(i);
                 boolean isLine = obj instanceof GLine;
                 Vector3 pos = obj.getPivot(); // if it's a line this is the midpoint.
-                ScreenPoint sp = pos.toPoint(getCamera()).toScreen(getSceneManager());
+                ScreenPoint sp = pos.toPoint(getCamera()).toScreen();
 
                 if (isLine) {
                     // draw triangle at sp for midpoint. using Graphics2D

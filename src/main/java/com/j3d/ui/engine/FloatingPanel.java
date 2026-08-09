@@ -8,8 +8,7 @@ import com.j3d.StaticRefs;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.util.function.Consumer;
 import com.j3d.ui.theme.J3DTheme;
 

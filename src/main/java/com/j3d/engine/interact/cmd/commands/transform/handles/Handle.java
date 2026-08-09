@@ -97,7 +97,7 @@ public class Handle {
      * @return The calculated {@link ScreenPoint}.
      */
     public ScreenPoint toSp() {
-        return position.toPoint(StaticRefs.getCamera()).toScreen(StaticRefs.getSceneManager());
+        return position.toPoint(StaticRefs.getCamera()).toScreen();
     }
 
     /**

@@ -189,8 +189,8 @@ public class SceneManager {
     }
 
     public void drawLine3D(Graphics2D g, Vector3 start, Vector3 end, Camera cam) {
-        ScreenPoint p1 = start.toPoint(cam).toScreen(this);
-        ScreenPoint p2 = end.toPoint(cam).toScreen(this);
+        ScreenPoint p1 = start.toPoint(cam).toScreen();
+        ScreenPoint p2 = end.toPoint(cam).toScreen();
         if (p1 != null && p2 != null) {
             g.drawLine(p1.x, p1.y, p2.x, p2.y);
         }
@@ -205,7 +205,7 @@ public class SceneManager {
      * @param cam The {@link Camera} instance used for perspective transformation.
      */
     public void drawText3D(Graphics2D g, Vector3 location, String text, Camera cam) {
-        ScreenPoint p = location.toPoint(cam).toScreen(this);
+        ScreenPoint p = location.toPoint(cam).toScreen();
         FontMetrics fm = g.getFontMetrics();
         int width = fm.stringWidth(text);
         int height = fm.getHeight();
@@ -227,7 +227,7 @@ public class SceneManager {
      * @param fgColor The foreground color for the text.
      */
     public void drawText3D(Graphics2D g, Vector3 location, String text, Camera cam, Color bgColor, Color fgColor) {
-        ScreenPoint p = location.toPoint(cam).toScreen(this);
+        ScreenPoint p = location.toPoint(cam).toScreen();
         FontMetrics fm = g.getFontMetrics();
         int width = fm.stringWidth(text);
         int height = fm.getHeight();
@@ -246,7 +246,7 @@ public class SceneManager {
             Vector3 v = points.get(i);
             ScreenPoint sp = v
                     .toPoint(StaticRefs.getCamera())
-                    .toScreen(this);
+                    .toScreen();
 
             xPoints[i] = sp.x;
             yPoints[i] = sp.y;
@@ -434,5 +434,10 @@ public class SceneManager {
         unparented.clear();
         history.clear(); // also clears backup.
         StaticRefs.getMainPanel().repaint();
+    }
+
+    public void drawTriangle3D(Graphics2D graphics2D, Vector3 pos1, Vector3 pos2, Vector3 pos3) {
+        ArrayList<Vector3> points = new ArrayList<>(List.of(pos1, pos2, pos3));
+        drawPoly3D(graphics2D, points);
     }
 }

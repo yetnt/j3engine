@@ -1,9 +1,6 @@
 package com.j3d.engine.math;
 
-import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.math.matrix.Vector3;
-import com.j3d.StaticConfig;
-import com.j3d.gen.settings.Settings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +15,7 @@ import java.util.Objects;
  * want to show it on the screen, converted to a {@link ScreenPoint}
  * @author Lehlogonolo Poole
  * @see ScreenPoint
- * @see CartesianPoint#toScreen(SceneManager)
+ * @see #toScreen()
  * @see BasePoint
  * @see Vector3
  */
@@ -57,10 +54,9 @@ public class CartesianPoint extends BasePoint<Double> {
 
     /**
      * Converts the Cartesian Point to a {@link ScreenPoint} such that it can be viewed on the user's window.
-     * @param sceneManager The sceneManager instance.
      * @return A ScreenPoint
      */
-    public ScreenPoint toScreen(SceneManager sceneManager) {
+    public ScreenPoint toScreen() {
 //        double adjustedX = x * Settings.sceneProperties.scale.getValue();
 //        double adjustedY = y * Settings.sceneProperties.scale.getValue();
 //
@@ -70,11 +66,9 @@ public class CartesianPoint extends BasePoint<Double> {
 //
 //        return new ScreenPoint(screenX - StaticConfig.OFFSET_X, screenY);
 
-        ScreenPoint s = toScreenWithProps(
-                Settings.sceneProperties.scale.getValue(),
-                sceneManager.screenSize
+        return toScreen(
+                ConversionProperties.global()
         );
-        return new ScreenPoint(s.x - StaticConfig.OFFSET_X, s.y);
     }
 
 
@@ -84,19 +78,19 @@ public class CartesianPoint extends BasePoint<Double> {
      * @param size The dimensions (width and height) of the screen or target area.
      * @return A ScreenPoint representing the converted coordinates.
      */
-    public ScreenPoint toScreenWithProps(double scale, Dim size) {
-        double adjustedX = x * scale;
-        double adjustedY = y * scale;
+    public ScreenPoint toScreen(ConversionProperties conversionProperties) {
+        double adjustedX = x * conversionProperties.scale();
+        double adjustedY = y * conversionProperties.scale();
 
-        int screenX = (int) (adjustedX + (double) size.width / 2);
-        int screenY = (int) ((double) size.height / 2 - adjustedY);
+        int screenX = (int) (adjustedX + (double) conversionProperties.size().width / 2);
+        int screenY = (int) ((double) conversionProperties.size().height / 2 - adjustedY);
 
 
         return new ScreenPoint(screenX, screenY);
     }
 
     /**
-     * Converts a 2 dimensional array into a cartesian point.
+     * Converts a 2-dimensional array into a cartesian point.
      * <p>
      * Generally used by Jaiva Implementation where points can be represented by [X, Y]
      * @param arr The array.
