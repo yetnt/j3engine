@@ -6,11 +6,9 @@ import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.engine.interact.input.mouse.MouseOwner;
 import com.j3d.StaticConfig;
 import com.j3d.gen.settings.Settings;
-import com.j3d.ui.engine.EngineFrame;
 import com.j3d.ui.theme.CursorManager;
 import com.j3d.ui.theme.CursorNames;
 
-import java.awt.*;
 import java.awt.event.MouseEvent;
 
 /**
@@ -24,7 +22,6 @@ import java.awt.event.MouseEvent;
  * @see OrbitCmd
  */
 public class OrbitMouseOwner extends MouseOwner {
-    private int startX, startY;
 
     public OrbitMouseOwner() {
         super(MOwner.ORBIT, 0);
@@ -33,8 +30,7 @@ public class OrbitMouseOwner extends MouseOwner {
     @Override
     public void mousePressed(MouseEvent e) {
         if (isNotOwner()) return;
-        startX = e.getX();
-        startY = e.getY();
+        setOldPoint(e.getPoint());
         CursorManager.set(CursorNames.HAND_GRAB);
     }
 
@@ -42,8 +38,6 @@ public class OrbitMouseOwner extends MouseOwner {
     public void mouseReleased(MouseEvent e) {
         if (isNotOwner()) return;
         super.mouseReleased(e);
-        startX = 0;
-        startY = 0;
         CursorManager.set(CursorNames.HAND_GRAB);
         // set the mouse to the centre of the screen.
         sendMouseToCentre();
@@ -52,11 +46,13 @@ public class OrbitMouseOwner extends MouseOwner {
     @Override
     public void mouseDraggedUsingClickDelay(MouseEvent e) {
         if (isNotOwner()) return;
+        wrap(e);
         CursorManager.set(CursorNames.HAND_GRABBING);
         boolean locked = StaticConfig.lock;
 
-        int dx = e.getX() - startX;
-        int dy = e.getY() - startY;
+        int dx = getPhysicalMouse().getDeltaX();
+        int dy = getPhysicalMouse().getDeltaY();
+
 
         double dxScaled = scaleDifference(dx);
         double dyScaled = scaleDifference(dy);
@@ -84,9 +80,6 @@ public class OrbitMouseOwner extends MouseOwner {
             StaticRefs.getCamera().getRotation().setYaw(StaticRefs.getCamera().getRotation().getYaw() - dxScaled);
 
         }
-
-        startX = e.getX();
-        startY = e.getY();
 
         StaticRefs.getMainPanel().repaint();
     }

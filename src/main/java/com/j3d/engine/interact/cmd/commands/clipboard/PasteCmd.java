@@ -107,7 +107,8 @@ public class PasteCmd extends Subcommand {
                 new ArrayList<>(List.of("translate","p")),
                 new ArrayList<>(List.of(
                         new TaggedArgValue<>("copied").setName("string").setType(String.class)
-                ))
+                )),
+                this
         );
     }
 }

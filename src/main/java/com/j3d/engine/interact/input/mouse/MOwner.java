@@ -35,5 +35,13 @@ public enum MOwner {
     /**
      * Owner for orbit the camera
      */
-    ORBIT, ALWAYS, QTRANS,
+    ORBIT,
+    /**
+     * Mouse owner that always exists
+     */
+    ALWAYS,
+    /**
+     * Owner for quick translate
+     */
+    QTRANS,
 }

@@ -69,6 +69,7 @@ public class OrbitCmd extends Command implements StatefulCommand<Pair<Vector3, R
     @Override
     public void onStart(Pair<Vector3, Rotation> object, SafeJLabel label) {
         orbitMouseOwner.requestOwnership();
+        orbitMouseOwner.sendMouseToCentre();
         CursorManager.set(CursorNames.HAND_GRAB);
         StaticRefs.getMainPanel().repaint();
         StaticRefs.getSceneManager().scheduleOverlap(orbitCmdUUID, c -> label.setText(

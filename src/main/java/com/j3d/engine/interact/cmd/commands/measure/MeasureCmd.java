@@ -80,7 +80,7 @@ public class MeasureCmd extends Command {
             if (points.size() == 3) {
                 // 3 points?
 
-                area.run(Invoker.byParentCommand(this), logLabel,
+                area.run(Invoker.byCommandCall(this), logLabel,
                         "area", new Object[]{
                                 points.get(0),
                                 points.get(1),
@@ -94,7 +94,7 @@ public class MeasureCmd extends Command {
             if (points.size() != 2)
                 return;
 
-            dist.run(Invoker.byParentCommand(this), logLabel, "distance", new Object[]{
+            dist.run(Invoker.byCommandCall(this), logLabel, "distance", new Object[]{
                     points.get(0),
                     points.get(1)
             }, new ArrayList<>());
@@ -111,7 +111,7 @@ public class MeasureCmd extends Command {
 
         if (tris.size() == 1) {
             GTri tri = tris.getFirst();
-            area.run(Invoker.byParentCommand(this), logLabel,
+            area.run(Invoker.byCommandCall(this), logLabel,
                     "area", new Object[]{
                             tri.getWinding().first(),
                             tri.getWinding().second(),

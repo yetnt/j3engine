@@ -470,9 +470,31 @@ public class CommandParser {
         EngineFrame.repaintL();
     }
 
+    /**
+     * Calls a specific command. This is the default run method for anything which is labelled as invoked by the engine
+     * @param cmd The command to run
+     * @param arguments The arguments to pass to the command
+     * @param taggedArguments The tagged arguments to pass to the command
+     * @return {@code true} if the command was run successfully, {@code false} otherwise
+     */
     public boolean run(Command cmd, ArrayList<Object> arguments, ArrayList<TaggedArgValue<?>> taggedArguments) {
+        return run(cmd, arguments, taggedArguments, null);
+    }
+
+    /**
+     * Calls a specific command wit an extra note labelling that it was called by some other command's invocation.
+     * This is different from a command calling it's own subcommand as that uses {@link Invoker#byParentCommand(Command)}
+     * whereas this uses {@link Invoker#byCommandCall(Command)}
+     * @param cmd The command to run
+     * @param arguments The arguments to pass to the command
+     * @param taggedArguments The tagged arguments to pass to the command
+     * @param caller The command that is invoking this command.
+     * @return {@code true} if the command was run successfully, {@code false} otherwise
+     */
+    public boolean run(Command cmd, ArrayList<Object> arguments, ArrayList<TaggedArgValue<?>> taggedArguments, Command caller) {
         String alias = cmd.aliases.getFirst();
-        return runCommand(cmd, alias, arguments, taggedArguments, Invoker.byEngine());
+        Invoker invoker1 = caller == null ? Invoker.byEngine() : Invoker.byCommandCall(caller);
+        return runCommand(cmd, alias, arguments, taggedArguments, invoker1);
     }
 
     private boolean runCommand(Command cmd, String cmdName, ArrayList<Object> arguments, ArrayList<TaggedArgValue<?>> taggedArguments, Invoker invoker) {
@@ -481,7 +503,7 @@ public class CommandParser {
             StaticRefs.getMainFrame().requestFocusInWindow();
             return false;
         }
-        if (cmd instanceof StatefulCommand statefulCommand)
+        if (cmd instanceof StatefulCommand<?> statefulCommand)
             CommandsManager.setAsCurrent(statefulCommand);
 
         cmd.run(invoker, label, cmdName, arguments.toArray(), taggedArguments);

@@ -144,31 +144,6 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
         physicalMouse.reset();
     }
 
-    @Override
-    public void attachListener(EventListener event) {
-        EventEmitter.genericAttach(registered, event);
-    }
-
-    @Override
-    public void detachListener(EventListener event) {
-        EventEmitter.genericDetach(registered, event);
-    }
-
-    @Override
-    public void detachAll() {
-        EventEmitter.genericDetachAll(registered);
-    }
-
-    @Override
-    public <K> void broadcast(EventType eventType, EventPayload<K> properties) {
-        EventEmitter.genericBroadcast(registered, eventType, properties);
-    }
-
-    @Override
-    public boolean isAttached(EventListener e) {
-        return registered.contains(e);
-    }
-
     /**
      * This method is called when a mouse drag event occurs, but only after the {@link MouseOwner#clickDelayThreshold}
      * has been exceeded. This is used to differentiate between a click and a drag.
@@ -217,6 +192,11 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
         clickDelay = 0;
     }
 
+    /**
+     * Moves the physical mouse cursor to the center of the main application window.
+     * This method uses a {@link Robot} to programmatically move the mouse and updates
+     * the internal {@link #physicalMouse} state to reflect the new position.
+     */
     public void sendMouseToCentre() {
         EngineFrame frame = StaticRefs.getMainFrame();
         int centerX = frame.getX() + frame.getWidth() / 2;
@@ -226,14 +206,11 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
     }
 
     /**
-     * Handles mouse wrapping behavior, allowing the mouse cursor to "teleport" from one side of the screen
-     * to the other when it reaches the edge. It also updates the internal {@link #physicalMouse} coordinates
-     * and a debug label with mouse information.
-     *
-     * This method is typically used for continuous camera movement or similar interactions where the mouse
-     * should not be constrained by screen boundaries.
+     * Implements mouse wrapping functionality, allowing the mouse cursor to seamlessly
+     * move from one edge of the screen to the opposite edge.
+     * When the mouse moves past a certain threshold near the left or right edge,
+     * it is repositioned to the corresponding opposite edge.
      * @param e The {@link MouseEvent} containing the current mouse coordinates.
-     * @throws RuntimeException if a {@link Robot} cannot be instantiated, which is used to move the mouse cursor.
      */
     public void wrap(MouseEvent e) {
         if (e.getX() + 10 > StaticRefs.getSceneManager().screenSize.width) {
@@ -272,5 +249,48 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
                         .addLn("MOUSE="+e.getPoint())
                         .wrapHTML()
         );
+    }
+
+    /**
+     * Retrieves the internal {@link Mouse} object representing the physical mouse state.
+     * @return The {@link Mouse} object.
+     */
+    protected Mouse getPhysicalMouse() {
+        return physicalMouse;
+    }
+
+    /**
+     * Sets the 'old' point, which is used to calculate mouse movement deltas
+     * for the {@link #wrap(MouseEvent)} method.
+     * @param point The new {@link Point} to set as the 'old' point.
+     * @see #wrap(MouseEvent)
+     */
+    protected void setOldPoint(Point point) {
+        old = point;
+    }
+
+    @Override
+    public void attachListener(EventListener event) {
+        EventEmitter.genericAttach(registered, event);
+    }
+
+    @Override
+    public void detachListener(EventListener event) {
+        EventEmitter.genericDetach(registered, event);
+    }
+
+    @Override
+    public void detachAll() {
+        EventEmitter.genericDetachAll(registered);
+    }
+
+    @Override
+    public <K> void broadcast(EventType eventType, EventPayload<K> properties) {
+        EventEmitter.genericBroadcast(registered, eventType, properties);
+    }
+
+    @Override
+    public boolean isAttached(EventListener e) {
+        return registered.contains(e);
     }
 }

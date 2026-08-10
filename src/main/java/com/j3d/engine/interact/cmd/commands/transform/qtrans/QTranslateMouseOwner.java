@@ -8,22 +8,27 @@ import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.math.plane.AxisPlane;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
 
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 /**
- * A mouse owner that handles camera orbiting logic. When active, dragging the mouse
- * will rotate the scene camera's pitch and yaw.
+ *
+ * A {@link MouseOwner} responsible for handling "quick translate" functionality.
+ * This class allows for displacing a group of selected {@link GPoint}s by a mouse movement delta,
+ * projecting the 2D mouse movement onto a 3D plane for intuitive translation.
  * <p>
- * This class is used exclusively by the {@link QuickTranslateCmd} command.
+ * It calculates the center of the selected points, establishes a projection plane based on the camera's view,
+ * and translates the points in 3D space according to the mouse's 2D movement.
+ * </p>
  * @author Lehlogonolo Poole
- * @see MOwner#ORBIT
+ * @see MOwner#QTRANS
  * @see MouseOwner
- * @see QuickTranslateCmd
+ * @see com.j3d.engine.interact.cmd.commands.transform.qtrans.QuickTranslateCmd
+ * @implSpec It's kinda funky. and math heavy
  */
 public class QTranslateMouseOwner extends MouseOwner {
-    private int startX, startY;
 
     ArrayList<GPoint> pointsToTransform = new ArrayList<>();
     AxisPlane cachedPlane = null;
@@ -33,14 +38,6 @@ public class QTranslateMouseOwner extends MouseOwner {
     public QTranslateMouseOwner() {
         super(MOwner.QTRANS, 0);
     }
-
-//    @Override
-//    public void mouseMoved(MouseEvent e) {
-//        super.mouseMoved(e);
-//        if (isNotOwner()) return;
-//        startX = e.getX();
-//        startY = e.getY();
-//    }
 
     @Override
     public void mouseMoved(MouseEvent e) {
@@ -98,6 +95,7 @@ public class QTranslateMouseOwner extends MouseOwner {
         pointsToTransform.clear();
         cachedPlane = null;
         cachedCentre = null;
+        setOldPoint(new Point(0, 0));
     }
 
     public void using(ArrayList<GPoint> pointsToTransform) {
