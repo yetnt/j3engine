@@ -5,6 +5,7 @@ import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.commands.*;
 import com.j3d.engine.interact.cmd.commands.camera.CameraCmd;
 import com.j3d.engine.interact.cmd.commands.clipboard.*;
+import com.j3d.engine.interact.cmd.commands.create.CreateCmd;
 import com.j3d.engine.interact.cmd.commands.debug.DebugCmd;
 import com.j3d.engine.interact.cmd.commands.engine.EngineCmd;
 import com.j3d.engine.interact.cmd.commands.measure.MeasureCmd;
@@ -12,6 +13,7 @@ import com.j3d.engine.interact.cmd.commands.camera.orbit.OrbitCmd;
 import com.j3d.engine.interact.cmd.commands.transform.qtrans.QuickTranslateCmd;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 import com.j3d.engine.interact.cmd.commands.uicmd.UICmd;
+import com.j3d.engine.scene.nodes.Creator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,7 @@ public class Commands {
     public SelectCmd selectCmd = new SelectCmd();
     public QuickTranslateCmd quickTranslateCmd = new QuickTranslateCmd();
     public CameraCmd camera = new CameraCmd();
+    public CreateCmd createCmd = new CreateCmd();
 
     /**
      * Default (empty) constructor
@@ -65,7 +68,8 @@ public class Commands {
                 debug, transform, engine,
                 explodeCmd, uiCmd, helpCmd,
                 prismCmd, measureCmd, clipboardCmd,
-                selectCmd, quickTranslateCmd, camera
+                selectCmd, quickTranslateCmd, camera,
+                createCmd
         ));
     }
 }

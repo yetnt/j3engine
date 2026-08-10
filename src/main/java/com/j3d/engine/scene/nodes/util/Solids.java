@@ -1,9 +1,9 @@
 package com.j3d.engine.scene.nodes.util;
 
-import com.j3d.StaticRefs;
 import com.j3d.engine.math.plane.AxisPlane;
 import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.nodes.Thing;
+import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.geometry.base.Winding;
 import com.j3d.engine.scene.nodes.geometry.GLine;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
@@ -65,14 +65,12 @@ public class Solids {
      *
      * @param radius The radius of the prism's base.
      * @param sideFaceAmts The number of sides for the prism's base (e.g., 3 for a triangular prism, 4 for a square prism).
-     * @param parentLayer The layer to which this prism will be added in the scene.
      * @param planes `SamePair` of {@link AxisPlane} objects, where the first plane defines the bottom face and the second defines the top face.
      * <p>
      * This method generates a prism by creating two n-gons (defined by `sideFaceAmts` and `radius`)
      * on the specified bottom and top planes, and then connecting their corresponding vertices to form the side faces.
      */
-
-    public static Thing prism(double radius, int sideFaceAmts, Layer parentLayer, SamePair<AxisPlane> planes) {
+    public static ArrayList<GObject> prism(double radius, int sideFaceAmts, SamePair<AxisPlane> planes, boolean randCol) {
         Vector3 bottomCentre = planes.first.origin();
         Vector3 topCentre = planes.second.origin();
         AxisPlane bottomAxisPlane = planes.first;
@@ -88,6 +86,7 @@ public class Solids {
                 sideFaceAmts,
                 p -> {
                     GPoint point = new GPoint(p);
+                    if (!randCol) return point;
                     // Random colour
                     int red = random.nextInt(256);   // 0 to 255
                     int green = random.nextInt(256);
@@ -104,6 +103,7 @@ public class Solids {
                 sideFaceAmts,
                 p -> {
                     GPoint point = new GPoint(p);
+                    if (!randCol) return point;
                     // Random colour
                     int red = random.nextInt(256);   // 0 to 255
                     int green = random.nextInt(256);
@@ -137,7 +137,7 @@ public class Solids {
             );
 
             // Triangle ABD and CDB
-            Color col = A.getColour();
+            Color col = randCol ? A.getColour() : Color.GRAY;
             lines.addAll(
                     List.of(
                             AB, BC, CD, DA, diagonalBD
@@ -147,14 +147,33 @@ public class Solids {
             tris.add(new GTri(col, BC, diagonalBD, CD, new Winding(B, D, C)));
         }
 
-        Thing circleThing = new Thing(StaticRefs.getSceneManager(), parentLayer, "Prism-"+radius);
-        circleThing.addObjs(centre, centre2)
-                .addObjs(points.toArray(new GPoint[0]))
-                .addObjs(points2.toArray(new GPoint[0]))
-                .addObjs(tris.toArray(new GTri[0]))
-                .addObjs(lines.toArray(new GLine[0]))
-                .solidify();
+        ArrayList<GObject> all = new ArrayList<>();
+        all.add(centre);
+        all.add(centre2);
+        all.addAll(points);
+        all.addAll(points2);
+        all.addAll(lines);
+        all.addAll(tris);
+        return all;
+    }
 
-        return circleThing;
+    /**
+     * Creates a 3D prism object.
+     *
+     * @param radius The radius of the prism's base.
+     * @param sideFaceAmts The number of sides for the prism's base (e.g., 3 for a triangular prism, 4 for a square prism).
+     * @param parentLayer The layer to which this prism will be added in the scene.
+     * @param planes `SamePair` of {@link AxisPlane} objects, where the first plane defines the bottom face and the second defines the top face.
+     * <p>
+     * This method generates a prism by creating two n-gons (defined by `sideFaceAmts` and `radius`)
+     * on the specified bottom and top planes, and then connecting their corresponding vertices to form the side faces.
+     */
+
+    public static Thing prism(double radius, int sideFaceAmts, Layer parentLayer, SamePair<AxisPlane> planes) {
+
+        ArrayList<GObject> o = prism(radius, sideFaceAmts, planes, true);
+        return new Thing(parentLayer, "Prism-"+radius)
+                .addObjs(o.toArray(new GObject[0]))
+                .solidify();
     }
 }

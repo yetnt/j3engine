@@ -230,21 +230,23 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
         return line;
     }
 
-    public ArrayList<GPoint> explode(Thing parent) {
-        deletedState = true;
-        parent.getObjects().remove(this);
-        ArrayList<GPoint> pointsList = getPointStream().collect(Collectors.toCollection(ArrayList::new));
-        pointsList.forEach(point -> {
-            if (point != null) {
-                point.explode(this);
-                detachListener(point);
-                point.detachListener(this);
-            }
-        });
-        getSceneManager().hasParent(this);
-        pointA = null;
-        pointB = null;
-        return pointsList;
+    public ArrayList<GPoint> explode(GTri tri) {
+        boolean ownedByOne = getParents().contains(tri) && getParents().size() == 1;
+        if (ownedByOne) {
+            ArrayList<GPoint> pointsList = getPointStream().collect(Collectors.toCollection(ArrayList::new));
+            pointsList.forEach(point -> {
+                if (point != null) {
+                    point.explode(this);
+                    detachListener(point);
+                    point.detachListener(this);
+                }
+            });
+            getSceneManager().hasParent(this);
+            pointA = null;
+            pointB = null;
+            return pointsList;
+        }
+        return getPointStream().collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**

@@ -120,7 +120,7 @@ public class SceneRenderer {
      */
     public void draw(Graphics2D g) {
         queue.sort();
-        for  (RenderState<?, ?> drawable : queue) {
+        for  (RenderState<?, ?> drawable : new ArrayList<>(queue)) {
             if (!drawable.isValid()) {
                 unregister(drawable);
                 unregister(drawable.getId());

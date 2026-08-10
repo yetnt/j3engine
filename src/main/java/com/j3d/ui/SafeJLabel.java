@@ -154,4 +154,11 @@ public class SafeJLabel {
         clearHigher();
         clearLower();
     }
+
+    public void repaint() {
+        SwingUtilities.invokeLater(() -> {
+            label.repaint();
+            label2.repaint();
+        });
+    }
 }

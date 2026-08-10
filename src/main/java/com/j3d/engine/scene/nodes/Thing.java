@@ -139,7 +139,7 @@ public class Thing implements SceneObjectList {
      * @return A Thing
      */
     public static Thing fromRaw(String name, String id, boolean hidden, Layer l, SceneManager sceneManager) {
-        Thing t = new Thing(sceneManager, l, name, false);
+        Thing t = new Thing(l, name, false);
         t.setHidden(hidden);
         t.setId(UUID.fromString(id));
         return t;
@@ -209,14 +209,13 @@ public class Thing implements SceneObjectList {
 
     /**
      * Constructs a Thing.
-     * @param sceneManager The sceneManager instance.
      * @param l The parent layer of the Thing.
      * @param name The name of the Thing.
      * @param invokeSwingHooks Whether to run GUI related hooks
      */
-    public Thing(SceneManager sceneManager, Layer l, String name, boolean invokeSwingHooks) {
+    public Thing(Layer l, String name, boolean invokeSwingHooks) {
         toggleSaved();
-        l = l == null ? sceneManager.layers.get(1) : l;
+        l = l == null ? StaticRefs.getSceneManager().layers.get(1) : l;
         if (l.getName().equals(Layer.BACKGROUND_ID)) {
             isBg = true;
         }
@@ -233,13 +232,13 @@ public class Thing implements SceneObjectList {
 
     /**
      * Constructs a Thing and runs GUI related hooks.
-     * @param sceneManager The sceneManager instance.
-     * @param l The parent layer of the Thing.
+     *
+     * @param l    The parent layer of the Thing.
      * @param name The name of the Thing.
      */
-    public Thing(SceneManager sceneManager, Layer l, String name) {
+    public Thing(Layer l, String name) {
         toggleSaved();
-        l = l == null ? sceneManager.layers.get(1) : l;
+        l = l == null ? StaticRefs.getSceneManager().layers.get(1) : l;
         if (l.getName().equals(Layer.BACKGROUND_ID)) {
             isBg = true;
         }
@@ -264,6 +263,11 @@ public class Thing implements SceneObjectList {
             System.out.println("bug biyvh");
         }
         Collections.addAll(objects, gObjects);
+        calculateCentroid(gObjects);
+        return this;
+    }
+
+    private void calculateCentroid(GObject[] gObjects) {
         ArrayList<Vector3> pts = new ArrayList<>();
         for (GObject ob : gObjects) {
             if (ob instanceof GPoint p) {
@@ -277,7 +281,6 @@ public class Thing implements SceneObjectList {
             Vector3 sum = Vector3.reduceToVector3(pts, Vector3::add);
             centroid = sum.div(pts.size());
         }
-        return this;
     }
 
     /**
@@ -412,7 +415,7 @@ public class Thing implements SceneObjectList {
 
             @Override
             public Thing run() {
-                newThing = new Thing(sceneManager, l, current.name + " copy").addObjs(objects.toArray(GObject[]::new));
+                newThing = new Thing(l, current.name + " copy").addObjs(objects.toArray(GObject[]::new));
                 return newThing;
             }
 
@@ -825,5 +828,12 @@ public class Thing implements SceneObjectList {
 
     public boolean isSolid() {
         return solid;
+    }
+
+    public void remove(GObject tri) {
+        objects.remove(tri);
+        calculateCentroid(
+                getObjects().toArray(new GObject[0])
+        );
     }
 }

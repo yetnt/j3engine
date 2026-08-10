@@ -1,11 +1,11 @@
 package com.j3d.engine.interact.cmd.commands;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.interact.cmd.Any;
 import com.j3d.engine.interact.cmd.Invoker;
+import com.j3d.engine.interact.cmd.args.TypedArg;
 import com.j3d.engine.scene.SceneManager;
-import com.j3d.engine.scene.nodes.geometry.GLine;
-import com.j3d.engine.scene.nodes.geometry.GPoint;
-import com.j3d.engine.scene.nodes.geometry.GTri;
+import com.j3d.engine.scene.nodes.geometry.*;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.interact.cmd.args.TaggedArgUtil;
 import com.j3d.engine.scene.nodes.layer.Layer;
@@ -19,6 +19,7 @@ import com.j3d.utility.generators.JLabelRichText;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.stream.Collectors;
 
 /**
@@ -60,13 +61,23 @@ public class ExplodeCmd extends Command{
 
     public ExplodeCmd() {
         super("explode", "Destroy given geometry of triangles and lines into constituent points. (Uses tagged arguments)");
-        this.aliases("expl", "ex", "destruct").parseUsages();
-        this.addNoArgUsage();
+        this.aliases("expl", "ex", "destruct").args(new TypedArg(
+                "useSelection", "Use Selection instead", true, Any.class
+        )).parseUsages();
     }
 
     @Override
     public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
+        if (args.length > 0) {
+            // check for selection
+            if (StaticRefs.getSceneManager().getSelected().isEmpty()) {
+                logLabel.setText(
+                        "A selection is required (When any input is given that isnt tagged arguments)"
+                );
+                return;
+            }
+        }
         AreYouSure aysDialogue = new AreYouSure(
                 StaticRefs.getMainFrame(), true // sets to modal
                 , JLabelRichText.htmlOf(
@@ -82,6 +93,13 @@ public class ExplodeCmd extends Command{
     }
 
     private void explode(SafeJLabel logLabel, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+
+        if (args.length > 0) {
+            // be safe and use selection.
+            explode(StaticRefs.getSceneManager().getSelected());
+            addHistory("selection");
+            return;
+        }
         // if there aren't any taggedArgs, explode it all
         if (taggedArgs.isEmpty()) {
             explodeAll();
@@ -132,14 +150,49 @@ public class ExplodeCmd extends Command{
         HashSet<GLine> lines = new HashSet<>();
         new ArrayList<>(thing.getObjects())
                 .stream()
-                .filter(o -> o instanceof GTri)
-                .map(o -> (GTri)o)
-                .forEach((tri) -> {
-                    lines.addAll(tri.getLegStream().collect(Collectors.toCollection(ArrayList::new)));
-                            points.addAll(tri.explode(thing));
-                        }
-                );
+                .filter(o -> o instanceof GTri || o instanceof GCurve)
+                .forEach((o) -> {
+                    if (o instanceof GTri tri) {
+                        lines.addAll(tri.getLegStream().collect(Collectors.toCollection(ArrayList::new)));
+                        points.addAll(tri.explode());
+                        thing.remove(tri);
+                    } else {
+                        GCurve c = (GCurve) o;
+                        points.addAll(c.explode());
+                        thing.remove(c);
+                    }
+                });
+        lines.forEach(thing::remove);
         StaticRefs.getSceneManager().select(thing);
+    }
+
+    private void explode(HashSet<GObject> obj) {
+        HashSet<GPoint> points = new HashSet<>();
+        HashSet<GObject> toRemove = new HashSet<>();
+        new ArrayList<>(obj)
+                .stream()
+                .filter(o -> o instanceof GTri || o instanceof GCurve)
+//                .map(o -> (GTri)o)
+                .forEach((o) -> {
+                    if (o instanceof GTri tri) {
+                        toRemove.addAll(tri.getLegStream().collect(Collectors.toCollection(ArrayList::new)));
+                        points.addAll(tri.explode());
+                        toRemove.add(tri);
+                    } else {
+                        GCurve c = (GCurve) o;
+                        points.addAll(c.explode());
+                        toRemove.add(c);
+                    }
+                });
+
+        while (!toRemove.isEmpty()) {
+            GObject seed = toRemove.iterator().next();
+            Thing parent = StaticRefs.getSceneManager().findObjectParent(seed);
+
+            parent.getObjects().removeIf(toRemove::remove);
+        }
+
+        StaticRefs.getSceneManager().select(new ArrayList<>(points));
     }
 
     private void addHistory(String operation) {

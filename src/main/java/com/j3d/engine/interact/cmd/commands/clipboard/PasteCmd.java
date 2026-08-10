@@ -80,7 +80,6 @@ public class PasteCmd extends Subcommand {
         Vector3 offset = Vector3.X(10);
 
         Thing thing = new Thing(
-                StaticRefs.getSceneManager(),
                 StaticRefs.getSceneManager().usableLayer(),
                 "copied" + copies.size()
                 );

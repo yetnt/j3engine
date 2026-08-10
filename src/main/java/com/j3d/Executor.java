@@ -123,7 +123,7 @@ public class Executor {
             tris.add(tri);
         }
 
-        return new Thing(StaticRefs.getSceneManager(), layer, "Cone")
+        return new Thing(layer, "Cone")
                 .addObjs(centre)
                 .addObjs(points.toArray(new GPoint[0]))
                 .addObjs(lines.toArray(new GLine[0]))
@@ -161,7 +161,7 @@ public class Executor {
             Solids.topFaceTri(lines, p1, p2, centre, tris);
         }
 
-        return new Thing(StaticRefs.getSceneManager(), layer, "Circle")
+        return new Thing(layer, "Circle")
                 .addObjs(centre)
                 .addObjs(points.toArray(new GPoint[0]))
                 .addObjs(lines.toArray(new GLine[0]))
@@ -230,7 +230,7 @@ public class Executor {
 
         curve.setColour(Color.ORANGE);
 
-        return new Thing(sceneManager, layer, "Three Tris").addObjs(tri1, tri2, tri3,
+        return new Thing(layer, "Three Tris").addObjs(tri1, tri2, tri3,
                 tri1.getLegA(), tri1.getLegB(), tri1.getLegC(),
                 tri2.getLegA(), tri2.getLegB(), tri2.getLegC(),
                 tri3.getLegA(), tri3.getLegB(), tri3.getLegC(),
@@ -258,7 +258,7 @@ public class Executor {
 
         GTri PRT = new GTri(Color.PINK, P, R, T);
 
-        return new Thing(StaticRefs.getSceneManager(), null, "Letter")
+        return new Thing(null, "Letter")
                 .addObjs(
                         P, Q, S, R, U, T,
                         SPR, PRQ, PQT, PUT, PRT,
@@ -276,7 +276,7 @@ public class Executor {
         GPoint C = new GPoint(new Vector3(0, 0, 10));
         GTri triangl = new GTri(Color.ORANGE, A, B, C);
         StaticRefs.getLog().println(triangl.getId().toString());
-        return new Thing(sceneManager, null, "Test").addObjs(triangl, triangl.getLegA(), triangl.getLegB(), triangl.getLegC(), A, B, C);
+        return new Thing(null, "Test").addObjs(triangl, triangl.getLegA(), triangl.getLegB(), triangl.getLegC(), A, B, C);
     }
 
     public void note(GPoint point, String label) {
@@ -316,7 +316,7 @@ public class Executor {
         GTri face6tri1 = new GTri(Color.YELLOW, D, F, B);
         GTri face6tri2 = new GTri(Color.YELLOW.darker(), F, B, G);
 
-        return new Thing(sceneManager, layer, "Cube").addObjs(
+        return new Thing(layer, "Cube").addObjs(
                 A, B, C, D, E, F, G, H, face1tri1, face1tri2, face2tri1, face2tri2, face3tri1, face3tri2, face4tri1, face4tri2,
                 face5tri1, face5tri2, face6tri1, face6tri2,
                 face1tri1.getLegA(), face1tri1.getLegB(), face1tri1.getLegC(),

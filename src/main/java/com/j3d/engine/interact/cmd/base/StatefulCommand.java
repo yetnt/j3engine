@@ -54,13 +54,17 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
      */
     void onEsc(ActionEvent e, T object, SafeJLabel label);
 
+    default void run(StatefulCommand t, String name, T object, SafeJLabel label) {
+        run(t, name, object, label, null);
+    }
+
     /**
      * Runs the stateful command.
      * @param t The stateful command that is running.
      * @param name The name of the command.
      * @param object The object that the command should operates on.
      */
-    default void run(StatefulCommand t, String name, T object, SafeJLabel label) {
+    default void run(StatefulCommand t, String name, T object, SafeJLabel label, String s) {
         if (!CommandsManager.isCurrentStatefulRunning(t)) return;
 
         // if theres a selection, clear it.
@@ -68,7 +72,10 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
 
         label.setLower(
                 JLabelRichText.htmlOf(
-                        new JLabelRichText("hit ENTER to confirm command, otherwise escape using ESC")
+                        new JLabelRichText(
+                                "hit ENTER to confirm command, otherwise escape using ESC"
+                                + (s == null ? "" : " | " + s)
+                        )
                                 .bold().italic().font(J3DTheme.TEXT_PRIMARY.color())
                 ), -1
         );

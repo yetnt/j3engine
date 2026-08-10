@@ -15,6 +15,7 @@ import com.j3d.utility.generic.SamePair;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class GCurve extends GObject implements IdempotentEventListener<GPoint.GPointMovedEvent, SamePair<Double>>, DecomposeWhenDrawn<Segment> {
@@ -23,6 +24,7 @@ public class GCurve extends GObject implements IdempotentEventListener<GPoint.GP
     private GPoint controlPoint;
     private GPoint end;
     private int amount = 50;
+    private boolean deletedState;
 
     public static GCurve fromRaw(String id, GPoint st, GPoint cp, GPoint en) {
         GCurve gp = new GCurve(st, cp, en);
@@ -105,6 +107,22 @@ public class GCurve extends GObject implements IdempotentEventListener<GPoint.GP
 
     public GPoint getControlPoint() {
         return controlPoint;
+    }
+
+    public ArrayList<GPoint> explode() {
+        deletedState = true;
+        ArrayList<GPoint> pointsList = getPointStream().collect(Collectors.toCollection(ArrayList::new));
+        pointsList.forEach(point -> {
+            if (point != null) {
+                point.explode(this);
+                detachListener(point);
+                point.detachListener(this);
+            }
+        });
+        start = null;
+        controlPoint = null;
+        end = null;
+        return pointsList;
     }
 
     ArrayList<RenderState<Segment, GObject>> segments = new ArrayList<>();

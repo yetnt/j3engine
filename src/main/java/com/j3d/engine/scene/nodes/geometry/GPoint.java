@@ -139,7 +139,7 @@ public class GPoint extends GObject implements HasParents<GObject>, DecomposeWhe
         return p;
     }
 
-    public void explode(GLine line) {
+    public void explode(GObject line) {
         line.detachListener(this);
         this.detachListener(line);
         removeParent(line);

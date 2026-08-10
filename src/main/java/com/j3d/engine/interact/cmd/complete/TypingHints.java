@@ -15,9 +15,11 @@ import com.j3d.ui.SafeJLabel;
 import com.j3d.ui.engine.CommandPalette;
 import com.j3d.utility.Parsing;
 import com.j3d.utility.generators.JLabelRichText;
+import com.j3d.utility.generic.QuadConsumer;
 import com.j3d.utility.generic.SamePair;
 import com.j3d.utility.generic.TriConsumer;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -68,7 +70,7 @@ public class TypingHints {
     /**
      * The maximum number of command name suggestions to display for both likely and partial matches.
      */
-    int MAX_CMDNAME_SUGGESTIONS = 8;
+    int MAX_CMDNAME_SUGGESTIONS = 10;
     /**
      * A flag indicating whether an error related to tagged arguments has occurred.
      * This is used to prevent other hints from overriding the tagged argument error message.
@@ -87,6 +89,7 @@ public class TypingHints {
      * @param endsWithSpace A boolean indicating whether the user's input currently ends with a space.
      */
     public void parse(ArrayList<CmdToken> init, boolean endsWithSpace) {
+        setOptions(new ArrayList<>());
         ArrayList<CmdToken> tokens = init
                 .stream()
                 .filter(
@@ -121,9 +124,13 @@ public class TypingHints {
             }
 
             StaticRefs.getCommandParser().safeJLabel().setLower(
-                    JLabelRichText.htmlOf(likely.toString(), partial.toString()),
+                    new JLabelRichText(likely + " " + partial)
+                            .font("4")
+                            .wrapHTML(),
                     20
             );
+            // repaint cuz wtf is happening.
+            StaticRefs.getCommandParser().safeJLabel().repaint();
 
             return;
         }
@@ -271,11 +278,14 @@ public class TypingHints {
                 .filter(s -> s.startsWith(input))
                 .collect(Collectors.toCollection(ArrayList::new));
 
+        ArrayList<String> all = new ArrayList<>(likelyMatches);
+
         // Aliases whose substring contains the input (and isnt in the likelyMatches)
         ArrayList<JLabelRichText> possibleMatches = commandAliases
                 .stream()
                 .filter(s -> s.contains(input))
                 .filter(s -> !likelyMatches.contains(s))
+                .peek(all::add)
                 .map(s -> {
                     // Style.
                     JLabelRichText match = new JLabelRichText(input)
@@ -304,20 +314,27 @@ public class TypingHints {
             likelyMatchesJL.add(new JLabelRichText(match.toString() + rest));
         });
 
+        setOptions(all);
+
         return new SamePair<>(likelyMatchesJL, possibleMatches);
     }
 
     /**
-     * Provides a {@link TriConsumer} that handles tab completion logic.
-     * When invoked, it attempts to complete the current command name based on user input.
-     * If the input is a single token representing a command name, it finds the longest
-     * matching alias and sets it as the input field's text. Otherwise, it delegates
-     * to the default action.
-     * @return A {@link TriConsumer} for tab completion.
+     * Provides a {@link QuadConsumer} that handles tab completion logic for the command palette.
+     * This consumer attempts to complete the current command name or argument based on available
+     * aliases and suggestions. If no specific completion is found, it delegates to the default
+     * {@link Action}.
+     * @return A {@link QuadConsumer} that takes:
+     *         <ul>
+     *             <li>An {@link ArrayList} of {@link CmdToken} representing the current input.</li>
+     *             <li>The default {@link Action} to perform if no completion is possible.</li>
+     *             <li>The {@link ActionEvent} that triggered the completion.</li>
+     *             <li>An {@link ArrayList} of {@link String} containing potential completion options.</li>
+     *         </ul>
      */
-    public TriConsumer<ArrayList<CmdToken>,
-            javax.swing.Action, ActionEvent> onTabComplete() {
-        return (tokens, action, actionEvent) -> {
+    public QuadConsumer<ArrayList<CmdToken>,
+                Action, ActionEvent, ArrayList<String>> onTabComplete() {
+        return (tokens, action, actionEvent, opts) -> {
             // If the tokens are empty. Do nothing
             if (tokens.isEmpty()) {
                 action.actionPerformed(actionEvent);
@@ -325,6 +342,7 @@ public class TypingHints {
             }
 
             // if there is a single token. its the command name try finder matches.
+            // (separate to prioritise startsWith over contains)
             if (tokens.size() == 1) {
                 CmdToken token = tokens.getFirst();
 
@@ -340,9 +358,15 @@ public class TypingHints {
                         .stream()
                         .flatMap(Command::aliasStream)
                         .filter(
-                                s -> s.startsWith(alias)
+                                s -> s.contains(alias)
                         )
-                        .min((s1, s2) -> s2.length() - s1.length())
+                        .sorted((s1, s2) -> s2.length() - s1.length())
+                        .min((s1, s2) -> {
+                            // string that start with sorted over ones that only contain
+                            if (s1.startsWith(alias)) return -1;
+                            if (s2.startsWith(alias)) return 1;
+                            return 0;
+                        })
                         .orElse(alias);
 
 
@@ -351,6 +375,22 @@ public class TypingHints {
                 );
 
                 return;
+            } else if (!opts.isEmpty()) {
+                // Get what the user currently typed
+                ArrayList<CmdToken> toks = new ArrayList<>(tokens);
+                // sort opts so startsWith matches first
+                String match = opts.stream().min(
+                        (s1, s2) -> {
+                            if (s1.startsWith(toks.getLast().getInput())) return -1;
+                            if (s2.startsWith(toks.getLast().getInput())) return 1;
+                            return 0;
+                        }
+                ).orElse(null);
+                toks.removeLast();
+
+                StaticRefs.getCommandParser().setInputField(
+                        CmdToken.toStr(toks) + " " + match + " " // Space so the typing hint can kick in.
+                );
             }
             action.actionPerformed(actionEvent);
         };
@@ -496,6 +536,7 @@ public class TypingHints {
                 .stream()
                 .filter(s -> s.startsWith(token.getInput()))
                 .collect(Collectors.toCollection(ArrayList::new));
+        setOptions(partialMatches);
         if (!partialMatches.isEmpty()) {
             // build a string
             StringBuilder stringBuilder = new StringBuilder().append("[");
@@ -605,7 +646,7 @@ public class TypingHints {
     private JLabelRichText boolMatch(String arg, CmdToken token) {
         ArrayList<String> validBools =
                 new ArrayList<>(List.of(
-                        "yebo", "aowa", "true", "false"
+                        "yebo", "aowa", "true", "false", "yes", "no"
                 ));
         if (token.getType() == CmdToken.Type.STRING) {
             // check if the current input start with the boolean.
@@ -702,6 +743,9 @@ public class TypingHints {
      * @return A styled {@link JLabelRichText} consisting of a partially coloured match.
      */
     private JLabelRichText partialStringMatch(ArrayList<String> options, String input) {
+        if (options.size() > 1) {
+            setOptions(options);
+        }
         // guaranteed at least one option partially matches.
         String bestMatch = options
                 .stream()
@@ -733,5 +777,15 @@ public class TypingHints {
      */
     public void taggedArgErr(boolean value) {
         taggedArgErr = value;
+    }
+
+    ArrayList<String> options;
+
+    public ArrayList<String> getOptions() {
+        return options;
+    }
+
+    private void setOptions(ArrayList<String> options) {
+        this.options = options;
     }
 }

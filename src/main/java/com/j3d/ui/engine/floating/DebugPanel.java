@@ -381,7 +381,7 @@ public class DebugPanel extends javax.swing.JPanel {
         );
 
         Thing g = new Thing(
-                getSceneManager(), null,
+                null,
                 "Random Tri " + t.getId().toString().substring(0, 4)).addObjs(
                         t, gps[0], gps[1], gps[2],
                 // the fix

@@ -664,7 +664,6 @@ public class Grid2DPanel extends javax.swing.JPanel {
 
         // create a new thing.
         Thing thing = new Thing(
-                StaticRefs.getSceneManager(),
                 StaticRefs.getSceneManager().usableLayer(),
                 "render" + result.size()
         );

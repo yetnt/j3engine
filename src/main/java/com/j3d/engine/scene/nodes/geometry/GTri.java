@@ -448,11 +448,11 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         }
     }
 
-    public ArrayList<GPoint> explode(Thing parent) {
+    public ArrayList<GPoint> explode() {
         deletedState = true;
         ArrayList<GPoint> points = new ArrayList<>();
         getLegStream().forEach(line -> {
-           ArrayList<GPoint> pointStream = line.explode(parent);
+           ArrayList<GPoint> pointStream = line.explode(this);
            line.removeParent(this);
            points.addAll(pointStream);
            detachListener(line);
@@ -462,15 +462,11 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
             if (p != null) {
                 this.detachListener(p);
                 p.detachListener(this);
-                p.hasParent();
             }
         });
         LegA = null;
         LegB = null;
         LegC = null;
-
-        // without lines, this triangle cannot exist. It must be deleted.
-        parent.getObjects().remove(this);
 
         return points;
     }

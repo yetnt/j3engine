@@ -1,5 +1,6 @@
 package com.j3d.engine.interact.cmd.commands.camera.orbit;
 
+import com.j3d.StaticConfig;
 import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.interact.cmd.args.Subcommand;
@@ -64,7 +65,7 @@ public class OrbitCmd extends Subcommand implements StatefulCommand<Pair<Vector3
                 new Pair<>(
                         StaticRefs.getCamera().getPosition().copy(),
                         StaticRefs.getCamera().getRotation().copy()
-                ), logLabel);
+                ), logLabel, "hit CAPS LOCK to rotate around world");
     }
 
     @Override
@@ -73,13 +74,19 @@ public class OrbitCmd extends Subcommand implements StatefulCommand<Pair<Vector3
         orbitMouseOwner.sendMouseToCentre();
         CursorManager.set(CursorNames.HAND_GRAB);
         StaticRefs.getMainPanel().repaint();
-        StaticRefs.getSceneManager().scheduleOverlap(orbitCmdUUID, c -> label.setText(
+        StaticRefs.getSceneManager().scheduleOverlap(orbitCmdUUID, c -> label.setTextWithSeconds(
                 "Use the mouse to orbit the camera around. | "+SafeJLabel.EMPH+": "
-                        + SafeJLabel.EMPH + SafeJLabel.EMPH,
+                        + SafeJLabel.EMPH + SafeJLabel.EMPH + " | " + SafeJLabel.EMPH,
+                -1,
                 "Sensitivity",
                 new JLabelRichText(Settings.cameraProperties.orbitSensitivity.getValue().toString())
                         .font(J3DTheme.TEXT_SECONDARY.color().brighter(), "8"),
-                " units per mouse drag"
+                " units per mouse drag",
+                StaticConfig.lock
+                        ? new JLabelRichText("[C]")
+                            .italic().bold()
+                             .font(J3DTheme.TEXT_SECONDARY.color().brighter(), "5")
+                        : ""
         ));
         StaticRefs.getSceneManager().layers.stream()
                 .flatMap(Layer::usableLayersStream)

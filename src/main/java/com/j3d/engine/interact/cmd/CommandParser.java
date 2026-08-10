@@ -195,6 +195,8 @@ public class CommandParser {
         typingHints.parse(tokens, endsWithSpace);
 
         typingHints.taggedArgErr(false);
+
+        StaticRefs.getCommandParser().safeJLabel().repaint();
     }
 
 
@@ -647,7 +649,8 @@ public class CommandParser {
                                     getTypingHintSession().onTabComplete().accept(
                                             getTokens(),
                                             a,
-                                            e
+                                            e,
+                                            typingHints.getOptions()
                                     );
                                 } else {
                                      a.actionPerformed(e);

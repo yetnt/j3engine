@@ -75,7 +75,7 @@ public class SceneManager {
         screenSize = dim;
         Layer bg = new Layer(Layer.BACKGROUND_ID);
         layers.add(bg); // the default layer
-        bg.add(new Thing(this, bg, "bg"));
+        bg.add(new Thing(bg, "bg"));
         layers.add(new Layer()); // testing layer.
     }
 
@@ -347,6 +347,13 @@ public class SceneManager {
     public SelectionManager select(Thing thing) {
         thing.getObjects()
                 .stream().filter(o -> !currentSelection.getSelected().contains(o))
+                .forEach(currentSelection.getSelected()::add);
+        return currentSelection;
+    }
+
+    public SelectionManager select(ArrayList<GObject> objects) {
+        objects.stream()
+                .filter(o -> !currentSelection.getSelected().contains(o))
                 .forEach(currentSelection.getSelected()::add);
         return currentSelection;
     }

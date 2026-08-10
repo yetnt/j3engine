@@ -9,6 +9,7 @@ import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class CmdToken {
 
@@ -18,6 +19,16 @@ public class CmdToken {
 
     public CmdToken(String input) {
         this.input = input;
+    }
+
+    public static String toStr(ArrayList<CmdToken> tokens) {
+        StringBuilder sb = new StringBuilder();
+        for (CmdToken token : tokens) {
+            sb.append(token.getInput()).append(" ");
+        }
+        // remove last space
+        sb.deleteCharAt(sb.length() - 1);
+        return sb.toString();
     }
 
     public void parsedAs(Object o, Type t) {
