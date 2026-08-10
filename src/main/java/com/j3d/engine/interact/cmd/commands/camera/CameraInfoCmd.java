@@ -1,17 +1,18 @@
-package com.j3d.engine.interact.cmd.commands.debug;
+package com.j3d.engine.interact.cmd.commands.camera;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.interact.cmd.args.ArgSet;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
+import com.j3d.engine.interact.cmd.commands.debug.DebugCmd;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.utility.ClipboardUtil;
 
 import java.util.ArrayList;
 
 /**
- * A subcommand of {@link DebugCmd} which simply prints camera properties
+ * A subcommand of {@link CameraCmd}  which simply prints camera properties
  * <p>
  *     Provides an optional second (third in context of its parent command) required {@link ArgSet} which accepts
  *     the following strings: {@code "position"}, {@code "rotation"}, {@code "pos"}, {@code "rot"}, {@code "p"}, {@code "r"}
@@ -22,12 +23,12 @@ import java.util.ArrayList;
  * <p>
  *     (For the below usage, say we have a camera at {@code (X:10, Y:2, Z:2)} with a rotation of {@code (Yaw:0, Pitch:60, Roll:20)})
  *     <pre>{@code
- *     debug cam            - pos(10, 2, 2) rot(0, 60, 20)
- *     dbg view rot         - rot(0, 60, 20)
- *     d cam pos            - pos(10, 2, 2)
- *     dbg c                - pos(10, 2, 2) rot(0, 60, 20)
- *     debug cam p          - pos(10, 2, 2)
- *     dbg camera position  - pos(10, 2, 2)
+ *     cam info        - pos(10, 2, 2) rot(0, 60, 20)
+ *     c i rot         - rot(0, 60, 20)
+ *     c info pos      - pos(10, 2, 2)
+ *     cam i           - pos(10, 2, 2) rot(0, 60, 20)
+ *     cam info p      - pos(10, 2, 2)
+ *     cam i position  - pos(10, 2, 2)
  *     }</pre>
  * </p>
  * @see DebugCmd
@@ -41,8 +42,8 @@ public class CameraInfoCmd extends Subcommand {
                     "pos", "rot", "position", "rotation", "p", "r");
 
     public CameraInfoCmd() {
-        super("camera", "Prints camera information to the console.");
-        aliases("cam", "c", "view", "v").args(
+        super("info", "Prints camera information to the console.");
+        aliases("i", "information", "debug").args(
                 argSet
         ).parseUsages();
     }

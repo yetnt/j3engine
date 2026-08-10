@@ -33,7 +33,7 @@
  * </p>
  * <h1>Classes</h1>
  * <p>
- *     Most MouseOwners can only be found where they are used. e.g. {@link com.j3d.engine.interact.cmd.commands.orbit.OrbitMouseOwner}
+ *     Most MouseOwners can only be found where they are used. e.g. {@link com.j3d.engine.interact.cmd.commands.camera.orbit.OrbitMouseOwner}
  *     can only be found within that command's sub-package within the commands package and do not live here. Only the generic owners
  *     live here.
  * </p>
@@ -83,7 +83,7 @@
  *         </p>
  *     </li>
  *     <li>
- *         {@link com.j3d.engine.interact.cmd.commands.orbit.OrbitMouseOwner}, the most interactive, is how the {@code orbit}
+ *         {@link com.j3d.engine.interact.cmd.commands.camera.orbit.OrbitMouseOwner}, the most interactive, is how the {@code orbit}
  *         command works by turning drag input into rotating the global camera.
  *     </li>
  *     <li>

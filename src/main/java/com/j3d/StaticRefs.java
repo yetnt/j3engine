@@ -8,7 +8,7 @@ import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.base.SemiStatefulCommand;
-import com.j3d.engine.interact.cmd.commands.orbit.OrbitCmd;
+import com.j3d.engine.interact.cmd.commands.camera.orbit.OrbitCmd;
 import com.j3d.engine.interact.input.keyboard.GlobalKeybinds;
 import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;

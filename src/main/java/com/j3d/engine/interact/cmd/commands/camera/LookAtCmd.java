@@ -1,7 +1,8 @@
-package com.j3d.engine.interact.cmd.commands;
+package com.j3d.engine.interact.cmd.commands.camera;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.Invoker;
+import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.ui.SafeJLabel;
@@ -12,7 +13,7 @@ import com.j3d.engine.interact.cmd.args.TypedArg;
 import java.util.ArrayList;
 
 /**
- * A command which makes the camera look at a given {@link Thing} or {@link Vector3}
+ * A subcommand of {@link CameraCmd} which makes the camera look at a given {@link Thing} or {@link Vector3}
  * <p>
  *     Provides a required {@link TypedArg} which accepts either a {@link String} (representing a {@link Thing}'s
  *     name or UUID) or a {@link Vector3} (representing a point in 3D space)
@@ -23,9 +24,9 @@ import java.util.ArrayList;
  * <p>
  *     Typical Usage:
  *     <pre>{@code
- *     lookat "myObject"            - Makes the camera look at the thing named "myObject"
- *     la (10, 20, 30)              - Makes the camera look at the point (10, 20, 30)
- *     look 123e4567-e89b-12d3-a456-426614174000 - Makes the camera look at the thing with the given UUID
+ *     cam lookat "myObject"            - Makes the camera look at the thing named "myObject"
+ *     cam la (10, 20, 30)              - Makes the camera look at the point (10, 20, 30)
+ *     cam look 123e4567-e89b-12d3-a456-426614174000 - Makes the camera look at the thing with the given UUID
  *     }</pre>
  * </p>
  * @see Command
@@ -34,7 +35,7 @@ import java.util.ArrayList;
  * @see Vector3
  * @author Lehlogonolo Poole
  */
-public class LookAtCmd extends Command {
+public class LookAtCmd extends Subcommand {
     public LookAtCmd() {
         super("lookAt", "Looks at a specific position or Thing");
         this.aliases("la", "look", "lookat").args(

@@ -11,7 +11,7 @@ public class ClipboardCmd extends Command {
     public ClipboardCmd() {
         super("clipboard", "Manages clipboard operations (copy, paste, cut).");
         this
-                .aliases("cb", "c", "clip", "cl")
+                .aliases("cb", "clip", "cl")
                 .args(new CopyCmd(), new PasteCmd())
                 .parseUsages();
     }

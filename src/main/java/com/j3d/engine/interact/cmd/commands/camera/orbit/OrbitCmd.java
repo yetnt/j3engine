@@ -1,7 +1,8 @@
-package com.j3d.engine.interact.cmd.commands.orbit;
+package com.j3d.engine.interact.cmd.commands.camera.orbit;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.Invoker;
+import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.math.rot.Rotation;
 import com.j3d.engine.interact.cmd.CommandsManager;
@@ -39,7 +40,7 @@ import java.util.UUID;
  * @see Command
  * @author Lehlogonolo Poole
  */
-public class OrbitCmd extends Command implements StatefulCommand<Pair<Vector3, Rotation>> {
+public class OrbitCmd extends Subcommand implements StatefulCommand<Pair<Vector3, Rotation>> {
     /**
      * The mouse owner for {@link OrbitCmd} to function
      */
@@ -51,13 +52,13 @@ public class OrbitCmd extends Command implements StatefulCommand<Pair<Vector3, R
 
     public OrbitCmd() {
         super("orbit", "Orbits the camera around itself");
-        this.aliases("o", "rot").parseUsages().addNoArgUsage();
+        this.aliases("o", "rot", "rotate", "r").parseUsages().addNoArgUsage();
     }
 
     @Override
     public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
-        if (!CommandsManager.isCurrentStatefulRunning(this)) return;
+        CommandsManager.setAsCurrent(this);
 
         run(this, "orbitCmd",
                 new Pair<>(

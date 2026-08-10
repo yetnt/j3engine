@@ -4,6 +4,7 @@ import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.*;
+import com.j3d.engine.interact.cmd.commands.camera.CameraInfoCmd;
 import com.j3d.ui.SafeJLabel;
 
 import java.util.ArrayList;
@@ -25,7 +26,6 @@ import java.util.ArrayList;
  *     debug echo "hi"      - Prints "hi" to the console and to the command palette output label
  *     debug typeof 1       - Prints "Type: Integer" to the console and to the command palette output label
  *     debug id             - Retrieves and prints a random GObject's UUID (and copies to your clipboard)
- *     debug cam            - Prints camera position and rotation.
  *     }</pre>
  * </p>
  * @see Command
@@ -43,7 +43,6 @@ public class DebugCmd extends Command {
                 new EchoCmd(),
                 new TypeOf(),
                 new RandomUUIDCmd(),
-                new CameraInfoCmd(),
                 new TriangleCmd()
         ).parseUsages();
     }

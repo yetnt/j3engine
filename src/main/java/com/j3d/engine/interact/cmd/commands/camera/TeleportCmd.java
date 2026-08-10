@@ -1,7 +1,8 @@
-package com.j3d.engine.interact.cmd.commands;
+package com.j3d.engine.interact.cmd.commands.camera;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.Invoker;
+import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
@@ -11,7 +12,7 @@ import com.j3d.engine.interact.cmd.args.TypedArg;
 import java.util.ArrayList;
 
 /**
- * A command which teleports the camera to a given {@link Vector3}
+ * A subcommand of {@link CameraCmd}  which teleports the camera to a given {@link Vector3}
  * <p>
  *     Provides a required {@link TypedArg} which accepts a {@link Vector3} (representing a point in 3D space)
  * </p>
@@ -21,9 +22,9 @@ import java.util.ArrayList;
  * <p>
  *     Typical Usage:
  *     <pre>{@code
- *     teleport (10, 20, 30) - Teleports the camera to the point (10, 20, 30)
- *     tp (0, 0, 0)          - Teleports the camera to the origin
- *     goto (1, 2, 3)        - Teleports the camera to the point (1, 2, 3)
+ *     cam teleport (10, 20, 30) - Teleports the camera to the point (10, 20, 30)
+ *     cam tp (0, 0, 0)          - Teleports the camera to the origin
+ *     cam goto (1, 2, 3)        - Teleports the camera to the point (1, 2, 3)
  *     }</pre>
  * </p>
  * @see Command
@@ -31,7 +32,7 @@ import java.util.ArrayList;
  * @see Vector3
  * @author Lehlogonolo Poole
  */
-public class TeleportCmd extends Command {
+public class TeleportCmd extends Subcommand {
     public TeleportCmd() {
         super("teleport", "Teleports the camera to the given coordinates");
         this.aliases("tp", "goto", "gt").args(

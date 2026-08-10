@@ -3,11 +3,12 @@ package com.j3d.engine.interact.cmd;
 import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.commands.*;
+import com.j3d.engine.interact.cmd.commands.camera.CameraCmd;
 import com.j3d.engine.interact.cmd.commands.clipboard.*;
 import com.j3d.engine.interact.cmd.commands.debug.DebugCmd;
 import com.j3d.engine.interact.cmd.commands.engine.EngineCmd;
 import com.j3d.engine.interact.cmd.commands.measure.MeasureCmd;
-import com.j3d.engine.interact.cmd.commands.orbit.OrbitCmd;
+import com.j3d.engine.interact.cmd.commands.camera.orbit.OrbitCmd;
 import com.j3d.engine.interact.cmd.commands.transform.qtrans.QuickTranslateCmd;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 import com.j3d.engine.interact.cmd.commands.uicmd.UICmd;
@@ -29,9 +30,6 @@ import java.util.List;
 public class Commands {
     public DebugCmd debug = new DebugCmd();
     public TransformCmd transform = new TransformCmd();
-    public LookAtCmd lookAt = new LookAtCmd();
-    public TeleportCmd teleport = new TeleportCmd();
-    public OrbitCmd orbit = new OrbitCmd();
     public EngineCmd engine = new EngineCmd();
     public ExplodeCmd explodeCmd = new ExplodeCmd();
     public UICmd uiCmd = new UICmd();
@@ -41,6 +39,7 @@ public class Commands {
     public ClipboardCmd clipboardCmd = new ClipboardCmd();
     public SelectCmd selectCmd = new SelectCmd();
     public QuickTranslateCmd quickTranslateCmd = new QuickTranslateCmd();
+    public CameraCmd camera = new CameraCmd();
 
     /**
      * Default (empty) constructor
@@ -63,11 +62,10 @@ public class Commands {
      */
     public ArrayList<Command> getCommands() {
         return new ArrayList<>(List.of(
-                debug, transform, lookAt,
-                teleport, orbit, engine,
+                debug, transform, engine,
                 explodeCmd, uiCmd, helpCmd,
                 prismCmd, measureCmd, clipboardCmd,
-                selectCmd, quickTranslateCmd
+                selectCmd, quickTranslateCmd, camera
         ));
     }
 }

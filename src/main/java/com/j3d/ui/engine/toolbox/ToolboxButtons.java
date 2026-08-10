@@ -57,8 +57,8 @@ public class ToolboxButtons {
             StaticRefs.getPropertiesPanel().toggleHidden();
         }, "properties.png");
         register("Orbit", e -> StaticRefs.getCommandParser().run(
-                CommandsManager.commands.orbit,
-                new ArrayList<>(), new ArrayList<>()), "orbit.png");
+                CommandsManager.commands.camera,
+                new ArrayList<>(List.of("orbit")), new ArrayList<>()), "orbit.png");
         register("History",
                 e -> History.panel.toggleHidden(),
                 "history.png"

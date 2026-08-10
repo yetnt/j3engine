@@ -1,4 +1,4 @@
-package com.j3d.engine.interact.cmd.commands.orbit;
+package com.j3d.engine.interact.cmd.commands.camera.orbit;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.math.matrix.Vector3;
