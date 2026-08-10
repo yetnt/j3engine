@@ -15,6 +15,10 @@ import java.util.LinkedHashMap;
 public enum Documentation {
 
     /**
+     * Guide for getting started with the engine.
+     */
+    GETTING_STARTED("Getting Started", "getting-started"),
+    /**
      * Documentation about the engine.
      */
     ABOUT("About", "about"),
@@ -22,10 +26,6 @@ public enum Documentation {
      * Introduction to the engine. (test file)
      */
     INTRO("Intro", "intro"),
-    /**
-     * Guide for getting started with the engine.
-     */
-    GETTING_STARTED("Getting Started", "getting-started"),
     /**
      * Documentation related to editing features.
      */

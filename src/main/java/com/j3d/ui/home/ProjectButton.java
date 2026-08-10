@@ -92,13 +92,14 @@ public class ProjectButton extends javax.swing.JPanel {
         projectImageLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
+                if (e.getClickCount() == 1) {
                     System.out.println(identity.getProjectFile().getName() + " was clicked!");
                     Startup.engine(identity.getProjectFile());
                     parentFrame.dispose();
-                } else if (e.getClickCount() == 1) {
-                    // None.
                 }
+//                else if (e.getClickCount() == 1) {
+//                    // None.
+//                }
             }
         });
     }

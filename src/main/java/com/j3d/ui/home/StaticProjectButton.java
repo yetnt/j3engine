@@ -44,11 +44,12 @@ public class StaticProjectButton extends javax.swing.JPanel {
         projectImageLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
+                if (e.getClickCount() == 1) {
                     action.accept(e);
-                } else if (e.getClickCount() == 1) {
-                    // None.
                 }
+//                else if (e.getClickCount() == 1) {
+//                    // None.
+//                }
             }
         });
     }

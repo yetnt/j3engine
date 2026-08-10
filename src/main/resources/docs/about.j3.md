@@ -1,4 +1,4 @@
-# About
+# About (unfinished)
 
 J3Engine (or J3D) is a custom-built, CPU-based 3D geometry editor and visualisation engine
 capable of creating, editing and visualising geometric scenes.

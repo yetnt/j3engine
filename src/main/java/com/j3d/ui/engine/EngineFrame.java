@@ -389,6 +389,19 @@ public class EngineFrame extends javax.swing.JFrame {
 
     private void buildContextMenu() {
         contextMenu = new ContextMenu()
+                .item("New Cube", KeyEvent.VK_U,
+                        KeyStroke.getKeyStroke(KeyEvent.VK_U, 0),
+                        () -> newCmd("cube")
+                )
+                .item("New Triangle", KeyEvent.VK_E,
+                        KeyStroke.getKeyStroke(KeyEvent.VK_U, 0),
+                        () -> newCmd("tri")
+                )
+                .item("New Point", KeyEvent.VK_P,
+                        KeyStroke.getKeyStroke(KeyEvent.VK_P, 0),
+                        () -> newCmd("point")
+                )
+                .separator()
                 .item("Copy", KeyEvent.VK_C,
                         KeyStroke.getKeyStroke(KeyEvent.VK_C, 0),
                         () -> copyMenuItemActionPerformed(null)
@@ -417,6 +430,15 @@ public class EngineFrame extends javax.swing.JFrame {
                                 new ArrayList<>(),
                                 new ArrayList<>()
                         ));
+    }
+
+    private void newCmd(String arg) {
+        StaticRefs.getCommandParser()
+                .run(
+                        CommandsManager.commands.createCmd,
+                        new ArrayList<>(List.of(arg)),
+                        new ArrayList<>()
+                );
     }
 
     private void transformCommand(String subcommand) {
