@@ -9,6 +9,7 @@ public enum ErrorCodes {
     ENGINE_CORE(40),
     ENGINE_CORE_SCENE(41),
     ENGINE_CORE_MATH(42),
+    ENGINE_CORE_INTERACT(43),
 
     IO(50);
 

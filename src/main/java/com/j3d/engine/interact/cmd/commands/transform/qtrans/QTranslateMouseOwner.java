@@ -97,6 +97,7 @@ public class QTranslateMouseOwner extends MouseOwner {
         super.clear();
         pointsToTransform.clear();
         cachedPlane = null;
+        cachedCentre = null;
     }
 
     public void using(ArrayList<GPoint> pointsToTransform) {

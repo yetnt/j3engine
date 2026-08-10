@@ -9,6 +9,7 @@ JCCXXX -> J3DErr (prefixed J cuz why not)
 	40XXX -> Generic Engine Exception
 	41XXX -> Scene Exceptions
 	42XXX -> Engine (Math) Exceptions
+	43XXX -> Interaction Exceptins (e.g. controlling user input or command line)
 50XXX -> I/O Exceptions
 
 (XXX is domain specific)
@@ -25,6 +26,8 @@ JCCXXX -> J3DErr (prefixed J cuz why not)
 
 20100 -> Generic SQL Exception
 20101 -> Given column is not apart of the table. (usually should be caught by type safety)
+
+43101 -> MouseOwner could not instantiate a Robot instance
 
 41101 -> Copy Exception - Connection severed.
 

@@ -1,6 +1,8 @@
 package com.j3d.engine.interact.input.mouse;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.EngineException;
+import com.j3d.engine.interact.InteractionException;
 import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.interact.selection.SelectionMouseOwner;
 import com.j3d.engine.react.events.*;
@@ -45,7 +47,8 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
     private final MOwner owner;
 
     private Point old = new Point(0 ,0);
-    public Mouse physicalMouse = new Mouse(0, 0);
+    private final Mouse physicalMouse = new Mouse(0, 0);
+    private Robot robot;
 
     /**
      * Creates a new MouseOwner with the given owner.
@@ -53,6 +56,13 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
      */
     public MouseOwner(MOwner owner) {
         this.owner = owner;
+        try {
+            robot = new Robot();
+        } catch (AWTException e) {
+            StaticRefs.getErrs().handle(
+                    new InteractionException("Robot could not be instantiated", e).code(101)
+            );
+        }
     }
 
     /**
@@ -61,7 +71,7 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
      * @param clickDelayThreshold The threshold for the click delay.
      */
     public MouseOwner(MOwner owner, int clickDelayThreshold) {
-        this.owner = owner;
+        this(owner);
         this.clickDelayThreshold = clickDelayThreshold;
     }
 
@@ -207,6 +217,14 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
         clickDelay = 0;
     }
 
+    public void sendMouseToCentre() {
+        EngineFrame frame = StaticRefs.getMainFrame();
+        int centerX = frame.getX() + frame.getWidth() / 2;
+        int centerY = frame.getY() + frame.getHeight() / 2;
+        robot.mouseMove(centerX, centerY);
+        physicalMouse.moveAndReset(centerX, centerY);
+    }
+
     /**
      * Handles mouse wrapping behavior, allowing the mouse cursor to "teleport" from one side of the screen
      * to the other when it reaches the edge. It also updates the internal {@link #physicalMouse} coordinates
@@ -220,42 +238,30 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
     public void wrap(MouseEvent e) {
         if (e.getX() + 10 > StaticRefs.getSceneManager().screenSize.width) {
             // move the mouse to the oppsite side
-            try {
-                Robot robot = new Robot();
-                // If
-                robot.mouseMove(
-                        StaticRefs.getMainFrame().getLocationOnScreen().x -
-                                (StaticRefs.getSceneManager().screenSize.width + 5),
-                        e.getY() /* +
-                                (StaticRefs.getSceneManager().screenSize.height - e.getY() )*/
-                );
-                physicalMouse.addX(5);
-                old = new Point(
-                        5,
-                        e.getPoint().y
-                );
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        } else if (e.getX() - 8 <= 0 && physicalMouse.getX() - StaticRefs.getSceneManager().screenSize.width > 0) {
-            // move the mouse to the oppsite side
-            try {
-                Robot robot = new Robot();
-                // If
-                robot.mouseMove(
-                        StaticRefs.getMainFrame().getLocationOnScreen().x +
-                                (StaticRefs.getSceneManager().screenSize.width - 2),
-                        e.getY() /* +
-                                (StaticRefs.getSceneManager().screenSize.height - e.getY() )*/
-                );
-                physicalMouse.addX(-2);
-                old = new Point(
-                        StaticRefs.getSceneManager().screenSize.width - 2,
-                        e.getPoint().y
-                );
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
+            robot.mouseMove(
+                    StaticRefs.getMainFrame().getLocationOnScreen().x -
+                            (StaticRefs.getSceneManager().screenSize.width + 5),
+                    e.getY() /* +
+                            (StaticRefs.getSceneManager().screenSize.height - e.getY() )*/
+            );
+            physicalMouse.addX(5);
+            old = new Point(
+                    5,
+                    e.getPoint().y
+            );
+        } else if (e.getX() - 8 <= 0 /*&& physicalMouse.getX() - StaticRefs.getSceneManager().screenSize.width > 0*/) {
+            // move the mouse to the opposite side
+            robot.mouseMove(
+                    StaticRefs.getMainFrame().getLocationOnScreen().x +
+                            (StaticRefs.getSceneManager().screenSize.width - 2),
+                    e.getY() /* +
+                            (StaticRefs.getSceneManager().screenSize.height - e.getY() )*/
+            );
+            physicalMouse.addX(-2);
+            old = new Point(
+                    StaticRefs.getSceneManager().screenSize.width - 2,
+                    e.getPoint().y
+            );
         } else {
             physicalMouse.addX(e.getPoint().x - old.x).addY(e.getPoint().y - old.y);
             old = e.getPoint();

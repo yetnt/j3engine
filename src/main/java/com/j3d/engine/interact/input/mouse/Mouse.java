@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public class Mouse {
-    int x, y;
+    int x, y, deltaX, deltaY;
     public Mouse(int x, int y) {
         this.x = x;
         this.y = y;
@@ -16,32 +16,44 @@ public class Mouse {
         return y;
     }
 
-    public Mouse setX(int x) {
-        this.x = x;
-        return this;
-    }
-    public Mouse setY(int y) {
-        this.y = y;
-        return this;
-    }
+//    public Mouse setX(int x) {
+//        this.x = x;
+//        return this;
+//    }
+//    public Mouse setY(int y) {
+//        this.y = y;
+//        return this;
+//    }
 
     public Mouse addX(int x) {
         this.x += x;
+        this.deltaX = x;
         return this;
     }
     public Mouse addY(int y) {
         this.y += y;
+        this.deltaY = y;
         return this;
     }
 
-    public void add(Point e, Point old) {
-        x += e.x - old.x;
-        y += e.y - old.y;
+    public int getDeltaX() {
+        return deltaX;
+    }
+
+    public int getDeltaY() {
+        return deltaY;
     }
 
     public void reset() {
         x = 0;
         y = 0;
+    }
+
+    public void moveAndReset(int x, int y) {
+        this.x = x;
+        this.y = y;
+        this.deltaX = 0;
+        this.deltaY = 0;
     }
 
     @Override
