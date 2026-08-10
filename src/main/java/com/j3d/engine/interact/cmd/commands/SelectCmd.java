@@ -2,8 +2,8 @@ package com.j3d.engine.interact.cmd.commands;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.Invoker;
+import com.j3d.engine.interact.cmd.Wildcard;
 import com.j3d.engine.scene.nodes.geometry.GObject;
-import com.j3d.engine.interact.cmd.Any;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.args.TypedArg;
 import com.j3d.engine.interact.cmd.base.Command;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 /**
  * A command which selects a given {@link GObject}
  * <p>
- *     Provides a required {@link TypedArg} which accepts an {@link Any} type, but expects a {@link GObject}
+ *     Provides a required {@link TypedArg} which accepts an {@link Wildcard} type, but expects a {@link GObject}
  *     (representing a {@link GObject}'s name or UUID)
  * </p>
  * <p>
@@ -42,7 +42,7 @@ public class SelectCmd extends Command {
                         "argument",
                         "something to select",
                         false,
-                        Any.class
+                        Wildcard.class
                 )
         ).parseUsages();
     }

@@ -39,7 +39,7 @@
  *     for recall and re-execution.
  * </p>
  * <p>
- *     {@link com.j3d.engine.interact.cmd.Any} is a special interface, which is used in Command definitions
+ *     {@link com.j3d.engine.interact.cmd.Wildcard} is a special interface, which is used in Command definitions
  *     to label that a {@link com.j3d.engine.interact.cmd.args.TypedArg} can take any type.
  * </p>
  * @author Lehlogonolo Poole

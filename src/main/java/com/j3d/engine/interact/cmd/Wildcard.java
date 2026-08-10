@@ -16,5 +16,5 @@ import com.j3d.ui.engine.CommandPalette;
  * @see CommandPalette
  * @see CommandParser
  */
-public interface Any {
+public interface Wildcard {
 }

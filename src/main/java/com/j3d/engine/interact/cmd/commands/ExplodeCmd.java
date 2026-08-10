@@ -1,7 +1,7 @@
 package com.j3d.engine.interact.cmd.commands;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.interact.cmd.Any;
+import com.j3d.engine.interact.cmd.Wildcard;
 import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.interact.cmd.args.TypedArg;
 import com.j3d.engine.scene.SceneManager;
@@ -19,7 +19,6 @@ import com.j3d.utility.generators.JLabelRichText;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.stream.Collectors;
 
 /**
@@ -62,7 +61,7 @@ public class ExplodeCmd extends Command{
     public ExplodeCmd() {
         super("explode", "Destroy given geometry of triangles and lines into constituent points. (Uses tagged arguments)");
         this.aliases("expl", "ex", "destruct").args(new TypedArg(
-                "useSelection", "Use Selection instead", true, Any.class
+                "useSelection", "Use Selection instead", true, Wildcard.class
         )).parseUsages();
     }
 

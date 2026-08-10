@@ -1,7 +1,7 @@
 package com.j3d.engine.interact.cmd.commands.debug;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.interact.cmd.Any;
+import com.j3d.engine.interact.cmd.Wildcard;
 import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * A subcommand of {@link DebugCmd} which logs the type of the given argument
  * <p>
  *     Provides an optional second (third in context of its parent command) {@link TypedArg} which accepts
- *     any valid type given {@link Any}
+ *     any valid type given {@link Wildcard}
  * </p>
  * <p>
  *     Aliases: {@code typeof}, {@code t}, {@code tof}, {@code type}, {@code ty}
@@ -41,14 +41,14 @@ import java.util.ArrayList;
  * @see Subcommand
  * @see TaggedArgValue
  * @see TypedArg
- * @see Any
+ * @see Wildcard
  * @author Lehlogonolo Poole
  */
 public class TypeOf extends Subcommand {
     public TypeOf() {
         super("typeof", "Returns the type of the input argument.");
         this.aliases("t", "tof", "type", "ty").args(
-                new TypedArg("input", "The input to check the type of", false, Any.class)
+                new TypedArg("input", "The input to check the type of", false, Wildcard.class)
         ).parseUsages();
     }
 
