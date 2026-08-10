@@ -18,7 +18,7 @@ Future ToDo (Important)
 4. A/B Testing with a hook class that asks the user if the program did the right thing. (Should probably call Main.main())
 5. [DONE] Projects Panel to load up a project
 6. [DONE] Startup login panel
-7. Via Main.main() open a file directly and skip the login/signup panel. (the only way to access the app in an unlogged-in state)
+7. [DONe] Via Main.main() open a file directly and skip the login/signup panel. (the only way to access the app in an unlogged-in state)
 8. [DONE] Settings Frame
 9. (CURRENT) Help docs
 10. Macros
@@ -33,16 +33,18 @@ Future ToDo (Important)
 
 Future ToDo (optional, these are more convenience and nice-to-have. might implement after submitting the PAT when this goes back to being a personal project)
 
-1. Spheres and curves (Bezier curves and splines)
+1. [BEZIER CURVES DONE] Spheres and curves (Bezier curves and splines)
 2. [DONE] Layer/Thing hiding
 3. Textures and importing pictures
 4. [DONE] Undo/Redo
 5. import/export obj
-6. Scripting with Jaiva
-7. jar plugins (via a more robust API)
+
+Futher down ToDo list (Abosoltuely only after PAT)
+1. Scripting with Jaiva (macros or custom commands)
+2. Jar plugins (more bare bones and lightweight API, just use engine internals)
 
 Far Down Wishlist (Will probably never do)
 
-1. Optional custom-built GPU shaders. No not like vulkan or opengl stuff. completely custom. because why not
+1. Optional custom-built GPU shaders. No not like vulkan or opengl stuff. completely custom. because why not. Like FULLY custom shader language.
 2. Lighting and otherwise raycasting
 3. [DONE] Detachable UI like FL Studio
