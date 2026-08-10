@@ -8,6 +8,7 @@ import com.j3d.engine.interact.cmd.commands.clipboard.*;
 import com.j3d.engine.interact.cmd.commands.create.CreateCmd;
 import com.j3d.engine.interact.cmd.commands.debug.DebugCmd;
 import com.j3d.engine.interact.cmd.commands.engine.EngineCmd;
+import com.j3d.engine.interact.cmd.commands.join.JoinCmd;
 import com.j3d.engine.interact.cmd.commands.measure.MeasureCmd;
 import com.j3d.engine.interact.cmd.commands.camera.orbit.OrbitCmd;
 import com.j3d.engine.interact.cmd.commands.transform.qtrans.QuickTranslateCmd;
@@ -43,6 +44,7 @@ public class Commands {
     public QuickTranslateCmd quickTranslateCmd = new QuickTranslateCmd();
     public CameraCmd camera = new CameraCmd();
     public CreateCmd createCmd = new CreateCmd();
+    public JoinCmd joinCmd = new JoinCmd();
 
     /**
      * Default (empty) constructor
@@ -69,7 +71,7 @@ public class Commands {
                 explodeCmd, uiCmd, helpCmd,
                 prismCmd, measureCmd, clipboardCmd,
                 selectCmd, quickTranslateCmd, camera,
-                createCmd
+                createCmd, joinCmd
         ));
     }
 }

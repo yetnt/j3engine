@@ -5,7 +5,7 @@
  *     A {@link com.j3d.engine.interact.cmd.base.Command} by itself, is a stateless side effect producing
  *     base class, where concrete implementations override {@link com.j3d.engine.interact.cmd.base.Command#run(com.j3d.engine.interact.cmd.Invoker, com.j3d.ui.SafeJLabel, String, Object[], java.util.ArrayList)}
  *     to do their specialised logic. Commands define their arguments within it's constructor super call
- *     and any aliases that relate to said command. The arguments are purely used for usage strings which
+ *     and any aliases that relate  to said command. The arguments are purely used for usage strings which
  *     form an important part of UX, giving user's a way to know the multiple ways a command can execute itself.
  * </p>
  * <p>

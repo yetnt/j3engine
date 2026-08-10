@@ -106,7 +106,7 @@ public class CreateCmd extends Command {
         Layer usable = StaticRefs.getSceneManager().usableLayer();
         ArrayList<FindResult> results = StaticRefs.getSceneManager().finder.find(
                 Thing.class,
-                Finder.nameQuery(),
+                (t, v) -> t.getName().contains(v),
                 name
         );
         String newName = name + results.size();

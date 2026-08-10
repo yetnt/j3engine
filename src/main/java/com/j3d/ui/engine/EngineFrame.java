@@ -409,7 +409,14 @@ public class EngineFrame extends javax.swing.JFrame {
                 .item("Scale", KeyEvent.VK_S,
                         KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.ALT_DOWN_MASK),
                         () -> transformCommand("scale")
-                );
+                ).separator()
+                .item("Join", KeyEvent.VK_J,
+                        KeyStroke.getKeyStroke(KeyEvent.VK_J, InputEvent.ALT_DOWN_MASK),
+                        () -> StaticRefs.getCommandParser().run(
+                                CommandsManager.commands.joinCmd,
+                                new ArrayList<>(),
+                                new ArrayList<>()
+                        ));
     }
 
     private void transformCommand(String subcommand) {

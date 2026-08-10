@@ -145,10 +145,10 @@ public class SceneManager {
         Stroke s = g.getStroke();
         Vector3 origin = new Vector3(0, 0, 0);
         Vector3 offset = new Vector3(0, 0, 0);
-        ArrayList<Double> nums = new ArrayList<>(List.of(-1.0, 1.0));
-        for (double i = 2.0; i < Math.clamp(Math.floor(axisLength), 0, 20); i++) {
-            nums.add(i);
-        }
+//        ArrayList<Double> nums = new ArrayList<>(List.of(-1.0, 1.0));
+//        for (double i = 2.0; i < Math.clamp(Math.floor(axisLength), 0, 20); i++) {
+//            nums.add(i);
+//        }
 
         g.setStroke(new BasicStroke(2));
         g.setColor(J3DTheme.TEXT_PRIMARY.color());
@@ -157,34 +157,34 @@ public class SceneManager {
                 origin.add(offset).sub(new Vector3(2, 0, 0)),
                 origin.add(new Vector3(axisLength, 0, 0)),
                 camera);
-        this.drawText3D(g, origin.add(new Vector3(axisLength+axisOffset, 0, 0)), "X", camera);
-        nums.forEach(num -> {
-            this.drawLine3D(
-                    g, new Vector3(num, 0, -1), new Vector3(num, 0, 1), camera
-            );
-        });
+        this.drawText3D(g, origin.add(new Vector3(axisLength+axisOffset, 0, 0)), "X+", camera);
+//        nums.forEach(num -> {
+//            this.drawLine3D(
+//                    g, new Vector3(num, 0, -1), new Vector3(num, 0, 1), camera
+//            );
+//        });
 
         g.setColor(Color.GREEN);
         this.drawLine3D(g, origin.add(offset).sub(new Vector3(0, 30, 0)),
                 origin.add(new Vector3(0, axisLength, 0)),
                 camera);
-        this.drawText3D(g, origin.add(new Vector3(0, axisLength+axisOffset, 0)), "Y", camera);
-        nums.forEach(num -> {
-            this.drawLine3D(
-                    g, new Vector3(-1, num, 0), new Vector3(1, num, 0), camera
-            );
-        });
+        this.drawText3D(g, origin.add(new Vector3(0, axisLength+axisOffset, 0)), "Y+", camera);
+//        nums.forEach(num -> {
+//            this.drawLine3D(
+//                    g, new Vector3(-1, num, 0), new Vector3(1, num, 0), camera
+//            );
+//        });
 
         g.setColor(Color.BLUE);
         this.drawLine3D(g, origin.add(offset).sub(new Vector3(0, 0, 2)),
                 origin.add(new Vector3(0, 0, axisLength)),
                 camera);
-        this.drawText3D(g, origin.add(new Vector3(0, 0, axisLength+axisOffset)), "Z", camera);
-        nums.forEach(num -> {
-            this.drawLine3D(
-                    g, new Vector3(0, -1, num), new Vector3(0, 1, num), camera
-            );
-        });
+        this.drawText3D(g, origin.add(new Vector3(0, 0, axisLength+axisOffset)), "Z+", camera);
+//        nums.forEach(num -> {
+//            this.drawLine3D(
+//                    g, new Vector3(0, -1, num), new Vector3(0, 1, num), camera
+//            );
+//        });
         g.setStroke(s);
     }
 
@@ -446,5 +446,11 @@ public class SceneManager {
     public void drawTriangle3D(Graphics2D graphics2D, Vector3 pos1, Vector3 pos2, Vector3 pos3) {
         ArrayList<Vector3> points = new ArrayList<>(List.of(pos1, pos2, pos3));
         drawPoly3D(graphics2D, points);
+    }
+
+    public void removeFromParent(GObject o, Thing t) {
+        Thing thing = StaticRefs.getSceneManager().findObjectParent(o);
+        if (thing.equals(t)) return;
+        thing.remove(o);
     }
 }

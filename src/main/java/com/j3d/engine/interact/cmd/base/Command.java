@@ -184,15 +184,11 @@ public class Command {
                     }
                     StringBuilder usageAccumulatorEntry = usageAccumulator.get(i);
                     if (GObjectRegistry.isGObject(cls)) {
-                        usageAccumulatorEntry.append("<").append(GObjectRegistry.fromClass(cls).getSimpleName()).append("> ");
+                        usageAccumulatorEntry.append("<").append(GObjectRegistry.fromClass(cls).getSimpleName()).append(tArg.isOptional() ? "?" : "").append("> ");
                         continue;
                     }
                     switch (cls.getSimpleName()) {
                         case "Thing" -> usageAccumulatorEntry.append("<thing").append(tArg.isOptional() ? "?" : "").append("> ");
-//                        case "GPoint" -> usageAccumulatorEntry.append("<point").append(tArg.isOptional() ? "?" : "").append("> ");
-//                        case "GLine" -> usageAccumulatorEntry.append("<line").append(tArg.isOptional() ? "?" : "").append("> ");
-//                        case "GTri" -> usageAccumulatorEntry.append("<tri").append(tArg.isOptional() ? "?" : "").append("> ");
-//                        case "GCurve" -> usageAccumulatorEntry.append("<curve").append(tArg.isOptional() ? "?" : "").append("> ");
                         case "Color" -> usageAccumulatorEntry.append("<#color").append(tArg.isOptional() ? "?" : "").append("#> ");
                         case "Vector3" -> usageAccumulatorEntry.append("<vector3").append(tArg.isOptional() ? "?" : "").append("> ");
                         case "String" -> usageAccumulatorEntry.append("<string").append(tArg.isOptional() ? "?" : "").append("> ");

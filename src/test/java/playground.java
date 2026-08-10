@@ -1,3 +1,4 @@
+import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.math.MathException;
 import com.j3d.engine.scene.DefaultObjectDeletionException;
 import com.j3d.engine.scene.copy.InvalidCopyException;
@@ -10,13 +11,15 @@ import java.util.List;
 
 public class playground {
     public static void main(String[] args) {
-        ArrayList<J3DError> errs = new ArrayList<>(List.of(
-                new ProjectFileException("Sd").code(23),
-                new PrefsGenException("d").code(4),
-                new DefaultObjectDeletionException("d", "G").code(901),
-                new MathException("dumb math").code(1),
-                new InvalidCopyException("D").code(101)
-        ));
-        errs.forEach(r -> System.out.println(r.codeToStr()));
+        CommandsManager.commands.getCommands().forEach(
+                cmd -> {
+                    System.out.println(cmd.getClass().getSimpleName());
+                    System.out.println("Aliuases: " + cmd.aliases);
+                    System.out.println("Args: " + cmd.args);
+                    System.out.println("Usages:" );
+                    cmd.getUsages().forEach(u -> System.out.println("\t (alias) " + u));
+                    System.out.println();
+                }
+        );
     }
 }

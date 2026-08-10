@@ -26,6 +26,9 @@
  *     holding its type and value, which can then be consumed by various subsystems or passed to the
  *     command for execution.
  * </p>
+ * <p>
+ *     {@link com.j3d.engine.interact.cmd.Invoker} represents the source from which a command was invoked.
+ * </p>
  * <h2>Sub-packages</h2>
  * <ul>
  *     <li>{@link com.j3d.engine.interact.cmd.args}</li>

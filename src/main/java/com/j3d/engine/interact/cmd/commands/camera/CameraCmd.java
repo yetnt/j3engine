@@ -8,6 +8,28 @@ import com.j3d.ui.SafeJLabel;
 
 import java.util.ArrayList;
 
+/**
+ * A command that groups all camera-related subcommands.
+ * <p>
+ *     This command acts as a dispatcher for various camera operations such as
+ *     orbiting, looking at specific objects, or teleporting the camera.
+ *     It provides a central point for managing camera interactions within the engine.
+ * </p>
+ * <p>
+ *     Typical Usage:
+ *     <pre>{@code
+ *     camera orbit <args>
+ *     c orbit <args>
+ *     camera lookat <args>
+ *     v teleport <args>
+ *     }</pre>
+ * </p>
+ * @author Lehlogonolo Poole
+ * @see Command
+ * @see OrbitCmd
+ * @see LookAtCmd
+ * @see TeleportCmd
+ */
 public class CameraCmd extends Command {
 
     public CameraCmd() {
