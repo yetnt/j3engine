@@ -79,7 +79,7 @@ public enum Documentation {
      * keyed by their file ID. Each value in the map is a {@link Pair}
      * where the first element is the human-readable label and the second
      * element is the actual {@link File} object.
-     * The map is lazily initialized and cached.
+     * The map is lazily initialised and cached.
      *
      * @return A {@link LinkedHashMap} mapping file IDs to a {@link Pair} of label and file.
      */
@@ -130,10 +130,16 @@ public enum Documentation {
         return fileId;
     }
 
-    /** The unique identifier for the documentation file (e.g., "about"). */
-    private String fileId;
-    /** The actual {@link File} object pointing to the documentation file. */
-    private File file;
-    /** The human-readable label for the documentation (e.g., "About"). */
-    private String label;
+    /**
+     * The unique identifier for the documentation file (e.g., "about").
+     */
+    private final String fileId;
+    /**
+     * The actual {@link File} object pointing to the documentation file.
+     */
+    private final File file;
+    /**
+     * The human-readable label for the documentation (e.g., "About").
+     */
+    private final String label;
 }

@@ -384,52 +384,62 @@ public class EngineFrame extends javax.swing.JFrame {
         // Initialise settings so it can fetch the user's stored settings if any exist.
         StaticRefs.getSettings();
 
+        StaticRefs.getCamera().lookAt(Vector3.ZERO);
+
         StaticRefs.getLog().uiPrintLn("EngineFrame completed building");
     }
 
     private void buildContextMenu() {
         contextMenu = new ContextMenu()
-                .item("New Cube", KeyEvent.VK_U,
-                        KeyStroke.getKeyStroke(KeyEvent.VK_U, 0),
-                        () -> newCmd("cube")
+                .menu(
+                        "New",
+                        (c) -> c
+                                .item("New Cube", KeyEvent.VK_U,
+                                        () -> newCmd("cube")
+                                )
+                                .item("New Triangle", KeyEvent.VK_I,
+                                        () -> newCmd("tri")
+                                )
+                                .item("New Point", KeyEvent.VK_E,
+                                        () -> newCmd("point")
+                                )
                 )
-                .item("New Triangle", KeyEvent.VK_E,
-                        KeyStroke.getKeyStroke(KeyEvent.VK_U, 0),
-                        () -> newCmd("tri")
-                )
-                .item("New Point", KeyEvent.VK_P,
-                        KeyStroke.getKeyStroke(KeyEvent.VK_P, 0),
-                        () -> newCmd("point")
+                .separator()
+                .menu(
+                        "Transform",
+                        (c) -> c
+                                .item("Translate", KeyEvent.VK_T,
+                                        () -> transformCommand("translate")
+                                )
+                                .item("Rotate", KeyEvent.VK_R,
+                                        () -> transformCommand("rotate")
+                                )
+                                .item("Scale", KeyEvent.VK_S,
+                                        () -> transformCommand("scale")
+                                )
                 )
                 .separator()
                 .item("Copy", KeyEvent.VK_C,
-                        KeyStroke.getKeyStroke(KeyEvent.VK_C, 0),
                         () -> copyMenuItemActionPerformed(null)
                 )
                 .item("Paste", KeyEvent.VK_P,
-                        KeyStroke.getKeyStroke(KeyEvent.VK_P, 0),
                         () -> pasteMenuItemActionPerformed(null)
-                )
-                .separator()
-                .item("Translate", KeyEvent.VK_T,
-                        KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.ALT_DOWN_MASK),
-                        () -> transformCommand("translate")
-                )
-                .item("Rotate", KeyEvent.VK_R,
-                        KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_DOWN_MASK),
-                        () -> transformCommand("rotate")
-                )
-                .item("Scale", KeyEvent.VK_S,
-                        KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.ALT_DOWN_MASK),
-                        () -> transformCommand("scale")
                 ).separator()
                 .item("Join", KeyEvent.VK_J,
-                        KeyStroke.getKeyStroke(KeyEvent.VK_J, InputEvent.ALT_DOWN_MASK),
                         () -> StaticRefs.getCommandParser().run(
                                 CommandsManager.commands.joinCmd,
                                 new ArrayList<>(),
                                 new ArrayList<>()
-                        ));
+                        )
+                ).separator()
+                .item(
+                        "Orbit", KeyEvent.VK_O,
+                        () -> StaticRefs.getCommandParser().run(
+                                CommandsManager.commands.camera,
+                                new ArrayList<>(List.of("orbit")),
+                                new ArrayList<>()
+                        )
+                );
     }
 
     private void newCmd(String arg) {

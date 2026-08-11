@@ -1,9 +1,11 @@
 package com.j3d.ui.engine;
 
+import com.j3d.ui.engine.contextMenu.ContextSubMenu;
 import com.j3d.ui.theme.J3DTheme;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.function.Consumer;
 
 public class ContextMenu extends JPopupMenu {
     public ContextMenu() {
@@ -19,10 +21,10 @@ public class ContextMenu extends JPopupMenu {
         setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
     }
 
-    public ContextMenu item(String text, int keyMnemonic, KeyStroke accelerator, Runnable action) {
+    public ContextMenu item(String text, int keyMnemonic, Runnable action) {
         JMenuItem item = new JMenuItem(text);
         item.setMnemonic(keyMnemonic);
-        item.setAccelerator(accelerator);
+//        item.setAccelerator(accelerator);
         item.setFont(Font.getFont("Segoe UI"));
 //        item.setForeground(J3DTheme.TEXT_PRIMARY.color());
         item.setBackground(J3DTheme.UI_SURFACE.color());
@@ -30,6 +32,16 @@ public class ContextMenu extends JPopupMenu {
         item.addActionListener(e -> action.run());
         add(item);
         separator();
+        return this;
+    }
+
+    public ContextMenu menu(String text, Consumer<ContextSubMenu> builder) {
+        ContextSubMenu menu = new ContextSubMenu(text);
+        builder.accept(menu);
+
+        add(menu);
+        separator();
+
         return this;
     }
 
