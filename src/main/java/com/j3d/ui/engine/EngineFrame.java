@@ -30,6 +30,7 @@ import com.j3d.gen.settings.Settings;
 import com.j3d.storage.files.FilesUtility;
 import com.j3d.storage.files.protocol.proj.PF1;
 import com.j3d.storage.files.protocol.proj.PF2;
+import com.j3d.storage.files.protocol.proj.PF3;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.threads.LongTask;
 import com.j3d.ui.engine.floating.DebugPanel;

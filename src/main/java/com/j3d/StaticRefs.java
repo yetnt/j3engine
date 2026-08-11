@@ -21,6 +21,7 @@ import com.j3d.storage.files.engine.EngineFiles;
 import com.j3d.storage.files.engine.LogFile;
 import com.j3d.storage.files.protocol.proj.PF1;
 import com.j3d.storage.files.protocol.proj.PF2;
+import com.j3d.storage.files.protocol.proj.PF3;
 import com.j3d.threads.StatisticsThread;
 import com.j3d.ui.engine.CommandPalette;
 import com.j3d.ui.engine.FloatingPanel;
@@ -232,6 +233,17 @@ public abstract class StaticRefs {
             projectFileV2 = new PF2();
         }
         return projectFileV2;
+    }
+    /**
+     * The Project File V2 instance. Used for reading and writing project files in version 2 format.
+     * Lazily initialised.
+     */
+    private static PF3 projectFileV3;
+    public static PF3 getProjectFileV3() {
+        if (projectFileV3 == null) {
+            projectFileV3 = new PF3();
+        }
+        return projectFileV3;
     }
 
     /**

@@ -200,7 +200,8 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
 
     public enum PF {
         V1(StaticRefs::getProjectFileV1),
-        V2(StaticRefs::getProjectFileV2);
+        V2(StaticRefs::getProjectFileV2),
+        V3(StaticRefs::getProjectFileV3);
 
         PF(Supplier<ProjectFile> pf) {
             projectFile = pf;
