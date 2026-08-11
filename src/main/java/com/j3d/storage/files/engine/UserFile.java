@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class UserFile {
@@ -19,6 +20,7 @@ public class UserFile {
     }
 
     public int read() {
+        AtomicBoolean empty = new AtomicBoolean(true);
         AtomicInteger id = new AtomicInteger();
         FilesUtility.readFromFile(
                 userFile.getAbsolutePath(),
@@ -26,14 +28,14 @@ public class UserFile {
                     while (scanner.hasNextLine()) {
                         try {
                             id.set(scanner.nextInt());
-                        } catch (InputMismatchException e) {
-                            id.set(NONE_FOUND);
+                            empty.set(false);
                         } catch (NoSuchElementException e) {
-                            continue;
+                            if (empty.get()) id.set(NONE_FOUND);
                         }
                     }
                 }
         );
+        if (empty.get()) return NONE_FOUND;
         return id.get();
     }
 
@@ -54,6 +56,7 @@ public class UserFile {
     }
 
     public boolean exists() {
+        // TODO: new user gets a login?????????????????
         return read() != NONE_FOUND;
     }
 }

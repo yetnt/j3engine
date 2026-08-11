@@ -13,7 +13,7 @@ public class RecentProjectsFile extends ProjectsFile {
 
     public static final int MAX_RECENT = 20;
 
-    public RecentProjectsFile() {
+    public RecentProjectsFile() throws IOException {
         super("recents.txt");
     }
 

@@ -20,16 +20,15 @@ public class EngineFiles {
 
 
     public EngineFiles() {
-        if (!engineFolder.exists()) {
-            engineFolder.mkdirs();
-        }
-        recents = new RecentProjectsFile();
-        pinned = new PinnedProjectsFile();
+        if (!engineFolder.exists()) engineFolder.mkdirs();
+
         logFile = new LogFile();
         debugDump = new DebugDump();
         try {
+            recents = new RecentProjectsFile();
             preferencesFile = new PrefsFile();
             userFile = new UserFile();
+            pinned = new PinnedProjectsFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Scanner;
 
 public class PinnedProjectsFile extends ProjectsFile {
-    public PinnedProjectsFile() {
+    public PinnedProjectsFile() throws IOException {
         super("pinned.txt");
     }
 

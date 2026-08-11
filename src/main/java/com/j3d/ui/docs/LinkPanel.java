@@ -6,6 +6,7 @@ package com.j3d.ui.docs;
 
 import com.j3d.StaticRefs;
 import com.j3d.gen.docs.DocsGenException;
+import com.j3d.gen.docs.Documentation;
 import com.j3d.gen.docs.reader.tokens.TLink;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.utility.Parsing;
@@ -14,6 +15,7 @@ import com.j3d.utility.generic.Pair;
 
 import java.awt.*;
 import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 /**
@@ -27,7 +29,9 @@ public class LinkPanel extends javax.swing.JPanel {
     private final boolean isMainHelp;
     private final String id;
 
-    public LinkPanel(DocsFrame parent, int refNum, TLink link, int length) {
+    private final Documentation documentation;
+
+    public LinkPanel(DocsFrame parent, int refNum, TLink link, int length, Documentation documentation) {
         initComponents();
         parentFrame = parent;
         Dimension dim = new Dimension(length, getMaximumSize().height);
@@ -38,12 +42,14 @@ public class LinkPanel extends javax.swing.JPanel {
         jLabel1.setText("[" + refNum + "] " + link.getContent());
         isMainHelp = false;
         id = "";
+        this.documentation = documentation;
 
         theme();
     }
 
     public LinkPanel(String id, Pair<String, File> pair, int width) {
         initComponents();
+        this.documentation = null;
 
         String name = pair.first;
 
@@ -86,6 +92,51 @@ public class LinkPanel extends javax.swing.JPanel {
 
         theme();
     }
+
+    public String path(String pathToResolve) {
+        if (documentation == null) {
+            // at the root just return path.
+            return pathToResolve;
+        }
+        Path current = Path.of(documentation.getFileId());
+        Path target = Path.of(pathToResolve);
+
+        Path parent = current.getParent();
+
+        if (parent == null) {
+            return target.normalize().toString();
+        }
+
+        return parent.resolve(target).normalize()
+                .toString().replaceAll("\\\\", "/");
+    }
+
+//    public String path(String pathToResolve) {
+//        Path p = Path.of(pathToResolve);
+//        Path thiz = Path.of(documentation.getFileId());
+//
+//
+//        // if thiz = "doc.j3.md" and p = "doc2.j3.md"
+//        // return p as is, same parent.
+//
+//        // if thiz = "doc.j3d.md" and p = "cmd/doc2.j3.md"
+//        // return p as is,
+//
+//        // if thiz = "cmd/doc.j3.md" and p = "doc2.j3.md"
+//        // return p with current file parents "cmd/doc2.j3.md"
+//
+//        // if thiz = "cmd/doc.j3.md" and p = "../doc2.j3.md"
+//        // go up the parent chain within thiz until p can be resolved there so in this case return p as "doc2.j3.md"
+//
+//        // if thiz = "cmd/other/k/doc.j3d.md" and p = "../rot/e/doc2.j3.md"
+//        // somehow resolve p to be "cmd/other/rot/e/doct2.j3.md
+//
+//        // basically all relative paths need to be resolved to a root path
+//        // thiz is always a guaranteed root path but may have its own stuff.
+//
+//
+//        return fr;
+//    }
 
     private void theme() {
         J3DTheme.commitAsGenericLbl(jLabel1, false);
@@ -176,12 +227,14 @@ public class LinkPanel extends javax.swing.JPanel {
                 }
 
                 // remove .j3.md extension
+                otherFile = path(otherFile);
                 otherFile = otherFile.substring(0, otherFile.length() - 6);
                 StaticRefs.getDocsProvider()
                         .provideDocFrame(otherFile) // get the other file
                         .scrollToHeader(header) // scroll to the header
                         .setVisible(true);
             } else if (url.endsWith(".j3.md")) {
+                url = path(url);
                 StaticRefs.getDocsProvider().provideDocFrame(url.substring(0, url.length() - 6)).setVisible(true);
             }
         }

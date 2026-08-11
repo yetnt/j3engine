@@ -4,6 +4,7 @@
  */
 package com.j3d.ui.docs;
 
+import com.j3d.gen.docs.Documentation;
 import com.j3d.gen.docs.reader.tokens.TLink;
 import com.j3d.ui.theme.J3DTheme;
 
@@ -18,11 +19,11 @@ public class LinksPanel extends javax.swing.JPanel {
     /**
      * Creates new form TextPanel
      */
-    public LinksPanel(DocsFrame parent, ArrayList<TLink> links, int width) {
+    public LinksPanel(DocsFrame parent, ArrayList<TLink> links, int width, Documentation doc) {
         initComponents();
         int totalHeight = 0;
         for (int i = 0; i < links.size(); i++) {
-            LinkPanel lp = new LinkPanel(parent, i + 1, links.get(i), width);
+            LinkPanel lp = new LinkPanel(parent, i + 1, links.get(i), width, doc);
             add(lp);
             totalHeight += lp.getPreferredSize().height;
         }

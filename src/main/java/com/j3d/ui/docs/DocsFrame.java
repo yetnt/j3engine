@@ -54,6 +54,7 @@ public class DocsFrame extends javax.swing.JFrame {
     private final ArrayList<HeaderIdentifier> tempHeaderHierachy = new ArrayList<>();
     private final LinkedHashMap<String, HeaderIdentifier> headerIdentifiers = new LinkedHashMap<>();
     private HeaderIdentifier rootHeader;
+    private Documentation doc;
 
     /**
      * Creates a new HelpFrame that displays a list of available help documents.
@@ -77,6 +78,7 @@ public class DocsFrame extends javax.swing.JFrame {
     public DocsFrame(String fileIdentifier) {
         initComponents();
         Pair<String, File> pair = Documentation.toMap().get(fileIdentifier);
+        doc = Documentation.from(fileIdentifier);
         String helpContentName = pair.first;
         jLabel1.setText(helpContentName);
         setTree("Top");
@@ -389,7 +391,7 @@ public class DocsFrame extends javax.swing.JFrame {
 //                    );
             lineSeparator();
             contentPanel.add(
-                    new LinksPanel(this, linksPerParagraph, size+100)
+                    new LinksPanel(this, linksPerParagraph, size+100, doc)
             );
             linksPerParagraph.clear();
         }

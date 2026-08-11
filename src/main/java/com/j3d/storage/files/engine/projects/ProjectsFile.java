@@ -12,12 +12,14 @@ public class ProjectsFile {
     File projectsFolder = Path.of(EngineFiles.engineFolder.toString(),"projects").toFile();
     File file;
     public File NO_IMAGE;
-    public ProjectsFile(String name) {
+    public ProjectsFile(String name) throws IOException {
         if (!projectsFolder.exists())
             projectsFolder.mkdirs();
         file = projectsFolder.toPath().resolve(name).toFile();
-        if (!file.exists())
+        if (!file.exists()) {
             file.getParentFile().mkdirs();
+            file.createNewFile();
+        }
         NO_IMAGE = projectsFolder.toPath().resolve("NO_IMAGE_SET.png").toFile();
     }
 

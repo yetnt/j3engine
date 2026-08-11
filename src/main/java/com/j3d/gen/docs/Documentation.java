@@ -49,7 +49,9 @@ public enum Documentation {
     /**
      * List of known issues*
      */
-    KNOWN_ISSUES("Known Issues", "known-issues");
+    KNOWN_ISSUES("Known Issues", "known-issues"),
+
+    TRANSFORM("Command - Transform", "cmd/transform");
 
     /**
      * Constructs a new Documentation enum constant.
@@ -90,6 +92,14 @@ public enum Documentation {
             MAP = map;
         }
         return MAP;
+    }
+
+    public static Documentation from(String id) {
+        for (Documentation f : Documentation.values()) {
+            if (f.getFileId().equals(id))
+                return f;
+        }
+        return null;
     }
 
     /**
