@@ -36,7 +36,6 @@ public class DebugPanel extends javax.swing.JPanel {
 
     public FloatingPanel floatingPanel = new FloatingPanel("Debug Panel");
     private final Map<UUID, JLabel> statsLabelMap = new HashMap<>();
-    private Consumer<JLabelRichText> stealStatsThreadRun = (s) -> {};
     private final StatisticsThread statisticsThread = new StatisticsThread(
             (map) -> {
                 JLabelRichText style = new JLabelRichText().bold().italic().font(Color.RED, "4");
@@ -45,9 +44,6 @@ public class DebugPanel extends javax.swing.JPanel {
                                JLabelRichText.from(map.get(uuid).toString(), style).wrapHTML()
                         )
                 );
-                // Since this is on the EDT, we shall use that to our advantage for static stats
-                // instead of using event listeners. Why? my code.
-                stealStatsThreadRun.accept(style);
             }
     );
 
@@ -408,12 +404,6 @@ public class DebugPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_clearButtonActionPerformed
 
     public void startStatisticsThread() {
-        stealStatsThreadRun = style -> trianglesInSceneLabel.setText(
-                JLabelRichText.from(
-                        "" + StaticRefs.getSceneManager().getRenderer().pureRegistered(),
-                        style
-                ).wrapHTML()
-        );
         statsLabelMap.put(StatisticsThread.IdEnum.REPAINTS_PER_SECOND.getId(), repaintsPerSecondLabel);
         statisticsThread.registerStatistic(StatisticsThread.IdEnum.REPAINTS_PER_SECOND.getId());
         StaticRefs.getMainPanel().registerRunnable(

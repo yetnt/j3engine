@@ -11,6 +11,7 @@ import com.j3d.threads.LongTask;
 import com.j3d.ui.dialog.Spinner;
 import com.j3d.ui.engine.EngineFrame;
 
+import java.awt.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -56,6 +57,25 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
         this.convertibleFrom = convertibleFrom;
     }
 
+    /**
+     * Converts a {@link Color} object to its integer ARGB representation.
+     * The integer includes the alpha component.
+     * @param col The {@link Color} object to convert.
+     * @return The integer representation of the color, including alpha.
+     */
+    public static int colToInt(Color col) {
+        return col.getRGB();
+    }
+
+    /**
+     * Converts an integer RGB representation back to a {@link Color} object.
+     * The integer is expected to include the alpha component (ARGB format).
+     * @param col The integer representation of the colour.
+     * @return A new {@link Color} object.
+     */
+    public static Color intToCol(int col) {
+        return new Color(col, true);
+    }
 
     @Override
     public String getProtocolHeader() {
@@ -139,6 +159,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
         return switch (version) {
             case 1 -> StaticRefs.getProjectFileV1();
             case 2 -> StaticRefs.getProjectFileV2();
+            case 3 -> StaticRefs.getProjectFileV3();
             default -> {
                 StaticRefs.getErrs().handle(
                         new J3DFileException("Attempt to finder a J3D project version which does not exist")

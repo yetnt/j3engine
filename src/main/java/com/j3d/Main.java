@@ -87,7 +87,7 @@ public class Main extends javax.swing.JFrame {
         jLabel1.setForeground(J3DTheme.TEXT_PRIMARY.color());
         jLabel1.setText("Welcome Back!");
 
-        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\ACER\\Documents\\code\\Jaiva3dEngine\\src\\main\\resources\\art\\logo\\OpeningJ3EngineSmall.png")); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/art/logo/OpeningJ3EngineSmall.png"))); // NOI18N
         jLabel2.setMaximumSize(new java.awt.Dimension(38, 100));
         jLabel2.setMinimumSize(new java.awt.Dimension(38, 100));
         jLabel2.setPreferredSize(new java.awt.Dimension(38, 100));

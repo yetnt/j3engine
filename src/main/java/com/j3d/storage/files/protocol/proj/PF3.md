@@ -81,6 +81,7 @@ Italics - V3 addition
   - _Curve UUID `UTF-8`_
   - _Parent Thing UUID `UTF-8`_
   - _Colour `#AARRGGBB signed int32`_
+  - _Amount `int`_
   - _Start Point UUID `UTF-8`_
   - _Control Point UUID `UTF-8`_
   - _End Point UUID `UTF-8`_

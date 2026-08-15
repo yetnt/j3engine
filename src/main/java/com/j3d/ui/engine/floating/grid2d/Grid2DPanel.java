@@ -639,6 +639,11 @@ public class Grid2DPanel extends javax.swing.JPanel {
 
     private void renderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renderBtnActionPerformed
         ArrayList<GridObject<?>> gridObjects1 = new ArrayList<>(gridObjects);
+                gridObjects.stream()
+                        .filter(g -> g instanceof Line)
+                        .map(g -> (Line) g)
+                        .filter(g -> g.getP1().equals(g.getP2()))
+                        .forEach(gridObjects1::remove);
         gridObjects1.sort((p1, p2) -> {
             // sort Point over Line
             if (p1 instanceof Point && p2 instanceof Line) {

@@ -26,6 +26,7 @@ import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.input.mouse.*;
 import com.j3d.engine.interact.selection.*;
 import com.j3d.StaticConfig;
+import com.j3d.gen.guide.GuideManager;
 import com.j3d.gen.settings.Settings;
 import com.j3d.storage.files.FilesUtility;
 import com.j3d.storage.files.protocol.proj.PF1;
@@ -111,6 +112,7 @@ public class EngineFrame extends javax.swing.JFrame {
      */
     private CommandPalette commandPalette;
     private ContextMenu contextMenu;
+    private GuideManager guideManager;
     public void showContextMenu(int x, int y) {
         contextMenu.show(this, x, y);
     }
@@ -379,6 +381,13 @@ public class EngineFrame extends javax.swing.JFrame {
             }
         });
 
+        GuidePanel gp = new GuidePanel();
+        gp.setBounds(0, 0, gp.getPreferredSize().width, gp.getPreferredSize().height);
+
+        layeredPane.add(gp, 4000);
+
+        guideManager = new GuideManager(gp);
+
         // Initialise all keybinds to be part of the mainPanel and add to the static references
         StaticRefs.registerGlobalKeybinds(new KeyBindings(this));
 
@@ -388,6 +397,10 @@ public class EngineFrame extends javax.swing.JFrame {
         StaticRefs.getCamera().lookAt(Vector3.ZERO);
 
         StaticRefs.getLog().uiPrintLn("EngineFrame completed building");
+    }
+
+    public GuideManager getGuideManager() {
+        return guideManager;
     }
 
     private void buildContextMenu() {
@@ -461,6 +474,8 @@ public class EngineFrame extends javax.swing.JFrame {
                 );
     }
 
+    private int PF_VERSION = 3;
+
     /**
      * Extracts all the file stuff like its path and name, logs the read
      * and also actually reads it by wrapping it in a {@link LongTask} so it
@@ -471,7 +486,7 @@ public class EngineFrame extends javax.swing.JFrame {
      * @see SceneObjectList
      */
     private void readProjectFile(File file) {
-        readFileUsingVers(file, 2);
+        readFileUsingVers(file, PF_VERSION);
     }
 
     /**
@@ -529,7 +544,7 @@ public class EngineFrame extends javax.swing.JFrame {
                     return a;
                 },
                 (tb, i, completed) -> {
-                    if (!completed || (vers == 2 && LOADED_OLD)) {
+                    if (!completed || (vers == 3 && LOADED_OLD)) {
                         LOADED_OLD = false;
                         return;
                     }
@@ -539,7 +554,7 @@ public class EngineFrame extends javax.swing.JFrame {
                     BiConsumer<Integer, ProjectFile> loadable = (currentV, convertTo) -> {
                         // just read the other version since this is being called.
                         StaticRefs.getLog().println(
-                                "An old Project File Version of version 1 was detected.");
+                                "An old Project File Version of version 2 was detected.");
                         readFileUsingVers(file, convertTo.getProtocolVersion());
                         LOADED_OLD = true;
                     };
@@ -972,7 +987,7 @@ public class EngineFrame extends javax.swing.JFrame {
             Settings.projectOutputFile.setValue(new File(folder, fileName));
         }
 
-        new PF2().writeFile(
+        (ProjectFile.getFromVersion(PF_VERSION)).writeFile(
                 Settings.projectOutputFile.getValue().getParent(),
                 Settings.projectOutputFile.getValue().getName(), StaticRefs.getSceneManager().layers);
     }//GEN-LAST:event_saveProjectJMenuItemActionPerformed

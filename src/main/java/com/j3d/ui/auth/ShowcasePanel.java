@@ -65,16 +65,16 @@ public class ShowcasePanel extends javax.swing.JPanel {
         jPanel1.setBackground(J3DTheme.BACKGROUND.color());
         jPanel1.setOpaque(false);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\ACER\\Documents\\code\\Jaiva3dEngine\\src\\main\\resources\\images\\signup\\piucA.png")); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/signup/piucA.png"))); // NOI18N
         jPanel1.add(jLabel1);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\ACER\\Documents\\code\\Jaiva3dEngine\\src\\main\\resources\\images\\signup\\picB.png")); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/signup/picB.png"))); // NOI18N
         jPanel1.add(jLabel2);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\ACER\\Documents\\code\\Jaiva3dEngine\\src\\main\\resources\\images\\signup\\picC.png")); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/signup/picC.png"))); // NOI18N
         jPanel1.add(jLabel3);
 
-        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\ACER\\Documents\\code\\Jaiva3dEngine\\src\\main\\resources\\images\\signup\\piucD.png")); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/signup/piucD.png"))); // NOI18N
         jPanel1.add(jLabel4);
 
         jScrollPane1.setViewportView(jPanel1);

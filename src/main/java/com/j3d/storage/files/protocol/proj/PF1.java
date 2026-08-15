@@ -361,7 +361,7 @@ public class PF1 extends ProjectFile {
                         boolean thingHidden = dis.readBoolean();
                         msg("\t\tHidden: " + thingHidden);
 
-                        Thing thing = Thing.fromRaw(thingName, thingUUID, thingHidden, l, StaticRefs.getSceneManager());
+                        Thing thing = Thing.fromRaw(thingName, thingUUID, thingHidden, l);
                         thing.addObjs(
                                         pointsParentsMap.getValues(thingUUID).toArray(new GPoint[0])
                                 );

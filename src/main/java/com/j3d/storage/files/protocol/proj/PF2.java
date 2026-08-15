@@ -255,7 +255,7 @@ public class PF2 extends ProjectFile {
             try {
                 msg("Reading project file from " + path);
                 readHeader(dis); // Read J3D file header
-                getHeaderReader().accept(dis, 1); // Read PROJECT file header
+                getHeaderReader().accept(dis, 2); // Read PROJECT file header
 
                 msg("Reading layers");
                 int numLayers = dis.readInt(); // Read number of layers
@@ -377,7 +377,7 @@ public class PF2 extends ProjectFile {
                         boolean thingHidden = dis.readBoolean();
                         msg("\t\tHidden: " + thingHidden);
 
-                        Thing thing = Thing.fromRaw(thingName, thingUUID, thingHidden, l, StaticRefs.getSceneManager());
+                        Thing thing = Thing.fromRaw(thingName, thingUUID, thingHidden, l);
                         thing.addObjs(
                                 pointsParentsMap.getValues(thingUUID).toArray(new GPoint[0])
                         );
@@ -415,13 +415,5 @@ public class PF2 extends ProjectFile {
         StaticRefs.getEngineFiles().recents.writeProj(new File(path).toPath().resolve(name).toFile());
 //        success.add(true);
         return (T) sceneObjectLists;
-    }
-
-    public static int colToInt(Color col) {
-        return col.getRGB();
-    }
-
-    public static Color intToCol(int col) {
-        return new Color(col, true);
     }
 }

@@ -100,6 +100,12 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         return gt;
     }
 
+    public static GTri fromV3Raw(String id, Color col, GLine gLine, GLine gLine1, GLine gLine2, GPoint gPoint, GPoint gPoint1, GPoint gPoint2) {
+        GTri gt = new GTri(col, gLine, gLine1, gLine2, new Winding(gPoint, gPoint1, gPoint2));
+        gt.setId(UUID.fromString(id));
+        return gt;
+    }
+
     /**
      * Constructs a new GTri from 3 points.
      *
@@ -343,7 +349,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
         return getPivot().sub(StaticRefs.getCamera().getPosition()).magnitude();
     }
 
-    private void setWinding(GPoint A, GPoint B, GPoint C) {
+    public void setWinding(GPoint A, GPoint B, GPoint C) {
         winding = new Winding(A, B, C);
     }
     public Winding getWinding() {

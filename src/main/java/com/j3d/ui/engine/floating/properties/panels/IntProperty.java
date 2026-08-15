@@ -8,6 +8,8 @@ import com.j3d.gen.properties.Property;
 import com.j3d.ui.theme.J3DTheme;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.util.ArrayList;
 
 /**
@@ -55,9 +57,17 @@ public class IntProperty extends javax.swing.JPanel implements PropertyPanel<Int
         addSpinnerListeners();
     }
 
+    private int old = 50;
+
     private void addSpinnerListeners() {
-        spinner.addChangeListener(e -> {
-            runAndAddAction((Integer) spinner.getValue(), "Int");
+        spinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (old == (int)spinner.getValue())
+                    return;
+                old = (int) spinner.getValue();
+                runAndAddAction((Integer) spinner.getValue(), "Int");
+            }
         });
     }
 

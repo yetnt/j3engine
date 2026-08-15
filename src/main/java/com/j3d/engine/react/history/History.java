@@ -94,11 +94,11 @@ public class History extends ArrayList<Action<?>> {
     @Override
     public boolean add(Action<?> action) {
         if (this.size() >= MAX_HISTORY_SIZE) {
-            Action<?> a = this.remove(0);
+            Action<?> a = this.remove(1);
             StaticRefs.getLog().println(logHead + "History head removed -> " + a.getDescription());
             if (a instanceof CleanableAction cl) {
                 try {
-                    cl.cleanup();
+//                    cl.resourceCleanup();
                     StaticRefs.getLog().println(logHead + "Cleaned up (as a result of being too old) -> " + a.getDescription());
                 } catch (Exception e) {
                     throw new RuntimeException(e);

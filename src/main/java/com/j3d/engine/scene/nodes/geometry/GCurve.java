@@ -12,6 +12,7 @@ import com.j3d.engine.react.events.IdempotentEventListener;
 import com.j3d.gen.properties.Property;
 import com.j3d.utility.generic.SamePair;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -26,9 +27,11 @@ public class GCurve extends GObject implements IdempotentEventListener<GPoint.GP
     private int amount = 50;
     private boolean deletedState;
 
-    public static GCurve fromRaw(String id, GPoint st, GPoint cp, GPoint en) {
+    public static GCurve fromRaw(String id, GPoint st, GPoint cp, GPoint en, Color col, int amount) {
         GCurve gp = new GCurve(st, cp, en);
         gp.setId(UUID.fromString(id));
+        gp.setColour(col);
+        gp.setAmount(amount);
         return gp;
     }
 
@@ -81,8 +84,11 @@ public class GCurve extends GObject implements IdempotentEventListener<GPoint.GP
         pivotProperty.constant(); // the pivot cannot be edited.
     }
 
-    private int getAmount() {
+    public int getAmount() {
         return amount;
+    }
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     public Vector3 point(double t) {

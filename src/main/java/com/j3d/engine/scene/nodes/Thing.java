@@ -135,10 +135,9 @@ public class Thing implements SceneObjectList {
      * @param id The ID of the Thing defined in the file.
      * @param hidden Whether the Thing is hidden or not.
      * @param l The parent layer of the Thing.
-     * @param sceneManager The sceneManager instance.
      * @return A Thing
      */
-    public static Thing fromRaw(String name, String id, boolean hidden, Layer l, SceneManager sceneManager) {
+    public static Thing fromRaw(String name, String id, boolean hidden, Layer l) {
         Thing t = new Thing(l, name, false);
         t.setHidden(hidden);
         t.setId(UUID.fromString(id));
@@ -260,7 +259,7 @@ public class Thing implements SceneObjectList {
     public Thing addObjs(GObject ...gObjects) {
         toggleSaved();
         if (gObjects.length == 0) {
-            System.out.println("bug biyvh");
+            return this;
         }
         Collections.addAll(objects, gObjects);
         calculateCentroid(gObjects);
