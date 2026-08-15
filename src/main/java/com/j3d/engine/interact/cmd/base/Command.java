@@ -106,6 +106,9 @@ public class Command {
                 " invoked: \"" + aliasUsed + "\" ("+aliases.getFirst()+"), " + "with an args length of " + args.length + " and " + taggedArgs.size() + " tagged arguments." +
                 "\n\t(invoked by " + invoker.getString() + ")"
         );
+        CommandsManager.commands.firedEvent(
+                this, invoker, aliasUsed, args, taggedArgs
+        );
     }
 
     /**

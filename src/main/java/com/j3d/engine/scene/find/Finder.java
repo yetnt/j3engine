@@ -193,13 +193,12 @@ public class Finder {
                             // if the GObject isnt what we're looking for:
                             if (!clazz.isInstance(g)) {
                                 // then youre looking for something that just wouldn't exist in this list.
-                                continue;
                             } else {
                                 // if we do find a GObject, apply the query
                                 if (query.apply((T) g, value)) {
                                     results.add(new FindResult(
                                             l, getLayers().indexOf(l),
-                                            t, getLayers().indexOf(t),
+                                            t, l.indexOf(t),
                                             g, t.getObjects().indexOf(g)
                                     ));
                                 }
@@ -209,7 +208,7 @@ public class Finder {
                     } else {
                         // if we do find a thing, apply the query
                         if (query.apply((T) t, value)) {
-                            results.add(new FindResult(l, getLayers().indexOf(l), t, getLayers().indexOf(t)));
+                            results.add(new FindResult(l, getLayers().indexOf(l), t, l.indexOf(t)));
                         }
                     }
                 }

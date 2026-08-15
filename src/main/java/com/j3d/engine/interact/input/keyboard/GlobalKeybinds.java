@@ -9,6 +9,7 @@ import com.j3d.gen.settings.Settings;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import static com.j3d.StaticRefs.getCamera;
@@ -242,6 +243,19 @@ public enum GlobalKeybinds {
                             StaticRefs.getCommandParser().commandPalette.setDisabled(
                                     !StaticRefs.getCommandParser().commandPalette.isDisabled()
                             );
+                            StaticRefs.getMainFrame().repaint();
+                        }
+                    }
+            )
+    ),
+    SELECT_ALL(
+            new J3Key(
+                    "selectAll",
+                    KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK),
+                    new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            StaticRefs.getSceneManager().selectAll();
                             StaticRefs.getMainFrame().repaint();
                         }
                     }

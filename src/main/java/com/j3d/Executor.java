@@ -1,5 +1,7 @@
 package com.j3d;
 
+import com.j3d.engine.react.actions.VoidAction;
+import com.j3d.engine.scene.find.FindResult;
 import com.j3d.engine.scene.nodes.geometry.base.Winding;
 import com.j3d.engine.scene.nodes.geometry.GCurve;
 import com.j3d.engine.scene.nodes.geometry.GLine;
@@ -51,41 +53,59 @@ public class Executor {
     public void run(Graphics2D graphics2D) {
         StaticRefs.getSceneManager().layers.add(layer);
 
-//        Thing ngon = ngon(3);
-//        Thing cub = cube();
+        Thing ngon = ngon(3);
+        Thing cub = cube();
         Thing tris = threeTris();
         StaticRefs.getCamera().lookAt(tris.getCentroid());
 
-//        Thing solid = Solids.prism(
-//                20,4, layer,
-//                new AxisPlane(
-//                        Vector3.ZERO,
-//                        new Vector3(0, 0.2, 0.6),
-//                        new Vector3(0.1, 0.4, 0)
-//                ).sameAxes(Vector3.X(-10), Vector3.X(-2))
-//        );
-//        Thing genericSolid = Solids.prism(
-//                10,40, layer,
-//                AxisPlane.ZY(Vector3.ZERO)
-//                        .sameAxes(Vector3.X(-30), Vector3.X(-22))
-//        );
-//        Thing cone = cone(20, 20);
+        Thing solid = Solids.prism(
+                20,4, layer,
+                new AxisPlane(
+                        Vector3.ZERO,
+                        new Vector3(0, 0.2, 0.6),
+                        new Vector3(0.1, 0.4, 0)
+                ).sameAxes(Vector3.X(-10), Vector3.X(-2))
+        );
+        Thing genericSolid = Solids.prism(
+                10,40, layer,
+                AxisPlane.ZY(Vector3.ZERO)
+                        .sameAxes(Vector3.X(-30), Vector3.X(-22))
+        );
+        Thing cone = cone(20, 20);
 
-        ArrayList<Action<?>> actions = new ArrayList<>(List.of(
-//                cub.rotate(Vector3.Z, 45),
-//                cub.translate(new Vector3(4, 2, 3)),
-//                cub.scale(0.4),
-                tris.translate(Vector3.X(14))
-//                cub.rotate(new Vector3(2, 3, 1), 2),
-//                solid.translate(Vector3.X(-20)),
-//                ngon.rotate(Vector3.Y, 20), // 20 degrees
-//                ngon.translate(Vector3.X(40)),
-//                cone.rotate(Vector3.X(5), 5)
+        ArrayList<VoidAction> actions = new ArrayList<>(List.of(
+                cub.rotate(Vector3.Z, 45),
+                cub.translate(new Vector3(4, 2, 3)),
+                cub.scale(0.4),
+                tris.translate(Vector3.X(14)),
+                cub.rotate(new Vector3(2, 3, 1), 2),
+                solid.translate(Vector3.X(-40)),
+                solid.translate(Vector3.Z(20)),
+                ngon.rotate(Vector3.Y, 20), // 20 degrees
+                ngon.translate(Vector3.X(40)),
+                cone.rotate(Vector3.X(5), 5)
         ));
         actions.forEach(Action::run);
         actions.forEach(SceneManager.history::add);
 
+        dumbstuff();
 
+    }
+
+    public void dumbstuff() {
+        // using the power of Finder, find every single triangle whose centroid is further than whatever
+        Vector3 v = new Vector3(0, 10, -1).rotateAroundAxis(
+                Vector3.X, 90
+        );
+        ArrayList<FindResult> findResult = StaticRefs.getSceneManager().finder.find(
+                GTri.class,
+                (tri, v2) -> {
+                    double l = tri.getPivot().distance(v2);
+                    return l > 20;
+                },
+                v
+        );
+        System.out.println(findResult);
     }
 
     public Thing cone(int max, int height) {

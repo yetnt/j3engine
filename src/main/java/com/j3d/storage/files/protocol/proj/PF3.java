@@ -140,7 +140,7 @@ public class PF3 extends ProjectFile {
 
                 throbber.setTaskTitle("Finalizing");
 
-                StaticRefs.getSceneManager().layers.addAll(layers.values());
+                StaticRefs.getSceneManager().layers.swingAddAll(layers.values());
 
                 readSixNine(dis);
 

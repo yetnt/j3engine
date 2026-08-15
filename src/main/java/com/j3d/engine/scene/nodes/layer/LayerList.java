@@ -1,10 +1,15 @@
 package com.j3d.engine.scene.nodes.layer;
 
 import com.j3d.engine.react.actions.VoidAction;
+import com.j3d.engine.scene.nodes.Thing;
+import com.j3d.engine.scene.nodes.geometry.GObject;
 
+import javax.swing.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class LayerList extends ArrayList<Layer> {
 
@@ -154,6 +159,19 @@ public class LayerList extends ArrayList<Layer> {
                 return LocalTime.now();
             }
         };
+    }
+
+    public void swingAddAll(Collection<Layer> values) {
+        SwingUtilities.invokeLater(
+                () -> this.addAll(values)
+        );
+    }
+
+    public Stream<GObject> objectStream() {
+        return stream()
+                .filter(l -> l.getTreeNode() != null)
+                .flatMap(Layer::stream)
+                .flatMap(Thing::objectsStream);
     }
 
     //TODO: Undo for move operation.

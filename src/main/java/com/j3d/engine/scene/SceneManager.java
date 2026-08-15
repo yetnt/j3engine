@@ -358,6 +358,12 @@ public class SceneManager {
         return currentSelection;
     }
 
+    public void selectAll() {
+        layers.objectStream()
+                .filter(o -> !currentSelection.getSelected().contains(o))
+                .forEach(currentSelection.getSelected()::add);
+    }
+
     public HashSet<GObject> getSelected() {
         return currentSelection.getSelected();
     }
@@ -394,18 +400,41 @@ public class SceneManager {
         clipboard.clear();
     }
 
+    /**
+     * Finds a {@link Thing} within the scene by its name.
+     * @implNote Convenience over using {@link #finder} with a {@link Finder#nameQuery()} to find a
+     * {@link Thing}
+     *
+     * @param name The name of the {@link Thing} to find.
+     * @return The {@link Thing} with the specified name.
+     */
     public Thing findThing(String name) {
         return finder
                 .findFirst(Thing.class, Finder.nameQuery(), name)
                 .getThing();
     }
 
+    /**
+     * Finds the parent {@link Thing} of a given {@link GObject}.
+     * @implNote Convenience over using {@link #finder} with a {@link Finder#instanceQuery()} to
+     * find a {@link GObject} but return the {@link Thing} that it was found in.
+     *
+     * @param o The {@link GObject} whose parent {@link Thing} is to be found.
+     * @return The {@link Thing} that contains the specified {@link GObject}.
+     */
     public Thing findObjectParent(GObject o) {
         return finder
                 .findFirst(GObject.class, Finder.instanceQuery(), o)
                 .getThing();
     }
 
+    /**
+     * Finds the {@link Layer} that contains a given {@link Thing}.
+     * @implNote Convenience over using {@link #finder} with a {@link Finder#instanceQuery()} to
+     * find a {@link Thing} but return the {@link Layer} that it was found in.
+     * @param objectParent The {@link Thing} whose containing {@link Layer} is to be found.
+     * @return The {@link Layer} that contains the specified {@link Thing}.
+     */
     public Layer findThingLayer(Thing objectParent) {
         return finder
                 .findFirst(Thing.class, Finder.instanceQuery(), objectParent)
