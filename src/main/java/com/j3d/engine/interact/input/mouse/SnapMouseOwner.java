@@ -1,6 +1,7 @@
 package com.j3d.engine.interact.input.mouse;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.interact.input.SnapPayload;
 import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.scene.nodes.geometry.GLine;

@@ -1,44 +1,32 @@
 package com.j3d.gen.guide;
 
-import com.j3d.StaticRefs;
+import com.j3d.gen.guide.steps.WelcomeStep;
 import com.j3d.ui.engine.GuidePanel;
-import com.j3d.utility.generators.JLabelRichText;
-
-import javax.swing.*;
-import java.awt.*;
 
 public class GuideManager {
-    private GuidePanel panel;
+    private GuidePanelAdapter adapter;
+    private GuideFlow flow;
 
-    public GuideManager(GuidePanel p) {
-        panel = p;
-        addCentreOffset(
-                new JLabel(
-                        new JLabelRichText("fdgbhfrfdgb")
-                                .font("10")
-                                .wrapHTML()
-                ),
-                0, 0
-        );
-        addCentreOffset(
-                new JLabel(
-                        new JLabelRichText("fdgbhfrfdgb")
-                                .font("10")
-                                .wrapHTML()
-                ),
-                40, 100
-        );
+    public GuidePanelAdapter getAdapter() {
+        return adapter;
     }
 
-    private void addComponentAt(Component comp, int x, int y) {
-        panel.add(comp);
-        comp.setBounds(x, y, comp.getPreferredSize().width, comp.getPreferredSize().height);
+    public GuideManager(GuidePanel panel) {
+        adapter = new GuidePanelAdapter(panel);
     }
 
-    private void addCentreOffset(Component comp, int x, int y) {
-        addComponentAt(comp,
-                (StaticRefs.getSceneManager().screenSize.width/2) - 200 - x,
-                (StaticRefs.getSceneManager().screenSize.height/2) - 100 - y
+    public void start() {
+
+        if (flow != null && !flow.finished()) return;
+
+        flow = new GuideFlow(
+                () -> adapter
         );
+        flow.add(() -> new WelcomeStep(this, flow));
+        flow.start();
+    }
+
+    public GuideFlow getFlow() {
+        return flow;
     }
 }

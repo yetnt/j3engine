@@ -286,6 +286,18 @@ public enum GlobalKeybinds {
                         }
                     }
             )
+    ),
+    GUIDE(
+            new J3Key(
+                    "guide",
+                    KeyStroke.getKeyStroke(KeyEvent.VK_G, InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK),
+                    new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            StaticRefs.getMainFrame().getGuideManager().start();
+                        }
+                    }
+            )
     );
 
 

@@ -66,7 +66,7 @@
  *         mid points, etc..
  *     </li>
  *     <li>
- *         {@link com.j3d.engine.interact.input.mouse.SnapPayload} , a payload class used to carry information about a snap
+ *         {@link com.j3d.engine.interact.input.SnapPayload} , a payload class used to carry information about a snap
  *         event, such as the snapped point and the type of snap.
  *     </li>
  * </ul>

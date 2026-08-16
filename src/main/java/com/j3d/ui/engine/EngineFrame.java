@@ -31,7 +31,6 @@ import com.j3d.gen.settings.Settings;
 import com.j3d.storage.files.FilesUtility;
 import com.j3d.storage.files.protocol.proj.PF1;
 import com.j3d.storage.files.protocol.proj.PF2;
-import com.j3d.storage.files.protocol.proj.PF3;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.threads.LongTask;
 import com.j3d.ui.engine.floating.DebugPanel;
@@ -384,7 +383,9 @@ public class EngineFrame extends javax.swing.JFrame {
         GuidePanel gp = new GuidePanel();
         gp.setBounds(0, 0, gp.getPreferredSize().width, gp.getPreferredSize().height);
 
-        layeredPane.add(gp, 4000);
+        layeredPane.add(gp, 10000);
+        layeredPane.setLayer(gp, 10000);
+        layeredPane.moveToFront(gp);
 
         guideManager = new GuideManager(gp);
 
@@ -610,7 +611,7 @@ public class EngineFrame extends javax.swing.JFrame {
         ArrayList<MouseOwner> owners = new ArrayList<>();
         owners.add(SelectionManager.selectionMouseOwner);
         owners.add(new NoMouseOwner());
-        owners.add(new AlwaysMouseOwner());
+        owners.add(AlwaysMouseOwner.getInstance());
         owners.add(ScaleSelection.scaleMouseOwner);
         owners.add(TranslateSelection.translateMouseOwner);
         owners.add(RotateSelection.rotateMouseOwner);

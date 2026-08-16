@@ -11,7 +11,7 @@ import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.commands.transform.handles.HandleType;
 import com.j3d.engine.interact.cmd.commands.transform.mouse.TransformMouseOwner;
 import com.j3d.engine.interact.cmd.commands.transform.mouse.TranslateMouseOwner;
-import com.j3d.engine.interact.input.mouse.SnapPayload;
+import com.j3d.engine.interact.input.SnapPayload;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.ui.SafeJLabel;

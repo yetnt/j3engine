@@ -1,5 +1,6 @@
-package com.j3d.engine.interact.input.mouse;
+package com.j3d.engine.interact.input;
 
+import com.j3d.engine.interact.input.mouse.SnapMouseOwner;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.react.events.EventPayload;
 
