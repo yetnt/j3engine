@@ -23,7 +23,7 @@ public class AlwaysMouseOwner extends MouseOwner {
             )
     );
 
-    public static AlwaysMouseOwner getInstance() {
+    public static AlwaysMouseOwner getSingleInstance() {
         return instance;
     }
 

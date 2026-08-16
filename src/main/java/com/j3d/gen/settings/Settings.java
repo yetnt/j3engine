@@ -179,13 +179,14 @@ public class Settings implements SettingsParent {
     }
 
     public void write() {
-        setPreferencesSaved(true);
         StaticRefs.getEngineFiles().preferencesFile.write(
                 serialize()
         );
+        setPreferencesSaved(true);
     }
 
     public void read() {
         deserialize(StaticRefs.getEngineFiles().preferencesFile.read());
+        setPreferencesSaved(true);
     }
 }

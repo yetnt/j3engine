@@ -94,7 +94,7 @@ public class ProjectButton extends javax.swing.JPanel {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 1) {
                     System.out.println(identity.getProjectFile().getName() + " was clicked!");
-                    Startup.engine(identity.getProjectFile());
+                    Startup.engine(identity.getProjectFile(), false);
                     parentFrame.dispose();
                 }
 //                else if (e.getClickCount() == 1) {

@@ -15,7 +15,7 @@ public class CameraProperties implements SettingsParent {
             0.5,
             "Factor by which the camera moves through the world.",
             0.01,
-            5.0
+            20.0
     ).setValues(
             d -> (int)(d * 100),
             i -> i/100.0,

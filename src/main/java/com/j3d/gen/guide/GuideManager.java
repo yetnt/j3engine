@@ -1,10 +1,11 @@
 package com.j3d.gen.guide;
 
+import com.j3d.gen.guide.steps.SceneExplStep;
 import com.j3d.gen.guide.steps.WelcomeStep;
 import com.j3d.ui.engine.GuidePanel;
 
 public class GuideManager {
-    private GuidePanelAdapter adapter;
+    private final GuidePanelAdapter adapter;
     private GuideFlow flow;
 
     public GuidePanelAdapter getAdapter() {
@@ -15,6 +16,8 @@ public class GuideManager {
         adapter = new GuidePanelAdapter(panel);
     }
 
+    // each GuideFlow() should be reinstantiated from nothing.
+
     public void start() {
 
         if (flow != null && !flow.finished()) return;
@@ -22,7 +25,9 @@ public class GuideManager {
         flow = new GuideFlow(
                 () -> adapter
         );
-        flow.add(() -> new WelcomeStep(this, flow));
+        flow.add(new WelcomeStep());
+        flow.add(new SceneExplStep());
+
         flow.start();
     }
 

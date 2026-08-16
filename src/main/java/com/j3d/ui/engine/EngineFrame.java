@@ -149,7 +149,7 @@ public class EngineFrame extends javax.swing.JFrame {
      * Initialises the entire engine in a clean state.
      */
     public EngineFrame() {
-        this(false);
+        this(false, false);
     }
 
     /**
@@ -160,7 +160,7 @@ public class EngineFrame extends javax.swing.JFrame {
      */
     public EngineFrame(File file) {
         // Call the other constructor, cuz it kinda does important stuff.
-        this(false);
+        this(false, false);
         this.setVisible(true);
 
         // read the file.
@@ -172,7 +172,7 @@ public class EngineFrame extends javax.swing.JFrame {
      * @param runExecutor Whether to run the executor or not. If false, then the engine is initialised
      *                    in a clean state.
      */
-    public EngineFrame(boolean runExecutor) {
+    public EngineFrame(boolean runExecutor, boolean showTutorial) {
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
             SwingUtilities.updateComponentTreeUI(this); // 'this' refers to the frame
@@ -187,6 +187,10 @@ public class EngineFrame extends javax.swing.JFrame {
         setCloseOperations();
         
         this.setVisible(true);
+
+        if (showTutorial) {
+            getGuideManager().start();
+        }
     }
 
     /**
@@ -611,7 +615,7 @@ public class EngineFrame extends javax.swing.JFrame {
         ArrayList<MouseOwner> owners = new ArrayList<>();
         owners.add(SelectionManager.selectionMouseOwner);
         owners.add(new NoMouseOwner());
-        owners.add(AlwaysMouseOwner.getInstance());
+        owners.add(AlwaysMouseOwner.getSingleInstance());
         owners.add(ScaleSelection.scaleMouseOwner);
         owners.add(TranslateSelection.translateMouseOwner);
         owners.add(RotateSelection.rotateMouseOwner);

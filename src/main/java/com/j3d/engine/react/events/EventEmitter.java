@@ -92,7 +92,7 @@ public abstract class EventEmitter implements EventEmitterInterface {
     public static <K> void genericBroadcast(ArrayList<EventListener> events, EventType eventType, EventPayload<K> properties) {
 //        StaticRefs.getLog().println(
 //                "[EVENTEMITTER] " + properties.emitter.getClass().getSimpleName() + " : " + eventType.toString() + " to " + events.size() + " listeners"
-//        );
+//        ); Infinite event listening bye-bye
         ArrayList<EventReactor> reactors = new ArrayList<>();
         new ArrayList<>(events).forEach(event -> {
             event.onEvent(eventType, properties);

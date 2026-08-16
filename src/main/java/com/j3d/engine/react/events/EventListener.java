@@ -10,8 +10,9 @@ public interface EventListener {
     /**
      * onEvent is called by {@link EventEmitter} via {@link EventEmitter#broadcast(EventType, EventPayload)}. Allowing the
      * emitter to call any other object that implements this.
+     * @param <K> The type of the emitter of this event
      * @param event The type of event
-     * @param properties The given event properties
+     * @param properties The given event payload
      * @implNote This method is to be overridden by implementors.
      */
     <K> void onEvent(EventType event, EventPayload<K> properties);

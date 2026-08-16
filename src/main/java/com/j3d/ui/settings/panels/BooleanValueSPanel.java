@@ -98,7 +98,7 @@ public class BooleanValueSPanel extends AbstractPanel<BooleanSetting, Boolean> {
 
     @Override
     public <K> void onEvent(EventType event, EventPayload<K> properties) {
-        if (event != EventType.SETTINGS_CODE_UPDATED) return;
+        if (event != EventType.SETTING_CODE_UPDATED) return;
         if (properties instanceof SettingUpdatedPayload<?> sp) {
             jCheckBox3.setSelected((Boolean) sp.getNewValue());
         }

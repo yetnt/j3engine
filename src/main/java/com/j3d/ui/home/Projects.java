@@ -142,13 +142,17 @@ public class Projects extends javax.swing.JFrame {
     }
 
     public void loadStarterProjects() {
-        StaticProjectButton freshProject = new StaticProjectButton("Fresh Project", e -> {
-            Startup.engine(false);
+        StaticProjectButton freshProject = new StaticProjectButton("New Project", e -> {
+            Startup.engine(false, false);
+            dispose();
+        });
+        StaticProjectButton tutorialProject = new StaticProjectButton("Tutorial Project", e -> {
+            Startup.engine(false, true);
             dispose();
         });
         StaticProjectButton openProject = new StaticProjectButton("Open Project", this::openProject);
         StaticProjectButton debugScene = new StaticProjectButton("Debug Project", e -> {
-            Startup.engine(true);
+            Startup.engine(true, false);
             dispose();
         });
         int width = 0;
@@ -162,6 +166,11 @@ public class Projects extends javax.swing.JFrame {
         width += openProject.getPreferredSize().width;
         starterProjectsPanel.add(openProject.filler());
         width += openProject.filler().getPreferredSize().width;
+
+        starterProjectsPanel.add(tutorialProject);
+        width += tutorialProject.getPreferredSize().width;
+        starterProjectsPanel.add(tutorialProject.filler());
+        width += tutorialProject.filler().getPreferredSize().width;
         
         starterProjectsPanel.add(debugScene);
         width += debugScene.getPreferredSize().width;
@@ -194,7 +203,7 @@ public class Projects extends javax.swing.JFrame {
             );
         }, this);
         if (file == null) return;
-        Startup.engine(file);
+        Startup.engine(file, false);
         dispose();
     }
 

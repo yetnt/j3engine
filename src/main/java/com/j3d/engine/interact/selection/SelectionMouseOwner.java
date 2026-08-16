@@ -5,10 +5,12 @@ import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.engine.interact.input.mouse.MouseOwner;
+import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.ui.engine.floating.properties.PropertiesPanel;
 import com.j3d.ui.theme.CursorManager;
 
 import java.awt.event.MouseEvent;
+import java.util.HashSet;
 
 import static com.j3d.StaticRefs.getLog;
 import static com.j3d.StaticRefs.getSceneManager;
@@ -46,8 +48,6 @@ public class SelectionMouseOwner extends MouseOwner {
     public void mouseClicked(MouseEvent e) {
         if (isNotOwner()) return;
         clearSelectionSquare();
-        broadcast(EventType.X_SELECTED, new EventPayload<>(this) {
-        });
     }
 
     @Override
@@ -64,7 +64,9 @@ public class SelectionMouseOwner extends MouseOwner {
         mousePos = null;
         if (selectionArea[0] != null && selectionArea[1] != null) {
             StaticRefs.getLog().println("Final Selection Area: " + selectionArea[0] + " to " + selectionArea[1]);
-            getLog().println("Selected " + getSceneManager().getSelected().size() + " objects.");
+            HashSet<GObject> selected = getSceneManager().getSelected();
+            getLog().println("Selected " + selected.size() + " objects.");
+            broadcast(EventType.X_SELECTED, new SelectionEventPayload(this, selected));
 
             SelectionManager.selectionMouseOwner.clearSelectionSquare();
             PropertiesPanel.load();

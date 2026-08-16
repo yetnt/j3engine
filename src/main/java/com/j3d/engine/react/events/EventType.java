@@ -6,8 +6,12 @@ import com.j3d.engine.interact.input.MouseClickPayload;
 import com.j3d.engine.interact.input.SnapPayload;
 import com.j3d.engine.interact.input.mouse.AlwaysMouseOwner;
 import com.j3d.engine.interact.input.mouse.SnapMouseOwner;
+import com.j3d.engine.interact.selection.SelectionEventPayload;
+import com.j3d.engine.interact.selection.SelectionMouseOwner;
+import com.j3d.engine.react.events.spec.SettingUpdatedPayload;
 import com.j3d.gen.guide.GuideInfo;
 import com.j3d.gen.guide.GuideInfoClosingEvent;
+import com.j3d.gen.settings.Setting;
 
 /**
  * Events is an enum that describes the possible Events that a listener can listen for.
@@ -18,13 +22,20 @@ public enum EventType {
      */
     OBJ_UPDATED,
     /**
-     * The object was selected.
+     * The object was selected. Broadcast by {@link SelectionMouseOwner} with a payload class of
+     * {@link SelectionEventPayload}
      */
     X_SELECTED,
     /**
-     * Something updated the settings code itself and not the UI. tell the UI.
+     * A Setting was updated via code specifically and needs to be broadcast to the UI
+     * so that it can react and change accordingly. Broadcast by any {@link Setting}
+     * with a payload class of {@link SettingUpdatedPayload}
      */
-    SETTINGS_CODE_UPDATED,
+    SETTING_CODE_UPDATED,
+    /**
+     * A Setting was updated. Broadcast by any {@link Setting} with no speciifc payload class.
+     */
+    SUPDATED,
     /**
      * A mouse owner has snapping enabled and the user double-right clicked to snap to some object.
      * Broadcast by {@link SnapMouseOwner} with a payload class of {@link SnapPayload}

@@ -108,7 +108,7 @@ public class ButtonGroupSPanel<E extends Enum> extends AbstractPanel<EnumSetting
 
     @Override
     public <K> void onEvent(EventType event, EventPayload<K> properties) {
-        if (event != EventType.SETTINGS_CODE_UPDATED) return;
+        if (event != EventType.SETTING_CODE_UPDATED) return;
         for (JRadioButton btn : buttons) {
             if (btn.getName().equals(((Enum<?>) ((SettingUpdatedPayload<?>) properties).getNewValue()).name())) {
                 btn.setSelected(true);

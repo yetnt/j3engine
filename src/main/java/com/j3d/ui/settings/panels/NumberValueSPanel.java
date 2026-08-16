@@ -48,7 +48,6 @@ public class NumberValueSPanel<T extends Number> extends AbstractPanel<Setting<T
                 )
         );
 
-        //noinspection unchecked
         jSpinner1.addChangeListener(
                 e -> {
                     if (setting instanceof DoubleSetting ds)
@@ -163,7 +162,7 @@ public class NumberValueSPanel<T extends Number> extends AbstractPanel<Setting<T
 
     @Override
     public <K> void onEvent(EventType event, EventPayload<K> properties) {
-        if (event != EventType.SETTINGS_CODE_UPDATED) return;
+        if (event != EventType.SETTING_CODE_UPDATED) return;
         if (properties instanceof SettingUpdatedPayload<?> sp) {
             //noinspection unchecked
             jSlider1.setValue(toInt.apply((T) sp.getNewValue()));

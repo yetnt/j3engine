@@ -90,7 +90,7 @@ public class EnterValueSPanel extends AbstractPanel<StringSetting, String> {
 
     @Override
     public <K> void onEvent(EventType event, EventPayload<K> properties) {
-        if (event != EventType.SETTINGS_CODE_UPDATED) return;
+        if (event != EventType.SETTING_CODE_UPDATED) return;
         if (properties instanceof SettingUpdatedPayload<?> sp) {
             jTextField1.setText((String) sp.getNewValue());
         }

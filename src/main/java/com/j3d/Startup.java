@@ -70,19 +70,19 @@ public class Startup {
     }
 
     public static void engineDebug() {
-        EngineFrame e = new EngineFrame(true);
+        EngineFrame e = new EngineFrame(true, false);
         e.setResizable(true);
         e.setVisible(true);
     }
 
-    public static void engine(Object o) {
+    public static void engine(Object o, boolean showTutorial) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
                  UnsupportedLookAndFeelException e) {
             throw new RuntimeException(e);
         }
-        FakeLongTask flt = getFakeLongTask(o);
+        FakeLongTask flt = getFakeLongTask(o, showTutorial);
         flt.iAmImpatient();
 //        try {
 //            flt.run();
@@ -91,14 +91,14 @@ public class Startup {
 //        }
     }
 
-    private static FakeLongTask getFakeLongTask(Object o) {
+    private static FakeLongTask getFakeLongTask(Object o, boolean showTutorial) {
         J3Splash splash = new J3Splash();
-        FakeLongTask flt = new FakeLongTask(() -> {
+        return new FakeLongTask(() -> {
             splash.setVisible(true);
         }, () -> {}, () -> {
             EngineFrame e = switch (o) {
                 case File f -> new EngineFrame(f);
-                case Boolean b -> new EngineFrame(b);
+                case Boolean b -> new EngineFrame(b, showTutorial);
                 default -> throw new IllegalStateException("Unexpected value: " + o);
             };
             e.setResizable(true);
@@ -109,7 +109,6 @@ public class Startup {
             t.setRepeats(false);
             t.start();
         }, 9.3);
-        return flt;
     }
 
     public static void saveUser(int id) {
