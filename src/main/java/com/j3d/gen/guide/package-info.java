@@ -25,7 +25,7 @@
  *         </li>
  *         <li>
  *             {@code WelcomeStep} fires an event to {@link com.j3d.gen.guide.GuideFlow}, specifically being
- *             {@link com.j3d.gen.guide.GuideInfoClosingEvent}
+ *             {@link com.j3d.engine.react.events.payloads.GuideInfoClosingPayload}
  *         </li>
  *         <li>
  *             {@link com.j3d.gen.guide.GuideFlow} makes sure that {@code WelcomeStep} can indeed close.
@@ -58,7 +58,7 @@
  *         {@link com.j3d.gen.guide.GuideFlow}, the flowwwwerr that manages the sequence and progression of {@link com.j3d.gen.guide.GuideInfo} steps.
  *     </li>
  *     <li>
- *         {@link com.j3d.gen.guide.GuideInfoClosingEvent}, An event payload indicating that a
+ *         {@link com.j3d.engine.react.events.payloads.GuideInfoClosingPayload}, An event payload indicating that a
  *         {@link com.j3d.gen.guide.GuideInfo} step is requesting to close.
  *     </li>
  *     <li>

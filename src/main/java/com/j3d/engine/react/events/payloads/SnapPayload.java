@@ -1,4 +1,4 @@
-package com.j3d.engine.interact.input;
+package com.j3d.engine.react.events.payloads;
 
 import com.j3d.engine.interact.input.mouse.SnapMouseOwner;
 import com.j3d.engine.scene.nodes.geometry.GObject;
@@ -7,6 +7,12 @@ import com.j3d.engine.react.events.EventPayload;
 /**
  * Represents an event payload specifically for snapping operations, carrying information
  * about the {@link GObject} that is being snapped to.
+ * <p>
+ *     This stores the {@link GObject} that is being snapped to.
+ * </p>
+ * @see SnapMouseOwner
+ * @see GObject
+ * @author Lehlogonolo Poole
  */
 public class SnapPayload extends EventPayload<SnapMouseOwner> {
     private final GObject snap;

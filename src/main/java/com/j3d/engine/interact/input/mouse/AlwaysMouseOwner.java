@@ -1,7 +1,7 @@
 package com.j3d.engine.interact.input.mouse;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.interact.input.MouseClickPayload;
+import com.j3d.engine.react.events.payloads.MouseClickPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.ui.engine.EngineFrame;
 

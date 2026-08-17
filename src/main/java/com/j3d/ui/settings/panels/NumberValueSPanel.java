@@ -6,7 +6,7 @@ package com.j3d.ui.settings.panels;
 
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
-import com.j3d.engine.react.events.spec.SettingUpdatedPayload;
+import com.j3d.engine.react.events.payloads.SettingUpdatedPayload;
 import com.j3d.gen.settings.Setting;
 import com.j3d.gen.settings.types.DoubleSetting;
 import com.j3d.gen.settings.types.IntSetting;

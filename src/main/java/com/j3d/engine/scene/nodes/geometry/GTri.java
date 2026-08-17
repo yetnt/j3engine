@@ -1,6 +1,7 @@
 package com.j3d.engine.scene.nodes.geometry;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.react.events.payloads.GPointMovedEvent;
 import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.draw.SceneRenderer;
 import com.j3d.engine.scene.draw.SortMethod;
@@ -54,7 +55,7 @@ import static com.j3d.StaticRefs.getSceneManager;
  * @see GPoint
  * @see GLine
  */
-public class GTri extends GObject implements IdempotentEventListener<GPoint.GPointMovedEvent, Vector3>, DecomposeWhenDrawn<Triangle> {
+public class GTri extends GObject implements IdempotentEventListener<GPointMovedEvent, Vector3>, DecomposeWhenDrawn<Triangle> {
     /**
      * Leg A, connected to Leg B and Leg C
      */
@@ -434,7 +435,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
 
     @Override
     public void onEvent(EventType event, EventPayload properties) {
-        if (event == EventType.GPOINT_RECALC_PIVOT && properties instanceof GPoint.GPointMovedEvent p)
+        if (event == EventType.GPOINT_RECALC_PIVOT && properties instanceof GPointMovedEvent p)
             handlePossibleDuplicates(event, p);
     }
 
@@ -444,7 +445,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPoint.GPoi
     }
 
     @Override
-    public void handlePossibleDuplicates(EventType type, GPoint.GPointMovedEvent payload) {
+    public void handlePossibleDuplicates(EventType type, GPointMovedEvent payload) {
         Vector3 piv = getLegA().getA().getPivot().add(getLegB().getA().getPivot()).add(getLegC().getA().getPivot()).div(3);
         if (!piv.equals(getDupeObjectToCheck())) {
             setPivot(piv);

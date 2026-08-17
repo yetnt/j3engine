@@ -16,7 +16,7 @@ import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgUtil;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.*;
-import com.j3d.engine.interact.cmd.commands.transform.mouse.ChangeCentreEventPayload;
+import com.j3d.engine.react.events.payloads.ChangeCentreEventPayload;
 import com.j3d.engine.react.events.EventListener;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;

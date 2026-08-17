@@ -2,27 +2,19 @@ package com.j3d.engine.react.events;
 
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
-import com.j3d.engine.interact.cmd.payloads.CommandFiredPayload;
-import com.j3d.engine.interact.cmd.payloads.StatefulCommandCompletedPayload;
-import com.j3d.engine.interact.input.MouseClickPayload;
-import com.j3d.engine.interact.input.SnapPayload;
+import com.j3d.engine.interact.cmd.commands.transform.mouse.TransformMouseOwner;
+import com.j3d.engine.react.events.payloads.*;
 import com.j3d.engine.interact.input.mouse.AlwaysMouseOwner;
 import com.j3d.engine.interact.input.mouse.SnapMouseOwner;
-import com.j3d.engine.interact.selection.SelectionEventPayload;
 import com.j3d.engine.interact.selection.SelectionMouseOwner;
-import com.j3d.engine.react.events.spec.SettingUpdatedPayload;
+import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.gen.guide.GuideInfo;
-import com.j3d.gen.guide.GuideInfoClosingEvent;
 import com.j3d.gen.settings.Setting;
 
 /**
  * Events is an enum that describes the possible Events that a listener can listen for.
  */
 public enum EventType {
-    /**
-     * The object was translated.
-     */
-    OBJ_UPDATED,
     /**
      * The object was selected. Broadcast by {@link SelectionMouseOwner} with a payload class of
      * {@link SelectionEventPayload}
@@ -44,11 +36,12 @@ public enum EventType {
      */
     SNAP_TO_OBJ,
     /**
-     * The pivot of the transform command(s) has changed.
+     * The pivot of the transform command(s) has changed. Fired by {@link TransformMouseOwner}
+     * with a payload class of {@link ChangeCentreEventPayload}
      */
     TRANSFORM_CHANGE_CENTRE,
     /**
-     * Self-explanatory
+     * Self-explanatory. Fired by a {@link GPoint} with a payload class of {@link GPointMovedEvent}
      */
     GPOINT_RECALC_PIVOT,
     /**
@@ -64,7 +57,7 @@ public enum EventType {
     STATEFUL_COMMAND_COMPLETED,
     /**
      * A guide step is closing. Broadcast by {@link GuideInfo} with a payload class of
-     * {@link GuideInfoClosingEvent}
+     * {@link GuideInfoClosingPayload}
      */
     GUIDE_CLOSING,
     /**

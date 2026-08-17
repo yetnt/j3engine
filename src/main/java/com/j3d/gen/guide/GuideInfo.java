@@ -2,6 +2,7 @@ package com.j3d.gen.guide;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.react.events.*;
+import com.j3d.engine.react.events.payloads.GuideInfoClosingPayload;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.utility.generators.JLabelRichText;
 
@@ -12,7 +13,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 public class GuideInfo extends EventEmitter implements EventListener {
 
@@ -65,11 +65,11 @@ public class GuideInfo extends EventEmitter implements EventListener {
 
     /**
      * Initiates the closing process for this guide step.
-     * It broadcasts a {@link EventType#GUIDE_CLOSING} event with a {@link GuideInfoClosingEvent}.
+     * It broadcasts a {@link EventType#GUIDE_CLOSING} event with a {@link GuideInfoClosingPayload}.
      */
     public void  close() {
         // fire event
-        broadcast(EventType.GUIDE_CLOSING, new GuideInfoClosingEvent(this));
+        broadcast(EventType.GUIDE_CLOSING, new GuideInfoClosingPayload(this));
     }
     /**
      * Cleans up the guide step by removing all associated UI components

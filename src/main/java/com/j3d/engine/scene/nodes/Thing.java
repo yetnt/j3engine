@@ -6,8 +6,6 @@ import com.j3d.engine.scene.nodes.geometry.GLine;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.engine.react.actions.DirtyVoidAction;
-import com.j3d.engine.react.events.EventType;
-import com.j3d.engine.react.events.spec.TriUpdatedBroadcast;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.engine.scene.nodes.geometry.GTri;
@@ -442,15 +440,6 @@ public class Thing implements SceneObjectList {
     }
 
     /**
-     * Notifies all GTri objects within this Thing that they have been updated.
-     */
-    private void notifyTris() {
-        for (GTri tri : objects.stream().filter(o -> o instanceof GTri).map(o -> (GTri) o).toList()) {
-            tri.broadcast(EventType.OBJ_UPDATED, new TriUpdatedBroadcast(tri, StaticRefs.getSceneManager()));
-        }
-    }
-
-    /**
      * Scales the Thing by a uniform factor around its centroid.
      * @param scale The uniform scaling factor.
      * @return An Action which performs the scae operation.
@@ -465,7 +454,6 @@ public class Thing implements SceneObjectList {
                     originalPositions.add(p.getPivot().copy());
                     p.setPivot(p.getPivot().sub(centroid).mult(scale).add(centroid));
                 }
-                notifyTris();
                 return null;
             }
 
@@ -474,7 +462,6 @@ public class Thing implements SceneObjectList {
                 for (int i = 0; i < points.size(); i++) {
                     points.get(i).setPivot(originalPositions.get(i));
                 }
-                notifyTris();
             }
 
             @Override
@@ -510,7 +497,6 @@ public class Thing implements SceneObjectList {
                     originalPositions.add(p.getPivot().copy());
                     p.setPivot(p.getPivot().sub(centroid).mult(scale).add(centroid));
                 }
-                notifyTris();
                 return null;
             }
 
@@ -519,7 +505,6 @@ public class Thing implements SceneObjectList {
                 for (int i = 0; i < points.size(); i++) {
                     points.get(i).setPivot(originalPositions.get(i));
                 }
-                notifyTris();
             }
 
             @Override
@@ -555,7 +540,6 @@ public class Thing implements SceneObjectList {
                     originalPositions.add(p.getPivot().copy());
                     p.setPivot(p.getPivot().add(v));
                 }
-                notifyTris();
                 return null;
             }
 
@@ -564,7 +548,6 @@ public class Thing implements SceneObjectList {
                 for (int i = 0; i < points.size(); i++) {
                     points.get(i).setPivot(originalPositions.get(i));
                 }
-                notifyTris();
             }
 
             @Override
@@ -603,7 +586,6 @@ public class Thing implements SceneObjectList {
                     dir = dir.rotateAroundAxis(axis, angleDegrees);
                     p.setPivot(centroid.add(dir));
                 }
-                notifyTris();
                 return null;
             }
 
@@ -612,7 +594,6 @@ public class Thing implements SceneObjectList {
                 for (int i = 0; i < points.size(); i++) {
                     points.get(i).setPivot(originalPositions.get(i));
                 }
-                notifyTris();
             }
 
             @Override
@@ -652,7 +633,6 @@ public class Thing implements SceneObjectList {
                     dir = dir.rotateAroundAxis(axis, angleDegrees);
                     p.setPivot(centroid.add(dir));
                 }
-                notifyTris();
                 return null;
             }
 
@@ -661,7 +641,6 @@ public class Thing implements SceneObjectList {
                 for (int i = 0; i < points.size(); i++) {
                     points.get(i).setPivot(originalPositions.get(i));
                 }
-                notifyTris();
             }
 
             @Override
@@ -749,14 +728,12 @@ public class Thing implements SceneObjectList {
             @Override
             public Boolean run() {
                 t.setHidden(!t.hidden);
-                notifyTris();
                 return t.hidden;
             }
 
             @Override
             public void undo() {
                 t.setHidden(oldState);
-                notifyTris();
             }
 
             @Override
@@ -799,8 +776,7 @@ public class Thing implements SceneObjectList {
             @Override
             public void undo() {
                 t.setForDeletion(false);
-                DefaultMutableTreeNode node = StaticRefs.getLayerTree().addNode(parentLayerNode, treeNodeIdentity);
-                t.treeNode = node;
+                t.treeNode = StaticRefs.getLayerTree().addNode(parentLayerNode, treeNodeIdentity);
             }
 
             @Override

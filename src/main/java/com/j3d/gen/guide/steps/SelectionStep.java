@@ -2,10 +2,9 @@ package com.j3d.gen.guide.steps;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.CommandsManager;
-import com.j3d.engine.interact.selection.SelectionEventPayload;
+import com.j3d.engine.react.events.payloads.SelectionEventPayload;
 import com.j3d.engine.interact.selection.SelectionManager;
 import com.j3d.engine.math.matrix.Vector3;
-import com.j3d.engine.react.events.EventEmitterInterface;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.scene.find.FindResult;

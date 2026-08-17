@@ -1,5 +1,6 @@
 package com.j3d.engine.scene.nodes.geometry;
 
+import com.j3d.engine.react.events.payloads.GPointMovedEvent;
 import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.nodes.geometry.base.DecomposeWhenDrawn;
 import com.j3d.engine.scene.copy.CopyProperties;
@@ -19,7 +20,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class GCurve extends GObject implements IdempotentEventListener<GPoint.GPointMovedEvent, SamePair<Double>>, DecomposeWhenDrawn<Segment> {
+public class GCurve extends GObject implements IdempotentEventListener<GPointMovedEvent, SamePair<Double>>, DecomposeWhenDrawn<Segment> {
 
     private GPoint start;
     private GPoint controlPoint;
@@ -166,7 +167,7 @@ public class GCurve extends GObject implements IdempotentEventListener<GPoint.GP
 
     @Override
     public void onEvent(EventType event, EventPayload properties) {
-        if (event == EventType.GPOINT_RECALC_PIVOT && properties instanceof GPoint.GPointMovedEvent p)
+        if (event == EventType.GPOINT_RECALC_PIVOT && properties instanceof GPointMovedEvent p)
             handlePossibleDuplicates(event, p);
     }
 
@@ -176,7 +177,7 @@ public class GCurve extends GObject implements IdempotentEventListener<GPoint.GP
     }
 
     @Override
-    public void handlePossibleDuplicates(EventType type, GPoint.GPointMovedEvent payload) {
+    public void handlePossibleDuplicates(EventType type, GPointMovedEvent payload) {
         setPivot(controlPoint.getPivot());
         invalidateAll();
         decompose();

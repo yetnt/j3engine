@@ -1,6 +1,7 @@
 package com.j3d.engine.scene.nodes.geometry;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.react.events.payloads.GPointMovedEvent;
 import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.nodes.geometry.base.DecomposeWhenDrawn;
@@ -10,7 +11,6 @@ import com.j3d.engine.scene.copy.InvalidCopyException;
 import com.j3d.engine.geometry.Point;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.math.matrix.Vector3;
-import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.ui.dialog.Spinner;
@@ -66,7 +66,7 @@ public class GPoint extends GObject implements HasParents<GObject>, DecomposeWhe
         super.setPivot(pivot);
         invalidateAll();
         decompose();
-        this.broadcast(EventType.GPOINT_RECALC_PIVOT, new GPointMovedEvent(this, StaticRefs.getSceneManager()));
+        this.broadcast(EventType.GPOINT_RECALC_PIVOT, new GPointMovedEvent(this));
     }
 
     /**
@@ -169,12 +169,6 @@ public class GPoint extends GObject implements HasParents<GObject>, DecomposeWhe
     public ArrayList genericRenderStateList() {
         decompose();
         return getDecomposeList();
-    }
-
-    public static class GPointMovedEvent extends EventPayload<GPoint> {
-        public GPointMovedEvent(GPoint e, SceneManager r) {
-            super(e);
-        }
     }
 
 }

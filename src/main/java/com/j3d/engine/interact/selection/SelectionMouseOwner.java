@@ -1,6 +1,7 @@
 package com.j3d.engine.interact.selection;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.react.events.payloads.SelectionEventPayload;
 import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.interact.input.mouse.MOwner;

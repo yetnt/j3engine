@@ -5,6 +5,7 @@ import com.j3d.engine.react.events.EventEmitter;
 import com.j3d.engine.react.events.EventListener;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
+import com.j3d.engine.react.events.payloads.GuideInfoClosingPayload;
 
 import javax.swing.*;
 import java.time.LocalTime;
@@ -108,8 +109,8 @@ public class GuideFlow extends EventEmitter implements EventListener {
     @Override
     public <K> void onEvent(EventType event, EventPayload<K> properties) {
         if (event == EventType.GUIDE_CLOSING) {
-            GuideInfoClosingEvent
-                    event1 = (GuideInfoClosingEvent) properties;
+            GuideInfoClosingPayload
+                    event1 = (GuideInfoClosingPayload) properties;
             if (event1.getId().equals(guides.getFirst().getId())) {
                  if (lastTime.plusSeconds(DEB).isAfter(LocalTime.now())) return;
                 lastTime = LocalTime.now();

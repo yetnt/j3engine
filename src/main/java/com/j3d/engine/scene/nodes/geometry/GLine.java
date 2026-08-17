@@ -1,6 +1,7 @@
 package com.j3d.engine.scene.nodes.geometry;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.react.events.payloads.GPointMovedEvent;
 import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.nodes.geometry.base.*;
 import com.j3d.engine.scene.copy.CopyProperties;
@@ -37,7 +38,7 @@ import static com.j3d.StaticRefs.getSceneManager;
  * @see GPoint
  * @see GTri
  */
-public class GLine extends GObject implements HasParents<GTri>, IdempotentEventListener<GPoint.GPointMovedEvent, Vector3>, DecomposeWhenDrawn<Segment> {
+public class GLine extends GObject implements HasParents<GTri>, IdempotentEventListener<GPointMovedEvent, Vector3>, DecomposeWhenDrawn<Segment> {
     /**
      * The startpoint of this line
      */
@@ -182,7 +183,7 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
 
     @Override
     public void onEvent(EventType event, EventPayload properties) {
-        if (event == EventType.GPOINT_RECALC_PIVOT && properties instanceof GPoint.GPointMovedEvent p)
+        if (event == EventType.GPOINT_RECALC_PIVOT && properties instanceof GPointMovedEvent p)
             handlePossibleDuplicates(event, p);
     }
 
@@ -192,7 +193,7 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
     }
 
     @Override
-    public void handlePossibleDuplicates(EventType type, GPoint.GPointMovedEvent payload) {
+    public void handlePossibleDuplicates(EventType type, GPointMovedEvent payload) {
         Vector3 piv = getA().getPivot().add(getB().getPivot()).div(2);
         if (!piv.equals(getDupeObjectToCheck())) {
             setPivot(piv);

@@ -1,6 +1,7 @@
 package com.j3d.engine.interact.cmd.commands.transform.mouse;
 
 import com.j3d.engine.math.ScreenPoint;
+import com.j3d.engine.react.events.payloads.ChangeCentreEventPayload;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.engine.interact.cmd.commands.transform.AbstractTransform;
 import com.j3d.engine.interact.cmd.commands.transform.handles.Handle;
@@ -20,11 +21,10 @@ import java.util.UUID;
  * A specialized {@link MouseOwner} that manages user interaction with a set of
  * 3D transformation handles.
  * <p>
- * This class is the foundation for mouse-driven transformations. It takes ownership
- * of mouse input and is responsible for detecting when a user clicks on a {@link Handle},
- * effectively selecting an axis for manipulation. Subclasses, such as {@link TranslateMouseOwner}
- * or {@link ScaleMouseOwner}, extend this class to implement the specific logic for
- * dragging the handle and transforming the selected objects.
+ * Responsible for detecting when a user clicks on a {@link Handle},
+ * selecting an axis for manipulation. Subclasses, such as {@link TranslateMouseOwner}
+ * or {@link ScaleMouseOwner}, extend this class for either no additional stuff or extra
+ * drawing using the handles.
  *
  * @author Lehlogonolo Poole
  * @see MOwner
@@ -34,15 +34,22 @@ import java.util.UUID;
  */
 public class TransformMouseOwner extends SnapMouseOwner {
 
-    /** The list of 3D handles (e.g., for X, Y, Z axes) that this owner manages. */
+    /**
+     * The list of 3D handles
+     */
     public ArrayList<Handle> handles = new ArrayList<>();
-    /** The type of the currently selected handle, or null if no handle is selected. */
+    /**
+     * The type of the currently selected handle, or null if no handle is selected.
+     */
     public HandleType selectedHandleType;
-    /** The screen-space bounding box (as a radius) for detecting clicks on a handle. */
+    /**
+     * The screen-space bounding box (as a radius) for detecting clicks on a handle.
+     */
     public Pair<Integer, Integer> selectionBoundingBox = new Pair<>(80, 80);
-    /** A generic distance variable, often used by subclasses to track drag distance. */
     public int distance = 0;
-    /** A direct reference to the currently selected handle object, or null. */
+    /**
+     * A direct reference to the currently selected handle object, or null.
+     */
     public Handle selectedHandle;
 
     /**
@@ -72,10 +79,8 @@ public class TransformMouseOwner extends SnapMouseOwner {
      * An adapter method called when a handle is successfully pressed.
      * Subclasses can override this to perform specific actions upon handle selection.
      * @param handle The handle that was pressed.
-     * @param e The originating mouse event.
-     * @throws Exception if an error occurs during processing.
      */
-    public void mousePressedAdapter(Handle handle, MouseEvent e) throws Exception {
+    public void mousePressedAdapter(Handle handle) {
         handle.selected();
     }
 
@@ -101,7 +106,7 @@ public class TransformMouseOwner extends SnapMouseOwner {
             if (isWithinBounds(e, p.toSp())) {
                 this.selectedHandle = p;
                 try {
-                    mousePressedAdapter(p, e);
+                    mousePressedAdapter(p);
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }

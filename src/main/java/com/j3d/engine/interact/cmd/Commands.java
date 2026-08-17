@@ -15,8 +15,8 @@ import com.j3d.engine.interact.cmd.commands.measure.MeasureCmd;
 import com.j3d.engine.interact.cmd.commands.transform.qtrans.QuickTranslateCmd;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 import com.j3d.engine.interact.cmd.commands.uicmd.UICmd;
-import com.j3d.engine.interact.cmd.payloads.CommandFiredPayload;
-import com.j3d.engine.interact.cmd.payloads.StatefulCommandCompletedPayload;
+import com.j3d.engine.react.events.payloads.CommandFiredPayload;
+import com.j3d.engine.react.events.payloads.StatefulCommandCompletedPayload;
 import com.j3d.engine.react.events.EventEmitter;
 import com.j3d.engine.react.events.EventType;
 
