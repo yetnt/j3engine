@@ -1,4 +1,4 @@
-package com.j3d.utility.generic;
+package com.j3d.utility.generic.func;
 
 import java.util.Objects;
 

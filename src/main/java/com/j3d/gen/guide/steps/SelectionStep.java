@@ -2,6 +2,7 @@ package com.j3d.gen.guide.steps;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.CommandsManager;
+import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.react.events.payloads.SelectionEventPayload;
 import com.j3d.engine.interact.selection.SelectionManager;
 import com.j3d.engine.math.matrix.Vector3;
@@ -23,6 +24,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
+
+/*
+For this guide in particular we need to teach the user that they can interact with the scene by using selection
+
+    -> Tell the user the view can be changed from wireframe and normal
+    -> Tell the user about selection up vs selection down
+        -> (Include U-selection and I-selection)
+    -> Make the user play around with selection
+ */
 
 public class SelectionStep extends GuideInfo {
 
@@ -82,6 +92,13 @@ public class SelectionStep extends GuideInfo {
                 adapter,
                 new JLabel(
                         new JLabelRichText("(I've gone ahead and created a cube for you)")
+                                .addLn(JLabelRichText.LINE_BREAK)
+                                .add(
+                                        "One useful thing to know is that you can go (in the top right) "
+                                        + "and click Scene > View > Wireframe (or use ALT+V) to change to a view where "
+                                        + "all hidden stuff is visible."
+                                )
+                                .wrapDiv(400)
                                 .font(
                                         J3DTheme.TEXT_PRIMARY.color(),
                                         "4"
@@ -89,17 +106,72 @@ public class SelectionStep extends GuideInfo {
                                 .wrapHTML()
                 ),
                 Anchor.CENTRE,
-                0, 200
+                0, 150
         );
 
         guideCounter(adapter);
         genericText(adapter, "(Select ONLY the blue point to continue)");
 
+        JLabelRichText boldUnderline = new JLabelRichText()
+                .underline().bold();
+
         addCompAt(
                 adapter,
-                new JLabel("son"),
-                Anchor.EAST | Anchor.CENTRE,
-                50, 100
+                new JLabel(
+                        new JLabelRichText(
+                                "To select things, click and drag your mouse over what you want to select. "
+                                + "There are different selection modes triggered from dragging up vs down (and keyboard input)"
+                        )
+                                .add(JLabelRichText.LINE_BREAK)
+                                .addLn(
+                                        "Dragging up shows a "
+                                ).add(
+                                        new JLabelRichText("green")
+                                                .wrapUsing(boldUnderline).font(SelectionUI.STRICT_COLOR)
+                                ).add(
+                                        " selection square, which only selects everything that is fully inside it. (strict selection)"
+                                )
+                                .addLn(JLabelRichText.LINE_BREAK)
+                                .add("Dragging down shows a ")
+                                .add(
+                                        new JLabelRichText("yellow")
+                                                .wrapUsing(boldUnderline).font(SelectionUI.SOFT_COLOR)
+                                ).add(
+                                        " selection square, which selects everything regardless. As long as its inside or "
+                                        + "intersects with the square (soft selection)"
+                                )
+                                .addLn(JLabelRichText.LINE_BREAK)
+                                .add(
+                                        "Additionally, you can "
+                                )
+                                .add(
+                                        new JLabelRichText("add")
+                                                .wrapUsing(boldUnderline).font(SelectionUI.UNION_COLOR)
+                                )
+                                .add(" to an existing selection by holding the ")
+                                .add(
+                                        new JLabelRichText("U").wrapUsing(boldUnderline).font(SelectionUI.UNION_COLOR)
+                                )
+                                .add(" key while dragging. and to "
+                                ).add(
+                                        new JLabelRichText("remove").wrapUsing(boldUnderline).font(SelectionUI.SUBTRACT_COLOR)
+                                )
+                                .add(" hold down the ")
+                                .add(
+                                        new JLabelRichText("I").wrapUsing(boldUnderline).font(SelectionUI.SUBTRACT_COLOR)
+                                )
+                                .add(
+                                        " key instead. Although these 2 modes add/remove from the existing selection "
+                                        + "they function similar to strict selecting.")
+                                .wrapDiv(280)
+                                .font(
+                                        J3DTheme.TEXT_PRIMARY.color(),
+                                        "5"
+                                )
+                                .wrapHTML()
+                ),
+                Anchor.EAST | Anchor.SOUTH,
+                200, 380
         );
     }
 

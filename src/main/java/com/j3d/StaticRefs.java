@@ -70,7 +70,7 @@ public abstract class StaticRefs {
     }
     /**
      * The Executor Instance. A once off scene initialiser which populates the scene with some test
-     * triangles and other stuff. Only via {@link EngineFrame#EngineFrame(boolean)} (set to {@code true}).
+     * triangles and other stuff. Only via {@link EngineFrame#EngineFrame(boolean, boolean)} (set to {@code true}).
      * This is also initialised by {@link EngineFrame} but then only called once and never again.
      */
     private static Executor executor = null;

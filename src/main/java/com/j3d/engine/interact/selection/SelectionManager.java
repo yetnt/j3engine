@@ -63,7 +63,7 @@ public class SelectionManager {
                         }
                         case SUBTRACT -> {
                             boolean wasSelected = getSceneManager().getSelected().contains(obj);
-                            boolean inBox = selectionQuery.has(obj, true);
+                            boolean inBox = selectionQuery.has(obj, false);
 
                             if (wasSelected && !inBox)
                                 selected.add(obj); // keep

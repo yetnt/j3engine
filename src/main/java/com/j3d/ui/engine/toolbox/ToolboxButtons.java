@@ -9,8 +9,11 @@ import com.j3d.threads.LongTask;
 import com.j3d.ui.theme.CursorManager;
 import com.j3d.ui.theme.CursorNames;
 import com.j3d.ui.theme.J3DTheme;
+import com.j3d.utility.generic.func.TrinaryConsumer;
+import com.sun.management.OperatingSystemMXBean;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,11 +21,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.management.ManagementFactory;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class ToolboxButtons {
     private static final ArrayList<JPanel> toolboxButtons = new ArrayList<>();
@@ -35,6 +42,36 @@ public class ToolboxButtons {
             // Toggle props mode
             StaticRefs.getDocsProvider().provideMain().setVisible(true);
         }, "docs.png");
+        tripleText(
+                "J3Engine",
+                "CPU: 0%",
+                "J3D: 0%",
+                2,
+                (a, b, c) -> {
+
+                    ScheduledExecutorService executor =
+                            Executors.newSingleThreadScheduledExecutor();
+
+                    executor.scheduleAtFixedRate(() -> {
+                        OperatingSystemMXBean os =
+                                (OperatingSystemMXBean)
+                                        ManagementFactory.getOperatingSystemMXBean();
+
+                        double system = os.getCpuLoad() * 100.0;
+                        double process = os.getProcessCpuLoad() * 100.0;
+
+
+                        SwingUtilities.invokeLater(() -> {
+                            b.setText(String.format("CPU (Total): %.1f%%", system));
+                            c.setText(String.format("CPU (By J3D) : %.1f%%", process));
+                        });
+                    }, 0, 1, TimeUnit.SECONDS);
+
+                    Runtime.getRuntime().addShutdownHook(
+                            new Thread(executor::shutdown)
+                    );
+                }
+        );
         registerComplex("Transform", new Subbox(s -> s
                 .add("quick translate", e -> StaticRefs.getCommandParser().run(
                         CommandsManager.commands.quickTranslateCmd,
@@ -74,7 +111,7 @@ public class ToolboxButtons {
             StaticRefs.getGrid2DPanel().toggleHidden();
         });
 
-        // another for exmaple
+        // another for example
         register("Toggle Spinner", e -> {
             String nString = JOptionPane.showInputDialog("Input time in ms to sleep");
             if (nString == null) return;
@@ -207,6 +244,49 @@ public class ToolboxButtons {
         J3DTheme.commitAsGenericUi(btnA);
         J3DTheme.commitAsGenericLbl(label1, false);
         return btnA;
+    }
+
+    public static void tripleText(String t1, String t2, String t3, int d, TrinaryConsumer<JLabel> after) {
+
+        JPanel buttonPanel = new JPanel();
+
+        buttonPanel.setBackground(J3DTheme.UI_SURFACE.color());
+        buttonPanel.setMaximumSize(new java.awt.Dimension(100*d, 120));
+        buttonPanel.setMinimumSize(new java.awt.Dimension(120*d, 120));
+        buttonPanel.setPreferredSize(new java.awt.Dimension(100*d, 120));
+        buttonPanel.setLayout(new javax.swing.BoxLayout(buttonPanel, javax.swing.BoxLayout.Y_AXIS));
+
+        ArrayList<String> content = new ArrayList<>(List.of(t1, t2, t3));
+        ArrayList<JLabel> labels = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            JLabel label = new JLabel();
+            labels.add(label);
+            label.setFont(new java.awt.Font("Tahoma", Font.BOLD, 12)); // NOI18N
+            label.setForeground(J3DTheme.TEXT_PRIMARY.color());
+            label.setBackground(J3DTheme.BACKGROUND.color());
+            label.setOpaque(true);
+            label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            label.setText(content.get(i));
+            label.setMaximumSize(new java.awt.Dimension(100*d, 35));
+            label.setMinimumSize(new java.awt.Dimension(120*d, 16));
+            label.setPreferredSize(new java.awt.Dimension(120*d, 16));
+            label.setBorder(new BevelBorder(BevelBorder.RAISED, J3DTheme.ACCENT_PRIMARY.color(), J3DTheme.ACCENT_SECONDARY.color()));
+            J3DTheme.commit(J3DTheme.BACKGROUND, (c) -> {
+                // reset the colours.
+                label.setForeground(J3DTheme.TEXT_PRIMARY.color());
+                label.setBackground(J3DTheme.BACKGROUND.color());
+                label.setBorder(new BevelBorder(BevelBorder.RAISED, J3DTheme.ACCENT_PRIMARY.color(), J3DTheme.ACCENT_SECONDARY.color()));
+            });
+            buttonPanel.add(label);
+        }
+
+        toolboxButtons.add(buttonPanel);
+        J3DTheme.commitAsGenericUi(buttonPanel);
+        after.accept(
+                labels.getFirst(),
+                labels.get(1),
+                labels.getLast()
+        );
     }
 
     public static ArrayList<JPanel> getToolboxButtons() {

@@ -2,8 +2,10 @@ package com.j3d.gen.guide.steps;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.CommandsManager;
+import com.j3d.engine.interact.input.mouse.AlwaysMouseOwner;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
+import com.j3d.engine.react.events.payloads.MouseClickPayload;
 import com.j3d.gen.guide.Anchor;
 import com.j3d.gen.guide.GuideInfo;
 import com.j3d.gen.guide.GuidePanelAdapter;
@@ -13,6 +15,7 @@ import com.j3d.ui.theme.J3DTheme;
 import com.j3d.utility.generators.JLabelRichText;
 
 import javax.swing.*;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +23,7 @@ public class SceneExplStep extends GuideInfo {
 
     public SceneExplStep() {
         super(
-                Settings.cameraProperties.movementSpeed
+                AlwaysMouseOwner.getSingleInstance()
         );
     }
 
@@ -28,7 +31,7 @@ public class SceneExplStep extends GuideInfo {
     public void build(GuidePanelAdapter adapter) {
         guideCounter(adapter);
 
-        genericText(adapter, "(Change your movement speed to progress to the next step)");
+        genericText(adapter, "(Double click to continue)");
 
         addCompAt(
                 adapter,
@@ -62,12 +65,13 @@ public class SceneExplStep extends GuideInfo {
 
     @Override
     public <K> void onEvent(EventType event, EventPayload<K> properties) {
-        if (event == EventType.SUPDATED) {
-            if (properties.emitter instanceof DoubleSetting doubleSetting) {
-                if (doubleSetting == Settings.cameraProperties.movementSpeed) {
-                    close();
-                }
-            }
+        if (event == EventType.MOUSE_CLICKED) {
+            MouseClickPayload payload
+                    = (MouseClickPayload) properties;
+            MouseEvent e = payload.getEvent();
+            if (e.getClickCount() != 2) return;
+
+            close();
         }
     }
 }

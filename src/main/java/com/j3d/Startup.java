@@ -39,6 +39,7 @@ public class Startup {
     }
 
     public static void run() {
+        StaticRefs.none();
         Main login = new Main(runnable);
         login.setVisible(true);
 

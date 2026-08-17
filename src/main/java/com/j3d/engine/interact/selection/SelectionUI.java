@@ -19,10 +19,10 @@ import java.awt.*;
  * @author Lehlogonolo Poole
  */
 public class SelectionUI {
-    private static final Color STRICT_COLOR = new Color(0, 255, 0, 26);
-    private static final Color SOFT_COLOR = new Color(255, 255, 0, 26);
-    private static final Color SUBTRACT_COLOR = new Color(255, 0, 0, 26);
-    private static final Color ADD_COLOR = new Color(154, 0, 255, 26);
+    public static final Color STRICT_COLOR = new Color(0, 255, 0, 26);
+    public static final Color SOFT_COLOR = new Color(255, 255, 0, 26);
+    public static final Color SUBTRACT_COLOR = new Color(255, 0, 0, 26);
+    public static final Color UNION_COLOR = new Color(154, 0, 255, 26);
 
     /**
      * The basic inferred selection via mouse dragging in combination with
@@ -36,7 +36,7 @@ public class SelectionUI {
         ScreenPoint ii = selectionArea[1];
 //        g.setColor(invert ? SUBTRACT_COLOR : isStrict ? STRICT_COLOR : SOFT_COLOR);
         g.setColor(SelectionUtils.usingSelectionVariant(inferredSelection, isStrict,
-                ADD_COLOR, SUBTRACT_COLOR, STRICT_COLOR, SOFT_COLOR));
+                UNION_COLOR, SUBTRACT_COLOR, STRICT_COLOR, SOFT_COLOR));
 //        CursorManager.set(invert ? "selectSubtract" : isStrict ? "selectStrict" : "selectSoft");
         CursorManager.set(SelectionUtils.usingSelectionVariant(inferredSelection, isStrict,
                 CursorNames.SELECT_ADD, CursorNames.SELECT_SUBTRACT, CursorNames.SELECT_STRICT, CursorNames.SELECT_SOFT));

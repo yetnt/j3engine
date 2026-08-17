@@ -47,10 +47,7 @@ public class RandomUUIDCmd extends Subcommand {
     public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
         List<GObject> objects = StaticRefs.getSceneManager().layers
-                .stream()
-                .flatMap(Layer::stream)
-                .flatMap(Thing::objectsStream)
-                .toList();
+                .objectStream().toList();
 
         GObject random = objects.get(new Random().nextInt(objects.size()));
         logLabel.setText(random.getId().toString());

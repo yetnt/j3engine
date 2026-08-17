@@ -26,9 +26,9 @@ public class Toolbox extends javax.swing.JPanel {
         );
         J3DTheme.commitAsGenericUi(toolboxScrollpane);
         J3DTheme.commitAsGenericUi(toolboxInnerPanel);
-        J3DTheme.commitAsGenericUi(btnA_panel);
-        J3DTheme.commitAsGenericUi(btnA);
-        J3DTheme.commitAsGenericLbl(btnA_label, false);
+//        J3DTheme.commitAsGenericUi(btnA_panel);
+//        J3DTheme.commitAsGenericUi(btnA);
+//        J3DTheme.commitAsGenericLbl(btnA_label, false);
 
     }
 
@@ -43,9 +43,6 @@ public class Toolbox extends javax.swing.JPanel {
 
         toolboxScrollpane = new javax.swing.JScrollPane();
         toolboxInnerPanel = new javax.swing.JPanel();
-        btnA_panel = new javax.swing.JPanel();
-        btnA = new javax.swing.JButton();
-        btnA_label = new javax.swing.JLabel();
 
         setMaximumSize(new java.awt.Dimension(1000, 32767));
         setPreferredSize(new java.awt.Dimension(1000, 134));
@@ -55,37 +52,6 @@ public class Toolbox extends javax.swing.JPanel {
 
         toolboxInnerPanel.setBackground(J3DTheme.UI_SURFACE.color());
         toolboxInnerPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, -4));
-
-        btnA_panel.setBackground(J3DTheme.UI_SURFACE.color());
-        btnA_panel.setMaximumSize(new java.awt.Dimension(100, 120));
-        btnA_panel.setMinimumSize(new java.awt.Dimension(120, 120));
-        btnA_panel.setPreferredSize(new java.awt.Dimension(100, 120));
-        btnA_panel.setLayout(new javax.swing.BoxLayout(btnA_panel, javax.swing.BoxLayout.Y_AXIS));
-
-        btnA.setBackground(J3DTheme.BACKGROUND.color());
-        btnA.setForeground(J3DTheme.TEXT_PRIMARY.color());
-        btnA.setText("examplebtn");
-        btnA.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnA.setMaximumSize(new java.awt.Dimension(100, 100));
-        btnA.setMinimumSize(new java.awt.Dimension(100, 100));
-        btnA.setPreferredSize(new java.awt.Dimension(100, 100));
-        btnA.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAActionPerformed(evt);
-            }
-        });
-        btnA_panel.add(btnA);
-
-        btnA_label.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        btnA_label.setForeground(J3DTheme.TEXT_PRIMARY.color());
-        btnA_label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnA_label.setText("default label");
-        btnA_label.setMaximumSize(new java.awt.Dimension(100, 16));
-        btnA_label.setMinimumSize(new java.awt.Dimension(120, 16));
-        btnA_label.setPreferredSize(new java.awt.Dimension(120, 16));
-        btnA_panel.add(btnA_label);
-
-        toolboxInnerPanel.add(btnA_panel);
 
         ToolboxButtons.getToolboxButtons().forEach(
             toolboxInnerPanel::add
@@ -105,15 +71,8 @@ public class Toolbox extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnA;
-    private javax.swing.JLabel btnA_label;
-    private javax.swing.JPanel btnA_panel;
     public javax.swing.JPanel toolboxInnerPanel;
     public javax.swing.JScrollPane toolboxScrollpane;
     // End of variables declaration//GEN-END:variables

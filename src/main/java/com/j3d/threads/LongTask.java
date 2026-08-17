@@ -1,9 +1,8 @@
 package com.j3d.threads;
 
 import com.j3d.StaticRefs;
-import com.j3d.errors.ErrorHandler;
 import com.j3d.ui.dialog.Spinner;
-import com.j3d.utility.generic.TriConsumer;
+import com.j3d.utility.generic.func.TriConsumer;
 
 import javax.swing.*;
 import java.util.function.Consumer;

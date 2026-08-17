@@ -15,9 +15,8 @@ import com.j3d.ui.SafeJLabel;
 import com.j3d.ui.engine.CommandPalette;
 import com.j3d.utility.Parsing;
 import com.j3d.utility.generators.JLabelRichText;
-import com.j3d.utility.generic.QuadConsumer;
+import com.j3d.utility.generic.func.QuadConsumer;
 import com.j3d.utility.generic.SamePair;
-import com.j3d.utility.generic.TriConsumer;
 
 import javax.swing.*;
 import java.awt.*;
