@@ -21,4 +21,11 @@ public class GenericIOException extends J3DError implements J3DFatal {
     public GenericIOException(String message, Throwable cause) {
         super(message, cause, ErrorCodes.IO.getBaseCode());
     }
+    public GenericIOException(String message, int baseCode) {
+        super(message, baseCode);
+    }
+
+    public GenericIOException(String message, Throwable cause, int baseCode) {
+        super(message, cause, baseCode);
+    }
 }

@@ -121,6 +121,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
             } catch (IOException e) {
                 StaticRefs.getErrs().handle(
                         new ProjectFileException("Error writing project file header", e)
+                                .code(10)
                 );
             }
         };
@@ -135,13 +136,15 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
 
                 if (!head.equals(getProtocolHeader())) {
                     StaticRefs.getErrs().handle(
-                            new ProjectFileException("Unsupported Project file header: " + head)
+                            new ProjectFileException("Invalid Project file protocol header: " + head)
+                                    .code(21)
                     );
                 }
                 if (version > getProtocolVersion()) {
                     // No version can read or possibly convert to a higher version.
                     StaticRefs.getErrs().handle(
-                            new ProjectFileException("Unsupported Project file version: " + version)
+                            new ProjectFileException("(Higher version) Unsupported Project file version: " + version)
+                                    .code(22)
                     );
                 } else if (version < getProtocolVersion()) {
                     // old version.
@@ -150,6 +153,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
             } catch (IOException e) {
                 StaticRefs.getErrs().handle(
                         new ProjectFileException("Error reading project file header", e)
+                                .code(20)
                 );
             }
         };
@@ -211,7 +215,7 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
                         new ProjectFileException(
                                 "Attempt to load a project file version which cannot be loaded" +
                                         " on this version of J3Engine."
-                        )
+                        ).code(1)
                 );
                 return;
             }
@@ -232,6 +236,16 @@ public class ProjectFile extends GenericFileProtocol implements FileProtocol {
 
         public ProjectFile getProjectFile() {
             return  projectFile.get();
+        }
+
+        public static PF fromInt(int n) {
+            return switch (n) {
+                case 1 -> V1;
+                case 2 -> V2;
+                case 3 -> V3;
+                default -> throw new
+                        UnsupportedOperationException("No verison of " + n);
+            };
         }
     }
 }

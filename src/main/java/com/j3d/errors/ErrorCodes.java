@@ -11,7 +11,8 @@ public enum ErrorCodes {
     ENGINE_CORE_MATH(42),
     ENGINE_CORE_INTERACT(43),
 
-    IO(50);
+    IO(50),
+    IO_PROJECT(51);
 
     ErrorCodes(int i) {
         baseCode = i;

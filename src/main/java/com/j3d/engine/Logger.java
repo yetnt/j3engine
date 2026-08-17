@@ -107,7 +107,7 @@ public class Logger {
             case J3DWarning w -> "!![WARN] ";
             case J3DFatal f -> "!!![FATAL] ";
             default -> ERROR_PREFIX;
-        } + "[" + err.codeToStr() + "]("+err.getClass().getSimpleName() +") " + err.getMessage() +
+        } + "[" + err.errorCode() + "]("+err.getClass().getSimpleName() +") " + err.getMessage() +
                 ( err.getCause() != null ?
                         " - (threw " + err.getCause().getClass().getSimpleName() + ") " +
                                 err.getCause().getMessage() + " \n" +
@@ -120,7 +120,7 @@ public class Logger {
         String errorMessage = message + "\n";
         StaticRefs.getEngineFiles().logFile.writeLn("\n" + getTimestamp() + " " + message + "\n");
         System.err.print(errorMessage);
-        if (err instanceof J3DFatal) {
+        if (err instanceof J3DFatal && err.getCause() != null) {
             err.getCause().printStackTrace(System.err);
         }
         if (!(err instanceof J3DMild) && logArea != null) {

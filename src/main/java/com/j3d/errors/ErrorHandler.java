@@ -89,11 +89,11 @@ public class ErrorHandler {
             case J3DFatal j3f -> {
                 // Fatal errors are unrecoverable.
                 StaticRefs.getLog().error(err);
-                JOptionPane.showMessageDialog(StaticRefs.getMainFrame(), err.getMessage(), "Fatal Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(StaticRefs.getMainFrame(), err.getMessage(), "Fatal Error " + err.errorCode(), JOptionPane.ERROR_MESSAGE);
                 if (j3f.terminate()) {
                     JOptionPane.showMessageDialog(StaticRefs.getMainFrame(),
                             "Due to the nature of the previous error, the app cannot continue in this state and will shut down.",
-                            "Fatal Error", JOptionPane.ERROR_MESSAGE);
+                            "Fatal Error " + err.errorCode(), JOptionPane.ERROR_MESSAGE);
                     System.exit(1);
 //                    throw err;
                 }

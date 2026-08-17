@@ -26,9 +26,11 @@ import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.input.mouse.*;
 import com.j3d.engine.interact.selection.*;
 import com.j3d.StaticConfig;
+import com.j3d.errors.J3DError;
 import com.j3d.gen.guide.GuideManager;
 import com.j3d.gen.settings.Settings;
 import com.j3d.storage.files.FilesUtility;
+import com.j3d.storage.files.protocol.UnsupportedVersionException;
 import com.j3d.storage.files.protocol.proj.PF1;
 import com.j3d.storage.files.protocol.proj.PF2;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
@@ -563,6 +565,10 @@ public class EngineFrame extends javax.swing.JFrame {
                         readFileUsingVers(file, convertTo.getProtocolVersion());
                         LOADED_OLD = true;
                     };
+                    if (err instanceof J3DError r) {
+                        StaticRefs.getErrs().handle(r);
+                        return;
+                    }
                     ProjectFile.handleErr(using, err, loadable);
                 }
         );

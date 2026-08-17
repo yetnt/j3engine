@@ -16,4 +16,12 @@ public class J3DFileException extends GenericIOException {
     public J3DFileException(String message, Throwable cause) {
         super(message, cause);
     }
+
+    public J3DFileException(String message, int baseCode) {
+        super(message, baseCode);
+    }
+
+    public J3DFileException(String message, Throwable cause, int baseCode) {
+        super(message, cause, baseCode);
+    }
 }

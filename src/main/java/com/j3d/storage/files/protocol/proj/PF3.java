@@ -3,6 +3,7 @@ package com.j3d.storage.files.protocol.proj;
 import com.j3d.StaticConfig;
 import com.j3d.StaticRefs;
 import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.scene.SceneObject;
 import com.j3d.engine.scene.nodes.SceneObjectList;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.*;
@@ -23,7 +24,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.function.Consumer;
-
 
 public class PF3 extends ProjectFile {
 
@@ -94,6 +94,7 @@ public class PF3 extends ProjectFile {
             } catch (IOException e) {
                 StaticRefs.getErrs().handle(
                         new ProjectFileException("Error writing project file data.", e)
+                                .code(300)
                 );
             }
 
@@ -148,9 +149,10 @@ public class PF3 extends ProjectFile {
             } catch (UnsupportedVersionException f) {
                 throw f;
             } catch (IOException e) {
-                StaticRefs.getErrs().handle(
-                        new ProjectFileException("Error reading project file data.", e)
-                );
+                        StaticRefs.getErrs().handle(
+                                new ProjectFileException("Error reading project file data.", e)
+                                .code(350)
+                        );
             }
             return null;
         };
@@ -193,19 +195,18 @@ public class PF3 extends ProjectFile {
      */
     private static HashMap<String, Layer> readLayers(DataInputStream dis, Spinner sp) throws IOException {
         HashMap<String, Layer> layers = new HashMap<>();
-        consumeBeginList(dis);
+        consumeBeginList(dis, "layers");
         int size = dis.readInt();
         sp.progressStart("Reading layers", size);
-        System.out.println("Discovered " + size + " layers");
         for (int i = 0; i < size; i++) {
-            consumeBeforeElement(dis);
+            consumeBeforeElement(dis, "layers" , i);
             String name = dis.readUTF();
             boolean hidden = dis.readBoolean();
             sp.updateProgress(i + 1);
 
             layers.put(name, Layer.fromRaw(name, hidden));
         }
-        consumeEndList(dis);
+        consumeEndList(dis, "layers");
         return layers;
     }
 
@@ -244,12 +245,12 @@ public class PF3 extends ProjectFile {
      * @throws IOException If an I/O error occurs, the file is corrupted, or a parent layer is not found.
      */
     private static HashMap<String, Thing> readThings(DataInputStream dis, HashMap<String, Layer> layers, Spinner sp) throws IOException {
-        consumeBeginList(dis);
+        consumeBeginList(dis, "things");
         HashMap<String, Thing> out = new HashMap<>();
         int thingAmt = dis.readInt();
         sp.progressStart("Reading things", thingAmt);
         for (int i = 0; i < thingAmt; i++) {
-            consumeBeforeElement(dis);
+            consumeBeforeElement(dis, "things", i);
             String id = dis.readUTF();
             String name = dis.readUTF();
             String parentLayerName = dis.readUTF();
@@ -257,9 +258,10 @@ public class PF3 extends ProjectFile {
             boolean isSolid = dis.readBoolean();
 
             Layer l = layers.get(parentLayerName);
-            if (l == null) {
-                throw new IOException("Corrupted file: Parent layer '" + parentLayerName + "' not found for thing with ID " + id + ".");
-            }
+
+            ifAnyNull(
+                    "thing", id, "layer", 365, l
+            );
 
             Thing t =
                     Thing.fromRaw(
@@ -271,7 +273,7 @@ public class PF3 extends ProjectFile {
             sp.updateProgress(i + 1);
             out.put(id, t);
         }
-        consumeEndList(dis);
+        consumeEndList(dis, "things");
         return out;
     }
 
@@ -313,13 +315,13 @@ public class PF3 extends ProjectFile {
      * @throws IOException If an I/O error occurs or the file is corrupted.
      */
     private static SuperMap<GCurve> readCurves(DataInputStream dis, SuperMap<GPoint> pointSuperMap, Spinner sp) throws IOException {
-        consumeBeginList(dis);
+        consumeBeginList(dis, "curves");
         HashMap<String, GCurve> idMap = new HashMap<>();
         HashMultiMap<String, GCurve> thingParentMap = new HashMultiMap<>();
         int curveAmt = dis.readInt();
         sp.progressStart("Reading curves", curveAmt);
         for (int i = 0; i < curveAmt; i++) {
-            consumeBeforeElement(dis);
+            consumeBeforeElement(dis, "curves", i);
             String id = dis.readUTF();
             String parent = dis.readUTF();
             int colour = dis.readInt();
@@ -328,19 +330,20 @@ public class PF3 extends ProjectFile {
             String start = dis.readUTF();
             String control = dis.readUTF();
             String end = dis.readUTF();
+            GPoint A = pointSuperMap.getIdMap().get(start);
+            GPoint B = pointSuperMap.getIdMap().get(control);
+            GPoint C = pointSuperMap.getIdMap().get(end);
 
-            GCurve curve = GCurve.fromRaw(
-                    id,
-                    pointSuperMap.getIdMap().get(start),
-                    pointSuperMap.getIdMap().get(control),
-                    pointSuperMap.getIdMap().get(end),
-                    col, amount
+            ifAnyNull(
+                    "curve", id, "point", 364, A, B, C
             );
+
+            GCurve curve = GCurve.fromRaw(id, A, B, C, col, amount);
             sp.updateProgress(i + 1);
             idMap.put(id, curve);
             thingParentMap.putValue(parent, curve);
         }
-        consumeEndList(dis);
+        consumeEndList(dis, "curves");
         return new SuperMap<>(
                 thingParentMap, idMap
         );
@@ -391,40 +394,43 @@ public class PF3 extends ProjectFile {
      * @throws IOException If an I/O error occurs or the file is corrupted.
      */
     private static SuperMap<GTri> readTris(DataInputStream dis, SuperMap<GLine> lines, SuperMap<GPoint> points, Spinner sp) throws IOException {
-        consumeBeginList(dis);
+        consumeBeginList(dis, "tris");
         HashMap<String, GTri> idMap = new HashMap<>();
         HashMultiMap<String, GTri> thingParentMap = new HashMultiMap<>();
         int triAmt = dis.readInt();
         sp.progressStart("Reading tris", triAmt);
         for (int i = 0; i < triAmt; i++) {
-            consumeBeforeElement(dis);
+            consumeBeforeElement(dis, "tris", i);
             String id = dis.readUTF();
             String parent = dis.readUTF();
             int colour = dis.readInt();
             Color col = intToCol(colour);
-            String legA = dis.readUTF();
-            String legB = dis.readUTF();
-            String legC = dis.readUTF();
-            String w1 = dis.readUTF();
-            String w2 = dis.readUTF();
-            String w3 = dis.readUTF();
+            String legA = dis.readUTF(); GLine LegA = lines.getIdMap().get(legA);
+            String legB = dis.readUTF(); GLine LegB = lines.getIdMap().get(legB);
+            String legC = dis.readUTF(); GLine LegC = lines.getIdMap().get(legC);
+            String w1 = dis.readUTF(); GPoint p1 = points.getIdMap().get(w1);
+            String w2 = dis.readUTF(); GPoint p2 = points.getIdMap().get(w2);
+            String w3 = dis.readUTF(); GPoint p3 = points.getIdMap().get(w3);
             boolean isDoubleSided = dis.readBoolean();
+
+            ifAnyNull(
+                    "tri", id, "line", 362, LegA, LegB, LegC
+            );
+            ifAnyNull(
+                    "tri", id, "winding point", 363, p1, p2, p3
+            );
 
             GTri tri = GTri.fromV3Raw(
                     id, col,
-                    lines.getIdMap().get(legA),
-                    lines.getIdMap().get(legB),
-                    lines.getIdMap().get(legC),
-                    points.getIdMap().get(w1),
-                    points.getIdMap().get(w2),
-                    points.getIdMap().get(w3)
+                    LegA, LegB, LegC,
+                    p1, p2, p3
             );
             tri.setDoubleSided(isDoubleSided);
             sp.updateProgress(i + 1);
             idMap.put(id, tri);
             thingParentMap.putValue(parent, tri);
         }
-        consumeEndList(dis);
+        consumeEndList(dis, "tris");
         return new SuperMap<>(thingParentMap, idMap);
     }
 
@@ -464,13 +470,13 @@ public class PF3 extends ProjectFile {
      * @throws IOException If an I/O error occurs or the file is corrupted.
      */
     private static SuperMap<GLine> readLines(DataInputStream dis, SuperMap<GPoint> pointSuperMap, Spinner sp) throws IOException {
-        consumeBeginList(dis);
+        consumeBeginList(dis, "lines");
         HashMap<String, GLine> idMap = new HashMap<>();
         HashMultiMap<String, GLine> thingParentMap = new HashMultiMap<>();
         int lineAmt = dis.readInt();
         sp.progressStart("Reading lines", lineAmt);
         for (int i = 0; i < lineAmt; i++) {
-            consumeBeforeElement(dis);
+            consumeBeforeElement(dis, "lines", i);
             String id = dis.readUTF();
             String parent = dis.readUTF();
             int colour = dis.readInt();
@@ -478,17 +484,24 @@ public class PF3 extends ProjectFile {
             String a = dis.readUTF();
             String b = dis.readUTF();
 
+            GPoint A = pointSuperMap.getIdMap().get(a);
+            GPoint B = pointSuperMap.getIdMap().get(b);
+
+            ifAnyNull(
+                    "lines", id, "points", 361, A, B
+            );
+
             GLine line = GLine.fromRaw(
                     id,
-                    pointSuperMap.getIdMap().get(a),
-                    pointSuperMap.getIdMap().get(b)
+                    A,
+                    B
             );
             line.setColour(col);
             sp.updateProgress(i + 1);
             idMap.put(id, line);
             thingParentMap.putValue(parent, line);
         }
-        consumeEndList(dis);
+        consumeEndList(dis, "lines");
         return new SuperMap<>(thingParentMap, idMap);
     }
 
@@ -530,13 +543,13 @@ public class PF3 extends ProjectFile {
      * @throws IOException If an I/O error occurs or the file is corrupted.
      */
     private static SuperMap<GPoint> readPoints(DataInputStream dis, Spinner sp) throws IOException {
-        consumeBeginList(dis);
+        consumeBeginList(dis, "points");
         HashMap<String, GPoint> idMap = new HashMap<>();
         HashMultiMap<String, GPoint> thingParentMap = new HashMultiMap<>();
         int pointAmt = dis.readInt();
         sp.progressStart("Reading points", pointAmt);
         for (int i = 0; i < pointAmt; i++) {
-            consumeBeforeElement(dis);
+            consumeBeforeElement(dis, "points", i);
             String id = dis.readUTF();
             String parent = dis.readUTF();
             double x = dis.readDouble();
@@ -551,7 +564,7 @@ public class PF3 extends ProjectFile {
             idMap.put(id, point);
             thingParentMap.putValue(parent, point);
         }
-        consumeEndList(dis);
+        consumeEndList(dis, "points");
         return new SuperMap<>(thingParentMap, idMap);
     }
 
@@ -571,10 +584,14 @@ public class PF3 extends ProjectFile {
      * @param dis The {@link DataInputStream} to read from.
      * @throws IOException If an I/O error occurs or the expected delimiter is not found.
      */
-    public static void consumeBeginList(DataInputStream dis) throws IOException {
+    public static void consumeBeginList(DataInputStream dis, String errStr) throws IOException {
         String utf = dis.readUTF();
         if (!utf.equals("?")) {
-            throw new IOException("Corrupted file: Expected begin list delimiter.");
+           StaticRefs.getErrs().handle(
+                   ProjectFileException.corrupted(
+                           "PF3 (at "+errStr+") expected the begin list delimiter. Instead got " + utf + ".")
+                           .code(351)
+           );
         }
     }
     /**
@@ -593,10 +610,13 @@ public class PF3 extends ProjectFile {
      * @param dis The {@link DataInputStream} to read from.
      * @throws IOException If an I/O error occurs or the expected delimiter is not found.
      */
-    public static void consumeEndList(DataInputStream dis) throws IOException {
+    public static void consumeEndList(DataInputStream dis, String errStr) throws IOException {
         String utf = dis.readUTF();
         if (!utf.equals("!")) {
-            throw new IOException("Corrupted file: Expected end of list delimiter.");
+            StaticRefs.getErrs().handle(
+                            ProjectFileException.corrupted("PF3 (at "+errStr+") expected the end of list delimiter but got " + utf + ".")
+                            .code(352)
+            );
         }
     }
     /**
@@ -615,10 +635,13 @@ public class PF3 extends ProjectFile {
      * @param dis The {@link DataInputStream} to read from.
      * @throws IOException If an I/O error occurs or the expected delimiter is not found.
      */
-    public static void consumeBeforeElement(DataInputStream dis) throws IOException {
+    public static void consumeBeforeElement(DataInputStream dis, String errStr, int index) throws IOException {
         byte b = dis.readByte();
         if (b != (byte) 0x11111111) {
-            throw new IOException("Corrupted file: Expected element delimiter.");
+            StaticRefs.getErrs().handle(
+                    ProjectFileException.corrupted("PF3 (at "+errStr+"["+index+"]) expected the before element delimiter but got " + b + ".")
+                            .code(353)
+            );
         }
     }
     /**
@@ -640,7 +663,10 @@ public class PF3 extends ProjectFile {
     public static void readSixNine(DataInputStream dis) throws IOException {
         short s = dis.readShort();
         if (s != 69) {
-            throw new IOException("Corrupted file: Expected 69.");
+            StaticRefs.getErrs().handle(
+                    ProjectFileException.corrupted("PF3 expected the end of file magic number (69) but got " + s + ".")
+                            .code(354)
+            );
         }
     }
     /**
@@ -650,6 +676,29 @@ public class PF3 extends ProjectFile {
      */
     private static void msg(String message) {
         StaticRefs.getLog().println(message);
+    }
+
+    /**
+     * Checks if any of the provided {@link SceneObject}s are null. If a null object is found,
+     * it handles a {@link ProjectFileException} indicating a corrupted file.
+     * This is typically used during file reading to ensure all referenced objects exist.
+     *
+     * @param errStr A string describing the type of object being checked (e.g., "tri", "curve").
+     * @param id The ID of the main object that references the potentially null objects.
+     * @param label A string describing the type of referenced object (e.g., "point", "line").
+     * @param code The error code to associate with the {@link ProjectFileException}.
+     * @param objs A variable argument list of {@link SceneObject}s to check for null.
+     */
+    private static void ifAnyNull(String errStr, String id,  String label, int code, SceneObject...objs) {
+        for (SceneObject o : objs) {
+            if (o == null) {
+                StaticRefs.getErrs().handle(
+                        ProjectFileException.corrupted("PF3 could not find the " + label + " referenced by the current "
+                                + errStr + " (" + id + ")")
+                                .code(code)
+                );
+            }
+        }
     }
 
     /**

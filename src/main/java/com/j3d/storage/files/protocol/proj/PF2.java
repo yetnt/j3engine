@@ -122,6 +122,7 @@ public class PF2 extends ProjectFile {
                     } catch (IOException e) {
                         StaticRefs.getErrs().handle(
                                 new ProjectFileException("Error writing layer data to project file", e)
+                                        .code(201)
                         );
                     }
                 });
@@ -206,6 +207,7 @@ public class PF2 extends ProjectFile {
                         } catch (IOException e) {
                             StaticRefs.getErrs().handle(
                                     new ProjectFileException("Error writing thing data to project file", e)
+                                            .code(202)
                             );
                         }
                     });
@@ -213,6 +215,7 @@ public class PF2 extends ProjectFile {
             } catch (IOException e) {
                 StaticRefs.getErrs().handle(
                         new ProjectFileException("Error writing project file data.", e)
+                                .code(200)
                 );
             }
 
@@ -300,6 +303,7 @@ public class PF2 extends ProjectFile {
                 if (numPoints == 0 && numLines != 0)
                     StaticRefs.getErrs().handle(
                             new ProjectFileException("Invalid project file: missing points")
+                                    .code(203)
                     );
 
                 if (numLines != 0) {
@@ -317,6 +321,7 @@ public class PF2 extends ProjectFile {
                         if (startPoint == null || endPoint == null)
                             StaticRefs.getErrs().handle(
                                     new ProjectFileException("Invalid line definition: missing points")
+                                            .code(204)
                             );
 
                         GLine line = GLine.fromRaw(lineUUID, startPoint, endPoint);
@@ -350,6 +355,7 @@ public class PF2 extends ProjectFile {
                         if (legA == null || legB == null || legC == null) {
                             StaticRefs.getErrs().handle(
                                     new ProjectFileException("Invalid triangle definition: missing lines")
+                                            .code(205)
                             );
                         }
                         trisParentsMap.putValue(parentThingUUID, GTri.fromRaw(triUUID, triColor, legA, legB, legC));
@@ -363,7 +369,13 @@ public class PF2 extends ProjectFile {
                     int layerIndex = dis.readInt(); // layer index
                     msg("Reading layer " + layerIndex);
                     Layer l = layerOrder.get(layerIndex);
-                    if (l == null) throw new IOException("Invalid layer index: " + layerIndex);
+                    if (l == null) {
+                        StaticRefs.getErrs().handle(
+                                new ProjectFileException("Invalid layer index: " + layerIndex)
+                                        .code(206)
+                        );
+                        return null;
+                    }
                     int numThingsInLayer = dis.readInt();
                     msg("\t"+numThingsInLayer + " things");
                     if (numThingsInLayer == 0) continue;
@@ -406,6 +418,7 @@ public class PF2 extends ProjectFile {
             } catch (IOException e) {
                 StaticRefs.getErrs().handle(
                         new ProjectFileException("Error reading project file data.", e)
+                                .code(200)
                 );
             }
             return null;

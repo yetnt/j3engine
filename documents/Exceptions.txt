@@ -11,6 +11,7 @@ JCCXXX -> J3DErr (prefixed J cuz why not)
 	42XXX -> Engine (Math) Exceptions
 	43XXX -> Interaction Exceptins (e.g. controlling user input or command line)
 50XXX -> I/O Exceptions
+    51XXX -> ProjectFile Exceptions
 
 (XXX is domain specific)
 
@@ -24,8 +25,10 @@ JCCXXX -> J3DErr (prefixed J cuz why not)
 10222 -> #-links: Attempt to link to some arbitrary file (isn't .j3.md)
 10231 -> 
 
+
 20100 -> Generic SQL Exception
 20101 -> Given column is not apart of the table. (usually should be caught by type safety)
+
 
 43101 -> MouseOwner could not instantiate a Robot instance
 
@@ -38,3 +41,38 @@ JCCXXX -> J3DErr (prefixed J cuz why not)
 42105 -> Matrix Math: Multiplication not defined for the input matrices.
 42106 -> Input matrix does not match expected dimensions
 42107 -> Matrix Resolve: Row/Column Index out of bounds
+
+
+51000 -> Generic project File Exception
+51001 -> Attempt at loading a PF version which this version of J3Engine cant load
+        (Normally in this case it tried downgrading but it needs to downgrade
+        further which is just not worth it.)
+51010 -> Error writing project file header
+51020 -> Generic Read error with an IOException
+51021 -> Invalid Project file protocol
+51022 -> Tried reading a higher project file version than expected
+51100 -> PF1 experienced a generic Exception
+51101 -> PF1 could not write layer data to file
+51102 -> PF1 could not write thing data to file
+51103 -> invalid PF1 file : missing points
+51104 -> invalid PF1 file (line defintion) : missing points
+51105 -> invalid PF1 file (triangle defintion) : missing lines
+51106 -> invalid PF1 file : Invalid layer index
+51200 -> PF2 experienced a generic Exception
+51201 -> PF2 could not write layer data to file
+51202 -> PF2 could not write thing data to file
+51203 -> invalid PF2 file : missing points
+51204 -> invalid PF2 file (line defintion) : missing points
+51205 -> invalid PF2 file (triangle defintion) : missing lines
+51206 -> invalid PF2 file : Invalid layer index
+51300 -> PF3 experienced a generic WRITE issue
+51350 -> PF3 experieced a generic READ issue
+51351 -> PF3 expected the start of a list.
+51352 -> PF3 expected the end of a list.
+51353 -> PF3 expected the before element delimiter.
+51354 -> PF3 expected the end of file magic number (69).
+51361 -> PF3 could not find the point referenced by the current line
+51362 -> PF3 could not find the line referenced by the current triangle
+51363 -> PF3 could not find the winding point referenced by the current triangle.
+51364 -> PF3 could not find the point referenced by the curve.
+51365 -> PF3 could not find the layer referenced by the thing.
