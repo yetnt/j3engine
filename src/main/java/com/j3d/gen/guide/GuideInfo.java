@@ -34,11 +34,6 @@ public class GuideInfo extends EventEmitter implements EventListener {
     public <K> void onEvent(EventType event, EventPayload<K> properties) {
 
     }
-    /**
-     * The unique identifier for this guide step.
-     * This ID is generated randomly upon instantiation.
-
-    }
 
     /**
      * Constructs a new GuideInfo instance, setting up the event emitter it should listen to.
@@ -177,7 +172,7 @@ public class GuideInfo extends EventEmitter implements EventListener {
                                 .wrapHTML()
                 ),
                 Anchor.SOUTH | Anchor.WEST,
-                -100, 30
+                -50, 30
         );
     }
 

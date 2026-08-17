@@ -4,6 +4,7 @@ import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.SceneObject;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.Thing;
+import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.engine.scene.nodes.layer.LayerList;
 
@@ -40,6 +41,8 @@ public class Finder {
     public Finder(Supplier<LayerList> layerListSupplier) {
         this.layerListSupplier = layerListSupplier;
     }
+
+
     /**
      * Retrieves the current {@link LayerList} from the configured supplier.
      *
@@ -71,6 +74,11 @@ public class Finder {
      */
     public static <T extends SceneObject> Query<T, UUID> idQuery() {
         return (t, v) -> t.getId().equals(v);
+    }
+
+
+    public static <T extends SceneObject> Query<T, Object> allQuery() {
+        return (t, v) -> true;
     }
 
     /**

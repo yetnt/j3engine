@@ -665,7 +665,7 @@ public class Grid2DPanel extends javax.swing.JPanel {
 
         // find all stuff named render within the entire thing
         ArrayList<FindResult> result = getSceneManager()
-                .finder.find(Thing.class, Finder.nameQuery(), "render");
+                .finder().find(Thing.class, Finder.nameQuery(), "render");
 
         // create a new thing.
         Thing thing = new Thing(

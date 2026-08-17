@@ -29,25 +29,32 @@ public class WelcomeStep extends GuideInfo {
                                 .wrapUsing(adapter.readableTextStyle)
                                 .add(
                                         new JLabelRichText("J3Engine").italic()
-                                ).wrapHTML()
+                                )
+                                .bold()
+                                .underline()
+                                .wrapHTML()
                 ),
                 Anchor.CENTRE,
-                0, 220
+                0, 170
         );
 
         addCompAt(
                 adapter,
                 new JLabel(
                         new JLabelRichText("This tutorial/guide will help you with getting started with J3Engine.")
-
-                                .wrapDiv(200).font(
+                                .addLn(JLabelRichText.LINE_BREAK)
+                                .addLn(
+                                        "If you'd like to exit the tutorial, Click \"File\" in the top left-hand corner"
+                                        + " and click \"Close Project\""
+                                )
+                                .wrapDiv(400).font(
                                         J3DTheme.TEXT_PRIMARY.color(),
                                         "5"
                                 )
                                 .wrapHTML()
                 ),
                 Anchor.CENTRE,
-                0, 120
+                0, 30
         );
 
         genericText(adapter, "(Double click to continue)");

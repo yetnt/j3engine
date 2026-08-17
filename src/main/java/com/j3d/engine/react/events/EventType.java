@@ -1,7 +1,9 @@
 package com.j3d.engine.react.events;
 
-import com.j3d.engine.interact.cmd.Commands;
 import com.j3d.engine.interact.cmd.base.Command;
+import com.j3d.engine.interact.cmd.base.StatefulCommand;
+import com.j3d.engine.interact.cmd.payloads.CommandFiredPayload;
+import com.j3d.engine.interact.cmd.payloads.StatefulCommandCompletedPayload;
 import com.j3d.engine.interact.input.MouseClickPayload;
 import com.j3d.engine.interact.input.SnapPayload;
 import com.j3d.engine.interact.input.mouse.AlwaysMouseOwner;
@@ -51,9 +53,15 @@ public enum EventType {
     GPOINT_RECALC_PIVOT,
     /**
      * A command was fired. This event doesn't guarantee the command ran successfully. Broadcast
-     * by {@link Command} with a payload class of {@link Commands.CommandFiredPayload}
+     * by {@link Command} with a payload class of {@link CommandFiredPayload}
      */
     COMMAND_FIRED,
+    /**
+     * Specifically na extender of {@link StatefulCommand} has released its statefulness either by
+     * the user confirming the action or cancelling. Broadcast by {@link StatefulCommand}
+     * with a payload class of {@link StatefulCommandCompletedPayload}
+     */
+    STATEFUL_COMMAND_COMPLETED,
     /**
      * A guide step is closing. Broadcast by {@link GuideInfo} with a payload class of
      * {@link GuideInfoClosingEvent}

@@ -44,7 +44,9 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
      * @param object The object that the command operates on.
      * @param label The SafeJLabel instance.
      */
-    void onEnter(ActionEvent e, T object, SafeJLabel label);
+    default void onEnter(ActionEvent e, T object, SafeJLabel label) {
+        CommandsManager.commands.statefulCompleted(this, true);
+    }
 
     /**
      * Called when the 'Escape' key is pressed.
@@ -52,9 +54,11 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
      * @param object The object that the command operates on.
      * @param label The SafeJLabel instance.
      */
-    void onEsc(ActionEvent e, T object, SafeJLabel label);
+    default void onEsc(ActionEvent e, T object, SafeJLabel label) {
+        CommandsManager.commands.statefulCompleted(this, false);
+    }
 
-    default void run(StatefulCommand t, String name, T object, SafeJLabel label) {
+    default void run(StatefulCommand<?> t, String name, T object, SafeJLabel label) {
         run(t, name, object, label, null);
     }
 
@@ -64,7 +68,7 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
      * @param name The name of the command.
      * @param object The object that the command should operates on.
      */
-    default void run(StatefulCommand t, String name, T object, SafeJLabel label, String s) {
+    default void run(StatefulCommand<?> t, String name, T object, SafeJLabel label, String s) {
         if (!CommandsManager.isCurrentStatefulRunning(t)) return;
 
         // if theres a selection, clear it.

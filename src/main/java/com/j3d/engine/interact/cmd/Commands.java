@@ -3,6 +3,7 @@ package com.j3d.engine.interact.cmd;
 import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.Command;
+import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.commands.*;
 import com.j3d.engine.interact.cmd.commands.camera.CameraCmd;
 import com.j3d.engine.interact.cmd.commands.clipboard.*;
@@ -14,8 +15,9 @@ import com.j3d.engine.interact.cmd.commands.measure.MeasureCmd;
 import com.j3d.engine.interact.cmd.commands.transform.qtrans.QuickTranslateCmd;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 import com.j3d.engine.interact.cmd.commands.uicmd.UICmd;
+import com.j3d.engine.interact.cmd.payloads.CommandFiredPayload;
+import com.j3d.engine.interact.cmd.payloads.StatefulCommandCompletedPayload;
 import com.j3d.engine.react.events.EventEmitter;
-import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 
 import java.util.ArrayList;
@@ -90,40 +92,14 @@ public class Commands extends EventEmitter {
         );
     }
 
-    public static class CommandFiredPayload extends EventPayload<Commands> {
-        private final Command command;
-        private final Invoker invoker;
-        private final String aliasUsed;
-        private final Object[] argsCopy;
-        private final ArrayList<TaggedArgValue<?>> taggedArgsCopy;
-
-        public CommandFiredPayload(Command cmd, Invoker i, String alias, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
-            super(CommandsManager.commands);
-            command = cmd;
-            invoker = i;
-            aliasUsed = alias;
-            argsCopy = args.clone();
-            taggedArgsCopy = (ArrayList<TaggedArgValue<?>>) taggedArgs.clone();
-        }
-
-        public Command getCommand() {
-            return command;
-        }
-
-        public Invoker getInvoker() {
-            return invoker;
-        }
-
-        public ArrayList<TaggedArgValue<?>> getTaggedArgsCopy() {
-            return taggedArgsCopy;
-        }
-
-        public Object[] getArgsCopy() {
-            return argsCopy;
-        }
-
-        public String getAliasUsed() {
-            return aliasUsed;
-        }
+    public void statefulCompleted(
+            StatefulCommand<?> statefulCommand,
+            boolean userHitEnter
+    ) {
+        broadcast(
+                EventType.STATEFUL_COMMAND_COMPLETED,
+                new StatefulCommandCompletedPayload(statefulCommand, userHitEnter)
+        );
     }
+
 }

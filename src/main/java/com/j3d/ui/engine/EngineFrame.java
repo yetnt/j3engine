@@ -676,10 +676,11 @@ public class EngineFrame extends javax.swing.JFrame {
         pasteMenuItem = new javax.swing.JMenuItem();
         undoJMenuItem = new javax.swing.JMenuItem();
         redoJMenuItem = new javax.swing.JMenuItem();
-        mouseJMenu = new javax.swing.JMenu();
+        sceneJMenu = new javax.swing.JMenu();
         viewJMenu = new javax.swing.JMenu();
-        viewAsNormalJMenuItem = new javax.swing.JMenuItem();
+        toggleViewJMenuItem = new javax.swing.JMenuItem();
         viewAsWireframeJMenuItem = new javax.swing.JMenuItem();
+        viewAsNormalJMenuItem = new javax.swing.JMenuItem();
         redrawJMenuItem = new javax.swing.JMenuItem();
         resetJMenuItemDropDown = new javax.swing.JMenu();
         resetCameraJMenuItem = new javax.swing.JMenuItem();
@@ -802,18 +803,18 @@ public class EngineFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(editJMenu);
 
-        mouseJMenu.setText("Mouse");
-        jMenuBar1.add(mouseJMenu);
+        sceneJMenu.setText("Scene");
 
         viewJMenu.setText("View");
 
-        viewAsNormalJMenuItem.setText("Normal View");
-        viewAsNormalJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        toggleViewJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        toggleViewJMenuItem.setText("Toggle View");
+        toggleViewJMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewAsNormalJMenuItemActionPerformed(evt);
+                toggleViewJMenuItemActionPerformed(evt);
             }
         });
-        viewJMenu.add(viewAsNormalJMenuItem);
+        viewJMenu.add(toggleViewJMenuItem);
 
         viewAsWireframeJMenuItem.setText("Wireframe View");
         viewAsWireframeJMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -823,6 +824,16 @@ public class EngineFrame extends javax.swing.JFrame {
         });
         viewJMenu.add(viewAsWireframeJMenuItem);
 
+        viewAsNormalJMenuItem.setText("Normal View");
+        viewAsNormalJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewAsNormalJMenuItemActionPerformed(evt);
+            }
+        });
+        viewJMenu.add(viewAsNormalJMenuItem);
+
+        sceneJMenu.add(viewJMenu);
+
         redrawJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
         redrawJMenuItem.setText("Redraw");
         redrawJMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -830,7 +841,7 @@ public class EngineFrame extends javax.swing.JFrame {
                 redrawJMenuItemActionPerformed(evt);
             }
         });
-        viewJMenu.add(redrawJMenuItem);
+        sceneJMenu.add(redrawJMenuItem);
 
         resetJMenuItemDropDown.setText("Reset");
 
@@ -861,7 +872,7 @@ public class EngineFrame extends javax.swing.JFrame {
         });
         resetJMenuItemDropDown.add(resetPositionJMenuItem);
 
-        viewJMenu.add(resetJMenuItemDropDown);
+        sceneJMenu.add(resetJMenuItemDropDown);
 
         exportJMenuItemDropDown.setText("Export As...");
 
@@ -874,9 +885,9 @@ public class EngineFrame extends javax.swing.JFrame {
         });
         exportJMenuItemDropDown.add(exportAsPNGJMenuItem);
 
-        viewJMenu.add(exportJMenuItemDropDown);
+        sceneJMenu.add(exportJMenuItemDropDown);
 
-        jMenuBar1.add(viewJMenu);
+        jMenuBar1.add(sceneJMenu);
 
         jMenu2.setText("User");
 
@@ -902,30 +913,30 @@ public class EngineFrame extends javax.swing.JFrame {
     private void resetPositionJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetPositionJMenuItemActionPerformed
         if (commandPaletteFocusOwner()) return;
         StaticRefs.getCamera().setPosition(new Vector3(0, 0, 0));
-        this.repaint();
+        mainPanel.repaint();
     }//GEN-LAST:event_resetPositionJMenuItemActionPerformed
 
     private void undoJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoJMenuItemActionPerformed
         SceneManager.history.undo();
-        this.repaint();
+        mainPanel.repaint();
     }//GEN-LAST:event_undoJMenuItemActionPerformed
 
     private void redoJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoJMenuItemActionPerformed
         SceneManager.history.redo();
-        this.repaint();
+        mainPanel.repaint();
     }//GEN-LAST:event_redoJMenuItemActionPerformed
 
     private void resetOrientationJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetOrientationJMenuItemActionPerformed
         if (commandPaletteFocusOwner()) return;
         StaticRefs.getCamera().setRotation(new Rotation(0, 0, 0));
-        this.repaint();
+        mainPanel.repaint();
     }//GEN-LAST:event_resetOrientationJMenuItemActionPerformed
 
     private void resetCameraJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetCameraJMenuItemActionPerformed
         if (commandPaletteFocusOwner()) return;
         StaticRefs.getCamera().setPosition(new Vector3(0, 0, 0));
         StaticRefs.getCamera().setRotation(new Rotation(0, 0, 0));
-        this.repaint();
+        mainPanel.repaint();
     }//GEN-LAST:event_resetCameraJMenuItemActionPerformed
 
     private void redrawJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redrawJMenuItemActionPerformed
@@ -934,12 +945,12 @@ public class EngineFrame extends javax.swing.JFrame {
 
     private void viewAsWireframeJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewAsWireframeJMenuItemActionPerformed
         StaticConfig.setViewType(ViewType.WIREFRAME);
-        this.repaint();
+        mainPanel.repaint();
     }//GEN-LAST:event_viewAsWireframeJMenuItemActionPerformed
 
     private void viewAsNormalJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewAsNormalJMenuItemActionPerformed
         StaticConfig.setViewType(ViewType.NORMAL);
-        this.repaint();
+        mainPanel.repaint();
     }//GEN-LAST:event_viewAsNormalJMenuItemActionPerformed
 
     private void openProjectMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openProjectMenuItemActionPerformed
@@ -1118,6 +1129,12 @@ public class EngineFrame extends javax.swing.JFrame {
                 );
     }//GEN-LAST:event_copyMenuItemActionPerformed
 
+    private void toggleViewJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleViewJMenuItemActionPerformed
+        ViewType type = StaticConfig.getViewType();
+        StaticConfig.setViewType(type == ViewType.NORMAL ? ViewType.WIREFRAME : ViewType.NORMAL);
+        mainPanel.repaint();
+    }//GEN-LAST:event_toggleViewJMenuItemActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1175,7 +1192,6 @@ public class EngineFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem logOutJMenuItem;
     public static javax.swing.JPanel mainPanel;
-    private javax.swing.JMenu mouseJMenu;
     private javax.swing.JMenuItem newProjectJMenuItem;
     private javax.swing.JMenuItem openProjectMenuItem;
     private javax.swing.JMenuItem pasteMenuItem;
@@ -1186,7 +1202,9 @@ public class EngineFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem resetOrientationJMenuItem;
     private javax.swing.JMenuItem resetPositionJMenuItem;
     private javax.swing.JMenuItem saveProjectJMenuItem;
+    private javax.swing.JMenu sceneJMenu;
     private javax.swing.JMenuItem settingsMenuItem;
+    private javax.swing.JMenuItem toggleViewJMenuItem;
     private javax.swing.JMenuItem undoJMenuItem;
     private javax.swing.JMenuItem viewAsNormalJMenuItem;
     private javax.swing.JMenuItem viewAsWireframeJMenuItem;

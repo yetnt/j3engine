@@ -26,27 +26,7 @@ public class SceneExplStep extends GuideInfo {
 
     @Override
     public void build(GuidePanelAdapter adapter) {
-        // put a cube for the user to interact with.
-        StaticRefs.getCommandParser().run(
-                CommandsManager.commands.createCmd,
-                new ArrayList<>(List.of("cube")),
-                new ArrayList<>()
-        );
         guideCounter(adapter);
-
-        addCompAt(
-                adapter,
-                new JLabel(
-                        new JLabelRichText("(I've gone ahead and created a cube for you)")
-                                .font(
-                                        J3DTheme.TEXT_PRIMARY.color(),
-                                        "4"
-                                )
-                                .wrapHTML()
-                ),
-                Anchor.CENTRE,
-                0, 200
-        );
 
         genericText(adapter, "(Change your movement speed to progress to the next step)");
 

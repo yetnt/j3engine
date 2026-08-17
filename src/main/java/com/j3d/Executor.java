@@ -97,7 +97,7 @@ public class Executor {
         Vector3 v = new Vector3(0, 10, -1).rotateAroundAxis(
                 Vector3.X, 90
         );
-        ArrayList<FindResult> findResult = StaticRefs.getSceneManager().finder.find(
+        ArrayList<FindResult> findResult = StaticRefs.getSceneManager().finder().find(
                 GTri.class,
                 (tri, v2) -> {
                     double l = tri.getPivot().distance(v2);

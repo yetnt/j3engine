@@ -42,7 +42,7 @@ public class SceneManager {
     public ArrayDeque<GPoint> points = new ArrayDeque<>();
     private HashSet<HasParents<? extends GObject>> unparented = new HashSet<>();
     private ArrayList<GObject> clipboard = new ArrayList<>();
-    public final Finder finder = new Finder(() -> layers);
+    private final Finder finder = new Finder(() -> layers);
     public Finder finder() {
         return finder;
     }

@@ -373,6 +373,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
      */
     @Override
     public void onEnter(ActionEvent e, Void object, SafeJLabel label) {
+        KeyedStatefulCommand.super.onEnter(e, object, label);
         EngineFrame.setMouseOwner(null);
         toggleSaved();
         ArrayList<Vector3> newPositions = references.stream().map(GObject::getPivot).collect(Collectors.toCollection(ArrayList::new));
@@ -412,6 +413,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
      */
     @Override
     public void onEsc(ActionEvent e, Void object, SafeJLabel label) {
+        KeyedStatefulCommand.super.onEsc(e, object, label);
         EngineFrame.setMouseOwner(null);
         for (GPoint p : references) p.setPivot(originalPointPos.get(references.indexOf(p)));
         finished(label);

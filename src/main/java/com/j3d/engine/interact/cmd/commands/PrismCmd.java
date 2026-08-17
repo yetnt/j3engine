@@ -273,6 +273,7 @@ public class PrismCmd extends Command implements KeyedStatefulCommand {
 
     @Override
     public void onEnter(ActionEvent e, Void object, SafeJLabel label) {
+        KeyedStatefulCommand.super.onEnter(e, object, label);
         String name = JOptionPane.showInputDialog(
                 "What must this be named gng?"
         );
@@ -294,6 +295,7 @@ public class PrismCmd extends Command implements KeyedStatefulCommand {
 
     @Override
     public void onEsc(ActionEvent e, Void object, SafeJLabel label) {
+        KeyedStatefulCommand.super.onEsc(e, object, label);
         finish(label);
     }
 
