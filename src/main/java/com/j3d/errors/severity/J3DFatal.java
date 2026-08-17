@@ -7,9 +7,9 @@ package com.j3d.errors.severity;
  * its operation safely or correctly.
  * </p>
  * @author Lehlogonolo Poole
- * @see J3Err
+ * @see J3ErrSeverity
  */
-public interface J3DFatal extends J3Err{
+public interface J3DFatal extends J3ErrSeverity {
     @Override
     default String logHead() {
         return "[FATAL]";

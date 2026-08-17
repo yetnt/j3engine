@@ -4,11 +4,24 @@ import com.j3d.StaticRefs;
 import com.j3d.errors.severity.J3DFatal;
 import com.j3d.errors.severity.J3DMild;
 import com.j3d.errors.severity.J3DWarning;
-import com.j3d.errors.severity.J3Err;
+import com.j3d.errors.severity.J3ErrSeverity;
 
 import javax.swing.*;
 import java.util.ArrayList;
 
+/**
+ *  Centralized error handling mechanism for J3Engine.
+ * <p>
+ *     This class provides methods to handle various types of {@link J3DError}s,
+ *     categorising them by their severity (mild, warning, fatal) and performing
+ *     appropriate actions such as logging, displaying user messages, or
+ *     terminating the application. It also supports temporarily ignoring
+ *     specific error types.
+ * </p>
+ * @see J3DError
+ * @see J3ErrSeverity
+ * @author Lehlogonolo Poole
+ */
 public class ErrorHandler {
     private final ArrayList<Class<?>> ignored = new ArrayList<>();
 
@@ -17,8 +30,7 @@ public class ErrorHandler {
      * When an error of the registered class type is encountered by the {@link #handle(J3DError)} method,
      * it will be consumed (removed from the ignore list) and no further action will be taken.
      * This effectively makes the next occurrence of that specific error type to be silently handled.
-     * <p>
-     * A maximum of 10 error classes can be registered for ignoring at any given time.
+     * @implSpec A maximum of 10 error classes can be registered for ignoring at any given time.
      * Attempting to register more will result in a {@link RuntimeException}.
      *
      * @param <T> The type of {@link J3DError} to ignore.
@@ -41,31 +53,24 @@ public class ErrorHandler {
 
     /**
      * Handles a given {@link J3DError}, processing it based on its type and severity.
-     * This method first checks if the error is an instance of {@link J3Err} (which provides logging information).
-     * If it is not, the method returns immediately without processing.
      * <p>
-     * If the error is an instance of {@link J3Err}, it then checks if the error's exact class
-     * is registered in the internal ignore list.
-     * If ignored, the error is consumed (removed from the ignore list, implying a one-time ignore)
-     * and no further action is taken.
+     * If the error is registered to be ignored, that is handled
      * <p>
      * Otherwise, the error is processed based on its specific type:
      * <ul>
      *     <li>{@link J3DMild}: The error is printed to the application's log.</li>
      *     <li>{@link J3DWarning}: The error is printed to the application's log, and a warning message
-     *         dialog is displayed to the user.</li>
+     *         dialogue is displayed to the user.</li>
      *     <li>{@link J3DFatal}: The error is printed to the application's log, and a fatal error message
-     *         dialog is displayed to the user. If the fatal error's {@code terminate()} method returns true,
+     *         dialogue is displayed to the user. If the fatal error's {@code terminate()} method returns true,
      *         an additional message is shown, and the application is terminated via {@code System.exit(1)}.</li>
-     *     <li>Any other {@link J3DError} type (that is also an instance of {@link J3Err}):
+     *     <li>Any other {@link J3DError} type (that is also an instance of {@link J3ErrSeverity}):
      *         The error is simply printed to the application's log.</li>
      * </ul>
      *
      * @param err The {@link J3DError} instance to be handled.
      */
     public void handle(J3DError err) {
-        if (!(err instanceof J3Err j3err)) return;
-        String logHead = " " + j3err.logHead() + " ";
 //        String msg = logHead+ err.getMessage() + " - " +  ( err.cause != null ? err.cause.getMessage() : "");
 
         if (ignored.contains(err.getClass())) {
@@ -112,6 +117,11 @@ public class ErrorHandler {
      * Handles a given {@link J3DError} using the {@link #handle(J3DError)} method
      * and then re-throws it.
      *
+     * @implNote This might seem a bit counterintuitive, however it's useful in the case where
+     * we still need to tell the user that an error happened but say for resolving a warning
+     * that occurred something up the call stack needs to catch said error hence it needs to be
+     * thrown. Obviously this won't apply to {@link J3DFatal} errors which will call
+     * {@link System#exit(int)}
      * @implSpec Only use if its confirmed something up the stack will definitely catch this error.
      *
      * @param err The {@link J3DError} instance to be handled and thrown.

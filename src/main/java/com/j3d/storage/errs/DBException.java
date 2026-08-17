@@ -1,7 +1,7 @@
 package com.j3d.storage.errs;
 
 
-import com.j3d.errors.ErrorCodes;
+import com.j3d.errors.BaseErrorCodes;
 import com.j3d.errors.J3DError;
 import com.j3d.errors.severity.J3DFatal;
 import com.j3d.errors.severity.J3DWarning;
@@ -17,19 +17,19 @@ import com.j3d.storage.db.DatabaseManager;
  */
 public class DBException extends J3DError implements J3DWarning {
     public DBException(String message, ConnectionReason connectionReason) {
-        super(message + " {" + connectionReason.toString() + "}", ErrorCodes.DATABASE.getBaseCode());
+        super(message + " {" + connectionReason.toString() + "}", BaseErrorCodes.DATABASE.getBaseCode());
     }
 
     public DBException(String message, ConnectionReason connectionReason, Throwable cause) {
-        super(message + " {" + connectionReason.toString() + "}", cause, ErrorCodes.DATABASE.getBaseCode());
+        super(message + " {" + connectionReason.toString() + "}", cause, BaseErrorCodes.DATABASE.getBaseCode());
     }
 
 
     public DBException(String message) {
-        super(message, ErrorCodes.DATABASE.getBaseCode());
+        super(message, BaseErrorCodes.DATABASE.getBaseCode());
     }
     public DBException(String message, Throwable throwable) {
-        super(message, throwable, ErrorCodes.DATABASE.getBaseCode());
+        super(message, throwable, BaseErrorCodes.DATABASE.getBaseCode());
     }
 
     public static J3DError sqlException(Throwable throwable, ConnectionReason cr) {

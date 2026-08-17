@@ -1,12 +1,12 @@
 package com.j3d.engine;
 
-import com.j3d.errors.ErrorCodes;
+import com.j3d.errors.BaseErrorCodes;
 import com.j3d.errors.J3DError;
 
 public class EngineException extends J3DError {
 
     public EngineException(String message) {
-        super(message, ErrorCodes.ENGINE_CORE.getBaseCode());
+        super(message, BaseErrorCodes.ENGINE_CORE.getBaseCode());
     }
 
     public EngineException(String message, int baseCode) {

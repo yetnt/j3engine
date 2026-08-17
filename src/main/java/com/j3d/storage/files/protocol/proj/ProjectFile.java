@@ -27,7 +27,7 @@ import java.util.function.Supplier;
  * It defines the common interface and properties for reading and writing
  * project files (typically .j3p files) of different versions.
  * <p>
- * Concrete implementations, such as {@link PF1} and {@link PF2},
+ * Concrete implementations, such as {@link PF1}, {@link PF2} or {@link PF3},
  * handle the specific serialization and deserialization logic for their respective
  * file formats.
  * </p>
@@ -35,6 +35,9 @@ import java.util.function.Supplier;
  * This class also provides utility methods for retrieving specific protocol
  * versions based on an integer identifier.
  * </p>
+ * @see PF1
+ * @see PF2
+ * @see PF3
  * @author Lehlogonolo Poole
  */
 public class ProjectFile extends GenericFileProtocol implements FileProtocol {

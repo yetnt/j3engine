@@ -1,6 +1,6 @@
 package com.j3d.storage.errs;
 
-import com.j3d.errors.ErrorCodes;
+import com.j3d.errors.BaseErrorCodes;
 import com.j3d.storage.files.protocol.proj.PF1;
 
 /**
@@ -12,11 +12,11 @@ import com.j3d.storage.files.protocol.proj.PF1;
 public class ProjectFileException extends J3DFileException {
 
     public ProjectFileException(String message) {
-        super(message, ErrorCodes.IO_PROJECT.getBaseCode());
+        super(message, BaseErrorCodes.IO_PROJECT.getBaseCode());
     }
 
     public ProjectFileException(String message, Throwable cause) {
-        super(message, cause, ErrorCodes.IO_PROJECT.getBaseCode());
+        super(message, cause, BaseErrorCodes.IO_PROJECT.getBaseCode());
     }
 
     public static ProjectFileException corrupted(String message) {

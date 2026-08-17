@@ -8,9 +8,9 @@ package com.j3d.errors.severity;
  * </p>
  * @implSpec These types of errors aren't told to the user.
  * @author Lehlogonolo Poole
- * @see J3Err
+ * @see J3ErrSeverity
  */
-public interface J3DMild extends J3Err {
+public interface J3DMild extends J3ErrSeverity {
     @Override
     default String logHead() {
         return "[MILD]";
