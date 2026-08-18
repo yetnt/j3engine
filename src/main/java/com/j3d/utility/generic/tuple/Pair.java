@@ -1,4 +1,4 @@
-package com.j3d.utility.generic;
+package com.j3d.utility.generic.tuple;
 
 import java.util.Objects;
 
@@ -7,6 +7,8 @@ import java.util.Objects;
  *
  * @param <T> The type of the first object.
  * @param <U> The type of the second object.
+ *
+ * @author Lehlogonolo Poole
  */
 public class Pair<T, U> {
     /** The first object in the pair. */

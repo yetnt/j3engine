@@ -20,7 +20,7 @@ import com.j3d.gen.grid.Line;
 import com.j3d.gen.grid.Point;
 import com.j3d.ui.engine.FloatingPanel;
 import com.j3d.ui.theme.J3DTheme;
-import com.j3d.utility.generic.SamePair;
+import com.j3d.utility.generic.tuple.SamePair;
 
 import javax.swing.*;
 import java.awt.*;

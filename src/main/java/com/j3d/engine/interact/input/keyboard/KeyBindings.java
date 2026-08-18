@@ -4,7 +4,7 @@ import com.j3d.StaticRefs;
 import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.interact.selection.SelectionUtils;
 import com.j3d.ui.engine.EngineFrame;
-import com.j3d.utility.generic.Pair;
+import com.j3d.utility.generic.tuple.Pair;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

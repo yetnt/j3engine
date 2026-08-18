@@ -18,7 +18,7 @@ import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.utility.generators.JLabelRichText;
-import com.j3d.utility.generic.SamePair;
+import com.j3d.utility.generic.tuple.SamePair;
 
 import javax.swing.*;
 import java.awt.*;

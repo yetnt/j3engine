@@ -1,7 +1,7 @@
 package com.j3d.gen.docs;
 
 import com.j3d.StaticRefs;
-import com.j3d.utility.generic.Pair;
+import com.j3d.utility.generic.tuple.Pair;
 
 import java.io.File;
 import java.util.LinkedHashMap;

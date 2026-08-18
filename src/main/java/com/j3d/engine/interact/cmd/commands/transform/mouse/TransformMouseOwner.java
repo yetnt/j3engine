@@ -10,7 +10,7 @@ import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.engine.interact.input.mouse.MouseOwner;
 import com.j3d.engine.interact.input.mouse.SnapMouseOwner;
 import com.j3d.engine.react.events.EventType;
-import com.j3d.utility.generic.Pair;
+import com.j3d.utility.generic.tuple.Pair;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

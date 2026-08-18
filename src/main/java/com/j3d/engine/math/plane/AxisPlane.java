@@ -2,7 +2,7 @@ package com.j3d.engine.math.plane;
 
 import com.j3d.engine.math.CartesianPoint;
 import com.j3d.engine.math.matrix.Vector3;
-import com.j3d.utility.generic.SamePair;
+import com.j3d.utility.generic.tuple.SamePair;
 
 import java.util.Objects;
 

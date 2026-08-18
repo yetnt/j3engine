@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
  * @see CommandPalette
  */
 public class SafeJLabel {
-    private JLabel label;
-    private JLabel label2;
+    private final JLabel label;
+    private final JLabel label2;
     private TimeoutWorker higher;
     private TimeoutWorker lower;
 

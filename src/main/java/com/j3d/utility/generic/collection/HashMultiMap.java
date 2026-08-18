@@ -1,13 +1,14 @@
-package com.j3d.utility.generic;
+package com.j3d.utility.generic.collection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * A lightweight multimap backed by a HashMap from keys to ArrayList of values.
- * This class provides convenience methods to add values to a key's list and to
- * retrieve the list of values for a key. It intentionally extends HashMap<K, ArrayList<T>>
- * so all standard Map operations are available.
+ * A HashMap who maps 1 key to multiple values.
+ * <p>
+ *     This class provides methods like {@link #putValue(Object, Object)} to add a single value to the collection of values
+ *     associated with a key, and {@link #getValues(Object)} to retrieve all values for a given key.
+ * </p>
  *
  * @param <K> the type of keys maintained by this multimap
  * @param <T> the type stored in the list

@@ -7,7 +7,7 @@ import com.j3d.engine.scene.nodes.geometry.*;
 import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.ui.engine.floating.properties.PropertyEntry;
 import com.j3d.ui.engine.floating.properties.panels.*;
-import com.j3d.utility.generic.HashMultiMap;
+import com.j3d.utility.generic.collection.HashMultiMap;
 
 import javax.swing.*;
 import java.awt.*;

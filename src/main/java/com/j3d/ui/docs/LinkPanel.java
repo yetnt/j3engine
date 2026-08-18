@@ -11,7 +11,7 @@ import com.j3d.gen.docs.reader.tokens.TLink;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.utility.Parsing;
 import com.j3d.utility.generators.JLabelRichText;
-import com.j3d.utility.generic.Pair;
+import com.j3d.utility.generic.tuple.Pair;
 
 import java.awt.*;
 import java.io.File;

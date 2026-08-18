@@ -1,14 +1,13 @@
 package com.j3d.storage.db.users;
 
 import com.j3d.StaticRefs;
-import com.j3d.errors.ErrorHandler;
 import com.j3d.storage.db.ConnectionReason;
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.api.SQLOperator;
 import com.j3d.storage.db.api.Table;
 import com.j3d.storage.db.api.TableColumns;
 import com.j3d.storage.errs.DBException;
-import com.j3d.utility.generic.Pair;
+import com.j3d.utility.generic.tuple.Pair;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -3,6 +3,13 @@ package com.j3d.utility.buckets;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+/**
+ * Utility class for dividing an {@code ArrayList} into multiple sub-lists,
+ * referred to as "buckets," based on various criteria.
+ * @implSpec The order of elements within each bucket is preserved from the original list.
+ * @see Bucket
+ * @author Lehlogonolo Poole
+ */
 public abstract class Buckets {
     /**
      * Divides an {@code ArrayList} into multiple buckets based on the provided classes.

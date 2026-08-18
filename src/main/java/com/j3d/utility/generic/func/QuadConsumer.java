@@ -1,12 +1,11 @@
 package com.j3d.utility.generic.func;
 
 import java.util.function.Consumer;
+import java.util.Objects;
 
 /**
  * Represents an operation that accepts four input arguments and returns no result.
  * This is a four-arity specialization of {@link java.util.function.Consumer}.
- * Unlike most other functional interfaces, {@code QuadConsumer} is expected to
- * operate via side effects.
  *
  * @param <T> the type of the first argument to the operation
  * @param <U> the type of the second argument to the operation
@@ -26,4 +25,21 @@ public interface QuadConsumer<T, U, V, W> {
      * @param w the fourth input argument
      */
     void accept(T t, U u, V v, W w);
+
+    /**
+     * Returns a composed {@code QuadConsumer} that performs, in sequence, this
+     * operation followed by the {@code after} operation.
+     *
+     * @param after the operation to perform after this operation
+     * @return a composed {@code QuadConsumer} that performs in sequence this
+     *         operation followed by the {@code after} operation
+     * @throws NullPointerException if {@code after} is null
+     */
+    default QuadConsumer<T, U, V, W> andThen(QuadConsumer<? super T, ? super U, ? super V, ? super W> after) {
+        Objects.requireNonNull(after);
+        return (t, u, v, w) -> {
+            this.accept(t, u, v, w);
+            after.accept(t, u, v, w);
+        };
+    }
 }

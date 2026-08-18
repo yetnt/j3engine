@@ -5,7 +5,7 @@ import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.utility.Parsing;
-import com.j3d.utility.generic.SamePair;
+import com.j3d.utility.generic.tuple.SamePair;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -2,8 +2,8 @@ package com.j3d.utility;
 
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.args.TaggedArgUtil;
-import com.j3d.utility.generic.Pair;
-import com.j3d.utility.generic.SamePair;
+import com.j3d.utility.generic.tuple.Pair;
+import com.j3d.utility.generic.tuple.SamePair;
 
 import java.util.ArrayList;
 

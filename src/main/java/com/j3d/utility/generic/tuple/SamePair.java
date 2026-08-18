@@ -1,9 +1,11 @@
-package com.j3d.utility.generic;
+package com.j3d.utility.generic.tuple;
 
 /**
  * A specialized {@link Pair} where both elements are of the same type.
  *
  * @param <T> The type of both elements in the pair.
+ *
+ * @author Lehlogonolo Poole
  */
 public class SamePair<T> extends Pair<T, T> {
     /**

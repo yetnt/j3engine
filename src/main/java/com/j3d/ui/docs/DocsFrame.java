@@ -15,7 +15,7 @@ import com.j3d.ui.theme.J3DScrollBarUI;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.ui.theme.J3DTreeCellRenderer;
 import com.j3d.utility.generators.JLabelRichText;
-import com.j3d.utility.generic.Pair;
+import com.j3d.utility.generic.tuple.Pair;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -31,8 +31,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
-
-import static com.j3d.StaticRefs.getEngineFiles;
 
 /**
  *

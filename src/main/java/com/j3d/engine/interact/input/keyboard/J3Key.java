@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.input.keyboard;
 
-import com.j3d.utility.generic.Pair;
+import com.j3d.utility.generic.tuple.Pair;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

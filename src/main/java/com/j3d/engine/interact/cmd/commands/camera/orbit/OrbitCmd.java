@@ -18,7 +18,7 @@ import com.j3d.ui.theme.CursorNames;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.utility.generators.JLabelRichText;
-import com.j3d.utility.generic.Pair;
+import com.j3d.utility.generic.tuple.Pair;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;

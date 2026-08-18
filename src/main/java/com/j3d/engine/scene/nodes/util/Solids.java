@@ -10,7 +10,7 @@ import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.scene.nodes.layer.Layer;
-import com.j3d.utility.generic.SamePair;
+import com.j3d.utility.generic.tuple.SamePair;
 
 import java.awt.*;
 import java.util.ArrayList;

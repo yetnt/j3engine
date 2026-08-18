@@ -11,7 +11,7 @@ import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.react.events.IdempotentEventListener;
 import com.j3d.gen.properties.Property;
-import com.j3d.utility.generic.SamePair;
+import com.j3d.utility.generic.tuple.SamePair;
 
 import java.awt.*;
 import java.util.ArrayList;

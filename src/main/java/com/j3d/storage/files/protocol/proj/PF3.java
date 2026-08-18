@@ -14,8 +14,8 @@ import com.j3d.storage.files.FilesUtility;
 import com.j3d.storage.files.IOSupplier;
 import com.j3d.storage.files.protocol.UnsupportedVersionException;
 import com.j3d.ui.dialog.Spinner;
-import com.j3d.utility.generic.HashMultiMap;
-import com.j3d.utility.generic.Pair;
+import com.j3d.utility.generic.collection.HashMultiMap;
+import com.j3d.utility.generic.tuple.Pair;
 
 import java.awt.*;
 import java.io.DataInputStream;

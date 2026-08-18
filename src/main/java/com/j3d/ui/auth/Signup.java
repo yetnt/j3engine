@@ -16,7 +16,7 @@ import com.j3d.storage.db.users.UsersTable;
 import com.j3d.ui.theme.CursorManager;
 import com.j3d.ui.theme.CursorNames;
 import com.j3d.ui.theme.J3DTheme;
-import com.j3d.utility.generic.Pair;
+import com.j3d.utility.generic.tuple.Pair;
 import com.j3d.utility.PasswordHasher;
 
 import javax.swing.*;

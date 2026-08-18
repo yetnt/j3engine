@@ -1,11 +1,8 @@
 package com.j3d.gen.grid;
 
-import com.j3d.engine.geometry.Drawable;
 import com.j3d.engine.math.ConversionProperties;
-import com.j3d.engine.math.Dim;
 import com.j3d.engine.math.plane.AxisPlane;
 import com.j3d.engine.scene.nodes.geometry.GObject;
-import com.j3d.utility.generic.Pair;
 
 import java.awt.*;
 import java.util.ArrayList;

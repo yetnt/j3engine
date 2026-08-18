@@ -1,4 +1,4 @@
-package com.j3d.utility.generic;
+package com.j3d.utility.generic.collection;
 
 import java.util.ArrayDeque;
 import java.util.Collection;
@@ -6,12 +6,10 @@ import java.util.Deque;
 import java.util.Set;
 
 /**
- * A hybrid data structure that combines the behaviour of a {@link Set} and a {@link Deque}.
+ * Structure with the behaviour of a {@link Set} and a {@link Deque}.
  * <p>
  * This class extends {@link ArrayDeque} to provide a double-ended queue, but overrides
  * its insertion methods to enforce uniqueness of elements, similar to a {@link Set}.
- * This is useful for scenarios where you need both ordered, queue-like access (LIFO/FIFO)
- * and the guarantee that no duplicate elements exist in the collection.
  *
  * @param <T> the type of elements held in this collection
  * @author Lehlogonolo Poole
