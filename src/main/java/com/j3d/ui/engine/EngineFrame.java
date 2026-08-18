@@ -37,6 +37,7 @@ import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.threads.LongTask;
 import com.j3d.ui.engine.floating.DebugPanel;
 import com.j3d.ui.engine.floating.tree.LayerTree;
+import com.j3d.ui.engine.toolbox.ButtonsRegistry;
 import com.j3d.ui.engine.toolbox.ToolboxButtons;
 import com.j3d.ui.theme.CursorManager;
 import com.j3d.ui.theme.CursorNames;
@@ -115,6 +116,7 @@ public class EngineFrame extends javax.swing.JFrame {
     private ContextMenu contextMenu;
     private GuideManager guideManager;
     public void showContextMenu(int x, int y) {
+        contextMenu.build();
         contextMenu.show(this, x, y);
     }
     public CommandPalette getCommandPalette() {
@@ -411,77 +413,48 @@ public class EngineFrame extends javax.swing.JFrame {
     }
 
     private void buildContextMenu() {
-        contextMenu = new ContextMenu()
-                .menu(
-                        "New",
-                        (c) -> c
-                                .item("New Cube", KeyEvent.VK_U,
-                                        () -> newCmd("cube")
+        contextMenu = new ContextMenu(
+                // everytime this conte4xt menu is called this consumer is called
+                (c) -> {
+                    int amount = StaticRefs.getSceneManager().getSelected().size();
+                    if (amount > 0) {
+                        c
+                                .menu(
+                                "Transform",
+                                        (c2) -> c2
+                                                .item("Quick Translate", KeyEvent.VK_Q, ButtonsRegistry.TransformOperations.QUICK_TRANSLATE)
+                                                .item("Translate", KeyEvent.VK_T, ButtonsRegistry.TransformOperations.TRANSLATE)
+                                                .item("Rotate", KeyEvent.VK_R, ButtonsRegistry.TransformOperations.ROTATE)
+                                                .item("Scale", KeyEvent.VK_S, ButtonsRegistry.TransformOperations.SCALE)
                                 )
-                                .item("New Triangle", KeyEvent.VK_I,
-                                        () -> newCmd("tri")
+                                .separator()
+                                .item("Copy", KeyEvent.VK_C, () -> copyMenuItemActionPerformed(null))
+                                .item("Paste", KeyEvent.VK_P, () -> pasteMenuItemActionPerformed(null))
+                                .separator()
+                                .menu(
+                                        "Tools",
+                                        (c2) -> c2
+                                                .item("Join", KeyEvent.VK_J, ButtonsRegistry.GeometryTools.JOIN)
+                                                .item("Measure", KeyEvent.VK_M, ButtonsRegistry.GeometryTools.MEASURE)
+                                );
+                    } else {
+                        c
+                                .item(
+                                "Orbit", KeyEvent.VK_O, ButtonsRegistry.CameraOperations.ORBIT
                                 )
-                                .item("New Point", KeyEvent.VK_E,
-                                        () -> newCmd("point")
-                                )
-                )
-                .separator()
-                .menu(
-                        "Transform",
-                        (c) -> c
-                                .item("Translate", KeyEvent.VK_T,
-                                        () -> transformCommand("translate")
-                                )
-                                .item("Rotate", KeyEvent.VK_R,
-                                        () -> transformCommand("rotate")
-                                )
-                                .item("Scale", KeyEvent.VK_S,
-                                        () -> transformCommand("scale")
-                                )
-                )
-                .separator()
-                .item("Copy", KeyEvent.VK_C,
-                        () -> copyMenuItemActionPerformed(null)
-                )
-                .item("Paste", KeyEvent.VK_P,
-                        () -> pasteMenuItemActionPerformed(null)
-                ).separator()
-                .item("Join", KeyEvent.VK_J,
-                        () -> StaticRefs.getCommandParser().run(
-                                CommandsManager.commands.joinCmd,
-                                new ArrayList<>(),
-                                new ArrayList<>()
-                        )
-                ).separator()
-                .item(
-                        "Orbit", KeyEvent.VK_O,
-                        () -> StaticRefs.getCommandParser().run(
-                                CommandsManager.commands.camera,
-                                new ArrayList<>(List.of("orbit")),
-                                new ArrayList<>()
-                        )
-                );
+                                .separator()
+                                .menu("New", (c2) -> c2
+                                        .item("New Cube", KeyEvent.VK_C, ButtonsRegistry.CreateTools.CUBE)
+                                        .item("New Triangle", KeyEvent.VK_T, ButtonsRegistry.CreateTools.TRI)
+                                        .item("New Point", KeyEvent.VK_N, ButtonsRegistry.CreateTools.POINT)
+                                        .item("New Prism", KeyEvent.VK_P, ButtonsRegistry.CreateTools.PRISM)
+                                );
+                    }
+                }
+        );
     }
 
-    private void newCmd(String arg) {
-        StaticRefs.getCommandParser()
-                .run(
-                        CommandsManager.commands.createCmd,
-                        new ArrayList<>(List.of(arg)),
-                        new ArrayList<>()
-                );
-    }
-
-    private void transformCommand(String subcommand) {
-        StaticRefs.getCommandParser()
-                .run(
-                        CommandsManager.commands.transform,
-                        new ArrayList<>(List.of(subcommand, "p")),
-                        new ArrayList<>()
-                );
-    }
-
-    private int PF_VERSION = 3;
+    private final int PF_VERSION = 3;
 
     /**
      * Extracts all the file stuff like its path and name, logs the read

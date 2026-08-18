@@ -45,12 +45,12 @@ public class Subbox extends javax.swing.JPanel {
 
     }
 
-    public Subbox add(String label, ActionListener aL, String imageFileName) {
+    public Subbox add(String label, String tooltip, ActionListener aL, String imageFileName) {
         ActionListener actionListener = e -> {
             aL.actionPerformed(e);
             delete();
         };
-        JButton l = add(label, actionListener);
+        JButton l = add(label, tooltip, actionListener);
         ImageIcon unscaled = new ImageIcon(Objects.requireNonNull(ToolboxButtons.class.getResource("/art/toolbox/" + imageFileName)));
         Image scaled = unscaled.getImage().getScaledInstance(l.getPreferredSize().width, l.getPreferredSize().height, Image.SCALE_SMOOTH);
         l.setText(""); // Set the text to nun so that it doesnt push the picture
@@ -58,8 +58,9 @@ public class Subbox extends javax.swing.JPanel {
         return this;
     }
 
-    public JButton add(String label, ActionListener actionListener) {
+    public JButton add(String label, String tooltip, ActionListener actionListener) {
         JPanel buttonPanel = new javax.swing.JPanel();
+        buttonPanel.setToolTipText(tooltip);
         buttonPanel.setMaximumSize(new java.awt.Dimension(100, 120));
         buttonPanel.setMinimumSize(new java.awt.Dimension(120, 120));
         buttonPanel.setPreferredSize(new java.awt.Dimension(100, 120));
@@ -67,6 +68,7 @@ public class Subbox extends javax.swing.JPanel {
         buttonPanel.setBackground(J3DTheme.UI_SURFACE.color());
 
         JButton btnA = new javax.swing.JButton();
+        btnA.setToolTipText(tooltip);
         btnA.setText("examplebtn");
         btnA.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnA.setMaximumSize(new java.awt.Dimension(100, 100));

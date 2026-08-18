@@ -29,7 +29,7 @@ public class Finder {
      * Supplies the {@link LayerList} containing all active layers in the engine.
      * This allows the Finder to access the current state of layers dynamically.
      */
-    private Supplier<LayerList> layerListSupplier;
+    private final Supplier<LayerList> layerListSupplier;
 
     /**
      * Constructs a new {@code Finder} instance.

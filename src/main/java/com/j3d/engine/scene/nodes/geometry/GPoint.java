@@ -24,8 +24,7 @@ import java.util.*;
  *     it's geometric centre, a GPoint's pivot is just its position.
  * </p>
  * <p>
- *     While a GPoint can only be drawn by anther {@link GLine}, a {@link Thing}
- *     stores GPoints separately as they form the core
+ *     a {@link Thing} stores GPoints separately as they form the core
  *     of any transformation irrespective of whether it's part of some
  *     other geometry. This means all transformations need to be point based
  *     and applied to the GPoint.

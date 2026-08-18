@@ -67,7 +67,7 @@ public class ToolboxButtons {
 
     }
 
-    static void registerComplex(String label, Subbox sub, String imageFileName) {
+    static void registerComplex(String label, String tooltip, Subbox sub, String imageFileName) {
         sub.setPreferredSize(
                 new Dimension(
                         Math.min(sub.getButtons(), MAX_BUTTONS) * BUTTON_PANEL_SIZE,
@@ -80,7 +80,7 @@ public class ToolboxButtons {
                         sub.getPreferredSize().height
                 )
         );
-        JButton l = register(label, new ActionListener() {
+        JButton l = register(label, tooltip, new ActionListener() {
             final Subbox s = sub;
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -118,15 +118,15 @@ public class ToolboxButtons {
         l.setIcon(new ImageIcon(scaled));
     }
 
-    static void register(String label, ActionListener actionListener, String imageFileName) {
-        JButton l = register(label, actionListener);
+    static void register(String label, String tooltip, ActionListener actionListener, String imageFileName) {
+        JButton l = register(label, tooltip, actionListener);
         ImageIcon unscaled = new ImageIcon(Objects.requireNonNull(ToolboxButtons.class.getResource("/art/toolbox/" + imageFileName)));
         Image scaled = unscaled.getImage().getScaledInstance(l.getPreferredSize().width, l.getPreferredSize().height, Image.SCALE_SMOOTH);
         l.setText(""); // Set the text to nun so that it doesnt push the picture
         l.setIcon(new ImageIcon(scaled));
     }
 
-    static JButton register(String label, ActionListener actionListener) {
+    static JButton register(String label, String tooltip, ActionListener actionListener) {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setMaximumSize(new Dimension(100, 120));
         buttonPanel.setMinimumSize(new Dimension(120, 120));
@@ -136,6 +136,7 @@ public class ToolboxButtons {
         buttonPanel.setBackground(J3DTheme.UI_SURFACE.color());
 
         JButton btnA = new JButton();
+        btnA.setToolTipText(tooltip);
         btnA.setText("examplebtn");
         btnA.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         btnA.setMaximumSize(new Dimension(100, 100));

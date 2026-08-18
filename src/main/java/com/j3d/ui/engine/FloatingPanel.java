@@ -19,7 +19,7 @@ import com.j3d.ui.theme.J3DTheme;
 public class FloatingPanel extends javax.swing.JPanel {
 
     private JFrame frame = null;
-    private String name;
+    private final String name;
     private boolean isDocked = false;
     private boolean isHidden = true;
     private boolean moving = false;
@@ -46,8 +46,6 @@ public class FloatingPanel extends javax.swing.JPanel {
     public void finish(Component c, Consumer<Component> consumer) {
         consumer.accept(c);
         addComponentToPanel(c);
-//        c.revalidate();
-//        c.repaint();
         JPanel panel = this;
         msl = new MouseMotionListener() {
             @Override
@@ -75,7 +73,7 @@ public class FloatingPanel extends javax.swing.JPanel {
         finish(c, consumer);
     }
 
-    public JFrame dock() {
+    public void dock() {
         if (frame == null && !isDocked) {
             isDocked = true;
             isHidden = false;
@@ -93,7 +91,6 @@ public class FloatingPanel extends javax.swing.JPanel {
             this.revalidate();
             frame.setVisible(true);
         }
-        return frame;
     }
 
     public void returnToFrame() {
