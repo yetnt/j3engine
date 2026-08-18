@@ -9,6 +9,7 @@ import com.j3d.engine.interact.selection.SelectionManager;
 import com.j3d.engine.react.events.*;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.utility.generators.JLabelRichText;
+import com.j3d.utility.generic.tuple.SamePair;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -44,14 +45,10 @@ public class SelectionPreCondition implements PreCommandExecution {
     private final EventReactor failListener;
     private final Runnable cleanup;
     private final Runnable commandEndCleanup;
+    private String text;
 
-    /**
-     * Constructs a new {@code SelectionPreCondition}.
-     *
-     * @param success A {@link Runnable} to be executed when the selection condition is met.
-     * @param extraCleanup A {@link Runnable} to be executed for additional clean-up when the condition check is finalised.
-     */
-    public SelectionPreCondition(Runnable success, Runnable extraCleanup) {
+    public SelectionPreCondition(Runnable success, Runnable extraCleanup, String text) {
+        this.text = text;
         passListener = new EventReactor() {
             @Override
             public <K> void onEvent(EventType event, EventPayload<K> properties) {
@@ -103,6 +100,16 @@ public class SelectionPreCondition implements PreCommandExecution {
     }
 
     /**
+     * Constructs a new {@code SelectionPreCondition}.
+     *
+     * @param success A {@link Runnable} to be executed when the selection condition is met.
+     * @param extraCleanup A {@link Runnable} to be executed for additional clean-up when the condition check is finalised.
+     */
+    public SelectionPreCondition(Runnable success, Runnable extraCleanup) {
+        this(success, extraCleanup, "");
+    }
+
+    /**
      * Finalises the clean-up process by detaching the pass and fail listeners from the event emitter.
      * This should be called when the command has either successfully proceeded or been aborted.
      */
@@ -126,22 +133,20 @@ public class SelectionPreCondition implements PreCommandExecution {
     }
 
     @Override
-    public String getLogText() {
-        return JLabelRichText.htmlOf(
-                new JLabelRichText("Make a selection then "),
-                new JLabelRichText("left click to continue ").bold().underline(),
-                new JLabelRichText("this command. "),
-                new JLabelRichText("(Or, hit escape to abort)").underline()
+    public SamePair<String> getLogText() {
+        return new SamePair<>(
+                JLabelRichText.htmlOf(
+                        new JLabelRichText("Make a selection then "),
+                        new JLabelRichText("left click to continue").bold().underline(),
+                        new JLabelRichText(" this command. "),
+                        new JLabelRichText("(Or, hit escape to abort)").underline()
+                ),
+                new JLabelRichText(text).bold().italic().wrapHTML()
         );
     }
 
     @Override
     public Supplier<Boolean> getCondition() {
-        return new Supplier<Boolean>() {
-            @Override
-            public Boolean get() {
-                return !StaticRefs.getSceneManager().getSelected().isEmpty();
-            }
-        };
+        return () -> !StaticRefs.getSceneManager().getSelected().isEmpty();
     }
 }

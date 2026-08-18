@@ -102,7 +102,8 @@ public class JoinCmd extends Command implements SemiStatefulCommand {
                             CommandsManager.clearCurrent();
                             SelectionManager.selectionMouseOwner.clearSelectionSquare();
                             SelectionManager.selectionMouseOwner.clearSelectionSquare();
-                        }
+                        },
+                        "(Reselect a point to use as the control point for the curve)"
                 );
                 StaticRefs.getMainFrame().requestFocusInWindow(); // Remove focus from the command pallete
 
@@ -116,7 +117,7 @@ public class JoinCmd extends Command implements SemiStatefulCommand {
         }
 
         // TODO: later do triangle creation via subcommand
-        label.setText("idk bro.");
+        label.setText("I'm not sure how to join that... (select 2/3 points)");
     }
 
     public void handleCurve(SafeJLabel label, ArrayList<GPoint> alreadySelected, GPoint controlPoint) {
