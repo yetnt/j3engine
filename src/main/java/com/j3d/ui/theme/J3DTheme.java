@@ -2,6 +2,8 @@ package com.j3d.ui.theme;
 
 import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.db.themes.ThemesTable;
+import com.j3d.ui.theme.updator.Locator;
+import com.j3d.ui.theme.updator.ThemeUpdater;
 import com.j3d.utility.Parsing;
 
 import java.awt.*;
@@ -62,22 +64,27 @@ public enum J3DTheme {
         return colorMap.getOrDefault(Parsing.toCamelCase(name()), Default.from(Parsing.toCamelCase(name())));
     }
 
+    public static Color transparency(J3DTheme col, int alpha) {
+        Color c = col.color();
+        return new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha);
+    }
+
     public Color defaultCol() {
         return new Color(0xffffff);
     }
 
-    public static volatile ThemeUpdater themeUpdater = new ThemeUpdater();
-    public static ThemeUpdater.Locator commit(J3DTheme themeProperty, Consumer<Color> propertySetter) {
+    public static final ThemeUpdater themeUpdater = new ThemeUpdater();
+    public static Locator commit(J3DTheme themeProperty, Consumer<Color> propertySetter) {
         return themeUpdater.add(themeProperty, propertySetter);
     }
-    public static ThemeUpdater.Locator commitAsGenericUi(Component component) {
+    public static Locator commitAsGenericUi(Component component) {
         return themeUpdater.add(
                 J3DTheme.UI_SURFACE,
                 component::setBackground
         );
     }
-    public static ArrayList<ThemeUpdater.Locator> commitAsGenericLbl(Component component, boolean setBackground) {
-        ArrayList<ThemeUpdater.Locator> locators = new ArrayList<>();
+    public static ArrayList<Locator> commitAsGenericLbl(Component component, boolean setBackground) {
+        ArrayList<Locator> locators = new ArrayList<>();
         locators.add(themeUpdater.add(
                 J3DTheme.TEXT_PRIMARY,
                 component::setForeground

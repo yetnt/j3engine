@@ -9,7 +9,7 @@ import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.gen.docs.api.ImageTag;
 import com.j3d.gen.docs.reader.tokens.wrappers.TWCodeBlock;
 import com.j3d.ui.theme.J3DTheme;
-import com.j3d.ui.theme.ThemeUpdater;
+import com.j3d.ui.theme.updator.Locator;
 import com.j3d.utility.ClipboardUtil;
 import com.j3d.utility.Parsing;
 import com.j3d.utility.generators.JLabelRichText;
@@ -27,8 +27,8 @@ import java.util.ArrayList;
  */
 public class TextPanel extends javax.swing.JPanel {
 
-    private ThemeUpdater.Locator l;
-    private ArrayList<ThemeUpdater.Locator> l2;
+    private Locator l;
+    private ArrayList<Locator> l2;
     private boolean isCodeblock = false, hasLineNum = true;
     private TWCodeBlock tc;
 

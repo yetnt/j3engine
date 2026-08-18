@@ -9,21 +9,22 @@ import com.j3d.gen.settings.SettingsParent;
 import com.j3d.gen.settings.types.BooleanSetting;
 import com.j3d.gen.settings.types.DoubleSetting;
 import com.j3d.gen.settings.types.EnumSetting;
+import com.j3d.gen.settings.types.IntSetting;
 import com.j3d.ui.settings.SettingsParentPanel;
 
 import java.util.ArrayList;
 
 public class SceneProperties implements SettingsParent {
-    public DoubleSetting axisLength = new DoubleSetting(
+    /**
+     * An integer setting that defines the number of lines to be displayed for the scene's axes.
+     * A higher value is NOT recommended.
+     */
+    public IntSetting axisLength = new IntSetting(
             "Axis Amount",
-            1.0,
-            "How many lines should be shown fpr the axis. This gets messy quick be warned.",
-            0.01,
-            100.0
-    ).setValues(
-            d -> (int)(d * 100),
-            i -> i/100.0,
-            0.0
+            1,
+            "How many lines should be shown for the axis. This gets messy quick be warned.",
+            1,
+            100
     ).onSetValue(
             (d) -> {
                 StaticRefs.getMainPanel().repaint();
@@ -46,6 +47,11 @@ public class SceneProperties implements SettingsParent {
             Double::intValue,
             i -> i * 1.0,
             1
+    ).onSetValue(
+            (d) -> {
+                StaticRefs.getMainPanel().repaint();
+                return null;
+            }
     );
     public EnumSetting<PureSortMethod> triangleSortMethod = new EnumSetting<>(
             "Triangle Sort Method",

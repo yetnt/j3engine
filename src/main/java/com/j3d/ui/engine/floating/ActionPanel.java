@@ -8,7 +8,7 @@ import com.j3d.StaticRefs;
 import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.ui.theme.J3DTheme;
-import com.j3d.ui.theme.ThemeUpdater;
+import com.j3d.ui.theme.updator.Locator;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -21,10 +21,10 @@ import java.util.List;
 public class ActionPanel extends javax.swing.JPanel {
     
     private Action action;
-    private ThemeUpdater.Locator jumpBg;
-    private ThemeUpdater.Locator thisBg;
+    private Locator jumpBg;
+    private Locator thisBg;
 
-    private ArrayList<ThemeUpdater.Locator> locators = new ArrayList<>();
+    private ArrayList<Locator> locators = new ArrayList<>();
 
     /**
      * Creates new form ActionPanel
@@ -36,11 +36,11 @@ public class ActionPanel extends javax.swing.JPanel {
         this.action = action;
         if (!action.isReversible()) jumpToBtn.setEnabled(false);
 
-        jumpBg = new ThemeUpdater.Locator(
+        jumpBg = new Locator(
                 J3DTheme.BACKGROUND,
                 jumpToBtn::setBackground
         );
-        thisBg = new ThemeUpdater.Locator(
+        thisBg = new Locator(
                 J3DTheme.UI_SURFACE,
                 this::setBackground
         );
@@ -56,7 +56,7 @@ public class ActionPanel extends javax.swing.JPanel {
         );
     }
 
-    public ArrayList<ThemeUpdater.Locator> getLocators() {
+    public ArrayList<Locator> getLocators() {
         return locators;
     }
 

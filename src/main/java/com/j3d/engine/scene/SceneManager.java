@@ -40,13 +40,13 @@ public class SceneManager {
     public LayerList layers = new LayerList();
 
     public ArrayDeque<GPoint> points = new ArrayDeque<>();
-    private HashSet<HasParents<? extends GObject>> unparented = new HashSet<>();
+    private final HashSet<HasParents<? extends GObject>> unparented = new HashSet<>();
     private ArrayList<GObject> clipboard = new ArrayList<>();
     private final Finder finder = new Finder(() -> layers);
     public Finder finder() {
         return finder;
     }
-    private SceneRenderer renderer = new SceneRenderer();
+    private final SceneRenderer renderer = new SceneRenderer();
     public SceneRenderer getRenderer() {
         return renderer;
     }
@@ -97,7 +97,7 @@ public class SceneManager {
     }
 
     public void axisGrid(Graphics2D g, Camera camera) {
-        double mult = Settings.sceneProperties.axisLength.getValue();
+        int mult = Settings.sceneProperties.axisLength.getValue();
 
         int start = (int) (50*mult);
         int jump = 10;
@@ -145,10 +145,6 @@ public class SceneManager {
         Stroke s = g.getStroke();
         Vector3 origin = new Vector3(0, 0, 0);
         Vector3 offset = new Vector3(0, 0, 0);
-//        ArrayList<Double> nums = new ArrayList<>(List.of(-1.0, 1.0));
-//        for (double i = 2.0; i < Math.clamp(Math.floor(axisLength), 0, 20); i++) {
-//            nums.add(i);
-//        }
 
         g.setStroke(new BasicStroke(2));
         g.setColor(J3DTheme.TEXT_PRIMARY.color());
@@ -158,33 +154,18 @@ public class SceneManager {
                 origin.add(new Vector3(axisLength, 0, 0)),
                 camera);
         this.drawText3D(g, origin.add(new Vector3(axisLength+axisOffset, 0, 0)), "X+", camera);
-//        nums.forEach(num -> {
-//            this.drawLine3D(
-//                    g, new Vector3(num, 0, -1), new Vector3(num, 0, 1), camera
-//            );
-//        });
 
         g.setColor(Color.GREEN);
         this.drawLine3D(g, origin.add(offset).sub(new Vector3(0, 30, 0)),
                 origin.add(new Vector3(0, axisLength, 0)),
                 camera);
         this.drawText3D(g, origin.add(new Vector3(0, axisLength+axisOffset, 0)), "Y+", camera);
-//        nums.forEach(num -> {
-//            this.drawLine3D(
-//                    g, new Vector3(-1, num, 0), new Vector3(1, num, 0), camera
-//            );
-//        });
 
         g.setColor(Color.BLUE);
         this.drawLine3D(g, origin.add(offset).sub(new Vector3(0, 0, 2)),
                 origin.add(new Vector3(0, 0, axisLength)),
                 camera);
         this.drawText3D(g, origin.add(new Vector3(0, 0, axisLength+axisOffset)), "Z+", camera);
-//        nums.forEach(num -> {
-//            this.drawLine3D(
-//                    g, new Vector3(0, -1, num), new Vector3(0, 1, num), camera
-//            );
-//        });
         g.setStroke(s);
     }
 

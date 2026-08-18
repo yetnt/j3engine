@@ -23,16 +23,6 @@ public class CursorManager {
         register(CursorNames.HAND_GRAB);
         register(CursorNames.HAND_GRABBING);
         register(CursorNames.HAND_POINTER);
-
-//        cursors.put("cursor-pointer", createScaledCursor("/cursors/cursor-pointer.png", "cursor-pointer"));
-//        cursors.put("hourglass", createScaledCursor("/cursors/hourglass.png", "hourglass"));
-//        cursors.put("selectSoft", createScaledCursor("/cursors/selectSoft.png", "selectSoft"));
-//        cursors.put("selectStrict", createScaledCursor("/cursors/selectStrict.png", "selectStrict"));
-//        cursors.put("selectSubtract", createScaledCursor("/cursors/selectSubtract.png", "selectSubtract"));
-//        cursors.put("selectAdd", createScaledCursor("/cursors/selectAdd.png", "selectAdd"));
-//        cursors.put("grab", createScaledCursor("/cursors/drag.png", "grab"));
-//        cursors.put("grabbing", createScaledCursor("/cursors/drag-held.png", "grabbing"));
-//        cursors.put("hand-pointer", createScaledCursor("/cursors/hand-pointer.png", "hand-pointer"));
     }
 
     public static void register(CursorNames cursorName) {

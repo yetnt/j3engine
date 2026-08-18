@@ -242,6 +242,14 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
 
         };
 
+        if (references.isEmpty()) {
+            logLabel.setText("No objects selected! " + (faceMode == FaceMode.POINTS
+                    ? "(Select points specifically)"
+                    : ""));
+            CommandsManager.clearCurrent();
+            return;
+        }
+
         originalPointPos = references.stream().map(GObject::getPivot).collect(Collectors.toCollection(ArrayList::new));
         run(this, eventName, null, logLabel);
     }

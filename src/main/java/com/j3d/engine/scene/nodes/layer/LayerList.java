@@ -174,5 +174,11 @@ public class LayerList extends ArrayList<Layer> {
                 .flatMap(Thing::objectsStream);
     }
 
+    public Stream<Thing> thingStream() {
+        return stream()
+                .filter(l -> l.getTreeNode() != null)
+                .flatMap(Layer::stream);
+    }
+
     //TODO: Undo for move operation.
 }
