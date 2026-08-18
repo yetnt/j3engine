@@ -38,22 +38,21 @@ public abstract class ButtonsRegistry {
     }
 
 
-    // TODO: buttons for editting geometry
     public static void editBtns() {
-        registerComplex("Edit Geometry", new Subbox(s -> s
+        registerComplex("Geometry Tools", new Subbox(s -> s
                         .add("Join", e -> StaticRefs.getCommandParser().run(
                                 CommandsManager.commands.joinCmd,
                                 new ArrayList<>(), new ArrayList<>()
-                        ), "translate.png")
+                        ), "join.png")
                         .add("Measure", e -> StaticRefs.getCommandParser().run(
                                 CommandsManager.commands.measureCmd,
                                 new ArrayList<>(), new ArrayList<>()
-                        ), "rotate.png")
+                        ), "measure.png")
                         .add("Explode", e -> StaticRefs.getCommandParser().run(
                                 CommandsManager.commands.explodeCmd,
                                 new ArrayList<>(), new ArrayList<>()
-                        ), "scale.png")),
-                "transform.png");
+                        ), "explode.png")),
+                "geo.png");
     }
 
     private static void selectionStatsText() {
@@ -183,7 +182,6 @@ public abstract class ButtonsRegistry {
                 "transform.png");
     }
 
-    // TODO: Camera pngs
     public static void cameraBtns() {
         registerComplex("Camera", new Subbox(s -> s
                         .add("Orbit", e -> StaticRefs.getCommandParser().run(
@@ -193,19 +191,19 @@ public abstract class ButtonsRegistry {
                         .add("Look At", e -> StaticRefs.getCommandParser().run(
                                 CommandsManager.commands.camera,
                                 new ArrayList<>(List.of("lookAt")), new ArrayList<>()
-                        ), "orbit.png")
+                        ), "lookAt.png")
                         .add("Reset To Start", e -> {
                             StaticRefs.getCamera()
                                     .setPosition(new Vector3(20, 50, -90))
                                     .setProjectionPlane(
                                             new Vector3(0, 0, Settings.cameraProperties.focalLength.getValue())
                                     );
-                        }, "orbit.png")
+                        }, "reset.png")
                         .add("Info", e -> StaticRefs.getCommandParser().run(
                                 CommandsManager.commands.camera,
                                 new ArrayList<>(List.of("info")), new ArrayList<>()
-                        ), "orbit.png")
+                        ), "info.png")
                 ),
-                "orbit.png");
+                "camera.png");
     }
 }
