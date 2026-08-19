@@ -151,10 +151,10 @@ public class Projects extends javax.swing.JFrame {
             dispose();
         });
         StaticProjectButton openProject = new StaticProjectButton("Open Project", this::openProject);
-        StaticProjectButton debugScene = new StaticProjectButton("Debug Project", e -> {
-            Startup.engine(true, false);
-            dispose();
-        });
+//        StaticProjectButton debugScene = new StaticProjectButton("Debug Project", e -> {
+//            Startup.engine(true, false);
+//            dispose();
+//        });
         int width = 0;
         
         starterProjectsPanel.add(freshProject);
@@ -172,10 +172,10 @@ public class Projects extends javax.swing.JFrame {
         starterProjectsPanel.add(tutorialProject.filler());
         width += tutorialProject.filler().getPreferredSize().width;
         
-        starterProjectsPanel.add(debugScene);
-        width += debugScene.getPreferredSize().width;
-        starterProjectsPanel.add(debugScene.filler());
-        width += debugScene.filler().getPreferredSize().width;
+//        starterProjectsPanel.add(debugScene);
+//        width += debugScene.getPreferredSize().width;
+//        starterProjectsPanel.add(debugScene.filler());
+//        width += debugScene.filler().getPreferredSize().width;
         
         Dimension dim = new Dimension(width, 20);
         starterProjectsPanel.setPreferredSize(dim);

@@ -33,17 +33,17 @@ public enum Documentation {
     /**
      * Documentation on mathematical concepts used in the engine.
      */
-    MATHS("Mathematics", "maths"),
+    MATHS("Mathematics", "maths");
     /**
      * Frequently Asked Questions.
      */
-    FAQ("FAQ", "faq"),
+//    FAQ("FAQ", "faq");
     /**
      * List of known issues*
      */
-    KNOWN_ISSUES("Known Issues", "known-issues"),
-
-    TRANSFORM("Command - Transform", "cmd/transform");
+//    KNOWN_ISSUES("Known Issues", "known-issues"),
+//
+//    TRANSFORM("Command - Transform", "cmd/transform");
 
     /**
      * Constructs a new Documentation enum constant.

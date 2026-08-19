@@ -68,13 +68,13 @@ public class GuideFlow extends EventEmitter implements EventListener {
         if (guides.isEmpty()) {
             JOptionPane.showMessageDialog(
                     StaticRefs.getMainFrame(),
-                    "No more guides to show!"
+                    "That's all for the guide! If you'd like to restart go back to the projects frame! (top right)"
             );
             gpa.repaint();
             return;
         }
         GuideInfo g = guides.getFirst();
-        // Keep track of all guides ever shown for indexinggg
+        // Keep track of all guides ever shown for indexing
         allGuides.add(g);
 
         g.attachListeners(this);
