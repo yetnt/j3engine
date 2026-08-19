@@ -9,6 +9,11 @@ around with (almost) any parameter!
 
 For more information about J3Engine visit [About](about.j3.md) or [Design](about.j3.md#design)
 
+## Tutorial
+
+To get a more brief introduction, Rather go to the Projects frame and click "Tutroial" for an interactive
+tutorial through J3Engine
+
 ## Explanation
 
 ### Scene Graph

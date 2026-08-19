@@ -23,10 +23,6 @@ public enum Documentation {
      */
     ABOUT("About", "about"),
     /**
-     * Introduction to the engine. (test file)
-     */
-    INTRO("Intro", "intro"),
-    /**
      * Documentation related to editing features.
      */
     EDITING("Editing", "editing"),

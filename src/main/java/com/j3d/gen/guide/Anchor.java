@@ -71,16 +71,42 @@ public class Anchor {
         return has(value, EAST) ||  has(value, WEST);
     }
 
+    /**
+     * Creates an upward component offset of the given magnitude.
+     * @implNote Typically used in {@link GuideInfo#addCompAt(GuidePanelAdapter, Component, int, int, int)}
+     * @param i distance from anchor in pixels
+     * @return the offset magnitude
+     */
     public static int offsetUp(int i) {
         return i;
     }
+
+    /**
+     * Creates a downward component offset of the given magnitude.
+     * @implNote Typically used in {@link GuideInfo#addCompAt(GuidePanelAdapter, Component, int, int, int)}
+     * @param i distance from anchor in pixels
+     * @return the offset magnitude
+     */
     public static int offsetDown(int i) {
         return -i;
     }
 
+    /**
+     * Creates a rightward component offset of the given magnitude.
+     * @implNote Typically used in {@link GuideInfo#addCompAt(GuidePanelAdapter, Component, int, int, int)}
+     * @param i distance from the anchor in pixels
+     * @return the offset magnitude
+     */
     public static int offsetRight(int i) {
         return -i;
     }
+
+    /**
+     * Creates a leftward component offset of the given magnitude.
+     * @implNote Typically used in {@link GuideInfo#addCompAt(GuidePanelAdapter, Component, int, int, int)}
+     * @param i distance from the anchor in pixels
+     * @return the offset magnitude
+     */
     public static int offsetLeft(int i) {
         return i;
     }

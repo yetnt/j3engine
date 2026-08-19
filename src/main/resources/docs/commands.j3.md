@@ -3,12 +3,7 @@
 Commands are a powerful way to use the engine. A command invokes some operation/state when it itself is invoked and can
 be invoked by the user directly through the command palette or by the user via a GUI abstraction.
 
-## Command Definition Syntax
-
-Commands, have
-
-
-# Key Terms
+# Command Properties
 
 ## Alias
 
@@ -29,6 +24,24 @@ e.g. the command **`transform`** can be invoked via that name or one of it's ali
 below is an example of the [typing hints](#typing-hints) showing all the aliases for the same **`transform`** command
 
 <img alt="Transform command typing hints" src="../art/docs/cmd/alias.png" scale="1"> </img>
+
+## Arguments
+
+Commands, have what's called **arguments**. These are positional input that the command expects to receive and work
+upon.
+
+An example would be
+
+```cmd
+prism (0, 10, 0) (0, 20, 0) plane:"XY"
+```
+
+**prism** is the command name whereas **_(0, 10, 0)_** is the first argument to the prism command, and etc.
+
+---
+
+`plane:"XY"` is a tagged argument. That will be discussed in detail later.
+
 
 ## Stateful vs Stateless
 
@@ -62,4 +75,12 @@ the command is showing.
 
 # Typing Hints
 
+Typing hints are a feature of the command palette that helps you discover and correctly use commands. As you type, the command palette will suggest commands and arguments that match your input.
 
+---
+
+Using the same image as before
+
+<img alt="Transform command typing hints" src="../art/docs/cmd/alias.png" scale="1"> </img>
+
+here we see the 3 aliases for the `transform` command provided by the typing hints.

@@ -215,8 +215,8 @@ public class GuideInfo extends EventEmitter implements EventListener {
      * @param adapter The GuidePanelAdapter to which the component will be added.
      * @param l The Component to add.
      * @param anchor A bitmask representing the desired anchor point (e.g., {@link Anchor#NORTH}, {@link Anchor#SOUTH}, {@link Anchor#EAST}, {@link Anchor#WEST}, {@link Anchor#CENTRE}).
-     * @param offX The horizontal offset from the calculated anchor position.
-     * @param offY The vertical offset from the calculated anchor position.
+     * @param offX The horizontal offset from the calculated anchor position. (Use {@link Anchor#offsetRight(int)} and {@link Anchor#offsetLeft(int)})
+     * @param offY The vertical offset from the calculated anchor position. (Use {@link Anchor#offsetUp(int)} and {@link Anchor#offsetDown(int)})
      */
     public void addCompAt(GuidePanelAdapter adapter, Component l, int anchor, int offX, int offY) {
         int x = 0;
