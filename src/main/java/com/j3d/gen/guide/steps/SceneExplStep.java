@@ -57,7 +57,7 @@ public class SceneExplStep extends GuideInfo {
                                 .wrapHTML()
                 ),
                 Anchor.CENTRE | Anchor.WEST,
-                -50, 0
+                Anchor.offsetRight(50), 0
         );
 
         // right side of screen

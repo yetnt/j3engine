@@ -1,8 +1,6 @@
 package com.j3d.gen.guide;
 
-import com.j3d.gen.guide.steps.SceneExplStep;
-import com.j3d.gen.guide.steps.SelectionStep;
-import com.j3d.gen.guide.steps.WelcomeStep;
+import com.j3d.gen.guide.steps.*;
 import com.j3d.ui.engine.GuidePanel;
 
 public class GuideManager {
@@ -28,7 +26,10 @@ public class GuideManager {
         );
         flow.add(new WelcomeStep());
         flow.add(new SceneExplStep());
+        flow.add(new ObjectExplainerStep());
         flow.add(new SelectionStep());
+        flow.add(new UIExplainerStep());
+        flow.add(new CommandPaletteStep());
 
         flow.start();
     }

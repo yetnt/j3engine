@@ -70,4 +70,18 @@ public class Anchor {
     public static boolean hasHorizontal(int value) {
         return has(value, EAST) ||  has(value, WEST);
     }
+
+    public static int offsetUp(int i) {
+        return i;
+    }
+    public static int offsetDown(int i) {
+        return -i;
+    }
+
+    public static int offsetRight(int i) {
+        return -i;
+    }
+    public static int offsetLeft(int i) {
+        return i;
+    }
 }

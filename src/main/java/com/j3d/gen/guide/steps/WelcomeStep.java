@@ -5,6 +5,7 @@ import com.j3d.engine.interact.input.mouse.AlwaysMouseOwner;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.gen.guide.*;
+import com.j3d.gen.guide.generic.DoubleClickStep;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.utility.generators.JLabelRichText;
 
@@ -12,13 +13,7 @@ import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
 
-public class WelcomeStep extends GuideInfo {
-
-    public WelcomeStep() {
-        super(
-                AlwaysMouseOwner.getSingleInstance()
-        );
-    }
+public class WelcomeStep extends DoubleClickStep {
 
     @Override
     public void build(GuidePanelAdapter adapter) {
@@ -35,7 +30,7 @@ public class WelcomeStep extends GuideInfo {
                                 .wrapHTML()
                 ),
                 Anchor.CENTRE,
-                0, 170
+                0, Anchor.offsetUp(170)
         );
 
         addCompAt(
@@ -54,7 +49,7 @@ public class WelcomeStep extends GuideInfo {
                                 .wrapHTML()
                 ),
                 Anchor.CENTRE,
-                0, 30
+                0, Anchor.offsetUp(30)
         );
 
         genericText(adapter, "(Double click to continue)");
@@ -66,22 +61,10 @@ public class WelcomeStep extends GuideInfo {
                         0.07
                 ),
                 Anchor.CENTRE,
-                0, -200
+                0, Anchor.offsetDown(200)
         );
         guideCounter(adapter);
     }
 
-
-    @Override
-    public <K> void onEvent(EventType event, EventPayload<K> properties) {
-        if (event == EventType.MOUSE_CLICKED) {
-            MouseClickPayload payload
-                    = (MouseClickPayload) properties;
-            MouseEvent e = payload.getEvent();
-            if (e.getClickCount() != 2) return;
-
-            close();
-        }
-    }
 
 }

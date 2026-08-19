@@ -41,73 +41,8 @@ public class SelectionStep extends GuideInfo {
                 SelectionManager.selectionMouseOwner
         );
     }
-
-    public void setup() {
-
-        // put a cube for the user to interact with.
-        StaticRefs.getCommandParser().run(
-                CommandsManager.commands.createCmd,
-                new ArrayList<>(List.of("cube")),
-                new ArrayList<>()
-        );
-
-        // get all GPoints
-        ArrayList<GPoint> points =
-                StaticRefs.getSceneManager().finder().find(
-                        GPoint.class, Finder.allQuery(), null
-                ).stream()
-                        .map(FindResult::getgObject)
-                        // finder guarantees they are all GPoints
-                        .map(GPoint.class::cast)
-                        // sort by the closest to the camera
-                        .sorted((p1, p2) -> {
-                            Vector3 pos = p1.getPivot();
-                            Vector3 pos2 = p2.getPivot();
-
-                            Vector3 camPos = StaticRefs.getCamera().getPosition();
-
-                            double d1 = camPos.distance(pos);
-                            double d2 = camPos.distance(pos2);
-
-                            return Double.compare(d1, d2);
-                        })
-                        // get top 4
-                        .limit(4)
-                        .collect(Collectors.toCollection(ArrayList::new));
-
-        // pick a random point
-        GPoint targetPoint = points.get(
-                new Random().nextInt(points.size())
-        );
-
-        // set the colour to blue
-        targetPoint.setColour(Color.BLUE);
-    }
-
     @Override
     public void build(GuidePanelAdapter adapter) {
-        setup();
-
-        addCompAt(
-                adapter,
-                new JLabel(
-                        new JLabelRichText("(I've gone ahead and created a cube for you)")
-                                .addLn(JLabelRichText.LINE_BREAK)
-                                .add(
-                                        "One useful thing to know is that you can go (in the top right) "
-                                        + "and click Scene > View > Wireframe (or use ALT+V) to change to a view where "
-                                        + "all hidden stuff is visible."
-                                )
-                                .wrapDiv(400)
-                                .font(
-                                        J3DTheme.TEXT_PRIMARY.color(),
-                                        "4"
-                                )
-                                .wrapHTML()
-                ),
-                Anchor.CENTRE,
-                0, 150
-        );
 
         guideCounter(adapter);
         genericText(adapter, "(Select ONLY the blue point to continue)");
@@ -171,7 +106,7 @@ public class SelectionStep extends GuideInfo {
                                 .wrapHTML()
                 ),
                 Anchor.EAST | Anchor.SOUTH,
-                200, 380
+                Anchor.offsetLeft(200), Anchor.offsetUp(380)
         );
     }
 

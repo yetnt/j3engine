@@ -110,6 +110,10 @@ public class GuideInfo extends EventEmitter implements EventListener {
         int index =(StaticRefs.getMainFrame().getGuideManager().getFlow().indexOf(this)+1);
         int total = StaticRefs.getMainFrame().getGuideManager().getFlow().totalSize();
 
+        JButton back = new JButton("(go back)");
+        back.addActionListener((e) -> {
+            StaticRefs.getMainFrame().getGuideManager().getFlow().back();
+        });
         JLabel label = new JLabel(
                 new JLabelRichText(index + " of " + total)
                         .wrapUsing(adapter.readableTextStyle)
@@ -117,6 +121,12 @@ public class GuideInfo extends EventEmitter implements EventListener {
                         .wrapHTML()
         );
 
+        addCompAt(
+                adapter,
+                back,
+                Anchor.SOUTH | Anchor.EAST,
+                150, 20
+        );
         addCompAt(
                 adapter,
                 label,
@@ -172,7 +182,7 @@ public class GuideInfo extends EventEmitter implements EventListener {
                                 .wrapHTML()
                 ),
                 Anchor.SOUTH | Anchor.WEST,
-                -50, 30
+                Anchor.offsetRight(50), Anchor.offsetUp(35)
         );
     }
 

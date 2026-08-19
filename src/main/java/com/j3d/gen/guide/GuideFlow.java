@@ -40,6 +40,24 @@ public class GuideFlow extends EventEmitter implements EventListener {
         return this;
     }
 
+    public void back() {
+        // check that there isnt only one.
+        if (guides.size() == 1) return;
+        // get the guide before this one.
+        GuideInfo current = allGuides.removeLast();
+        GuideInfo before = allGuides.removeLast();
+        // add this current guide back to guides
+        guides.addFirst(current);
+        guides.addFirst(before);
+
+        // tear down current
+        current.breakdown();
+
+        // since before is now the head of "guides", this should show before
+        // then straight after it will be current.
+        start();
+    }
+
     /**
      * Starts the guide flow by displaying the first guide in the queue.
      * If no guides are present, it shows a message dialog.
@@ -96,7 +114,7 @@ public class GuideFlow extends EventEmitter implements EventListener {
     }
 
     /** The debounce period in seconds to prevent rapid guide closing events. */
-    private final int DEB = 5;
+    private final int DEB = 1;
     /** The last time a guide closing event was processed, used for debouncing. */
     private LocalTime lastTime = LocalTime.now();
 
