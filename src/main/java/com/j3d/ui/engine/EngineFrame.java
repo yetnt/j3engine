@@ -958,8 +958,10 @@ public class EngineFrame extends javax.swing.JFrame {
             );
         }, this);
         if (file == null) return;
-        StaticRefs.getSceneManager().resetScene();
-        readProjectFile(file);
+//        StaticRefs.getSceneManager().resetScene();
+        this.dispose();
+        Startup.engine(file, false);
+//        readProjectFile(file);
     }//GEN-LAST:event_openProjectMenuItemActionPerformed
 
     private void saveProjectJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveProjectJMenuItemActionPerformed
