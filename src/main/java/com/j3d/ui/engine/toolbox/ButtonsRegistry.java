@@ -80,7 +80,11 @@ public abstract class ButtonsRegistry {
                                 e -> GeometryTools.MEASURE.run(), "measure.png")
                         .add("Explode",
                                 "Explodes everything or a selection of objects into points. (Dangerous)",
-                                e -> GeometryTools.EXPLODE.run(), "explode.png")),
+                                e -> GeometryTools.EXPLODE.run(), "explode.png")
+                        .add("Extrude",
+                                "(Selection) Extrude a selected triangle into a 3d shape.",
+                                // todo: EXTRUDE IMAGE
+                                e -> GeometryTools.EXTRUDE.run(), "geo.png")),
                 "geo.png");
     }
 
@@ -281,6 +285,10 @@ public abstract class ButtonsRegistry {
         public static final Runnable EXPLODE = () -> StaticRefs.getCommandParser().run(
                 CommandsManager.commands.explodeCmd,
                 new ArrayList<>(Collections.singleton("j")), new ArrayList<>()
+        );
+        public static final Runnable EXTRUDE = () -> StaticRefs.getCommandParser().run(
+                CommandsManager.commands.extrudeCmd,
+                new ArrayList<>(), new ArrayList<>()
         );
     }
 

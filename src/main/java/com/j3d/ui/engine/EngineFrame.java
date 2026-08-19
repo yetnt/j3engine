@@ -429,7 +429,6 @@ public class EngineFrame extends javax.swing.JFrame {
                                 )
                                 .separator()
                                 .item("Copy", KeyEvent.VK_C, () -> copyMenuItemActionPerformed(null))
-                                .item("Paste", KeyEvent.VK_P, () -> pasteMenuItemActionPerformed(null))
                                 .separator()
                                 .menu(
                                         "Tools",
@@ -448,7 +447,8 @@ public class EngineFrame extends javax.swing.JFrame {
                                         .item("New Triangle", KeyEvent.VK_T, ButtonsRegistry.CreateTools.TRI)
                                         .item("New Point", KeyEvent.VK_N, ButtonsRegistry.CreateTools.POINT)
                                         .item("New Prism", KeyEvent.VK_P, ButtonsRegistry.CreateTools.PRISM)
-                                );
+                                )
+                                .item("Paste", KeyEvent.VK_P, () -> pasteMenuItemActionPerformed(null));
                     }
                 }
         );

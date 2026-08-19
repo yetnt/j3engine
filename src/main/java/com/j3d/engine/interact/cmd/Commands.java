@@ -49,6 +49,7 @@ public class Commands extends EventEmitter {
     public CameraCmd camera = new CameraCmd();
     public CreateCmd createCmd = new CreateCmd();
     public JoinCmd joinCmd = new JoinCmd();
+    public ExtrudeCmd extrudeCmd = new ExtrudeCmd();
 
     /**
      * Default (empty) constructor
@@ -75,7 +76,7 @@ public class Commands extends EventEmitter {
                 explodeCmd, uiCmd, helpCmd,
                 prismCmd, measureCmd, clipboardCmd,
                 selectCmd, quickTranslateCmd, camera,
-                createCmd, joinCmd
+                createCmd, joinCmd, extrudeCmd
         ));
     }
 

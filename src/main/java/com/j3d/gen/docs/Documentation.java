@@ -35,10 +35,6 @@ public enum Documentation {
      */
     MATHS("Mathematics", "maths"),
     /**
-     * Documentation regarding common errors.
-     */
-    ERRORS("Errors", "errors"),
-    /**
      * Frequently Asked Questions.
      */
     FAQ("FAQ", "faq"),

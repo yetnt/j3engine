@@ -19,7 +19,8 @@ It absolutely is. But here is the app either way!
 
 ## Design
 
-J3Engine is a Swing app, which uses [2D Swing Graphics](https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/package-summary.html). 
+J3Engine is a Swing app, which uses 
+[2D Swing Graphics.](https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/package-summary.html) 
 Meaning the only core rendering API not made by J3Engine which it utilises, is drawing 2D lines, points, triangles and other shapes.
 Everything else like prisms, cubes, 3D curves is all done by J3Engine itself with no outside classes.
 
