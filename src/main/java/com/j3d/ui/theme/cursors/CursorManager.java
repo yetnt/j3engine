@@ -1,4 +1,4 @@
-package com.j3d.ui.theme;
+package com.j3d.ui.theme.cursors;
 
 import com.j3d.ui.engine.EngineFrame;
 

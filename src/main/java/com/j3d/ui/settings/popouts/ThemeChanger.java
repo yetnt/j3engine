@@ -8,10 +8,11 @@ import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.StaticConfig;
 import com.j3d.gen.settings.Settings;
-import com.j3d.storage.db.DatabaseManager;
-import com.j3d.storage.db.themes.Theme;
 import com.j3d.ui.engine.floating.properties.PropertiesPanel;
+import com.j3d.ui.theme.DefaultThemes;
 import com.j3d.ui.theme.J3DTheme;
+import com.j3d.ui.theme.ThemeEntry;
+import com.j3d.ui.theme.ThemeKey;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,7 +26,7 @@ import java.util.HashMap;
  */
 public class ThemeChanger extends javax.swing.JFrame {
 
-    private HashMap<String, Color> themeOptionMap = new HashMap<>();
+    private HashMap<ThemeKey, Color> themeOptionMap = new HashMap<>();
     private int selectedId = 1;
     private final ButtonGroup radioButtonGroup = new ButtonGroup();
 
@@ -34,8 +35,8 @@ public class ThemeChanger extends javax.swing.JFrame {
      */
     public ThemeChanger() {
         initComponents();
-        for (Theme theme : DatabaseManager.tblThemes.themes) {
-            radio(theme.themeName.getValue(), theme.themeId);
+        for (DefaultThemes theme : DefaultThemes.values()) {
+            radio(theme.getThemeEntry().getName(), theme.ordinal());
         }
         buttons.repaint();
         buttons.revalidate();
@@ -51,18 +52,14 @@ public class ThemeChanger extends javax.swing.JFrame {
     private JRadioButton radio(String title, int id) {
         JRadioButton rd = new JRadioButton();
 
-        if (J3DTheme.getCurrentLoadedThemeId() == id)
-            rd.setSelected(true);
+//        if (J3DTheme.getCurrentLoadedThemeId() == id)
+//            rd.setSelected(true);
 
         rd.setFont(new java.awt.Font("Segoe UI", Font.ITALIC, 12));
         rd.setForeground(J3DTheme.TEXT_PRIMARY.color());
         rd.setText(title);
         rd.addActionListener(e -> {
-            themeOptionMap = DatabaseManager.tblThemes.themes.stream().filter(
-                    t -> t.themeId == id
-            ).findFirst().orElseGet(
-                    () -> DatabaseManager.tblThemes.themes.getFirst()
-            ).toColorHashMap();
+            themeOptionMap = DefaultThemes.valueOf(title).getThemeEntry().getEntries();
             selectedId = id;
             setColors();
             drawPanel.repaint();
@@ -77,7 +74,7 @@ public class ThemeChanger extends javax.swing.JFrame {
     }
 
     private Color colorOf(J3DTheme theme) {
-        return J3DTheme.colorFromMap(theme, themeOptionMap);
+        return J3DTheme.getCurrentLoadedTheme().getEntries().get(ThemeKey.valueOf(theme.toString()));
     }
 
     private void setColors() {
@@ -319,13 +316,9 @@ public class ThemeChanger extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void enterThemeChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterThemeChangeActionPerformed
-        // TODO: Somehow change entire app theme or ask user to close and open for theme change.
-        StaticConfig.user.themeId.setValue(
-                selectedId
-        );
-        StaticConfig.user.save();
 
-        J3DTheme.loadTheme(selectedId);
+        // TODO: refactor
+//        J3DTheme.loadTheme();
 
         J3DTheme.themeUpdater.update();
 

@@ -5,9 +5,9 @@
 package com.j3d.ui.engine.toolbox;
 
 import com.j3d.StaticRefs;
-import com.j3d.ui.theme.CursorManager;
-import com.j3d.ui.theme.CursorNames;
-import com.j3d.ui.theme.J3DScrollBarUI;
+import com.j3d.ui.theme.cursors.CursorManager;
+import com.j3d.ui.theme.cursors.CursorNames;
+import com.j3d.ui.theme.swing.J3DScrollBarUI;
 import com.j3d.ui.theme.J3DTheme;
 
 import javax.swing.*;

@@ -1,6 +1,7 @@
 package com.j3d.gen.docs;
 
 import com.j3d.StaticRefs;
+import com.j3d.storage.JarPath;
 import com.j3d.utility.generic.tuple.Pair;
 
 import java.io.File;
@@ -54,9 +55,7 @@ public enum Documentation {
     Documentation(String label, String id) {
         this.fileId = id;
         this.label = label;
-        this.file = new File(
-                StaticRefs.getEngineFiles().docsFolder.getFolder()
-                , id + ".j3.md");
+        this.file = new JarPath(StaticRefs.getEngineFiles().docsFolder.getRoot() + id + ".j3.md");
     }
 
     /**
@@ -64,7 +63,7 @@ public enum Documentation {
      * The value is a {@link Pair} where the first element is the label
      * and the second element is the {@link File} object.
      */
-    private static LinkedHashMap<String, Pair<String, File>> MAP = null;
+    private static LinkedHashMap<String, Pair<String, JarPath>> MAP = null;
 
     /**
      * Returns a {@link LinkedHashMap} containing all documentation entries,
@@ -75,9 +74,9 @@ public enum Documentation {
      *
      * @return A {@link LinkedHashMap} mapping file IDs to a {@link Pair} of label and file.
      */
-    public static LinkedHashMap<String, Pair<String, File>> toMap() {
+    public static LinkedHashMap<String, Pair<String, JarPath>> toMap() {
         if (MAP == null) {
-            LinkedHashMap<String, Pair<String, File>> map = new LinkedHashMap<>();
+            LinkedHashMap<String, Pair<String, JarPath>> map = new LinkedHashMap<>();
             for (Documentation f : Documentation.values()) {
                 map.put(f.getFileId(), new Pair<>(f.getLabel(), f.getFile()));
             }
@@ -99,7 +98,7 @@ public enum Documentation {
      *
      * @return The {@link File} object representing the documentation file.
      */
-    public File getFile() {
+    public JarPath getFile() {
         return file;
     }
 
@@ -129,7 +128,7 @@ public enum Documentation {
     /**
      * The actual {@link File} object pointing to the documentation file.
      */
-    private final File file;
+    private final JarPath file;
     /**
      * The human-readable label for the documentation (e.g., "About").
      */

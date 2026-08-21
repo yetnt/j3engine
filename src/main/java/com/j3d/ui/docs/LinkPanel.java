@@ -8,6 +8,7 @@ import com.j3d.StaticRefs;
 import com.j3d.gen.docs.DocsGenException;
 import com.j3d.gen.docs.Documentation;
 import com.j3d.gen.docs.reader.tokens.TLink;
+import com.j3d.storage.JarPath;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.utility.Parsing;
 import com.j3d.utility.generators.JLabelRichText;
@@ -47,7 +48,7 @@ public class LinkPanel extends javax.swing.JPanel {
         theme();
     }
 
-    public LinkPanel(String id, Pair<String, File> pair, int width) {
+    public LinkPanel(String id, Pair<String, JarPath> pair, int width) {
         initComponents();
         this.documentation = null;
 
@@ -110,33 +111,6 @@ public class LinkPanel extends javax.swing.JPanel {
         return parent.resolve(target).normalize()
                 .toString().replaceAll("\\\\", "/");
     }
-
-//    public String path(String pathToResolve) {
-//        Path p = Path.of(pathToResolve);
-//        Path thiz = Path.of(documentation.getFileId());
-//
-//
-//        // if thiz = "doc.j3.md" and p = "doc2.j3.md"
-//        // return p as is, same parent.
-//
-//        // if thiz = "doc.j3d.md" and p = "cmd/doc2.j3.md"
-//        // return p as is,
-//
-//        // if thiz = "cmd/doc.j3.md" and p = "doc2.j3.md"
-//        // return p with current file parents "cmd/doc2.j3.md"
-//
-//        // if thiz = "cmd/doc.j3.md" and p = "../doc2.j3.md"
-//        // go up the parent chain within thiz until p can be resolved there so in this case return p as "doc2.j3.md"
-//
-//        // if thiz = "cmd/other/k/doc.j3d.md" and p = "../rot/e/doc2.j3.md"
-//        // somehow resolve p to be "cmd/other/rot/e/doct2.j3.md
-//
-//        // basically all relative paths need to be resolved to a root path
-//        // thiz is always a guaranteed root path but may have its own stuff.
-//
-//
-//        return fr;
-//    }
 
     private void theme() {
         J3DTheme.commitAsGenericLbl(jLabel1, false);

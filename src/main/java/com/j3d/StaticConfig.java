@@ -7,8 +7,6 @@ import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.gen.settings.Settings;
-import com.j3d.storage.db.DatabaseManager;
-import com.j3d.storage.db.users.User;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -22,13 +20,6 @@ public abstract class StaticConfig {
      * A constant number to offset all components which get pushed down by the JMenuBar
      */
     public static final int jMenuBarOffsetY = 20;
-    /**
-     * A constant offset used within {@link #toScreen()} and
-     * {@link #toPoint()} to shift all x values {@code 200} pixels closer to the centre
-     * of the screen.
-     */
-    public static final int OFFSET_X = 0;
-    public static User user;
     public static boolean hasSaved = false;
     /**
      * Generic lock flag for when the user has CAPS LOCK enabled.
@@ -59,13 +50,6 @@ public abstract class StaticConfig {
      */
     public static ViewType viewType = ViewType.NORMAL;
     public static boolean movementControls = true;
-
-    /// Literally could be set by [com.j3d.ui.home.Projects] or something else.
-    public static void defaultLogin() {
-        if (user == null) {
-            user = DatabaseManager.tblUsers.findById(1);
-        }
-    }
 
     static {
         try {

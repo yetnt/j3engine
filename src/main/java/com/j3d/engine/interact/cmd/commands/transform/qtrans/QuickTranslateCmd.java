@@ -15,8 +15,8 @@ import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.ui.engine.EngineFrame;
-import com.j3d.ui.theme.CursorManager;
-import com.j3d.ui.theme.CursorNames;
+import com.j3d.ui.theme.cursors.CursorManager;
+import com.j3d.ui.theme.cursors.CursorNames;
 
 import java.awt.event.ActionEvent;
 import java.time.LocalTime;

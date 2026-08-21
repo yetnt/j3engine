@@ -6,8 +6,12 @@ import com.j3d.gen.docs.DocsGenException;
 import com.j3d.gen.docs.ImgGenException;
 import com.j3d.gen.docs.reader.tokens.wrappers.HTMLTags;
 import com.j3d.gen.docs.reader.tokens.wrappers.TWhtmlTag;
+import com.j3d.storage.JarPath;
 
+import javax.swing.*;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.Objects;
 
@@ -27,11 +31,11 @@ import java.util.Objects;
 public class ImageTag {
     private TWhtmlTag tag;
     private String altText;
-    private File imagePath;
+    private JarPath imagePath;
     private double scale;
     private boolean invalid = false;
 
-    private ImageTag(TWhtmlTag tag, File imagePath, String altText, double scale) {
+    private ImageTag(TWhtmlTag tag, JarPath imagePath, String altText, double scale) {
         this.tag = tag;
         this.imagePath = imagePath;
         this.altText = altText;
@@ -81,14 +85,11 @@ public class ImageTag {
             fp = fp.substring(2);
         }
 
-        File image;
+        JarPath image;
         // check that this file exists within resources.
         try {
-            image =
-                    new File(Objects.requireNonNull(ImageTag.class.getResource(
-                            fp
-                    )).toURI());
-        } catch (URISyntaxException | NullPointerException f) {
+            image = new JarPath(fp);
+        } catch (NullPointerException f) {
             StaticRefs.getErrs().handle(
                     new ImgGenException(
                             "Image tag has an invalid path for src: " + tag.getRawContent().getFirst()
@@ -97,7 +98,7 @@ public class ImageTag {
             return imageTag;
         }
 
-        if (!(image.getAbsolutePath().endsWith(".png") || image.getAbsolutePath().endsWith(".jpg"))) {
+        if (!(image.path().endsWith(".png") || image.path().endsWith(".jpg"))) {
             StaticRefs.getErrs().handle(
                     new ImgGenException(
                             "Image tag has an invalid file type for src (only .png and .jpg are supported): " + tag.getRawContent().getFirst()
@@ -127,7 +128,7 @@ public class ImageTag {
         this.altText = altText;
     }
 
-    public File getImagePath() {
+    public JarPath getImagePath() {
         return imagePath;
     }
 
@@ -137,5 +138,17 @@ public class ImageTag {
 
     public boolean isInvalid() {
         return invalid;
+    }
+
+    public ImageIcon read() throws IOException {
+        return getImagePath().readAs(
+                (i) -> {
+                    try {
+                        return new ImageIcon(i.readAllBytes());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+        );
     }
 }

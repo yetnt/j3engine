@@ -8,6 +8,7 @@ import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.gen.docs.api.ImageTag;
 import com.j3d.gen.docs.reader.tokens.wrappers.TWCodeBlock;
+import com.j3d.storage.JarPath;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.ui.theme.updator.Locator;
 import com.j3d.utility.ClipboardUtil;
@@ -19,6 +20,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -45,10 +47,15 @@ public class TextPanel extends javax.swing.JPanel {
     public TextPanel(ImageTag imageTag) {
         initComponents();
         jLabel1.setText("");
-        File image = imageTag.getImagePath();
+        JarPath image = imageTag.getImagePath();
         double scale = imageTag.getScale();
         // set the image
-        ImageIcon icon = new ImageIcon(image.getAbsolutePath());
+        ImageIcon icon;
+        try {
+            icon = imageTag.read();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         Image scaled = icon.getImage().getScaledInstance(
                 (int) (icon.getIconWidth() * scale),

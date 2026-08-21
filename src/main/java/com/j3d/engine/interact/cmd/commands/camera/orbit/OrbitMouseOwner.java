@@ -6,8 +6,8 @@ import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.engine.interact.input.mouse.MouseOwner;
 import com.j3d.StaticConfig;
 import com.j3d.gen.settings.Settings;
-import com.j3d.ui.theme.CursorManager;
-import com.j3d.ui.theme.CursorNames;
+import com.j3d.ui.theme.cursors.CursorManager;
+import com.j3d.ui.theme.cursors.CursorNames;
 
 import java.awt.event.MouseEvent;
 

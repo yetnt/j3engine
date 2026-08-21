@@ -12,7 +12,7 @@ import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.StaticConfig;
 import com.j3d.threads.StatisticsThread;
-import com.j3d.ui.theme.J3DScrollBarUI;
+import com.j3d.ui.theme.swing.J3DScrollBarUI;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.ui.dialog.AreYouSure;
 import com.j3d.ui.engine.FloatingPanel;
@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 import static com.j3d.StaticRefs.*;
 

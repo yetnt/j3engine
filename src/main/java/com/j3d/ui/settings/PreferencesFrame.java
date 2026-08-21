@@ -7,7 +7,7 @@ package com.j3d.ui.settings;
 import com.j3d.StaticRefs;
 import com.j3d.gen.settings.Settings;
 import com.j3d.ui.dialog.AreYouSure;
-import com.j3d.ui.theme.J3DScrollBarUI;
+import com.j3d.ui.theme.swing.J3DScrollBarUI;
 import com.j3d.ui.theme.J3DTheme;
 
 import javax.swing.*;

@@ -12,7 +12,7 @@ import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.storage.files.FilesUtility;
 import com.j3d.storage.files.util.ProjectImagePair;
-import com.j3d.ui.theme.J3DScrollBarUI;
+import com.j3d.ui.theme.swing.J3DScrollBarUI;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.utility.ImageUtils;
 import com.j3d.utility.generators.JLabelRichText;
@@ -44,7 +44,7 @@ public class Projects extends javax.swing.JFrame {
         jLabel4.setText(
                 JLabelRichText.htmlOf(
                         new JLabelRichText("Welcome "),
-                        new JLabelRichText(StaticConfig.user.firstName.getValue()).italic(),
+                        new JLabelRichText(System.getProperty("user.name")).italic(),
                         new JLabelRichText("!")
                 )
         );

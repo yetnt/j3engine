@@ -4,11 +4,13 @@ import com.j3d.gen.docs.reader.tokens.TLink;
 import com.j3d.gen.docs.reader.tokens.TText;
 import com.j3d.gen.docs.reader.tokens.TWrapper;
 import com.j3d.gen.docs.reader.tokens.wrappers.*;
+import com.j3d.storage.JarPath;
 import com.j3d.ui.docs.DocsFrame;
 import com.j3d.utility.Parsing;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -42,16 +44,23 @@ public class J3DocsReader {
      * Parses a given file and returns a list of TWrapper objects representing the document structure.
      * @param file The file to parse.
      * @return An ArrayList of TWrapper objects.
-     * @throws FileNotFoundException If the file does not exist.
      */
-    public static ArrayList<TWrapper> parseFile(File file) throws FileNotFoundException {
-        if (!file.isFile()) return new ArrayList<>();
-        if (!file.getPath().endsWith(".j3.md")) return new ArrayList<>();
+    public static ArrayList<TWrapper> parseFile(JarPath file) {
+//        if (!file.isFile()) return new ArrayList<>();
+//        if (!file.getPath().endsWith(".j3.md")) return new ArrayList<>();
 
-        Scanner scanner = new Scanner(file);
-        ArrayList<TWrapper> wrapper = read(scanner);
-        scanner.close();
-        return wrapper;
+
+
+        ArrayList<TWrapper> wrappers;
+        try {
+            wrappers = file.readAs((i) -> {
+                Scanner scanner = new Scanner(i);
+                return read(scanner);
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return wrappers;
     }
 
     private static ArrayList<TWrapper> read(Scanner scanner) {

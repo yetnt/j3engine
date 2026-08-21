@@ -145,14 +145,7 @@ public class GuideInfo extends EventEmitter implements EventListener {
      */
     public JLabel image(URL url, double scale) {
         JLabel label = new JLabel("");
-        File imagePath;
-        try {
-            imagePath = new File(url.toURI());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-        // set the image
-        ImageIcon icon = new ImageIcon(imagePath.getAbsolutePath());
+        ImageIcon icon = new ImageIcon(url);
 
         Image scaled = icon.getImage().getScaledInstance(
                 (int) (icon.getIconWidth() * scale),

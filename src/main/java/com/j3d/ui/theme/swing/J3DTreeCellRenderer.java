@@ -1,6 +1,7 @@
-package com.j3d.ui.theme;
+package com.j3d.ui.theme.swing;
 
 import com.j3d.ui.engine.floating.tree.SceneTreeRenderer;
+import com.j3d.ui.theme.J3DTheme;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultTreeCellRenderer;

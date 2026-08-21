@@ -11,16 +11,16 @@ import com.j3d.gen.docs.api.ImageTag;
 import com.j3d.gen.docs.reader.*;
 import com.j3d.gen.docs.reader.tokens.*;
 import com.j3d.gen.docs.reader.tokens.wrappers.*;
-import com.j3d.ui.theme.J3DScrollBarUI;
+import com.j3d.storage.JarPath;
+import com.j3d.ui.theme.swing.J3DScrollBarUI;
 import com.j3d.ui.theme.J3DTheme;
-import com.j3d.ui.theme.J3DTreeCellRenderer;
+import com.j3d.ui.theme.swing.J3DTreeCellRenderer;
 import com.j3d.utility.generators.JLabelRichText;
 import com.j3d.utility.generic.tuple.Pair;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -75,7 +75,7 @@ public class DocsFrame extends javax.swing.JFrame {
      */
     public DocsFrame(String fileIdentifier) {
         initComponents();
-        Pair<String, File> pair = Documentation.toMap().get(fileIdentifier);
+        Pair<String, JarPath> pair = Documentation.toMap().get(fileIdentifier);
         doc = Documentation.from(fileIdentifier);
         String helpContentName = pair.first;
         jLabel1.setText(helpContentName);
@@ -195,12 +195,6 @@ public class DocsFrame extends javax.swing.JFrame {
 
         // at root
         if (tempHeaderHierachy.isEmpty()) {
-//            if (h.getHeaderLevel() != 1)
-//                StaticRefs.getErrs().handle(
-//                        new DocsGenException(
-//                                "First header is not an H1 header."
-//                        )
-//                );
 
             tempHeaderHierachy.add(child);
             addTreeNode(rootHeader, child);
@@ -249,12 +243,10 @@ public class DocsFrame extends javax.swing.JFrame {
         return this;
     }
 
-    private void parse(File file) throws FileNotFoundException {
+    private void parse(JarPath file) throws FileNotFoundException {
 //        testStuff();
 
-        ArrayList<TWrapper> wrappers = J3DocsReader.parseFile(
-                file
-        );
+        ArrayList<TWrapper> wrappers = J3DocsReader.parseFile(file);
 
         JLabelRichText div = new JLabelRichText()
                 .wrapDiv(size);

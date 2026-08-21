@@ -5,7 +5,6 @@ import com.j3d.gen.settings.classes.CameraProperties;
 import com.j3d.gen.settings.classes.EditorProperties;
 import com.j3d.gen.settings.classes.SceneProperties;
 import com.j3d.gen.settings.types.ComplexSetting;
-import com.j3d.storage.db.DatabaseManager;
 import com.j3d.storage.files.FilesUtility;
 import com.j3d.ui.settings.PreferencesFrame;
 import com.j3d.ui.settings.popouts.ThemeChanger;
@@ -35,25 +34,25 @@ public class Settings implements SettingsParent {
     public static SceneProperties sceneProperties = new SceneProperties();
     public static EditorProperties editorProperties = new EditorProperties();
     public static ThemeChanger themeChanger;
-    public static ComplexSetting<String> changeTheme = new ComplexSetting<>(
-            "Change Theme",
-            DatabaseManager.tblThemes.currentSelectedTheme().themeName.getValue(),
-            "Change your theme (only applies on app restart)",
-            (e, label) -> {
-                if (themeChanger == null) {
-                    themeChanger = new ThemeChanger();
-                    themeChanger.setVisible(true);
-                }
-                String str = DatabaseManager.tblThemes.map()
-                        .get(themeChanger.getSelectedId())
-                        .themeName.getValue();
-                label.setText(
-                        str
-                );
-                return str;
-            },
-            () -> DatabaseManager.tblThemes.currentSelectedTheme().themeName.getValue()
-    );
+//    public static ComplexSetting<String> changeTheme = new ComplexSetting<>(
+//            "Change Theme",
+//            DatabaseManager.tblThemes.currentSelectedTheme().themeName.getValue(),
+//            "Change your theme (only applies on app restart)",
+//            (e, label) -> {
+//                if (themeChanger == null) {
+//                    themeChanger = new ThemeChanger();
+//                    themeChanger.setVisible(true);
+//                }
+//                String str = DatabaseManager.tblThemes.map()
+//                        .get(themeChanger.getSelectedId())
+//                        .themeName.getValue();
+//                label.setText(
+//                        str
+//                );
+//                return str;
+//            },
+//            () -> DatabaseManager.tblThemes.currentSelectedTheme().themeName.getValue()
+//    );
     public static ComplexSetting<File> projectOutputFile = new ComplexSetting<>(
             "Project Output File",
             null,
@@ -129,7 +128,7 @@ public class Settings implements SettingsParent {
     @Override
     public ArrayList<SettingsChild> getAllChildren() {
         return new ArrayList<>() {{
-            add(changeTheme);
+//            add(changeTheme);
             add(projectOutputFile);
             add(cameraProperties);
             add(editorProperties);

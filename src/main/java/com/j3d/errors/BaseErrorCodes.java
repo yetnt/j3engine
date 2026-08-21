@@ -6,7 +6,6 @@ import com.j3d.engine.math.MathException;
 import com.j3d.engine.scene.SceneException;
 import com.j3d.errors.severity.J3ErrSeverity;
 import com.j3d.gen.GenException;
-import com.j3d.storage.errs.DBException;
 import com.j3d.storage.errs.GenericIOException;
 import com.j3d.storage.errs.ProjectFileException;
 import com.j3d.threads.ThreadsException;
@@ -25,10 +24,6 @@ public enum BaseErrorCodes {
      * Base code for {@link GenException}
      */
     GENERATION(10),
-    /**
-     * Base code for {@link DBException}
-     */
-    DATABASE(20),
     /**
      * Base code for {@link ThreadsException}
      */

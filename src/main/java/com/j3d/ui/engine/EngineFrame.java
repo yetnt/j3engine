@@ -30,7 +30,6 @@ import com.j3d.errors.J3DError;
 import com.j3d.gen.guide.GuideManager;
 import com.j3d.gen.settings.Settings;
 import com.j3d.storage.files.FilesUtility;
-import com.j3d.storage.files.protocol.UnsupportedVersionException;
 import com.j3d.storage.files.protocol.proj.PF1;
 import com.j3d.storage.files.protocol.proj.PF2;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
@@ -39,8 +38,8 @@ import com.j3d.ui.engine.floating.DebugPanel;
 import com.j3d.ui.engine.floating.tree.LayerTree;
 import com.j3d.ui.engine.toolbox.ButtonsRegistry;
 import com.j3d.ui.engine.toolbox.ToolboxButtons;
-import com.j3d.ui.theme.CursorManager;
-import com.j3d.ui.theme.CursorNames;
+import com.j3d.ui.theme.cursors.CursorManager;
+import com.j3d.ui.theme.cursors.CursorNames;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.ui.settings.PreferencesFrame;
 import com.j3d.ui.engine.toolbox.Toolbox;
@@ -1065,10 +1064,6 @@ public class EngineFrame extends javax.swing.JFrame {
         if (!canProceed) return;
 
         this.dispose();
-
-        StaticConfig.user = null;
-
-        Startup.clearUser();
 
         Startup.run();
     }//GEN-LAST:event_logOutJMenuItemActionPerformed

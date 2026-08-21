@@ -4,14 +4,10 @@
  */
 package com.j3d;
 
-import com.j3d.storage.db.DatabaseManager;
-import com.j3d.storage.db.users.User;
 import com.j3d.threads.FakeLongTask;
-import com.j3d.ui.dialog.AreYouSure;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.ui.engine.J3Splash;
 import com.j3d.ui.home.Projects;
-import com.j3d.ui.theme.J3DTheme;
 
 import javax.swing.*;
 import java.io.File;
@@ -40,34 +36,8 @@ public class Startup {
 
     public static void run() {
         StaticRefs.none();
-        Main login = new Main(runnable);
-        login.setVisible(true);
-
-        if (StaticRefs.getEngineFiles().userFile.exists()) {
-            int id = StaticRefs.getEngineFiles().userFile.read();
-            AreYouSure ays = new AreYouSure(
-                    login, true,
-                    "Use previously logged in account?"
-            ).setDialogName("Saved Login");
-            ays.setVisible(true);
-            if (ays.canProceed()) {
-                User u = DatabaseManager.tblUsers.findById(id);
-                if (u == null) {
-                    Startup.clearUser(); // clear since this doesn't exist.
-                    return;
-                }
-                login.dispose();
-                StaticConfig.user = u;
-                J3DTheme.loadTheme(u.themeId.getValue());
-                JOptionPane.showMessageDialog(login, "Welcome back, " + u.firstName.getValue() + "!");
-                runnable.run();
-            }
-        }
-    }
-
-    public static void run(Runnable runnable) {
-        Main login = new Main(runnable);
-        login.setVisible(true);
+        Projects  frame = new Projects();
+        frame.setVisible(true);
     }
 
     public static void engineDebug() {
@@ -110,13 +80,5 @@ public class Startup {
             t.setRepeats(false);
             t.start();
         }, 9.3);
-    }
-
-    public static void saveUser(int id) {
-        StaticRefs.getEngineFiles().userFile.write(id);
-    }
-
-    public static void clearUser() {
-        StaticRefs.getEngineFiles().userFile.clear();
     }
 }

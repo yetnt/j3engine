@@ -1,4 +1,4 @@
-package com.j3d.ui.theme;
+package com.j3d.ui.theme.cursors;
 
 /**
  * An enum representing the names of custom cursors used in the app.

@@ -9,7 +9,7 @@ import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.gen.properties.SelectionPropertiesFilter;
 import com.j3d.gen.properties.PropertiesUI;
 import com.j3d.ui.engine.FloatingPanel;
-import com.j3d.ui.theme.J3DScrollBarUI;
+import com.j3d.ui.theme.swing.J3DScrollBarUI;
 
 import javax.swing.*;
 import java.util.ArrayList;
