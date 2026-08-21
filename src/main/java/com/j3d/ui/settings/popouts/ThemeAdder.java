@@ -1,92 +1,75 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package com.j3d.ui.settings.popouts;
 
-import com.j3d.StaticRefs;
-import com.j3d.gen.settings.Settings;
-import com.j3d.ui.engine.floating.properties.PropertiesPanel;
-import com.j3d.ui.theme.DefaultThemes;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.ui.theme.ThemeEntry;
 import com.j3d.ui.theme.ThemeKey;
-import com.j3d.utility.Parsing;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.function.Supplier;
+import java.awt.Color;
+import java.util.LinkedHashMap;
 
 /**
  *
- * @author ACER
+ * @author yetnt
  */
-public class ThemeChanger extends javax.swing.JFrame {
-
-    private HashMap<ThemeKey, Color> themeOptionMap = new HashMap<>();
-    private HashMap<String, ThemeEntry> userLoaded = new HashMap<>();
-    private String selectedId = "";
+public class ThemeAdder extends javax.swing.JDialog {
+    
+    private final LinkedHashMap<ThemeKey, Color> themeOptionMap = new LinkedHashMap<>();
+    boolean success = false;
+    private ThemeEntry entry;
     private final ButtonGroup radioButtonGroup = new ButtonGroup();
 
     /**
-     * Creates new form ThemeChanger
+     * Creates new form ThemeAdder
      */
-    public ThemeChanger() {
+    public ThemeAdder(java.awt.Frame parent) {
+        super(parent, true);
         initComponents();
-        for (DefaultThemes theme : DefaultThemes.values()) {
-            radio(theme.getThemeEntry());
-        }
-        userLoaded = StaticRefs.getEngineFiles().themeFiles.loadAllEntries();
-        for (ThemeEntry key : userLoaded.values()) {
-            radio(key);
-        }
-        setColors();
-        buttons.repaint();
-        buttons.revalidate();
-        this.revalidate();
-        this.repaint();
-        StaticRefs.getLog().uiPrintLn("ThemeChanger completed building");
-
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                Settings.themeChanger = null;
-            }
-        });
     }
 
-    private JRadioButton radio(ThemeEntry entry) {
-        JRadioButton rd = new JRadioButton();
-        String title = entry.getName();
+    public ThemeEntry getEntry() {
+        return entry;
+    }
 
-        if (J3DTheme.getCurrentLoadedTheme().getName().equals(title)) {
-            rd.setSelected(true);
-            selectedId = title;
-            themeOptionMap = entry.getEntries();
-        }
-
-        rd.setFont(new java.awt.Font("Segoe UI", Font.ITALIC, 12));
-        rd.setForeground(J3DTheme.TEXT_PRIMARY.color());
-        rd.setText(title);
-        rd.addActionListener(e -> {
-            themeOptionMap = entry.getEntries();
-            selectedId = title;
-            setColors();
-            drawPanel.repaint();
-            this.repaint();
-            this.revalidate();
+    public ThemeAdder(JFrame parent, ThemeEntry from) {
+        super(parent, true);
+        initComponents();
+        from.getEntries().forEach((key, value) -> {
+            themeOptionMap.put(key, value);
+            buttons.add(
+                    new ThemePropertyPanel(
+                            radioButtonGroup,
+                            from, key,
+                            (e) -> {
+                                Color newColor = JColorChooser.showDialog(
+                                        this,
+                                        "Pick a new colour",
+                                        themeOptionMap.get(key)
+                                );
+                                themeOptionMap.put(key, newColor);
+                                setColors();
+                                return newColor;
+                            }
+                    )
+            );
         });
+        setColors();
+    }
 
-        radioButtonGroup.add(rd);
-        buttons.add(rd);
+    public boolean isSuccess() {
+        return success;
+    }
 
-        return rd;
+    public ThemeEntry build() {
+        String name = JOptionPane.showInputDialog("Name this theme");
+        if (name == null || name.contains("=")) return null;
+        return new ThemeEntry(
+                name, themeOptionMap, ThemeEntry.ThemeType.USER_LOADED
+        );
     }
 
     private Color colorOf(J3DTheme theme) {
@@ -106,23 +89,6 @@ public class ThemeChanger extends javax.swing.JFrame {
         jButton3.setForeground(colorOf(J3DTheme.TEXT_PRIMARY));
     }
 
-    public static ThemeEntry fromTitle(String id, Supplier<HashMap<String, ThemeEntry>> userLoaded) {
-        // try getting from default.
-        ThemeEntry e1 = Arrays.stream(DefaultThemes.values())
-                .map(DefaultThemes::getThemeEntry)
-                .filter(s -> s.getName().equals(id))
-                .findFirst().orElse(null);
-        if (e1 != null) return e1;
-
-        // get from supplier
-        ThemeEntry e2 = userLoaded.get().get(Parsing.toCamelCase(id));
-        if (e2 != null) return e2;
-
-        // otherwise default
-
-        return DefaultThemes.DEFAULT.getThemeEntry();
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -135,6 +101,7 @@ public class ThemeChanger extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        buttons = new javax.swing.JPanel();
         drawPanel = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -143,21 +110,20 @@ public class ThemeChanger extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         innerPanel = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
-        enterThemeChange = new javax.swing.JButton();
-        addNewTheme = new javax.swing.JButton();
+        finalizeBtn = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        buttons = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setBackground(J3DTheme.UI_SURFACE.color());
-        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
         jPanel1.setBackground(J3DTheme.UI_SURFACE.color());
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setForeground(J3DTheme.TEXT_PRIMARY.color());
-        jLabel1.setText("Choose A Theme");
+        jLabel1.setText("Select a property to change");
+
+        buttons.setBackground(J3DTheme.UI_SURFACE.color());
+        buttons.setMinimumSize(new java.awt.Dimension(229, 100));
+        buttons.setLayout(new javax.swing.BoxLayout(buttons, javax.swing.BoxLayout.Y_AXIS));
 
         drawPanel.setBackground(colorOf(J3DTheme.UI_SURFACE));
         drawPanel.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), javax.swing.BorderFactory.createEtchedBorder()));
@@ -167,7 +133,6 @@ public class ThemeChanger extends javax.swing.JFrame {
         jPanel2.setBackground(colorOf(J3DTheme.BACKGROUND));
         jPanel2.setMaximumSize(new java.awt.Dimension(264, 166));
         jPanel2.setMinimumSize(new java.awt.Dimension(264, 166));
-        jPanel2.setPreferredSize(new java.awt.Dimension(264, 166));
 
         jLabel3.setForeground(colorOf(J3DTheme.TEXT_PRIMARY));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -269,34 +234,19 @@ public class ThemeChanger extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         drawPanel.add(jPanel4, gridBagConstraints);
 
-        enterThemeChange.setBackground(J3DTheme.BACKGROUND.color());
-        enterThemeChange.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        enterThemeChange.setForeground(J3DTheme.TEXT_PRIMARY.color());
-        enterThemeChange.setText("Change Theme");
-        enterThemeChange.addActionListener(new java.awt.event.ActionListener() {
+        finalizeBtn.setBackground(J3DTheme.BACKGROUND.color());
+        finalizeBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        finalizeBtn.setForeground(J3DTheme.TEXT_PRIMARY.color());
+        finalizeBtn.setText("Finalize");
+        finalizeBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                enterThemeChangeActionPerformed(evt);
-            }
-        });
-
-        addNewTheme.setBackground(J3DTheme.BACKGROUND.color());
-        addNewTheme.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        addNewTheme.setForeground(J3DTheme.TEXT_PRIMARY.color());
-        addNewTheme.setText("Add a new Theme");
-        addNewTheme.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addNewThemeActionPerformed(evt);
+                finalizeBtnActionPerformed(evt);
             }
         });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
         jLabel4.setForeground(J3DTheme.TEXT_PRIMARY.color());
-        jLabel4.setText("(If adding a theme, the preset colours will be based on the current selected theme)");
-
-        buttons.setBackground(J3DTheme.UI_SURFACE.color());
-        buttons.setMinimumSize(new java.awt.Dimension(229, 100));
-        buttons.setLayout(new javax.swing.BoxLayout(buttons, javax.swing.BoxLayout.Y_AXIS));
-        jScrollPane1.setViewportView(buttons);
+        jLabel4.setText("(Theme changes are only applied on app startup or when a new frame is made)");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -305,97 +255,76 @@ public class ThemeChanger extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(drawPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(44, 44, 44)
+                        .addComponent(buttons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(119, 119, 119)
-                        .addComponent(enterThemeChange)
-                        .addGap(82, 82, 82)
-                        .addComponent(addNewTheme, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(drawPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addGap(47, 47, 47))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(114, 114, 114)
+                .addComponent(finalizeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(34, 34, 34)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(28, 28, 28)
-                        .addComponent(jScrollPane1))
+                        .addComponent(buttons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(drawPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(enterThemeChange)
-                    .addComponent(addNewTheme))
-                .addGap(30, 30, 30))
+                .addComponent(finalizeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
-        getContentPane().add(jPanel1);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 578, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 486, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void enterThemeChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterThemeChangeActionPerformed
-
-        ThemeEntry e = fromTitle(selectedId, () -> userLoaded);
-        J3DTheme.loadTheme(e);
-        Settings.changeTheme.setValue(e);
-
-        J3DTheme.themeUpdater.update();
-
-        StaticRefs.getMainPanel().repaint();
-
-        StaticRefs.getSettings().panel().dispose();
-
-        if (!StaticRefs.getPropertiesPanel().floatingPanel.isHidden())
-            PropertiesPanel.load(); // reload properties panel if its open
-
-        this.dispose();
-        StaticRefs.getSettings().write();
-        Settings.themeChanger = null;
-    }//GEN-LAST:event_enterThemeChangeActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void addNewThemeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewThemeActionPerformed
-
-        ThemeEntry e = fromTitle(selectedId, () -> userLoaded);
-
-        ThemeAdder adder = new ThemeAdder(this, e);
-
-        adder.setVisible(true);
-
-        if (adder.isSuccess()) {
-            // write the file
-            try {
-                StaticRefs.getEngineFiles().themeFiles.writeTheme(
-                        Parsing.toCamelCase(adder.getEntry().getName()),
-                        adder.getEntry()
-                );
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-
-            selectedId = adder.getEntry().getName();
-            radio(adder.getEntry());
-        }
-    }//GEN-LAST:event_addNewThemeActionPerformed
+    private void finalizeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finalizeBtnActionPerformed
+        entry = build();
+        if (entry == null) return;
+        success = true;
+        dispose();
+    }//GEN-LAST:event_finalizeBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -414,29 +343,35 @@ public class ThemeChanger extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ThemeChanger.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ThemeAdder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ThemeChanger.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ThemeAdder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ThemeChanger.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ThemeAdder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ThemeChanger.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ThemeAdder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ThemeChanger().setVisible(true);
+                ThemeAdder dialog = new ThemeAdder(new javax.swing.JFrame());
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addNewTheme;
     private javax.swing.JPanel buttons;
     private javax.swing.JPanel drawPanel;
-    private javax.swing.JButton enterThemeChange;
+    private javax.swing.JButton finalizeBtn;
     private javax.swing.JPanel innerPanel;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -447,6 +382,5 @@ public class ThemeChanger extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

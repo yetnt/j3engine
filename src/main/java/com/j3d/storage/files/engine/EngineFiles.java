@@ -17,6 +17,7 @@ public class EngineFiles {
     public final DocsFolder docsFolder;
     public final PrefsFile preferencesFile;
     public final UserFile userFile;
+    public final ThemeFiles themeFiles;
 
 
     public EngineFiles() {
@@ -24,6 +25,7 @@ public class EngineFiles {
 
         logFile = new LogFile();
         debugDump = new DebugDump();
+        themeFiles = new ThemeFiles();
         try {
             recents = new RecentProjectsFile();
             preferencesFile = new PrefsFile();

@@ -153,7 +153,8 @@ public class Setting<T> implements SettingsChild, EventEmitterInterface {
         broadcast(EventType.SETTING_CODE_UPDATED,new SettingUpdatedPayload<T>(
                 this, old, value
         ));
-        StaticRefs.getMainPanel().repaint();
+        if (StaticRefs.getMainPanel() != null)
+            StaticRefs.getMainPanel().repaint();
     }
 
     /**

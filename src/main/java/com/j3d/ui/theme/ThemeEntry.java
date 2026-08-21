@@ -5,13 +5,14 @@ import com.j3d.utility.Parsing;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class ThemeEntry {
     private final String name;
-    private HashMap<ThemeKey, Color> entries = new HashMap<>();
+    private LinkedHashMap<ThemeKey, Color> entries;
     private final ThemeType themeType;
 
-    public ThemeEntry(String name, HashMap<ThemeKey, Color> colorHashMap, ThemeType themeType) {
+    public ThemeEntry(String name, LinkedHashMap<ThemeKey, Color> colorHashMap, ThemeType themeType) {
         if (colorHashMap.size() != 6) {
             throw new RuntimeException("invalid colour hashmap given");
         }
@@ -32,7 +33,7 @@ public class ThemeEntry {
     ) {
         this.name = name;
         entries =
-                new HashMap<>() {{
+                new LinkedHashMap<>() {{
                     this.put(ThemeKey.TEXT_PRIMARY, textPrimary);
                     this.put(ThemeKey.TEXT_SECONDARY, textSecondary);
                     this.put(ThemeKey.ACCENT_PRIMARY, accentPrimary);
@@ -66,7 +67,7 @@ public class ThemeEntry {
         return name;
     }
 
-    public HashMap<ThemeKey, Color> getEntries() {
+    public LinkedHashMap<ThemeKey, Color> getEntries() {
         return entries;
     }
 

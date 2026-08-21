@@ -4,10 +4,12 @@
  */
 package com.j3d;
 
+import com.j3d.gen.settings.Settings;
 import com.j3d.threads.FakeLongTask;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.ui.engine.J3Splash;
 import com.j3d.ui.home.Projects;
+import com.j3d.ui.theme.J3DTheme;
 
 import javax.swing.*;
 import java.io.File;
@@ -36,6 +38,9 @@ public class Startup {
 
     public static void run() {
         StaticRefs.none();
+        J3DTheme.loadTheme(
+                Settings.changeTheme.getValue()
+        );
         Projects  frame = new Projects();
         frame.setVisible(true);
     }

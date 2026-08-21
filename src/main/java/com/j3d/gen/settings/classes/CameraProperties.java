@@ -44,7 +44,8 @@ public class CameraProperties implements SettingsParent {
             0.01
     ).onSetValue((Double d) -> {
         StaticRefs.getCamera().setFocalLength(d);
-        StaticRefs.getMainPanel().repaint();
+        if (StaticRefs.getMainPanel() != null)
+            StaticRefs.getMainPanel().repaint();
         return null;
     });
     public IntSetting nearZeroProjectionPower = new IntSetting(
@@ -52,7 +53,7 @@ public class CameraProperties implements SettingsParent {
             18,
             "When the dz of a point approaches less than 10^-x, it's clamped to 10^-6",
             6,
-            30
+            200
     );
 
     public CameraProperties() {

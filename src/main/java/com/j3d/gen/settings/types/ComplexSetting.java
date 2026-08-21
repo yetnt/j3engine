@@ -14,8 +14,8 @@ import java.util.function.Supplier;
 public class ComplexSetting<T> extends Setting<T> {
 
     private final BiFunction<ActionEvent, JLabel, T> onOpen;
-    private Supplier<String> onCreate;
-    private boolean isSerializable;
+    private final Supplier<String> onCreate;
+    private boolean isSerializable = false;
     private Function<T, String> forward = Object::toString;
     private Function<String, T> backward = (String s) -> (T) s;
 
@@ -31,6 +31,10 @@ public class ComplexSetting<T> extends Setting<T> {
         this.forward = forward;
         this.backward = backward;
         return this;
+    }
+
+    public Supplier<String> getOnCreate() {
+        return onCreate;
     }
 
     @Override

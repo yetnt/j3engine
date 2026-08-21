@@ -343,6 +343,7 @@ public abstract class StaticRefs {
      * Does absolutely shit.
      */
     public static void none() {
+        StaticRefs.getSettings();
     }
 
     public static void clear() {

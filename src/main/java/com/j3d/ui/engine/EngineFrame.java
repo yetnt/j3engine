@@ -666,9 +666,6 @@ public class EngineFrame extends javax.swing.JFrame {
         resetPositionJMenuItem = new javax.swing.JMenuItem();
         exportJMenuItemDropDown = new javax.swing.JMenu();
         exportAsPNGJMenuItem = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        logOutJMenuItem = new javax.swing.JMenuItem();
-        deleteAccountJMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("J3D");
@@ -867,21 +864,6 @@ public class EngineFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(sceneJMenu);
 
-        jMenu2.setText("User");
-
-        logOutJMenuItem.setText("Log Out");
-        logOutJMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                logOutJMenuItemActionPerformed(evt);
-            }
-        });
-        jMenu2.add(logOutJMenuItem);
-
-        deleteAccountJMenuItem.setText("Delete Account");
-        jMenu2.add(deleteAccountJMenuItem);
-
-        jMenuBar1.add(jMenu2);
-
         setJMenuBar(jMenuBar1);
 
         setSize(new java.awt.Dimension(1503, 817));
@@ -1047,27 +1029,6 @@ public class EngineFrame extends javax.swing.JFrame {
         preferencesFrame.setVisible(true);
     }//GEN-LAST:event_settingsMenuItemActionPerformed
 
-    private void logOutJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutJMenuItemActionPerformed
-        // log out one day
-        boolean canProceed = true;
-        if (!StaticConfig.hasSaved) {
-            AreYouSure ays = new AreYouSure(
-                    this, true,
-                    new JLabelRichText(
-                            "You haven't saved this project! Click Nah Fam then use"
-                    ).addLn("CTRL+S to save, or click Hell Yeah to proceed anyway.")
-                            .wrapHTML()
-            );
-            ays.setVisible(true);
-            canProceed = ays.canProceed();
-        }
-        if (!canProceed) return;
-
-        this.dispose();
-
-        Startup.run();
-    }//GEN-LAST:event_logOutJMenuItemActionPerformed
-
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
 
         boolean canProceed = true;
@@ -1158,15 +1119,12 @@ public class EngineFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem copyMenuItem;
-    private javax.swing.JMenuItem deleteAccountJMenuItem;
     private javax.swing.JMenu editJMenu;
     private javax.swing.JMenuItem exportAsPNGJMenuItem;
     private javax.swing.JMenu exportJMenuItemDropDown;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     public javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem logOutJMenuItem;
     public static javax.swing.JPanel mainPanel;
     private javax.swing.JMenuItem newProjectJMenuItem;
     private javax.swing.JMenuItem openProjectMenuItem;

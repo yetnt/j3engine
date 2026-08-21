@@ -8,6 +8,8 @@ import com.j3d.gen.settings.types.ComplexSetting;
 import com.j3d.storage.files.FilesUtility;
 import com.j3d.ui.settings.PreferencesFrame;
 import com.j3d.ui.settings.popouts.ThemeChanger;
+import com.j3d.ui.theme.J3DTheme;
+import com.j3d.ui.theme.ThemeEntry;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,25 +36,33 @@ public class Settings implements SettingsParent {
     public static SceneProperties sceneProperties = new SceneProperties();
     public static EditorProperties editorProperties = new EditorProperties();
     public static ThemeChanger themeChanger;
-//    public static ComplexSetting<String> changeTheme = new ComplexSetting<>(
-//            "Change Theme",
-//            DatabaseManager.tblThemes.currentSelectedTheme().themeName.getValue(),
-//            "Change your theme (only applies on app restart)",
-//            (e, label) -> {
-//                if (themeChanger == null) {
-//                    themeChanger = new ThemeChanger();
-//                    themeChanger.setVisible(true);
-//                }
-//                String str = DatabaseManager.tblThemes.map()
-//                        .get(themeChanger.getSelectedId())
-//                        .themeName.getValue();
-//                label.setText(
-//                        str
-//                );
-//                return str;
-//            },
-//            () -> DatabaseManager.tblThemes.currentSelectedTheme().themeName.getValue()
-//    );
+    public static ComplexSetting<ThemeEntry> changeTheme = new ComplexSetting<>(
+            "Theme",
+            J3DTheme.getCurrentLoadedTheme(),
+            "Change your theme",
+            (e, label) -> {
+                if (themeChanger == null) {
+                    themeChanger = new ThemeChanger();
+                    themeChanger.setVisible(true);
+                }
+                ThemeEntry str = J3DTheme.getCurrentLoadedTheme();
+                label.setText(str.getName());
+                return str;
+            },
+            J3DTheme.getCurrentLoadedTheme()::getName
+    ).serializable(
+            (t) -> {
+                return
+                        (t.getThemeType() == ThemeEntry.ThemeType.USER_LOADED ? "user" : "engine")
+                        + ":\"" + t.getName() + "\"";
+            },
+            (s) -> {
+                String s2 = s.split(":")[1];
+                String s3 = s2.substring(1, s2.length()-1);
+                ThemeEntry e = ThemeChanger.fromTitle(s3, StaticRefs.getEngineFiles().themeFiles::loadAllEntries);
+                return e;
+            }
+    );
     public static ComplexSetting<File> projectOutputFile = new ComplexSetting<>(
             "Project Output File",
             null,
@@ -128,7 +138,7 @@ public class Settings implements SettingsParent {
     @Override
     public ArrayList<SettingsChild> getAllChildren() {
         return new ArrayList<>() {{
-//            add(changeTheme);
+            add(changeTheme);
             add(projectOutputFile);
             add(cameraProperties);
             add(editorProperties);

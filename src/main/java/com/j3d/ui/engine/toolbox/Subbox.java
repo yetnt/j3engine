@@ -92,7 +92,7 @@ public class Subbox extends javax.swing.JPanel {
 
         toolboxInnerPanel.add(buttonPanel);
         J3DTheme.commitAsGenericUi(buttonPanel);
-        J3DTheme.commitAsGenericUi(btnA);
+        J3DTheme.commitAsGenericLbl(btnA, true);
         J3DTheme.commitAsGenericLbl(label1, false);
         buttons++;
         return btnA;

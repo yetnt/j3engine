@@ -102,6 +102,7 @@ public class PopoutSPanel<T> extends AbstractPanel<ComplexSetting<T>, T> {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         setting.setValue(onOpen.apply(evt, valueLabel));
+        valueLabel.setText(setting.getOnCreate().get());
         this.repaint();
         this.revalidate();
     }//GEN-LAST:event_jButton1ActionPerformed
