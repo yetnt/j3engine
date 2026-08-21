@@ -20,8 +20,4 @@ public class ThemeFiles {
             }
         }
     }
-
-    public HashMap<String, Object> readTheme(String id) throws IOException {
-        
-    }
 }
