@@ -61,6 +61,7 @@ public class Parsing {
     public static BracePairs bracePairs(String line) {
         ArrayList<SamePair<Integer>> finalArr = new ArrayList<>();
         ArrayList<Pair<Integer, Character>> stack = new ArrayList<>();
+        ArrayList<Pair<Integer, Character>> danglingClose = new ArrayList<>();
 
         for(int i = 0; i < line.length(); ++i) {
             char c = line.charAt(i);
@@ -69,6 +70,10 @@ public class Parsing {
             }
 
             if ((c == ']' || c == ')') /*&& Validate.isOpInQuotePair(line, i) == -1*/) {
+                if (stack.isEmpty()) {
+                    danglingClose.add(new Pair<>(i, c));
+                    continue;
+                }
                 Pair<Integer, Character> t = stack.getLast();
                 if (t.second == '[' && c == ']' || t.second == '(' && c == ')') {
                     finalArr.add(new SamePair<>(t.first, i));
@@ -77,7 +82,7 @@ public class Parsing {
             }
         }
 
-        return new BracePairs(finalArr, stack);
+        return new BracePairs(finalArr, stack, danglingClose);
     }
 
 
@@ -108,10 +113,12 @@ public class Parsing {
      *
      * @param closedPairs An {@link ArrayList} of {@link SamePair} representing the start and end indices of closed brace pairs.
      * @param unclosedBraces An {@link ArrayList} of {@link Pair} where each pair contains the index and character of an unclosed brace.
+     * @param danglingClose An {@link ArrayList} of {@link Pair} where each pair contains the index and character of a dangling close brace.
      */
     public record BracePairs(
             ArrayList<SamePair<Integer>> closedPairs,
-            ArrayList<Pair<Integer, Character>> unclosedBraces
+            ArrayList<Pair<Integer, Character>> unclosedBraces,
+            ArrayList<Pair<Integer, Character>> danglingClose
     ) {}
 
     /**
