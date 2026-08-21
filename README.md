@@ -23,8 +23,8 @@ This is a project for my 2026 Matric Practical Assessment Task in IT.
 Clone the repository:
 
 ```sh
-git clone <repository-url>
-cd Jaiva3dEngine
+git clone https://github.com/yetnt/j3engine
+cd j3engine
 ```
 
 Switch to the PAT branch:
