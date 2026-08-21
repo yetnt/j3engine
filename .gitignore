@@ -7,7 +7,7 @@ target/
 /documents/*.docx
 /UCanAccess-5.0.1.bin.zip
 /UCanAccess-5.0.1.bin
-/database/**
+/database/j3db-original.accdb
 /src/main/resources/music/**
 
 ### IntelliJ IDEA ###
