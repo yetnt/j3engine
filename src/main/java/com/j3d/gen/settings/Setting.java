@@ -122,7 +122,7 @@ public class Setting<T> implements SettingsChild, EventEmitterInterface {
         }
         String strValue = parts[1].trim();
         setValue(fromString(strValue));
-        ((AbstractPanel<?, T>)panel()).calculate();
+//        ((AbstractPanel<?, T>)panel()).calculate();
     }
 
     /**

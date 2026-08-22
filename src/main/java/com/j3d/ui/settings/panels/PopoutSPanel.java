@@ -8,6 +8,7 @@ import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.gen.settings.types.ComplexSetting;
 import com.j3d.ui.theme.J3DTheme;
+import com.j3d.utility.generic.func.TriFunction;
 
 import java.awt.event.ActionEvent;
 import java.util.function.BiFunction;
@@ -19,13 +20,13 @@ import javax.swing.JLabel;
  */
 public class PopoutSPanel<T> extends AbstractPanel<ComplexSetting<T>, T> {
 
-    BiFunction<ActionEvent, JLabel, T> onOpen;
+    TriFunction<ActionEvent, JLabel, PopoutSPanel<T>, T> onOpen;
     ComplexSetting<T> setting;
 
     /**
      * Creates new form PopoutSPanel
      */
-    public PopoutSPanel(String initalValue, ComplexSetting<T> setting, BiFunction<ActionEvent, JLabel, T> onOpen) {
+    public PopoutSPanel(String initalValue, ComplexSetting<T> setting, TriFunction<ActionEvent, JLabel, PopoutSPanel<T>, T> onOpen) {
         super(setting);
         initComponents();
         valueLabel.setText(initalValue);
@@ -101,7 +102,7 @@ public class PopoutSPanel<T> extends AbstractPanel<ComplexSetting<T>, T> {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        setting.setValue(onOpen.apply(evt, valueLabel));
+        setting.setValue(onOpen.apply(evt, valueLabel, this));
         valueLabel.setText(setting.getOnCreate().get());
         this.repaint();
         this.revalidate();

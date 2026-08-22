@@ -7,6 +7,7 @@ package com.j3d.ui.settings.popouts;
 import com.j3d.StaticRefs;
 import com.j3d.gen.settings.Settings;
 import com.j3d.ui.engine.floating.properties.PropertiesPanel;
+import com.j3d.ui.settings.panels.PopoutSPanel;
 import com.j3d.ui.theme.DefaultThemes;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.ui.theme.ThemeEntry;
@@ -36,7 +37,7 @@ public class ThemeChanger extends javax.swing.JFrame {
     /**
      * Creates new form ThemeChanger
      */
-    public ThemeChanger() {
+    public ThemeChanger(PopoutSPanel<ThemeEntry> panel) {
         initComponents();
         for (DefaultThemes theme : DefaultThemes.values()) {
             radio(theme.getThemeEntry());
@@ -394,6 +395,8 @@ public class ThemeChanger extends javax.swing.JFrame {
 
             selectedId = adder.getEntry().getName();
             radio(adder.getEntry());
+            this.repaint();
+            this.revalidate();
         }
     }//GEN-LAST:event_addNewThemeActionPerformed
 
@@ -427,7 +430,7 @@ public class ThemeChanger extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ThemeChanger().setVisible(true);
+                new ThemeChanger(null).setVisible(true);
             }
         });
     }

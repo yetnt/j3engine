@@ -40,16 +40,19 @@ public class Settings implements SettingsParent {
             "Theme",
             J3DTheme.getCurrentLoadedTheme(),
             "Change your theme",
-            (e, label) -> {
+            (e, label, panel) -> {
                 if (themeChanger == null) {
-                    themeChanger = new ThemeChanger();
+                    themeChanger = new ThemeChanger(panel);
                     themeChanger.setVisible(true);
                 }
                 ThemeEntry str = J3DTheme.getCurrentLoadedTheme();
                 label.setText(str.getName());
                 return str;
             },
-            J3DTheme.getCurrentLoadedTheme()::getName
+            () -> {
+                ThemeEntry e = J3DTheme.getCurrentLoadedTheme();
+                return e.getName();
+            }
     ).serializable(
             (t) -> {
                 return
@@ -67,7 +70,7 @@ public class Settings implements SettingsParent {
             "Project Output File",
             null,
             "Set the output file.",
-            (e, label) -> {
+            (e, label, ignored) -> {
                 File file = FilesUtility.fileChooser(
                         (cf) -> {
                             File f2 = Settings.projectOutputFile.getValue();
