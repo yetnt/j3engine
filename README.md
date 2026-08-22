@@ -7,45 +7,6 @@ A (Work-In-Progress) 3D Graphics Engine written in Java from scratch using only
 the Java Standard Library and [Swing](https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/package-summary.html)'s 
 2D drawing capabilities.
 
-This is a project for my 2026 Matric Practical Assessment Task in IT.
-
 ## Installation & Run
 
-While in development, the engine has no official release yet.
-To use the engine, clone this repository and compile the Java files using your preferred IDE or command line tools.
-
-(This is a Maven project, so you can also use Maven to handle dependencies and build the project.)
-
-[//]: # (You're also going to have to install the jaiva dependency which can be found in `lib/bin/jaiva.jar`)
-
-[//]: # ()
-[//]: # (In NetBeans this can be done by:)
-
-[//]: # (1. Going into libraries)
-
-[//]: # (2. Right clicking on the jaiva package)
-
-[//]: # (3. Clicking install manually)
-
-[//]: # (4. Locating the jar in `lib/bin/jaiva.jar`)
-
-[//]: # (5. install.)
-
-[//]: # ()
-[//]: # (```bash)
-
-[//]: # (git clone https://github.com/yetnt/j3engine.git)
-
-[//]: # (cd j3engine)
-
-[//]: # (mvn compile)
-
-[//]: # (mvn exec:java -Dexec.mainClass="j3engine.Main")
-
-[//]: # (```)
-
-## Build
-
-Since this is a school project, theres a bunch of files that you'd naturally not have.
-
-### Database
+Man just run the jar
