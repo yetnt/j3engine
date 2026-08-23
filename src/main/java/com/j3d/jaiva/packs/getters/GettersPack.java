@@ -22,6 +22,7 @@ import com.jaiva.tokenizer.tokens.Token;
 import com.jaiva.tokenizer.tokens.specific.TFuncCall;
 
 import java.util.ArrayList;
+import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -54,6 +55,10 @@ public class GettersPack extends BaseLibrary {
         super(LibraryType.LIB, "j3d/objects/getters");
 
         vfs.putAll(new TriGetters().vfs); // adds other tri getters like winding, legs and double-sided proper.
+        vfs.putAll(new CurveGetters().vfs); // curve getters
+        vfs.putAll(new LineGetters().vfs); // line getters
+        vfs.putAll(new Vector3Getters().vfs);
+        vfs.putAll(new ColourGetters().vfs);
 
         GObjectRegistry.forEach(
                 (object) -> {
@@ -70,22 +75,47 @@ public class GettersPack extends BaseLibrary {
                                             @ If (object) holds the structured array
                                             
                                             maak object!
-                                            maak %s <- %s_%s(object);
+                                            maak %s <- get_%s_%s(object);
                                             
                                             khuluma(%s)!
                                             """, s1, namespace, s3, s1)
                                     );
-                    put(vfs, namespace, "getId", function.apply("id", "[UUID]", "getId"), GObject.EngineObjectUtils::getUuid);
-                    put(vfs, namespace, "getPivot", function.apply("pivot", "[Vector3]", "getPivot"), GObject.EngineObjectUtils::getPivot);
-                    put(vfs, namespace, "getColour", function.apply("colour", "[Colour]", "getColour"), GObject.EngineObjectUtils::getColour);
-                    put(vfs, namespace, "getColor", function.apply("color", "[Colour]", "getColor"),  GObject.EngineObjectUtils::getColour);
+                    put(vfs, namespace, "id", function.apply("id", "[UUID]", "id"), GObject.EngineObjectUtils::getUuid);
+                    put(vfs, namespace, "pivot", function.apply("pivot", "[Vector3]", "pivot"), GObject.EngineObjectUtils::getPivot);
+                    putAliases(vfs, namespace,
+                            function.apply("color", "[Colour]", "color"),
+                            GObject.EngineObjectUtils::getColour,
+                            "color", "colour"
+                            );
                 }
+        );
+
+        putAliases(
+                vfs, "uuid",
+                JDoc.builder()
+                        .addDesc("Retrieves the value of the UUID as a string"),
+                (cp, eo) -> {
+
+                    TypeConverter.expectObjectType(eo, EngineObject.Type.UUID, cp);
+                    UUID id = TypeConverter.UUIDfromObject(eo);
+                    return id.toString();
+                },
+                "string", "of", "value"
         );
     }
 
+    public static void putAliases(Vfs vfs, String namespace, JDocBuilder jDocBuilder, Getter getter, String ...labels) {
+        String name = "get_" + namespace + "_" + labels[0];
+        BaseFunction bf = of(name, jDocBuilder, getter);
+        for (String l : labels) {
+            vfs.put("get_" + namespace + "_"  + l, bf);
+        }
+    }
+
     public static void put(Vfs vfs, String namespace, String label, JDocBuilder jDocBuilder, Getter getter) {
-        String name = namespace + "_" + label;
-        vfs.put(name, of(name, jDocBuilder, getter));
+        String name = "get_" + namespace + "_" + label;
+        BaseFunction bf = of(name, jDocBuilder, getter);
+        vfs.put(name, bf);
     }
 
     public static BaseFunction of(String name, JDocBuilder docs, Getter getter) {

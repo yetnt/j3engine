@@ -224,7 +224,7 @@ public abstract class GObject extends EventEmitter implements EventListener, Can
 
     public EngineObject asReference() {
         return new EngineObject(EngineObject.Type.GREF)
-                .addProperty(getEngineObjectType())
+                .addProperty(getEngineObjectType().toString())
                 .addProperty(getId().toString());
     }
 

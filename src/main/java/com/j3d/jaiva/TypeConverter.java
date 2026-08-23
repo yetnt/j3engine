@@ -83,8 +83,8 @@ public class TypeConverter {
 
     public static Object from(EngineObject engineObject) {
         return switch (EngineObject.Type.valueOf(engineObject.getEngineProperties().getLast())) {
-            case VECTOR3 -> Vector3.fromObject(engineObject);
-            case COLOUR -> colorFromObject(engineObject);
+            case VECTOR3 -> Vector3.fromObject(null, engineObject);
+            case COLOUR -> colorFromObject(null, engineObject);
             case UUID -> UUIDfromObject(engineObject);
             case GPOINT, GLINE, GTRI, GCURVE -> getGObject(engineObject);
             case GREF -> getReference(engineObject);
@@ -153,7 +153,7 @@ public class TypeConverter {
                 .addProperty(color.getAlpha());
     }
 
-    public static Color colorFromObject(EngineObject color) {
+    public static Color colorFromObject(GettersPack.CallProperties cp, EngineObject color) {
         return new Color(
                 (int)color.getProperties().getFirst(),
                 (int)color.getProperties().get(1),

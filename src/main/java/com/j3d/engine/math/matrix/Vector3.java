@@ -5,6 +5,7 @@ import com.j3d.engine.math.CartesianPoint;
 import com.j3d.engine.scene.Camera;
 import com.j3d.gen.settings.Settings;
 import com.j3d.jaiva.EngineObject;
+import com.j3d.jaiva.packs.getters.GettersPack;
 
 import javax.management.ConstructorParameters;
 import java.beans.ConstructorProperties;
@@ -532,7 +533,7 @@ public class Vector3 implements MatrixInterface {
                 .addProperty(x).addProperty(y).addProperty(z);
     }
 
-    public static Vector3 fromObject(EngineObject obj) {
+    public static Vector3 fromObject(GettersPack.CallProperties callProperties, EngineObject obj) {
         return new Vector3(
                 (double)obj.getProperties().getFirst(),
                 (double)obj.getProperties().get(1),

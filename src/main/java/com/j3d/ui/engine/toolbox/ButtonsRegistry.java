@@ -96,6 +96,8 @@ public abstract class ButtonsRegistry {
                 2,
                 (a, b, c) -> {
 
+                    // TODO: this should prolly be 1 thread with the below stats. oh well.
+
                     ScheduledExecutorService executor =
                             Executors.newSingleThreadScheduledExecutor();
 
