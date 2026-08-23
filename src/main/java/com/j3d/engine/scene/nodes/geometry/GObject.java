@@ -11,8 +11,10 @@ import com.j3d.engine.react.events.EventEmitter;
 import com.j3d.engine.react.events.EventListener;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.math.matrix.Vector3;
-import com.j3d.gen.properties.HasProperties;
 import com.j3d.gen.properties.Property;
+import com.j3d.jaiva.EngineObject;
+import com.j3d.jaiva.TypeConverter;
+import com.j3d.jaiva.packs.getters.GettersPack;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.ui.dialog.Spinner;
 
@@ -209,5 +211,36 @@ public abstract class GObject extends EventEmitter implements EventListener, Can
 
     public boolean isDeletedState() {
         return false;
+    }
+
+    public abstract EngineObject.Type getEngineObjectType();
+
+    public EngineObject toObject() {
+        return new EngineObject(getEngineObjectType())
+                .addProperty(TypeConverter.convertUUID(getId()))
+                .addProperty(getPivot().toObject())
+                .addProperty(TypeConverter.convertColor(getColour()));
+    }
+
+    public EngineObject asReference() {
+        return new EngineObject(EngineObject.Type.GREF)
+                .addProperty(getEngineObjectType())
+                .addProperty(getId().toString());
+    }
+
+    // assuming the incoming engine object is a type of GObject
+    public static class EngineObjectUtils {
+        public static EngineObject getUuid(GettersPack.CallProperties call, EngineObject object) {
+            ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().getFirst());
+            return TypeConverter.fromArr(arr);
+        }
+        public static EngineObject getPivot(GettersPack.CallProperties call, EngineObject object) {
+            ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(1));
+            return TypeConverter.fromArr(arr);
+        }
+        public static EngineObject getColour(GettersPack.CallProperties call, EngineObject object) {
+            ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(2));
+            return TypeConverter.fromArr(arr);
+        }
     }
 }

@@ -62,8 +62,7 @@ public class Settings implements SettingsParent {
             (s) -> {
                 String s2 = s.split(":")[1];
                 String s3 = s2.substring(1, s2.length()-1);
-                ThemeEntry e = ThemeChanger.fromTitle(s3, StaticRefs.getEngineFiles().themeFiles::loadAllEntries);
-                return e;
+                return ThemeChanger.fromTitle(s3, StaticRefs.getEngineFiles().themeFiles::loadAllEntries);
             }
     );
     public static ComplexSetting<File> projectOutputFile = new ComplexSetting<>(

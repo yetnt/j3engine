@@ -256,7 +256,7 @@ public class CommandParser {
      * @param col the colour to convert
      * @return a string in the palette colour format, including surrounding '#'
      */
-    public String colourToCommandPaletteString(Color col) {
+    public static String colourToCommandPaletteString(Color col) {
         return String.format(
                 "#%d:%d:%d:%d#",
                 col.getRed(),

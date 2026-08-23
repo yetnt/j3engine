@@ -1,6 +1,12 @@
 package com.j3d.engine.scene.nodes.geometry;
 
 import com.j3d.engine.interact.cmd.CmdToken;
+import com.j3d.jaiva.EngineObject;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * Defines the main registry for checking for GObjects, primarily used by these subsystems:
@@ -22,19 +28,19 @@ public enum GObjectRegistry {
     /**
      * a point.
      */
-    POINT(GPoint.class, "point", CmdToken.Type.ID_POINT),
+    POINT(GPoint.class, "point", CmdToken.Type.ID_POINT, EngineObject.Type.GPOINT),
     /**
      * a curve
      */
-    LINE(GLine.class, "line", CmdToken.Type.ID_LINE),
+    LINE(GLine.class, "line", CmdToken.Type.ID_LINE, EngineObject.Type.GLINE),
     /**
      * a triangle
      */
-    TRI(GTri.class, "tri", CmdToken.Type.ID_TRI),
+    TRI(GTri.class, "tri", CmdToken.Type.ID_TRI, EngineObject.Type.GTRI),
     /**
      * a curve
      */
-    CURVE(GCurve.class, "curve", CmdToken.Type.ID_CURVE);
+    CURVE(GCurve.class, "curve", CmdToken.Type.ID_CURVE, EngineObject.Type.GCURVE);
 
     /**
      * The actual class
@@ -49,12 +55,28 @@ public enum GObjectRegistry {
      * the command token type associated with this gobject.
      */
     private final CmdToken.Type type;
+    private final EngineObject.Type engineObjectType;
 
-    GObjectRegistry(Class<? extends GObject> clazz, String simpleName, CmdToken.Type type) {
+    GObjectRegistry(Class<? extends GObject> clazz, String simpleName, CmdToken.Type type, EngineObject.Type engineObjectType) {
         this.clazz = clazz;
         this.simpleName = simpleName;
         this.type = type;
+        this.engineObjectType = engineObjectType;
 
+    }
+
+    public static ArrayList<Class<?>> getClasses() {
+        ArrayList<Class<?>> classes = new ArrayList<>();
+        for (GObjectRegistry registry : values()) {
+            classes.add(registry.clazz);
+        }
+        return classes;
+    }
+
+    public static void forEach(Consumer<GObjectRegistry> consumer) {
+        for (GObjectRegistry registry : values()) {
+            consumer.accept(registry);
+        }
     }
 
     public Class<? extends GObject> getClazz() {
@@ -147,6 +169,13 @@ public enum GObjectRegistry {
             if (registry.getSimpleName().substring(0, 2).repeat(2).equals(letters)) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    public static boolean isGObject(EngineObject.Type type) {
+        for (GObjectRegistry registry : values()) {
+            if (registry.engineObjectType == type) return true;
         }
         return false;
     }

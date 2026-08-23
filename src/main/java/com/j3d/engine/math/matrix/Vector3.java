@@ -4,6 +4,7 @@ import com.j3d.StaticRefs;
 import com.j3d.engine.math.CartesianPoint;
 import com.j3d.engine.scene.Camera;
 import com.j3d.gen.settings.Settings;
+import com.j3d.jaiva.EngineObject;
 
 import javax.management.ConstructorParameters;
 import java.beans.ConstructorProperties;
@@ -525,4 +526,17 @@ public class Vector3 implements MatrixInterface {
      * A static constant representing the unit vector (1, 1, 1).
      */
     public static Vector3 UNIT = new Vector3(1, 1, 1);
+
+    public EngineObject toObject() {
+        return new EngineObject(EngineObject.Type.VECTOR3)
+                .addProperty(x).addProperty(y).addProperty(z);
+    }
+
+    public static Vector3 fromObject(EngineObject obj) {
+        return new Vector3(
+                (double)obj.getProperties().getFirst(),
+                (double)obj.getProperties().get(1),
+                (double)obj.getProperties().getLast()
+        );
+    }
 }

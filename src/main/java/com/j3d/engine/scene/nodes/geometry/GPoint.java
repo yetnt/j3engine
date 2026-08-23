@@ -12,6 +12,7 @@ import com.j3d.engine.geometry.Point;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.react.events.EventType;
+import com.j3d.jaiva.EngineObject;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.ui.dialog.Spinner;
 
@@ -45,7 +46,7 @@ public class GPoint extends GObject implements HasParents<GObject>, DecomposeWhe
      * </p>
      */
     public static final int DIAMETER = 7;
-    private HashSet<GObject> parents = new HashSet<>();
+    private final HashSet<GObject> parents = new HashSet<>();
 
     /**
      * Constructs a GPoint.
@@ -169,5 +170,12 @@ public class GPoint extends GObject implements HasParents<GObject>, DecomposeWhe
         decompose();
         return getDecomposeList();
     }
+
+    @Override
+    public EngineObject.Type getEngineObjectType() {
+        return EngineObject.Type.GPOINT;
+    }
+
+    // GPoint adds nothing extra
 
 }

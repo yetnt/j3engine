@@ -108,6 +108,30 @@ public class Parsing {
         return sb.toString();
     }
 
+    public static String removeCCol(String rawMessage) {
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < rawMessage.length(); i++) {
+            if (rawMessage.charAt(i) == '\u001B'
+                    && i + 1 < rawMessage.length()
+                    && rawMessage.charAt(i + 1) == '[') {
+
+                i += 2;
+
+                // Skip until the terminating 'm'
+                while (i < rawMessage.length() && rawMessage.charAt(i) != 'm') {
+                    i++;
+                }
+
+                continue;
+            }
+
+            result.append(rawMessage.charAt(i));
+        }
+
+        return result.toString();
+    }
+
     /**
      * A record to hold the results of the {@link #bracePairs(String)} method.
      *

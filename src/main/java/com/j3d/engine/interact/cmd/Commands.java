@@ -50,6 +50,7 @@ public class Commands extends EventEmitter {
     public CreateCmd createCmd = new CreateCmd();
     public JoinCmd joinCmd = new JoinCmd();
     public ExtrudeCmd extrudeCmd = new ExtrudeCmd();
+    public JaivaExecCmd jaivaExecCmd = new JaivaExecCmd();
 
     /**
      * Default (empty) constructor
@@ -76,7 +77,8 @@ public class Commands extends EventEmitter {
                 explodeCmd, uiCmd, helpCmd,
                 prismCmd, measureCmd, clipboardCmd,
                 selectCmd, quickTranslateCmd, camera,
-                createCmd, joinCmd, extrudeCmd
+                createCmd, joinCmd, extrudeCmd,
+                jaivaExecCmd
         ));
     }
 

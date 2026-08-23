@@ -11,6 +11,10 @@ import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.react.events.IdempotentEventListener;
 import com.j3d.gen.properties.Property;
+import com.j3d.jaiva.EngineObject;
+import com.j3d.jaiva.TypeConverter;
+import com.j3d.jaiva.packs.getters.GettersPack;
+import com.j3d.jaiva.packs.getters.J3DGetterException;
 import com.j3d.utility.generic.tuple.SamePair;
 
 import java.awt.*;
@@ -206,5 +210,42 @@ public class GCurve extends GObject implements IdempotentEventListener<GPointMov
         );
         curve.setColour(getColour());
         return curve;
+    }
+
+    @Override
+    public EngineObject.Type getEngineObjectType() {
+        return EngineObject.Type.GCURVE;
+    }
+
+    @Override
+    public EngineObject toObject() {
+        return super.toObject()
+                .addProperty(getStart().asReference())
+                .addProperty(getControlPoint().asReference())
+                .addProperty(getEnd().asReference())
+                .addProperty(amount);
+    }
+
+    // assuming the incoming engine object is a type of GObject
+    public static class EngineObjectUtils {
+        public static EngineObject getStart(GettersPack.CallProperties call, EngineObject object) throws J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.GCURVE, call);
+            ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(3));
+            return TypeConverter.fromArr(arr);
+        }
+        public static EngineObject getControlPoint(GettersPack.CallProperties call, EngineObject object) throws J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.GCURVE, call);
+            ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(4));
+            return TypeConverter.fromArr(arr);
+        }
+        public static EngineObject getEnd(GettersPack.CallProperties call, EngineObject object) throws J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.GCURVE, call);
+            ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(5));
+            return TypeConverter.fromArr(arr);
+        }
+        public static int getAmount(GettersPack.CallProperties call, EngineObject object) throws J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.GCURVE, call);
+            return TypeConverter.expectType(object.getProperties().get(6), Integer.class);
+        }
     }
 }

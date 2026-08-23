@@ -13,6 +13,10 @@ import com.j3d.engine.react.events.IdempotentEventListener;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.gen.properties.Property;
+import com.j3d.jaiva.EngineObject;
+import com.j3d.jaiva.TypeConverter;
+import com.j3d.jaiva.packs.getters.GettersPack;
+import com.j3d.jaiva.packs.getters.J3DGetterException;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.ui.dialog.Spinner;
 
@@ -317,5 +321,31 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
     public ArrayList<RenderState<Segment, GObject>> getDecomposeList() {
         if (renderState == null) return new ArrayList<>();
         return new ArrayList<>(Collections.singletonList(renderState));
+    }
+
+    @Override
+    public EngineObject.Type getEngineObjectType() {
+        return EngineObject.Type.GLINE;
+    }
+
+    @Override
+    public EngineObject toObject() {
+        return super.toObject()
+                .addProperty(getA().asReference())
+                .addProperty(getB().asReference());
+    }
+
+    // assuming the incoming engine object is a type of GObject
+    public static class EngineObjectUtils {
+        public static EngineObject getPointA(GettersPack.CallProperties call, EngineObject object) throws J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.GLINE, call);
+            ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(3));
+            return TypeConverter.fromArr(arr);
+        }
+        public static EngineObject getPointB(GettersPack.CallProperties call, EngineObject object) throws J3DGetterException{
+            TypeConverter.expectObjectType(object, EngineObject.Type.GLINE, call);
+            ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(4));
+            return TypeConverter.fromArr(arr);
+        }
     }
 }

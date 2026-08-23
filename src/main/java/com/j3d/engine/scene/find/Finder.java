@@ -134,7 +134,8 @@ public class Finder {
                             // if the GObject isnt what we're looking for:
                             if (!clazz.isInstance(g)) {
                                 // then youre looking for something that just wouldn't exist in this list.
-                                return new FindResult();
+                                continue;
+//                                return new FindResult();
                             } else {
                                 // if we do find a GObject, apply the query
                                 if (query.apply((T) g, value)) {

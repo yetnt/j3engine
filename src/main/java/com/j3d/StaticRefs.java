@@ -17,6 +17,7 @@ import com.j3d.errors.ErrorHandler;
 import com.j3d.gen.docs.DocsProvider;
 import com.j3d.gen.settings.Settings;
 import com.j3d.gen.settings.classes.CameraProperties;
+import com.j3d.jaiva.JaivaInstanceManager;
 import com.j3d.storage.files.engine.EngineFiles;
 import com.j3d.storage.files.engine.LogFile;
 import com.j3d.storage.files.protocol.proj.PF1;
@@ -322,6 +323,11 @@ public abstract class StaticRefs {
     private static final ErrorHandler errs = new ErrorHandler();
     public static ErrorHandler getErrs() {
         return errs;
+    }
+
+    private static final JaivaInstanceManager jaivaInstanceManager = new JaivaInstanceManager();
+    public static JaivaInstanceManager getJaivaInstanceManager() {
+        return jaivaInstanceManager;
     }
 
     /**

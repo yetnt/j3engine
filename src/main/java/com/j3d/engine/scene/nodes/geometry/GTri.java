@@ -25,9 +25,14 @@ import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.gen.properties.Property;
 import com.j3d.StaticConfig;
+import com.j3d.jaiva.EngineObject;
+import com.j3d.jaiva.TypeConverter;
+import com.j3d.jaiva.packs.getters.GettersPack;
+import com.j3d.jaiva.packs.getters.J3DGetterException;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.storage.files.protocol.proj.PF1;
 import com.j3d.ui.dialog.Spinner;
+import com.jaiva.tokenizer.tokens.specific.TFuncCall;
 
 import static com.j3d.StaticRefs.getSceneManager;
 
@@ -552,6 +557,60 @@ public class GTri extends GObject implements IdempotentEventListener<GPointMoved
                     }
                 }
         );
+    }
+
+    @Override
+    public EngineObject.Type getEngineObjectType() {
+        return EngineObject.Type.GTRI;
+    }
+
+    @Override
+    public EngineObject toObject() {
+        return super.toObject()
+                .addProperty(getLegA().asReference())
+                .addProperty(getLegB().asReference())
+                .addProperty(getLegC().asReference())
+                .addProperty(getWinding().first().asReference())
+                .addProperty(getWinding().second().asReference())
+                .addProperty(getWinding().third().asReference())
+                .addProperty(doubleSided);
+    }
+
+    // assuming the incoming engine object is a type of GObject
+    public static class EngineObjectUtils {
+        public static EngineObject getLegA(GettersPack.CallProperties c, EngineObject object) throws J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.GTRI, c);
+            ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(3));
+            return TypeConverter.fromArr(arr);
+        }
+        public static EngineObject getLegB(GettersPack.CallProperties c, EngineObject object) throws J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.GTRI, c);
+            ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(4));
+            return TypeConverter.fromArr(arr);
+        }
+        public static EngineObject getLegC(GettersPack.CallProperties c, EngineObject object) throws J3DGetterException{
+            TypeConverter.expectObjectType(object, EngineObject.Type.GTRI, c);
+            ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(5));
+            return TypeConverter.fromArr(arr);
+        }
+        public static EngineObject getWindingA(GettersPack.CallProperties c, EngineObject object) throws J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.GTRI, c);
+            ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(6));
+            return TypeConverter.fromArr(arr);
+        }
+        public static EngineObject getWindingB(GettersPack.CallProperties c, EngineObject object) throws J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.GTRI, c);
+            ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(7));
+            return TypeConverter.fromArr(arr);
+        }
+        public static EngineObject getWindingC(GettersPack.CallProperties c, EngineObject object) throws J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.GTRI, c);
+            ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(8));
+            return TypeConverter.fromArr(arr);
+        }
+        public static boolean getIsDoubleSided(GettersPack.CallProperties t, EngineObject object) {
+            return TypeConverter.expectType(object.getProperties().get(9), Boolean.class);
+        }
     }
 
 }
