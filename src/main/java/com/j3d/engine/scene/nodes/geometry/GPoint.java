@@ -100,7 +100,7 @@ public class GPoint extends GObject implements HasParents<GObject>, DecomposeWhe
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof GPoint other)) return false;
-        return Objects.equals(this.getPivot(), other.getPivot());
+        return Objects.equals(getId(), other.getId()) && Objects.equals(this.getPivot(), other.getPivot());
     }
 
     @Override
