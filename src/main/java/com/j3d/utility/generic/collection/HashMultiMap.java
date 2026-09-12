@@ -10,6 +10,8 @@ import java.util.HashMap;
  *     associated with a key, and {@link #getValues(Object)} to retrieve all values for a given key.
  * </p>
  *
+ * This is actually from <a href="https://github.com/yetnt/jaiva-vscode/blob/main/src/mmap.ts">Jaiva's VSCode Extension</a>
+ *
  * @param <K> the type of keys maintained by this multimap
  * @param <T> the type stored in the list
  * @author Lehlogonolo Poole

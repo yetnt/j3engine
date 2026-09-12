@@ -29,7 +29,7 @@ Italics - V3 addition
 > the logic
 
 - J3D Header `UTF-8` `(J3D)`
-- **J3D Version `short` `(1)`** 
+- **J3D Version `short` `(1)`** (it was gonna be a short but then it means changing ProjectFile base class to be short breaking PF1 and PF2 or ovberriding the logic that it does just to change form int to short so fuck this idea.)
 - PROJECT Header `UTF-8` `PROJECT`
 - PROJECT Header Version `short` `(3)`
 - _`Padding A`_

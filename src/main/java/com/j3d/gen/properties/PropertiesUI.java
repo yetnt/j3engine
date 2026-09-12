@@ -67,6 +67,9 @@ public class PropertiesUI {
                         case POINT -> {
                             if (o instanceof GPoint) filtered.add((T) o);
                         }
+                        case CURVE -> {
+                            if (o instanceof GCurve) filtered.add((T)o);
+                        }
                         case THING -> filtered.add(
                                 (T) getSceneManager().findObjectParent(o)
                         );
@@ -138,6 +141,7 @@ public class PropertiesUI {
             case POINT -> filterCommonProperties(objects, GPoint.class);
             case LINE -> filterCommonProperties(objects, GLine.class);
             case TRI -> filterCommonProperties(objects, GTri.class);
+            case CURVE -> filterCommonProperties(objects, GCurve.class);
             case THING -> filterCommonProperties(objects, Thing.class);
             case LAYER -> filterCommonProperties(objects, Layer.class);
         };

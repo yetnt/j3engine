@@ -37,11 +37,7 @@ public class Startup {
     }
 
     public static void run() {
-        StaticRefs.none();
-        J3DTheme.loadTheme(
-                Settings.changeTheme.getValue()
-        );
-        Projects  frame = new Projects();
+        Projects frame = new Projects();
         frame.setVisible(true);
     }
 

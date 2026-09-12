@@ -116,7 +116,7 @@ public class PropertiesPanel extends javax.swing.JPanel {
 
         comboBox.setBackground(J3DTheme.BACKGROUND.color());
         comboBox.setForeground(J3DTheme.TEXT_PRIMARY.color());
-        comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "default", "point", "line", "tri", "thing", "layer" }));
+        comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "default", "point", "line", "tri", "curve", "thing", "layer" }));
         comboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboBoxActionPerformed(evt);
@@ -185,6 +185,7 @@ public class PropertiesPanel extends javax.swing.JPanel {
             case "point" -> SelectionPropertiesFilter.POINT;
             case "line" -> SelectionPropertiesFilter.LINE;
             case "tri" -> SelectionPropertiesFilter.TRI;
+            case "curve" -> SelectionPropertiesFilter.CURVE;
             default -> SelectionPropertiesFilter.DEFAULT;
         };
         load();

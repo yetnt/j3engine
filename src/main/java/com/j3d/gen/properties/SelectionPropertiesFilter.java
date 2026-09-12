@@ -6,5 +6,5 @@ public enum SelectionPropertiesFilter {
     LINE,
     TRI,
     THING,
-    LAYER
+    CURVE, LAYER
 }

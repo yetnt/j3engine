@@ -6,7 +6,7 @@
 
     <groupId>com.j3d</groupId>
     <artifactId>J3Engine</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 
     <dependencies>
         <dependency>
@@ -23,6 +23,20 @@
     </properties>
 
     <build>
+
+<!--        <pluginManagement>-->
+<!--            <plugins>-->
+<!--                <plugin>-->
+<!--                    <groupId>org.panteleyev</groupId>-->
+<!--                    <artifactId>jpackage-maven-plugin</artifactId>-->
+<!--                    <version>1.6.0</version>-->
+<!--                    <configuration>-->
+<!--                        &lt;!&ndash; Empty config to make IDE happy &ndash;&gt;-->
+<!--                    </configuration>-->
+<!--                </plugin>-->
+<!--            </plugins>-->
+<!--        </pluginManagement>-->
+
         <plugins>
             <!-- Create the fat JAR -->
             <plugin>
@@ -45,6 +59,75 @@
                     </execution>
                 </executions>
             </plugin>
+
+
+            <plugin>
+                <groupId>org.panteleyev</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jpackage</goal>
+                        </goals>
+                        <configuration>
+                            <name>J3Engine</name>
+                            <appVersion>${project.version}</appVersion>
+                            <icon>src/main/resources/art/logo/J3Dicon.ico</icon>
+                            <description>J3Engine Project</description>
+                            <vendor>yetnt</vendor>
+                            <mainClass>com.j3d.Main</mainClass>
+                            <mainJar>${project.build.finalName}.jar</mainJar>
+                            <!--                        <runtimeImage>${java.home}</runtimeImage>-->
+
+                            <resourceDir>src/main/resources</resourceDir>
+                            <type>MSI</type>
+
+
+                            <input>${project.build.directory}</input>
+                            <destination>${project.build.directory}/jpackage</destination>
+
+                            <winMenu>true</winMenu>
+                            <winShortcut>true</winShortcut>
+
+                            <!-- File associations -->
+                            <fileAssociations>
+                                <fileAssociation>src/main/resources/file-assoc-j3d.properties</fileAssociation>
+                            </fileAssociations>
+
+                            <winPerUserInstall>false</winPerUserInstall>
+                            <aboutUrl>https://github.com/yetnt/j3engine</aboutUrl>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-icon</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources/art/logo</directory>
+                                    <includes>
+                                        <include>J3Dicon.ico</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 
