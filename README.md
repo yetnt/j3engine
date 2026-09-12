@@ -9,4 +9,4 @@ the Java Standard Library and [Swing](https://docs.oracle.com/en/java/javase/21/
 
 ## Installation & Run
 
-Man just run the jar
+Man just run the `.jar` or `.msi` man with like Java 21 and you good.
