@@ -96,7 +96,7 @@
                                 <fileAssociation>src/main/resources/file-assoc-j3d.properties</fileAssociation>
                             </fileAssociations>
 
-                            <winPerUserInstall>false</winPerUserInstall>
+                            <winPerUserInstall>true</winPerUserInstall>
                             <aboutUrl>https://github.com/yetnt/j3engine</aboutUrl>
                         </configuration>
                     </execution>
