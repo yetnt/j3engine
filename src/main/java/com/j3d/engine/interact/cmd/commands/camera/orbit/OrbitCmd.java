@@ -113,14 +113,17 @@ public class OrbitCmd extends Subcommand implements StatefulCommand<Pair<Vector3
         StaticRefs.getLog().println(
                 "Camera was rotated from: pos-" + object.first.toCommandPaletteString() + " rot-" + object.second.toLogString() + " to " + StaticRefs.getCamera().getRotation().toLogString()
         );
+
+        StaticRefs.getCamera().setPosition(StaticRefs.getCamera().getPosition());
+        StaticRefs.getCamera().setRotation(StaticRefs.getCamera().getRotation());
         // done
     }
 
     @Override
     public  void onEsc(ActionEvent e, Pair<Vector3, Rotation> object, SafeJLabel label) {
         StatefulCommand.super.onEsc(e, object, label);
-        StaticRefs.getCamera().setPosition(object.first);
-        StaticRefs.getCamera().setRotation(object.second);
+        StaticRefs.getCamera().setPositionNoEvent(object.first);
+        StaticRefs.getCamera().setRotationNoEvent(object.second);
         cleanup(label);
     }
 

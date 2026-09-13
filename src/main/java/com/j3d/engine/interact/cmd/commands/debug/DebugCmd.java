@@ -43,7 +43,8 @@ public class DebugCmd extends Command {
                 new EchoCmd(),
                 new TypeOf(),
                 new RandomUUIDCmd(),
-                new TriangleCmd()
+                new TriangleCmd(),
+                new TestCmd()
         ).parseUsages();
     }
 

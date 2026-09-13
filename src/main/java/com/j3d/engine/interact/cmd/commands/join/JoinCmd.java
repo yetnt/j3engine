@@ -76,6 +76,7 @@ public class JoinCmd extends Command implements SemiStatefulCommand {
                             CommandsManager.clearCurrent();
                             SelectionManager.selectionMouseOwner.clearSelectionSquare();
                             selectionPreCondition.finaliseCleanup();
+                            fire(true);
 
                             // check the new selection if it ahs a single point
                             HashSet<GObject> newSelection = StaticRefs.getSceneManager().getSelected();

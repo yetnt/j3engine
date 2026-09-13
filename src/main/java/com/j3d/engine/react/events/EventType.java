@@ -7,6 +7,7 @@ import com.j3d.engine.react.events.payloads.*;
 import com.j3d.engine.interact.input.mouse.AlwaysMouseOwner;
 import com.j3d.engine.interact.input.mouse.SnapMouseOwner;
 import com.j3d.engine.interact.selection.SelectionMouseOwner;
+import com.j3d.engine.scene.Camera;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.gen.guide.GuideInfo;
 import com.j3d.gen.settings.Setting;
@@ -66,4 +67,8 @@ public enum EventType {
      * payload class of {@link MouseClickPayload}
      */
     MOUSE_CLICKED,
+    /**
+     * The camera moved. Broadcast by {@link Camera} with a payload class of {@link CameraUpdatedEventPayload}
+     */
+    CAMERA_MOVED
 }

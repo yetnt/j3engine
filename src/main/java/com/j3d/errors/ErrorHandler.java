@@ -5,6 +5,7 @@ import com.j3d.errors.severity.J3DFatal;
 import com.j3d.errors.severity.J3DMild;
 import com.j3d.errors.severity.J3DWarning;
 import com.j3d.errors.severity.J3ErrSeverity;
+import com.j3d.ui.engine.J3Splash;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -93,6 +94,8 @@ public class ErrorHandler {
             }
             case J3DFatal j3f -> {
                 // Fatal errors are unrecoverable.
+                if (J3Splash.isPlaying())
+                    J3Splash.stop();
                 StaticRefs.getLog().error(err);
                 JOptionPane.showMessageDialog(StaticRefs.getMainFrame(), err.getMessage(), "Fatal Error " + err.errorCode(), JOptionPane.ERROR_MESSAGE);
                 if (j3f.terminate()) {

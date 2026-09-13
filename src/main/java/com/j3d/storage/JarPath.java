@@ -1,6 +1,5 @@
 package com.j3d.storage;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.function.Function;

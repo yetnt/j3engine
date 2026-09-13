@@ -1,5 +1,6 @@
 package com.j3d.engine.react.events.payloads;
 
+import com.j3d.engine.interact.cmd.base.SemiStatefulCommand;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
@@ -15,11 +16,11 @@ import com.j3d.engine.react.events.EventType;
  * @see CompletionType
  * @author Lehlogonolo Poole
  */
-public class StatefulCommandCompletedPayload extends EventPayload<StatefulCommand<?>> {
+public class StatefulCommandCompletedPayload extends EventPayload<SemiStatefulCommand> {
 
     private final CompletionType completionType;
 
-    public StatefulCommandCompletedPayload(StatefulCommand<?> e, boolean userHitEnter) {
+    public StatefulCommandCompletedPayload(SemiStatefulCommand e, boolean userHitEnter) {
         super(e);
         completionType = userHitEnter ? CompletionType.ENTER : CompletionType.CANCEL;
     }
@@ -29,7 +30,8 @@ public class StatefulCommandCompletedPayload extends EventPayload<StatefulComman
     }
 
     /**
-     * Represents the manner in which a {@link StatefulCommand} completed its execution.
+     * Represents the manner in which a {@link StatefulCommand} completed its execution. however if the given
+     * only implements as high as {@link SemiStatefulCommand} it will always be {@link #ENTER}
      */
     public enum CompletionType {
         /**

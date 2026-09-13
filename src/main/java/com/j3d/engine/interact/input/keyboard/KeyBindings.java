@@ -34,6 +34,8 @@ public class KeyBindings {
      */
     private final ArrayList<J3Key> keys = new ArrayList<>();
 
+    public static ArrayList<KeyStroke> globalKeyStrokes = new ArrayList<>();
+
     /**
      * A list of prohibited key bindings that should not be added to the input and action maps. This is used to prevent
      * common key bindings that would interfere with the application's functionality from being added by the user.
@@ -71,6 +73,7 @@ public class KeyBindings {
                 .filter(Objects::nonNull)
                 .peek((s) -> sb.append("\t").append(s).append("\n"))
                 .collect(Collectors.toCollection(ArrayList::new));
+        globalKeyStrokes.addAll(prohibited);
         // remove last \n
         sb.deleteCharAt(sb.length() - 1);
         StaticRefs.getLog().println("prohibited keys: \n" + sb);
@@ -86,10 +89,15 @@ public class KeyBindings {
         );
 
         for (GlobalKeybinds key : GlobalKeybinds.values()) {
+            globalKeyStrokes.add(key.getKey().getKeyStroke());
             rJ3Key(
                     key.getKey()
             );
         }
+    }
+
+    public static ArrayList<KeyStroke> getGlobalKeyStrokes() {
+        return globalKeyStrokes;
     }
 
     /** Initialises the key bindings for the application.

@@ -3,6 +3,7 @@ package com.j3d.engine.interact.cmd;
 import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.Command;
+import com.j3d.engine.interact.cmd.base.SemiStatefulCommand;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.commands.*;
 import com.j3d.engine.interact.cmd.commands.camera.CameraCmd;
@@ -11,10 +12,13 @@ import com.j3d.engine.interact.cmd.commands.create.CreateCmd;
 import com.j3d.engine.interact.cmd.commands.debug.DebugCmd;
 import com.j3d.engine.interact.cmd.commands.engine.EngineCmd;
 import com.j3d.engine.interact.cmd.commands.join.JoinCmd;
+import com.j3d.engine.interact.cmd.commands.macro.MacroCmd;
 import com.j3d.engine.interact.cmd.commands.measure.MeasureCmd;
 import com.j3d.engine.interact.cmd.commands.transform.qtrans.QuickTranslateCmd;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 import com.j3d.engine.interact.cmd.commands.uicmd.UICmd;
+import com.j3d.engine.interact.macros.MacroRecorder;
+import com.j3d.engine.interact.selection.SelectionManager;
 import com.j3d.engine.react.events.payloads.CommandFiredPayload;
 import com.j3d.engine.react.events.payloads.StatefulCommandCompletedPayload;
 import com.j3d.engine.react.events.EventEmitter;
@@ -35,6 +39,9 @@ import java.util.List;
  * @see CommandsManager
  */
 public class Commands extends EventEmitter {
+
+    private MacroRecorder macroRecorder;
+
     public DebugCmd debug = new DebugCmd();
     public TransformCmd transform = new TransformCmd();
     public EngineCmd engine = new EngineCmd();
@@ -51,6 +58,7 @@ public class Commands extends EventEmitter {
     public JoinCmd joinCmd = new JoinCmd();
     public ExtrudeCmd extrudeCmd = new ExtrudeCmd();
     public JaivaExecCmd jaivaExecCmd = new JaivaExecCmd();
+    public MacroCmd macroCmd = new MacroCmd();
 
     /**
      * Default (empty) constructor
@@ -64,6 +72,10 @@ public class Commands extends EventEmitter {
                         .reduce((a, b) -> a + ", " + b)
                 + ")"
         );
+        macroRecorder = new MacroRecorder();
+        this.attachListener(macroRecorder);
+        SelectionManager.selectionMouseOwner.attachListener(macroRecorder);
+        StaticRefs.getCamera().attachListener(macroRecorder);
     }
 
     /**
@@ -78,7 +90,7 @@ public class Commands extends EventEmitter {
                 prismCmd, measureCmd, clipboardCmd,
                 selectCmd, quickTranslateCmd, camera,
                 createCmd, joinCmd, extrudeCmd,
-                jaivaExecCmd
+                jaivaExecCmd, macroCmd
         ));
     }
 
@@ -96,7 +108,7 @@ public class Commands extends EventEmitter {
     }
 
     public void statefulCompleted(
-            StatefulCommand<?> statefulCommand,
+            SemiStatefulCommand statefulCommand,
             boolean userHitEnter
     ) {
         broadcast(
@@ -105,4 +117,7 @@ public class Commands extends EventEmitter {
         );
     }
 
+    public MacroRecorder getMacroRecorder() {
+        return macroRecorder;
+    }
 }

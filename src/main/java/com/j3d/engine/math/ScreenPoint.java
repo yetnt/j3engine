@@ -48,6 +48,18 @@ public class ScreenPoint extends BasePoint<Integer> {
         return new Point(x, y);
     }
 
+    public String toMacroPoint() {
+        return "[" + x + ";" + y + "]";
+    }
+
+    public static ScreenPoint fromMacroPoint(String macroPoint) {
+        String arg = macroPoint.substring(1, macroPoint.length() - 1);
+        String[] split = arg.split(";");
+        int x = Integer.parseInt(split[0]);
+        int y = Integer.parseInt(split[1]);
+        return new ScreenPoint(x, y);
+    }
+
     @Override
     public String toString() {
         return "SP[" +

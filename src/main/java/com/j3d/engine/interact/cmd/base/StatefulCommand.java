@@ -27,7 +27,6 @@ import java.util.UUID;
  * so it sets itself. if this is not done {@link StatefulCommand#run(StatefulCommand, String, Object, SafeJLabel)} will exit early.
  * @param <T> The type of object that the command operates on.
  * @author Lehlogonolo Poole
- * @see CommandParser#run()
  * @see CommandsManager#setAsCurrent(SemiStatefulCommand)
  */
 public interface StatefulCommand<T> extends SemiStatefulCommand {
@@ -45,7 +44,7 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
      * @param label The SafeJLabel instance.
      */
     default void onEnter(ActionEvent e, T object, SafeJLabel label) {
-        CommandsManager.commands.statefulCompleted(this, true);
+        fire(true);
     }
 
     /**
@@ -55,7 +54,7 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
      * @param label The SafeJLabel instance.
      */
     default void onEsc(ActionEvent e, T object, SafeJLabel label) {
-        CommandsManager.commands.statefulCompleted(this, false);
+        fire(false);
     }
 
     default void run(StatefulCommand<?> t, String name, T object, SafeJLabel label) {

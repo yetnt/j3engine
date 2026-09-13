@@ -79,6 +79,7 @@ public class TransformCmd extends Command implements SemiStatefulCommand {
                 () -> {
                     CommandsManager.clearCurrent();
                     selectionPreCondition.finaliseCleanup();
+                    fire(true);
                     SelectionManager.selectionMouseOwner.clearSelectionSquare();
                     dispatchToSubcommands(subcommandName, logLabel, _args, _taggedArgs);
                 },

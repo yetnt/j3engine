@@ -22,4 +22,7 @@ import java.awt.event.KeyEvent;
  * @author Lehlogonolo Poole
  */
 public interface SemiStatefulCommand {
+    default void fire(boolean finished) {
+        CommandsManager.commands.statefulCompleted(this, finished);
+    }
 }

@@ -67,7 +67,7 @@ public class SelectionMouseOwner extends MouseOwner {
             StaticRefs.getLog().println("Final Selection Area: " + selectionArea[0] + " to " + selectionArea[1]);
             HashSet<GObject> selected = getSceneManager().getSelected();
             getLog().println("Selected " + selected.size() + " objects.");
-            broadcast(EventType.X_SELECTED, new SelectionEventPayload(this, selected));
+            broadcast(EventType.X_SELECTED, new SelectionEventPayload(this, selected, selectionArea, SelectionUI.inferredSelection));
 
             SelectionManager.selectionMouseOwner.clearSelectionSquare();
             PropertiesPanel.load();

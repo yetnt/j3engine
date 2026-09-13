@@ -59,7 +59,7 @@ public class OrbitMouseOwner extends MouseOwner {
 
         if (locked) {
             double lockedScale = 2;
-            StaticRefs.getCamera().setPosition(
+            StaticRefs.getCamera().setPositionNoEvent(
                     StaticRefs.getCamera().getPosition().rotateAroundAxis(
                             Vector3.Y(1),
                             dxScaled * lockedScale
@@ -67,7 +67,7 @@ public class OrbitMouseOwner extends MouseOwner {
             );
             double dyLockedScale = (StaticRefs.getCamera().getPosition().getZ() <= 0
                     ? lockedScale : -lockedScale) * 1.4;
-            StaticRefs.getCamera().setPosition(
+            StaticRefs.getCamera().setPositionNoEvent(
                     StaticRefs.getCamera().getPosition().rotateAroundAxis(
                             Vector3.X(1),
                             dyScaled * dyLockedScale

@@ -77,6 +77,7 @@ public class Startup {
             e.setVisible(true);
             Timer t = new Timer(3000, ae -> {
                 splash.dispose();
+                J3Splash.setPlaying(false);
             });
             t.setRepeats(false);
             t.start();

@@ -14,11 +14,21 @@ import java.awt.*;
  */
 public class J3Splash extends javax.swing.JFrame {
 
+    static boolean playing = false;
+    static J3Splash instance;
+
     /**
      * Creates new form NewJFrame
      */
     public J3Splash() {
+        instance = this;
+        playing = true;
         initComponents();
+    }
+
+    public static void stop() {
+        instance.dispose();
+        playing = false;
     }
 
     public void transparency() {
@@ -27,6 +37,14 @@ public class J3Splash extends javax.swing.JFrame {
 
         jLabel1.setOpaque(false);
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+    }
+
+    public static boolean isPlaying() {
+        return playing;
+    }
+
+    public static void setPlaying(boolean playing) {
+        J3Splash.playing = playing;
     }
 
 

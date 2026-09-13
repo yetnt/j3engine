@@ -4,6 +4,9 @@ import com.j3d.engine.math.plane.NormalPlane;
 import com.j3d.engine.math.matrix.MatrixMath;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.math.rot.Rotation;
+import com.j3d.engine.react.events.EventEmitter;
+import com.j3d.engine.react.events.EventType;
+import com.j3d.engine.react.events.payloads.CameraUpdatedEventPayload;
 
 /**
  * Represents the virtual camera in the 3D scene.
@@ -17,7 +20,7 @@ import com.j3d.engine.math.rot.Rotation;
  * @see Vector3
  * @see MatrixMath
  */
-public class Camera {
+public class Camera extends EventEmitter {
 
     /**
      * The 3D position of the camera in the world (c).
@@ -77,13 +80,18 @@ public class Camera {
         return position;
     }
 
+    public Camera setPositionNoEvent(Vector3 position) {
+        this.position = position;
+        return this;
+    }
+
     /**
      * Sets the position
      * @param position The new position for the camera.
      */
     public Camera setPosition(Vector3 position) {
-        this.position = position;
-        return this;
+        broadcast(EventType.CAMERA_MOVED, new CameraUpdatedEventPayload(position, getRotation()));
+        return setPositionNoEvent(position);
     }
 
     /**
@@ -94,13 +102,18 @@ public class Camera {
         return rotation;
     }
 
+    public Camera setRotationNoEvent(Rotation rotation) {
+        this.rotation = rotation;
+        return this;
+    }
+
     /**
      * Sets the rotation
      * @param rotation The new rotation for the camera.
      */
     public Camera setRotation(Rotation rotation) {
-        this.rotation = rotation;
-        return this;
+        broadcast(EventType.CAMERA_MOVED, new CameraUpdatedEventPayload(getPosition(), rotation));
+        return setRotationNoEvent(rotation);
     }
 
     /**

@@ -1,9 +1,6 @@
 package com.j3d.engine.interact.cmd;
 
-import com.j3d.engine.scene.nodes.geometry.GCurve;
-import com.j3d.engine.scene.nodes.geometry.GLine;
-import com.j3d.engine.scene.nodes.geometry.GPoint;
-import com.j3d.engine.scene.nodes.geometry.GTri;
+import com.j3d.engine.scene.nodes.geometry.*;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
@@ -44,6 +41,37 @@ public class CmdToken {
         StringBuilder sb = new StringBuilder();
         for (CmdToken token : tokens) {
             sb.append(token.getInput()).append(" ");
+        }
+        // remove last space
+        if (!sb.isEmpty()) {
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Converts a list of objects back into a single space-separated string.
+     *
+     * @param arr An array objects.
+     * @return A string representation of the objects, joined by spaces.
+     */
+    public static String toStr(Object[] arr) {
+        StringBuilder sb = new StringBuilder();
+        for (Object element : arr) {
+            sb.append(
+                    switch (element) {
+                        case Vector3 v -> v.toCommandPaletteString();
+                        case GObject g -> g.getId().toString();
+                        case Thing thing -> thing.getId().toString();
+                        case Color col -> CommandParser.colourToCommandPaletteString(col);
+                        case Integer integer -> integer.toString();
+                        case Double d -> d.toString();
+                        case Boolean b -> b.toString();
+                        case String s ->
+                                s.contains(" ") ? "\"" + s + "\"" : s;
+                        default -> throw new UnsupportedOperationException("Not supported yet. Actually what the fuck happened why did this receive" + element.getClass());
+                    }
+            ).append(" ");
         }
         // remove last space
         if (!sb.isEmpty()) {

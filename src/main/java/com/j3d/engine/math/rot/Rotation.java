@@ -139,4 +139,8 @@ public class Rotation {
         // format: [y:XX.XX, p:XX.XX r:XX.XX]
         return String.format("[Y:%.2f, P:%.2f R:%.2f]", yaw, pitch, roll);
     }
+
+    public String toMacroString() {
+        return String.format("(%.2f, %.2f %.2f)", yaw, pitch, roll);
+    }
 }
