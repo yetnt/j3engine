@@ -240,4 +240,8 @@ public class Camera extends EventEmitter {
                 d
         );
     }
+
+    public void event() {
+        broadcast(EventType.CAMERA_MOVED, new CameraUpdatedEventPayload(getPosition(), getRotation()));
+    }
 }

@@ -47,14 +47,14 @@ public enum GlobalKeybinds {
      */
     MOVE_CAM_FORWARD(
             new J3Key(
-                    "moveCameraFoward",
+                    "moveCameraForward",
                     KeyStroke.getKeyStroke(KeyEvent.VK_W, 0),
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             if (commandPaletteFocusOwner() || !StaticConfig.movementControls) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
-                            getCamera().setPosition(
+                            getCamera().setPositionNoEvent(
                                     getCamera().getPosition().add(
                                             getCamera().getForward().mult(mvSpeed)
                                     )
@@ -62,7 +62,7 @@ public enum GlobalKeybinds {
                             StaticRefs.getMainFrame().repaint();
                         }
                     }
-            )
+            ), true
     ),
     /**
      * keystroke to move the camera backward (along the forward vector).
@@ -76,7 +76,7 @@ public enum GlobalKeybinds {
                         public void actionPerformed(ActionEvent e) {
                             if (commandPaletteFocusOwner() || !StaticConfig.movementControls) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
-                            getCamera().setPosition(
+                            getCamera().setPositionNoEvent(
                                     getCamera().getPosition().sub(
                                             getCamera().getForward().mult(mvSpeed)
                                     )
@@ -84,7 +84,7 @@ public enum GlobalKeybinds {
                             StaticRefs.getMainFrame().repaint();
                         }
                     }
-            )
+            ), true
     ),
     /**
      * keystroke to move the camera left (along the right vector).
@@ -98,7 +98,7 @@ public enum GlobalKeybinds {
                         public void actionPerformed(ActionEvent e) {
                             if (commandPaletteFocusOwner() || !StaticConfig.movementControls) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
-                            getCamera().setPosition(
+                            getCamera().setPositionNoEvent(
                                     getCamera().getPosition().sub(
                                             getCamera().getRight().mult(mvSpeed)
                                     )
@@ -106,7 +106,7 @@ public enum GlobalKeybinds {
                             StaticRefs.getMainFrame().repaint();
                         }
                     }
-            )
+            ), true
     ),
     /**
      * keystroke to move the camera right (along the right vector).
@@ -120,7 +120,7 @@ public enum GlobalKeybinds {
                         public void actionPerformed(ActionEvent e) {
                             if (commandPaletteFocusOwner() || !StaticConfig.movementControls) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
-                            getCamera().setPosition(
+                            getCamera().setPositionNoEvent(
                                     getCamera().getPosition().add(
                                             getCamera().getRight().mult(mvSpeed)
                                     )
@@ -128,7 +128,7 @@ public enum GlobalKeybinds {
                             StaticRefs.getMainFrame().repaint();
                         }
                     }
-            )
+            ), true
     ),
     /**
      * keystroke to move the camera up (along the up vector).
@@ -142,7 +142,7 @@ public enum GlobalKeybinds {
                         public void actionPerformed(ActionEvent e) {
                             if (commandPaletteFocusOwner() || !StaticConfig.movementControls) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
-                            getCamera().setPosition(
+                            getCamera().setPositionNoEvent(
                                     getCamera().getPosition().add(
                                             getCamera().getUp().mult(mvSpeed)
                                     )
@@ -150,7 +150,7 @@ public enum GlobalKeybinds {
                             StaticRefs.getMainFrame().repaint();
                         }
                     }
-            )
+            ), true
     ),
     /**
      * keystroke to move the camera down (along the up vector).
@@ -164,7 +164,7 @@ public enum GlobalKeybinds {
                         public void actionPerformed(ActionEvent e) {
                             if (commandPaletteFocusOwner() || !StaticConfig.movementControls) return;
                             double mvSpeed = Settings.cameraProperties.movementSpeed.getValue();
-                            getCamera().setPosition(
+                            getCamera().setPositionNoEvent(
                                     getCamera().getPosition().sub(
                                             getCamera().getUp().mult(mvSpeed)
                                     )
@@ -172,7 +172,7 @@ public enum GlobalKeybinds {
                             StaticRefs.getMainFrame().repaint();
                         }
                     }
-            )
+            ), true
     ),
     /**
      * Paired with {@link SelectionMouseOwner} where if the user holds down I while making a selection
@@ -289,15 +289,22 @@ public enum GlobalKeybinds {
     );
 
 
-
-
-    private J3Key key;
+    private final J3Key key;
+    private final boolean addDownMask;
     GlobalKeybinds(J3Key key) {
         this.key = key;
+        addDownMask = false;
+    }
+    GlobalKeybinds(J3Key key, boolean addDownMask) {
+        this.key = key;
+        this.addDownMask = addDownMask;
     }
 
     public J3Key getKey() {
         return key;
     }
 
+    public boolean hasAddDownMask() {
+        return addDownMask;
+    }
 }

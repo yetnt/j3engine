@@ -90,6 +90,24 @@ public class KeyBindings {
 
         for (GlobalKeybinds key : GlobalKeybinds.values()) {
             globalKeyStrokes.add(key.getKey().getKeyStroke());
+            if (key.hasAddDownMask())
+                rJ3Key(
+                        new J3Key(
+                                key.getKey().getName() + "onRelease",
+                                KeyStroke.getKeyStroke(
+                                        key.getKey().getKeyStroke().getKeyCode(),
+                                        key.getKey().getKeyStroke().getModifiers(),
+                                        true
+                                ),
+                                new AbstractAction() {
+                                    @Override
+                                    public void actionPerformed(ActionEvent e) {
+                                        StaticRefs.getCamera().event();
+                                    }
+                                }
+                        )
+                );
+
             rJ3Key(
                     key.getKey()
             );
