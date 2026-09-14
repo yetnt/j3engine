@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class EndCmd extends Subcommand {
     public EndCmd() {
         super("end", "End a recording macro");
-        this.addNoArgUsage().parseUsages();
+        this.aliases("stop", "finish").addNoArgUsage().parseUsages();
     }
 
     @Override

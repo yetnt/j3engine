@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class RecordCmd extends Subcommand {
     public RecordCmd() {
         super("record", "Record a new macro");
-        this.args(
+        this.aliases("start", "begin").args(
                 new TypedArg(
                         "macroName", "The macro name",
                         false, String.class
