@@ -181,16 +181,9 @@ public class GCurve extends GObject implements IdempotentEventListener<GPointMov
         setPivot(controlPoint.getPivot());
         invalidateAll();
         decompose();
-//        double reLengthA = start.getPivot().distance(controlPoint.getPivot());
-//        double reLengthB = end.getPivot().distance(controlPoint.getPivot());
-//        if (Math.abs(reLengthA - lengthA) > EPSILON || Math.abs(reLengthB - lengthB) > EPSILON) {
-//            lengthA = reLengthA;
-//            lengthB = reLengthB;
-//            setPivot(payload.emitter.getPivot());
-//            decompose();
-//        }
     }
 
+    @Override
     public void copy(CopyProperties props) throws InvalidCopyException {
         GPoint a = props.existsOrElse(start.getId(), start::copySelf);
         GPoint control = props.existsOrElse(controlPoint.getId(), controlPoint::copySelf);

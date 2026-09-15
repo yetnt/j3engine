@@ -61,6 +61,9 @@ public class PropertiesUI {
                         case LINE -> {
                             if (o instanceof GLine) filtered.add((T) o);
                         }
+                        case CURVE -> {
+                            if (o instanceof GCurve) filtered.add((T) o);
+                        }
                         case TRI -> {
                             if (o instanceof GTri) filtered.add((T) o);
                         }
@@ -135,6 +138,7 @@ public class PropertiesUI {
                 }
 
             }
+            case CURVE -> filterCommonProperties(objects, GCurve.class);
             case POINT -> filterCommonProperties(objects, GPoint.class);
             case LINE -> filterCommonProperties(objects, GLine.class);
             case TRI -> filterCommonProperties(objects, GTri.class);
