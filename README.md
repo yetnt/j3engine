@@ -2,7 +2,7 @@
 
 <img src="./src/main/resources/art/logo/J3Engine.png" alt="J3Engine Logo"></img>
 
-A (Work-In-Progress) 3D Graphics Engine written in Java from scratch using only 
+A (Work-In-Progress) CAD-inspired 3D Geometry Editor & Graphics Engine written in Java from scratch using only 
 the Java Standard Library and [Swing](https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/package-summary.html)'s 
 2D drawing capabilities.
 
@@ -109,3 +109,40 @@ once hidden.](imgs/Screenshot%202026-09-13%20063938.png)
 - Object-type filtering
 - Generic properties
 - Selection of dependent geometry (line, with it's points)
+
+## Highlight Commands
+
+(See [Aliases](./src/main/resources/docs/commands.j3.md#alias) to see how command and subcommand aliases work)
+
+(All links below link to the source code of the command/tool)
+
+- `transform <subcommand>` - [Transform](./src/main/java/com/j3d/engine/interact/cmd/commands/transform/TransformCmd.java) a selection of objects
+  - `transform translate [p|f|t]` : Translate tool
+  - `transform rotate [p|f|t] <vector3?>` : Rotate tool
+  - `transform scale [p|v|t]` : Scale tool
+  - `transform qtrans` : Quick-Translate tool
+- `camera <subcommand>` - [Camera](./src/main/java/com/j3d/engine/interact/cmd/commands/camera/CameraCmd.java) commands
+  - `camera orbit` : Orbit tool (Change the camera yaw/pitch or orbit around world centre)
+- `clipboard <subcommand>` - [Clipboard](./src/main/java/com/j3d/engine/interact/cmd/commands/clipboard/ClipboardCmd.java) related commands (keybinded to CTRL+C and CTRL+V)
+  - `clipboard copy` : Copies the current selection to the J3Engine clipbaord
+  - `clipboard paste` : Pastes whatever is in the J3Engine clipboard
+- `extrude <triangle?>` : [Extrude](./src/main/java/com/j3d/engine/interact/cmd/commands/ExtrudeCmd.java) a given triangle into a solid (or a selection if no triangle input is given)
+- `prism <vector3> <vector3> <vector3?> <vector3?> <vector3?> <vector3?>` : Creates a [prism](./src/main/java/com/j3d/engine/interact/cmd/commands/PrismCmd.java)
+- `join <subcommand?>` : [Joins](./src/main/java/com/j3d/engine/interact/cmd/commands/join/JoinCmd.java) a selection of points or otherwise into new geometry
+  - Depending on what's selected, the command may call the appropriate subcommand o your behalf.
+  - `join line <point> <point> <point?>` : Joins 2 points into a line or 3 points into a curve.
+- `measure <subcommand?>` : [Measures](./src/main/java/com/j3d/engine/interact/cmd/commands/measure/MeasureCmd.java) the given geometry
+  - Similar selection based handling semantics as join
+  - `measure line <vector3> <vector3>` : Measure the distance between 2 positions
+  - `measure area <vector3> <Vector3> <vector3>` : Measure the area between 3 positions as a triangle
+  - `measure volume <thing>` : Measure the volume of a given Thing.
+- `explode <any>` : [Explodes](./src/main/java/com/j3d/engine/interact/cmd/commands/ExplodeCmd.java) all geometry into constituent points, decimating all relationships and not storing in history.
+- `debug <subcommand>` : Commands for debugging mostly random engine internals. Such as echoing within the command palette or other stuff
+- `ui <subcommand>` : [UI](./src/main/java/com/j3d/engine/interact/cmd/commands/uicmd/UICmd.java) related commands.
+  - `ui toggle [history|grid2d|properties|...]` : Toggle the visibility of floating panel ui.
+- `create [point|tri|prism|...]` : [Create](./src/main/java/com/j3d/engine/interact/cmd/commands/create/CreateCmd.java) new geometry on the fly
+- `engine <subcommand>` : [Engine](./src/main/java/com/j3d/engine/interact/cmd/commands/engine/EngineCmd.java) related subcommands
+  - `engine exit <boolean>` : Run the engine shutdown sequence
+  - `engine files` : Open the location of J3Engine user files where things such as custom themes, preferences, log files, projects frame relating things are.
+- `select <any>` : [Selects](./src/main/java/com/j3d/engine/interact/cmd/commands/SelectCmd.java) the given geometry.
+- `help <any>` : Provides [help](./src/main/java/com/j3d/engine/interact/cmd/commands/HelpCmd.java) on the given command.
