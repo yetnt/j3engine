@@ -11,6 +11,12 @@ and others are handcrafted. [See Vector3](./src/main/java/com/j3d/engine/math/ma
 
 J3Engine is a standalone desktop app.
 
+(This project comes in 2 versions, this version the actual hobby
+project development and then the 
+[PAT version](https://github.com/yetnt/j3engine/tree/pat)
+with the features being enar identical with only
+a few minor differences)
+
 ## Installation & Run
 
 Man just run the `.jar` or `.msi` man with like Java 21 and you good.
