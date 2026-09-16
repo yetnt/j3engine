@@ -22,20 +22,22 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <build>
+    <profiles>
+        <profile>
+            <id>ci-javadoc</id>
+            <dependencies>
+                <!-- Override the local dependency so Maven doesn't try to fetch it -->
+                <dependency>
+                    <groupId>com.jaiva</groupId>
+                    <artifactId>jaiva</artifactId>
+                    <version>5.0.2</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 
-<!--        <pluginManagement>-->
-<!--            <plugins>-->
-<!--                <plugin>-->
-<!--                    <groupId>org.panteleyev</groupId>-->
-<!--                    <artifactId>jpackage-maven-plugin</artifactId>-->
-<!--                    <version>1.6.0</version>-->
-<!--                    <configuration>-->
-<!--                        &lt;!&ndash; Empty config to make IDE happy &ndash;&gt;-->
-<!--                    </configuration>-->
-<!--                </plugin>-->
-<!--            </plugins>-->
-<!--        </pluginManagement>-->
+    <build>
 
         <plugins>
             <!-- Create the fat JAR -->
