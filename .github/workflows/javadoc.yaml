@@ -29,7 +29,7 @@ jobs:
 
       # 4. Generate Javadoc for all packages
       - name: Generate Javadoc
-        run: mvn javadoc:javadoc -Pci-javadoc
+        run: mvn javadoc:javadoc
 
       # 5. Deploy Javadoc to GitHub Pages
       - name: Deploy to GitHub Pages

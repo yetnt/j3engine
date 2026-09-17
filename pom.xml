@@ -8,12 +8,18 @@
     <artifactId>J3Engine</artifactId>
     <version>1.1.0</version>
 
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
-            <groupId>com.jaiva</groupId>
+            <groupId>com.github.yetnt</groupId>
             <artifactId>jaiva</artifactId>
             <version>5.0.2</version>
-            <optional>true</optional>
         </dependency>
     </dependencies>
 
@@ -22,22 +28,6 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <profiles>
-        <profile>
-            <id>ci-javadoc</id>
-            <dependencyManagement>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.jaiva</groupId>
-                        <artifactId>jaiva</artifactId>
-                        <version>5.0.2</version>
-                        <scope>provided</scope>
-                    </dependency>
-                </dependencies>
-            </dependencyManagement>
-        </profile>
-    </profiles>
 
 
     <build>
