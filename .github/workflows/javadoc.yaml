@@ -36,6 +36,6 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./target/site/apidocs
+          publish_dir: ./target/apidocs
           publish_branch: gh-pages
           force_orphan: true
