@@ -13,6 +13,7 @@
             <groupId>com.jaiva</groupId>
             <artifactId>jaiva</artifactId>
             <version>5.0.2</version>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
@@ -25,17 +26,19 @@
     <profiles>
         <profile>
             <id>ci-javadoc</id>
-            <dependencies>
-                <!-- Override the local dependency so Maven doesn't try to fetch it -->
-                <dependency>
-                    <groupId>com.jaiva</groupId>
-                    <artifactId>jaiva</artifactId>
-                    <version>5.0.2</version>
-                    <scope>provided</scope>
-                </dependency>
-            </dependencies>
+            <dependencyManagement>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.jaiva</groupId>
+                        <artifactId>jaiva</artifactId>
+                        <version>5.0.2</version>
+                        <scope>provided</scope>
+                    </dependency>
+                </dependencies>
+            </dependencyManagement>
         </profile>
     </profiles>
+
 
     <build>
 
