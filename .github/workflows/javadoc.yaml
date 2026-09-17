@@ -30,7 +30,6 @@ jobs:
       # 4. Generate Javadoc for all packages
       - name: Generate Javadoc
         run: mvn javadoc:javadoc
-        continue-on-error: true
 
       # 5. Deploy Javadoc to GitHub Pages
       - name: Deploy to GitHub Pages
