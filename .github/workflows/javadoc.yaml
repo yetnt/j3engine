@@ -24,8 +24,8 @@ jobs:
           cache: maven
 
       # 3. Build project (skip tests for speed)
-      - name: Build with Maven
-        run: mvn clean install -DskipTests
+#      - name: Build with Maven
+#        run: mvn clean install -DskipTests
 
       # 4. Generate Javadoc for all packages
       - name: Generate Javadoc
