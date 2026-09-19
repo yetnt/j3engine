@@ -1,0 +1,25 @@
+-classpath
+'/home/runner/.m2/repository/com/github/yetnt/jaiva/5.0.2/jaiva-5.0.2.jar'
+-encoding
+'UTF-8'
+-protected
+-source
+'21'
+-sourcepath
+'/home/runner/work/j3engine/j3engine/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2026. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'/home/runner/work/j3engine/j3engine/target/reports/apidocs'
+-docencoding
+'UTF-8'
+-Xdoclint:none
+-doctitle
+'J3Engine 1.1.0 API'
+-use
+-version
+-windowtitle
+'J3Engine 1.1.0 API'
