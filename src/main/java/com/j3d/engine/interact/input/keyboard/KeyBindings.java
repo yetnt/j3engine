@@ -319,6 +319,18 @@ public class KeyBindings {
         return key;
     }
 
+    /**
+     * Removes a J3Key
+     * @param id the id of the J3Key to remove
+     */
+    public void removeJ3KeyConsumer(UUID id) {
+        J3Key key = keys.stream().filter(k -> k.getId().equals(id)).findFirst().orElse(null);
+        if (key == null) return;
+        keys.remove(key);
+        inputMap.remove(key.getKeyStroke());
+        actionMap.remove(key.getId());
+    }
+
     /** Returns the action map containing the actions bound to keys.
      * @return the action map
      */

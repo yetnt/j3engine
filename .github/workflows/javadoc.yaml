@@ -37,5 +37,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./target/reports/apidocs
-          publish_branch: gh-pages
+          publish_branch: apidocs
           force_orphan: true

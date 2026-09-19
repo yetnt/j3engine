@@ -1,6 +1,7 @@
 package com.j3d;
 
 import com.j3d.engine.Logger;
+import com.j3d.engine.interact.macros.MacroUtils;
 import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.Camera;
 import com.j3d.engine.scene.nodes.Thing;
@@ -318,6 +319,16 @@ public abstract class StaticRefs {
         if (commandManager == null)
             commandManager = new CommandsManager();
         return commandManager;
+    }
+
+    /**
+     * The macro utils which is the... macro recording and fetching utils. whatd u expect
+     */
+    private static MacroUtils macroUtils;
+    public static MacroUtils getMacroUtils() {
+        if (macroUtils == null)
+            macroUtils = new MacroUtils();
+        return macroUtils;
     }
 
     private static final ErrorHandler errs = new ErrorHandler();

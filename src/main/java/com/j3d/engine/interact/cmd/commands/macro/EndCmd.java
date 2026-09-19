@@ -23,19 +23,17 @@ public class EndCmd extends Subcommand {
     public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
 
+        MacroRecorder mr = StaticRefs.getMacroUtils().getMacroRecorder();
 
-        MacroRecorder mr = CommandsManager.commands.getMacroRecorder();
-
-        ArrayList<MacroLine> macroLines = new ArrayList<>();
         if (mr.isRecording()) {
-            macroLines = mr.stop();
+            ArrayList<MacroLine> macroLines = mr.stop();
+            try {
+                StaticRefs.getEngineFiles().macrosFile.write(mr.getName(), macroLines);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
-        try {
-            StaticRefs.getEngineFiles().macrosFile.write(mr.getName(), macroLines);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
     }
 }

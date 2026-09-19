@@ -12,7 +12,8 @@ public class MacroCmd extends Command {
         super("macro", "Handle user defined macros");
         this.args(
                 new RecordCmd(),
-                new EndCmd()
+                new EndCmd(),
+                new ListCmd()
         ).parseUsages();
     }
 

@@ -40,8 +40,6 @@ import java.util.List;
  */
 public class Commands extends EventEmitter {
 
-    private MacroRecorder macroRecorder;
-
     public DebugCmd debug = new DebugCmd();
     public TransformCmd transform = new TransformCmd();
     public EngineCmd engine = new EngineCmd();
@@ -72,10 +70,6 @@ public class Commands extends EventEmitter {
                         .reduce((a, b) -> a + ", " + b)
                 + ")"
         );
-        macroRecorder = new MacroRecorder();
-        this.attachListener(macroRecorder);
-        SelectionManager.selectionMouseOwner.attachListener(macroRecorder);
-        StaticRefs.getCamera().attachListener(macroRecorder);
     }
 
     /**
@@ -115,9 +109,5 @@ public class Commands extends EventEmitter {
                 EventType.STATEFUL_COMMAND_COMPLETED,
                 new StatefulCommandCompletedPayload(statefulCommand, userHitEnter)
         );
-    }
-
-    public MacroRecorder getMacroRecorder() {
-        return macroRecorder;
     }
 }

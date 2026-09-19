@@ -7,7 +7,8 @@ import com.j3d.gen.settings.classes.SceneProperties;
 import com.j3d.gen.settings.types.ComplexSetting;
 import com.j3d.storage.files.FilesUtility;
 import com.j3d.ui.settings.PreferencesFrame;
-import com.j3d.ui.settings.popouts.ThemeChanger;
+import com.j3d.ui.settings.popouts.macros.MacrosEditor;
+import com.j3d.ui.settings.popouts.theme.ThemeChanger;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.ui.theme.ThemeEntry;
 
@@ -122,6 +123,19 @@ public class Settings implements SettingsParent {
                 return file.getAbsolutePath();
             }
     );
+    public static ComplexSetting<String> macrosEditor = new ComplexSetting<>(
+            "Macros Editor",
+            "macrosEditor",
+            "Edit existing macros",
+            (e, label, ignored) -> {
+                MacrosEditor editor = new MacrosEditor(StaticRefs.getMainFrame(), true);
+                editor.setVisible(true);
+                return "macrosEditor";
+            },
+            () -> {
+                return "macrosEditor";
+            }
+    );
 
     public Settings() {
         read();
@@ -142,6 +156,7 @@ public class Settings implements SettingsParent {
         return new ArrayList<>() {{
             add(changeTheme);
             add(projectOutputFile);
+            add(macrosEditor);
             add(cameraProperties);
             add(editorProperties);
             add(sceneProperties);
