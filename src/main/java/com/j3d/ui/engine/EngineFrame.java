@@ -12,6 +12,7 @@ import com.j3d.engine.interact.cmd.commands.camera.orbit.OrbitMouseOwner;
 import com.j3d.engine.interact.cmd.commands.transform.qtrans.QuickTranslateCmd;
 import com.j3d.engine.scene.DefaultObjectDeletionException;
 import com.j3d.engine.math.Dim;
+import com.j3d.engine.scene.find.Finder;
 import com.j3d.engine.scene.nodes.SceneObjectList;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.commands.engine.ExitCmd;
@@ -26,6 +27,7 @@ import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.input.mouse.*;
 import com.j3d.engine.interact.selection.*;
 import com.j3d.StaticConfig;
+import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.errors.J3DError;
 import com.j3d.gen.guide.GuideManager;
 import com.j3d.gen.settings.Settings;
@@ -946,6 +948,11 @@ public class EngineFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_openProjectMenuItemActionPerformed
 
     private void saveProjectJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveProjectJMenuItemActionPerformed
+
+        if (!StaticRefs.getSceneManager().finder().findFirst(GObject.class, Finder.allQuery(), null).containsThing()) {
+            JOptionPane.showMessageDialog(this, "This scene has nothing!");
+            return;
+        }
         if (Settings.projectOutputFile.getValue() == null) {
             String fileName = JOptionPane.showInputDialog("Project name?");
             fileName = (
