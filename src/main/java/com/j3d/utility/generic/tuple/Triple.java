@@ -1,9 +1,14 @@
 package com.j3d.utility.generic.tuple;
 
+import com.j3d.utility.generic.func.TriFunction;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Stream;
+
 /**
  * An immutable record representing a tuple of three elements of the same type.
  * This record provides a convenient way to group three related objects together.
@@ -11,6 +16,15 @@ import java.util.function.Function;
  * @param <T> The type of the elements in the triple.
  */
 public record Triple<T>(T v1, T v2, T v3) {
+
+    public static Triple<String> from(List<String> strings) {
+        return new Triple<String>(strings.get(0), strings.get(1), strings.get(2));
+    }
+
+    public <K> K mapTo(TriFunction<T, T, T, K> map)  {
+        return map.apply(v1, v2, v3);
+    }
+
     /**
      * Converts this Triple into an {@link ArrayList} containing its three elements.
      * The order of elements in the list will be v1, v2, v3.
@@ -37,9 +51,21 @@ public record Triple<T>(T v1, T v2, T v3) {
         );
     }
 
+    public Stream<T> stream() {
+        return Stream.of(v1, v2, v3);
+    }
+
     public static <T, V> void forEachPair(Triple<T> t1, Triple<V> t2, BiConsumer<T, V> forEachConsumer) {
         forEachConsumer.accept(t1.v1, t2.v1);
         forEachConsumer.accept(t1.v2, t2.v2);
         forEachConsumer.accept(t1.v3, t2.v3);
+    }
+
+    public static <T, U, V> Triple<V> mapPair(Triple<T> t1, Triple<U> t2, BiFunction<T, U, V> mapper) {
+        return new Triple<>(
+                mapper.apply(t1.v1, t2.v1),
+                mapper.apply(t1.v2, t2.v2),
+                mapper.apply(t1.v3, t2.v3)
+        );
     }
 }

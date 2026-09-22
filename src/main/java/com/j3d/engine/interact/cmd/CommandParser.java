@@ -164,6 +164,7 @@ public class CommandParser {
         commandPalette.inputField.setText(input);
         ignoreDocumentEvent = false;
         reParseLine();
+        System.out.println("wee");
     }
 
     /**
@@ -499,7 +500,18 @@ public class CommandParser {
         return runCommand(cmd, alias, arguments, taggedArguments, invoker1);
     }
 
+    public boolean runMacro(Command cmd, ArrayList<Object> arguments, ArrayList<TaggedArgValue<?>> taggedArguments) {
+        String alias = cmd.aliases.getFirst();
+        return runCommand(cmd, alias, arguments, taggedArguments, Invoker.byMacro());
+    }
+
     private boolean runCommand(Command cmd, String cmdName, ArrayList<Object> arguments, ArrayList<TaggedArgValue<?>> taggedArguments, Invoker invoker) {
+        if (StaticRefs.getMacroUtils().getMacroRunner().isRunning()) {
+            if (invoker.isEngine() || invoker.isUser()) {
+                StaticRefs.getHoverLabel().error("Commands cannot be ran while a macro is active");
+                return false;
+            }
+        }
         if (CommandsManager.commandIsRunning()) {
             StaticRefs.getHoverLabel().error("Command is currently running: " + SafeJLabel.EMPH, CommandsManager.getCurrentCommandName());
             StaticRefs.getMainFrame().requestFocusInWindow();
@@ -607,6 +619,10 @@ public class CommandParser {
 
     public ArrayList<CmdToken> getTokens() {
         return tokens;
+    }
+
+    public ArrayList<TaggedArgValue<?>> getTaggedArguments() {
+        return taggedArguments;
     }
 
     /**

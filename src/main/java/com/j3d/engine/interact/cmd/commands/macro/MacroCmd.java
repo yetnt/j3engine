@@ -13,7 +13,8 @@ public class MacroCmd extends Command {
         this.args(
                 new RecordCmd(),
                 new EndCmd(),
-                new ListCmd()
+                new ListCmd(),
+                new RunCmd()
         ).parseUsages();
     }
 

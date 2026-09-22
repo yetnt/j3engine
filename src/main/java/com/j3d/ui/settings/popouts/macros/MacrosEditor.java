@@ -7,6 +7,7 @@ import com.j3d.engine.interact.macros.Macro;
 import com.j3d.ui.theme.J3DTheme;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import com.j3d.StaticRefs;
@@ -160,11 +161,28 @@ public class MacrosEditor extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
+        HashSet<KeyStroke> keyStrokes = new HashSet<>();
         HashMap<KeyStroke, String> map = new HashMap<>();
+        AtomicBoolean collision = new AtomicBoolean(false);
         wrappers.forEach(wrapper -> {
-            if (wrapper.getKeyStroke() != null)
+            if (wrapper.getKeyStroke() != null) {
+                if (keyStrokes.contains(wrapper.getKeyStroke())) {
+                    JOptionPane.showMessageDialog(
+                            StaticRefs.getMainFrame(),
+                            "There is a keystroke collision for the following key:\n"
+                            + "-> " + wrapper.getKeyStroke().toString(),
+                            "Keystroke Collision",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                    collision.set(true);
+                    return;
+                }
+                keyStrokes.add(wrapper.getKeyStroke());
                 map.put(wrapper.getKeyStroke(), wrapper.getIdentity());
+            }
         });
+
+        if (collision.get()) return;
 
         StaticRefs.getMacroUtils().setMacroKeys(map);
 

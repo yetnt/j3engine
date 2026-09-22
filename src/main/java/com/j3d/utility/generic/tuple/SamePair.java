@@ -1,5 +1,8 @@
 package com.j3d.utility.generic.tuple;
 
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
 /**
  * A specialized {@link Pair} where both elements are of the same type.
  *
@@ -16,5 +19,13 @@ public class SamePair<T> extends Pair<T, T> {
      */
     public SamePair(T first, T second) {
         super(first, second);
+    }
+
+    public <U> SamePair<U> map(Function<T, U> function) {
+        return new SamePair<U>(function.apply(first), function.apply(second));
+    }
+
+    public <U> U mapTo(BiFunction<T, T, U> function) {
+        return function.apply(first, second);
     }
 }

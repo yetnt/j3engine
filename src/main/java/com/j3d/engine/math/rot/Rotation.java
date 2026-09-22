@@ -137,10 +137,10 @@ public class Rotation {
 
     public String toLogString() {
         // format: [y:XX.XX, p:XX.XX r:XX.XX]
-        return String.format("[Y:%.2f, P:%.2f R:%.2f]", yaw, pitch, roll);
+        return String.format("[P:%.2f, Y:%.2f, R:%.2f]", pitch, yaw, roll);
     }
 
     public String toMacroString() {
-        return String.format("(%.2f, %.2f %.2f)", yaw, pitch, roll);
+        return String.format("(%.2f, %.2f, %.2f)", pitch, yaw, roll);
     }
 }

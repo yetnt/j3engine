@@ -44,6 +44,10 @@ public class Invoker {
      */
     private final boolean engine;
     /**
+     * Indicates if the invocation originated from a macro.
+     */
+    private final boolean macro;
+    /**
      * The parent command that invoked this command as a subcommand of itself, if applicable.
      */
     private final Command invokedFromParent;
@@ -52,11 +56,12 @@ public class Invoker {
      */
     private final Command invokedFromCall;
 
-    private Invoker(boolean user, boolean engine, Command parent, Command call) {
+    private Invoker(boolean user, boolean engine, boolean macro, Command parent, Command call) {
         this.user = user;
         this.engine = engine;
         this.invokedFromParent = parent;
         this.invokedFromCall = call;
+        this.macro = macro;
     }
 
     /**
@@ -65,7 +70,15 @@ public class Invoker {
      * @return An Invoker instance representing a user invocation.
      */
     public static Invoker byUser() {
-        return new Invoker(true, false, null, null);
+        return new Invoker(true, false, false,null, null);
+    }
+    /**
+     * Creates an Invoker instance indicating the invocation originated from a macro
+     *
+     * @return An Invoker instance representing a macro invocation.
+     */
+    public static Invoker byMacro() {
+        return new Invoker(false, false, true, null, null);
     }
 
     /**
@@ -74,7 +87,7 @@ public class Invoker {
      * @return An Invoker instance representing an engine invocation.
      */
     public static Invoker byEngine() {
-        return new Invoker(false, true, null, null);
+        return new Invoker(false, true, false, null, null);
     }
 
     /**
@@ -84,7 +97,7 @@ public class Invoker {
      * @return An Invoker instance.
      */
     public static Invoker byParentCommand(Command command) {
-        return new Invoker(false, false, command, null);
+        return new Invoker(false, false, false, command, null);
     }
 
     /**
@@ -94,7 +107,7 @@ public class Invoker {
      * @return An Invoker instance.
      */
     public static Invoker byCommandCall(Command command) {
-        return new Invoker(false, false, null, command);
+        return new Invoker(false, false, false, null, command);
     }
 
     /**
@@ -136,8 +149,8 @@ public class Invoker {
      * @return A string representing the invoker.
      */
     public String getString() {
-        if (user || engine) {
-            return user ? "USER" : "ENGINE";
+        if (user || engine || macro) {
+            return user ? "USER" : macro ? "MACRO" : "ENGINE";
         }
 
         return (invokedFromParent == null

@@ -20,15 +20,20 @@ import java.util.List;
 public class MacroUtils {
 
     private final MacroRecorder macroRecorder;
-    private HashMap<String, Macro> macros = new HashMap<>();
+    private final MacroRunner macroRunner;
+    private final HashMap<String, Macro> macros = new HashMap<>();
     private HashMap<KeyStroke, String> macroKeys = new HashMap<>();
     private final ArrayList<J3Key> keys = new ArrayList<>();
 
     public MacroUtils() {
         macroRecorder = new MacroRecorder();
+        macroRunner = new MacroRunner();
         CommandsManager.commands.attachListener(macroRecorder);
         SelectionManager.selectionMouseOwner.attachListener(macroRecorder);
         StaticRefs.getCamera().attachListener(macroRecorder);
+        CommandsManager.commands.attachListener(macroRunner);
+        SelectionManager.selectionMouseOwner.attachListener(macroRunner);
+        StaticRefs.getCamera().attachListener(macroRunner);
 
         discover();
     }
@@ -49,12 +54,20 @@ public class MacroUtils {
         return new HashMap<>(macros);
     }
 
+    public void addMacro(String s, Macro m) {
+        macros.put(s, m);
+    }
+
     public HashMap<KeyStroke, String> getMacroKeys() {
         return macroKeys;
     }
 
     public MacroRecorder getMacroRecorder() {
         return macroRecorder;
+    }
+
+    public MacroRunner getMacroRunner() {
+        return macroRunner;
     }
 
     public void setMacroKeys(HashMap<KeyStroke, String> macroKeys) {
@@ -78,22 +91,36 @@ public class MacroUtils {
                     .forEach(StaticRefs.getGlobalKeybinds()::removeJ3KeyConsumer);
 
         keys.clear();
+        JMenu macroMenu = StaticRefs.getMainFrame().getMacroJMenu();
+        macroMenu.removeAll();
 
         macroKeys.forEach((keyStroke, macroName) -> {
             Macro macro = macros.get(macroName);
             if (macro != null) {
-                J3Key key = new J3Key(
-                        macroName + "_macro",
-                        keyStroke,
+                AbstractAction action =
                         new AbstractAction() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 System.out.println(keyStroke + "from macro " + macroName + " was pressed!!!");
+                                StaticRefs.getCommandParser().run(
+                                        CommandsManager.commands.macroCmd,
+                                        new ArrayList<>(List.of("run", macroName)),
+                                        new ArrayList<>()
+                                );
                             }
-                        }
+                        };
+                J3Key key = new J3Key(
+                        macroName + "_macro",
+                        keyStroke,
+                        action
                 );
                 keys.add(key);
                 StaticRefs.getGlobalKeybinds().registerJ3Key(key);
+
+                JMenuItem item = new JMenuItem();
+                item.setText(macroName);
+                item.addActionListener(action);
+                macroMenu.add(item);
             }
         });
     }

@@ -406,6 +406,8 @@ public class EngineFrame extends javax.swing.JFrame {
 
         StaticRefs.getCamera().lookAt(Vector3.ZERO);
 
+        StaticRefs.getMacroUtils();
+
         StaticRefs.getLog().uiPrintLn("EngineFrame completed building");
     }
 
@@ -634,6 +636,10 @@ public class EngineFrame extends javax.swing.JFrame {
         return (J3DPanel) mainPanel;
     }
 
+    public JMenu getMacroJMenu() {
+        return macroJMenu;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -668,6 +674,9 @@ public class EngineFrame extends javax.swing.JFrame {
         resetPositionJMenuItem = new javax.swing.JMenuItem();
         exportJMenuItemDropDown = new javax.swing.JMenu();
         exportAsPNGJMenuItem = new javax.swing.JMenuItem();
+        macroMainMenu = new javax.swing.JMenu();
+        macroEditorMenu = new javax.swing.JMenuItem();
+        macroJMenu = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("J3D");
@@ -865,6 +874,22 @@ public class EngineFrame extends javax.swing.JFrame {
         sceneJMenu.add(exportJMenuItemDropDown);
 
         jMenuBar1.add(sceneJMenu);
+
+        macroMainMenu.setText("Macros");
+
+        macroEditorMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        macroEditorMenu.setText("Open Macro Editor");
+        macroEditorMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                macroEditorMenuActionPerformed(evt);
+            }
+        });
+        macroMainMenu.add(macroEditorMenu);
+
+        macroJMenu.setText("Discovered Macros");
+        macroMainMenu.add(macroJMenu);
+
+        jMenuBar1.add(macroMainMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -1079,6 +1104,10 @@ public class EngineFrame extends javax.swing.JFrame {
         mainPanel.repaint();
     }//GEN-LAST:event_toggleViewJMenuItemActionPerformed
 
+    private void macroEditorMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_macroEditorMenuActionPerformed
+        Settings.macrosEditor.open();
+    }//GEN-LAST:event_macroEditorMenuActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1132,6 +1161,9 @@ public class EngineFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     public javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem macroEditorMenu;
+    private javax.swing.JMenu macroJMenu;
+    private javax.swing.JMenu macroMainMenu;
     public static javax.swing.JPanel mainPanel;
     private javax.swing.JMenuItem newProjectJMenuItem;
     private javax.swing.JMenuItem openProjectMenuItem;

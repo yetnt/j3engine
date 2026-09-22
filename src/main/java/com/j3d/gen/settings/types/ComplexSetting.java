@@ -66,4 +66,8 @@ public class ComplexSetting<T> extends Setting<T> {
     public PopoutSPanel<T> panel() {
         return new PopoutSPanel<>(onCreate.get(), this, onOpen);
     }
+
+    public void open() {
+        panel().jButton1ActionPerformed(null);
+    }
 }

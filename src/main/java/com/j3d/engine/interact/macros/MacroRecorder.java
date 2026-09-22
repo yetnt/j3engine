@@ -76,8 +76,8 @@ public class MacroRecorder implements EventListener {
         } else if (properties instanceof CameraUpdatedEventPayload cameraUpdatedEventPayload) {
             // pos_xyz(x, y, z)
             String pos = "pos_xyz" + cameraUpdatedEventPayload.getPosition().toCommandPaletteString();
-            // rot_ypr(y, p, r)
-            String rot = "rot_ypr" + cameraUpdatedEventPayload.getRotation().toMacroString();
+            // rot_pyr(y, p, r)
+            String rot = "rot_pyr" + cameraUpdatedEventPayload.getRotation().toMacroString();
 
             String line = pos + " | " + rot;
             MacroLine macroLine = new MacroLine(InstructionType.CAMERA, line);

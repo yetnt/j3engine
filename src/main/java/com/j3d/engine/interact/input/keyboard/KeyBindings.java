@@ -1,5 +1,6 @@
 package com.j3d.engine.interact.input.keyboard;
 
+import com.j3d.StaticConfig;
 import com.j3d.StaticRefs;
 import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.interact.selection.SelectionUtils;
@@ -102,6 +103,7 @@ public class KeyBindings {
                                 new AbstractAction() {
                                     @Override
                                     public void actionPerformed(ActionEvent e) {
+                                        if (commandPaletteFocusOwner() || !StaticConfig.movementControls) return;
                                         StaticRefs.getCamera().event();
                                     }
                                 }
