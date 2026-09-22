@@ -48,6 +48,7 @@ public class MacroPanel extends javax.swing.JPanel {
         setMinimumSize(new java.awt.Dimension(448, 35));
 
         macroEditBtn.setBackground(J3DTheme.BACKGROUND.color());
+        macroEditBtn.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
         macroEditBtn.setForeground(J3DTheme.TEXT_PRIMARY.color());
         macroEditBtn.setText("macroEditBtn");
         macroEditBtn.addActionListener(new java.awt.event.ActionListener() {

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class RunCmd extends Subcommand {
     public RunCmd() {
-        super("run", "Run a new macro");
+        super("run", "Runs a given macro by its name.");
         this.aliases("start", "begin").args(
                 new TypedArg(
                         "macroName", "The macro name",
@@ -53,6 +53,6 @@ public class RunCmd extends Subcommand {
                 new JLabelRichText(name).bold().italic()
         );
 
-        mr2.run(name);
+        mr2.run(logLabel, name);
     }
 }

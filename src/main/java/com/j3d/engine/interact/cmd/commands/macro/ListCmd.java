@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class ListCmd extends Subcommand {
 
     public ListCmd() {
-        super("list", "Lists all available macros. With an optional param to open the folder.");
+        super("list", "Opens the folder where all macros live.");
         this.aliases("l", "all").parseUsages();
     }
 

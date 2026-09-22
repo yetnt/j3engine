@@ -18,6 +18,7 @@ import com.j3d.engine.react.events.EventListener;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.react.events.payloads.StatefulCommandCompletedPayload;
+import com.j3d.ui.SafeJLabel;
 import com.j3d.utility.generic.tuple.SamePair;
 import com.j3d.utility.generic.tuple.Triple;
 import com.jaiva.tokenizer.tokens.Token;
@@ -30,13 +31,15 @@ import java.util.stream.Collectors;
 public class MacroRunner implements EventListener {
 
     private Macro macro;
+    private SafeJLabel logLabel;
     private ArrayDeque<MacroLine> deque = new ArrayDeque<>();
     private boolean running = false;
     private boolean expectEvent = false;
 
-    public void run(String name) {
+    public void run(SafeJLabel logLabel, String name) {
         macro = StaticRefs.getMacroUtils().getMacros().get(name);
         if (macro == null) return;
+        this.logLabel = logLabel;
         running = true;
         deque = new ArrayDeque<>(macro.getMacroLines());
 
@@ -48,12 +51,14 @@ public class MacroRunner implements EventListener {
         running = false;
         expectEvent = false;
         macro = null;
+        logLabel = null;
         deque = new ArrayDeque<>();
     }
 
     private void popOne() {
         MacroLine line = deque.poll();
         if (line == null) {
+            logLabel.setText("Ran " + SafeJLabel.EMPH + " macro.", macro.getName());
             clean();
             return;
         }
@@ -101,12 +106,19 @@ public class MacroRunner implements EventListener {
 
         cmdP.runMacro(command, objs, tagged); // run ze command
 
-        if (command instanceof SemiStatefulCommand && CommandsManager.currentStatefulCommand.getClass() == command.getClass()) {
+        if (command instanceof SemiStatefulCommand) {
             // usually just checking whether its stateful or not is fine
             // however some that only implement semistateful may only do so to be stateful sometimes menaing they
             // never fire an event
-            expectEvent = true;
-            return false;
+
+            // i wrote that then realised, subcommands will be the one who have statefulness recognized in some cases
+            // so its basically imposible for us to check.
+            // i mean i could go through each commands argument and see if a subcommand if a given command has stateful
+            // but just for macro come on now
+            if (CommandsManager.commandIsRunning()) {
+                expectEvent = true;
+                return false;
+            }
         }
 
         return true;

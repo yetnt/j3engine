@@ -82,12 +82,13 @@ public class MacrosEditor extends javax.swing.JDialog {
         jScrollPane1.setBackground(J3DTheme.UI_SURFACE.color());
 
         macrosPanel.setBackground(J3DTheme.UI_SURFACE.color());
-        macrosPanel.setLayout(new java.awt.GridLayout(0, 1));
+        macrosPanel.setLayout(new javax.swing.BoxLayout(macrosPanel, javax.swing.BoxLayout.PAGE_AXIS));
         jScrollPane1.setViewportView(macrosPanel);
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setForeground(J3DTheme.TEXT_PRIMARY.color());
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("jLabel1");
+        jLabel1.setText("Macros Editor");
 
         saveBtn.setBackground(J3DTheme.BACKGROUND.color());
         saveBtn.setForeground(J3DTheme.TEXT_PRIMARY.color()

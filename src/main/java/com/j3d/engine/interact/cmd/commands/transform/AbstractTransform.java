@@ -372,6 +372,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
         keys.forEach(key -> StaticRefs.getGlobalKeybinds().removeJ3Key(key.getId()));
         StaticRefs.getSceneManager().removeOverlap(overlapId);
         lbl.clear();
+        CommandsManager.clearCurrent();
         StaticRefs.getSceneManager().deselectAll();
         StaticRefs.getMainFrame().repaint();
     }

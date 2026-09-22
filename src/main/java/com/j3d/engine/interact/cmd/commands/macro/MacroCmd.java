@@ -7,6 +7,10 @@ import com.j3d.ui.SafeJLabel;
 
 import java.util.ArrayList;
 
+/**
+ * A dispatcher command for macro related things
+ * More docs coming soooon
+ */
 public class MacroCmd extends Command {
     public MacroCmd() {
         super("macro", "Handle user defined macros");
