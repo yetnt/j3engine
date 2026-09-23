@@ -33,7 +33,6 @@ import com.j3d.ui.engine.EngineFrame;
 import com.j3d.utility.generators.JLabelRichText;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.List;
@@ -361,10 +360,8 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
         }
     }
 
-    /**
-     * Cleans up the stateful command environment after it has finished.
-     */
-    private void finished(SafeJLabel lbl) {
+    @Override
+    public void finished(boolean success, SafeJLabel lbl) {
         mouseOwner.handles.forEach(Handle::clear);
         selectionPivot = null;
         centreIsSelectionPivot = true;
@@ -375,14 +372,14 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
         CommandsManager.clearCurrent();
         StaticRefs.getSceneManager().deselectAll();
         StaticRefs.getMainFrame().repaint();
+        KeyedStatefulCommand.super.finished(success, lbl);
     }
 
     /**
      * Called when the user presses Enter, committing the transformation.
      */
     @Override
-    public void onEnter(ActionEvent e, Void object, SafeJLabel label) {
-        KeyedStatefulCommand.super.onEnter(e, object, label);
+    public void onEnter(Void object, SafeJLabel label) {
         EngineFrame.setMouseOwner(null);
         toggleSaved();
         ArrayList<Vector3> newPositions = references.stream().map(GObject::getPivot).collect(Collectors.toCollection(ArrayList::new));
@@ -410,7 +407,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
                     }
                 }
         );
-        finished(label);
+        finished(true, label);
     }
 
     private void toggleSaved() {
@@ -421,11 +418,10 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
      * Called when the user presses Escape, canceling the transformation and reverting all changes.
      */
     @Override
-    public void onEsc(ActionEvent e, Void object, SafeJLabel label) {
-        KeyedStatefulCommand.super.onEsc(e, object, label);
+    public void onEsc(Void object, SafeJLabel label) {
         EngineFrame.setMouseOwner(null);
         for (GPoint p : references) p.setPivot(originalPointPos.get(references.indexOf(p)));
-        finished(label);
+        finished(false, label);
     }
 
     // Implementation of KeyedStatefulCommand interface methods

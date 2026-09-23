@@ -164,7 +164,6 @@ public class CommandParser {
         commandPalette.inputField.setText(input);
         ignoreDocumentEvent = false;
         reParseLine();
-        System.out.println("wee");
     }
 
     /**

@@ -6,6 +6,7 @@ import com.j3d.engine.interact.cmd.commands.transform.AbstractTransform;
 import com.j3d.engine.interact.cmd.commands.transform.TranslateSelection;
 import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.input.keyboard.OtherKeys;
+import com.j3d.ui.SafeJLabel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -117,6 +118,25 @@ public interface KeyedStatefulCommand extends StatefulCommand<Void> {
                         }
                 )
         );
+    }
+
+    /**
+     * Method which clears all state related to this which can be
+     * <ul>
+     *     <li>keys</li>
+     *     <li>ghost previews</li>
+     *     <li>temporary listeners</li>
+     *     <li>...</li>
+     * </ul>
+     * @implSpec Implementors are required to override this such as to clear all state for another command.
+     * And to further call it via {@code KeyedStatefulCommand.super.finished()} such that the {@link com.j3d.engine.react.events.EventType#STATEFUL_COMMAND_COMPLETED}
+     * event can be broadcast at the end of cleanup
+     * @param success Whether the command finished successfully or not. if the user had clicked escape or an error occurred that counts
+     *                as an unsuccessful invocation
+     * @param lbl The label.
+     */
+    default void finished(boolean success, SafeJLabel lbl) {
+        fire(success);
     }
 
     /**

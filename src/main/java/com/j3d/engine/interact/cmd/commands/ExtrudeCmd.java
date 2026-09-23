@@ -9,25 +9,19 @@ import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.KeyedStatefulCommand;
 import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.math.matrix.Vector3;
-import com.j3d.engine.scene.find.FindResult;
-import com.j3d.engine.scene.find.Finder;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GLine;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.engine.scene.nodes.geometry.base.Winding;
-import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.engine.scene.nodes.util.Sampler;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.utility.generators.JLabelRichText;
 import com.j3d.utility.generic.tuple.Pair;
-import com.j3d.utility.generic.tuple.SamePair;
 import com.j3d.utility.generic.tuple.Triple;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -289,31 +283,30 @@ public class ExtrudeCmd extends Command implements KeyedStatefulCommand {
     }
 
     @Override
-    public void onEnter(ActionEvent e, Void object, SafeJLabel label) {
+    public void onEnter(Void object, SafeJLabel label) {
         if (length < 0.01) {
-            KeyedStatefulCommand.super.onEsc(e, object, label);
             label.setText("Length is less than 0.01");
-            finish(label);
+            finished(false, label);
             return;
         }
-        KeyedStatefulCommand.super.onEnter(e, object, label);
         join();
-        finish(label);
+        finished( true, label);
     }
 
     @Override
-    public void onEsc(ActionEvent e, Void object, SafeJLabel label) {
-        KeyedStatefulCommand.super.onEsc(e, object, label);
-        finish(label);
+    public void onEsc(Void object, SafeJLabel label) {
+        finished(false, label);
     }
 
-    private void finish(SafeJLabel label) {
+    @Override
+    public void finished(boolean success, SafeJLabel label) {
         length = 1;
         flipped = false;
         tri = null;
         getSceneManager().removeOverlap(overlapId);
         label.clear();
         keys.forEach(key -> StaticRefs.getGlobalKeybinds().removeJ3Key(key.getId()));
+        KeyedStatefulCommand.super.finished(success, label);
     }
 
     @Override

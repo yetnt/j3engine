@@ -22,7 +22,6 @@ import com.j3d.utility.generic.tuple.SamePair;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -272,13 +271,12 @@ public class PrismCmd extends Command implements KeyedStatefulCommand {
     }
 
     @Override
-    public void onEnter(ActionEvent e, Void object, SafeJLabel label) {
-        KeyedStatefulCommand.super.onEnter(e, object, label);
+    public void onEnter(Void object, SafeJLabel label) {
         String name = JOptionPane.showInputDialog(
                 "What must this be named gng?"
         );
         if (name == null) {
-            finish(label);
+            finished(false, label);
             label.setText("The thing needs a name my friend.");
             return;
         }
@@ -290,21 +288,22 @@ public class PrismCmd extends Command implements KeyedStatefulCommand {
                 l,
                 new SamePair<>(bottom, top)
         );
-        finish(label);
+        finished(true, label);
     }
 
     @Override
-    public void onEsc(ActionEvent e, Void object, SafeJLabel label) {
-        KeyedStatefulCommand.super.onEsc(e, object, label);
-        finish(label);
+    public void onEsc(Void object, SafeJLabel label) {
+        finished(false, label);
     }
 
-    private void finish(SafeJLabel label) {
+    @Override
+    public void finished(boolean success, SafeJLabel label) {
         sides = 3;
         radius = 5;
         getSceneManager().removeOverlap(overlapId);
         label.clear();
         keys.forEach(key -> StaticRefs.getGlobalKeybinds().removeJ3Key(key.getId()));
+        KeyedStatefulCommand.super.finished(success, label);
     }
 
     @Override

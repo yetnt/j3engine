@@ -1,7 +1,6 @@
 package com.j3d.engine.interact.cmd.base;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.engine.interact.input.keyboard.J3Key;
@@ -39,21 +38,21 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
 
     /**
      * Called when the 'Enter' key is pressed.
-     * @param e The event that triggered this method.
+     *
      * @param object The object that the command operates on.
-     * @param label The SafeJLabel instance.
+     * @param label  The SafeJLabel instance.
      */
-    default void onEnter(ActionEvent e, T object, SafeJLabel label) {
+    default void onEnter(T object, SafeJLabel label) {
         fire(true);
     }
 
     /**
      * Called when the 'Escape' key is pressed.
-     * @param e The event that triggered this method.
+     *
      * @param object The object that the command operates on.
-     * @param label The SafeJLabel instance.
+     * @param label  The SafeJLabel instance.
      */
-    default void onEsc(ActionEvent e, T object, SafeJLabel label) {
+    default void onEsc(T object, SafeJLabel label) {
         fire(false);
     }
 
@@ -96,12 +95,12 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
                         new AbstractAction() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                onEnter(e, object, label);
+                                StaticRefs.getGlobalKeybinds().removeJ3Key(esckey);
+                                onEnter(object, label);
                                 StaticRefs.getMainFrame().repaint();
                                 StaticRefs.getCommandParser().enable();
                                 CommandsManager.clearCurrent();
                                 StaticRefs.getHoverLabel().clear();
-                                StaticRefs.getGlobalKeybinds().removeJ3Key(esckey);
                             }
                         });
         StaticRefs.getGlobalKeybinds().registerJ3Key(enter);
@@ -117,9 +116,9 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
                         new AbstractAction() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                if (!CommandsManager.isCurrentStatefulRunning(t)) return;
-                                onEsc(e, object, label);
+//                                if (!CommandsManager.isCurrentStatefulRunning(t)) return;
                                 StaticRefs.getGlobalKeybinds().removeJ3Key(enter.getId());
+                                onEsc(object, label);
                                 StaticRefs.getMainFrame().repaint();
                                 StaticRefs.getCommandParser().enable();
                                 CommandsManager.clearCurrent();

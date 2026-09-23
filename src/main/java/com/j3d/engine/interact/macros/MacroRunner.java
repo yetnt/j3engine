@@ -82,10 +82,8 @@ public class MacroRunner implements EventListener {
     public <K> void onEvent(EventType event, EventPayload<K> properties) {
         if (event == EventType.STATEFUL_COMMAND_COMPLETED && expectEvent) {
             StatefulCommandCompletedPayload payload = (StatefulCommandCompletedPayload) properties;
-            if (payload.getCompletionType() == StatefulCommandCompletedPayload.CompletionType.ENTER) {
                 expectEvent = false;
                 popOne();
-            }
         }
     }
 

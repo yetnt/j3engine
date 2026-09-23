@@ -20,7 +20,6 @@ import com.j3d.ui.engine.EngineFrame;
 import com.j3d.utility.generators.JLabelRichText;
 import com.j3d.utility.generic.tuple.Pair;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -107,8 +106,8 @@ public class OrbitCmd extends Subcommand implements StatefulCommand<Pair<Vector3
     }
 
     @Override
-    public void onEnter(ActionEvent e, Pair<Vector3, Rotation> object, SafeJLabel label) {
-        StatefulCommand.super.onEnter(e, object, label);
+    public void onEnter(Pair<Vector3, Rotation> object, SafeJLabel label) {
+        StatefulCommand.super.onEnter(object, label);
         cleanup(label);
         StaticRefs.getLog().println(
                 "Camera was rotated from: pos-" + object.first.toCommandPaletteString() + " rot-" + object.second.toLogString() + " to " + StaticRefs.getCamera().getRotation().toLogString()
@@ -120,8 +119,8 @@ public class OrbitCmd extends Subcommand implements StatefulCommand<Pair<Vector3
     }
 
     @Override
-    public  void onEsc(ActionEvent e, Pair<Vector3, Rotation> object, SafeJLabel label) {
-        StatefulCommand.super.onEsc(e, object, label);
+    public  void onEsc(Pair<Vector3, Rotation> object, SafeJLabel label) {
+        StatefulCommand.super.onEsc(object, label);
         StaticRefs.getCamera().setPositionNoEvent(object.first);
         StaticRefs.getCamera().setRotationNoEvent(object.second);
         cleanup(label);

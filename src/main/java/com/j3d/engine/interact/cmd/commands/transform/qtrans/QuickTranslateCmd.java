@@ -18,7 +18,6 @@ import com.j3d.ui.engine.EngineFrame;
 import com.j3d.ui.theme.cursors.CursorManager;
 import com.j3d.ui.theme.cursors.CursorNames;
 
-import java.awt.event.ActionEvent;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -114,8 +113,8 @@ public class QuickTranslateCmd extends Subcommand implements StatefulCommand<Voi
     }
 
     @Override
-    public void onEnter(ActionEvent e, Void object, SafeJLabel label) {
-        StatefulCommand.super.onEnter(e, object, label);
+    public void onEnter(Void object, SafeJLabel label) {
+        StatefulCommand.super.onEnter(object, label);
         cleanup(label);
         VoidAction action = new VoidAction() {
             final ArrayList<GPoint> points = new ArrayList<>(pointsToTransform);
@@ -156,8 +155,8 @@ public class QuickTranslateCmd extends Subcommand implements StatefulCommand<Voi
     }
 
     @Override
-    public void onEsc(ActionEvent e, Void object, SafeJLabel label) {
-        StatefulCommand.super.onEsc(e, object, label);
+    public void onEsc(Void object, SafeJLabel label) {
+        StatefulCommand.super.onEsc(object, label);
         pointsToTransform.forEach(point -> point.setPivot(objectOriginalPosiions.get(pointsToTransform.indexOf(point))));
         cleanup(label);
     }

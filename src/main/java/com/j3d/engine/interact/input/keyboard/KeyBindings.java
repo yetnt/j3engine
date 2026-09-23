@@ -145,8 +145,8 @@ public class KeyBindings {
                 new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        key.call(e);
                         if (key.isOneShot()) removeJ3Key(key.getId());
+                        key.call(e);
                     }
                 });
     }
