@@ -27,6 +27,7 @@ import java.util.UUID;
  * @param <T> The type of object that the command operates on.
  * @author Lehlogonolo Poole
  * @see CommandsManager#setAsCurrent(SemiStatefulCommand)
+ * @see KeyedStatefulCommand
  */
 public interface StatefulCommand<T> extends SemiStatefulCommand {
     /**

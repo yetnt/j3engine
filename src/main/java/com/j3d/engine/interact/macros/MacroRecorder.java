@@ -15,6 +15,7 @@ import com.j3d.utility.generic.tuple.SamePair;
 
 import java.util.ArrayList;
 
+// TODO: document
 public class MacroRecorder implements EventListener {
 
     ArrayList<MacroLine> instructions = new ArrayList<>();
