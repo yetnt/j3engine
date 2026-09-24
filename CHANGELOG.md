@@ -93,7 +93,7 @@ This has a lot of things from the over a year of dev so like yeah ill briefly me
   * Added a main `macro` command with a `record`, `run`, `end` and `list` subcommands.
   * Added macros menu to the settings menu which manages macros' keybinds (although you can quick access the menu via the menu bar using the ALT+M accelator)
   * Macros persist on disk and can be key-bound to any key which J3Engine does not use already for global keys or accelerators
-* Add Error Dialogue to better allow describing errors and linking to the log output when the engine closes (optional)
+* Add Error Dialogue to better allow describing errors and linking to the log output when the engine closes (optional) (not implemented yet)
 * Make SemiStatefulCommand responsible for firing the StatefulCommandFinished event so even commands which aren't fully stateful still emit the event when they release said state
   * Fix bug where some stateful commands may not release keys if another was run in quick succession. (One shot key order change)
   * Removed unused ActionEvent from all implementations. I seriously dont know why it was even in the methods like it was NEVER used.
