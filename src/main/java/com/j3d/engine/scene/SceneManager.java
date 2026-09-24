@@ -118,14 +118,14 @@ public class SceneManager {
         for (int i = 0; i <= amt; i++) {
             this.drawLine3D(
                     g,
-                    vXA.add(Vector3.X(i * jump)),
-                    vXB.add(Vector3.X(i * jump)),
+                    vXA.add(Vector3.acrossX(i * jump)),
+                    vXB.add(Vector3.acrossX(i * jump)),
                     camera
             );
             this.drawLine3D(
                     g,
-                    vZA.add(Vector3.Z(i * jump)),
-                    vZB.add(Vector3.Z(i * jump)),
+                    vZA.add(Vector3.acrossZ(i * jump)),
+                    vZB.add(Vector3.acrossZ(i * jump)),
                     camera
             );
         }

@@ -26,8 +26,8 @@ public record NormalPlane(
      */
     public AxisPlane toAxisPlane() {
         Vector3 ref = Math.abs(normal.getY()) < 0.9
-                ? Vector3.Y(1)
-                : Vector3.X(1);
+                ? Vector3.acrossY(1)
+                : Vector3.acrossX(1);
         Vector3 x = normal.cross(ref).normalize();
         Vector3 y = normal.cross(x).normalize();
         return new AxisPlane(origin, x, y);

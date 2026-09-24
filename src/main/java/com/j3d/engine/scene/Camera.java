@@ -60,7 +60,7 @@ public class Camera extends EventEmitter {
         this.position = Vector3.ZERO;
         this.rotation = new Rotation(0, 0, 0);
         // A default focal length (e.g., 500). e_x and e_y are 0 for a standard projection.
-        this.projectionPlane = Vector3.Z(2);
+        this.projectionPlane = Vector3.acrossZ(2);
     }
 
     /**

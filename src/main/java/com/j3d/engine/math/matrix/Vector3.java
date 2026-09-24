@@ -6,13 +6,14 @@ import com.j3d.engine.scene.Camera;
 import com.j3d.gen.settings.Settings;
 import com.j3d.jaiva.EngineObject;
 import com.j3d.jaiva.packs.getters.GettersPack;
+import com.j3d.utility.generic.tuple.Triple;
 
-import javax.management.ConstructorParameters;
 import java.beans.ConstructorProperties;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
+import java.util.stream.Stream;
 
 /**
  * Represents an immutable 3D vector or a point in 3D space.
@@ -459,13 +460,26 @@ public class Vector3 implements MatrixInterface {
         return String.format("(%f, %f, %f)", x, y, z);
     }
 
+    public EngineObject toObject() {
+        return new EngineObject(EngineObject.Type.VECTOR3)
+                .addProperty(x).addProperty(y).addProperty(z);
+    }
+
+    public Stream<Double> stream() {
+        return Stream.of(x, y, z);
+    }
+
+    public Triple<Double> triple() {
+        return new Triple<>(x, y, z);
+    }
+
     /**
      * Creates a vector along the X-axis with the specified magnitude.
      *
      * @param x The magnitude along the X-axis.
      * @return A new {@code Vector3} (x, 0, 0).
      */
-    public static Vector3 X(double x) {
+    public static Vector3 acrossX(double x) {
         return new Vector3(x, 0, 0);
     }
 
@@ -475,7 +489,7 @@ public class Vector3 implements MatrixInterface {
      * @param y The magnitude along the Y-axis.
      * @return A new {@code Vector3} (0, y, 0).
      */
-    public static Vector3 Y(double y) {
+    public static Vector3 acrossY(double y) {
         return new Vector3(0, y, 0);
     }
 
@@ -485,39 +499,39 @@ public class Vector3 implements MatrixInterface {
      * @param z The magnitude along the Z-axis.
      * @return A new {@code Vector3} (0, 0, z).
      */
-    public static Vector3 Z(double z) {
+    public static Vector3 acrossZ(double z) {
         return new Vector3(0, 0, z);
     }
 
     /**
      * A static constant representing the unit vector along the positive Y-axis (0, 1, 0).
      */
-    public static Vector3 Y = Vector3.Y(1);
+    public static Vector3 Y = Vector3.acrossY(1);
 
     /**
      * A static constant representing the unit vector along the positive X-axis (1, 0, 0).
      */
-    public static Vector3 X = Vector3.X(1);
+    public static Vector3 X = Vector3.acrossX(1);
 
     /**
      * A static constant representing the unit vector along the positive Z-axis (0, 0, 1).
      */
-    public static Vector3 Z = Vector3.Z(1);
+    public static Vector3 Z = Vector3.acrossZ(1);
 
     /**
      * A static constant representing the unit vector along the negative Y-axis (0, -1, 0).
      */
-    public static Vector3 NY = Vector3.Y(-1);
+    public static Vector3 NY = Vector3.acrossY(-1);
 
     /**
      * A static constant representing the unit vector along the negative X-axis (-1, 0, 0).
      */
-    public static Vector3 NX = Vector3.X(-1);
+    public static Vector3 NX = Vector3.acrossX(-1);
 
     /**
      * A static constant representing the unit vector along the negative Z-axis (0, 0, -1).
      */
-    public static Vector3 NZ = Vector3.Z(-1);
+    public static Vector3 NZ = Vector3.acrossZ(-1);
 
     /**
      * A static constant representing the zero vector (0, 0, 0).
@@ -527,11 +541,6 @@ public class Vector3 implements MatrixInterface {
      * A static constant representing the unit vector (1, 1, 1).
      */
     public static Vector3 UNIT = new Vector3(1, 1, 1);
-
-    public EngineObject toObject() {
-        return new EngineObject(EngineObject.Type.VECTOR3)
-                .addProperty(x).addProperty(y).addProperty(z);
-    }
 
     public static Vector3 fromObject(GettersPack.CallProperties callProperties, EngineObject obj) {
         return new Vector3(

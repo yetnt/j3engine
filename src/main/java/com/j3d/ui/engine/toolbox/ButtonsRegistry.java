@@ -265,7 +265,7 @@ public abstract class ButtonsRegistry {
                 CommandsManager.commands.prismCmd,
                 new ArrayList<>(List.of(
                         Vector3.ZERO,
-                        Vector3.Y(10)
+                        Vector3.acrossY(10)
                 )), new ArrayList<>(Collections.singleton(
                         new TaggedArgValue<>("XZ").setName("plane")
                 ))

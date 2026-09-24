@@ -65,7 +65,7 @@ public class Executor {
                         Vector3.ZERO,
                         new Vector3(0, 0.2, 0.6),
                         new Vector3(0.1, 0.4, 0)
-                ).sameAxes(Vector3.X(-10), Vector3.X(-2))
+                ).sameAxes(Vector3.acrossX(-10), Vector3.acrossX(-2))
         );
         Thing cone = cone(20, 20);
 
@@ -73,13 +73,13 @@ public class Executor {
                 cub.rotate(Vector3.Z, 45),
                 cub.translate(new Vector3(4, 2, 3)),
                 cub.scale(0.4),
-                tris.translate(Vector3.X(14)),
+                tris.translate(Vector3.acrossX(14)),
                 cub.rotate(new Vector3(2, 3, 1), 2),
-                solid.translate(Vector3.X(-40)),
-                solid.translate(Vector3.Z(20)),
+                solid.translate(Vector3.acrossX(-40)),
+                solid.translate(Vector3.acrossZ(20)),
                 ngon.rotate(Vector3.Y, 20), // 20 degrees
-                ngon.translate(Vector3.X(40)),
-                cone.rotate(Vector3.X(5), 5)
+                ngon.translate(Vector3.acrossX(40)),
+                cone.rotate(Vector3.acrossX(5), 5)
         ));
         actions.forEach(Action::run);
         actions.forEach(SceneManager.history::add);
@@ -115,7 +115,7 @@ public class Executor {
                 GPoint::new
         );
 
-        centre.setPivot(centre.getPivot().sub(Vector3.Y(height)));
+        centre.setPivot(centre.getPivot().sub(Vector3.acrossY(height)));
 
         HashSet<GLine> lines = new HashSet<>();
         HashSet<GTri> tris = new HashSet<>();

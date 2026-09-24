@@ -77,7 +77,7 @@ public class PasteCmd extends Subcommand {
         ArrayList<GObject> copies = copyProperties.getCopiesAsObjects();
 
         // do smth idk, offset on the x?
-        Vector3 offset = Vector3.X(10);
+        Vector3 offset = Vector3.acrossX(10);
 
         Thing thing = new Thing(
                 StaticRefs.getSceneManager().usableLayer(),
