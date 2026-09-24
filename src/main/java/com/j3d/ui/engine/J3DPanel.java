@@ -61,7 +61,7 @@ public class J3DPanel extends JPanel {
         if (run) {
 //            sceneManager.axis((Graphics2D) g, camera);
             if (StaticRefs.getExecutor() != null)
-                StaticRefs.getExecutor().run((Graphics2D) g);
+                StaticRefs.getExecutor().run();
             run = false;
         }
         StaticRefs.getSceneManager().draw((Graphics2D) g);

@@ -2,8 +2,9 @@ package com.j3d.gen.grid;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.math.CartesianPoint;
-import com.j3d.engine.math.ConversionProperties;
+import com.j3d.engine.math.convert.Conversion;
 import com.j3d.engine.math.ScreenPoint;
+import com.j3d.engine.math.convert.ConversionWithOffset;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.math.plane.AxisPlane;
 import com.j3d.engine.scene.nodes.geometry.GObject;
@@ -25,7 +26,7 @@ public class Point implements GridObject<GPoint> {
     }
 
     @Override
-    public void draw(Graphics2D graphics2D, ConversionProperties props) {
+    public void draw(Graphics2D graphics2D, ConversionWithOffset props) {
         // draw as circle.
         ScreenPoint sp = point.toScreen(props);
         int size = 10;

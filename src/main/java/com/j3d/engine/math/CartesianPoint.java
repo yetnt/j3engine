@@ -1,5 +1,7 @@
 package com.j3d.engine.math;
 
+import com.j3d.engine.math.convert.Conversion;
+import com.j3d.engine.math.convert.ConversionWithOffset;
 import com.j3d.engine.math.matrix.Vector3;
 
 import java.util.ArrayList;
@@ -53,38 +55,37 @@ public class CartesianPoint extends BasePoint<Double> {
     }
 
     /**
-     * Converts the Cartesian Point to a {@link ScreenPoint} such that it can be viewed on the user's window.
+     * Converts the Cartesian Point to a {@link ScreenPoint} using the global properties
+     * defined by {@link Conversion#global()}
      * @return A ScreenPoint
      */
     public ScreenPoint toScreen() {
-//        double adjustedX = x * Settings.sceneProperties.scale.getValue();
-//        double adjustedY = y * Settings.sceneProperties.scale.getValue();
-//
-//        int screenX = (int) (adjustedX + (double) sceneManager.screenSize.width / 2);
-//        int screenY = (int) ((double) sceneManager.screenSize.height / 2 - adjustedY);
-//
-//
-//        return new ScreenPoint(screenX - StaticConfig.OFFSET_X, screenY);
-
         return toScreen(
-                ConversionProperties.global()
+                Conversion.global()
         );
     }
-
+    
+    /**
+     * Converts the Cartesian Point to a {@link ScreenPoint} using provided properties
+     * @param conversion The conversion properties
+     * @return A ScreenPoint representing the converted coordinates.
+     * @implNote This is just a wrapper over {{@link #toScreen(ConversionWithOffset)}}
+     */
+    public ScreenPoint toScreen(Conversion conversion) {
+        return toScreen(ConversionWithOffset.from(conversion));
+    }
 
     /**
-     * Converts the Cartesian Point to a {@link ScreenPoint} using provided scale and dimension properties.
-     * @param scale The scaling factor to apply to the Cartesian coordinates.
-     * @param size The dimensions (width and height) of the screen or target area.
-     * @return A ScreenPoint representing the converted coordinates.
+     * Converts the Cartesian Point to a {@link ScreenPoint} using the provided properties.
+     * @param conversion The conversion properties
+     * @return A sScreenPoint representing the converted coordinates
      */
-    public ScreenPoint toScreen(ConversionProperties conversionProperties) {
-        double adjustedX = x * conversionProperties.scale();
-        double adjustedY = y * conversionProperties.scale();
+    public ScreenPoint toScreen(ConversionWithOffset conversion) {
+        double adjustedX = (x + conversion.offset().getXOffset()) * conversion.scale();
+        double adjustedY = (y + conversion.offset().getYOffset()) * conversion.scale();
 
-        int screenX = (int) (adjustedX + (double) conversionProperties.size().width / 2);
-        int screenY = (int) ((double) conversionProperties.size().height / 2 - adjustedY);
-
+        int screenX = (int) (adjustedX + (double) conversion.size().width / 2);
+        int screenY = (int) ((double) conversion.size().height / 2 - adjustedY);
 
         return new ScreenPoint(screenX, screenY);
     }

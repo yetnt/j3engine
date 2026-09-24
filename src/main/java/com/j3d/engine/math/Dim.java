@@ -1,5 +1,7 @@
 package com.j3d.engine.math;
 
+import java.awt.Dimension;
+
 /**
  * Dim, like {@link BasePoint} is a 2 dimensional class, however holding width and height
  * instead of an X and Y value.
@@ -10,24 +12,14 @@ package com.j3d.engine.math;
  * @author Lehlogonolo Poole
  * @see java.awt.Dimension
  */
-public class Dim {
-    /**
-     * The width of this dimension.
-     */
-    public final int width;
-    /**
-     * The height of this dimension.
-     */
-    public final int height;
-
+public class Dim extends Dimension {
     /**
      * Default constructor
      * @param width Given width
      * @param height Given height.
      */
     public Dim(int width, int height) {
-        this.width = width;
-        this.height = height;
+        super(width, height);
     }
 
     /**
@@ -35,8 +27,7 @@ public class Dim {
      * @param preferredSize Given {@link java.awt.Dimension}
      */
     public Dim(java.awt.Dimension preferredSize) {
-        this.width = preferredSize.width;
-        this.height = preferredSize.height;
+        super(preferredSize);
     }
 
     @Override

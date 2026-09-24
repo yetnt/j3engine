@@ -5,31 +5,29 @@
 package com.j3d.ui.engine.floating.grid2d;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.math.ConversionProperties;
+import com.j3d.engine.math.convert.Conversion;
 import com.j3d.engine.math.Dim;
 import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.math.CartesianPoint;
+import com.j3d.engine.math.convert.ConversionWithOffset;
 import com.j3d.engine.math.plane.AxisPlane;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.scene.find.FindResult;
 import com.j3d.engine.scene.find.Finder;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GObject;
+import com.j3d.gen.grid.GridManager;
 import com.j3d.gen.grid.GridObject;
 import com.j3d.gen.grid.Line;
 import com.j3d.gen.grid.Point;
 import com.j3d.ui.engine.FloatingPanel;
 import com.j3d.ui.theme.J3DTheme;
-import com.j3d.utility.generic.tuple.SamePair;
+import com.j3d.utility.generic.tuple.MutablePair;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import static com.j3d.StaticRefs.*;
 
@@ -41,22 +39,21 @@ public class Grid2DPanel extends javax.swing.JPanel {
     
     public FloatingPanel floatingPanel = new FloatingPanel("History Panel");
     public static CartesianPoint mousePosInPanel = new CartesianPoint(0, 0);
+    public static MutablePair<Integer, Integer> offset = new MutablePair<>(0, 0);
 
-    private ArrayList<GridObject<?>> gridObjects = new ArrayList<>();
-    private final int radius = 10;
     private final UUID overlapId = UUID.randomUUID();
-    private HashMap<UUID, Consumer<Graphics2D>> temp = new HashMap<>();
 
     private double scale = 20;
+
+    private CartesianPoint to;
+    private CartesianPoint from;
 
     // default parameters.
     private Vector3 v1 = Vector3.X;
     private Vector3 v2 = Vector3.Z;
     private Vector3 origin = Vector3.ZERO;
 
-    private boolean deleteMode = false;
-    private CartesianPoint to;
-    private CartesianPoint from;
+    private GridManager gm;
 
     /**
      * Creates new form Grid2DPanel
@@ -70,106 +67,14 @@ public class Grid2DPanel extends javax.swing.JPanel {
         });
         initMouse();
 
-        ((Grid)drawPanel).setConsumer((g) -> {
-            // Draw the origin point
-            ConversionProperties props = new ConversionProperties(
-                    scale,
-                    new Dim(drawPanel.getWidth(), drawPanel.getHeight())
-            );
-            CartesianPoint cp = new CartesianPoint(0, 0);
-            ScreenPoint sp =
-                    cp.toScreen(
-                            props
-                    );
-            g.setColor(J3DTheme.TEXT_PRIMARY.color());
-            g.fillOval(sp.x - radius/2, sp.y - radius/2, radius, radius);
+        gm = new GridManager(this);
 
-            // Draw all the grid lines
-            pts.forEach(p -> {
-                g.drawLine(
-                        p.first.x,
-                        p.first.y,
-                        p.second.x,
-                        p.second.y
-                );
-            });
-            gridObjects.forEach(
-                    gr -> gr.draw(g, props)
-            );
-            temp.forEach((i, s) -> {
-                s.accept(g);
-            });
-        });
-        getSceneManager().scheduleOverlap(
-                overlapId,
-                (g) -> {
-                    if (floatingPanel.isHidden()) return;
-                    drawMouse(g, mousePosInPanel, new AxisPlane(origin, v1, v2));
-                    Vector3 point = new AxisPlane(origin, v1, v2)
-                            .toWorld(mousePosInPanel);
-                    ScreenPoint sp =
-                            point.toPoint(getCamera())
-                                            .toScreen();
-                    g.setColor(Color.cyan);
-                    g.drawOval(sp.x - radius, sp.y - radius, radius*2, radius*2);
-                    g.setColor(Color.white);
-                    getMainPanel().repaint();
-                    gridObjects.forEach(gr -> gr.drawWorld(g, new AxisPlane(origin, v1, v2)));
-                }
-        );
-        this.addComponentListener(
-                new ComponentAdapter() {
-                    @Override
-                    public void componentResized(ComponentEvent e) {
-                        gridRepaint();
-                    }
-                }
-        );
-        grid();
         theme();
-    }
-
-    public static void drawMouse(Graphics2D g, CartesianPoint mousePos, AxisPlane plane) {
-        int arrowSize = 1;
-        double sideLength = 0.25;
-        // not really the side length since this is more the offset to make the diagonal
-        // which is the actual line we care about.
-        // the actual side length will be sqrt(4)
-        double x = mousePos.x;
-        double y = mousePos.y;
-        ArrayList<CartesianPoint> points = new ArrayList<>(List.of(mousePos));
-
-        // tip is the mouse position (first element)
-        points.add(new CartesianPoint(x, y - 3*arrowSize)); // tail
-        points.add(new CartesianPoint(x - sideLength, y - sideLength)); // Bottom-left
-        points.add(new CartesianPoint(x + sideLength, y - sideLength)); // Bottom-right
-
-        ArrayList<Vector3> points2 = points
-                .stream().map(plane::toWorld)
-                .collect(Collectors.toCollection(ArrayList::new));
-
-        getSceneManager().drawLine3D(
-                g, points2.getFirst(), points2.get(1), getCamera()
-        );
-        getSceneManager().drawLine3D(
-                g, points2.getFirst(), points2.get(2), getCamera()
-        );
-        getSceneManager().drawLine3D(
-                g, points2.getFirst(), points2.get(3), getCamera()
-        );
-
-        getSceneManager().drawText3D(
-                g, points2.getFirst(),
-                mousePos.friendlyString() +" -> " + points2.getFirst().toCommandPaletteString(),
-                getCamera(),
-                J3DTheme.UI_SURFACE.color(),
-                J3DTheme.TEXT_PRIMARY.color()
-        );
     }
 
     private CartesianPoint toPoint(ScreenPoint p, boolean round) {
         Dim dim = getGrid().sizeDim();
-        CartesianPoint cp = p.toPoint(new ConversionProperties(scale, dim));
+        CartesianPoint cp = p.toPoint(new ConversionWithOffset(scale, dim, GridManager.fromMut()));
         if (round) {
             return new CartesianPoint(
                     Math.round(cp.x),
@@ -178,12 +83,6 @@ public class Grid2DPanel extends javax.swing.JPanel {
         }
 
         return cp;
-    }
-
-    private void gridRepaint() {
-        pts.clear();
-        grid();
-        drawPanel.repaint();
     }
 
     UUID drag = UUID.randomUUID();
@@ -198,9 +97,9 @@ public class Grid2DPanel extends javax.swing.JPanel {
                         t.requestFocus();
                         ScreenPoint sp = new ScreenPoint(e.getX(), e.getY());
                         CartesianPoint snapped = toPoint(sp, true);
-                        if (deleteMode) {
-                            delete(snapped);
-                        } else existing(() -> new Point(snapped));
+                        if (gm.isDeleteMode()) {
+                            gm.delete(snapped);
+                        } else gm.existing(() -> new Point(snapped));
                         System.out.println(snapped);
                         drawPanel.repaint();
                     }
@@ -209,24 +108,26 @@ public class Grid2DPanel extends javax.swing.JPanel {
                     public void mouseReleased(MouseEvent e) {
                         super.mouseReleased(e);
 //                        t.requestFocus();
-                        temp.remove(drag);
+                        if (e.getButton() != MouseEvent.BUTTON1) return;
+                        gm.getTemporaryDrawConsumers().remove(drag);
                         ScreenPoint sp = new ScreenPoint(e.getX(), e.getY());
                         CartesianPoint snapped = toPoint(sp, true);
 
-                        ScreenPoint mousePos = mousePosInPanel.toScreen(new ConversionProperties(
+                        ScreenPoint mousePos = mousePosInPanel.toScreen(new ConversionWithOffset(
                                 scale,
-                                getGrid().sizeDim()
+                                getGrid().sizeDim(),
+                                GridManager.fromMut()
                         ));
                         CartesianPoint cp = toPoint(mousePos, true);
 
                         System.out.println("From " + cp + " to " + snapped);
                         Line l = new Line(snapped, cp);
-                        if (deleteMode) {
-                            delete(l);
+                        if (gm.isDeleteMode()) {
+                            gm.delete(l);
                         } else {
-                            existing(() -> new Point(snapped));
-                            existing(() -> new Point(cp));
-                            gridObjects.add(l);
+                            gm.existing(() -> new Point(snapped));
+                            gm.existing(() -> new Point(cp));
+                            gm.getObjects().add(l);
                         }
                     }
 
@@ -237,34 +138,51 @@ public class Grid2DPanel extends javax.swing.JPanel {
                     @Override
                     public void mouseMoved(MouseEvent e) {
                         super.mouseMoved(e);
+                        old = e.getPoint();
                         mousePosInPanel =
                                 new ScreenPoint(e.getX(), e.getY())
-                                        .toPoint(new ConversionProperties(scale, getGrid().sizeDim()));
+                                        .toPoint(new ConversionWithOffset(scale, getGrid().sizeDim(), GridManager.fromMut()));
                         drawPanel.repaint();
                     }
 
                     @Override
                     public void mouseDragged(MouseEvent e) {
                         super.mouseDragged(e);
-                        ScreenPoint sp = new ScreenPoint(e.getX(), e.getY());
-                        to = toPoint(sp, true);
+                        if ((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) != 0) {
+                            ScreenPoint sp = new ScreenPoint(e.getX(), e.getY());
+                            setTo(toPoint(sp, true));
 
-                        ConversionProperties cp = new ConversionProperties(
-                                scale,
-                                getGrid().sizeDim()
-                        );
-                        from = toPoint(mousePosInPanel.toScreen(cp), true);
+                            ConversionWithOffset cp = new ConversionWithOffset(
+                                    scale,
+                                    getGrid().sizeDim(),
+                                    GridManager.fromMut()
+                            );
+                            setFrom(toPoint(mousePosInPanel.toScreen(cp), true));
 
-                        gridRepaint();
-                        if (!temp.containsKey(drag)) {
-                            temp.put(drag, (g) -> Line.drawLine(
-                                    () -> deleteMode ? Color.RED : J3DTheme.TEXT_SECONDARY.color(),
-                                    () -> to,
-                                    () -> from,
-                                    g,
-                                    cp
-                            ));
+                            gm.repaint();
+                            if (!gm.getTemporaryDrawConsumers().containsKey(drag)) {
+                                gm.getTemporaryDrawConsumers().put(drag, (g) -> Line.drawLine(
+                                        () -> gm.isDeleteMode() ? Color.RED : J3DTheme.TEXT_SECONDARY.color(),
+                                        Grid2DPanel.this::getTo,
+                                        Grid2DPanel.this::getFrom,
+                                        g, cp
+                                ));
+                            }
+                        } else {
+                            // i forgor the delta.
+                            int dx_cart = (int) ((old.x - e.getX()) / scale);
+                            int dy_cart = (int) ((old.y - e.getY()) / scale);
+
+                            int mult = 1;
+
+//                            if (scale > 20) {
+//                                mult = (int)Math.floor(scale/4);
+//                            }
+
+                            offset.setFirst(offset.getFirst() - (mult * dx_cart));
+                            offset.setSecond(offset.getSecond() + (mult * dy_cart));
                         }
+                        old = e.getPoint();
                     }
                 }
         );
@@ -274,116 +192,60 @@ public class Grid2DPanel extends javax.swing.JPanel {
                     public void mouseWheelMoved(MouseWheelEvent e) {
                         super.mouseWheelMoved(e);
                         scale *= Math.pow(1.1, -e.getWheelRotation());
-                        gridRepaint();
+                        gm.repaint();
                     }
                 }
         );
     }
 
-    private void existing(Supplier<Point> p) {
-        Point o = p.get();
-        Point p2 = gridObjects
-                .stream()
-                .filter(
-                        o2 -> o2 instanceof Point
-                )
-                .map(
-                        o2 -> (Point)o2
-                )
-                .filter(
-                        point -> point.getPoint().equals(o.getPoint())
-                )
-                .findFirst()
-                .orElse(null);
-        if (p2 == null) {
-            gridObjects.add(o);
-        }
-    }
-
-    private void delete(CartesianPoint snapped) {
-        // look for a point at the current position, if any matches delete said points.
-        new ArrayList<>(gridObjects).stream()
-                .filter(
-                        o -> o instanceof Point
-                )
-                .map(
-                        o -> (Point) o
-                )
-                .filter(
-                        point -> point.getPoint().equals(snapped)
-                )
-                .forEach(gridObjects::remove);
-    }
-
-    private void delete(Line l) {
-        // if this line intersects with any other line in this list, delete that line
-        new ArrayList<>(gridObjects)
-                .stream()
-                .peek(o -> {
-                    if (o instanceof Point p)
-                        if (p.getPoint().equals(l.getP1()) || p.getPoint().equals(l.getP2()))
-                            gridObjects.remove(p);
-                })
-                .filter(
-                        lw -> lw instanceof Line
-                )
-                .map(
-                        lw -> (Line) lw
-                )
-                .filter(
-                        lw ->
-                                (lw.getP1().equals(l.getP1()) && lw.getP2().equals(l.getP2()))
-                        || (lw.getP1().equals(l.getP2()) && lw.getP2().equals(l.getP1()))
-                        || Line.intersects(l, lw)
-                )
-                .forEach(gridObjects::remove);
-    }
+    private java.awt.Point old = new java.awt.Point(0, 0);
 
     public void toggleHidden()  {
         floatingPanel.toggleHidden();
     }
 
-    // grid stuff
-    private ArrayList<SamePair<ScreenPoint>> pts = new ArrayList<>();
-
-    private Grid getGrid() {
+    public Grid getGrid() {
         return (Grid) drawPanel;
     }
 
-    private void  regInGrid(CartesianPoint p, CartesianPoint s) {
-        Dim dim = getGrid().sizeDim();
-        ConversionProperties conversionProperties = new ConversionProperties(scale, dim);
-        pts.add(
-                new SamePair<>(
-                        p.toScreen(conversionProperties),
-                        s.toScreen(conversionProperties)
-                )
-        );
+    public UUID getOverlapId() {
+        return overlapId;
     }
 
-    private void grid() {
-        Dim panelSize = getGrid().sizeDim();
-        if (panelSize.width == 0 || panelSize.height == 0) return;
+    public JPanel getDrawPanel() {
+        return drawPanel;
+    }
 
-        // Convert screen corners to Cartesian points to find the bounds
-        ConversionProperties conversionProperties = new ConversionProperties(scale, panelSize);
-        CartesianPoint topLeft = new ScreenPoint(0, 0).toPoint(conversionProperties);
-        CartesianPoint bottomRight = new ScreenPoint(panelSize.width, panelSize.height).toPoint(conversionProperties);
+    public Vector3 getOrigin() {
+        return origin;
+    }
 
-        double startX = Math.floor(topLeft.x);
-        double endX = Math.ceil(bottomRight.x);
-        double startY = Math.floor(bottomRight.y);
-        double endY = Math.ceil(topLeft.y);
+    public Vector3 getV1() {
+        return v1;
+    }
 
-        // Draw vertical lines
-        for (double x = startX; x <= endX; x++) {
-            regInGrid(new CartesianPoint(x, startY), new CartesianPoint(x, endY));
-        }
+    public Vector3 getV2() {
+        return v2;
+    }
 
-        // Draw horizontal lines
-        for (double y = startY; y <= endY; y++) {
-            regInGrid(new CartesianPoint(startX, y), new CartesianPoint(endX, y));
-        }
+    public double getScale() {
+        return scale;
+    }
+
+    public CartesianPoint getFrom() {
+        return from;
+    }
+
+    public void setFrom(CartesianPoint from) {
+        this.from = from;
+    }
+
+    public CartesianPoint getTo() {
+        return to;
+    }
+
+    public void setTo(CartesianPoint to) {
+        this.to = to;
     }
 
     private Vector3 parseV3Str(String accumulator) {
@@ -426,6 +288,7 @@ public class Grid2DPanel extends javax.swing.JPanel {
                     "Error",
                     JOptionPane.ERROR_MESSAGE
             );
+            return null;
         }
         return v;
     }
@@ -638,8 +501,8 @@ public class Grid2DPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_yCompBtnActionPerformed
 
     private void renderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renderBtnActionPerformed
-        ArrayList<GridObject<?>> gridObjects1 = new ArrayList<>(gridObjects);
-                gridObjects.stream()
+        ArrayList<GridObject<?>> gridObjects1 = new ArrayList<>(gm.getObjects());
+                gm.getObjects().stream()
                         .filter(g -> g instanceof Line)
                         .map(g -> (Line) g)
                         .filter(g -> g.getP1().equals(g.getP2()))
@@ -678,7 +541,7 @@ public class Grid2DPanel extends javax.swing.JPanel {
         );
 
         // clear.
-        gridObjects.clear();
+        gm.getObjects().clear();
 
     }//GEN-LAST:event_renderBtnActionPerformed
 
@@ -702,7 +565,7 @@ public class Grid2DPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_presetComboBoxActionPerformed
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-        deleteMode = !deleteMode;
+        gm.setDeleteMode(!gm.isDeleteMode());
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
 

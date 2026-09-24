@@ -21,6 +21,10 @@ public class SamePair<T> extends Pair<T, T> {
         super(first, second);
     }
 
+    public SamePair(Pair<T, T> samePair) {
+        super(samePair.first, samePair.second);
+    }
+
     public <U> SamePair<U> map(Function<T, U> function) {
         return new SamePair<U>(function.apply(first), function.apply(second));
     }

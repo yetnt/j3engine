@@ -1,5 +1,7 @@
 package com.j3d.engine.math;
 
+import com.j3d.engine.math.convert.Conversion;
+import com.j3d.engine.math.convert.ConversionWithOffset;
 import com.j3d.engine.math.matrix.Vector3;
 
 import java.awt.*;
@@ -26,17 +28,36 @@ public class ScreenPoint extends BasePoint<Integer> {
     }
 
     /**
-     * Converts this ScreenPoint back into it's CartesianPoint. (Accuracy is not guaranteed.)
+     * Converts this ScreenPoint back into it's CartesianPoint using the global Conversion properties
+     * defined by {@link Conversion#global()}
      * @return A CartesianPoint
      */
     public CartesianPoint toPoint() {
         return
-                toPoint(ConversionProperties.global());
+                toPoint(Conversion.global());
     }
 
-    public CartesianPoint toPoint(ConversionProperties conversionProperties) {
-        double adjustedX = ((x)- conversionProperties.size().width / 2.0) / conversionProperties.scale();
-        double adjustedY = (conversionProperties.size().height / 2.0 - y) / conversionProperties.scale();
+    /**
+     * Converts the Screen Point into a {@link CartesianPoint}.
+     * @param conversion The conversion properties
+     * @return The {@link CartesianPoint} coordinates of this ScreenPoint.
+     * @implSpec If this is being used to reverse {@link CartesianPoint#toScreen(Conversion)}, it will not be accurate.
+     * @implNote This is just a wrapper over {{@link #toPoint(ConversionWithOffset)}}
+     */
+    public CartesianPoint toPoint(Conversion conversion) {
+        return toPoint(
+                ConversionWithOffset.from(conversion)
+        );
+    }
+    /**
+     * Converts the Screen Point into a {@link CartesianPoint}.
+     * @param conversion The conversion properties
+     * @return The {@link CartesianPoint} coordinates of this ScreenPoint.
+     * @implSpec If this is being used to reverse {@link CartesianPoint#toScreen(ConversionWithOffset)}, it will not be accurate.
+     */
+    public CartesianPoint toPoint(ConversionWithOffset conversion) {
+        double adjustedX = (((x)- conversion.size().width / 2.0) / conversion.scale()) - conversion.offset().getXOffset();
+        double adjustedY = ((conversion.size().height / 2.0 - y) / conversion.scale()) -  conversion.offset().getYOffset();
         return new CartesianPoint(adjustedX, adjustedY);
     }
 

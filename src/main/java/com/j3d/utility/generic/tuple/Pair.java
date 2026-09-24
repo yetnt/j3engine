@@ -27,6 +27,11 @@ public class Pair<T, U> {
         this.second = second;
     }
 
+    public Pair(MutablePair<T, U> pair) {
+        this.first = pair.getFirst();
+        this.second = pair.getSecond();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

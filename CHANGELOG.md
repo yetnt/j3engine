@@ -85,7 +85,7 @@ This has a lot of things from the over a year of dev so like yeah ill briefly me
 * fix some theme changer stuff not working
 * begin back integrated Jaiva! because why not
 
-# v1.2.0
+# v1.2.0 Macros!
 
 * Change `.msi` build to be per user (as the J3Engine user files are per-user too)
 * Add Custom keybind utility dialog since swing doesn't have one for some odd reason
@@ -110,3 +110,13 @@ This has a lot of things from the over a year of dev so like yeah ill briefly me
 * Added Github workflow to publish JavaDoc site with all public, private, protected and package-private classes, fields and methods to github pages cuz why not
 * Removed unused background music from resources. Cluttering build
 * Change `jaiva` import to be of the released github version such as to allow JavaDoc to build and not the locally installed version.
+
+# v1.3.0 Grid2d
+
+* Fix bug where curves could not be moved in point/tri mode
+* Change `ConversionProperties` to be `Conversion` and add `ConversionWithOffset` and an `Offset` class for converting between `ScreenPoint` and `CartesianPoint`
+* Grid2dPanel updates
+  * Grid2dPanel now uses `ConversionWithOffset` such as to allow panning the canvas
+  * Grid2dPanel has been split into `Grid2dPanel` and `GridManager` to alleviate responsibilities off of `Grid2dPanel`
+  * Grid2dPanel now allows panning the canvas (using any mouse button that isnt LEFT click)
+  * the X and Y vectors are now drawn at the centre to visualize the scaling of the actual plane in 3d

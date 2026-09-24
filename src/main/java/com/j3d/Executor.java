@@ -29,7 +29,8 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Executor is a class called by {@link EngineFrame#main(String[])} that just draws things ot the window
+ * Executor is a class called by {@link EngineFrame#main(String[])} that is specifically draws a debug scene
+ * when the debug project is chosen. It only makes this stuff once and never again purely for debugging
  */
 public class Executor {
     /**
@@ -50,7 +51,7 @@ public class Executor {
     /**
      * Runs the executor.
      */
-    public void run(Graphics2D graphics2D) {
+    public void run() {
         StaticRefs.getSceneManager().layers.add(layer);
 
         Thing ngon = ngon(3);
@@ -65,11 +66,6 @@ public class Executor {
                         new Vector3(0, 0.2, 0.6),
                         new Vector3(0.1, 0.4, 0)
                 ).sameAxes(Vector3.X(-10), Vector3.X(-2))
-        );
-        Thing genericSolid = Solids.prism(
-                10,40, layer,
-                AxisPlane.ZY(Vector3.ZERO)
-                        .sameAxes(Vector3.X(-30), Vector3.X(-22))
         );
         Thing cone = cone(20, 20);
 

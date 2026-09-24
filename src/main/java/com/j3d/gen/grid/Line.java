@@ -2,8 +2,9 @@ package com.j3d.gen.grid;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.math.CartesianPoint;
-import com.j3d.engine.math.ConversionProperties;
+import com.j3d.engine.math.convert.Conversion;
 import com.j3d.engine.math.ScreenPoint;
+import com.j3d.engine.math.convert.ConversionWithOffset;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.math.plane.AxisPlane;
 import com.j3d.engine.scene.nodes.geometry.GLine;
@@ -72,7 +73,7 @@ public class Line implements GridObject<GLine> {
     }
 
     @Override
-    public void draw(Graphics2D graphics2D, ConversionProperties props) {
+    public void draw(Graphics2D graphics2D, ConversionWithOffset props) {
         // draw as line
         ScreenPoint sp1 = p1.toScreen(props);
         ScreenPoint sp2 = p2.toScreen(props);
@@ -104,7 +105,7 @@ public class Line implements GridObject<GLine> {
         );
     }
 
-    public static void drawLine(Supplier<Color> col, Supplier<CartesianPoint> p1, Supplier<CartesianPoint> p2, Graphics2D g, ConversionProperties c) {
+    public static void drawLine(Supplier<Color> col, Supplier<CartesianPoint> p1, Supplier<CartesianPoint> p2, Graphics2D g, ConversionWithOffset c) {
         ScreenPoint sp1 = p1.get().toScreen(c);
         ScreenPoint sp2 = p2.get().toScreen(c);
 

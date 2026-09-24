@@ -25,26 +25,21 @@ import java.util.stream.Stream;
  * A {@code Layer} is a fundamental concept in the rendering pipeline, representing a
  * collection of {@link Thing} instances that are rendered together. The
  * {@link SceneManager} processes these layers in a specific order, drawing the
- * contents of each layer to the screen. By organizing {@code Thing}s into
- * layers, you can control their stacking order and visibility.
+ * contents of each layer to the screen.
  * <p>
- * The {@code Layer} class extends {@link ArrayList}, providing a versatile and
- * efficient way to manage the objects within it. You can add, remove, and
+ * The {@code Layer} class extends {@link ArrayList}, providing a
+ * way to manage the objects within it. You can add, remove, and
  * reorder objects in a layer to dynamically change the scene's composition.
  *
- * <h3>Key Features:</h3>
  * <ul>
- *     <li>
- *         <b>Object Grouping:</b> Layers allow you to group related
- *         {@link GObject}s, making it easier to manage complex scenes. For
- *         example, you could have separate layers for the background, main
- *         characters, and UI elements.
+ *     <li>Layers allow you to group related
+ *         {@link Thing}s, making it easier to manage complex scenes.
  *     </li>
  * </ul>
  *
  * @see SceneManager
  * @see GObject
- * @see ArrayDeque
+ * @see ArrayList
  */
 public class Layer extends ArrayList<Thing> implements SceneObjectList {
 

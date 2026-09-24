@@ -4,10 +4,7 @@ import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.math.ScreenPoint;
-import com.j3d.engine.scene.nodes.geometry.GLine;
-import com.j3d.engine.scene.nodes.geometry.GObject;
-import com.j3d.engine.scene.nodes.geometry.GPoint;
-import com.j3d.engine.scene.nodes.geometry.GTri;
+import com.j3d.engine.scene.nodes.geometry.*;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandsManager;
@@ -220,10 +217,14 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
 
         references = switch (faceMode) {
             case TRIANGLES -> new ArrayList<>(StaticRefs.getSceneManager().getSelected().stream()
-                    .filter(obj -> obj instanceof GTri)
-                    .map(obj -> (GTri) obj)
-                    .flatMap(GTri::getLegStream)
-                    .flatMap(GLine::getPointStream)
+                    .filter(obj -> obj instanceof GTri || obj instanceof GCurve)
+                    .flatMap(obj -> {
+                        if (obj instanceof GTri t) return t.getLegStream().flatMap(GLine::getPointStream);
+                        else {
+                            GCurve c = (GCurve) obj;
+                            return c.getPointStream();
+                        }
+                    })
                     .collect(Collectors.toSet()));
             case POINTS -> StaticRefs.getSceneManager().getSelected()
                     .stream()
