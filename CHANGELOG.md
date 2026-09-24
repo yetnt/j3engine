@@ -5,7 +5,7 @@
 title: Example Git-Graph of J3Engine at PAT branch off
 ---
 
-gitGraph TB:
+gitGraph:
     
     commit id:"(previous commits)"
     commit id:"de0a781"
@@ -17,12 +17,16 @@ gitGraph TB:
     checkout pat
     merge main id:"583e875"
     checkout main
-    commit id:"e0ffde4" tag: "1.0.0"
+    commit id:"e0ffde4"
+    commit id: "c1c69bd"
     checkout pat
     commit id:"752fd0e"
-    commit id:"(more commits)"
     checkout main
+    commit id: "2122b46"
+    commit id: "2f09915" tag: "1.0.0"
     commit id:"(more commits )"
+    checkout pat
+    commit id:"(more commits)"
 ```
 
 > For context, the PAT branch and the main branch are almost identical in code, however from v1 onwards they differ so the following and
