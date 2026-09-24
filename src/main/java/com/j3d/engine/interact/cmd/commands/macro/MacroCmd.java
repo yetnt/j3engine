@@ -8,13 +8,28 @@ import com.j3d.ui.SafeJLabel;
 import java.util.ArrayList;
 
 /**
- * A dispatcher command for macro related things
- * More docs coming soooon
+ * A dispatcher command for macro related things.
+ * <p>
+ *     This class does functionally nothing other than dispatch
+ * </p>
+ * <p>
+ *     Aliases: {@code macro}, {@code auto}
+ * </p>
+ * <p>
+ *     Typical Usage:
+ *     <pre>{@code
+ *     macro record poop    // Record poop macro
+ *     macro end poop       // End recording for the poop macro
+ *     macro list           // Opens the directories where the macros live
+ *     macro run poop       // Runs the poop macro
+ *     }</pre>
+ * </p>
  */
 public class MacroCmd extends Command {
+
     public MacroCmd() {
         super("macro", "Handle user defined macros");
-        this.args(
+        this.aliases("auto").args(
                 new RecordCmd(),
                 new EndCmd(),
                 new ListCmd(),

@@ -39,9 +39,8 @@ public class MacrosEditor extends javax.swing.JDialog {
                         (entry) -> {
                             // if the entry doesn't exist within the map, this key's file was deleted so skip it.
                             return map.containsKey(entry.getValue());
-                            }
-                            )
-                .collect(
+                        }
+                ).collect(
                         Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)
                 );
 

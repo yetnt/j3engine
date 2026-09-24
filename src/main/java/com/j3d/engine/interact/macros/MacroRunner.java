@@ -99,6 +99,11 @@ public class MacroRunner implements EventListener {
     private boolean expectEvent = false;
 
     /**
+     * Package-private default constructor (Only {@link MacroUtils} can instantiate it)
+     */
+    MacroRunner() {}
+
+    /**
      * Attempts to run a given macro by name. This serves as the start of running a macro and will run ther entire macro
      * to completion.
      * @implSpec Ensure the class is not already running a macro or else this will cause issues.

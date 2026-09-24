@@ -15,37 +15,84 @@ import com.j3d.utility.generic.tuple.SamePair;
 
 import java.util.ArrayList;
 
-// TODO: document
+/**
+ * A single-instantiated class with the purpose of recording engine events to become a single {@link Macro}.
+ * <p>
+ *     How it works is, it listens for the following events:
+ *     <ul>
+ *         <li>{@link EventType#CAMERA_MOVED} to track camera changes</li>
+ *         <li>{@link EventType#COMMAND_FIRED} to track command invocations (only the base invocation since it'll have the subcommand as arguments)</li>
+ *         <li>{@link EventType#X_SELECTED} to track selection</li>
+ *     </ul>
+ *     and simply formats them. The reverse of {@link MacroRunner}
+ * </p>
+ * @see Macro
+ * @see MacroLine
+ * @see MacroRunner
+ * @see MacroUtils
+ * @see EventType#COMMAND_FIRED
+ * @see EventType#CAMERA_MOVED
+ * @see EventType#X_SELECTED
+ *
+ * @author Lehlogonolo Poole
+ */
 public class MacroRecorder implements EventListener {
 
-    ArrayList<MacroLine> instructions = new ArrayList<>();
-    String name = null;
-    boolean running = false;
+    /**
+     * The ordered list of instructions.
+     */
+    private ArrayList<MacroLine> instructions = new ArrayList<>();
+    /**
+     * The name of the macro provided by {@link RecordCmd}
+     */
+    private String name = null;
+    /**
+     * Boolean indicating whether the macro is running or not
+     */
+    private boolean running = false;
 
-    public MacroRecorder() {
-        StaticRefs.getLog().println("Macro Recorder Instance created.");
-    }
+    /**
+     * Package-private default constructor (Only {@link MacroUtils} can instantiate it)
+     */
+    MacroRecorder() {}
 
+    /**
+     * Begins recording engine events to save as macro instructions. This serves as the start of recording a macro.
+     * @implSpec Ensure the class is not already running a macro or else this will cause issues.
+     * @param name The name of the new macro
+     */
     public void record(String name) {
         running = true;
         this.name = name;
         StaticRefs.getLog().println("[MR] Started.");
     }
 
-    public ArrayList<MacroLine> stop() {
+    /**
+     * Stops recording the macro, clears all state such that a new macro can be recorded and returns a macro of the recorded instructions.
+     * @return The recorded macro, unless the class was never running then null.
+     */
+    public Macro stop() {
+        if (!running) return null;
         running = false;
+        String n = name;
+        name = null;
         ArrayList<MacroLine> result = new ArrayList<>(instructions);
         instructions.clear();
         StaticRefs.getLog().println("[MR] Stopped.");
-        return result;
+        return new Macro(n, result);
     }
 
-    public String getName() {
-        String n = name;
-        name = null;
-        return n;
-    }
-
+    /**
+     * Listens for the 3 events listed in the {@link MacroRecorder} doc and applies human readable formatting if the recorded class instance
+     * does not provide a specialized macro-line method.
+     * @param event The type of event
+     * @param properties The given event payload
+     * @param <K> K.
+     *
+     * @see EventType#X_SELECTED
+     * @see EventType#CAMERA_MOVED
+     * @see EventType#COMMAND_FIRED
+     */
     @Override
     public <K> void onEvent(EventType event, EventPayload<K> properties) {
         if (!running) return;

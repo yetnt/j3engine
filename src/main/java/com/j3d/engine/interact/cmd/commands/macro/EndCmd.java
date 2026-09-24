@@ -1,13 +1,10 @@
 package com.j3d.engine.interact.cmd.commands.macro;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
-import com.j3d.engine.interact.cmd.args.TypedArg;
 import com.j3d.engine.interact.macros.Macro;
-import com.j3d.engine.interact.macros.MacroLine;
 import com.j3d.engine.interact.macros.MacroRecorder;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.utility.generators.JLabelRichText;
@@ -28,13 +25,11 @@ public class EndCmd extends Subcommand {
         MacroRecorder mr = StaticRefs.getMacroUtils().getMacroRecorder();
 
         if (mr.isRecording()) {
-            ArrayList<MacroLine> macroLines = mr.stop();
-            String name = mr.getName();
-            if (macroLines.getLast().instruction().contains("macro"))
-                macroLines.removeLast();
+            Macro macro = mr.stop();
+            if (macro.getMacroLines().getLast().instruction().contains("macro"))
+                macro.getMacroLines().removeLast();
             try {
-                StaticRefs.getEngineFiles().macrosFile.write(name, macroLines);
-                StaticRefs.getMacroUtils().addMacro(name, new Macro(name, macroLines));
+                StaticRefs.getMacroUtils().addMacro(macro);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
