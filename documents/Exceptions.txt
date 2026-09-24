@@ -3,13 +3,13 @@ JCCXXX -> J3DErr (prefixed J cuz why not)
 (CC from 00 to 09 are unused due to small domain
 
 10XXX -> Generation Exceptions
-20XXX -> Database Exceptions
+20XXX -> (Unused)
 30XXX -> Threading Exceptions
 4?XXX -> Engine Exceptions
 	40XXX -> Generic Engine Exception
 	41XXX -> Scene Exceptions
 	42XXX -> Engine (Math) Exceptions
-	43XXX -> Interaction Exceptins (e.g. controlling user input or command line)
+	43XXX -> Interaction Exceptions (e.g. controlling user input or command line)
 50XXX -> I/O Exceptions
     51XXX -> ProjectFile Exceptions
 
@@ -23,11 +23,7 @@ JCCXXX -> J3DErr (prefixed J cuz why not)
 10213 -> Invalid HTML Tag: Malformed attributes
 10221 -> #-links: Malformed link-to-header (within same document or other .j3.md document) written.
 10222 -> #-links: Attempt to link to some arbitrary file (isn't .j3.md)
-10231 -> 
-
-
-20100 -> Generic SQL Exception
-20101 -> Given column is not apart of the table. (usually should be caught by type safety)
+10231 ->
 
 
 43101 -> MouseOwner could not instantiate a Robot instance
