@@ -21,6 +21,11 @@
             <artifactId>jaiva</artifactId>
             <version>5.0.2</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.yetnt</groupId>
+            <artifactId>ytils</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
     <properties>
@@ -38,6 +43,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
+                    <links>
+                        <link>https://yetnt.github.io/ytils/</link>
+                    </links>
                     <show>private</show>
                     <doclint>none</doclint>
                     <failOnError>false</failOnError>
