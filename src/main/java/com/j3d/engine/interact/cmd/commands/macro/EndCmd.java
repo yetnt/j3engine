@@ -7,7 +7,7 @@ import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.macros.Macro;
 import com.j3d.engine.interact.macros.MacroRecorder;
 import com.j3d.ui.SafeJLabel;
-import com.j3d.utility.generators.JLabelRichText;
+import com.yetnt.utils.builders.InlineHTML;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class EndCmd extends Subcommand {
             }
         }
 
-        logLabel.setText("Recording macro finished. Enter " + SafeJLabel.EMPH + " to edit the keybind to this macro.", new JLabelRichText("ALT+M").bold().italic());
+        logLabel.setText("Recording macro finished. Enter " + SafeJLabel.EMPH + " to edit the keybind to this macro.", new InlineHTML("ALT+M").bold().italic());
 
 
     }

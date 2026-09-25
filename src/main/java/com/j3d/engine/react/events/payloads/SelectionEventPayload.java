@@ -2,13 +2,12 @@ package com.j3d.engine.react.events.payloads;
 
 import com.j3d.engine.interact.selection.SelectionManager;
 import com.j3d.engine.interact.selection.SelectionMouseOwner;
-import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.interact.selection.SelectionUtils;
 import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.scene.nodes.geometry.GObject;
-import com.j3d.utility.generic.tuple.SamePair;
+import com.yetnt.utils.tuple.SamePair;
 
 import java.util.HashSet;
 

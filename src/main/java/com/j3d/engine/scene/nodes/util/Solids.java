@@ -10,7 +10,7 @@ import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.scene.nodes.layer.Layer;
-import com.j3d.utility.generic.tuple.SamePair;
+import com.yetnt.utils.tuple.SamePair;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -71,10 +71,10 @@ public class Solids {
      * on the specified bottom and top planes, and then connecting their corresponding vertices to form the side faces.
      */
     public static ArrayList<GObject> prism(double radius, int sideFaceAmts, SamePair<AxisPlane> planes, boolean randCol) {
-        Vector3 bottomCentre = planes.first.origin();
-        Vector3 topCentre = planes.second.origin();
-        AxisPlane bottomAxisPlane = planes.first;
-        AxisPlane topAxisPlane = planes.second;
+        Vector3 bottomCentre = planes.getFirst().origin();
+        Vector3 topCentre = planes.getSecond().origin();
+        AxisPlane bottomAxisPlane = planes.getFirst();
+        AxisPlane topAxisPlane = planes.getSecond();
 
         GPoint centre = new GPoint(bottomCentre);
         GPoint centre2 = new GPoint(topCentre);

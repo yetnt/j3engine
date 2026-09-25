@@ -15,7 +15,7 @@ import com.j3d.jaiva.EngineObject;
 import com.j3d.jaiva.TypeConverter;
 import com.j3d.jaiva.packs.getters.GettersPack;
 import com.j3d.jaiva.packs.getters.J3DGetterException;
-import com.j3d.utility.generic.tuple.SamePair;
+import com.yetnt.utils.tuple.SamePair;
 
 import java.awt.*;
 import java.util.ArrayList;

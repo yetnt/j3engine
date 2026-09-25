@@ -8,7 +8,7 @@ import com.j3d.StaticRefs;
 import com.j3d.engine.scene.nodes.geometry.*;
 import com.j3d.gen.properties.Property;
 import com.j3d.ui.theme.J3DTheme;
-import com.j3d.utility.generic.tuple.Pair;
+import com.yetnt.utils.tuple.Pair;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -41,9 +41,9 @@ public class ObjectProperty<T extends GObject> extends JPanel implements Propert
         labelTxtField.setEnabled(false);
         uuidTextField.setEnabled(false);
         Pair<String, UUID> type = setType();
-        labelTxtField.setText(type.first);
+        labelTxtField.setText(type.getFirst());
         if (singleProperty()) {
-            uuidTextField.setText(type.second.toString().substring(0, 10) + "...");
+            uuidTextField.setText(type.getSecond().toString().substring(0, 10) + "...");
 
             MouseAdapter mouseAdapter = new MouseAdapter() {
                 @Override
@@ -51,7 +51,7 @@ public class ObjectProperty<T extends GObject> extends JPanel implements Propert
                     if (e.getClickCount() == 2) {
                         // add the UUID to the command palette
                         StaticRefs.getCommandParser().injectArgument(
-                                type.second
+                                type.getSecond()
                         );
                     }
                 }

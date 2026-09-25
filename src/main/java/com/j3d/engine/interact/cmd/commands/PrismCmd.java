@@ -17,8 +17,8 @@ import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.ui.theme.J3DTheme;
-import com.j3d.utility.generators.JLabelRichText;
-import com.j3d.utility.generic.tuple.SamePair;
+import com.yetnt.utils.builders.InlineHTML;
+import com.yetnt.utils.tuple.SamePair;
 
 import javax.swing.*;
 import java.awt.*;
@@ -261,7 +261,7 @@ public class PrismCmd extends Command implements KeyedStatefulCommand {
                     SafeJLabel.EMPH + "-sided prism with radius "+SafeJLabel.EMPH+" using arrow keys and handles. "
                             +"| (Click "+SafeJLabel.EMPH+" to change radius)",
                     sides,
-                    new JLabelRichText(""+radius)
+                    new InlineHTML(""+radius)
                             .font(J3DTheme.TEXT_SECONDARY.color().darker(), "6"),
                     "[R]"
             );

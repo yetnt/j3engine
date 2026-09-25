@@ -19,10 +19,10 @@ import com.j3d.gen.grid.*;
 import com.j3d.gen.grid.Point;
 import com.j3d.ui.engine.FloatingPanel;
 import com.j3d.ui.theme.J3DTheme;
-import com.j3d.utility.generators.JLabelRichText;
-import com.j3d.utility.generic.func.QuadFunction;
-import com.j3d.utility.generic.tuple.MutablePair;
-import com.j3d.utility.generic.tuple.Triple;
+import com.yetnt.utils.builders.InlineHTML;
+import com.yetnt.utils.functional.QuadFunction;
+import com.yetnt.utils.tuple.MutablePair;
+import com.yetnt.utils.tuple.Triple;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
@@ -310,7 +310,7 @@ public class Grid2DPanel extends javax.swing.JPanel {
     }
 
     private void log(String string) {
-        logLbl.setText(new JLabelRichText(string).bold().underline().wrapHTML());
+        logLbl.setText(new InlineHTML(string).bold().underline().wrapHTML());
     }
 
     public void theme() {

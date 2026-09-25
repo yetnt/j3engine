@@ -8,8 +8,8 @@ import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.selection.SelectionManager;
 import com.j3d.engine.react.events.*;
 import com.j3d.ui.SafeJLabel;
-import com.j3d.utility.generators.JLabelRichText;
-import com.j3d.utility.generic.tuple.SamePair;
+import com.yetnt.utils.builders.InlineHTML;
+import com.yetnt.utils.tuple.SamePair;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -135,13 +135,13 @@ public class SelectionPreCondition implements PreCommandExecution {
     @Override
     public SamePair<String> getLogText() {
         return new SamePair<>(
-                JLabelRichText.htmlOf(
-                        new JLabelRichText("Make a selection then "),
-                        new JLabelRichText("left click to continue").bold().underline(),
-                        new JLabelRichText(" this command. "),
-                        new JLabelRichText("(Or, hit escape to abort)").underline()
+                InlineHTML.htmlOf(
+                        new InlineHTML("Make a selection then "),
+                        new InlineHTML("left click to continue").bold().underline(),
+                        new InlineHTML(" this command. "),
+                        new InlineHTML("(Or, hit escape to abort)").underline()
                 ),
-                new JLabelRichText(text).bold().italic().wrapHTML()
+                new InlineHTML(text).bold().italic().wrapHTML()
         );
     }
 

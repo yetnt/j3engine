@@ -14,7 +14,7 @@ import com.j3d.ui.SafeJLabel;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.ui.dialog.AreYouSure;
-import com.j3d.utility.generators.JLabelRichText;
+import com.yetnt.utils.builders.InlineHTML;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -79,10 +79,10 @@ public class ExplodeCmd extends Command{
         }
         AreYouSure aysDialogue = new AreYouSure(
                 StaticRefs.getMainFrame(), true // sets to modal
-                , JLabelRichText.htmlOf(
-                        new JLabelRichText(
+                , InlineHTML.htmlOf(
+                        new InlineHTML(
                                 "This command CANNOT be undone."
-                                        + JLabelRichText.LINE_BREAK
+                                        + InlineHTML.LINE_BREAK
                                         + "This means any previous history before this will be unreachable.")
         )
         );

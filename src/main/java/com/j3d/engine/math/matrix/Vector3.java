@@ -6,7 +6,7 @@ import com.j3d.engine.scene.Camera;
 import com.j3d.gen.settings.Settings;
 import com.j3d.jaiva.EngineObject;
 import com.j3d.jaiva.packs.getters.GettersPack;
-import com.j3d.utility.generic.tuple.Triple;
+import com.yetnt.utils.tuple.Triple;
 
 import java.beans.ConstructorProperties;
 import java.util.ArrayList;

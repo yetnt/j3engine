@@ -15,8 +15,8 @@ import com.j3d.storage.files.FilesUtility;
 import com.j3d.storage.files.IOSupplier;
 import com.j3d.storage.files.protocol.UnsupportedVersionException;
 import com.j3d.ui.dialog.Spinner;
-import com.j3d.utility.generic.collection.HashMultiMap;
-import com.j3d.utility.generic.tuple.Pair;
+import com.yetnt.utils.collection.HashMultiMap;
+import com.yetnt.utils.tuple.Pair;
 
 import java.awt.*;
 import java.io.DataInputStream;
@@ -147,8 +147,8 @@ public class PF2 extends ProjectFile {
                 // Write points
                 dos.writeInt(points.size()); // Write number of points
                 for (Pair<UUID, GPoint> pair : points) {
-                    GPoint gp = pair.second;
-                    UUID parent = pair.first;
+                    GPoint gp = pair.getSecond();
+                    UUID parent = pair.getFirst();
                     dos.writeUTF(gp.getId().toString()); // Write Point UUID
                     dos.writeUTF(parent.toString()); // Write Parent Thing UUID
                     dos.writeDouble(gp.getPivot().getX()); // Write X Coordinate
@@ -160,8 +160,8 @@ public class PF2 extends ProjectFile {
                 // Write lines
                 dos.writeInt(lines.size());
                 for (Pair<UUID, GLine> pair : lines) {
-                    GLine gl = pair.second;
-                    UUID parent = pair.first;
+                    GLine gl = pair.getSecond();
+                    UUID parent = pair.getFirst();
                     dos.writeUTF(gl.getId().toString());
                     dos.writeUTF(parent.toString());
                     // v2 addition
@@ -172,8 +172,8 @@ public class PF2 extends ProjectFile {
                 // Write triangles
                 dos.writeInt(tris.size());
                 for (Pair<UUID, GTri> pair : tris) {
-                    GTri gt = pair.second;
-                    UUID parent = pair.first;
+                    GTri gt = pair.getSecond();
+                    UUID parent = pair.getFirst();
                     dos.writeUTF(gt.getId().toString());
                     dos.writeUTF(parent.toString());
 //                    old write colour

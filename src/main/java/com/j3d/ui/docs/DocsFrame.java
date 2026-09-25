@@ -15,8 +15,8 @@ import com.j3d.storage.JarPath;
 import com.j3d.ui.theme.swing.J3DScrollBarUI;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.ui.theme.swing.J3DTreeCellRenderer;
-import com.j3d.utility.generators.JLabelRichText;
-import com.j3d.utility.generic.tuple.Pair;
+import com.yetnt.utils.builders.InlineHTML;
+import com.yetnt.utils.tuple.Pair;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -77,13 +77,13 @@ public class DocsFrame extends javax.swing.JFrame {
         initComponents();
         Pair<String, JarPath> pair = Documentation.toMap().get(fileIdentifier);
         doc = Documentation.from(fileIdentifier);
-        String helpContentName = pair.first;
+        String helpContentName = pair.getFirst();
         jLabel1.setText(helpContentName);
         setTree("Top");
         J3DScrollBarUI.setBars(contentScrollPane);
         J3DScrollBarUI.setBars(jScrollPane2);
         try {
-            parse(pair.second);
+            parse(pair.getSecond());
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -248,7 +248,7 @@ public class DocsFrame extends javax.swing.JFrame {
 
         ArrayList<TWrapper> wrappers = J3DocsReader.parseFile(file);
 
-        JLabelRichText div = new JLabelRichText()
+        InlineHTML div = new InlineHTML()
                 .wrapDiv(size);
         ArrayList<TLink> linksPerParagraph = new ArrayList<>();
 
@@ -258,8 +258,8 @@ public class DocsFrame extends javax.swing.JFrame {
             } else if (wrapper instanceof TWHeader header) {
                 addLinks(linksPerParagraph);
                 TextPanel p = new TextPanel(
-                        new JLabelRichText(header.getContent())
-                                .heading(JLabelRichText.Heading.fromInt(header.getHeaderLevel()))
+                        new InlineHTML(header.getContent())
+                                .heading(InlineHTML.Heading.fromInt(header.getHeaderLevel()))
                                 .addStyle(new LinkedHashMap<>(Map.of(
                                         "text-align", "center"
                                 )))
@@ -281,9 +281,9 @@ public class DocsFrame extends javax.swing.JFrame {
             } else if (wrapper instanceof TWParagraph paragraph) {
                 StringBuilder content = new StringBuilder();
                 paragraph.getParagraph().forEach(text -> {
-                    JLabelRichText text1 = new JLabelRichText(
+                    InlineHTML text1 = new InlineHTML(
                             text.getContent() + (text instanceof TLink ?
-                                    new JLabelRichText(" [" + (linksPerParagraph.size()+1) + "]")
+                                    new InlineHTML(" [" + (linksPerParagraph.size()+1) + "]")
                                             .bold().subscript()
                             : "")
 
@@ -300,7 +300,7 @@ public class DocsFrame extends javax.swing.JFrame {
                 });
                 contentPanel.add(
                         new TextPanel(
-                                new JLabelRichText(content.toString()).wrapUsing(div)
+                                new InlineHTML(content.toString()).wrapUsing(div)
                                         .wrapHTML()
                         )
                 );
@@ -314,7 +314,7 @@ public class DocsFrame extends javax.swing.JFrame {
                             // just add some generic text with the image alt text instead
 
                             new TextPanel(
-                                    new JLabelRichText("Image not found or invalid: " + alt)
+                                    new InlineHTML("Image not found or invalid: " + alt)
                                             .font(J3DTheme.TEXT_PRIMARY.color())
                                             .wrapUsing(div)
                                             .wrapHTML()
@@ -332,21 +332,21 @@ public class DocsFrame extends javax.swing.JFrame {
                     String line = tc.getLines().get(i);
                     lines.append(i+1).append(". ").append(line);
                     if (i+1 != tc.getLines().size())
-                        lines.append(JLabelRichText.LINE_BREAK);
+                        lines.append(InlineHTML.LINE_BREAK);
                 }
 
                 lineSeparator();
 
                 contentPanel.add(
                         new TextPanel(
-                                new JLabelRichText(lines.toString())
+                                new InlineHTML(lines.toString())
                                         .font(textCol, "+0", backCol)
                                         .wrapUsing(div)
                                         .addStyle(new LinkedHashMap<>(Map.of(
                                                 // add background
                                                 "padding", "10px",
                                                 "border-radius", "5px",
-                                                "background-color", JLabelRichText.colToStr(backCol)
+                                                "background-color", InlineHTML.colToStr(backCol)
                                         )))
                                         .wrapHTML()
                         ).asCodeBlock(backCol, tc, true)
@@ -366,7 +366,7 @@ public class DocsFrame extends javax.swing.JFrame {
 
     private void lineSeparator() {
         contentPanel.add(new TextPanel(
-                new JLabelRichText(JLabelRichText.HORIZONTAL_LINE)
+                new InlineHTML(InlineHTML.HORIZONTAL_LINE)
                         .wrapHTML()
         ));
     }
@@ -376,7 +376,7 @@ public class DocsFrame extends javax.swing.JFrame {
             // add here
 //                    contentPanel.add(
 //                            new TextPanel(
-//                                    JLabelRichText.from("links", div).wrapHTML()
+//                                    InlineHTML.from("links", div).wrapHTML()
 //                            )
 //                    );
             lineSeparator();
@@ -391,9 +391,9 @@ public class DocsFrame extends javax.swing.JFrame {
         String some = "pdsdfd ".repeat(20);
 
         TextPanel p = new TextPanel(
-                new JLabelRichText(some)
+                new InlineHTML(some)
                         .wrapDiv(size)
-                        .heading(JLabelRichText.Heading.H1)
+                        .heading(InlineHTML.Heading.H1)
                         .addStyle(
                                 new LinkedHashMap<>(
                                         Map.of(
@@ -404,7 +404,7 @@ public class DocsFrame extends javax.swing.JFrame {
                         .wrapHTML()
         );
         TextPanel p2 = new TextPanel(
-                new JLabelRichText(some.repeat(300))
+                new InlineHTML(some.repeat(300))
                         .wrapDiv(size)
                         .wrapHTML()
         );

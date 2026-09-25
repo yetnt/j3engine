@@ -14,9 +14,9 @@ import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.ui.engine.CommandPalette;
 import com.j3d.utility.Parsing;
-import com.j3d.utility.generators.JLabelRichText;
-import com.j3d.utility.generic.func.QuadConsumer;
-import com.j3d.utility.generic.tuple.SamePair;
+import com.yetnt.utils.builders.InlineHTML;
+import com.yetnt.utils.functional.QuadConsumer;
+import com.yetnt.utils.tuple.SamePair;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
  * @see CmdToken
  * @see CommandsManager
  * @see SafeJLabel
- * @see JLabelRichText
+ * @see InlineHTML
  */
 public class TypingHints {
 
@@ -103,7 +103,7 @@ public class TypingHints {
 
         if (tokens.getFirst().getType() != CmdToken.Type.CMD_NAME) {
             StaticRefs.getCommandParser().safeJLabel().setText(
-                    new JLabelRichText("The first argument (command name) is usually a string bro")
+                    new InlineHTML("The first argument (command name) is usually a string bro")
                             .italic().wrapHTML()
             );
             return;
@@ -112,18 +112,18 @@ public class TypingHints {
         // if there is a single token. it's the command name try finder matches.
         if (tokens.size() == 1 && !endsWithSpace) {
             CmdToken token = tokens.getFirst();
-            SamePair<ArrayList<JLabelRichText>> matches = possibleCommandAliasMatches(token);
+            SamePair<ArrayList<InlineHTML>> matches = possibleCommandAliasMatches(token);
             // limit to 5 per likely/partial
             StringBuilder likely = new StringBuilder(), partial = new StringBuilder();
             for (int i = 0; i < MAX_CMDNAME_SUGGESTIONS; i++) {
-                if (i < matches.first.size())
-                    likely.append(matches.first.get(i)).append(" ");
-                if (i < matches.second.size())
-                    partial.append(matches.second.get(i)).append(" ");
+                if (i < matches.getFirst().size())
+                    likely.append(matches.getFirst().get(i)).append(" ");
+                if (i < matches.getSecond().size())
+                    partial.append(matches.getSecond().get(i)).append(" ");
             }
 
             StaticRefs.getCommandParser().safeJLabel().setLower(
-                    new JLabelRichText(likely + " " + partial)
+                    new InlineHTML(likely + " " + partial)
                             .font("4")
                             .wrapHTML(),
                     20
@@ -147,7 +147,7 @@ public class TypingHints {
 
         if (!taggedArgErr)
             StaticRefs.getCommandParser().safeJLabel().setText(
-                    new JLabelRichText(command.description).bold().wrapHTML(),
+                    new InlineHTML(command.description).bold().wrapHTML(),
                     20
             );
 
@@ -252,11 +252,11 @@ public class TypingHints {
      * It categorises matches into "likely" (aliases starting with the input) and "partial"
      * (aliases containing the input but not starting with it), and styles them accordingly.
      * @param token The {@link CmdToken} representing the user's current input for a command name.
-     * @return A {@link SamePair} containing two {@link ArrayList}s of {@link JLabelRichText}.
+     * @return A {@link SamePair} containing two {@link ArrayList}s of {@link InlineHTML}.
      *         The first list contains likely matches, and the second contains partial matches.
      */
-    private SamePair<ArrayList<JLabelRichText>> possibleCommandAliasMatches(CmdToken token) {
-        ArrayList<JLabelRichText> likelyMatchesJL = new ArrayList<>();
+    private SamePair<ArrayList<InlineHTML>> possibleCommandAliasMatches(CmdToken token) {
+        ArrayList<InlineHTML> likelyMatchesJL = new ArrayList<>();
 
         String input = token.getInput();
         ArrayList<Command> commands = CommandsManager.commands.getCommands();
@@ -280,37 +280,37 @@ public class TypingHints {
         ArrayList<String> all = new ArrayList<>(likelyMatches);
 
         // Aliases whose substring contains the input (and isnt in the likelyMatches)
-        ArrayList<JLabelRichText> possibleMatches = commandAliases
+        ArrayList<InlineHTML> possibleMatches = commandAliases
                 .stream()
                 .filter(s -> s.contains(input))
                 .filter(s -> !likelyMatches.contains(s))
                 .peek(all::add)
                 .map(s -> {
                     // Style.
-                    JLabelRichText match = new JLabelRichText(input)
+                    InlineHTML match = new InlineHTML(input)
                             .bold().font(CMDNAME_PARTIAL_MATCH);
                     // style the rest (might be before or after)
-                    JLabelRichText before = new JLabelRichText(
+                    InlineHTML before = new InlineHTML(
                             s.substring(0, s.indexOf(input))
                     ).bold();
                     // Abba
-                    JLabelRichText after = new JLabelRichText(
+                    InlineHTML after = new InlineHTML(
                             s.substring(s.indexOf(input) + input.length())
                     ).bold();
-                    return new JLabelRichText(
+                    return new InlineHTML(
                             before.toString() + match.toString() + after.toString());
                 })
                 .collect(Collectors.toCollection(ArrayList::new));
 
         likelyMatches.forEach(s -> {
             // Style.
-            JLabelRichText match = new JLabelRichText(input)
+            InlineHTML match = new InlineHTML(input)
                     .bold().font(CMDNAME_LIEKLY_MATCH);
             // rest of alias name
-            JLabelRichText rest = new JLabelRichText(
+            InlineHTML rest = new InlineHTML(
                     s.substring(input.length())
             ).bold();
-            likelyMatchesJL.add(new JLabelRichText(match.toString() + rest));
+            likelyMatchesJL.add(new InlineHTML(match.toString() + rest));
         });
 
         setOptions(all);
@@ -396,17 +396,17 @@ public class TypingHints {
     }
 
     /**
-     * Appends a hint for tagged arguments to the given {@link JLabelRichText} based on the command's
+     * Appends a hint for tagged arguments to the given {@link InlineHTML} based on the command's
      * support for tagged arguments and whether any tagged arguments are present in the input.
-     * @param rich The current {@link JLabelRichText} to append to.
+     * @param rich The current {@link InlineHTML} to append to.
      * @param command The {@link Command} for which the hints are being generated.
      * @param init The initial list of {@link CmdToken}s, including any tagged arguments.
-     * @return The modified {@link JLabelRichText} with the tagged argument hint appended and styled.
+     * @return The modified {@link InlineHTML} with the tagged argument hint appended and styled.
      */
-    private JLabelRichText colourTaggedArgs(JLabelRichText rich, Command command, ArrayList<CmdToken> init) {
+    private InlineHTML colourTaggedArgs(InlineHTML rich, Command command, ArrayList<CmdToken> init) {
         if (init.stream()
                 .anyMatch(tk -> tk.getType() == CmdToken.Type.TAGGED)) {
-            return new JLabelRichText(
+            return new InlineHTML(
                     rich.toString() + (
                             command.hasNoArgs() || command.varTaggedArgs()
                                     ? partialType(" ...key:value")
@@ -425,9 +425,9 @@ public class TypingHints {
      * by the user.
      * @param usage The expected command usage string, e.g., "mycommand <string> [option1|option2] <vector3>".
      * @param tokens An {@link ArrayList} of {@link CmdToken} representing the user's parsed input.
-     * @return A {@link JLabelRichText} object containing the styled usage string.
+     * @return A {@link InlineHTML} object containing the styled usage string.
      */
-    public JLabelRichText colourGivenUsage(String usage, ArrayList<CmdToken> tokens) {
+    public InlineHTML colourGivenUsage(String usage, ArrayList<CmdToken> tokens) {
         StringBuilder sb = new StringBuilder();
         ArrayList<String> args = Parsing.split(usage, ' ');
         args.removeLast(); // tagged arg
@@ -479,7 +479,7 @@ public class TypingHints {
             } else {
                 // the input has to undoubtedly be a stirng.
                 if (token.getType() == CmdToken.Type.CMD_NAME) {
-                    sb.append(new JLabelRichText(arg).font(CMDNAME_LIEKLY_MATCH).bold().underline()).append(" ");
+                    sb.append(new InlineHTML(arg).font(CMDNAME_LIEKLY_MATCH).bold().underline()).append(" ");
                     continue;
                 }
                 if (token.getType() != CmdToken.Type.STRING) {
@@ -500,7 +500,7 @@ public class TypingHints {
         }
         // remove last space
         sb.deleteCharAt(sb.length() - 1);
-        return new JLabelRichText(sb.toString());
+        return new InlineHTML(sb.toString());
     }
 
     /**
@@ -509,11 +509,11 @@ public class TypingHints {
      * @param arg The expected arg string, which is {@code [value1|value2|value3]} and defines the
      *            accepted values.
      * @param token The token to check against
-     * @return A styled {@link JLabelRichText} which colours the given expected argument.
+     * @return A styled {@link InlineHTML} which colours the given expected argument.
      * This is either, the single fully matched value, a list of partially matched values or otherwise
      * incorrect.
      */
-    private JLabelRichText argSetMatch(String arg, CmdToken token) {
+    private InlineHTML argSetMatch(String arg, CmdToken token) {
         // remove braces
         arg = arg.substring(1, arg.length() - 1);
         // get each accepted value
@@ -545,7 +545,7 @@ public class TypingHints {
             // remove last space and comma
             stringBuilder.setLength(stringBuilder.length() - 2);
             stringBuilder.append("]");
-            return new JLabelRichText(stringBuilder.toString());
+            return new InlineHTML(stringBuilder.toString());
         }
 
         return incorrectType(arg);
@@ -557,12 +557,12 @@ public class TypingHints {
      * @param arg The expected arg string, which is {@code <point>}, {@code <line>}, {@code <tri>}, {@code <thing>},
      *            {@code <point?>}, {@code <line?>}, {@code <tri?>} or {@code <thing?>}
      * @param token The token to check against
-     * @return A styled {@link JLabelRichText} which colours the given expected argument.
+     * @return A styled {@link InlineHTML} which colours the given expected argument.
      * @implNote Even if the given {@link UUID} is valid, if it is an ID which belongs to something
      * different from what the arg expects, e.g. the user giving a {@link GTri}'s id but the arg expects
      * {@code <point>}, then this is coloured incorrectly.
      */
-    private JLabelRichText idReferenceMatch(String arg, CmdToken token) {
+    private InlineHTML idReferenceMatch(String arg, CmdToken token) {
         if (token.getType() == CmdToken.Type.STRING) {
             // check if its maybe like a uuid
             String regex =
@@ -590,9 +590,9 @@ public class TypingHints {
      * Type checks a given value as to expect an {@link Integer} or {@link Double}
      * @param arg The expected arg string, which is {@code <int>}, {@code <int?>}, {@code <number>} or {@code <number?>}
      * @param token The token to check against
-     * @return A styled {@link JLabelRichText} which colours the given expected argument
+     * @return A styled {@link InlineHTML} which colours the given expected argument
      */
-    private JLabelRichText numberMatch(String arg, CmdToken token) {
+    private InlineHTML numberMatch(String arg, CmdToken token) {
         // check all posible cases.
         if (token.getType() != CmdToken.Type.INT && token.getType() != CmdToken.Type.DOUBLE) {
             // incorrect.
@@ -619,11 +619,11 @@ public class TypingHints {
      * Type checks a given value as to expect a {@link Color}
      * @param arg The expected arg string, which is {@code <color>} or {@code <color?>}
      * @param token The token to check against
-     * @return A styled {@link JLabelRichText} which colours the given expected argument.
+     * @return A styled {@link InlineHTML} which colours the given expected argument.
      * This goes the extra mile by colouring the background of the rich text to be the
      * given input colour as to tell the user the input they gave.
      */
-    private JLabelRichText colourMatch(String arg, CmdToken token) {
+    private InlineHTML colourMatch(String arg, CmdToken token) {
         if (token.getType() == CmdToken.Type.STRING && token.getInput().startsWith("#")) {
             // unfinished colour. Although it has to start with #
             return partialType(arg);
@@ -639,10 +639,10 @@ public class TypingHints {
      * Type checks a given value as to expect a {@link Boolean}
      * @param arg The expected arg string, which is {@code <boolean>} or {@code <boolean?>}
      * @param token The token to check against
-     * @return A styled {@link JLabelRichText} which colours the given expected argument. This is either
+     * @return A styled {@link InlineHTML} which colours the given expected argument. This is either
      * a fully matched boolean, or a partially matched boolean. Otherwise it is incorrect.
      */
-    private JLabelRichText boolMatch(String arg, CmdToken token) {
+    private InlineHTML boolMatch(String arg, CmdToken token) {
         ArrayList<String> validBools =
                 new ArrayList<>(List.of(
                         "yebo", "aowa", "true", "false", "yes", "no"
@@ -668,9 +668,9 @@ public class TypingHints {
      * Type checks a given value as to expect a {@link Vector3}
      * @param arg The expected arg string, which is {@code <vector3>} or {@code <vector3?>}
      * @param token The token to check against
-     * @return A styled {@link JLabelRichText} which colours the given expected argument
+     * @return A styled {@link InlineHTML} which colours the given expected argument
      */
-    private JLabelRichText vector3(String arg, CmdToken token) {
+    private InlineHTML vector3(String arg, CmdToken token) {
         if (token.getType() == CmdToken.Type.STRING) {
             // vector3 in progress
             return partialType(arg);
@@ -685,10 +685,10 @@ public class TypingHints {
     /**
      * Colours the given type as fully correct.
      * @param arg The expected arg string, like {@code <vector3>} or {@code [p|r|e]}
-     * @return A styled {@link JLabelRichText} which colours the given expected argument
+     * @return A styled {@link InlineHTML} which colours the given expected argument
      */
-    private JLabelRichText correctType(String arg) {
-        JLabelRichText jLabelRichText = new JLabelRichText(arg, true);
+    private InlineHTML correctType(String arg) {
+        InlineHTML jLabelRichText = new InlineHTML(arg, true);
         return jLabelRichText
                 .bold()
                 .font(EXACT_MATCH);
@@ -705,30 +705,30 @@ public class TypingHints {
      *     <li>{@link }</li>
      * </ul>
      * @param arg The expected arg string, like {@code <vector3>} or {@code [p|r|e]}
-     * @return A styled {@link JLabelRichText} which colours the given expected argument
+     * @return A styled {@link InlineHTML} which colours the given expected argument
      * {@link #PARTIAL_MATCH}
      */
-    private JLabelRichText partialType(String arg) {
-        return new JLabelRichText(arg, true).italic().font(PARTIAL_MATCH);
+    private InlineHTML partialType(String arg) {
+        return new InlineHTML(arg, true).italic().font(PARTIAL_MATCH);
     }
 
     /**
      * Colours the given type as incorrect
      * @param arg The expected arg string, like {@code <vector3>} or {@code [p|r|e]}
-     * @return A styled {@link JLabelRichText} which colours the given expected argument
+     * @return A styled {@link InlineHTML} which colours the given expected argument
      * {@link #INCORRECT_TYPE}
      */
-    private JLabelRichText incorrectType(String arg) {
-        return new JLabelRichText(arg, true).italic().font(INCORRECT_TYPE);
+    private InlineHTML incorrectType(String arg) {
+        return new InlineHTML(arg, true).italic().font(INCORRECT_TYPE);
     }
 
     /**
      * Styles a given input as generic (The user has not given this input yet.)
      * @param arg The input to style
-     * @return A {@link JLabelRichText} object containing the styled input
+     * @return A {@link InlineHTML} object containing the styled input
      */
-    private JLabelRichText notGivenYet(String arg) {
-        JLabelRichText jLabelRichText = new JLabelRichText(arg, true)
+    private InlineHTML notGivenYet(String arg) {
+        InlineHTML jLabelRichText = new InlineHTML(arg, true)
                 .italic();
         if (!arg.contains("?") || !arg.contains("<")) jLabelRichText.bold();
         return jLabelRichText;
@@ -739,9 +739,9 @@ public class TypingHints {
      * Given a list of options, finder the first match and colour it partially.
      * @param options The list of options
      * @param input The input the user gave
-     * @return A styled {@link JLabelRichText} consisting of a partially coloured match.
+     * @return A styled {@link InlineHTML} consisting of a partially coloured match.
      */
-    private JLabelRichText partialStringMatch(ArrayList<String> options, String input) {
+    private InlineHTML partialStringMatch(ArrayList<String> options, String input) {
         if (options.size() > 1) {
             setOptions(options);
         }
@@ -760,12 +760,12 @@ public class TypingHints {
             return correctType(bestMatch);
         }
         // Style.
-        JLabelRichText match = partialType(input);
+        InlineHTML match = partialType(input);
         // rest of alias name
-        JLabelRichText rest = new JLabelRichText(
+        InlineHTML rest = new InlineHTML(
                 bestMatch.substring(input.length())
         ).italic();
-        return new JLabelRichText(match.toString() + rest);
+        return new InlineHTML(match.toString() + rest);
     }
 
     /**

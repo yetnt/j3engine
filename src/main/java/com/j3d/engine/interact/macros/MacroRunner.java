@@ -21,9 +21,9 @@ import com.j3d.engine.react.events.EventListener;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.ui.SafeJLabel;
-import com.j3d.utility.generic.tuple.SamePair;
-import com.j3d.utility.generic.tuple.Triple;
 import com.jaiva.tokenizer.tokens.Token;
+import com.yetnt.utils.tuple.SamePair;
+import com.yetnt.utils.tuple.Triple;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -258,12 +258,12 @@ public class MacroRunner implements EventListener {
 
         StaticRefs.getSceneManager().select(
                 new SelectionQuery(
-                        points.first, points.second,
+                        points.getFirst(), points.getSecond(),
                         switch (inferredSelectionType) {
                             case UNION -> SelectionType.UNION;
                             case SUBTRACT -> SelectionType.SUBTRACT;
                             case NONE ->
-                                    SelectionUI.isStrict(new ScreenPoint[]{points.first, points.second})
+                                    SelectionUI.isStrict(new ScreenPoint[]{points.getFirst(), points.getSecond()})
                                             ? SelectionType.BOUNDS_STRICT : SelectionType.BOUNDS_SOFT;
                         }
                 )

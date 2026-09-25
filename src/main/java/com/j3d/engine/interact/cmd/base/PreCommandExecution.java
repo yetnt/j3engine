@@ -4,7 +4,7 @@ import com.j3d.engine.interact.cmd.base.conditions.SelectionPreCondition;
 import com.j3d.engine.react.events.EventEmitterInterface;
 import com.j3d.engine.react.events.EventReactor;
 import com.j3d.ui.SafeJLabel;
-import com.j3d.utility.generic.tuple.SamePair;
+import com.yetnt.utils.tuple.SamePair;
 
 import java.util.function.Supplier;
 
@@ -72,8 +72,8 @@ public interface PreCommandExecution {
      */
     default boolean execute(SafeJLabel logLabel) {
         if (!getCondition().get()) {
-            logLabel.setText(getLogText().first, -1);
-            logLabel.setLower(getLogText().second, -1);
+            logLabel.setText(getLogText().getFirst(), -1);
+            logLabel.setLower(getLogText().getSecond(), -1);
             if (!getEventEmitterToAttachTo().isAttached(getPassListener()))
                 getEventEmitterToAttachTo().attachListener(getPassListener());
             return false;

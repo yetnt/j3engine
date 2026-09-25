@@ -1,6 +1,6 @@
 package com.j3d.storage.files.util;
 
-import com.j3d.utility.generic.tuple.Pair;
+import com.yetnt.utils.tuple.Pair;
 
 import java.io.File;
 

@@ -8,7 +8,7 @@ import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.gen.properties.Property;
 import com.j3d.ui.theme.J3DTheme;
-import com.j3d.utility.generators.JLabelRichText;
+import com.yetnt.utils.builders.InlineHTML;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,7 +37,7 @@ public class ColourProperty extends javax.swing.JPanel implements PropertyPanel<
             Color col = getSingleProperty().getValueSupplier().get();
 
             colourPreviewLabel.setText(
-                    new JLabelRichText("~".repeat(15))
+                    new InlineHTML("~".repeat(15))
                             .font(J3DTheme.TEXT_PRIMARY.color(), "4", col)
                             .wrapHTML()
             );

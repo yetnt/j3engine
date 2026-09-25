@@ -8,7 +8,7 @@ import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.args.TypedArg;
 import com.j3d.engine.interact.macros.MacroRecorder;
 import com.j3d.ui.SafeJLabel;
-import com.j3d.utility.generators.JLabelRichText;
+import com.yetnt.utils.builders.InlineHTML;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -57,8 +57,8 @@ public class RecordCmd extends Subcommand {
 
         logLabel.setText(
                 "Recording macro " + SafeJLabel.EMPH + ". Use " + SafeJLabel.EMPH + " to stop recording.",
-                new JLabelRichText(name).bold().italic(),
-                new JLabelRichText("macro end").bold().italic().font("4")
+                new InlineHTML(name).bold().italic(),
+                new InlineHTML("macro end").bold().italic().font("4")
                 );
 
         mr.record(name);

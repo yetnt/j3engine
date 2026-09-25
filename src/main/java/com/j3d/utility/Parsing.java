@@ -2,8 +2,9 @@ package com.j3d.utility;
 
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.args.TaggedArgUtil;
-import com.j3d.utility.generic.tuple.Pair;
-import com.j3d.utility.generic.tuple.SamePair;
+import com.yetnt.utils.tuple.Pair;
+import com.yetnt.utils.tuple.SamePair;
+
 
 import java.util.ArrayList;
 
@@ -75,8 +76,8 @@ public class Parsing {
                     continue;
                 }
                 Pair<Integer, Character> t = stack.getLast();
-                if (t.second == '[' && c == ']' || t.second == '(' && c == ')') {
-                    finalArr.add(new SamePair<>(t.first, i));
+                if (t.getSecond() == '[' && c == ']' || t.getSecond() == '(' && c == ')') {
+                    finalArr.add(new SamePair<>(t.getFirst(), i));
                     stack.removeLast();
                 }
             }
@@ -195,9 +196,9 @@ public class Parsing {
             char ch = input.charAt(i);
             int finalI = i;
             boolean inBrace = bracePairs.closedPairs.stream().anyMatch(
-                    pair -> finalI >= pair.first && finalI <= pair.second);
+                    pair -> finalI >= pair.getFirst() && finalI <= pair.getSecond());
             boolean inQuote = quotePairs.stream().anyMatch(
-                    pair -> finalI >= pair.first && finalI <= pair.second
+                    pair -> finalI >= pair.getFirst() && finalI <= pair.getSecond()
             );
             if (ch != c || dangling || (inBrace || inQuote)) {
                 if ((ch == '\"' || ch == '(') && !(inBrace || inQuote))

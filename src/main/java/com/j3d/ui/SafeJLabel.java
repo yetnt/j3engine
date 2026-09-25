@@ -5,7 +5,7 @@ import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.threads.TimeoutWorker;
 import com.j3d.ui.engine.CommandPalette;
 import com.j3d.ui.theme.J3DTheme;
-import com.j3d.utility.generators.JLabelRichText;
+import com.yetnt.utils.builders.InlineHTML;
 
 import javax.swing.*;
 import java.awt.*;
@@ -80,8 +80,8 @@ public class SafeJLabel {
 
     public void error(String text) {
         setText(
-                JLabelRichText.htmlOf(
-                        new JLabelRichText(text).font(Color.RED)
+                InlineHTML.htmlOf(
+                        new InlineHTML(text).font(Color.RED)
                 ), ERROR_SECONDS
         );
     }
@@ -89,11 +89,11 @@ public class SafeJLabel {
     public static String EMPH = "%EMPH%";
 
     public void error(String text, Object... emphasize) {
-        ArrayList<JLabelRichText> emphasized = Arrays.stream(emphasize).map(
-                t -> new JLabelRichText(t.toString()).underline().italic().font(new Color(65, 22, 22))
+        ArrayList<InlineHTML> emphasized = Arrays.stream(emphasize).map(
+                t -> new InlineHTML(t.toString()).underline().italic().font(new Color(65, 22, 22))
         ).collect(Collectors.toCollection(ArrayList::new));
-        String html = JLabelRichText.htmlOf(new JLabelRichText(text).font(Color.RED).bold().paragraph());
-        for (JLabelRichText emph : emphasized) {
+        String html = InlineHTML.htmlOf(new InlineHTML(text).font(Color.RED).bold().paragraph());
+        for (InlineHTML emph : emphasized) {
             html = html.replaceFirst(
                     EMPH,
                     emph.toString()
@@ -103,11 +103,11 @@ public class SafeJLabel {
     }
 
     public void setText(String text, Object... emphasize) {
-        ArrayList<JLabelRichText> emphasized = Arrays.stream(emphasize).map(
-                t -> new JLabelRichText(t.toString()).underline().italic().font(J3DTheme.TEXT_PRIMARY.color())
+        ArrayList<InlineHTML> emphasized = Arrays.stream(emphasize).map(
+                t -> new InlineHTML(t.toString()).underline().italic().font(J3DTheme.TEXT_PRIMARY.color())
         ).collect(Collectors.toCollection(ArrayList::new));
-        String html = JLabelRichText.htmlOf(new JLabelRichText(text).font(J3DTheme.TEXT_SECONDARY.color()).bold().paragraph());
-        for (JLabelRichText emph : emphasized) {
+        String html = InlineHTML.htmlOf(new InlineHTML(text).font(J3DTheme.TEXT_SECONDARY.color()).bold().paragraph());
+        for (InlineHTML emph : emphasized) {
             html = html.replaceFirst(
                     EMPH,
                     emph.toString()
@@ -117,11 +117,11 @@ public class SafeJLabel {
     }
 
     public void setTextWithSeconds(String text, int seconds, Object... emphasize) {
-        ArrayList<JLabelRichText> emphasized = Arrays.stream(emphasize).map(
-                t -> new JLabelRichText(t.toString()).underline().italic().font(J3DTheme.TEXT_PRIMARY.color())
+        ArrayList<InlineHTML> emphasized = Arrays.stream(emphasize).map(
+                t -> new InlineHTML(t.toString()).underline().italic().font(J3DTheme.TEXT_PRIMARY.color())
         ).collect(Collectors.toCollection(ArrayList::new));
-        String html = JLabelRichText.htmlOf(new JLabelRichText(text).font(J3DTheme.TEXT_SECONDARY.color()).bold().paragraph());
-        for (JLabelRichText emph : emphasized) {
+        String html = InlineHTML.htmlOf(new InlineHTML(text).font(J3DTheme.TEXT_SECONDARY.color()).bold().paragraph());
+        for (InlineHTML emph : emphasized) {
             html = html.replaceFirst(
                     EMPH,
                     emph.toString()

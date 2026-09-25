@@ -7,7 +7,7 @@ import com.j3d.engine.react.events.EventType;
 import com.j3d.gen.guide.*;
 import com.j3d.gen.guide.generic.DoubleClickStep;
 import com.j3d.ui.theme.J3DTheme;
-import com.j3d.utility.generators.JLabelRichText;
+import com.yetnt.utils.builders.InlineHTML;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
@@ -20,10 +20,10 @@ public class WelcomeStep extends DoubleClickStep {
         addCompAt(
                 adapter,
                 new JLabel(
-                        new JLabelRichText("Welcome to ")
+                        new InlineHTML("Welcome to ")
                                 .wrapUsing(adapter.readableTextStyle)
                                 .add(
-                                        new JLabelRichText("J3Engine").italic()
+                                        new InlineHTML("J3Engine").italic()
                                 )
                                 .bold()
                                 .underline()
@@ -36,8 +36,8 @@ public class WelcomeStep extends DoubleClickStep {
         addCompAt(
                 adapter,
                 new JLabel(
-                        new JLabelRichText("This tutorial/guide will help you with getting started with J3Engine.")
-                                .addLn(JLabelRichText.LINE_BREAK)
+                        new InlineHTML("This tutorial/guide will help you with getting started with J3Engine.")
+                                .addLn(InlineHTML.LINE_BREAK)
                                 .addLn(
                                         "If you'd like to exit the tutorial, Click \"File\" in the top left-hand corner"
                                         + " and click \"Close Project\""

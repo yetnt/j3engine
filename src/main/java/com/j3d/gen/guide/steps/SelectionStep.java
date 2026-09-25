@@ -16,7 +16,7 @@ import com.j3d.gen.guide.Anchor;
 import com.j3d.gen.guide.GuideInfo;
 import com.j3d.gen.guide.GuidePanelAdapter;
 import com.j3d.ui.theme.J3DTheme;
-import com.j3d.utility.generators.JLabelRichText;
+import com.yetnt.utils.builders.InlineHTML;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,53 +47,53 @@ public class SelectionStep extends GuideInfo {
         guideCounter(adapter);
         genericText(adapter, "(Select ONLY the blue point to continue)");
 
-        JLabelRichText boldUnderline = new JLabelRichText()
+        InlineHTML boldUnderline = new InlineHTML()
                 .underline().bold();
 
         addCompAt(
                 adapter,
                 new JLabel(
-                        new JLabelRichText(
+                        new InlineHTML(
                                 "To select things, click and drag your mouse over what you want to select. "
                                 + "There are different selection modes triggered from dragging up vs down (and keyboard input)"
                         )
-                                .add(JLabelRichText.LINE_BREAK)
+                                .add(InlineHTML.LINE_BREAK)
                                 .addLn(
                                         "Dragging up shows a "
                                 ).add(
-                                        new JLabelRichText("green")
+                                        new InlineHTML("green")
                                                 .wrapUsing(boldUnderline).font(SelectionUI.STRICT_COLOR)
                                 ).add(
                                         " selection square, which only selects everything that is fully inside it. (strict selection)"
                                 )
-                                .addLn(JLabelRichText.LINE_BREAK)
+                                .addLn(InlineHTML.LINE_BREAK)
                                 .add("Dragging down shows a ")
                                 .add(
-                                        new JLabelRichText("yellow")
+                                        new InlineHTML("yellow")
                                                 .wrapUsing(boldUnderline).font(SelectionUI.SOFT_COLOR)
                                 ).add(
                                         " selection square, which selects everything regardless. As long as its inside or "
                                         + "intersects with the square (soft selection)"
                                 )
-                                .addLn(JLabelRichText.LINE_BREAK)
+                                .addLn(InlineHTML.LINE_BREAK)
                                 .add(
                                         "Additionally, you can "
                                 )
                                 .add(
-                                        new JLabelRichText("add")
+                                        new InlineHTML("add")
                                                 .wrapUsing(boldUnderline).font(SelectionUI.UNION_COLOR)
                                 )
                                 .add(" to an existing selection by holding the ")
                                 .add(
-                                        new JLabelRichText("U").wrapUsing(boldUnderline).font(SelectionUI.UNION_COLOR)
+                                        new InlineHTML("U").wrapUsing(boldUnderline).font(SelectionUI.UNION_COLOR)
                                 )
                                 .add(" key while dragging. and to "
                                 ).add(
-                                        new JLabelRichText("remove").wrapUsing(boldUnderline).font(SelectionUI.SUBTRACT_COLOR)
+                                        new InlineHTML("remove").wrapUsing(boldUnderline).font(SelectionUI.SUBTRACT_COLOR)
                                 )
                                 .add(" hold down the ")
                                 .add(
-                                        new JLabelRichText("I").wrapUsing(boldUnderline).font(SelectionUI.SUBTRACT_COLOR)
+                                        new InlineHTML("I").wrapUsing(boldUnderline).font(SelectionUI.SUBTRACT_COLOR)
                                 )
                                 .add(
                                         " key instead. Although these 2 modes add/remove from the existing selection "

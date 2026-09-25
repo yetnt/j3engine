@@ -8,7 +8,7 @@ import com.j3d.engine.interact.selection.SelectionMouseOwner;
 import com.j3d.engine.react.events.*;
 import com.j3d.StaticConfig;
 import com.j3d.ui.engine.EngineFrame;
-import com.j3d.utility.generators.JLabelRichText;
+import com.yetnt.utils.builders.InlineHTML;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -245,7 +245,7 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
         }
 
         StaticRefs.getHoverLabel().setText(
-                new JLabelRichText("PHYS="+physicalMouse)
+                new InlineHTML("PHYS="+physicalMouse)
                         .addLn("MOUSE="+e.getPoint())
                         .wrapHTML()
         );

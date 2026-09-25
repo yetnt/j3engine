@@ -5,7 +5,7 @@ import com.j3d.StaticRefs;
 import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.interact.selection.SelectionUtils;
 import com.j3d.ui.engine.EngineFrame;
-import com.j3d.utility.generic.tuple.Pair;
+import com.yetnt.utils.tuple.Pair;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -182,16 +182,16 @@ public class KeyBindings {
     private void updateLinks(J3Key leader, KeyStroke newKeyStroke) {
         if (leader.getLink() == null) return;
         Pair<J3Key, Integer> child = leader.getLink();
-        inputMap.remove(child.first.getKeyStroke());
-        child.first.setKeyStroke(
+        inputMap.remove(child.getFirst().getKeyStroke());
+        child.getFirst().setKeyStroke(
                 KeyStroke.getKeyStroke(
                         newKeyStroke.getKeyCode(),
-                        child.second.intValue() | newKeyStroke.getModifiers(),
-                        child.first.getKeyStroke().isOnKeyRelease()
+                        child.getSecond().intValue() | newKeyStroke.getModifiers(),
+                        child.getFirst().getKeyStroke().isOnKeyRelease()
                 )
         );
-        inputMap.put(child.first.getKeyStroke(), child.first.getId());
-        updateLinks(child.first, newKeyStroke);
+        inputMap.put(child.getFirst().getKeyStroke(), child.getFirst().getId());
+        updateLinks(child.getFirst(), newKeyStroke);
     }
 
     /**
@@ -260,13 +260,13 @@ public class KeyBindings {
         if (leader.getLink() == null) return false;
         int leaderModifier = leader.getKeyStroke().getModifiers();
 
-        J3Key child = leader.getLink().first;
+        J3Key child = leader.getLink().getFirst();
         while (child != null) {
             if (
                     ((child.getKeyStroke().getModifiers() | leaderModifier) == leaderModifier)
                     && child.getKeyStroke().isOnKeyRelease() == leader.getKeyStroke().isOnKeyRelease()
             ) return true;
-            child = child.getLink() == null ? null : child.getLink().first;
+            child = child.getLink() == null ? null : child.getLink().getFirst();
         }
         return false;
     }

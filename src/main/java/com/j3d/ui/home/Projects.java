@@ -15,7 +15,7 @@ import com.j3d.storage.files.util.ProjectImagePair;
 import com.j3d.ui.theme.swing.J3DScrollBarUI;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.utility.ImageUtils;
-import com.j3d.utility.generators.JLabelRichText;
+import com.yetnt.utils.builders.InlineHTML;
 
 import javax.imageio.IIOException;
 import javax.swing.*;
@@ -42,10 +42,10 @@ public class Projects extends javax.swing.JFrame {
     public Projects() {
         initComponents();
         jLabel4.setText(
-                JLabelRichText.htmlOf(
-                        new JLabelRichText("Welcome "),
-                        new JLabelRichText(System.getProperty("user.name")).italic(),
-                        new JLabelRichText("!")
+                InlineHTML.htmlOf(
+                        new InlineHTML("Welcome "),
+                        new InlineHTML(System.getProperty("user.name")).italic(),
+                        new InlineHTML("!")
                 )
         );
         this.addWindowListener(new WindowAdapter() {

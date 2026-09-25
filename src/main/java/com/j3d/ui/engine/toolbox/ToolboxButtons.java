@@ -4,7 +4,7 @@ import com.j3d.StaticRefs;
 import com.j3d.ui.theme.cursors.CursorManager;
 import com.j3d.ui.theme.cursors.CursorNames;
 import com.j3d.ui.theme.J3DTheme;
-import com.j3d.utility.generic.func.TrinaryConsumer;
+import com.yetnt.utils.functional.TrinaryConsumer;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;

@@ -2,14 +2,14 @@ package com.j3d.gen.guide;
 
 import com.j3d.ui.engine.GuidePanel;
 import com.j3d.ui.theme.J3DTheme;
-import com.j3d.utility.generators.JLabelRichText;
+import com.yetnt.utils.builders.InlineHTML;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class GuidePanelAdapter {
     private GuidePanel panel;
-    public final JLabelRichText readableTextStyle = new JLabelRichText().font(
+    public final InlineHTML readableTextStyle = new InlineHTML().font(
             J3DTheme.TEXT_PRIMARY.color(), "10"
     );
 

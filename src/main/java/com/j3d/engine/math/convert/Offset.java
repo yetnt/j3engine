@@ -2,8 +2,8 @@ package com.j3d.engine.math.convert;
 
 import com.j3d.engine.math.CartesianPoint;
 import com.j3d.engine.math.ScreenPoint;
-import com.j3d.utility.generic.tuple.MutablePair;
-import com.j3d.utility.generic.tuple.SamePair;
+import com.yetnt.utils.tuple.MutablePair;
+import com.yetnt.utils.tuple.SamePair;
 
 /**
  * A simple immutable class which stores an {@code X} and {@code Y} offset when converting
@@ -34,7 +34,7 @@ public class Offset extends SamePair<Integer> {
      * @param samePair The same pair
      */
     public Offset(SamePair<Integer> samePair) {
-        super(samePair.first, samePair.second);
+        super(samePair.getFirst(), samePair.getSecond());
     }
 
     /**

@@ -17,8 +17,8 @@ import com.j3d.ui.theme.cursors.CursorManager;
 import com.j3d.ui.theme.cursors.CursorNames;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.ui.engine.EngineFrame;
-import com.j3d.utility.generators.JLabelRichText;
-import com.j3d.utility.generic.tuple.Pair;
+import com.yetnt.utils.builders.InlineHTML;
+import com.yetnt.utils.tuple.Pair;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -78,11 +78,11 @@ public class OrbitCmd extends Subcommand implements StatefulCommand<Pair<Vector3
                         + SafeJLabel.EMPH + SafeJLabel.EMPH + " | " + SafeJLabel.EMPH,
                 -1,
                 "Sensitivity",
-                new JLabelRichText(Settings.cameraProperties.orbitSensitivity.getValue().toString())
+                new InlineHTML(Settings.cameraProperties.orbitSensitivity.getValue().toString())
                         .font(J3DTheme.TEXT_SECONDARY.color().brighter(), "8"),
                 " units per mouse drag",
                 StaticConfig.lock
-                        ? new JLabelRichText("[C]")
+                        ? new InlineHTML("[C]")
                             .italic().bold()
                              .font(J3DTheme.TEXT_SECONDARY.color().brighter(), "5")
                         : ""
@@ -110,7 +110,7 @@ public class OrbitCmd extends Subcommand implements StatefulCommand<Pair<Vector3
         StatefulCommand.super.onEnter(object, label);
         cleanup(label);
         StaticRefs.getLog().println(
-                "Camera was rotated from: pos-" + object.first.toCommandPaletteString() + " rot-" + object.second.toLogString() + " to " + StaticRefs.getCamera().getRotation().toLogString()
+                "Camera was rotated from: pos-" + object.getFirst().toCommandPaletteString() + " rot-" + object.getSecond().toLogString() + " to " + StaticRefs.getCamera().getRotation().toLogString()
         );
 
         StaticRefs.getCamera().setPosition(StaticRefs.getCamera().getPosition());
@@ -121,8 +121,8 @@ public class OrbitCmd extends Subcommand implements StatefulCommand<Pair<Vector3
     @Override
     public  void onEsc(Pair<Vector3, Rotation> object, SafeJLabel label) {
         StatefulCommand.super.onEsc(object, label);
-        StaticRefs.getCamera().setPositionNoEvent(object.first);
-        StaticRefs.getCamera().setRotationNoEvent(object.second);
+        StaticRefs.getCamera().setPositionNoEvent(object.getFirst());
+        StaticRefs.getCamera().setRotationNoEvent(object.getSecond());
         cleanup(label);
     }
 

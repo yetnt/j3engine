@@ -20,7 +20,7 @@ import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.ui.engine.floating.grid2d.Grid;
 import com.j3d.ui.engine.floating.grid2d.Grid2DPanel;
 import com.j3d.ui.theme.J3DTheme;
-import com.j3d.utility.generic.tuple.SamePair;
+import com.yetnt.utils.tuple.SamePair;
 
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
@@ -167,10 +167,10 @@ public class GridManager implements EventListener {
             // Draw all the grid lines
             gridlinesPoints.forEach(p -> {
                 g.drawLine(
-                        p.first.x,
-                        p.first.y,
-                        p.second.x,
-                        p.second.y
+                        p.getFirst().x,
+                        p.getFirst().y,
+                        p.getSecond().x,
+                        p.getSecond().y
                 );
             });
             g.setColor(original);

@@ -12,7 +12,7 @@ import com.j3d.gen.guide.GuidePanelAdapter;
 import com.j3d.gen.settings.Settings;
 import com.j3d.gen.settings.types.DoubleSetting;
 import com.j3d.ui.theme.J3DTheme;
-import com.j3d.utility.generators.JLabelRichText;
+import com.yetnt.utils.builders.InlineHTML;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
@@ -36,15 +36,15 @@ public class SceneExplStep extends GuideInfo {
         addCompAt(
                 adapter,
                 new JLabel(
-                        new JLabelRichText(
+                        new InlineHTML(
                                 "What you're viewing in front of you is the scene, "
                                 + "where all your 3D objects will be rendered.")
-                                .addLn(JLabelRichText.LINE_BREAK)
+                                .addLn(InlineHTML.LINE_BREAK)
                                 .addLn(
                                         "You can use the W, A, S, D keys to move your camera around. "
                                         + "and additionally Q and E for up and down."
                                 )
-                                .addLn(JLabelRichText.LINE_BREAK)
+                                .addLn(InlineHTML.LINE_BREAK)
                                 .addLn(
                                         "If the movement is too slow you can change it in your settings "
                                         + " (by going to File > Settings or using the keybind ALT+S)"

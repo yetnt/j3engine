@@ -4,7 +4,7 @@ import com.j3d.StaticRefs;
 import com.j3d.engine.react.events.*;
 import com.j3d.engine.react.events.payloads.GuideInfoClosingPayload;
 import com.j3d.ui.theme.J3DTheme;
-import com.j3d.utility.generators.JLabelRichText;
+import com.yetnt.utils.builders.InlineHTML;
 
 import javax.swing.*;
 import java.awt.*;
@@ -115,7 +115,7 @@ public class GuideInfo extends EventEmitter implements EventListener {
             StaticRefs.getMainFrame().getGuideManager().getFlow().back();
         });
         JLabel label = new JLabel(
-                new JLabelRichText(index + " of " + total)
+                new InlineHTML(index + " of " + total)
                         .wrapUsing(adapter.readableTextStyle)
                         .italic()
                         .wrapHTML()
@@ -159,7 +159,7 @@ public class GuideInfo extends EventEmitter implements EventListener {
 
     /**
      * Adds a generic text label to the guide panel at a predefined position (SOUTH | WEST).
-     * The text is styled using {@link JLabelRichText} with a specific font color and size.
+     * The text is styled using {@link InlineHTML} with a specific font color and size.
      * @param adapter The GuidePanelAdapter to which the text label will be added.
      * @param text The string content to display in the label.
      */
@@ -167,7 +167,7 @@ public class GuideInfo extends EventEmitter implements EventListener {
         addCompAt(
                 adapter,
                 new JLabel(
-                        new JLabelRichText(text)
+                        new InlineHTML(text)
                                 .wrapDiv(200).font(
                                         J3DTheme.TEXT_PRIMARY.color(),
                                         "5"

@@ -7,7 +7,7 @@ import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.args.TypedArg;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.ui.SafeJLabel;
-import com.j3d.utility.generators.JLabelRichText;
+import com.yetnt.utils.builders.InlineHTML;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *     for that specific command.
  * </p>
  * <p>
- *     It leverages {@link JLabelRichText} to format the output for better readability
+ *     It leverages {@link InlineHTML} to format the output for better readability
  *     in the UI.
  * </p>
  * <p>
@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * </p>
  * @see Command
  * @see CommandsManager
- * @see JLabelRichText
+ * @see InlineHTML
  * @author Lehlogonolo Poole
  */
 public class HelpCmd extends Command {
@@ -46,8 +46,8 @@ public class HelpCmd extends Command {
         if (args.length == 0) {
             // show list of available commands
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(new JLabelRichText("Available Commands:").bold())
-                    .append(JLabelRichText.LINE_BREAK).append(JLabelRichText.LINE_BREAK);
+            stringBuilder.append(new InlineHTML("Available Commands:").bold())
+                    .append(InlineHTML.LINE_BREAK).append(InlineHTML.LINE_BREAK);
             // show 10 commands only
             AtomicInteger maxCmd = new AtomicInteger();
             int max = 20;
@@ -56,12 +56,12 @@ public class HelpCmd extends Command {
 
             if (maxCmd.get() == max) {
                 stringBuilder
-                        .append(JLabelRichText.LINE_BREAK).append(JLabelRichText.LINE_BREAK)
-                        .append(new JLabelRichText("and like " + (commands.size()-max) + " more...").italic());
+                        .append(InlineHTML.LINE_BREAK).append(InlineHTML.LINE_BREAK)
+                        .append(new InlineHTML("and like " + (commands.size()-max) + " more...").italic());
             }
 
             StaticRefs.getHoverLabel().setText(
-                    new JLabelRichText(stringBuilder.toString()).wrapHTML()
+                    new InlineHTML(stringBuilder.toString()).wrapHTML()
             );
             return;
         }
@@ -83,11 +83,11 @@ public class HelpCmd extends Command {
         // top
         stringBuilder.
                 append("[")
-                .append(new JLabelRichText(cmdName).bold())
+                .append(new InlineHTML(cmdName).bold())
                 .append("] ")
-                .append(new JLabelRichText(cmd.description).underline());
+                .append(new InlineHTML(cmd.description).underline());
 
-        stringBuilder.append(JLabelRichText.LINE_BREAK).append(JLabelRichText.LINE_BREAK);
+        stringBuilder.append(InlineHTML.LINE_BREAK).append(InlineHTML.LINE_BREAK);
 
         // aliases
 
@@ -97,18 +97,18 @@ public class HelpCmd extends Command {
                 alias -> stringBuilder.append(alias).append(", ")
         );
 
-        stringBuilder.append(JLabelRichText.LINE_BREAK).append(JLabelRichText.LINE_BREAK);
+        stringBuilder.append(InlineHTML.LINE_BREAK).append(InlineHTML.LINE_BREAK);
 
         // usages
 
         cmd.getUsages().forEach(
-                usage -> stringBuilder.append(new JLabelRichText(cmdName + " " + usage, true).italic())
-                        .append(JLabelRichText.LINE_BREAK)
+                usage -> stringBuilder.append(new InlineHTML(cmdName + " " + usage, true).italic())
+                        .append(InlineHTML.LINE_BREAK)
         );
 
         // print
 
-        StaticRefs.getHoverLabel().setText(new JLabelRichText(stringBuilder.toString()).wrapHTML());
+        StaticRefs.getHoverLabel().setText(new InlineHTML(stringBuilder.toString()).wrapHTML());
     }
 
     private static ArrayList<Command> getCommands(AtomicInteger maxCmd, int max, StringBuilder stringBuilder) {
@@ -119,11 +119,11 @@ public class HelpCmd extends Command {
                     if (maxCmd.get() == max) return;
 
                     stringBuilder.append(
-                            new JLabelRichText(cmd.aliases.getFirst()).bold()
+                            new InlineHTML(cmd.aliases.getFirst()).bold()
                     ).append(" - ").append(
-                            new JLabelRichText(cmd.description)
+                            new InlineHTML(cmd.description)
                     )
-                            .append(JLabelRichText.LINE_BREAK);
+                            .append(InlineHTML.LINE_BREAK);
                 }
         );
         return commands;

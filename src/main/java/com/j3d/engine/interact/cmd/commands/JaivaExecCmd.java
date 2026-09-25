@@ -8,7 +8,7 @@ import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.jaiva.TypeConverter;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.utility.Parsing;
-import com.j3d.utility.generators.JLabelRichText;
+import com.yetnt.utils.builders.InlineHTML;
 import com.jaiva.errors.JaivaException;
 import com.jaiva.utils.generator.CCol;
 

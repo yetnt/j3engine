@@ -1,10 +1,8 @@
 
 package com.j3d.jaiva.packs.getters;
 
-import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.jaiva.EngineObject;
 import com.j3d.jaiva.TypeConverter;
-import com.j3d.utility.generic.func.TriFunction;
 import com.jaiva.interpreter.Primitives;
 import com.jaiva.interpreter.Scope;
 import com.jaiva.interpreter.libBuilders.func.Argument;
@@ -18,6 +16,7 @@ import com.jaiva.interpreter.symbol.BaseFunction;
 import com.jaiva.tokenizer.jdoc.JDoc;
 import com.jaiva.tokenizer.tokens.Token;
 import com.jaiva.tokenizer.tokens.specific.TFuncCall;
+import com.yetnt.utils.functional.TriFunction;
 
 import java.awt.*;
 import java.util.ArrayList;

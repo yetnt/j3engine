@@ -7,7 +7,7 @@ package com.j3d.ui.settings.popouts.theme;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.ui.theme.ThemeEntry;
 import com.j3d.ui.theme.ThemeKey;
-import com.j3d.utility.generators.JLabelRichText;
+import com.yetnt.utils.builders.InlineHTML;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,7 +28,7 @@ public class ThemePropertyPanel extends javax.swing.JPanel {
         initComponents();
         gp.add(themeRadioBtn);
         themeColourLabel.setText(
-                new JLabelRichText("~~~~~~~")
+                new InlineHTML("~~~~~~~")
                         .font(J3DTheme.TEXT_PRIMARY.color(), "4", from.getEntries().get(key))
                         .wrapHTML()
         );
@@ -44,7 +44,7 @@ public class ThemePropertyPanel extends javax.swing.JPanel {
         themeRadioBtn.setText(key.toString());
         themeRadioBtn.addActionListener(e -> {
             themeColourLabel.setText(
-                    new JLabelRichText("~~~~~~~")
+                    new InlineHTML("~~~~~~~")
                             .font(J3DTheme.TEXT_PRIMARY.color(), "4", actionEventConsumer.apply(e))
                             .wrapHTML()
             );

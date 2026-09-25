@@ -1,6 +1,6 @@
 package com.j3d.engine.interact.macros;
 
-import com.j3d.utility.generic.tuple.Pair;
+import com.yetnt.utils.tuple.Pair;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;

@@ -37,7 +37,7 @@ public class ProjectsFile {
 
     public void remove(File project, ArrayList<ProjectImagePair> list) {
         try {
-            list.removeIf(p -> p.second.getAbsolutePath().equals(project.getAbsolutePath()));
+            list.removeIf(p -> p.getSecond().getAbsolutePath().equals(project.getAbsolutePath()));
             PrintWriter pw = new PrintWriter(new FileWriter(file, false)); // Overwrite the file
             for (ProjectImagePair p : list)
                 pw.println(p);

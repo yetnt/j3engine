@@ -14,8 +14,8 @@ import com.j3d.storage.files.FilesUtility;
 import com.j3d.storage.files.IOSupplier;
 import com.j3d.storage.files.protocol.UnsupportedVersionException;
 import com.j3d.ui.dialog.Spinner;
-import com.j3d.utility.generic.collection.HashMultiMap;
-import com.j3d.utility.generic.tuple.Pair;
+import com.yetnt.utils.collection.HashMultiMap;
+import com.yetnt.utils.tuple.Pair;
 
 import java.awt.*;
 import java.io.DataInputStream;
@@ -223,11 +223,11 @@ public class PF3 extends ProjectFile {
         dos.writeInt(thingAmt);
         if (!things.isEmpty()) {
             for (Pair<String, Thing> pair : things) {
-                Thing thing = pair.second;
+                Thing thing = pair.getSecond();
                 beforeElement(dos);
                 dos.writeUTF(thing.getId().toString());
                 dos.writeUTF(thing.getName());
-                dos.writeUTF(pair.first);
+                dos.writeUTF(pair.getFirst());
                 dos.writeBoolean(thing.isHidden());
                 dos.writeBoolean(thing.isSolid());
             }
@@ -291,9 +291,9 @@ public class PF3 extends ProjectFile {
         if (!curves.isEmpty()) {
             for (Pair<UUID, GCurve> pair : curves) {
                 beforeElement(dos);
-                GCurve gc = pair.second;
+                GCurve gc = pair.getSecond();
                 dos.writeUTF(gc.getId().toString());
-                UUID parent = pair.first;
+                UUID parent = pair.getFirst();
                 dos.writeUTF(parent.toString());
                 dos.writeInt(colToInt(gc.getColour()));
                 dos.writeInt(gc.getAmount());
@@ -363,9 +363,9 @@ public class PF3 extends ProjectFile {
         if (!tris.isEmpty()) {
             for (Pair<UUID, GTri> pair : tris) {
                 beforeElement(dos);
-                GTri gt = pair.second;
+                GTri gt = pair.getSecond();
                 dos.writeUTF(gt.getId().toString());
-                UUID parent = pair.first;
+                UUID parent = pair.getFirst();
                 dos.writeUTF(parent.toString());
                 dos.writeInt(colToInt(gt.getColour()));
 
@@ -448,9 +448,9 @@ public class PF3 extends ProjectFile {
         if (!lines.isEmpty()) {
             for (Pair<UUID, GLine> pair : lines) {
                 beforeElement(dos);
-                GLine gl = pair.second;
+                GLine gl = pair.getSecond();
                 dos.writeUTF(gl.getId().toString());
-                UUID parent = pair.first;
+                UUID parent = pair.getFirst();
                 dos.writeUTF(parent.toString());
                 dos.writeInt(colToInt(gl.getColour()));
                 dos.writeUTF(gl.getA().getId().toString());
@@ -519,9 +519,9 @@ public class PF3 extends ProjectFile {
         if (!points.isEmpty()) {
             for (Pair<UUID, GPoint> pair : points) {
                 beforeElement(dos);
-                GPoint gp = pair.second;
+                GPoint gp = pair.getSecond();
                 dos.writeUTF(gp.getId().toString());
-                UUID parent = pair.first;
+                UUID parent = pair.getFirst();
                 dos.writeUTF(parent.toString());
 
                 dos.writeDouble(gp.getPivot().getX());

@@ -4,7 +4,7 @@ import com.j3d.gen.guide.Anchor;
 import com.j3d.gen.guide.GuidePanelAdapter;
 import com.j3d.gen.guide.generic.DoubleClickStep;
 import com.j3d.ui.theme.J3DTheme;
-import com.j3d.utility.generators.JLabelRichText;
+import com.yetnt.utils.builders.InlineHTML;
 
 import javax.swing.*;
 
@@ -18,19 +18,19 @@ public class UIExplainerStep extends DoubleClickStep {
         addCompAt(
                 adapter,
                 new JLabel(
-                        new JLabelRichText(
+                        new InlineHTML(
                                 "The top panel with buttons, called the Toolbox, has buttons for executing quick actions"
                         )
                                 .add(
                                         " (mostly on a selection of objects or other things. You can hover over the button to find out)"
                                 )
-                                .addLn(JLabelRichText.LINE_BREAK)
+                                .addLn(InlineHTML.LINE_BREAK)
                                 .add(
                                         "There is also the Context Menu (right click the scene to open it) which shows actions you can do "
                                 ).add(
                                         "but only when you're doing some specific action."
                                 )
-                                .addLn(JLabelRichText.LINE_BREAK)
+                                .addLn(InlineHTML.LINE_BREAK)
                                 .add(
                                         "All of these buttons are just abstractions over the bottom text field input, called the command palette. "
                                 )

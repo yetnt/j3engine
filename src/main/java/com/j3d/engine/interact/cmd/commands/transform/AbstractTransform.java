@@ -27,7 +27,7 @@ import com.j3d.engine.interact.cmd.commands.transform.mouse.TransformMouseOwner;
 import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.ui.engine.EngineFrame;
-import com.j3d.utility.generators.JLabelRichText;
+import com.yetnt.utils.builders.InlineHTML;
 
 import java.awt.*;
 import java.time.LocalTime;
@@ -314,16 +314,16 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
                             + SafeJLabel.EMPH + SafeJLabel.EMPH + " (Click "+SafeJLabel.EMPH+" to change)",
                     -1,
                     capitalizedName,
-                    new JLabelRichText(switch (faceMode) {
+                    new InlineHTML(switch (faceMode) {
                         case THING -> "things";
                         case POINTS -> "points";
                         case TRIANGLES -> "triangles";
                     })
                             .font(J3DTheme.TEXT_SECONDARY.color().darker(), "6"),
-                    new JLabelRichText(label1.isBlank() ? "" : "(" + label1 + ")")
+                    new InlineHTML(label1.isBlank() ? "" : "(" + label1 + ")")
                             .font(J3DTheme.TEXT_SECONDARY.color().darker(), "3"),
                     stepsTitle + ": ",
-                    new JLabelRichText(getCurrentStepSize() +
+                    new InlineHTML(getCurrentStepSize() +
                             (this instanceof ScaleSelection s ? "/" + Double.toString(s.getInverseStepSize()) : "") +
                             (this instanceof RotateSelection ? '°' : " units")
                     )

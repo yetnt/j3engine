@@ -13,7 +13,7 @@ import com.j3d.ui.theme.J3DTheme;
 import com.j3d.ui.theme.updator.Locator;
 import com.j3d.utility.ClipboardUtil;
 import com.j3d.utility.Parsing;
-import com.j3d.utility.generators.JLabelRichText;
+import com.yetnt.utils.builders.InlineHTML;
 
 import javax.swing.*;
 import java.awt.*;
@@ -76,7 +76,7 @@ public class TextPanel extends javax.swing.JPanel {
                 String originalText;
                 if (isCodeblock) {
                     originalText = Parsing.removeHTML(jLabel1.getText().replace(
-                            JLabelRichText.LINE_BREAK, "\n"
+                            InlineHTML.LINE_BREAK, "\n"
                     ));
                     if (hasLineNum) {
                         StringBuilder code = new StringBuilder();

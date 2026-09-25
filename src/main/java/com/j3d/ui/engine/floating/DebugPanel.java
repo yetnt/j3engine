@@ -16,7 +16,7 @@ import com.j3d.ui.theme.swing.J3DScrollBarUI;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.ui.dialog.AreYouSure;
 import com.j3d.ui.engine.FloatingPanel;
-import com.j3d.utility.generators.JLabelRichText;
+import com.yetnt.utils.builders.InlineHTML;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,10 +37,10 @@ public class DebugPanel extends javax.swing.JPanel {
     private final Map<UUID, JLabel> statsLabelMap = new HashMap<>();
     private final StatisticsThread statisticsThread = new StatisticsThread(
             (map) -> {
-                JLabelRichText style = new JLabelRichText().bold().italic().font(Color.RED, "4");
+                InlineHTML style = new InlineHTML().bold().italic().font(Color.RED, "4");
                 statsLabelMap.forEach(
                         (uuid, label) -> label.setText(
-                               JLabelRichText.from(map.get(uuid).toString(), style).wrapHTML()
+                               InlineHTML.from(map.get(uuid).toString(), style).wrapHTML()
                         )
                 );
             }

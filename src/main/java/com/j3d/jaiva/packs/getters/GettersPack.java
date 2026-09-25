@@ -4,8 +4,6 @@ import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.geometry.GObjectRegistry;
 import com.j3d.jaiva.EngineObject;
 import com.j3d.jaiva.TypeConverter;
-import com.j3d.utility.generic.func.ThrowableTriFunction;
-import com.j3d.utility.generic.func.TriFunction;
 import com.jaiva.errors.JaivaException;
 import com.jaiva.interpreter.Primitives;
 import com.jaiva.interpreter.Scope;
@@ -20,6 +18,8 @@ import com.jaiva.tokenizer.jdoc.JDoc;
 import com.jaiva.tokenizer.jdoc.JDocBuilder;
 import com.jaiva.tokenizer.tokens.Token;
 import com.jaiva.tokenizer.tokens.specific.TFuncCall;
+import com.yetnt.utils.functional.ThrowableTriFunction;
+import com.yetnt.utils.functional.TriFunction;
 
 import java.util.ArrayList;
 import java.util.UUID;

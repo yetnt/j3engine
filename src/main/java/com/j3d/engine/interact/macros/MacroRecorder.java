@@ -11,7 +11,7 @@ import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.react.events.payloads.CameraUpdatedEventPayload;
 import com.j3d.engine.react.events.payloads.CommandFiredPayload;
 import com.j3d.engine.react.events.payloads.SelectionEventPayload;
-import com.j3d.utility.generic.tuple.SamePair;
+import com.yetnt.utils.tuple.SamePair;
 
 import java.util.ArrayList;
 
@@ -115,7 +115,7 @@ public class MacroRecorder implements EventListener {
         } else if (properties instanceof SelectionEventPayload selectionEventPayload) {
             SamePair<ScreenPoint> points = selectionEventPayload.getScreenPoints();
 
-            String line = points.first.toMacroPoint() + " -> " + points.second.toMacroPoint() + " | " + selectionEventPayload.getInferredSelectionType().name();
+            String line = points.getFirst().toMacroPoint() + " -> " + points.getSecond().toMacroPoint() + " | " + selectionEventPayload.getInferredSelectionType().name();
             MacroLine mLine = new MacroLine(InstructionType.SELECTION, line);
 
             instructions.add(mLine);

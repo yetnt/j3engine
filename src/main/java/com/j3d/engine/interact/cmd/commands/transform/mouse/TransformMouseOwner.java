@@ -10,7 +10,7 @@ import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.engine.interact.input.mouse.MouseOwner;
 import com.j3d.engine.interact.input.mouse.SnapMouseOwner;
 import com.j3d.engine.react.events.EventType;
-import com.j3d.utility.generic.tuple.Pair;
+import com.yetnt.utils.tuple.Pair;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -61,7 +61,7 @@ public class TransformMouseOwner extends SnapMouseOwner {
     private boolean isWithinBounds(MouseEvent e, ScreenPoint p) {
         int dx = e.getX() - p.x;
         int dy = e.getY() - p.y;
-        int radius = selectionBoundingBox.first;
+        int radius = selectionBoundingBox.getFirst();
 
         // Pythagorean theorem: a^2 + b^2 <= r^2
         return (dx * dx + dy * dy) <= (radius * radius);

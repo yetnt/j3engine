@@ -17,9 +17,9 @@ import com.j3d.engine.scene.nodes.geometry.base.Winding;
 import com.j3d.engine.scene.nodes.util.Sampler;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.ui.theme.J3DTheme;
-import com.j3d.utility.generators.JLabelRichText;
-import com.j3d.utility.generic.tuple.Pair;
-import com.j3d.utility.generic.tuple.Triple;
+import com.yetnt.utils.builders.InlineHTML;
+import com.yetnt.utils.tuple.Pair;
+import com.yetnt.utils.tuple.Triple;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -163,10 +163,10 @@ public class ExtrudeCmd extends Command implements KeyedStatefulCommand {
                     "Extruding triangle with a length of "+SafeJLabel.EMPH+" "+SafeJLabel.EMPH+" using arrow keys. "
                             +"| (Click "+SafeJLabel.EMPH+" to change length step)",
 
-                    new JLabelRichText(length+"")
+                    new InlineHTML(length+"")
                             .font(J3DTheme.TEXT_SECONDARY.color().darker(), "6"),
 
-                    new JLabelRichText("("+getGearTrain()[currentIndex]+")")
+                    new InlineHTML("("+getGearTrain()[currentIndex]+")")
                             .font(J3DTheme.TEXT_SECONDARY.color().darker(), "6"),
                     "[R]"
             );
@@ -177,8 +177,8 @@ public class ExtrudeCmd extends Command implements KeyedStatefulCommand {
 
     private void ghost(Graphics2D graphics2D) {
         Pair<Triple<GPoint>, Triple<Vector3>> newPoints = getAllPoints();
-        Triple<Vector3> original = newPoints.first.map(GPoint::toPoint);
-        Triple<Vector3> extruded = newPoints.second;
+        Triple<Vector3> original = newPoints.getFirst().map(GPoint::toPoint);
+        Triple<Vector3> extruded = newPoints.getSecond();
 
         // join the points
         Sampler.joinNGonArbitaryVectors(extruded.toArrayList(), graphics2D);
@@ -221,8 +221,8 @@ public class ExtrudeCmd extends Command implements KeyedStatefulCommand {
     private void join() {
         Pair<Triple<GPoint>, Triple<Vector3>> newPoints = getAllPoints();
 
-        ArrayList<GPoint> original = newPoints.first.toArrayList();
-        ArrayList<GPoint> extruded = newPoints.second.map(GPoint::new).toArrayList();
+        ArrayList<GPoint> original = newPoints.getFirst().toArrayList();
+        ArrayList<GPoint> extruded = newPoints.getSecond().map(GPoint::new).toArrayList();
 
         HashSet<GLine> lines = new HashSet<>(tri.getLegStream().toList());
         HashSet<GTri> tris = new HashSet<>();

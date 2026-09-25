@@ -10,7 +10,7 @@ import com.j3d.gen.guide.Anchor;
 import com.j3d.gen.guide.GuidePanelAdapter;
 import com.j3d.gen.guide.generic.DoubleClickStep;
 import com.j3d.ui.theme.J3DTheme;
-import com.j3d.utility.generators.JLabelRichText;
+import com.yetnt.utils.builders.InlineHTML;
 
 import javax.swing.*;
 import java.awt.*;
@@ -77,8 +77,8 @@ public class ObjectExplainerStep extends DoubleClickStep {
         addCompAt(
                 adapter,
                 new JLabel(
-                        new JLabelRichText("(I've gone ahead and created a cube for you)")
-                                .addLn(JLabelRichText.LINE_BREAK)
+                        new InlineHTML("(I've gone ahead and created a cube for you)")
+                                .addLn(InlineHTML.LINE_BREAK)
                                 .add(
                                         "Some objects like points are hidden by default. you can go (in the top right) "
                                                 + "and click Scene > View > Wireframe (or use ALT+V) to change to a view where "
@@ -98,11 +98,11 @@ public class ObjectExplainerStep extends DoubleClickStep {
         addCompAt(
                 adapter,
                 new JLabel(
-                        new JLabelRichText("The scene is comprised of many smaller geometry, referred to as just \"objects\"")
+                        new InlineHTML("The scene is comprised of many smaller geometry, referred to as just \"objects\"")
                                 .addLn(
                                 "These include points, lines, triangles and curves. All of these are types of objects."
                                 )
-                                .addLn(JLabelRichText.LINE_BREAK)
+                                .addLn(InlineHTML.LINE_BREAK)
                                 .add(
                                         "These objects are then all stored within a single \"Thing\" (think of it as like a group of multiple"
                                 ).add(
@@ -110,7 +110,7 @@ public class ObjectExplainerStep extends DoubleClickStep {
                                 ).add(
                                         " \"Layer\""
                                 )
-                                .addLn(JLabelRichText.LINE_BREAK)
+                                .addLn(InlineHTML.LINE_BREAK)
                                 .add(
                                         "(This is a later section but you can click in the above buttons (the toolbox) the Layer Tree to view all the Layers and Things)"
                                 )

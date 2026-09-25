@@ -61,7 +61,7 @@ import static com.j3d.engine.interact.input.keyboard.KeyBindings.commandPaletteF
 import com.j3d.engine.scene.draw.ViewType;
 import com.j3d.ui.dialog.AreYouSure;
 import com.j3d.ui.HoverJLabel;
-import com.j3d.utility.generators.JLabelRichText;
+import com.yetnt.utils.builders.InlineHTML;
 
 /**
  * Possibly. The most chaotic, most important UI. This is the main UI of the entire app where the user
@@ -1007,7 +1007,7 @@ public class EngineFrame extends javax.swing.JFrame {
         if (!StaticConfig.hasSaved) {
             AreYouSure ays = new AreYouSure(
                     this, true,
-                    new JLabelRichText(
+                    new InlineHTML(
                             "You haven't saved this project! Click Nah Fam then use"
                     ).addLn("CTRL+S to save, or click Hell Yeah to proceed anyway.")
                             .wrapHTML()
@@ -1067,7 +1067,7 @@ public class EngineFrame extends javax.swing.JFrame {
         if (!StaticConfig.hasSaved) {
             AreYouSure ays = new AreYouSure(
                     this, true,
-                    new JLabelRichText(
+                    new InlineHTML(
                             "You haven't saved this project! Click Nah Fam then use"
                     ).addLn("CTRL+S to save, or click Hell Yeah to proceed anyway.")
                             .wrapHTML()

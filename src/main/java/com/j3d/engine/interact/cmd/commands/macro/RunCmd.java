@@ -9,7 +9,7 @@ import com.j3d.engine.interact.cmd.args.TypedArg;
 import com.j3d.engine.interact.macros.MacroRecorder;
 import com.j3d.engine.interact.macros.MacroRunner;
 import com.j3d.ui.SafeJLabel;
-import com.j3d.utility.generators.JLabelRichText;
+import com.yetnt.utils.builders.InlineHTML;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -45,12 +45,12 @@ public class RunCmd extends Subcommand {
         }
 
         if (!StaticRefs.getMacroUtils().getMacros().containsKey(name)) {
-            logLabel.setText("No macro with the name " + SafeJLabel.EMPH + " exists!", new JLabelRichText(name).bold().italic());
+            logLabel.setText("No macro with the name " + SafeJLabel.EMPH + " exists!", new InlineHTML(name).bold().italic());
         }
 
         StaticRefs.getHoverLabel().setText(
                 "Running macro " + SafeJLabel.EMPH + ".",
-                new JLabelRichText(name).bold().italic()
+                new InlineHTML(name).bold().italic()
         );
 
         mr2.run(logLabel, name);

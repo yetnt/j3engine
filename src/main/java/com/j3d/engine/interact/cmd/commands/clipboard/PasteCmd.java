@@ -16,7 +16,7 @@ import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.args.TypedArg;
 import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.ui.SafeJLabel;
-import com.j3d.utility.buckets.Buckets;
+import com.yetnt.utils.collection.buckets.Buckets;
 
 import java.util.ArrayList;
 import java.util.List;

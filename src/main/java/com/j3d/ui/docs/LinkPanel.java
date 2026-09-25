@@ -11,8 +11,8 @@ import com.j3d.gen.docs.reader.tokens.TLink;
 import com.j3d.storage.JarPath;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.utility.Parsing;
-import com.j3d.utility.generators.JLabelRichText;
-import com.j3d.utility.generic.tuple.Pair;
+import com.yetnt.utils.builders.InlineHTML;
+import com.yetnt.utils.tuple.Pair;
 
 import java.awt.*;
 import java.io.File;
@@ -52,7 +52,7 @@ public class LinkPanel extends javax.swing.JPanel {
         initComponents();
         this.documentation = null;
 
-        String name = pair.first;
+        String name = pair.getFirst();
 
         jButton1.setText("Open");
 
@@ -66,10 +66,10 @@ public class LinkPanel extends javax.swing.JPanel {
 
 
         jLabel1.setText(
-                new JLabelRichText(
+                new InlineHTML(
                         name
                 )
-                        .heading(JLabelRichText.Heading.H1)
+                        .heading(InlineHTML.Heading.H1)
 //                        .font("5")
                         .bold().italic().wrapHTML()
         );
