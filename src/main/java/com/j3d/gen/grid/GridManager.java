@@ -8,6 +8,15 @@ import com.j3d.engine.math.convert.ConversionWithOffset;
 import com.j3d.engine.math.convert.Offset;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.math.plane.AxisPlane;
+import com.j3d.engine.math.plane.NormalPlane;
+import com.j3d.engine.react.events.EventListener;
+import com.j3d.engine.react.events.EventPayload;
+import com.j3d.engine.react.events.EventType;
+import com.j3d.engine.react.events.payloads.ReactivePointInvalidatedPayload;
+import com.j3d.engine.scene.find.FindResult;
+import com.j3d.engine.scene.find.Finder;
+import com.j3d.engine.scene.nodes.geometry.GObject;
+import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.ui.engine.floating.grid2d.Grid;
 import com.j3d.ui.engine.floating.grid2d.Grid2DPanel;
 import com.j3d.ui.theme.J3DTheme;
@@ -16,10 +25,8 @@ import com.j3d.utility.generic.tuple.SamePair;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -27,7 +34,7 @@ import java.util.stream.Collectors;
 import static com.j3d.StaticRefs.*;
 import static com.j3d.ui.engine.floating.grid2d.Grid2DPanel.mousePosInPanel;
 
-public class GridManager {
+public class GridManager implements EventListener {
 
     private final ArrayList<GridObject<?>> objects = new ArrayList<>();
     private final int ovalRadius = 10;
@@ -72,6 +79,61 @@ public class GridManager {
         panel.getDrawPanel().repaint();
     }
 
+    public void addExistingPoints() {
+        ArrayList<FindResult> findResults = StaticRefs.getSceneManager().finder()
+                .find(GPoint.class, Finder.allQuery(), null);
+
+        ArrayList<GPoint> foundObjects = findResults.stream()
+                .map(FindResult::getgObject)
+                .map(g -> (GPoint)g)
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        if (foundObjects.isEmpty()) return;
+
+        AxisPlane p = getAxisPlane();
+        NormalPlane plane = p.toNormalPlane();
+
+        for (GPoint gPoint : foundObjects) {
+
+            if (!plane.onPlane(gPoint.getPivot())) continue;
+
+            ReactivePoint reactivePoint = new ReactivePoint(gPoint, this::getAxisPlane, panel::roundPoint);
+
+            reactivePoint.attachListener(this);
+
+            objects.add(reactivePoint);
+        }
+    }
+
+    public void invalidateAndRemoveAllReactive() {
+        List<ReactivePoint> list = objects.stream()
+                .filter(g -> g instanceof ReactivePoint)
+                .map(ReactivePoint.class::cast)
+                .toList();
+
+        list.forEach(this::removeReactivePoint);
+    }
+
+    public void removeReactivePoint(ReactivePoint point) {
+        objects.remove(point);
+        point.getGPoint().detachListener(point);
+        point.detachAll();
+    }
+
+    @Override
+    public <K> void onEvent(EventType event, EventPayload<K> properties) {
+        if (event == EventType.REACTIVE_POINT_INVALIDATED) {
+            ReactivePointInvalidatedPayload payload =
+                    (ReactivePointInvalidatedPayload) properties;
+
+            removeReactivePoint(payload.emitter);
+        }
+    }
+
+    public AxisPlane getAxisPlane() {
+        return new AxisPlane(panel.getOrigin(), panel.getV1(), panel.getV2());
+    }
+
     /**
      * initialises all the drawing shenanigans we need to do being:
      * <ul>
@@ -113,7 +175,7 @@ public class GridManager {
             });
             g.setColor(original);
             g.fillOval(sp.x - ovalRadius /2, sp.y - ovalRadius /2, ovalRadius, ovalRadius);
-            objects.forEach(
+            new ArrayList<>(objects).forEach(
                     gr -> gr.draw(g, props)
             );
             temporaryDrawConsumers.forEach((i, s) -> {
@@ -124,11 +186,14 @@ public class GridManager {
                 panel.getOverlapId(),
                 (g) -> {
                     if (panel.floatingPanel.isHidden()) return;
-                    AxisPlane p = new AxisPlane(panel.getOrigin(), panel.getV1(), panel.getV2());
+                    AxisPlane p = getAxisPlane();
                     drawMouse(g, mousePosInPanel, p);
+                    Stroke original = g.getStroke();
+                    g.setStroke(new BasicStroke(2));
                     drawDirArr(g, new CartesianPoint(0, 10), p, false);
                     drawDirArr(g, new CartesianPoint(10, 0), p, true);
-                    Vector3 point = new AxisPlane(panel.getOrigin(), panel.getV1(), panel.getV2())
+                    g.setStroke(original);
+                    Vector3 point = p
                             .toWorld(mousePosInPanel);
                     ScreenPoint sp =
                             point.toPoint(getCamera())
@@ -137,7 +202,7 @@ public class GridManager {
                     g.drawOval(sp.x - ovalRadius, sp.y - ovalRadius, ovalRadius *2, ovalRadius *2);
                     g.setColor(Color.white);
                     getMainPanel().repaint();
-                    objects.forEach(gr -> gr.drawWorld(g, new AxisPlane(panel.getOrigin(), panel.getV1(), panel.getV2())));
+                    objects.forEach(gr -> gr.drawWorld(g, p));
                 }
         );
         panel.addComponentListener(
@@ -175,7 +240,7 @@ public class GridManager {
         if (panelSize.width == 0 || panelSize.height == 0) return;
 
         // Convert screen corners to Cartesian points to find the bounds
-        ConversionWithOffset conversionProperties = new ConversionWithOffset(panel.getScale(), panelSize, fromMut());
+        ConversionWithOffset conversionProperties = new ConversionWithOffset(panel.getScale(), panel.getGrid().sizeDim(), fromMut());
         CartesianPoint topLeft = new ScreenPoint(0, 0).toPoint(conversionProperties);
         CartesianPoint bottomRight = new ScreenPoint(panelSize.width, panelSize.height).toPoint(conversionProperties);
 
@@ -200,6 +265,7 @@ public class GridManager {
      * @param p The point supplier (why the fuck is this a supplier)
      */
     public void existing(Supplier<Point> p) {
+        ConversionWithOffset conversionProperties = new ConversionWithOffset(panel.getScale(), panel.getGrid().sizeDim(), fromMut());
         Point o = p.get();
         Point p2 = objects
                 .stream()
@@ -210,7 +276,7 @@ public class GridManager {
                         o2 -> (Point)o2
                 )
                 .filter(
-                        point -> point.getPoint().equals(o.getPoint())
+                        point -> point.getPoint(conversionProperties).equals(o.getPoint(conversionProperties))
                 )
                 .findFirst()
                 .orElse(null);
@@ -225,15 +291,20 @@ public class GridManager {
      */
     public void delete(CartesianPoint cartesianPoint) {
         // look for a point at the current position, if any matches delete said points.
+        ConversionWithOffset conversionProperties = new ConversionWithOffset(
+                panel.getScale(),
+                panel.getGrid().sizeDim(),
+                fromMut()
+        );
         new ArrayList<>(objects).stream()
                 .filter(
-                        o -> o instanceof Point
+                        o -> o instanceof Point && !(o instanceof ReactivePoint)
                 )
                 .map(
                         o -> (Point) o
                 )
                 .filter(
-                        point -> point.getPoint().equals(cartesianPoint)
+                        point -> point.getPoint(conversionProperties).equals(cartesianPoint)
                 )
                 .forEach(objects::remove);
     }
@@ -244,12 +315,19 @@ public class GridManager {
      */
     public void delete(Line l) {
         // if this line intersects with any other line in this list, delete that line
+        ConversionWithOffset conversionProperties = new ConversionWithOffset(
+                panel.getScale(),
+                panel.getGrid().sizeDim(),
+                fromMut()
+        );
         new ArrayList<>(objects)
                 .stream()
                 .peek(o -> {
-                    if (o instanceof Point p)
-                        if (p.getPoint().equals(l.getP1()) || p.getPoint().equals(l.getP2()))
-                            objects.remove(p);
+                    if (o instanceof Point p && !(o instanceof ReactivePoint))
+                        if (
+                                p.getPoint(conversionProperties).equals(l.getP1())
+                                || p.getPoint(conversionProperties).equals(l.getP2())
+                        ) objects.remove(p);
                 })
                 .filter(
                         lw -> lw instanceof Line
@@ -317,12 +395,12 @@ public class GridManager {
 
         if (xDir) {
             // tip is the mouse position (first element)
-            points.add(new CartesianPoint(x-1, y)); // tail
+            points.add(new CartesianPoint(0, y)); // tail
             points.add(new CartesianPoint(x - 1, y - 1)); // Bottom-left
             points.add(new CartesianPoint(x - 1, y + 1)); // Bottom-right
         } else {
             // tip is the mouse position (first element)
-            points.add(new CartesianPoint(x, y - 1)); // tail
+            points.add(new CartesianPoint(x, 0)); // tail
             points.add(new CartesianPoint(x - 1, y - 1)); // Bottom-left
             points.add(new CartesianPoint(x + 1, y - 1)); // Bottom-right
         }
@@ -353,4 +431,5 @@ public class GridManager {
     public static Offset fromMut() {
         return Offset.fromMutablePair(Grid2DPanel.offset);
     }
+
 }

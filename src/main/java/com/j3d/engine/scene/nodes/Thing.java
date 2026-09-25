@@ -2,13 +2,10 @@ package com.j3d.engine.scene.nodes;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.scene.SceneManager;
-import com.j3d.engine.scene.nodes.geometry.GLine;
+import com.j3d.engine.scene.nodes.geometry.*;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.engine.react.actions.DirtyVoidAction;
-import com.j3d.engine.scene.nodes.geometry.GObject;
-import com.j3d.engine.scene.nodes.geometry.GPoint;
-import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.ConstructorAction;
 import com.j3d.engine.react.actions.VoidAction;
@@ -278,6 +275,24 @@ public class Thing implements SceneObjectList {
             Vector3 sum = Vector3.reduceToVector3(pts, Vector3::add);
             centroid = sum.div(pts.size());
         }
+//        else {
+//            HashSet<GPoint> discovered = Stream.of(gObjects)
+//                    .flatMap(gObject -> {
+//                        return switch (gObject) {
+//                            case GTri tri -> tri.getLegStream().flatMap(GLine::getPointStream);
+//                            case GLine line -> line.getPointStream();
+//                            case GCurve curve -> curve.getPointStream();
+//                            case null, default -> Stream.of((GPoint) gObject);
+//                        };
+//                    })
+//                    .collect(Collectors.toCollection(HashSet::new));
+//            Vector3 sum = Vector3.reduceToVector3(
+//                    new ArrayList<>(discovered.stream().map(GPoint::getPivot).toList()),
+//                    Vector3::add
+//            );
+//            centroid = sum.div(discovered.size());
+//            points.addAll(discovered);
+//        }
     }
 
     /**

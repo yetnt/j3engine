@@ -78,8 +78,9 @@ public class Executor {
                 solid.translate(Vector3.acrossX(-40)),
                 solid.translate(Vector3.acrossZ(20)),
                 ngon.rotate(Vector3.Y, 20), // 20 degrees
-                ngon.translate(Vector3.acrossX(40)),
-                cone.rotate(Vector3.acrossX(5), 5)
+                ngon.translate(Vector3.acrossX(40))
+//                ,
+//                cone.rotate(Vector3.acrossX(5), 5)
         ));
         actions.forEach(Action::run);
         actions.forEach(SceneManager.history::add);

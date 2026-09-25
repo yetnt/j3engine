@@ -39,7 +39,7 @@ public record NormalPlane(
      * @return {@code true} if the point is on the plane (within a small epsilon tolerance), {@code false} otherwise.
      */
     public boolean onPlane(Vector3 pos) {
-        return Math.abs(pos.dot(normal)) < EPSILON;
+        return Math.abs(pos.sub(origin).dot(normal)) < EPSILON;
     }
 
     /**

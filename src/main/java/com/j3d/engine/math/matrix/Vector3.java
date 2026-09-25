@@ -542,6 +542,30 @@ public class Vector3 implements MatrixInterface {
      */
     public static Vector3 UNIT = new Vector3(1, 1, 1);
 
+    public static Vector3 setXComponent(Vector3 original, double xComp) {
+        return new Vector3(
+                xComp,
+                original.getY(),
+                original.getZ()
+        );
+    }
+
+    public static Vector3 setYComponent(Vector3 original, double yComp) {
+        return new Vector3(
+                original.getX(),
+                yComp,
+                original.getZ()
+        );
+    }
+
+    public static Vector3 setZComponent(Vector3 original, double zComp) {
+        return new Vector3(
+                original.getX(),
+                original.getY(),
+                zComp
+        );
+    }
+
     public static Vector3 fromObject(GettersPack.CallProperties callProperties, EngineObject obj) {
         return new Vector3(
                 (double)obj.getProperties().getFirst(),

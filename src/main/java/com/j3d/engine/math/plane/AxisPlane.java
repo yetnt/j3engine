@@ -33,6 +33,28 @@ public record AxisPlane(
                 .add(v1.scale(point.x))
                 .add(v2.scale(point.y));
     }
+
+    public CartesianPoint fromWorld(Vector3 point) {
+        Vector3 d = point.sub(origin);
+
+        double v1v1 = v1.dot(v1);
+        double v1v2 = v1.dot(v2);
+        double v2v2 = v2.dot(v2);
+
+        double dv1 = d.dot(v1);
+        double dv2 = d.dot(v2);
+
+        double determinant = v1v1 * v2v2 - v1v2 * v1v2;
+
+        if (Math.abs(determinant) < NormalPlane.EPSILON) {
+            throw new IllegalStateException("Plane basis vectors are parallel");
+        }
+
+        double x = (dv1 * v2v2 - dv2 * v1v2) / determinant;
+        double y = (dv2 * v1v1 - dv1 * v1v2) / determinant;
+
+        return new CartesianPoint(x, y);
+    }
     /**
      * Normalises the vectors
      * @return A new plane with the normalised vectors

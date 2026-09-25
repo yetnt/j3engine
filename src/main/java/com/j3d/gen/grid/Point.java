@@ -20,15 +20,16 @@ public class Point implements GridObject<GPoint> {
     public Point(CartesianPoint point) {
         this.point = point;
     }
+    Point() {}
 
-    public CartesianPoint getPoint() {
+    public CartesianPoint getPoint(ConversionWithOffset props) {
         return point;
     }
 
     @Override
     public void draw(Graphics2D graphics2D, ConversionWithOffset props) {
         // draw as circle.
-        ScreenPoint sp = point.toScreen(props);
+        ScreenPoint sp = getPoint(props).toScreen(props);
         int size = 10;
 
         Stroke original = graphics2D.getStroke();
@@ -42,7 +43,7 @@ public class Point implements GridObject<GPoint> {
     @Override
     public void drawWorld(Graphics2D graphics2D, AxisPlane axisPlane) {
         // draw dot.
-        Vector3 pos = axisPlane.toWorld(point);
+        Vector3 pos = axisPlane.toWorld(getPoint(null));
         ScreenPoint sp = pos
                 .toPoint(StaticRefs.getCamera())
                 .toScreen();
@@ -55,6 +56,6 @@ public class Point implements GridObject<GPoint> {
 
     @Override
     public GPoint render(AxisPlane plane, ArrayList<GObject> objects) {
-        return new GPoint(plane.toWorld(point));
+        return new GPoint(plane.toWorld(getPoint(null)));
     }
 }

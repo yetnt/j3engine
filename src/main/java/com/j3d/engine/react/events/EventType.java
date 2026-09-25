@@ -67,6 +67,7 @@ public enum EventType {
      * payload class of {@link MouseClickPayload}
      */
     MOUSE_CLICKED,
+    REACTIVE_POINT_INVALIDATED,
     /**
      * The camera moved. Broadcast by {@link Camera} with a payload class of {@link CameraUpdatedEventPayload}
      */

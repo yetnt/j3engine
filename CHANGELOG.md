@@ -120,3 +120,9 @@ This has a lot of things from the over a year of dev so like yeah ill briefly me
   * Grid2dPanel has been split into `Grid2dPanel` and `GridManager` to alleviate responsibilities off of `Grid2dPanel`
   * Grid2dPanel now allows panning the canvas (using any mouse button that isnt LEFT click)
   * the X and Y vectors are now drawn at the centre to visualize the scaling of the actual plane in 3d
+  * Grid2dPanel now shows points which intersect the plane and allow clicking and using them like any point (if you click the Query button)
+  * Grid2dPanel now has 9 Spinners for each component of the origin, v1 and v2 vectors respectively
+  * Grid2dPanel correctly labels itself Grid2dPanel and not the history panel
+* Introduce QuadFunction
+* Introduce Colours utility for adding an alpha to colours and ReactivePoint in relation to Grid2dPanel
+* Introduce REACTIVE_POINT_INVALIDATED and its own payload.
