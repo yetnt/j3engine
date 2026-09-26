@@ -26,7 +26,7 @@
             <!-- Personal esoteric programming language parsing and runtime, so it can be embedded. -->
             <groupId>com.github.yetnt</groupId>
             <artifactId>jaiva</artifactId>
-            <version>5.0.2</version>
+            <version>5.1.0-alpha.0</version> <!-- Alpha version introduced better JBundler handling -->
         </dependency>
         <dependency>
             <!-- Personal shared utility tuples and functions between this and jaiva -->
