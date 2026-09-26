@@ -1,5 +1,6 @@
-package com.j3d;
+package com.j3d.artefacts;
 
+import com.j3d.StaticRefs;
 import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.engine.scene.find.FindResult;
 import com.j3d.engine.scene.nodes.geometry.base.Winding;
@@ -29,28 +30,25 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Executor is a class called by {@link EngineFrame#main(String[])} that is specifically draws a debug scene
- * when the debug project is chosen. It only makes this stuff once and never again purely for debugging
+ * Executor is a generic debugging artefact. This is available to any use via the {@link com.j3d.ui.home.Projects} UI
+ * to see for themselves the shenanigans i'm doing.
+ * <p>
+ *     Executor, is the oldest, implementation of an {@link Artefact} and does itself predate the Artefact
+ *     interface by an entire year. {@link Executor} is where I'll most likely be testing obscure
+ *     scene initialisation and geometry stuff before it becomes a user-facing feature. hence old implementations
+ *     or unused methods can be found.
+ * </p>
+ * @see Artefact
+ * @author Lehlogonolo Poole
  */
-public class Executor {
-    /**
-     * The sceneManager instance.
-     */
-    private final SceneManager sceneManager;
+public class Executor implements Artefact {
 
     private final Layer layer = new Layer("exec");
 
     /**
-     * Default Constructor
-     * @param r The SceneManager Instance.
-     */
-    public Executor(SceneManager r) {
-        sceneManager = r;
-    }
-
-    /**
      * Runs the executor.
      */
+    @Override
     public void run() {
         StaticRefs.getSceneManager().layers.add(layer);
 
@@ -85,24 +83,6 @@ public class Executor {
         actions.forEach(Action::run);
         actions.forEach(SceneManager.history::add);
 
-        dumbstuff();
-
-    }
-
-    public void dumbstuff() {
-        // using the power of Finder, find every single triangle whose centroid is further than whatever
-        Vector3 v = new Vector3(0, 10, -1).rotateAroundAxis(
-                Vector3.X, 90
-        );
-        ArrayList<FindResult> findResult = StaticRefs.getSceneManager().finder().find(
-                GTri.class,
-                (tri, v2) -> {
-                    double l = tri.getPivot().distance(v2);
-                    return l > 20;
-                },
-                v
-        );
-        System.out.println(findResult);
     }
 
     public Thing cone(int max, int height) {
@@ -297,10 +277,10 @@ public class Executor {
     }
 
     public void note(GPoint point, String label) {
-        sceneManager.scheduleOverlap(
+        StaticRefs.getSceneManager().scheduleOverlap(
                 point.getId(),
                 g ->
-                        sceneManager.drawText3D(
+                        StaticRefs.getSceneManager().drawText3D(
                                 g, point.getPivot(),
                                 label, StaticRefs.getCamera()
                         )

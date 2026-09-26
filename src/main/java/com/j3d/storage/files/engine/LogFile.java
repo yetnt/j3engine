@@ -32,7 +32,7 @@ public class LogFile {
 
         Runtime.getRuntime().addShutdownHook(
                 new Thread(() -> {
-                    StaticRefs.getLog().println("Engine shutdown.");
+                    StaticRefs.getLog().println("[SHUTDOWN]");
                     pw.close();
                 })
         );

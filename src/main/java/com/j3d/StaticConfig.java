@@ -50,6 +50,7 @@ public abstract class StaticConfig {
      */
     public static ViewType viewType = ViewType.NORMAL;
     public static boolean movementControls = true;
+    public static boolean test = false;
 
     static {
         try {

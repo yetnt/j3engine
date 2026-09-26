@@ -4,12 +4,12 @@
  */
 package com.j3d;
 
-import com.j3d.gen.settings.Settings;
+import com.j3d.artefacts.Artefact;
+import com.j3d.artefacts.Executor;
 import com.j3d.threads.FakeLongTask;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.ui.engine.J3Splash;
 import com.j3d.ui.home.Projects;
-import com.j3d.ui.theme.J3DTheme;
 
 import javax.swing.*;
 import java.io.File;
@@ -42,7 +42,7 @@ public class Startup {
     }
 
     public static void engineDebug() {
-        EngineFrame e = new EngineFrame(true, false);
+        EngineFrame e = new EngineFrame(new Executor(), false);
         e.setResizable(true);
         e.setVisible(true);
     }
@@ -54,8 +54,14 @@ public class Startup {
                  UnsupportedLookAndFeelException e) {
             throw new RuntimeException(e);
         }
+
         FakeLongTask flt = getFakeLongTask(o, showTutorial);
-//        flt.iAmImpatient();
+
+        // if theres an artefact, skip the fake long task
+        if (o instanceof Artefact) {
+            flt.iAmImpatient();
+            return;
+        }
         try {
             flt.run();
         } catch (InterruptedException e) {
@@ -70,7 +76,7 @@ public class Startup {
         }, () -> {}, () -> {
             EngineFrame e = switch (o) {
                 case File f -> new EngineFrame(f);
-                case Boolean b -> new EngineFrame(b, showTutorial);
+                case Artefact b -> new EngineFrame(b, showTutorial);
                 default -> throw new IllegalStateException("Unexpected value: " + o);
             };
             e.setResizable(true);

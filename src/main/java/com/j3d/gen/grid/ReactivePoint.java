@@ -11,7 +11,7 @@ import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.ui.engine.floating.grid2d.Grid2DPanel;
 import com.j3d.ui.theme.J3DTheme;
-import com.j3d.utility.Colors;
+import com.yetnt.utils.qol.Colours;
 import jdk.jfr.FlightRecorder;
 
 import java.awt.*;
@@ -53,7 +53,7 @@ public class ReactivePoint extends Point implements EventListener, EventEmitterI
 
         Stroke original = graphics2D.getStroke();
         graphics2D.setStroke(new BasicStroke(2));
-        graphics2D.setColor(Colors.alphaChannel(J3DTheme.TEXT_SECONDARY.color().darker(), 160));
+        graphics2D.setColor(Colours.alphaChannel(J3DTheme.TEXT_SECONDARY.color().darker(), 160));
         graphics2D.fillOval(sp.x - size / 2, sp.y - size / 2, size, size);
         graphics2D.setColor(Color.black);
         graphics2D.setStroke(original);

@@ -4,6 +4,7 @@
  */
 package com.j3d;
 
+import com.j3d.artefacts.Artefact;
 import com.j3d.gen.settings.Settings;
 import com.j3d.ui.theme.J3DTheme;
 
@@ -20,5 +21,15 @@ public class Main {
             Startup.engine(new File(path), false);
         } else
             Startup.run();
+    }
+
+    public static void test(Artefact artifact) {
+        // Static Refs was already instantiated.
+        J3DTheme.loadTheme(
+                Settings.changeTheme.getValue()
+        );
+
+        if (artifact == null) Startup.run(); // go through projects frame
+        else Startup.engine(artifact, false);
     }
 }

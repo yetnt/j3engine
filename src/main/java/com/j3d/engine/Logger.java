@@ -1,10 +1,12 @@
 package com.j3d.engine;
 
+import com.j3d.StaticConfig;
 import com.j3d.StaticRefs;
 import com.j3d.errors.J3DError;
 import com.j3d.errors.severity.J3DFatal;
 import com.j3d.errors.severity.J3DMild;
 import com.j3d.errors.severity.J3DWarning;
+import com.yetnt.utils.builders.AnsiColour;
 
 import javax.swing.*;
 import java.time.format.DateTimeFormatter;
@@ -46,6 +48,10 @@ public class Logger {
         return "<" + java.time.LocalTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME) + ">";
     }
 
+    public String appendIfTest(String message) {
+        return StaticConfig.test && !(message.contains("[TEST]")) && !(message.contains("[SHUTDOWN]")) ? "\t | " : "";
+    }
+
     /**
      * Logs a standard message. The message is prefixed with {@code [J3D]} and
      * printed to the console. If a JTextArea is provided, the message
@@ -55,10 +61,18 @@ public class Logger {
      */
     public void println(String message) {
         String logMessage = PREFIX + message + "\n";
-        StaticRefs.getEngineFiles().logFile.writeLn(getTimestamp() + " " + PREFIX + message);
-        System.out.print(logMessage);
+        StaticRefs.getEngineFiles().logFile.writeLn(appendIfTest(message) + getTimestamp() + " " + PREFIX + message);
+        System.out.print(
+                message.contains("[TEST]") && message.contains("Passed: ") ?
+                        AnsiColour.print(appendIfTest(message) + logMessage, AnsiColour.FORE.GREEN, AnsiColour.FONT.BOLD)
+                        : message.contains("[TEST]") && message.contains("started") ?
+                        AnsiColour.print(appendIfTest(message) + logMessage, AnsiColour.FONT.UNDERLINE)
+                        : message.contains("[SHUTDOWN]") ?
+                        AnsiColour.print(appendIfTest(message) + logMessage, AnsiColour.FONT.BOLD, AnsiColour.BACK.BRIGHT_PURPLE, AnsiColour.FORE.BLACK)
+                        : AnsiColour.print(appendIfTest(message) + logMessage, AnsiColour.FORE.BRIGHT_BLACK, AnsiColour.FONT.ITALIC)
+        );
         if (logArea != null) {
-            logArea.append(logMessage + getTimestamp() + "\n");
+            logArea.append(appendIfTest(message) + logMessage + getTimestamp() + "\n");
             logArea.setCaretPosition(logArea.getDocument().getLength());
         }
     }
@@ -84,10 +98,10 @@ public class Logger {
      */
     public void error(String message) {
         String errorMessage = ERROR_PREFIX + message + "\n";
-        StaticRefs.getEngineFiles().logFile.writeLn(getTimestamp() + " " + ERROR_PREFIX + message);
-        System.err.print(errorMessage);
+        StaticRefs.getEngineFiles().logFile.writeLn(appendIfTest(message) + getTimestamp() + " " + ERROR_PREFIX + message);
+        System.err.print(appendIfTest(message) + errorMessage);
         if (logArea != null) {
-            logArea.append(errorMessage + getTimestamp() + "\n");
+            logArea.append(appendIfTest(message) + errorMessage + getTimestamp() + "\n");
             logArea.setCaretPosition(logArea.getDocument().getLength());
         }
     }
@@ -118,13 +132,17 @@ public class Logger {
                         : ""
                 );
         String errorMessage = message + "\n";
-        StaticRefs.getEngineFiles().logFile.writeLn("\n" + getTimestamp() + " " + message + "\n");
-        System.err.print(errorMessage);
+        StaticRefs.getEngineFiles().logFile.writeLn(appendIfTest(message) + "\n" + getTimestamp() + " " + message + "\n");
+        System.err.print(appendIfTest(message) + errorMessage);
         if (err instanceof J3DFatal && err.getCause() != null) {
             err.getCause().printStackTrace(System.err);
         }
         if (!(err instanceof J3DMild) && logArea != null) {
-            logArea.append(errorMessage + getTimestamp() + "\n");
+            logArea.append(appendIfTest(message) + errorMessage + getTimestamp() + "\n");
         }
+    }
+
+    public void testPrintln(String s) {
+        println("[TEST] " + s);
     }
 }

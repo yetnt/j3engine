@@ -111,7 +111,17 @@ This has a lot of things from the over a year of dev so like yeah ill briefly me
 * Removed unused background music from resources. Cluttering build
 * Change `jaiva` import to be of the released github version such as to allow JavaDoc to build and not the locally installed version.
 
-# v1.3.0 Grid2d
+# v1.3.0 Grid2d & Tests
+
+## Repo
+
+* Added:
+  * `CONTRIBUTING.md`
+  * `dcouments/Architecture.md`
+  * Github Issue Templates for feature requests and bugs
+  * GNU GPLv3 license
+
+## 1.3.0
 
 * Fix bug where curves could not be moved in point/tri mode
 * Change `ConversionProperties` to be `Conversion` and add `ConversionWithOffset` and an `Offset` class for converting between `ScreenPoint` and `CartesianPoint`
@@ -123,6 +133,29 @@ This has a lot of things from the over a year of dev so like yeah ill briefly me
   * Grid2dPanel now shows points which intersect the plane and allow clicking and using them like any point (if you click the Query button)
   * Grid2dPanel now has 9 Spinners for each component of the origin, v1 and v2 vectors respectively
   * Grid2dPanel correctly labels itself Grid2dPanel and not the history panel
-* Introduce QuadFunction
-* Introduce Colours utility for adding an alpha to colours and ReactivePoint in relation to Grid2dPanel
+* The following have since been moved to `com.yetnt.utils`
+  * Introduce QuadFunction
+  * Introduce Colours utility for adding an alpha to colours and ReactivePoint in relation to Grid2dPanel
 * Introduce REACTIVE_POINT_INVALIDATED and its own payload.
+* Begin Testing Framework work
+  * Add `J3DTest` to ping `StaticRefs`
+  * Update `Logger` to be aware of Testing context to allow lovely CLI output
+  * Added Tests for:
+    * Parsing utilities
+    * Copying `GObject` references
+    * Theme Updater
+* Fixed bug where, removing a `GPoint` from a copy list didnt actually guarantee
+ that it may or may not be made later
+* Abstracted `Executor`'s functional looking syntax into a generic `Artefact`
+interface
+  * This is also for future tests to make custom artefacts
+* Fixed bug where `CopyProperties` handled it's `InvalidCopyException`
+instead of passing it up the chain
+* Remove `PasswordHasher`. Idk how it survived this long when PAT has been long gone.
+* Change responsibility of `J3DPanel` running an `Artefact` to be in `EngineFrame`
+  * As a result `StaticRefs` no longer has `getArtefact` or `registerArtefact`
+* Added future capability to `Main` via `Main#test(Artefact)`
+* Removed `Parsing.removeCCol` in favour of `com.yetnt.utils.builder.AnsiColour.remove`
+* Removed `JarPath` in favour of `com.yetnt.io.JarPath`
+* Added public test flag in `StaticConfig` such that everything can be aware
+of the current testing environment.

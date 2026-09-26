@@ -70,7 +70,10 @@ public class CopyProperties {
      * @param original The {@link UUID} of the original {@link GObject} to look for.
      * @return The copied {@link GObject} if found, or {@code null} if no copy for the given original {@link UUID} exists.
      */
-    public GObject get(UUID original) {
+    public GObject get(UUID original) throws InvalidCopyException {
+        if (!exists(original)) throw new InvalidCopyException(
+                "Missing object dependency " + original + " which is not part of the copied selection"
+        ).code(101);
         return copies.stream()
                 .filter(c -> c.is(original))
                 .findAny()
@@ -138,7 +141,7 @@ public class CopyProperties {
      * @see #allowsSoftDependencies()
      */
     @SuppressWarnings("unchecked")
-    public <T extends CanCopy> T existsOrElse(UUID id, Supplier<T> supplier) {
+    public <T extends CanCopy> T existsOrElse(UUID id, Supplier<T> supplier) throws InvalidCopyException {
         if (exists(id))  {
             return (T)
                     copies.stream()
@@ -146,11 +149,9 @@ public class CopyProperties {
                             .findAny().get()
                             .copy();
         } else {
-            if (!softDependencies) StaticRefs.getErrs().handleThenThrow(
-                    new InvalidCopyException(
-                            "Missing object dependency " + id + " which is not part of the copied selection"
-                    ).code(101)
-            );
+            if (!softDependencies) throw new InvalidCopyException(
+                    "Missing object dependency " + id + " which is not part of the copied selection"
+            ).code(101);
             T t = supplier.get();
             add(id, (GObject) t);
             return t;

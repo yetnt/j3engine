@@ -222,7 +222,7 @@ public class GLine extends GObject implements HasParents<GTri>, IdempotentEventL
         return line;
     }
 
-    public static GLine getOrCreateCopy(CopyProperties copyProperties, GLine original) {
+    public static GLine getOrCreateCopy(CopyProperties copyProperties, GLine original) throws InvalidCopyException {
         // check if the line already exists
         if (copyProperties.exists(original.getId()))
             return (GLine) copyProperties.get(original.getId());

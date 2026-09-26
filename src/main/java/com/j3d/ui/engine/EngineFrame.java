@@ -4,9 +4,8 @@
  */
 package com.j3d.ui.engine;
 
-import com.j3d.Startup;
-import com.j3d.StaticRefs;
-import com.j3d.Executor;
+import com.j3d.*;
+import com.j3d.artefacts.Artefact;
 import com.j3d.engine.interact.cmd.commands.camera.orbit.OrbitCmd;
 import com.j3d.engine.interact.cmd.commands.camera.orbit.OrbitMouseOwner;
 import com.j3d.engine.interact.cmd.commands.transform.qtrans.QuickTranslateCmd;
@@ -26,7 +25,6 @@ import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.input.mouse.*;
 import com.j3d.engine.interact.selection.*;
-import com.j3d.StaticConfig;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.errors.J3DError;
 import com.j3d.gen.guide.GuideManager;
@@ -86,10 +84,9 @@ import com.yetnt.utils.builders.InlineHTML;
  */
 public class EngineFrame extends javax.swing.JFrame {
     /**
-     * Boolean flag to run the {@link Executor}. Once the executor has run this is immediately set
-     * to false.
+     * Boolean flag to run {@link FloatingPanel} instances only if the engine is in a "running" state
      */
-    public static boolean run = true;
+    private static boolean defer = true;
     /**
      * The default {@link MouseOwner}. being selection
      * @see MouseOwner
@@ -154,7 +151,7 @@ public class EngineFrame extends javax.swing.JFrame {
      * Initialises the entire engine in a clean state.
      */
     public EngineFrame() {
-        this(false, false);
+        this(null, false);
     }
 
     /**
@@ -165,7 +162,7 @@ public class EngineFrame extends javax.swing.JFrame {
      */
     public EngineFrame(File file) {
         // Call the other constructor, cuz it kinda does important stuff.
-        this(false, false);
+        this(null, false);
         this.setVisible(true);
 
         // read the file.
@@ -174,10 +171,9 @@ public class EngineFrame extends javax.swing.JFrame {
 
     /**
      * Constructor with a boolean flag to initialise the executor.
-     * @param runExecutor Whether to run the executor or not. If false, then the engine is initialised
-     *                    in a clean state.
+     * @param artifact The artefact to run
      */
-    public EngineFrame(boolean runExecutor, boolean showTutorial) {
+    public EngineFrame(Artefact artifact, boolean showTutorial) {
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
             SwingUtilities.updateComponentTreeUI(this); // 'this' refers to the frame
@@ -188,7 +184,7 @@ public class EngineFrame extends javax.swing.JFrame {
         buildContextMenu();
         initMouseOwners();
         initComponents();
-        complete(runExecutor);
+        complete(artifact);
         setCloseOperations();
         
         this.setVisible(true);
@@ -213,7 +209,7 @@ public class EngineFrame extends javax.swing.JFrame {
             StaticRefs.getMainFrame().revalidate();
             StaticRefs.getMainFrame().repaint();
         };
-        if (run) floats.add(r);
+        if (defer) floats.add(r);
         else r.run();
     }
 
@@ -250,10 +246,9 @@ public class EngineFrame extends javax.swing.JFrame {
      * Completes by manually initialising almost everything. I have no more words.
      * @implNote Usually i hate documenting code extensively. Code should be self-documenting.
      * However, this method is TOO LONG. I have to.
-     * @param runExecutor Boolean to run the executor. if false, it's basically running the engine in a
-     *                    new fresh state.
+     * @param artefact The artefact to run.
      */
-    public void complete(boolean runExecutor) {
+    public void complete(Artefact artefact) {
         // create the layered pane where all the panels will be layered on top of each other.
         JLayeredPane layeredPane = this.getLayeredPane();
         // initialise the menu bar offset
@@ -278,9 +273,7 @@ public class EngineFrame extends javax.swing.JFrame {
         // initialise the scene manager with the screen size.
         SceneManager sceneManager = new SceneManager(StaticConfig.screenSize);
         StaticRefs.registerSceneManager(sceneManager);
-        // If we can run the executor, initialise it.
-        if (runExecutor)
-            StaticRefs.registerExecutor(new Executor(sceneManager));
+
         // initialise the debug panel's components.
         StaticRefs.getDebugPanel().startStatisticsThread();
         // create and set the bounds for the hover JLabel's panel.
@@ -404,11 +397,21 @@ public class EngineFrame extends javax.swing.JFrame {
         // Initialise settings so it can fetch the user's stored settings if any exist.
         StaticRefs.getSettings();
 
+        // look at 0 , 0, 0 at the start
         StaticRefs.getCamera().lookAt(Vector3.ZERO);
 
+        // Tell macro utils it must start living
         StaticRefs.getMacroUtils();
 
+        // log.
         StaticRefs.getLog().uiPrintLn("EngineFrame completed building");
+
+        // allow floaters to lock in
+        defer = false;
+
+        // and finally.
+        if (artefact != null)
+            artefact.run();
     }
 
     public GuideManager getGuideManager() {

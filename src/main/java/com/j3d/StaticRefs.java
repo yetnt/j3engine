@@ -1,5 +1,6 @@
 package com.j3d;
 
+import com.j3d.artefacts.Artefact;
 import com.j3d.engine.Logger;
 import com.j3d.engine.interact.macros.MacroUtils;
 import com.j3d.engine.scene.SceneManager;
@@ -69,22 +70,6 @@ public abstract class StaticRefs {
      */
     public static void registerSceneManager(SceneManager instance) {
         sceneManager = instance;
-    }
-    /**
-     * The Executor Instance. A once off scene initialiser which populates the scene with some test
-     * triangles and other stuff. Only via {@link EngineFrame#EngineFrame(boolean, boolean)} (set to {@code true}).
-     * This is also initialised by {@link EngineFrame} but then only called once and never again.
-     */
-    private static Executor executor = null;
-    public static Executor getExecutor() {
-        return executor;
-    }
-    /**
-     * @implSpec This should only be called by {@link EngineFrame}
-     * @param instance The instance.
-     */
-    public static void registerExecutor(Executor instance) {
-        executor = instance;
     }
 
     /**
@@ -363,14 +348,21 @@ public abstract class StaticRefs {
         StaticRefs.getSettings();
     }
 
-    public static void clear() {
+    public static void none(boolean test, String methodName) {
+        StaticRefs.none();
+        if (test) {
+            StaticConfig.test = true;
+            StaticRefs.getLog().testPrintln("Test " + methodName + " started. Logger Output:");
+        }
+    }
+
+    public static void clear(boolean clearLogger) {
         StatisticsThread.clearAll();
         if (settings != null)
             settings.clearState();
         
         // clear engine frame set stuff.
         sceneManager    = null;
-        executor        = null;
         mainFrame       = null;
         commandParser   = null;
         mainPanel       = null;
@@ -390,6 +382,14 @@ public abstract class StaticRefs {
         commandManager = null;
 
         log.println("[ST-REFS] Cleared all static references.");
+        if (clearLogger) clearLogger();
+    }
+
+    public static void clear() {
+        clear(true);
+    }
+
+    public static void clearLogger() {
         log = null;
     }
 }

@@ -21,7 +21,7 @@ import com.j3d.engine.react.events.EventListener;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.ui.SafeJLabel;
-import com.jaiva.tokenizer.tokens.Token;
+import com.j3d.utility.Parsing;
 import com.yetnt.utils.tuple.SamePair;
 import com.yetnt.utils.tuple.Triple;
 
@@ -283,8 +283,8 @@ public class MacroRunner implements EventListener {
         String yprS = ypr.substring(1,  ypr.length() - 1).trim();
 
         // already did this dumbass shit in Jaiva
-        Triple<String> numsXyz = Triple.from(Token.splitByTopLevelComma(xyzS));
-        Triple<String> numsYpr = Triple.from(Token.splitByTopLevelComma(yprS));
+        Triple<String> numsXyz = Triple.from(Parsing.split(xyzS, ','));
+        Triple<String> numsYpr = Triple.from(Parsing.split(yprS, ','));
 
         Vector3  position = numsXyz.map(Double::parseDouble).mapTo(Vector3::new);
         Rotation rotation = numsYpr.map(Double::parseDouble).mapTo(Rotation::new);

@@ -13,7 +13,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import static com.j3d.StaticConfig.jMenuBarOffsetY;
-import static com.j3d.ui.engine.EngineFrame.*;
 import static com.j3d.ui.engine.EngineFrame.selectionArea;
 
 /**
@@ -58,12 +57,6 @@ public class J3DPanel extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        if (run) {
-//            sceneManager.axis((Graphics2D) g, camera);
-            if (StaticRefs.getExecutor() != null)
-                StaticRefs.getExecutor().run();
-            run = false;
-        }
         StaticRefs.getSceneManager().draw((Graphics2D) g);
         // draw selection area ontop of all render things.
         if (selectionArea[0] != null && selectionArea[1] != null)

@@ -17,11 +17,19 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.9.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <!-- Personal esoteric programming language parsing and runtime, so it can be embedded. -->
             <groupId>com.github.yetnt</groupId>
             <artifactId>jaiva</artifactId>
             <version>5.0.2</version>
         </dependency>
         <dependency>
+            <!-- Personal shared utility tuples and functions between this and jaiva -->
             <groupId>com.github.yetnt</groupId>
             <artifactId>ytils</artifactId>
             <version>1.0.0</version>
