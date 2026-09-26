@@ -17,6 +17,12 @@ project development and then the
 with the features being enar identical with only
 a few minor differences)
 
+## Links
+
+- [Architecture](documents/Architecture.md)
+- [Building J3Engine from scratch](documents/Building.md)
+- [J3Engine API site (Generated from Javadoc)](https://yetnt.github.io/j3engine/)
+
 ## Installation & Run
 
 Man just run the `.jar` or `.msi` man with like Java 21 and you good.
