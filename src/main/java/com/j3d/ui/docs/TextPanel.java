@@ -8,7 +8,7 @@ import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.gen.docs.api.ImageTag;
 import com.j3d.gen.docs.reader.tokens.wrappers.TWCodeBlock;
-import com.j3d.storage.JarPath;
+import com.yetnt.utils.io.JarPath;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.ui.theme.updator.Locator;
 import com.j3d.utility.ClipboardUtil;

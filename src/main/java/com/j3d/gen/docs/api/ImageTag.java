@@ -6,7 +6,7 @@ import com.j3d.gen.docs.DocsGenException;
 import com.j3d.gen.docs.ImgGenException;
 import com.j3d.gen.docs.reader.tokens.wrappers.HTMLTags;
 import com.j3d.gen.docs.reader.tokens.wrappers.TWhtmlTag;
-import com.j3d.storage.JarPath;
+import com.yetnt.utils.io.JarPath;
 
 import javax.swing.*;
 import java.io.File;
@@ -142,6 +142,7 @@ public class ImageTag {
 
     public ImageIcon read() throws IOException {
         return getImagePath().readAs(
+                ImageTag.class,
                 (i) -> {
                     try {
                         return new ImageIcon(i.readAllBytes());

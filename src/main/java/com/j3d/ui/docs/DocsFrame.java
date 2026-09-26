@@ -11,7 +11,7 @@ import com.j3d.gen.docs.api.ImageTag;
 import com.j3d.gen.docs.reader.*;
 import com.j3d.gen.docs.reader.tokens.*;
 import com.j3d.gen.docs.reader.tokens.wrappers.*;
-import com.j3d.storage.JarPath;
+import com.yetnt.utils.io.JarPath;
 import com.j3d.ui.theme.swing.J3DScrollBarUI;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.ui.theme.swing.J3DTreeCellRenderer;

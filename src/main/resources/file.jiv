@@ -1,26 +1,39 @@
-tsea "j3d-core"!
+@ jaiva script to just query the engine
 
-axis()!
+tsea "jaiva/debug"!
+tsea "jaiva/j3d"!
+tsea "jaiva/j3d/objects"!
+tsea "jaiva/j3d/objects/getters"!
 
-point(-1, 0)!
-point(0, 0)!
-point(1, 0)!
+maak triangle <- getCallerValue()! @ random GObject from command palette input
+@ if its not a triangle the next call will error
 
-point(-1, -1)!
-point(0, -1)!
-point(1, -1)!
+if (triangle~ = 0) ->
+    cima <== "No input given"!
+<~
 
-point(-1, 1)!
-point(0, 1)!
-point(1, 1)!
+maak pivot <- get_tri_pivot(triangle)!
 
-point(0.5, 0.5)!
+maak colour <- get_tri_colour( triangle)!
 
-line(aOf(-200, 200), aOf(200, -200))!
-line(aOf(-200, -200), aOf(200, 200))!
+maak lineA <- get_tri_lineA(triangle)!
 
-draw()!
+maak windingPointB <- get_tri_windingB(triangle)!
 
-line(aOf(-40, 20), aOf(21, -430))!
+maak uuid <- get_tri_id( triangle )!
 
-draw()!
+khuluma( "Triangle properties" )!
+khuluma( triangle )!
+khuluma( "Triangle pivot" )!
+khuluma( pivot )!
+khuluma( "Triangle pivot (Sum of the properties multiplied by 10)" )!
+khuluma( get_vector3_asFunc(pivot)(f~(x,y,z) : (x+y+z))*10 )!
+khuluma( "Colour of tri" )!
+khuluma( colour )!
+khuluma( "Line A" )!
+khuluma( lineA )!
+khuluma( "winding point b")!
+khuluma( windingPointB )!
+khuluma( "Triangle uuid" )!
+khuluma( uuid )!
+khuluma( get_uuid_value(uuid) )!

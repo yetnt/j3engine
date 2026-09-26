@@ -4,7 +4,7 @@ import com.j3d.gen.docs.reader.tokens.TLink;
 import com.j3d.gen.docs.reader.tokens.TText;
 import com.j3d.gen.docs.reader.tokens.TWrapper;
 import com.j3d.gen.docs.reader.tokens.wrappers.*;
-import com.j3d.storage.JarPath;
+import com.yetnt.utils.io.JarPath;
 import com.j3d.ui.docs.DocsFrame;
 import com.j3d.utility.Parsing;
 
@@ -53,7 +53,7 @@ public class J3DocsReader {
 
         ArrayList<TWrapper> wrappers;
         try {
-            wrappers = file.readAs((i) -> {
+            wrappers = file.readAs(J3DocsReader.class, (i) -> {
                 Scanner scanner = new Scanner(i);
                 return read(scanner);
             });

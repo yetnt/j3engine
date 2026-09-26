@@ -8,7 +8,7 @@ import com.j3d.StaticRefs;
 import com.j3d.gen.docs.DocsGenException;
 import com.j3d.gen.docs.Documentation;
 import com.j3d.gen.docs.reader.tokens.TLink;
-import com.j3d.storage.JarPath;
+import com.yetnt.utils.io.JarPath;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.utility.Parsing;
 import com.yetnt.utils.builders.InlineHTML;
