@@ -33,7 +33,7 @@
             <!-- Personal esoteric programming language parsing and runtime, so it can be embedded. -->
             <groupId>com.github.yetnt.jaiva</groupId>
             <artifactId>core</artifactId>
-            <version>6.0.0-beta.1</version> <!-- Alpha version introduced better JBundler handling -->
+            <version>6.0.0-beta.2</version> <!-- Alpha version introduced better JBundler handling -->
         </dependency>
 <!--        <dependency>-->
 <!--            &lt;!&ndash; TODO: Remove, Local Instlalaiton &ndash;&gt;-->
@@ -63,7 +63,7 @@
                 <plugin>
                     <groupId>com.github.yetnt.jaiva</groupId>
                     <artifactId>jaiva-libjson-plugin</artifactId>
-                    <version>6.0.0-beta.1</version>
+                    <version>6.0.0-beta.2</version>
                     <executions>
                         <execution>
                             <goals><goal>generate-lib-json</goal></goals>
