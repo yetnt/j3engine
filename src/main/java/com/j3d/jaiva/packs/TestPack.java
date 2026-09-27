@@ -16,6 +16,7 @@ import com.jaiva.interpreter.libBuilders.func.FunctionBuilder;
 import com.jaiva.interpreter.libBuilders.func.arg.AArgument;
 import com.jaiva.interpreter.libs.BaseLibrary;
 import com.jaiva.interpreter.libs.LibraryType;
+import com.jaiva.interpreter.libs.annotation.PublicLibrary;
 import com.jaiva.interpreter.runtime.IConfig;
 import com.jaiva.interpreter.symbol.BaseFunction;
 import com.jaiva.tokenizer.tokens.Token;
@@ -24,10 +25,11 @@ import com.jaiva.tokenizer.tokens.specific.TFuncCall;
 import java.util.ArrayList;
 import java.util.UUID;
 
+@PublicLibrary(path = "j3d")
 public class TestPack extends BaseLibrary {
-    public static String path = "j3d";
+
     public TestPack() {
-        super(LibraryType.LIB, "j3d");
+        super();
 
         vfs.put("echo", new FEcho());
         vfs.put("find", new FFind());

@@ -24,10 +24,16 @@
         </dependency>
         <dependency>
             <!-- Personal esoteric programming language parsing and runtime, so it can be embedded. -->
-            <groupId>com.github.yetnt</groupId>
-            <artifactId>jaiva</artifactId>
-            <version>5.1.0-alpha.0</version> <!-- Alpha version introduced better JBundler handling -->
+            <groupId>com.github.yetnt.jaiva</groupId>
+            <artifactId>core</artifactId>
+            <version>6.0.0-alpha.0</version> <!-- Alpha version introduced better JBundler handling -->
         </dependency>
+<!--        <dependency>-->
+<!--            &lt;!&ndash; TODO: Remove, Local Instlalaiton &ndash;&gt;-->
+<!--            <groupId>com.jaiva</groupId>-->
+<!--            <artifactId>core</artifactId>-->
+<!--            <version>6.0.0-alpha.0</version>-->
+<!--        </dependency>-->
         <dependency>
             <!-- Personal shared utility tuples and functions between this and jaiva -->
             <groupId>com.github.yetnt</groupId>
@@ -46,6 +52,20 @@
     <build>
 
         <plugins>
+
+                <plugin>
+                    <groupId>com.github.yetnt.jaiva</groupId>
+                    <artifactId>jaiva-libjson-plugin</artifactId>
+                    <version>6.0.0-alpha.0</version>
+                    <executions>
+                        <execution>
+                            <goals><goal>generate-lib-json</goal></goals>
+                            <configuration>
+                                <basePackage>com.j3d.jaiva.packs</basePackage>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

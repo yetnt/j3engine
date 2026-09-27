@@ -9,7 +9,7 @@ import com.jaiva.tokenizer.jdoc.JDoc;
 public class LineGetters extends BaseLibrary {
 
     public LineGetters() {
-        super(LibraryType.CONTAINER);
+        super();
 
         GettersPack.putAliases(
                 vfs, "line",

@@ -23,7 +23,7 @@ import java.util.List;
 public class Vector3Getters extends BaseLibrary {
 
     public Vector3Getters() {
-        super(LibraryType.CONTAINER);
+        super();
 
         TriFunction<GettersPack.CallProperties, EngineObject, String, Object> g = (cp, eo, str) -> {
             Vector3 v = Vector3.fromObject(cp, eo);

@@ -25,7 +25,7 @@ import java.util.List;
 public class ColourGetters extends BaseLibrary {
 
     public ColourGetters() {
-        super(LibraryType.CONTAINER);
+        super();
 
         TriFunction<GettersPack.CallProperties, EngineObject, String, Object> g = (cp, eo, str) -> {
             Color v = TypeConverter.colorFromObject(cp, eo);

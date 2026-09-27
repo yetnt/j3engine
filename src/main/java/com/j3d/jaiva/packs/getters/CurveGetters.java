@@ -9,7 +9,7 @@ import com.jaiva.tokenizer.jdoc.JDoc;
 public class CurveGetters extends BaseLibrary {
 
     public CurveGetters() {
-        super(LibraryType.CONTAINER);
+        super();
 
         GettersPack.putAliases(
                 vfs, "curve",

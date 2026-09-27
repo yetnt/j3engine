@@ -12,6 +12,7 @@ import com.jaiva.interpreter.libBuilders.func.*;
 import com.jaiva.interpreter.libBuilders.func.arg.AArgument;
 import com.jaiva.interpreter.libs.BaseLibrary;
 import com.jaiva.interpreter.libs.LibraryType;
+import com.jaiva.interpreter.libs.annotation.PublicLibrary;
 import com.jaiva.interpreter.runtime.IConfig;
 import com.jaiva.interpreter.symbol.BaseFunction;
 import com.jaiva.tokenizer.jdoc.JDoc;
@@ -26,6 +27,7 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+@PublicLibrary(path = "j3d/objects/getters")
 public class GettersPack extends BaseLibrary {
 
     @FunctionalInterface
@@ -50,9 +52,9 @@ public class GettersPack extends BaseLibrary {
         if (obj == null) return Token.voidValue(t.call.lineNumber);
         return TypeConverter.toJaivaReadable(obj);
     };
-    public static String path = "j3d/objects/getters";
+
     public GettersPack() {
-        super(LibraryType.LIB, "j3d/objects/getters");
+        super();
 
         vfs.putAll(new TriGetters().vfs); // adds other tri getters like winding, legs and double-sided proper.
         vfs.putAll(new CurveGetters().vfs); // curve getters

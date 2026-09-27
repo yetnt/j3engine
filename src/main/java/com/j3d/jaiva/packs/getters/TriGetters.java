@@ -8,7 +8,7 @@ import com.jaiva.tokenizer.jdoc.JDoc;
 public class TriGetters extends BaseLibrary {
 
     public TriGetters() {
-        super(LibraryType.CONTAINER);
+        super();
 
         GettersPack.putAliases(
                 vfs, "tri",
