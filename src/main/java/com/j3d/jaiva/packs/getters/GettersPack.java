@@ -15,6 +15,7 @@ import com.jaiva.interpreter.libs.LibraryType;
 import com.jaiva.interpreter.libs.annotation.PublicLibrary;
 import com.jaiva.interpreter.runtime.IConfig;
 import com.jaiva.interpreter.symbol.BaseFunction;
+import com.jaiva.interpreter.symbol.Symbol;
 import com.jaiva.tokenizer.jdoc.JDoc;
 import com.jaiva.tokenizer.jdoc.JDocBuilder;
 import com.jaiva.tokenizer.tokens.Token;
@@ -23,8 +24,11 @@ import com.yetnt.utils.functional.ThrowableTriFunction;
 import com.yetnt.utils.functional.TriFunction;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 @PublicLibrary(path = "j3d/objects/getters")
@@ -56,11 +60,11 @@ public class GettersPack extends BaseLibrary {
     public GettersPack() {
         super();
 
-        vfs.putAll(new TriGetters().vfs); // adds other tri getters like winding, legs and double-sided proper.
-        vfs.putAll(new CurveGetters().vfs); // curve getters
-        vfs.putAll(new LineGetters().vfs); // line getters
-        vfs.putAll(new Vector3Getters().vfs);
-        vfs.putAll(new ColourGetters().vfs);
+        add(new TriGetters()); // adds other tri getters like winding, legs and double-sided proper.
+        add(new CurveGetters()); // curve getters
+        add(new LineGetters()); // line getters
+        add(new Vector3Getters());
+        add(new ColourGetters());
 
         GObjectRegistry.forEach(
                 (object) -> {
@@ -82,9 +86,9 @@ public class GettersPack extends BaseLibrary {
                                             khuluma(%s)!
                                             """, s1, namespace, s3, s1)
                                     );
-                    put(vfs, namespace, "id", function.apply("id", "[UUID]", "id"), GObject.EngineObjectUtils::getUuid);
-                    put(vfs, namespace, "pivot", function.apply("pivot", "[Vector3]", "pivot"), GObject.EngineObjectUtils::getPivot);
-                    putAliases(vfs, namespace,
+                    put(this::add, namespace, "id", function.apply("id", "[UUID]", "id"), GObject.EngineObjectUtils::getUuid);
+                    put(this::add, namespace, "pivot", function.apply("pivot", "[Vector3]", "pivot"), GObject.EngineObjectUtils::getPivot);
+                    putAliases(this::addWithAliases, namespace,
                             function.apply("color", "[Colour]", "color"),
                             GObject.EngineObjectUtils::getColour,
                             "color", "colour"
@@ -93,7 +97,7 @@ public class GettersPack extends BaseLibrary {
         );
 
         putAliases(
-                vfs, "uuid",
+                this::addWithAliases, "uuid",
                 JDoc.builder()
                         .addDesc("Retrieves the value of the UUID as a string"),
                 (cp, eo) -> {
@@ -106,18 +110,21 @@ public class GettersPack extends BaseLibrary {
         );
     }
 
-    public static void putAliases(Vfs vfs, String namespace, JDocBuilder jDocBuilder, Getter getter, String ...labels) {
+    public static void putAliases(BiConsumer<Symbol, String[]> addConsumer, String namespace, JDocBuilder jDocBuilder, Getter getter, String ...labels) {
         String name = "get_" + namespace + "_" + labels[0];
         BaseFunction bf = of(name, jDocBuilder, getter);
-        for (String l : labels) {
-            vfs.put("get_" + namespace + "_"  + l, bf);
+        String[] newLabels =  new String[labels.length];
+        for (int i = 0; i < labels.length; i++) {
+            String l = labels[i];
+            newLabels[i] = "get_" + namespace + "_" + l;
         }
+        addConsumer.accept(bf, newLabels);
     }
 
-    public static void put(Vfs vfs, String namespace, String label, JDocBuilder jDocBuilder, Getter getter) {
+    public static void put(Consumer<Symbol> addConsumer, String namespace, String label, JDocBuilder jDocBuilder, Getter getter) {
         String name = "get_" + namespace + "_" + label;
         BaseFunction bf = of(name, jDocBuilder, getter);
-        vfs.put(name, bf);
+        addConsumer.accept(bf);
     }
 
     public static BaseFunction of(String name, JDocBuilder docs, Getter getter) {

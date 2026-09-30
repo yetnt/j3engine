@@ -1,1 +1,2366 @@
-{"version":"5.1.0-alpha.0","tokens":[{"type": "TFunction","name": "F~get_tri_windingC","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the third point of the triangle's winding"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_tri_windingB","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the second point of the triangle's winding"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_colour_blue","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Returns the Blue property of the given Colour object"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_tri_windingA","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the first point of the triangle's winding"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_colour_alpha","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Returns the Blue property of the given Colour object"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_tri_color","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the color specified by the input GObject (tri)"}, {"tagType":"returns","description":"The [Colour] structured array"}, {"tagType":"from","version":"1.0.0"}, {"tagType":"example","codeblock":["tsea \"j3d/objects/getters\"!","","@ If (object) holds the structured array","","maak object!","maak color <- get_tri_color(object);","","khuluma(color)!"]}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_colour_alpha","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Returns the Blue property of the given Colour object"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_tri_windingC","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the third point of the triangle's winding"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_uuid_string","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the value of the UUID as a string"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_line_color","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the color specified by the input GObject (line)"}, {"tagType":"returns","description":"The [Colour] structured array"}, {"tagType":"from","version":"1.0.0"}, {"tagType":"example","codeblock":["tsea \"j3d/objects/getters\"!","","@ If (object) holds the structured array","","maak object!","maak color <- get_line_color(object);","","khuluma(color)!"]}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_curve_control","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the control point of the curve"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_tri_doubleSided","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the double sided property"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_colour_green","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Returns the Green property of the given Colour object"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_colour_func","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"v"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_vector3_func","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"v"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_colour_blue","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Returns the Blue property of the given Colour object"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_vector3_y","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Returns the Y property of the given Vector3 object"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_line_pivot","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the pivot specified by the input GObject (line)"}, {"tagType":"returns","description":"The [Vector3] structured array"}, {"tagType":"from","version":"1.0.0"}, {"tagType":"example","codeblock":["tsea \"j3d/objects/getters\"!","","@ If (object) holds the structured array","","maak object!","maak pivot <- get_line_pivot(object);","","khuluma(pivot)!"]}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_curve_amount","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrives the amount of lines tht this curve will decompose into."}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_curve_pivot","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the pivot specified by the input GObject (curve)"}, {"tagType":"returns","description":"The [Vector3] structured array"}, {"tagType":"from","version":"1.0.0"}, {"tagType":"example","codeblock":["tsea \"j3d/objects/getters\"!","","@ If (object) holds the structured array","","maak object!","maak pivot <- get_curve_pivot(object);","","khuluma(pivot)!"]}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_vector3_func","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"v"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_tri_legC","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the third leg of the triangle"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_tri_legA","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the first leg of the triangle"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_tri_legB","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the second leg of the triangle"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_tri_windingA","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the first point of the triangle's winding"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_curve_color","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the color specified by the input GObject (curve)"}, {"tagType":"returns","description":"The [Colour] structured array"}, {"tagType":"from","version":"1.0.0"}, {"tagType":"example","codeblock":["tsea \"j3d/objects/getters\"!","","@ If (object) holds the structured array","","maak object!","maak color <- get_curve_color(object);","","khuluma(color)!"]}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_tri_windingB","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the second point of the triangle's winding"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_tri_windingC","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the third point of the triangle's winding"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_line_start","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the start point of the line"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_colour_func","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"v"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_line_end","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the control point of the line"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_tri_windingA","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the first point of the triangle's winding"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_curve_control","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the control point of the curve"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_curve_start","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the start point of the curve"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_uuid_string","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the value of the UUID as a string"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_curve_end","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the end point of the curve"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_line_id","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the id specified by the input GObject (line)"}, {"tagType":"returns","description":"The [UUID] structured array"}, {"tagType":"from","version":"1.0.0"}, {"tagType":"example","codeblock":["tsea \"j3d/objects/getters\"!","","@ If (object) holds the structured array","","maak object!","maak id <- get_line_id(object);","","khuluma(id)!"]}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_colour_green","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Returns the Green property of the given Colour object"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_curve_end","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the end point of the curve"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_curve_id","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the id specified by the input GObject (curve)"}, {"tagType":"returns","description":"The [UUID] structured array"}, {"tagType":"from","version":"1.0.0"}, {"tagType":"example","codeblock":["tsea \"j3d/objects/getters\"!","","@ If (object) holds the structured array","","maak object!","maak id <- get_curve_id(object);","","khuluma(id)!"]}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_vector3_func","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"v"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_line_color","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the color specified by the input GObject (line)"}, {"tagType":"returns","description":"The [Colour] structured array"}, {"tagType":"from","version":"1.0.0"}, {"tagType":"example","codeblock":["tsea \"j3d/objects/getters\"!","","@ If (object) holds the structured array","","maak object!","maak color <- get_line_color(object);","","khuluma(color)!"]}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_tri_legB","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the second leg of the triangle"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_tri_id","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the id specified by the input GObject (tri)"}, {"tagType":"returns","description":"The [UUID] structured array"}, {"tagType":"from","version":"1.0.0"}, {"tagType":"example","codeblock":["tsea \"j3d/objects/getters\"!","","@ If (object) holds the structured array","","maak object!","maak id <- get_tri_id(object);","","khuluma(id)!"]}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_tri_legB","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the second leg of the triangle"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_curve_color","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the color specified by the input GObject (curve)"}, {"tagType":"returns","description":"The [Colour] structured array"}, {"tagType":"from","version":"1.0.0"}, {"tagType":"example","codeblock":["tsea \"j3d/objects/getters\"!","","@ If (object) holds the structured array","","maak object!","maak color <- get_curve_color(object);","","khuluma(color)!"]}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_tri_legA","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the first leg of the triangle"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_uuid_string","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the value of the UUID as a string"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_tri_legC","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the third leg of the triangle"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_vector3_z","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Returns the Z property of the given Vector3 object"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_point_id","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the id specified by the input GObject (point)"}, {"tagType":"returns","description":"The [UUID] structured array"}, {"tagType":"from","version":"1.0.0"}, {"tagType":"example","codeblock":["tsea \"j3d/objects/getters\"!","","@ If (object) holds the structured array","","maak object!","maak id <- get_point_id(object);","","khuluma(id)!"]}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_point_color","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the color specified by the input GObject (point)"}, {"tagType":"returns","description":"The [Colour] structured array"}, {"tagType":"from","version":"1.0.0"}, {"tagType":"example","codeblock":["tsea \"j3d/objects/getters\"!","","@ If (object) holds the structured array","","maak object!","maak color <- get_point_color(object);","","khuluma(color)!"]}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_tri_pivot","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the pivot specified by the input GObject (tri)"}, {"tagType":"returns","description":"The [Vector3] structured array"}, {"tagType":"from","version":"1.0.0"}, {"tagType":"example","codeblock":["tsea \"j3d/objects/getters\"!","","@ If (object) holds the structured array","","maak object!","maak pivot <- get_tri_pivot(object);","","khuluma(pivot)!"]}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_vector3_x","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Returns the X property of the given Vector3 object"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_vector3_y","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Returns the Y property of the given Vector3 object"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_vector3_x","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Returns the X property of the given Vector3 object"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_colour_func","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"v"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_vector3_z","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Returns the Z property of the given Vector3 object"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_colour_func","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"v"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_line_end","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the control point of the line"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_point_color","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the color specified by the input GObject (point)"}, {"tagType":"returns","description":"The [Colour] structured array"}, {"tagType":"from","version":"1.0.0"}, {"tagType":"example","codeblock":["tsea \"j3d/objects/getters\"!","","@ If (object) holds the structured array","","maak object!","maak color <- get_point_color(object);","","khuluma(color)!"]}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_tri_legC","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the third leg of the triangle"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_tri_doubleSided","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the double sided property"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_colour_red","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Returns the Red property of the given Colour object"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_tri_legA","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the first leg of the triangle"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_colour_red","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Returns the Red property of the given Colour object"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_tri_windingB","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the second point of the triangle's winding"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_line_start","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the start point of the line"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_vector3_func","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"v"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_vector3_y","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Returns the Y property of the given Vector3 object"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_tri_color","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the color specified by the input GObject (tri)"}, {"tagType":"returns","description":"The [Colour] structured array"}, {"tagType":"from","version":"1.0.0"}, {"tagType":"example","codeblock":["tsea \"j3d/objects/getters\"!","","@ If (object) holds the structured array","","maak object!","maak color <- get_tri_color(object);","","khuluma(color)!"]}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_vector3_x","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Returns the X property of the given Vector3 object"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_point_pivot","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the pivot specified by the input GObject (point)"}, {"tagType":"returns","description":"The [Vector3] structured array"}, {"tagType":"from","version":"1.0.0"}, {"tagType":"example","codeblock":["tsea \"j3d/objects/getters\"!","","@ If (object) holds the structured array","","maak object!","maak pivot <- get_point_pivot(object);","","khuluma(pivot)!"]}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_curve_start","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Retrieves the start point of the curve"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null},{"type": "TFunction","name": "F~get_vector3_z","exportSymbol": false,"toolTip": [{"tagType":"GENERIC","description":"Returns the Z property of the given Vector3 object"}, {"tagType":"parameter","description":"The array to extract the information from","var":"array","type":"[]","optional":false}],"lineNumber": -1,"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}"args": ["array"],"isArgOptional": [false],"varArgs": false,"body": null}]}
+{
+  "version": "6.0.0-beta.6",
+  "tokens": [
+    {
+      "type": "TFunction",
+      "name": "F~get_tri_legA",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the first leg of the triangle"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_tri_firstLeg",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the first leg of the triangle"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_tri_lineA",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the first leg of the triangle"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_tri_legB",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the second leg of the triangle"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_tri_secondLeg",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the second leg of the triangle"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_tri_lineB",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the second leg of the triangle"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_tri_legC",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the third leg of the triangle"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_tri_thirdLeg",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the third leg of the triangle"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_tri_lineC",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the third leg of the triangle"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_tri_windingA",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the first point of the triangle's winding"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_tri_firstPoint",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the first point of the triangle's winding"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_tri_pointA",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the first point of the triangle's winding"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_tri_windingB",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the second point of the triangle's winding"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_tri_secondPoint",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the second point of the triangle's winding"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_tri_pointB",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the second point of the triangle's winding"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_tri_windingC",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the third point of the triangle's winding"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_tri_thirdPoint",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the third point of the triangle's winding"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_tri_pointC",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the third point of the triangle's winding"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_tri_doubleSided",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the double sided property"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_tri_isDoubleSided",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the double sided property"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_curve_start",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the start point of the curve"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_curve_pointA",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the start point of the curve"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_curve_control",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the control point of the curve"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_curve_pointB",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the control point of the curve"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_curve_end",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the end point of the curve"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_curve_pointC",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the end point of the curve"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_curve_amount",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrives the amount of lines tht this curve will decompose into."
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_line_start",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the start point of the line"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_line_pointA",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the start point of the line"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_line_end",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the control point of the line"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_line_pointB",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the control point of the line"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_vector3_x",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Returns the X property of the given Vector3 object"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_vector3_X",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Returns the X property of the given Vector3 object"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_vector3_left",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Returns the X property of the given Vector3 object"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_vector3_y",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Returns the Y property of the given Vector3 object"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_vector3_Y",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Returns the Y property of the given Vector3 object"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_vector3_up",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Returns the Y property of the given Vector3 object"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_vector3_z",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Returns the Z property of the given Vector3 object"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_vector3_Z",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Returns the Z property of the given Vector3 object"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_vector3_forward",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Returns the Z property of the given Vector3 object"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_vector3_func",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "v"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_vector3_asFunc",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "v"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_vector3_f",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "v"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_vector3_F",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "v"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_colour_red",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Returns the Red property of the given Colour object"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_colour_r",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Returns the Red property of the given Colour object"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_colour_green",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Returns the Green property of the given Colour object"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_colour_g",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Returns the Green property of the given Colour object"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_colour_blue",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Returns the Blue property of the given Colour object"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_colour_b",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Returns the Blue property of the given Colour object"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_colour_alpha",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Returns the Blue property of the given Colour object"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_colour_a",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Returns the Blue property of the given Colour object"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_colour_func",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "v"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_colour_asFunc",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "v"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_colour_f",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "v"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_colour_F",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "v"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_point_id",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the id specified by the input GObject (point)"
+        },
+        {
+          "tagType": "returns",
+          "description": "The [UUID] structured array"
+        },
+        {
+          "tagType": "from",
+          "version": "1.0.0"
+        },
+        {
+          "tagType": "example",
+          "codeblock": [
+            "tsea \"j3d/objects/getters\"!",
+            "",
+            "@ If (object) holds the structured array",
+            "",
+            "maak object!",
+            "maak id <- get_point_id(object);",
+            "",
+            "khuluma(id)!"
+          ]
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_point_pivot",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the pivot specified by the input GObject (point)"
+        },
+        {
+          "tagType": "returns",
+          "description": "The [Vector3] structured array"
+        },
+        {
+          "tagType": "from",
+          "version": "1.0.0"
+        },
+        {
+          "tagType": "example",
+          "codeblock": [
+            "tsea \"j3d/objects/getters\"!",
+            "",
+            "@ If (object) holds the structured array",
+            "",
+            "maak object!",
+            "maak pivot <- get_point_pivot(object);",
+            "",
+            "khuluma(pivot)!"
+          ]
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_point_color",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the color specified by the input GObject (point)"
+        },
+        {
+          "tagType": "returns",
+          "description": "The [Colour] structured array"
+        },
+        {
+          "tagType": "from",
+          "version": "1.0.0"
+        },
+        {
+          "tagType": "example",
+          "codeblock": [
+            "tsea \"j3d/objects/getters\"!",
+            "",
+            "@ If (object) holds the structured array",
+            "",
+            "maak object!",
+            "maak color <- get_point_color(object);",
+            "",
+            "khuluma(color)!"
+          ]
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_point_colour",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the color specified by the input GObject (point)"
+        },
+        {
+          "tagType": "returns",
+          "description": "The [Colour] structured array"
+        },
+        {
+          "tagType": "from",
+          "version": "1.0.0"
+        },
+        {
+          "tagType": "example",
+          "codeblock": [
+            "tsea \"j3d/objects/getters\"!",
+            "",
+            "@ If (object) holds the structured array",
+            "",
+            "maak object!",
+            "maak color <- get_point_color(object);",
+            "",
+            "khuluma(color)!"
+          ]
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_line_id",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the id specified by the input GObject (line)"
+        },
+        {
+          "tagType": "returns",
+          "description": "The [UUID] structured array"
+        },
+        {
+          "tagType": "from",
+          "version": "1.0.0"
+        },
+        {
+          "tagType": "example",
+          "codeblock": [
+            "tsea \"j3d/objects/getters\"!",
+            "",
+            "@ If (object) holds the structured array",
+            "",
+            "maak object!",
+            "maak id <- get_line_id(object);",
+            "",
+            "khuluma(id)!"
+          ]
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_line_pivot",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the pivot specified by the input GObject (line)"
+        },
+        {
+          "tagType": "returns",
+          "description": "The [Vector3] structured array"
+        },
+        {
+          "tagType": "from",
+          "version": "1.0.0"
+        },
+        {
+          "tagType": "example",
+          "codeblock": [
+            "tsea \"j3d/objects/getters\"!",
+            "",
+            "@ If (object) holds the structured array",
+            "",
+            "maak object!",
+            "maak pivot <- get_line_pivot(object);",
+            "",
+            "khuluma(pivot)!"
+          ]
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_line_color",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the color specified by the input GObject (line)"
+        },
+        {
+          "tagType": "returns",
+          "description": "The [Colour] structured array"
+        },
+        {
+          "tagType": "from",
+          "version": "1.0.0"
+        },
+        {
+          "tagType": "example",
+          "codeblock": [
+            "tsea \"j3d/objects/getters\"!",
+            "",
+            "@ If (object) holds the structured array",
+            "",
+            "maak object!",
+            "maak color <- get_line_color(object);",
+            "",
+            "khuluma(color)!"
+          ]
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_line_colour",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the color specified by the input GObject (line)"
+        },
+        {
+          "tagType": "returns",
+          "description": "The [Colour] structured array"
+        },
+        {
+          "tagType": "from",
+          "version": "1.0.0"
+        },
+        {
+          "tagType": "example",
+          "codeblock": [
+            "tsea \"j3d/objects/getters\"!",
+            "",
+            "@ If (object) holds the structured array",
+            "",
+            "maak object!",
+            "maak color <- get_line_color(object);",
+            "",
+            "khuluma(color)!"
+          ]
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_tri_id",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the id specified by the input GObject (tri)"
+        },
+        {
+          "tagType": "returns",
+          "description": "The [UUID] structured array"
+        },
+        {
+          "tagType": "from",
+          "version": "1.0.0"
+        },
+        {
+          "tagType": "example",
+          "codeblock": [
+            "tsea \"j3d/objects/getters\"!",
+            "",
+            "@ If (object) holds the structured array",
+            "",
+            "maak object!",
+            "maak id <- get_tri_id(object);",
+            "",
+            "khuluma(id)!"
+          ]
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_tri_pivot",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the pivot specified by the input GObject (tri)"
+        },
+        {
+          "tagType": "returns",
+          "description": "The [Vector3] structured array"
+        },
+        {
+          "tagType": "from",
+          "version": "1.0.0"
+        },
+        {
+          "tagType": "example",
+          "codeblock": [
+            "tsea \"j3d/objects/getters\"!",
+            "",
+            "@ If (object) holds the structured array",
+            "",
+            "maak object!",
+            "maak pivot <- get_tri_pivot(object);",
+            "",
+            "khuluma(pivot)!"
+          ]
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_tri_color",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the color specified by the input GObject (tri)"
+        },
+        {
+          "tagType": "returns",
+          "description": "The [Colour] structured array"
+        },
+        {
+          "tagType": "from",
+          "version": "1.0.0"
+        },
+        {
+          "tagType": "example",
+          "codeblock": [
+            "tsea \"j3d/objects/getters\"!",
+            "",
+            "@ If (object) holds the structured array",
+            "",
+            "maak object!",
+            "maak color <- get_tri_color(object);",
+            "",
+            "khuluma(color)!"
+          ]
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_tri_colour",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the color specified by the input GObject (tri)"
+        },
+        {
+          "tagType": "returns",
+          "description": "The [Colour] structured array"
+        },
+        {
+          "tagType": "from",
+          "version": "1.0.0"
+        },
+        {
+          "tagType": "example",
+          "codeblock": [
+            "tsea \"j3d/objects/getters\"!",
+            "",
+            "@ If (object) holds the structured array",
+            "",
+            "maak object!",
+            "maak color <- get_tri_color(object);",
+            "",
+            "khuluma(color)!"
+          ]
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_curve_id",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the id specified by the input GObject (curve)"
+        },
+        {
+          "tagType": "returns",
+          "description": "The [UUID] structured array"
+        },
+        {
+          "tagType": "from",
+          "version": "1.0.0"
+        },
+        {
+          "tagType": "example",
+          "codeblock": [
+            "tsea \"j3d/objects/getters\"!",
+            "",
+            "@ If (object) holds the structured array",
+            "",
+            "maak object!",
+            "maak id <- get_curve_id(object);",
+            "",
+            "khuluma(id)!"
+          ]
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_curve_pivot",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the pivot specified by the input GObject (curve)"
+        },
+        {
+          "tagType": "returns",
+          "description": "The [Vector3] structured array"
+        },
+        {
+          "tagType": "from",
+          "version": "1.0.0"
+        },
+        {
+          "tagType": "example",
+          "codeblock": [
+            "tsea \"j3d/objects/getters\"!",
+            "",
+            "@ If (object) holds the structured array",
+            "",
+            "maak object!",
+            "maak pivot <- get_curve_pivot(object);",
+            "",
+            "khuluma(pivot)!"
+          ]
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_curve_color",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the color specified by the input GObject (curve)"
+        },
+        {
+          "tagType": "returns",
+          "description": "The [Colour] structured array"
+        },
+        {
+          "tagType": "from",
+          "version": "1.0.0"
+        },
+        {
+          "tagType": "example",
+          "codeblock": [
+            "tsea \"j3d/objects/getters\"!",
+            "",
+            "@ If (object) holds the structured array",
+            "",
+            "maak object!",
+            "maak color <- get_curve_color(object);",
+            "",
+            "khuluma(color)!"
+          ]
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_curve_colour",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the color specified by the input GObject (curve)"
+        },
+        {
+          "tagType": "returns",
+          "description": "The [Colour] structured array"
+        },
+        {
+          "tagType": "from",
+          "version": "1.0.0"
+        },
+        {
+          "tagType": "example",
+          "codeblock": [
+            "tsea \"j3d/objects/getters\"!",
+            "",
+            "@ If (object) holds the structured array",
+            "",
+            "maak object!",
+            "maak color <- get_curve_color(object);",
+            "",
+            "khuluma(color)!"
+          ]
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_uuid_string",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the value of the UUID as a string"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_uuid_of",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the value of the UUID as a string"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    },
+    {
+      "type": "TFunction",
+      "name": "F~get_uuid_value",
+      "exportSymbol": false,
+      "toolTip": [
+        {
+          "tagType": "GENERIC",
+          "description": "Retrieves the value of the UUID as a string"
+        },
+        {
+          "tagType": "parameter",
+          "description": "The array to extract the information from",
+          "var": "array",
+          "type": "[]",
+          "optional": false
+        }
+      ],
+      "lineNumber": -1,
+      "args": [
+        "array"
+      ],
+      "isArgOptional": [
+        false
+      ],
+      "varArgs": false,
+      "body": null
+    }
+  ]
+}

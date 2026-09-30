@@ -12,14 +12,14 @@ public class LineGetters extends BaseLibrary {
         super();
 
         GettersPack.putAliases(
-                vfs, "line",
+                this::addWithAliases, "line",
                 JDoc.builder()
                         .addDesc("Retrieves the start point of the line"),
                 (t, r) -> GettersPack.referenceTransformer.apply(GLine.EngineObjectUtils::getPointA, t, r),
                 "start", "pointA"
         );
         GettersPack.putAliases(
-                vfs, "line",
+                this::addWithAliases, "line",
                 JDoc.builder()
                         .addDesc("Retrieves the control point of the line"),
                 (t, r) -> GettersPack.referenceTransformer.apply(GLine.EngineObjectUtils::getPointB, t, r),

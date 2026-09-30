@@ -39,28 +39,28 @@ public class ColourGetters extends BaseLibrary {
         };
 
         GettersPack.putAliases(
-                vfs, "colour",
+                this::addWithAliases, "colour",
                 JDoc.builder()
                         .addDesc("Returns the Red property of the given Colour object"),
                 (cp, eo) -> g.apply(cp, eo, "red"),
                 "red", "r"
         );
         GettersPack.putAliases(
-                vfs, "colour",
+                this::addWithAliases, "colour",
                 JDoc.builder()
                         .addDesc("Returns the Green property of the given Colour object"),
                 (cp, eo) -> g.apply(cp, eo, "green"),
                 "green", "g"
         );
         GettersPack.putAliases(
-                vfs, "colour",
+                this::addWithAliases, "colour",
                 JDoc.builder()
                         .addDesc("Returns the Blue property of the given Colour object"),
                 (cp, eo) -> g.apply(cp, eo, "blue"),
                 "blue", "b"
         );
         GettersPack.putAliases(
-                vfs, "colour",
+                this::addWithAliases, "colour",
                 JDoc.builder()
                         .addDesc("Returns the Blue property of the given Colour object"),
                 (cp, eo) -> g.apply(cp, eo, "alpha"),
@@ -69,7 +69,7 @@ public class ColourGetters extends BaseLibrary {
 
 
         GettersPack.putAliases(
-                vfs, "colour",
+                this::addWithAliases, "colour",
                 JDoc.builder()
                         .addDesc("v"),
                 (cp, eo) -> {

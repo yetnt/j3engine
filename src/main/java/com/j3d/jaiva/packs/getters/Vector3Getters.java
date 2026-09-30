@@ -36,21 +36,21 @@ public class Vector3Getters extends BaseLibrary {
         };
 
         GettersPack.putAliases(
-                vfs, "vector3",
+                this::addWithAliases, "vector3",
                 JDoc.builder()
                         .addDesc("Returns the X property of the given Vector3 object"),
                 (cp, eo) -> g.apply(cp, eo, "x"),
                 "x", "X", "left"
         );
         GettersPack.putAliases(
-                vfs, "vector3",
+                this::addWithAliases, "vector3",
                 JDoc.builder()
                         .addDesc("Returns the Y property of the given Vector3 object"),
                 (cp, eo) -> g.apply(cp, eo, "y"),
                 "y", "Y", "up"
         );
         GettersPack.putAliases(
-                vfs, "vector3",
+                this::addWithAliases, "vector3",
                 JDoc.builder()
                         .addDesc("Returns the Z property of the given Vector3 object"),
                 (cp, eo) -> g.apply(cp, eo, "z"),
@@ -59,7 +59,7 @@ public class Vector3Getters extends BaseLibrary {
 
 
         GettersPack.putAliases(
-                vfs, "vector3",
+                this::addWithAliases, "vector3",
                 JDoc.builder()
                         .addDesc("v"),
                 (cp, eo) -> {

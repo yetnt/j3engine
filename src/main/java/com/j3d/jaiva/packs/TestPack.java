@@ -16,6 +16,7 @@ import com.jaiva.interpreter.libBuilders.func.FunctionBuilder;
 import com.jaiva.interpreter.libBuilders.func.arg.AArgument;
 import com.jaiva.interpreter.libs.BaseLibrary;
 import com.jaiva.interpreter.libs.LibraryType;
+import com.jaiva.interpreter.libs.annotation.Exports;
 import com.jaiva.interpreter.libs.annotation.PublicLibrary;
 import com.jaiva.interpreter.runtime.IConfig;
 import com.jaiva.interpreter.symbol.BaseFunction;
@@ -25,15 +26,16 @@ import com.jaiva.tokenizer.tokens.specific.TFuncCall;
 import java.util.ArrayList;
 import java.util.UUID;
 
+@Exports(ObjectsPack.class)
 @PublicLibrary(path = "j3d")
 public class TestPack extends BaseLibrary {
 
     public TestPack() {
         super();
 
-        vfs.put("echo", new FEcho());
-        vfs.put("find", new FFind());
-        vfs.put("isValid", new FValidate());
+        add(new FEcho());
+        add(new FFind());
+        add(new FValidate());
     }
 
     public static class FEcho extends BaseFunction {
