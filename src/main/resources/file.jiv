@@ -2,8 +2,6 @@
 
 tsea "jaiva/debug"!
 tsea "jaiva/j3d"!
-tsea "jaiva/j3d/objects"!
-tsea "jaiva/j3d/objects/getters"!
 
 maak triangle <- getCallerValue()! @ random GObject from command palette input
 @ if its not a triangle the next call will error

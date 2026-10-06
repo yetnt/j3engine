@@ -11,7 +11,11 @@ import com.jaiva.tokenizer.jdoc.JDoc;
 import com.jaiva.tokenizer.tokens.specific.TStringVar;
 
 @Exports(GettersPack.class)
-@PublicLibrary(path = "j3d/objects")
+@PublicLibrary(
+        path = "j3d/objects",
+        description = "Objects pack which just holds the array type constants" +
+                " along with all the functions to do stuff"
+)
 public class ObjectsPack extends BaseLibrary {
 
     public ObjectsPack() {

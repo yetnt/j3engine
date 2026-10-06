@@ -3,6 +3,7 @@ package com.j3d.jaiva;
 import com.j3d.StaticRefs;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.scene.find.Finder;
+import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.geometry.GObjectRegistry;
 import com.j3d.jaiva.packs.getters.GettersPack;
@@ -87,7 +88,7 @@ public class TypeConverter {
             case COLOUR -> colorFromObject(null, engineObject);
             case UUID -> UUIDfromObject(engineObject);
             case GPOINT, GLINE, GTRI, GCURVE -> getGObject(engineObject);
-            case GREF -> getReference(engineObject);
+            case REF -> getReference(engineObject);
         };
     }
 
@@ -106,13 +107,19 @@ public class TypeConverter {
 
     }
 
-    public static GObject getReference(EngineObject object) {
+    public static Object getReference(EngineObject object) {
         // Just find by ID
         if (object == null) return null;
         if (!(object.getProperties().getLast() instanceof String uuidString))
             throw new IllegalArgumentException("Cannot convert " + object.getEngineProperties().getLast() + " objects.");
 
         UUID uuid = UUID.fromString(uuidString);
+
+        Thing t = StaticRefs.getSceneManager().finder().findFirst(
+                Thing.class, Finder.idQuery(), uuid
+        ).getThing();
+
+        if (t != null) return t;
 
         return StaticRefs.getSceneManager().finder().findFirst(
                 GObject.class, Finder.idQuery(), uuid

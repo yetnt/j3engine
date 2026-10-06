@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+    <project xmlns="http://maven.apache.org/POM/4.0.0"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.j3d</groupId>
     <artifactId>J3Engine</artifactId>
@@ -33,14 +33,8 @@
             <!-- Personal esoteric programming language parsing and runtime, so it can be embedded. -->
             <groupId>com.github.yetnt.jaiva</groupId>
             <artifactId>core</artifactId>
-            <version>6.0.0-beta.2</version> <!-- Alpha version introduced better JBundler handling -->
+            <version>6.0.0</version>
         </dependency>
-<!--        <dependency>-->
-<!--            &lt;!&ndash; TODO: Remove, Local Instlalaiton &ndash;&gt;-->
-<!--            <groupId>com.jaiva</groupId>-->
-<!--            <artifactId>core</artifactId>-->
-<!--            <version>6.0.0-alpha.0</version>-->
-<!--        </dependency>-->
         <dependency>
             <!-- Personal shared utility tuples and functions between this and jaiva -->
             <groupId>com.github.yetnt</groupId>
@@ -60,19 +54,30 @@
 
         <plugins>
 
-                <plugin>
-                    <groupId>com.github.yetnt.jaiva</groupId>
-                    <artifactId>jaiva-libjson-plugin</artifactId>
-                    <version>6.0.0-beta.2</version>
-                    <executions>
-                        <execution>
-                            <goals><goal>generate-lib-json</goal></goals>
-                            <configuration>
-                                <basePackage>com.j3d.jaiva.packs</basePackage>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
+            <plugin>
+                <groupId>com.github.yetnt.jaiva</groupId>
+                <artifactId>lib-tooling-plugin</artifactId>
+                <version>6.0.0</version>
+                <executions>
+                    <execution>
+                        <id>json-gen</id>
+                        <goals><goal>json</goal></goals>
+                        <configuration>
+                            <basePackage>com.j3d.jaiva.packs</basePackage>
+                            <ifOutDirNotEmpty>OVERWRITE</ifOutDirNotEmpty>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>md-gen</id>
+                        <goals><goal>markdown</goal></goals>
+                        <configuration>
+                            <basePackage>com.j3d.jaiva.packs</basePackage>
+                            <allOutputOptionsTrue>true</allOutputOptionsTrue>
+                            <ifOutDirNotEmpty>OVERWRITE</ifOutDirNotEmpty>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -1,5 +1,6 @@
 package com.j3d.jaiva.packs.getters;
 
+import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.geometry.GObjectRegistry;
 import com.j3d.jaiva.EngineObject;
@@ -31,7 +32,10 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-@PublicLibrary(path = "j3d/objects/getters")
+@PublicLibrary(
+        path = "j3d/objects/getters",
+        description = "Contains all the functions to get properties from the given array"
+)
 public class GettersPack extends BaseLibrary {
 
     @FunctionalInterface
@@ -50,9 +54,13 @@ public class GettersPack extends BaseLibrary {
             IConfig<Object> config
     ) {}
 
-    public static final ThrowableTriFunction<GetterOf<EngineObject>, CallProperties, EngineObject, Object, JaivaException> referenceTransformer = (f, t, e) -> {
+    public static final ThrowableTriFunction<
+            GetterOf<EngineObject>, CallProperties,
+            EngineObject, Object,
+            JaivaException
+            > referenceTransformer = (f, t, e) -> {
         EngineObject reference = f.applyExc(t, e);
-        GObject obj = TypeConverter.getReference(reference);
+        Object obj = TypeConverter.getReference(reference);
         if (obj == null) return Token.voidValue(t.call.lineNumber);
         return TypeConverter.toJaivaReadable(obj);
     };
