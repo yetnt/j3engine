@@ -8,7 +8,7 @@ import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.gen.settings.types.ComplexSetting;
 import com.j3d.ui.theme.J3DTheme;
-import com.yetnt.utils.functional.TriFunction;
+import com.yetnt.utils.functional.function.TriFunction;
 
 import java.awt.event.ActionEvent;
 import java.util.function.BiFunction;

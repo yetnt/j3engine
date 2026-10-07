@@ -20,7 +20,7 @@ import com.j3d.gen.grid.Point;
 import com.j3d.ui.engine.FloatingPanel;
 import com.j3d.ui.theme.J3DTheme;
 import com.yetnt.utils.builders.InlineHTML;
-import com.yetnt.utils.functional.QuadFunction;
+import com.yetnt.utils.functional.function.QuadFunction;
 import com.yetnt.utils.tuple.MutablePair;
 import com.yetnt.utils.tuple.Triple;
 

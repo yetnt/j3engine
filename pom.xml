@@ -36,10 +36,10 @@
             <version>6.0.0</version>
         </dependency>
         <dependency>
-            <!-- Personal shared utility tuples and functions between this and jaiva -->
-            <groupId>com.github.yetnt</groupId>
+            <!-- Personal shared utility tuples and functions between this and jaiva (on mvn central) -->
+            <groupId>io.github.yetnt</groupId>
             <artifactId>ytils</artifactId>
-            <version>1.0.0</version>
+            <version>1.1.0</version>
         </dependency>
     </dependencies>
 

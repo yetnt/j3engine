@@ -2,7 +2,7 @@ package com.j3d.threads;
 
 import com.j3d.StaticRefs;
 import com.j3d.ui.dialog.Spinner;
-import com.yetnt.utils.functional.TriConsumer;
+import com.yetnt.utils.functional.consumer.TriConsumer;
 
 import javax.swing.*;
 import java.util.function.Consumer;

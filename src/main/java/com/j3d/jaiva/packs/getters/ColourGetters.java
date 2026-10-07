@@ -16,7 +16,7 @@ import com.jaiva.interpreter.symbol.BaseFunction;
 import com.jaiva.tokenizer.jdoc.JDoc;
 import com.jaiva.tokenizer.tokens.Token;
 import com.jaiva.tokenizer.tokens.specific.TFuncCall;
-import com.yetnt.utils.functional.TriFunction;
+import com.yetnt.utils.functional.function.TriFunction;
 
 import java.awt.*;
 import java.util.ArrayList;

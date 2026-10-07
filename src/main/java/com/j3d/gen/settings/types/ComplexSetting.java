@@ -2,7 +2,7 @@ package com.j3d.gen.settings.types;
 
 import com.j3d.gen.settings.Setting;
 import com.j3d.ui.settings.panels.PopoutSPanel;
-import com.yetnt.utils.functional.TriFunction;
+import com.yetnt.utils.functional.function.TriFunction;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

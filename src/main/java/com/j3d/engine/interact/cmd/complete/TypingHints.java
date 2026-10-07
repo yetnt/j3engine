@@ -15,7 +15,7 @@ import com.j3d.ui.SafeJLabel;
 import com.j3d.ui.engine.CommandPalette;
 import com.j3d.utility.Parsing;
 import com.yetnt.utils.builders.InlineHTML;
-import com.yetnt.utils.functional.QuadConsumer;
+import com.yetnt.utils.functional.consumer.QuadConsumer;
 import com.yetnt.utils.tuple.SamePair;
 
 import javax.swing.*;
