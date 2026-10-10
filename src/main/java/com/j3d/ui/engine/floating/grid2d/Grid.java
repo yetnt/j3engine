@@ -1,7 +1,6 @@
 package com.j3d.ui.engine.floating.grid2d;
 
 import com.j3d.engine.math.Dim;
-import com.j3d.ui.theme.J3DTheme;
 
 import javax.swing.*;
 import java.awt.*;

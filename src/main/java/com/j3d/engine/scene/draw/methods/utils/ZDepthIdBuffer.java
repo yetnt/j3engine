@@ -1,16 +1,16 @@
 package com.j3d.engine.scene.draw.methods.utils;
 
+import com.j3d.StaticConfig;
 import com.j3d.StaticRefs;
 import com.j3d.engine.scene.draw.methods.VisibleSort;
-import com.j3d.engine.scene.nodes.layer.Layer;
+import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GLine;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.engine.scene.nodes.geometry.GTri;
-import com.j3d.engine.scene.nodes.Thing;
-import com.j3d.StaticConfig;
+import com.j3d.engine.scene.nodes.layer.Layer;
 
-import java.awt.Point;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.UUID;

@@ -1,7 +1,6 @@
 package com.j3d.engine.interact.cmd.commands.macro;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
@@ -11,7 +10,6 @@ import com.j3d.engine.interact.macros.MacroRunner;
 import com.j3d.ui.SafeJLabel;
 import com.yetnt.utils.builders.InlineHTML;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
 public class RunCmd extends Subcommand {

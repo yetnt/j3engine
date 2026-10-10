@@ -5,8 +5,6 @@ import com.j3d.engine.scene.draw.SceneRenderer;
 import com.j3d.engine.scene.draw.SortMethod;
 import com.j3d.engine.scene.nodes.geometry.GTri;
 
-import java.util.ArrayList;
-
 import static com.j3d.engine.scene.draw.methods.CamDepthSort.calcDepth;
 
 /**

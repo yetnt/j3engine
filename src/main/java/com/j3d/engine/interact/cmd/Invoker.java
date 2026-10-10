@@ -1,7 +1,6 @@
 package com.j3d.engine.interact.cmd;
 
 import com.j3d.engine.interact.cmd.base.Command;
-import com.j3d.ui.SafeJLabel;
 
 import java.util.ArrayList;
 

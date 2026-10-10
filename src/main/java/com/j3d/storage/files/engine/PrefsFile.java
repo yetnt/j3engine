@@ -1,16 +1,10 @@
 package com.j3d.storage.files.engine;
 
-import com.j3d.StaticRefs;
 import com.j3d.storage.files.FilesUtility;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.lang.reflect.Array;
 import java.nio.file.Path;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class PrefsFile {

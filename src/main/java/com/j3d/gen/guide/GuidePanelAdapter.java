@@ -4,7 +4,6 @@ import com.j3d.ui.engine.GuidePanel;
 import com.j3d.ui.theme.J3DTheme;
 import com.yetnt.utils.builders.InlineHTML;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class GuidePanelAdapter {

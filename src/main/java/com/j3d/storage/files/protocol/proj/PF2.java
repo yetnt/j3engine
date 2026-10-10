@@ -1,15 +1,15 @@
 package com.j3d.storage.files.protocol.proj;
 
+import com.j3d.StaticConfig;
 import com.j3d.StaticRefs;
+import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.scene.nodes.SceneObjectList;
+import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GLine;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.engine.scene.nodes.geometry.GTri;
-import com.j3d.engine.scene.nodes.Thing;
-import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.engine.scene.nodes.layer.LayerList;
-import com.j3d.StaticConfig;
 import com.j3d.storage.errs.ProjectFileException;
 import com.j3d.storage.files.FilesUtility;
 import com.j3d.storage.files.IOSupplier;

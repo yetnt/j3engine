@@ -1,14 +1,14 @@
 package com.j3d.engine.interact.cmd.commands.transform.mouse;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.scene.nodes.geometry.GPoint;
-import com.j3d.engine.math.plane.AxisPlane;
-import com.j3d.engine.scene.nodes.util.Sampler;
-import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.interact.cmd.commands.transform.RotateSelection;
 import com.j3d.engine.interact.cmd.commands.transform.handles.Handle;
 import com.j3d.engine.interact.cmd.commands.transform.handles.HandleType;
 import com.j3d.engine.interact.input.mouse.MOwner;
+import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.math.plane.AxisPlane;
+import com.j3d.engine.scene.nodes.geometry.GPoint;
+import com.j3d.engine.scene.nodes.util.Sampler;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

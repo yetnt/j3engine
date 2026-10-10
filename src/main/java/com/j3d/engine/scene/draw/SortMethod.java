@@ -1,9 +1,9 @@
 package com.j3d.engine.scene.draw;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.scene.nodes.geometry.base.DecomposeWhenDrawn;
-import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.scene.nodes.geometry.GTri;
+import com.j3d.engine.scene.nodes.geometry.base.DecomposeWhenDrawn;
 import com.j3d.gen.settings.Settings;
 
 import java.util.ArrayList;

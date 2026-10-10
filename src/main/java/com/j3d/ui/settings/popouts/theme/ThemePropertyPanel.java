@@ -12,7 +12,6 @@ import com.yetnt.utils.builders.InlineHTML;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**

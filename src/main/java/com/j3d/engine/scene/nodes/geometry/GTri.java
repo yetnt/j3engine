@@ -1,16 +1,29 @@
 package com.j3d.engine.scene.nodes.geometry;
 
+import com.j3d.StaticConfig;
 import com.j3d.StaticRefs;
+import com.j3d.engine.geometry.Triangle;
+import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.react.events.EventPayload;
+import com.j3d.engine.react.events.EventType;
+import com.j3d.engine.react.events.IdempotentEventListener;
 import com.j3d.engine.react.events.payloads.GPointMovedEvent;
+import com.j3d.engine.scene.copy.CopyProperties;
+import com.j3d.engine.scene.copy.InvalidCopyException;
 import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.draw.SceneRenderer;
 import com.j3d.engine.scene.draw.SortMethod;
+import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.base.DecomposeWhenDrawn;
 import com.j3d.engine.scene.nodes.geometry.base.Winding;
-import com.j3d.engine.scene.copy.CopyProperties;
-import com.j3d.engine.scene.copy.InvalidCopyException;
-import com.j3d.engine.geometry.Triangle;
-import com.j3d.engine.scene.nodes.Thing;
+import com.j3d.gen.properties.Property;
+import com.j3d.jaiva.EngineObject;
+import com.j3d.jaiva.TypeConverter;
+import com.j3d.jaiva.packs.getters.GettersPack;
+import com.j3d.jaiva.packs.getters.J3DGetterException;
+import com.j3d.storage.files.protocol.proj.PF1;
+import com.j3d.storage.files.protocol.proj.ProjectFile;
+import com.j3d.ui.dialog.Spinner;
 
 import java.awt.*;
 import java.util.*;
@@ -18,21 +31,6 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import com.j3d.engine.math.matrix.Vector3;
-import com.j3d.engine.react.events.IdempotentEventListener;
-import com.j3d.engine.react.events.EventPayload;
-import com.j3d.engine.react.events.EventType;
-import com.j3d.gen.properties.Property;
-import com.j3d.StaticConfig;
-import com.j3d.jaiva.EngineObject;
-import com.j3d.jaiva.TypeConverter;
-import com.j3d.jaiva.packs.getters.GettersPack;
-import com.j3d.jaiva.packs.getters.J3DGetterException;
-import com.j3d.storage.files.protocol.proj.ProjectFile;
-import com.j3d.storage.files.protocol.proj.PF1;
-import com.j3d.ui.dialog.Spinner;
-import com.jaiva.tokenizer.tokens.specific.TFuncCall;
 
 import static com.j3d.StaticRefs.getSceneManager;
 

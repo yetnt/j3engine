@@ -1,9 +1,9 @@
 package com.j3d.engine.scene.draw;
 
 import com.j3d.engine.geometry.Drawable;
-import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.geometry.Pure;
 import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.scene.nodes.geometry.GObject;
 
 import java.awt.*;
 import java.util.UUID;

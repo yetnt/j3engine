@@ -1,21 +1,24 @@
 package com.j3d.engine.scene.nodes;
 
+import com.j3d.StaticConfig;
 import com.j3d.StaticRefs;
-import com.j3d.engine.scene.SceneManager;
-import com.j3d.engine.scene.nodes.geometry.*;
 import com.j3d.engine.math.matrix.Vector3;
-import com.j3d.engine.scene.nodes.layer.Layer;
-import com.j3d.engine.react.actions.DirtyVoidAction;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.ConstructorAction;
+import com.j3d.engine.react.actions.DirtyVoidAction;
 import com.j3d.engine.react.actions.VoidAction;
+import com.j3d.engine.scene.SceneManager;
+import com.j3d.engine.scene.nodes.geometry.GLine;
+import com.j3d.engine.scene.nodes.geometry.GObject;
+import com.j3d.engine.scene.nodes.geometry.GPoint;
+import com.j3d.engine.scene.nodes.geometry.GTri;
+import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.gen.properties.Property;
-import com.j3d.StaticConfig;
 import com.j3d.storage.files.protocol.proj.PF1;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
-import com.j3d.ui.theme.J3DTheme;
 import com.j3d.ui.dialog.Spinner;
 import com.j3d.ui.engine.floating.tree.TreeNodeIdentity;
+import com.j3d.ui.theme.J3DTheme;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;

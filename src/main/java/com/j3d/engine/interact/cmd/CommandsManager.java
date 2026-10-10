@@ -1,9 +1,9 @@
 package com.j3d.engine.interact.cmd;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.SemiStatefulCommand;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
-import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.ui.engine.CommandPalette;
 
 import java.util.HashMap;

@@ -1,12 +1,12 @@
 package com.j3d.engine.scene.nodes;
 
-import com.j3d.engine.scene.SceneObject;
-import com.j3d.engine.scene.nodes.layer.Layer;
+import com.j3d.StaticConfig;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.CleanableAction;
 import com.j3d.engine.react.actions.DirtyVoidAction;
 import com.j3d.engine.react.history.History;
-import com.j3d.StaticConfig;
+import com.j3d.engine.scene.SceneObject;
+import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.ui.dialog.Spinner;
 import com.j3d.ui.engine.floating.tree.LayerTree;

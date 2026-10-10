@@ -2,12 +2,12 @@ package com.j3d.engine.geometry;
 
 import com.j3d.StaticConfig;
 import com.j3d.StaticRefs;
+import com.j3d.engine.math.ScreenPoint;
+import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.draw.ViewType;
-import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
-import com.j3d.engine.math.matrix.Vector3;
 
 import java.awt.*;
 import java.util.UUID;

@@ -1,7 +1,6 @@
 package com.j3d.jaiva.packs.getters;
 
 import com.j3d.jaiva.EngineObject;
-import com.j3d.jaiva.TypeConverter;
 import com.jaiva.errors.InterpreterException;
 import com.jaiva.interpreter.Scope;
 

@@ -9,7 +9,7 @@ import com.j3d.ui.theme.ThemeEntry;
 import com.j3d.ui.theme.ThemeKey;
 
 import javax.swing.*;
-import java.awt.Color;
+import java.awt.*;
 import java.util.LinkedHashMap;
 
 /**

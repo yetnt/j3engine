@@ -1,8 +1,8 @@
 package com.j3d.engine.interact.cmd.args;
 
-import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.base.Command;
+import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.utility.Parsing;
 import com.yetnt.utils.tuple.SamePair;

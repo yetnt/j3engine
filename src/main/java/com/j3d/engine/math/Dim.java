@@ -1,6 +1,6 @@
 package com.j3d.engine.math;
 
-import java.awt.Dimension;
+import java.awt.*;
 
 /**
  * Dim, like {@link BasePoint} is a 2 dimensional class, however holding width and height

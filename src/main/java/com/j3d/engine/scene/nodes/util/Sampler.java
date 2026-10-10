@@ -1,8 +1,8 @@
 package com.j3d.engine.scene.nodes.util;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.math.plane.AxisPlane;
 import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.math.plane.AxisPlane;
 
 import java.awt.*;
 import java.util.ArrayList;

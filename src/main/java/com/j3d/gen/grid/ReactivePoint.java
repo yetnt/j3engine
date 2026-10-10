@@ -4,15 +4,12 @@ import com.j3d.engine.math.CartesianPoint;
 import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.math.convert.ConversionWithOffset;
 import com.j3d.engine.math.plane.AxisPlane;
-import com.j3d.engine.math.plane.NormalPlane;
 import com.j3d.engine.react.events.*;
 import com.j3d.engine.react.events.payloads.ReactivePointInvalidatedPayload;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
-import com.j3d.ui.engine.floating.grid2d.Grid2DPanel;
 import com.j3d.ui.theme.J3DTheme;
 import com.yetnt.utils.qol.Colours;
-import jdk.jfr.FlightRecorder;
 
 import java.awt.*;
 import java.util.ArrayList;

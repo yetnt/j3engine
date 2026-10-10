@@ -1,6 +1,8 @@
 package com.j3d.engine.math.rot;
 
-import com.j3d.engine.math.matrix.*;
+import com.j3d.engine.math.matrix.Matrix3;
+import com.j3d.engine.math.matrix.MatrixInterface;
+import com.j3d.engine.math.matrix.MatrixMath;
 
 /**
  * Implements the {@link RotationMatrixDirection} interface to create rotation matrices

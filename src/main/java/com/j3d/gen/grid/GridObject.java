@@ -1,6 +1,5 @@
 package com.j3d.gen.grid;
 
-import com.j3d.engine.math.convert.Conversion;
 import com.j3d.engine.math.convert.ConversionWithOffset;
 import com.j3d.engine.math.plane.AxisPlane;
 import com.j3d.engine.scene.nodes.geometry.GObject;

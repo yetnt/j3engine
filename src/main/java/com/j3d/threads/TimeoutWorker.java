@@ -1,6 +1,6 @@
 package com.j3d.threads;
 
-import javax.swing.SwingWorker;
+import javax.swing.*;
 import java.util.concurrent.TimeUnit;
 
 /**

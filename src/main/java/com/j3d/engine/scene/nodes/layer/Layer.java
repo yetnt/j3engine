@@ -1,23 +1,26 @@
 package com.j3d.engine.scene.nodes.layer;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.scene.DefaultObjectDeletionException;
-import com.j3d.engine.scene.SceneManager;
-import com.j3d.engine.scene.nodes.geometry.GObject;
-import com.j3d.engine.scene.nodes.geometry.GTri;
-import com.j3d.engine.scene.nodes.Thing;
-import com.j3d.engine.scene.nodes.SceneObjectList;
-import com.j3d.engine.react.actions.DirtyAction;
-import com.j3d.engine.react.actions.DirtyVoidAction;
 import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.ConstructorAction;
+import com.j3d.engine.react.actions.DirtyAction;
+import com.j3d.engine.react.actions.DirtyVoidAction;
+import com.j3d.engine.scene.DefaultObjectDeletionException;
+import com.j3d.engine.scene.SceneManager;
+import com.j3d.engine.scene.nodes.SceneObjectList;
+import com.j3d.engine.scene.nodes.Thing;
+import com.j3d.engine.scene.nodes.geometry.GObject;
+import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.gen.properties.Property;
 import com.j3d.ui.engine.floating.tree.TreeNodeIdentity;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 

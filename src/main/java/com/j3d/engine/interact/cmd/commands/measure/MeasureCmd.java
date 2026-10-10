@@ -2,12 +2,12 @@ package com.j3d.engine.interact.cmd.commands.measure;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.Invoker;
+import com.j3d.engine.interact.cmd.args.TaggedArgValue;
+import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.scene.nodes.geometry.GLine;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.engine.scene.nodes.geometry.GTri;
-import com.j3d.engine.interact.cmd.args.TaggedArgValue;
-import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.ui.SafeJLabel;
 
 import java.util.ArrayList;

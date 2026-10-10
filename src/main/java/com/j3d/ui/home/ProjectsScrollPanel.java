@@ -4,9 +4,8 @@
  */
 package com.j3d.ui.home;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  *

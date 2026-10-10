@@ -11,9 +11,6 @@ import com.yetnt.utils.io.JarPath;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.util.Objects;
 
 /**
  * A utility class for parsing and representing {@code <img>} HTML tags found within J3Engine documentation.

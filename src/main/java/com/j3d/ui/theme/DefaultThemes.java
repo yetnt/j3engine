@@ -1,8 +1,6 @@
 package com.j3d.ui.theme;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
 
 public enum DefaultThemes {
     DEFAULT(

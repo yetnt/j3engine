@@ -1,9 +1,7 @@
 package com.j3d.jaiva.packs.getters;
 
 import com.j3d.engine.scene.nodes.geometry.GCurve;
-import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.jaiva.interpreter.libs.BaseLibrary;
-import com.jaiva.interpreter.libs.LibraryType;
 import com.jaiva.tokenizer.jdoc.JDoc;
 
 public class CurveGetters extends BaseLibrary {

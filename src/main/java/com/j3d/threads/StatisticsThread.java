@@ -1,11 +1,7 @@
 package com.j3d.threads;
 
-import java.util.ArrayList;
 import javax.swing.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;

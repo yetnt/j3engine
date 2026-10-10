@@ -6,9 +6,10 @@ package com.j3d.ui.engine.floating.properties;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.scene.nodes.geometry.GObject;
-import com.j3d.gen.properties.SelectionPropertiesFilter;
 import com.j3d.gen.properties.PropertiesUI;
+import com.j3d.gen.properties.SelectionPropertiesFilter;
 import com.j3d.ui.engine.FloatingPanel;
+import com.j3d.ui.theme.J3DTheme;
 import com.j3d.ui.theme.swing.J3DScrollBarUI;
 
 import javax.swing.*;
@@ -16,7 +17,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import static com.j3d.StaticRefs.getSceneManager;
-import com.j3d.ui.theme.J3DTheme;
 
 
 /**

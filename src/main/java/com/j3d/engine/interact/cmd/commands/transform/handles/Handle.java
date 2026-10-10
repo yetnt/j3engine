@@ -1,9 +1,9 @@
 package com.j3d.engine.interact.cmd.commands.transform.handles;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.interact.cmd.commands.transform.mouse.TransformMouseOwner;
 import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.math.matrix.Vector3;
-import com.j3d.engine.interact.cmd.commands.transform.mouse.TransformMouseOwner;
 
 import java.awt.*;
 import java.util.function.BiConsumer;

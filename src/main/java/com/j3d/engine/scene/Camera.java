@@ -1,8 +1,8 @@
 package com.j3d.engine.scene;
 
-import com.j3d.engine.math.plane.NormalPlane;
 import com.j3d.engine.math.matrix.MatrixMath;
 import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.math.plane.NormalPlane;
 import com.j3d.engine.math.rot.Rotation;
 import com.j3d.engine.react.events.EventEmitter;
 import com.j3d.engine.react.events.EventType;

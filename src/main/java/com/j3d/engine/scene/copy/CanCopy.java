@@ -1,6 +1,7 @@
 package com.j3d.engine.scene.copy;
 
-import com.j3d.engine.interact.cmd.commands.clipboard.*;
+import com.j3d.engine.interact.cmd.commands.clipboard.CopyCmd;
+import com.j3d.engine.interact.cmd.commands.clipboard.PasteCmd;
 
 /**
  * Interface for objects that can be copied.

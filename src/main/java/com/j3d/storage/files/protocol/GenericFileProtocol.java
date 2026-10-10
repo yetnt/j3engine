@@ -1,7 +1,6 @@
 package com.j3d.storage.files.protocol;
 
 import com.j3d.StaticRefs;
-import com.j3d.errors.ErrorHandler;
 import com.j3d.storage.errs.J3DFileException;
 
 import java.io.DataInputStream;

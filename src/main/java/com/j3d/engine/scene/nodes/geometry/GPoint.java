@@ -1,17 +1,17 @@
 package com.j3d.engine.scene.nodes.geometry;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.react.events.payloads.GPointMovedEvent;
-import com.j3d.engine.scene.SceneManager;
-import com.j3d.engine.scene.draw.RenderState;
-import com.j3d.engine.scene.nodes.geometry.base.DecomposeWhenDrawn;
-import com.j3d.engine.scene.nodes.geometry.base.HasParents;
-import com.j3d.engine.scene.copy.CopyProperties;
-import com.j3d.engine.scene.copy.InvalidCopyException;
 import com.j3d.engine.geometry.Point;
-import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.react.events.EventType;
+import com.j3d.engine.react.events.payloads.GPointMovedEvent;
+import com.j3d.engine.scene.SceneManager;
+import com.j3d.engine.scene.copy.CopyProperties;
+import com.j3d.engine.scene.copy.InvalidCopyException;
+import com.j3d.engine.scene.draw.RenderState;
+import com.j3d.engine.scene.nodes.Thing;
+import com.j3d.engine.scene.nodes.geometry.base.DecomposeWhenDrawn;
+import com.j3d.engine.scene.nodes.geometry.base.HasParents;
 import com.j3d.jaiva.EngineObject;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.ui.dialog.Spinner;

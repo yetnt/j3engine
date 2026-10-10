@@ -1,11 +1,10 @@
 package com.j3d.engine.scene.draw;
 
-import com.j3d.engine.scene.nodes.geometry.GLine;
-import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.ui.engine.EngineFrame;
 
 import java.awt.*;
+
 /**
  * An enum describing how a {@link GTri} should draw itself. This just changes whether a triangle will draw
  * it's legs, points or its area. This can be changed via the JMenuBar

@@ -1,7 +1,6 @@
 package com.j3d.storage.files;
 
 import com.j3d.StaticRefs;
-import com.j3d.errors.ErrorHandler;
 import com.j3d.storage.errs.GenericIOException;
 
 import javax.swing.*;

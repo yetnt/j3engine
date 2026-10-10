@@ -2,16 +2,16 @@ package com.j3d.engine.geometry;
 
 import com.j3d.StaticConfig;
 import com.j3d.StaticRefs;
+import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.draw.ViewType;
 import com.j3d.engine.scene.nodes.geometry.GObject;
-import com.j3d.engine.math.matrix.Vector3;
 
 import java.awt.*;
 import java.util.List;
 import java.util.UUID;
 
-import static com.j3d.StaticRefs.*;
+import static com.j3d.StaticRefs.getSceneManager;
 
 public class Triangle implements Pure {
 

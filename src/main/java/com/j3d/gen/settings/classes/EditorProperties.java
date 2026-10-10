@@ -1,8 +1,8 @@
 package com.j3d.gen.settings.classes;
 
 import com.j3d.gen.settings.SettingsChild;
-import com.j3d.gen.settings.types.DoubleSetting;
 import com.j3d.gen.settings.SettingsParent;
+import com.j3d.gen.settings.types.DoubleSetting;
 import com.j3d.gen.settings.types.IntSetting;
 import com.j3d.ui.settings.SettingsParentPanel;
 

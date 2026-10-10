@@ -1,12 +1,11 @@
 package com.j3d.engine.interact.input.mouse;
 
-import com.j3d.StaticRefs;
-import com.j3d.engine.EngineException;
-import com.j3d.engine.interact.InteractionException;
-import com.j3d.engine.math.ScreenPoint;
-import com.j3d.engine.interact.selection.SelectionMouseOwner;
-import com.j3d.engine.react.events.*;
 import com.j3d.StaticConfig;
+import com.j3d.StaticRefs;
+import com.j3d.engine.interact.InteractionException;
+import com.j3d.engine.interact.selection.SelectionMouseOwner;
+import com.j3d.engine.math.ScreenPoint;
+import com.j3d.engine.react.events.*;
 import com.j3d.ui.engine.EngineFrame;
 import com.yetnt.utils.builders.InlineHTML;
 

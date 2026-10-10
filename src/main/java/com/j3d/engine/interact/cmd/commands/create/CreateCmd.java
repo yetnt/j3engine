@@ -6,7 +6,6 @@ import com.j3d.engine.interact.cmd.args.ArgSet;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.scene.find.FindResult;
-import com.j3d.engine.scene.find.Finder;
 import com.j3d.engine.scene.nodes.Creator;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GObject;
@@ -14,7 +13,6 @@ import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.ui.SafeJLabel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A command to create various geometric objects in the scene.

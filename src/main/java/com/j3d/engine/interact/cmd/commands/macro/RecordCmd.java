@@ -1,7 +1,6 @@
 package com.j3d.engine.interact.cmd.commands.macro;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;

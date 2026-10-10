@@ -1,7 +1,6 @@
 package com.j3d.gen.guide.generic;
 
 import com.j3d.engine.interact.input.mouse.AlwaysMouseOwner;
-import com.j3d.engine.react.events.EventEmitterInterface;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.react.events.payloads.MouseClickPayload;

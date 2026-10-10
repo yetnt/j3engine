@@ -6,26 +6,25 @@ package com.j3d.ui.home;
 
 import com.j3d.Startup;
 import com.j3d.StaticRefs;
-import com.j3d.StaticConfig;
 import com.j3d.engine.interact.input.keyboard.GlobalKeybinds;
 import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.storage.files.FilesUtility;
 import com.j3d.storage.files.util.ProjectImagePair;
-import com.j3d.ui.theme.swing.J3DScrollBarUI;
 import com.j3d.ui.theme.J3DTheme;
+import com.j3d.ui.theme.swing.J3DScrollBarUI;
 import com.j3d.utility.ImageUtils;
 import com.yetnt.utils.builders.InlineHTML;
 
 import javax.imageio.IIOException;
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.stream.Collectors;
-import javax.swing.filechooser.FileFilter;
 
 /**
  *

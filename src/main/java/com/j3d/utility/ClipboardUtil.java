@@ -1,7 +1,7 @@
 package com.j3d.utility;
-import java.awt.Toolkit;
+
+import java.awt.*;
 import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Clipboard;
 
 /**
  * Utility class for interacting with the system clipboard.

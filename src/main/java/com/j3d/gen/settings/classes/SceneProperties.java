@@ -1,9 +1,9 @@
 package com.j3d.gen.settings.classes;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.scene.draw.PureSortMethod;
-import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.math.CartesianPoint;
+import com.j3d.engine.math.ScreenPoint;
+import com.j3d.engine.scene.draw.PureSortMethod;
 import com.j3d.gen.settings.SettingsChild;
 import com.j3d.gen.settings.SettingsParent;
 import com.j3d.gen.settings.types.BooleanSetting;

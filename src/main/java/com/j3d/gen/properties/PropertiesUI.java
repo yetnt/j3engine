@@ -1,8 +1,8 @@
 package com.j3d.gen.properties;
 
+import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.nodes.Thing;
-import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.scene.nodes.geometry.*;
 import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.ui.engine.floating.properties.PropertyEntry;

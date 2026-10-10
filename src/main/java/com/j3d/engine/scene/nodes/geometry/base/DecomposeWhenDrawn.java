@@ -1,8 +1,8 @@
 package com.j3d.engine.scene.nodes.geometry.base;
 
+import com.j3d.engine.geometry.Pure;
 import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.nodes.geometry.GObject;
-import com.j3d.engine.geometry.Pure;
 
 import java.util.ArrayList;
 

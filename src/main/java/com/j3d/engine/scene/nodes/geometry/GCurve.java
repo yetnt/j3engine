@@ -1,15 +1,15 @@
 package com.j3d.engine.scene.nodes.geometry;
 
-import com.j3d.engine.react.events.payloads.GPointMovedEvent;
-import com.j3d.engine.scene.draw.RenderState;
-import com.j3d.engine.scene.nodes.geometry.base.DecomposeWhenDrawn;
-import com.j3d.engine.scene.copy.CopyProperties;
-import com.j3d.engine.scene.copy.InvalidCopyException;
 import com.j3d.engine.geometry.Segment;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.react.events.IdempotentEventListener;
+import com.j3d.engine.react.events.payloads.GPointMovedEvent;
+import com.j3d.engine.scene.copy.CopyProperties;
+import com.j3d.engine.scene.copy.InvalidCopyException;
+import com.j3d.engine.scene.draw.RenderState;
+import com.j3d.engine.scene.nodes.geometry.base.DecomposeWhenDrawn;
 import com.j3d.gen.properties.Property;
 import com.j3d.jaiva.EngineObject;
 import com.j3d.jaiva.TypeConverter;

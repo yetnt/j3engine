@@ -1,10 +1,10 @@
 package com.j3d.engine.interact.input.keyboard;
 
+import com.j3d.StaticConfig;
 import com.j3d.StaticRefs;
 import com.j3d.engine.interact.selection.SelectionMouseOwner;
 import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.interact.selection.SelectionUtils;
-import com.j3d.StaticConfig;
 import com.j3d.gen.settings.Settings;
 
 import javax.swing.*;

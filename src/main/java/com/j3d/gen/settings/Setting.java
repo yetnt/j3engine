@@ -7,7 +7,6 @@ import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.react.events.payloads.SettingUpdatedPayload;
 import com.j3d.gen.settings.classes.CameraProperties;
-import com.j3d.ui.settings.panels.AbstractPanel;
 
 import java.awt.*;
 import java.util.ArrayList;

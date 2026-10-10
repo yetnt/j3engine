@@ -8,7 +8,6 @@ import com.yetnt.utils.builders.InlineHTML;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;

@@ -1,11 +1,11 @@
 package com.j3d.engine.interact.cmd.commands.measure;
 
 import com.j3d.engine.interact.cmd.Invoker;
-import com.j3d.engine.scene.nodes.geometry.GPoint;
-import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.args.TypedArg;
+import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.threads.BlinkerSwingWorker;
 import com.j3d.ui.SafeJLabel;
 

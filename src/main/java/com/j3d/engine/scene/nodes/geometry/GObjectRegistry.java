@@ -4,9 +4,7 @@ import com.j3d.engine.interact.cmd.CmdToken;
 import com.j3d.jaiva.EngineObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 /**
  * Defines the main registry for checking for GObjects, primarily used by these subsystems:

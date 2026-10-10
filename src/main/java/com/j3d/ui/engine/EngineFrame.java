@@ -4,27 +4,39 @@
  */
 package com.j3d.ui.engine;
 
-import com.j3d.*;
+import com.j3d.Startup;
+import com.j3d.StaticConfig;
+import com.j3d.StaticRefs;
 import com.j3d.artefacts.Artefact;
+import com.j3d.engine.interact.cmd.CommandParser;
+import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.commands.camera.orbit.OrbitCmd;
 import com.j3d.engine.interact.cmd.commands.camera.orbit.OrbitMouseOwner;
+import com.j3d.engine.interact.cmd.commands.engine.ExitCmd;
+import com.j3d.engine.interact.cmd.commands.transform.RotateSelection;
+import com.j3d.engine.interact.cmd.commands.transform.ScaleSelection;
+import com.j3d.engine.interact.cmd.commands.transform.TranslateSelection;
+import com.j3d.engine.interact.cmd.commands.transform.mouse.RotateMouseOwner;
+import com.j3d.engine.interact.cmd.commands.transform.mouse.ScaleMouseOwner;
+import com.j3d.engine.interact.cmd.commands.transform.mouse.TranslateMouseOwner;
 import com.j3d.engine.interact.cmd.commands.transform.qtrans.QuickTranslateCmd;
-import com.j3d.engine.scene.DefaultObjectDeletionException;
+import com.j3d.engine.interact.input.keyboard.KeyBindings;
+import com.j3d.engine.interact.input.mouse.AlwaysMouseOwner;
+import com.j3d.engine.interact.input.mouse.MOwner;
+import com.j3d.engine.interact.input.mouse.MouseOwner;
+import com.j3d.engine.interact.input.mouse.NoMouseOwner;
+import com.j3d.engine.interact.selection.SelectionManager;
+import com.j3d.engine.interact.selection.SelectionQuery;
+import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.math.Dim;
+import com.j3d.engine.math.ScreenPoint;
+import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.math.rot.Rotation;
+import com.j3d.engine.scene.DefaultObjectDeletionException;
+import com.j3d.engine.scene.SceneManager;
+import com.j3d.engine.scene.draw.ViewType;
 import com.j3d.engine.scene.find.Finder;
 import com.j3d.engine.scene.nodes.SceneObjectList;
-import com.j3d.engine.interact.cmd.CommandsManager;
-import com.j3d.engine.interact.cmd.commands.engine.ExitCmd;
-import com.j3d.engine.interact.cmd.commands.transform.*;
-import com.j3d.engine.interact.cmd.commands.transform.mouse.*;
-import com.j3d.engine.interact.input.keyboard.KeyBindings;
-import com.j3d.engine.scene.SceneManager;
-import com.j3d.engine.math.ScreenPoint;
-import com.j3d.engine.math.rot.Rotation;
-import com.j3d.engine.math.matrix.Vector3;
-import com.j3d.engine.interact.cmd.CommandParser;
-import com.j3d.engine.interact.input.mouse.*;
-import com.j3d.engine.interact.selection.*;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.errors.J3DError;
 import com.j3d.gen.guide.GuideManager;
@@ -34,15 +46,21 @@ import com.j3d.storage.files.protocol.proj.PF1;
 import com.j3d.storage.files.protocol.proj.PF2;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.threads.LongTask;
+import com.j3d.ui.HoverJLabel;
+import com.j3d.ui.dialog.AreYouSure;
 import com.j3d.ui.engine.floating.DebugPanel;
 import com.j3d.ui.engine.floating.tree.LayerTree;
 import com.j3d.ui.engine.toolbox.ButtonsRegistry;
+import com.j3d.ui.engine.toolbox.Toolbox;
 import com.j3d.ui.engine.toolbox.ToolboxButtons;
+import com.j3d.ui.settings.PreferencesFrame;
+import com.j3d.ui.theme.J3DTheme;
 import com.j3d.ui.theme.cursors.CursorManager;
 import com.j3d.ui.theme.cursors.CursorNames;
-import com.j3d.ui.theme.J3DTheme;
-import com.j3d.ui.settings.PreferencesFrame;
-import com.j3d.ui.engine.toolbox.Toolbox;
+import com.yetnt.utils.builders.InlineHTML;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -51,15 +69,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
-import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
 
 import static com.j3d.engine.interact.input.keyboard.KeyBindings.commandPaletteFocusOwner;
-
-import com.j3d.engine.scene.draw.ViewType;
-import com.j3d.ui.dialog.AreYouSure;
-import com.j3d.ui.HoverJLabel;
-import com.yetnt.utils.builders.InlineHTML;
 
 /**
  * Possibly. The most chaotic, most important UI. This is the main UI of the entire app where the user

@@ -1,11 +1,11 @@
 package com.j3d.engine.interact.selection;
 
 import com.j3d.engine.scene.SceneManager;
+import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GLine;
+import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.engine.scene.nodes.layer.Layer;
-import com.j3d.engine.scene.nodes.geometry.GObject;
-import com.j3d.engine.scene.nodes.Thing;
 
 import java.util.ArrayList;
 import java.util.HashSet;

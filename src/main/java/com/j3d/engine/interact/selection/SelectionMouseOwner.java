@@ -1,11 +1,12 @@
 package com.j3d.engine.interact.selection;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.react.events.payloads.SelectionEventPayload;
-import com.j3d.engine.scene.SceneManager;
-import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.engine.interact.input.mouse.MouseOwner;
+import com.j3d.engine.math.ScreenPoint;
+import com.j3d.engine.react.events.EventType;
+import com.j3d.engine.react.events.payloads.SelectionEventPayload;
+import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.ui.engine.floating.properties.PropertiesPanel;
 import com.j3d.ui.theme.cursors.CursorManager;
@@ -15,8 +16,8 @@ import java.util.HashSet;
 
 import static com.j3d.StaticRefs.getLog;
 import static com.j3d.StaticRefs.getSceneManager;
-import static com.j3d.ui.engine.EngineFrame.*;
-import com.j3d.engine.react.events.*;
+import static com.j3d.ui.engine.EngineFrame.mousePos;
+import static com.j3d.ui.engine.EngineFrame.selectionArea;
 
 /**
  * SelectionMouseOwner is a MouseOwner which is responsible for handling mouse events related to

@@ -1,7 +1,6 @@
 package com.j3d.engine.math.matrix;
 
 import com.j3d.StaticRefs;
-import com.j3d.errors.ErrorHandler;
 
 /**
  * Provides a collection of static utility methods for performing mathematical operations

@@ -8,18 +8,17 @@ import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.gen.docs.api.ImageTag;
 import com.j3d.gen.docs.reader.tokens.wrappers.TWCodeBlock;
-import com.yetnt.utils.io.JarPath;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.ui.theme.updator.Locator;
 import com.j3d.utility.ClipboardUtil;
 import com.j3d.utility.Parsing;
 import com.yetnt.utils.builders.InlineHTML;
+import com.yetnt.utils.io.JarPath;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 

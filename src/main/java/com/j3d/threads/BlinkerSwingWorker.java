@@ -1,8 +1,8 @@
 package com.j3d.threads;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.interact.cmd.commands.measure.VolumeCmd;
+import com.j3d.engine.scene.SceneManager;
 
 import javax.swing.*;
 import java.util.UUID;

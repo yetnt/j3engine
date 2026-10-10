@@ -1,14 +1,14 @@
 package com.j3d.engine.interact.selection;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.scene.draw.RenderState;
-import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.geometry.Segment;
 import com.j3d.engine.geometry.Triangle;
+import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.nodes.geometry.*;
 
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.ArrayList;
 
 /**

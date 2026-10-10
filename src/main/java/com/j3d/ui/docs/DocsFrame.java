@@ -8,16 +8,23 @@ import com.j3d.StaticRefs;
 import com.j3d.gen.docs.Documentation;
 import com.j3d.gen.docs.api.HeaderIdentifier;
 import com.j3d.gen.docs.api.ImageTag;
-import com.j3d.gen.docs.reader.*;
-import com.j3d.gen.docs.reader.tokens.*;
+import com.j3d.gen.docs.reader.J3DocsReader;
+import com.j3d.gen.docs.reader.tokens.TLink;
+import com.j3d.gen.docs.reader.tokens.TWrapper;
 import com.j3d.gen.docs.reader.tokens.wrappers.*;
-import com.yetnt.utils.io.JarPath;
-import com.j3d.ui.theme.swing.J3DScrollBarUI;
 import com.j3d.ui.theme.J3DTheme;
+import com.j3d.ui.theme.swing.J3DScrollBarUI;
 import com.j3d.ui.theme.swing.J3DTreeCellRenderer;
 import com.yetnt.utils.builders.InlineHTML;
+import com.yetnt.utils.io.JarPath;
 import com.yetnt.utils.tuple.Pair;
 
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicTreeUI;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -25,12 +32,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import javax.swing.*;
-import javax.swing.plaf.basic.BasicTreeUI;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
 
 /**
  *

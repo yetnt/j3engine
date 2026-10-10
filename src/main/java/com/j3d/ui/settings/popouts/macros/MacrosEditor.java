@@ -3,16 +3,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package com.j3d.ui.settings.popouts.macros;
+
+import com.j3d.StaticRefs;
 import com.j3d.engine.interact.macros.Macro;
 import com.j3d.ui.theme.J3DTheme;
 
+import javax.swing.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
-
-import com.j3d.StaticRefs;
-
-import javax.swing.*;
 
 /**
  *

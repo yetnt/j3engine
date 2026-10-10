@@ -10,9 +10,8 @@ import com.j3d.gen.settings.types.ComplexSetting;
 import com.j3d.ui.theme.J3DTheme;
 import com.yetnt.utils.functional.function.TriFunction;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.util.function.BiFunction;
-import javax.swing.JLabel;
 
 /**
  *

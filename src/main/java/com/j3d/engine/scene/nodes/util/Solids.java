@@ -1,14 +1,14 @@
 package com.j3d.engine.scene.nodes.util;
 
+import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.math.plane.AxisPlane;
 import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.nodes.Thing;
-import com.j3d.engine.scene.nodes.geometry.GObject;
-import com.j3d.engine.scene.nodes.geometry.base.Winding;
 import com.j3d.engine.scene.nodes.geometry.GLine;
+import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.engine.scene.nodes.geometry.GTri;
-import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.scene.nodes.geometry.base.Winding;
 import com.j3d.engine.scene.nodes.layer.Layer;
 import com.yetnt.utils.tuple.SamePair;
 

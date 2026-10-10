@@ -1,8 +1,8 @@
 package com.j3d.engine.react.events.payloads;
 
 import com.j3d.engine.interact.input.mouse.SnapMouseOwner;
-import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.react.events.EventPayload;
+import com.j3d.engine.scene.nodes.geometry.GObject;
 
 /**
  * Represents an event payload specifically for snapping operations, carrying information

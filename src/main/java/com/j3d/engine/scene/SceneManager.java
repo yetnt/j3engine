@@ -1,22 +1,22 @@
 package com.j3d.engine.scene;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.scene.draw.SceneRenderer;
-import com.j3d.engine.scene.find.Finder;
-import com.j3d.engine.math.ScreenPoint;
-import com.j3d.engine.math.Dim;
-import com.j3d.engine.scene.nodes.geometry.GObject;
-import com.j3d.engine.scene.nodes.geometry.GPoint;
-import com.j3d.engine.scene.nodes.geometry.GTri;
-import com.j3d.engine.scene.nodes.Thing;
-import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.interact.selection.SelectionManager;
 import com.j3d.engine.interact.selection.SelectionQuery;
 import com.j3d.engine.interact.selection.SelectionType;
+import com.j3d.engine.math.Dim;
+import com.j3d.engine.math.ScreenPoint;
+import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.react.history.History;
+import com.j3d.engine.scene.draw.SceneRenderer;
+import com.j3d.engine.scene.find.Finder;
+import com.j3d.engine.scene.nodes.Thing;
+import com.j3d.engine.scene.nodes.geometry.GObject;
+import com.j3d.engine.scene.nodes.geometry.GPoint;
+import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.engine.scene.nodes.geometry.base.HasParents;
 import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.engine.scene.nodes.layer.LayerList;
-import com.j3d.engine.react.history.History;
 import com.j3d.gen.settings.Settings;
 import com.j3d.ui.theme.J3DTheme;
 

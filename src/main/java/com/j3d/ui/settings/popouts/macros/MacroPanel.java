@@ -3,10 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package com.j3d.ui.settings.popouts.macros;
+
 import com.j3d.StaticRefs;
 import com.j3d.ui.dialog.JKeyChooser;
 import com.j3d.ui.theme.J3DTheme;
-import javax.swing.KeyStroke;
+
+import javax.swing.*;
 import java.util.function.Supplier;
 
 /**

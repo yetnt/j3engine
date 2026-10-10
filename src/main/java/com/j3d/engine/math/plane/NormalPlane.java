@@ -1,7 +1,7 @@
 package com.j3d.engine.math.plane;
 
-import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.yetnt.utils.tuple.SamePair;
 
 import java.util.Objects;

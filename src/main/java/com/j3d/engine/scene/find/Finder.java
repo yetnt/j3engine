@@ -2,9 +2,8 @@ package com.j3d.engine.scene.find;
 
 import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.SceneObject;
-import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.Thing;
-import com.j3d.engine.scene.nodes.geometry.GPoint;
+import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.engine.scene.nodes.layer.LayerList;
 

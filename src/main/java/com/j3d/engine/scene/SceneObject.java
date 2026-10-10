@@ -1,9 +1,9 @@
 package com.j3d.engine.scene;
 
+import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GLine;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.engine.scene.nodes.geometry.GTri;
-import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.gen.properties.HasProperties;
 

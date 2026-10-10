@@ -1,8 +1,5 @@
 package com.j3d.engine.interact.input.mouse;
 
-import java.awt.*;
-import java.awt.event.MouseEvent;
-
 public class Mouse {
     private int x, y, deltaX, deltaY;
     public Mouse(int x, int y) {

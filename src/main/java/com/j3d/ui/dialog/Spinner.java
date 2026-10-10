@@ -6,7 +6,8 @@ package com.j3d.ui.dialog;
 
 import com.j3d.StaticRefs;
 import com.j3d.ui.theme.J3DTheme;
-import javax.swing.SwingUtilities;
+
+import javax.swing.*;
 
 /**
  *

@@ -4,12 +4,10 @@ import com.j3d.gen.docs.reader.tokens.TLink;
 import com.j3d.gen.docs.reader.tokens.TText;
 import com.j3d.gen.docs.reader.tokens.TWrapper;
 import com.j3d.gen.docs.reader.tokens.wrappers.*;
-import com.yetnt.utils.io.JarPath;
 import com.j3d.ui.docs.DocsFrame;
 import com.j3d.utility.Parsing;
+import com.yetnt.utils.io.JarPath;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;

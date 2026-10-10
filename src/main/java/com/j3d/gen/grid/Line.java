@@ -2,7 +2,6 @@ package com.j3d.gen.grid;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.math.CartesianPoint;
-import com.j3d.engine.math.convert.Conversion;
 import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.math.convert.ConversionWithOffset;
 import com.j3d.engine.math.matrix.Vector3;

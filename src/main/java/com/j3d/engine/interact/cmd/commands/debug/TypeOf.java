@@ -1,8 +1,8 @@
 package com.j3d.engine.interact.cmd.commands.debug;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.interact.cmd.Wildcard;
 import com.j3d.engine.interact.cmd.Invoker;
+import com.j3d.engine.interact.cmd.Wildcard;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.args.TypedArg;

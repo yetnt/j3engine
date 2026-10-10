@@ -1,7 +1,5 @@
 package com.j3d.engine.interact.macros;
 
-import java.io.IOException;
-
 /**
  * A single line of a {@link Macro} with an {@link InstructionType} and the string representing the instruction.
  *

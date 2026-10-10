@@ -1,6 +1,5 @@
 package com.j3d.jaiva.packs.getters;
 
-import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.geometry.GObjectRegistry;
 import com.j3d.jaiva.EngineObject;
@@ -8,11 +7,11 @@ import com.j3d.jaiva.TypeConverter;
 import com.jaiva.errors.JaivaException;
 import com.jaiva.interpreter.Primitives;
 import com.jaiva.interpreter.Scope;
-import com.jaiva.interpreter.Vfs;
-import com.jaiva.interpreter.libBuilders.func.*;
+import com.jaiva.interpreter.libBuilders.func.Argument;
+import com.jaiva.interpreter.libBuilders.func.Arguments;
+import com.jaiva.interpreter.libBuilders.func.FunctionBuilder;
 import com.jaiva.interpreter.libBuilders.func.arg.AArgument;
 import com.jaiva.interpreter.libs.BaseLibrary;
-import com.jaiva.interpreter.libs.LibraryType;
 import com.jaiva.interpreter.libs.annotation.PublicLibrary;
 import com.jaiva.interpreter.runtime.IConfig;
 import com.jaiva.interpreter.symbol.BaseFunction;
@@ -25,12 +24,9 @@ import com.yetnt.utils.functional.function.ThrowableTriFunction;
 import com.yetnt.utils.functional.function.TriFunction;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.UUID;
 import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 @PublicLibrary(
         path = "j3d/objects/getters",

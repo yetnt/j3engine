@@ -1,9 +1,9 @@
 package com.j3d.engine.interact.cmd;
 
-import com.j3d.engine.scene.nodes.geometry.*;
-import com.j3d.engine.scene.nodes.Thing;
-import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
+import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.scene.nodes.Thing;
+import com.j3d.engine.scene.nodes.geometry.*;
 
 import java.awt.*;
 import java.util.ArrayList;

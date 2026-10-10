@@ -7,7 +7,8 @@ import com.j3d.engine.interact.cmd.args.*;
 import com.j3d.engine.scene.nodes.geometry.GObjectRegistry;
 import com.j3d.ui.SafeJLabel;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 

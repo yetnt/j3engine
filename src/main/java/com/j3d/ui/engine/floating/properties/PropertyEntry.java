@@ -10,7 +10,9 @@ import com.j3d.ui.engine.floating.properties.panels.PropertyPanel;
 import com.j3d.ui.theme.J3DTheme;
 
 import javax.swing.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * A {@link PropertyEntry} represents either a single or combined list of properties and is itself

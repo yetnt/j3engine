@@ -1,21 +1,22 @@
 package com.j3d.engine.interact.cmd;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.scene.find.Finder;
-import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgUtil;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
+import com.j3d.engine.interact.cmd.base.Command;
+import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.commands.HelpCmd;
 import com.j3d.engine.interact.cmd.complete.TypingHints;
 import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
-import com.j3d.engine.scene.nodes.geometry.*;
+import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.scene.find.Finder;
+import com.j3d.engine.scene.nodes.Thing;
+import com.j3d.engine.scene.nodes.geometry.GObject;
+import com.j3d.engine.scene.nodes.geometry.GObjectRegistry;
+import com.j3d.ui.SafeJLabel;
 import com.j3d.ui.engine.CommandPalette;
 import com.j3d.ui.engine.EngineFrame;
-import com.j3d.engine.scene.nodes.Thing;
-import com.j3d.engine.math.matrix.Vector3;
-import com.j3d.engine.interact.cmd.base.Command;
-import com.j3d.ui.SafeJLabel;
 import com.j3d.utility.Parsing;
 
 import javax.swing.*;

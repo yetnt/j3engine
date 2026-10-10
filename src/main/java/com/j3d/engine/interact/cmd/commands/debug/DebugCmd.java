@@ -3,7 +3,7 @@ package com.j3d.engine.interact.cmd.commands.debug;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
-import com.j3d.engine.interact.cmd.base.*;
+import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.commands.camera.CameraInfoCmd;
 import com.j3d.ui.SafeJLabel;
 

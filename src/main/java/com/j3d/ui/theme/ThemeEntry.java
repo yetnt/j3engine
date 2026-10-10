@@ -1,10 +1,8 @@
 package com.j3d.ui.theme;
 
-import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.utility.Parsing;
 
 import java.awt.*;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class ThemeEntry {

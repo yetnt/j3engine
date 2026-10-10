@@ -1,13 +1,11 @@
 package com.j3d.engine.scene.draw.methods;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.scene.draw.RenderState;
-import com.j3d.engine.scene.draw.SortMethod;
-import com.j3d.engine.scene.draw.SceneRenderer;
-import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.engine.math.matrix.Vector3;
-
-import java.util.ArrayList;
+import com.j3d.engine.scene.draw.RenderState;
+import com.j3d.engine.scene.draw.SceneRenderer;
+import com.j3d.engine.scene.draw.SortMethod;
+import com.j3d.engine.scene.nodes.geometry.GTri;
 
 /**
  * CamDepthSort is a sorting method that sorts GTri objects based on their depth values.

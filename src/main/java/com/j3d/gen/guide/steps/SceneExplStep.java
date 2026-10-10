@@ -1,7 +1,5 @@
 package com.j3d.gen.guide.steps;
 
-import com.j3d.StaticRefs;
-import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.input.mouse.AlwaysMouseOwner;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
@@ -9,15 +7,11 @@ import com.j3d.engine.react.events.payloads.MouseClickPayload;
 import com.j3d.gen.guide.Anchor;
 import com.j3d.gen.guide.GuideInfo;
 import com.j3d.gen.guide.GuidePanelAdapter;
-import com.j3d.gen.settings.Settings;
-import com.j3d.gen.settings.types.DoubleSetting;
 import com.j3d.ui.theme.J3DTheme;
 import com.yetnt.utils.builders.InlineHTML;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SceneExplStep extends GuideInfo {
 

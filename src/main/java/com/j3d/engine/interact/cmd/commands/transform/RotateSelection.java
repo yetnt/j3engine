@@ -1,16 +1,16 @@
 package com.j3d.engine.interact.cmd.commands.transform;
 
 import com.j3d.engine.interact.cmd.Invoker;
-import com.j3d.engine.scene.nodes.geometry.GPoint;
-import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.interact.cmd.args.ArgSet;
-import com.j3d.engine.interact.cmd.base.KeyedStatefulCommand;
-import com.j3d.engine.interact.cmd.base.StatefulCommand;
-import com.j3d.ui.SafeJLabel;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.args.TypedArg;
+import com.j3d.engine.interact.cmd.base.KeyedStatefulCommand;
+import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.commands.transform.handles.HandleType;
 import com.j3d.engine.interact.cmd.commands.transform.mouse.RotateMouseOwner;
+import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.scene.nodes.geometry.GPoint;
+import com.j3d.ui.SafeJLabel;
 
 import java.util.ArrayList;
 import java.util.function.Supplier;

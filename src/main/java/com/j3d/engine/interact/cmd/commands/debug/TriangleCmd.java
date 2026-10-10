@@ -1,10 +1,10 @@
 package com.j3d.engine.interact.cmd.commands.debug;
 
+import com.j3d.StaticConfig;
 import com.j3d.engine.interact.cmd.Invoker;
-import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
-import com.j3d.StaticConfig;
+import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.ui.SafeJLabel;
 
 import java.util.ArrayList;

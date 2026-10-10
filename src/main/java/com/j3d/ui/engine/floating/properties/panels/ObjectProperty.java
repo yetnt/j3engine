@@ -5,7 +5,8 @@
 package com.j3d.ui.engine.floating.properties.panels;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.scene.nodes.geometry.*;
+import com.j3d.engine.scene.nodes.geometry.GObject;
+import com.j3d.engine.scene.nodes.geometry.GObjectRegistry;
 import com.j3d.gen.properties.Property;
 import com.j3d.ui.theme.J3DTheme;
 import com.yetnt.utils.tuple.Pair;

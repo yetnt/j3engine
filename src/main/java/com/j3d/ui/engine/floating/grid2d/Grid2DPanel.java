@@ -5,12 +5,12 @@
 package com.j3d.ui.engine.floating.grid2d;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.math.CartesianPoint;
 import com.j3d.engine.math.Dim;
 import com.j3d.engine.math.ScreenPoint;
-import com.j3d.engine.math.CartesianPoint;
 import com.j3d.engine.math.convert.ConversionWithOffset;
-import com.j3d.engine.math.plane.AxisPlane;
 import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.math.plane.AxisPlane;
 import com.j3d.engine.scene.find.FindResult;
 import com.j3d.engine.scene.find.Finder;
 import com.j3d.engine.scene.nodes.Thing;
@@ -27,13 +27,18 @@ import com.yetnt.utils.tuple.Triple;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static com.j3d.StaticRefs.*;
+import static com.j3d.StaticRefs.getMainFrame;
+import static com.j3d.StaticRefs.getSceneManager;
 
 /**
  *

@@ -1,16 +1,16 @@
 package com.j3d.engine.scene.nodes.geometry;
 
+import com.j3d.engine.geometry.Pure;
+import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.react.events.EventEmitter;
+import com.j3d.engine.react.events.EventListener;
+import com.j3d.engine.react.events.EventPayload;
+import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.scene.SceneObject;
-import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.copy.CanCopy;
 import com.j3d.engine.scene.copy.CopyProperties;
 import com.j3d.engine.scene.copy.InvalidCopyException;
-import com.j3d.engine.geometry.Pure;
-import com.j3d.engine.react.events.EventPayload;
-import com.j3d.engine.react.events.EventEmitter;
-import com.j3d.engine.react.events.EventListener;
-import com.j3d.engine.react.events.EventType;
-import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.gen.properties.Property;
 import com.j3d.jaiva.EngineObject;
 import com.j3d.jaiva.TypeConverter;
@@ -19,7 +19,9 @@ import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.ui.dialog.Spinner;
 
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Graphics Object is an abstract class that represents any actual tangible
@@ -223,7 +225,7 @@ public abstract class GObject extends EventEmitter implements EventListener, Can
     }
 
     public EngineObject asReference() {
-        return new EngineObject(EngineObject.Type.GREF)
+        return new EngineObject(EngineObject.Type.REF)
                 .addProperty(getEngineObjectType().toString())
                 .addProperty(getId().toString());
     }

@@ -1,12 +1,11 @@
 package com.j3d.ui.engine;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.interact.selection.SelectionUI;
+import com.j3d.engine.math.ScreenPoint;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;

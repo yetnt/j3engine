@@ -5,8 +5,6 @@ import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.args.TypedArg;
-import com.j3d.engine.interact.cmd.base.SemiStatefulCommand;
-import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GCurve;
 import com.j3d.engine.scene.nodes.geometry.GLine;

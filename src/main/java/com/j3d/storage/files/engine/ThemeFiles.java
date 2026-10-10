@@ -1,6 +1,5 @@
 package com.j3d.storage.files.engine;
 
-import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.ui.theme.ThemeEntry;
 import com.j3d.ui.theme.ThemeKey;
 
@@ -8,10 +7,8 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 

@@ -1,10 +1,10 @@
 package com.j3d;
 
-import com.j3d.engine.scene.draw.ViewType;
-import com.j3d.engine.scene.draw.PureSortMethod;
 import com.j3d.engine.math.Dim;
-import com.j3d.engine.scene.nodes.geometry.GTri;
+import com.j3d.engine.scene.draw.PureSortMethod;
+import com.j3d.engine.scene.draw.ViewType;
 import com.j3d.engine.scene.nodes.Thing;
+import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.gen.settings.Settings;
 

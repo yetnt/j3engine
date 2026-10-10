@@ -2,9 +2,9 @@ package com.j3d.engine.interact.cmd.base;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.CommandsManager;
-import com.j3d.ui.SafeJLabel;
 import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.selection.SelectionManager;
+import com.j3d.ui.SafeJLabel;
 import com.j3d.ui.theme.J3DTheme;
 import com.yetnt.utils.builders.InlineHTML;
 

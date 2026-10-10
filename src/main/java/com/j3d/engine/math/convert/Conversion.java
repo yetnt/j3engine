@@ -1,7 +1,9 @@
 package com.j3d.engine.math.convert;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.math.*;
+import com.j3d.engine.math.CartesianPoint;
+import com.j3d.engine.math.Dim;
+import com.j3d.engine.math.ScreenPoint;
 import com.j3d.gen.settings.Settings;
 import com.j3d.ui.engine.EngineFrame;
 

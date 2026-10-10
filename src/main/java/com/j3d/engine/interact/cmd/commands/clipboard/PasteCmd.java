@@ -1,20 +1,20 @@
 package com.j3d.engine.interact.cmd.commands.clipboard;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.Invoker;
+import com.j3d.engine.interact.cmd.args.Subcommand;
+import com.j3d.engine.interact.cmd.args.TaggedArgValue;
+import com.j3d.engine.interact.cmd.args.TypedArg;
+import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.engine.scene.copy.CopyProperties;
 import com.j3d.engine.scene.copy.InvalidCopyException;
+import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GLine;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.engine.scene.nodes.geometry.GTri;
-import com.j3d.engine.scene.nodes.Thing;
-import com.j3d.engine.math.matrix.Vector3;
-import com.j3d.engine.interact.cmd.CommandsManager;
-import com.j3d.engine.interact.cmd.args.Subcommand;
-import com.j3d.engine.interact.cmd.args.TaggedArgValue;
-import com.j3d.engine.interact.cmd.args.TypedArg;
-import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.ui.SafeJLabel;
 import com.yetnt.utils.collection.buckets.Buckets;
 

@@ -1,8 +1,6 @@
 package com.j3d.engine.interact.cmd.commands.transform;
 
 import com.j3d.engine.interact.cmd.Invoker;
-import com.j3d.engine.scene.nodes.geometry.GObject;
-import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.interact.cmd.args.ArgSet;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.args.TypedArg;
@@ -11,9 +9,11 @@ import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.commands.transform.handles.HandleType;
 import com.j3d.engine.interact.cmd.commands.transform.mouse.TransformMouseOwner;
 import com.j3d.engine.interact.cmd.commands.transform.mouse.TranslateMouseOwner;
-import com.j3d.engine.react.events.payloads.SnapPayload;
+import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
+import com.j3d.engine.react.events.payloads.SnapPayload;
+import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.ui.SafeJLabel;
 
 import java.util.ArrayList;
