@@ -8,7 +8,9 @@ import com.j3d.engine.interact.cmd.args.TypedArg;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.KeyedStatefulCommand;
 import com.j3d.engine.interact.input.keyboard.J3Key;
+import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GLine;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
@@ -29,8 +31,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-
-import static com.j3d.StaticRefs.getSceneManager;
 
 /**
  * A command to extrude a selected {@link GTri} (triangle) along its normal vector.
@@ -133,7 +133,7 @@ public class ExtrudeCmd extends Command implements KeyedStatefulCommand {
             tri = (GTri) args[0];
         } else {
             ArrayList<GTri> tris
-                    = StaticRefs.getSceneManager().getSelected()
+                    = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected()
                     .stream().filter(GTri.class::isInstance)
                     .map(GTri.class::cast).collect(Collectors.toCollection(ArrayList::new));
             if (tris.size() != 1) {
@@ -150,15 +150,14 @@ public class ExtrudeCmd extends Command implements KeyedStatefulCommand {
 
     @Override
     public void onStart(Void object, SafeJLabel label) {
-        keys.forEach(StaticRefs.getGlobalKeybinds()::registerJ3Key);
+        KeyBindings globalKeybinds = StaticRefs.throwIfNull(StaticRefs.getGlobalKeybinds());
+        keys.forEach(globalKeybinds::registerJ3Key);
 
         Consumer<Graphics2D> drawGhosts = g -> {
             g.setColor(Color.WHITE);
 
             // drawing ghost
-
             ghost(g);
-
 
             label.setText(
                     "Extruding triangle with a length of "+SafeJLabel.EMPH+" "+SafeJLabel.EMPH+" using arrow keys. "
@@ -173,7 +172,8 @@ public class ExtrudeCmd extends Command implements KeyedStatefulCommand {
             );
         };
 
-        getSceneManager().scheduleOverlap(overlapId, drawGhosts);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager())
+                .scheduleOverlap(overlapId, drawGhosts);
     }
 
     private void ghost(Graphics2D graphics2D) {
@@ -184,11 +184,12 @@ public class ExtrudeCmd extends Command implements KeyedStatefulCommand {
         // join the points
         Sampler.joinNGonArbitaryVectors(extruded.toArrayList(), graphics2D);
 
+        SceneManager sm = StaticRefs.throwIfNull(StaticRefs.getSceneManager());
         Triple.forEachPair(
                 original,
                 extruded,
                 (v1, v2) -> {
-                    getSceneManager().drawLine3D(
+                    sm.drawLine3D(
                             graphics2D, v1, v2, StaticRefs.getCamera()
                     );
                 }
@@ -275,7 +276,8 @@ public class ExtrudeCmd extends Command implements KeyedStatefulCommand {
                 )
         );
 
-        Thing t = StaticRefs.getSceneManager().findObjectParent(original.getFirst());
+        Thing t = StaticRefs.throwIfNull(StaticRefs.getSceneManager())
+                .findObjectParent(original.getFirst());
 
         t.addObjs(original.toArray(new GPoint[0]))
                 .addObjs(extruded.toArray(new GPoint[0]))
@@ -304,9 +306,10 @@ public class ExtrudeCmd extends Command implements KeyedStatefulCommand {
         length = 1;
         flipped = false;
         tri = null;
-        getSceneManager().removeOverlap(overlapId);
+        KeyBindings globalKeybinds = StaticRefs.throwIfNull(StaticRefs.getGlobalKeybinds());
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).removeOverlap(overlapId);
         label.clear();
-        keys.forEach(key -> StaticRefs.getGlobalKeybinds().removeJ3Key(key.getId()));
+        keys.forEach(key -> globalKeybinds.removeJ3Key(key.getId()));
         KeyedStatefulCommand.super.finished(success, label);
     }
 

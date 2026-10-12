@@ -51,7 +51,7 @@ public class ObjectProperty<T extends GObject> extends JPanel implements Propert
                 public void mouseClicked(MouseEvent e) {
                     if (e.getClickCount() == 2) {
                         // add the UUID to the command palette
-                        StaticRefs.getCommandParser().injectArgument(
+                        StaticRefs.throwIfNull(StaticRefs.getCommandParser()).injectArgument(
                                 type.getSecond()
                         );
                     }
@@ -69,7 +69,7 @@ public class ObjectProperty<T extends GObject> extends JPanel implements Propert
         if (t != null) {
             return new Pair<>("(" + GObjectRegistry.getSimpleName(t.getClass()) + ")", t.getId());
         } else {
-            throw new IllegalStateException("Unexpected value: " + t);
+            throw new IllegalStateException("Unexpected value: " + null);
         }
 //        return switch (t) {
 //            case GTri t -> new Pair<>("(tri)", t.getId());

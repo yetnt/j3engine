@@ -73,8 +73,8 @@ public class OrbitCmd extends Subcommand implements StatefulCommand<Pair<Vector3
         orbitMouseOwner.requestOwnership();
         orbitMouseOwner.sendMouseToCentre();
         CursorManager.set(CursorNames.HAND_GRAB);
-        StaticRefs.getMainPanel().repaint();
-        StaticRefs.getSceneManager().scheduleOverlap(orbitCmdUUID, c -> label.setTextWithSeconds(
+        StaticRefs.throwIfNull(StaticRefs.getMainPanel()).repaint();
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).scheduleOverlap(orbitCmdUUID, c -> label.setTextWithSeconds(
                 "Use the mouse to orbit the camera around. | "+SafeJLabel.EMPH+": "
                         + SafeJLabel.EMPH + SafeJLabel.EMPH + " | " + SafeJLabel.EMPH,
                 -1,
@@ -88,7 +88,7 @@ public class OrbitCmd extends Subcommand implements StatefulCommand<Pair<Vector3
                              .font(J3DTheme.TEXT_SECONDARY.color().brighter(), "5")
                         : ""
         ));
-        StaticRefs.getSceneManager().layers.stream()
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).layers.stream()
                 .flatMap(Layer::usableLayersStream)
                 .forEach(t -> t.getIdentity().add(orbitCmdUUID, (t2, d) -> {
                     StaticRefs.getCamera().lookAt(t2.getCentroid());
@@ -98,10 +98,10 @@ public class OrbitCmd extends Subcommand implements StatefulCommand<Pair<Vector3
     public void cleanup(SafeJLabel label) {
         EngineFrame.setMouseOwner(null);
         CursorManager.setDefault();
-        StaticRefs.getSceneManager().removeOverlap(orbitCmdUUID);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).removeOverlap(orbitCmdUUID);
         label.clear();
         CommandsManager.clearCurrent();
-        StaticRefs.getSceneManager().layers.stream()
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).layers.stream()
                 .flatMap(Layer::usableLayersStream)
                 .forEach(t -> t.getIdentity().remove(orbitCmdUUID));
     }

@@ -1,9 +1,9 @@
 JCCXXX -> J3DErr (prefixed J cuz why not)
 
-(CC from 00 to 09 are unused due to small domain
+(CC from 00 to 09 are unused due to small domain)
 
-10XXX -> Generation Exceptions
-20XXX -> (Unused)
+10XXX -> Generic Exceptions
+20XXX -> Generation Exceptions
 30XXX -> Threading Exceptions
 4?XXX -> Engine Exceptions
 	40XXX -> Generic Engine Exception
@@ -15,15 +15,18 @@ JCCXXX -> J3DErr (prefixed J cuz why not)
 
 (XXX is domain specific)
 
+10000 -> Wrapped Exception in some random place
+10100 -> Expected a non-null value
 
-10100 -> Preferences Frame encountered a generic exception with a cause (Fatal)
-10201 -> DocsProvider attempted to find a non-existent help document (Fatal)
-10211 -> Invalid HTML Tag: Different Opening and closing tags
-10212 -> Invalid HTML Tag: Unaccepted HTML Tag was given
-10213 -> Invalid HTML Tag: Malformed attributes
-10221 -> #-links: Malformed link-to-header (within same document or other .j3.md document) written.
-10222 -> #-links: Attempt to link to some arbitrary file (isn't .j3.md)
-10231 ->
+
+20100 -> Preferences Frame encountered a generic exception with a cause (Fatal)
+20201 -> DocsProvider attempted to find a non-existent help document (Fatal)
+20211 -> Invalid HTML Tag: Different Opening and closing tags
+20212 -> Invalid HTML Tag: Unaccepted HTML Tag was given
+20213 -> Invalid HTML Tag: Malformed attributes
+20221 -> #-links: Malformed link-to-header (within same document or other .j3.md document) written.
+20222 -> #-links: Attempt to link to some arbitrary file (isn't .j3.md)
+20231 ->
 
 
 43101 -> MouseOwner could not instantiate a Robot instance

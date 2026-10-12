@@ -97,14 +97,14 @@ public class TextPanel extends javax.swing.JPanel {
                 if (e.getClickCount() == 2) {
                     ClipboardUtil.copyToClipboard(originalText.trim());
                     JOptionPane.showMessageDialog(
-                            StaticRefs.getMainFrame(),
+                            StaticRefs.throwIfNull(StaticRefs.getMainFrame()),
                             "Text copied to clipboard!",
                             "Copied",
                             JOptionPane.INFORMATION_MESSAGE
                     );
                     if (isCodeblock && tc.isCommand()) {
-                        if (StaticRefs.getMainFrame() == null) return; // no main frame, no command parser.
-                        CommandParser commandParser = StaticRefs.getCommandParser();
+                        if (StaticRefs.throwIfNull(StaticRefs.getMainFrame()) == null) return; // no main frame, no command parser.
+                        CommandParser commandParser = StaticRefs.throwIfNull(StaticRefs.getCommandParser());
                         if (commandParser.isEmpty()) // we dont wanna override their args.
                             commandParser.setInputField(originalText.trim());
                     }

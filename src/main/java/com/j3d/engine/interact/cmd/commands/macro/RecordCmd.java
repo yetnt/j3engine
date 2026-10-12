@@ -45,7 +45,7 @@ public class RecordCmd extends Subcommand {
 
         if (StaticRefs.getMacroUtils().getMacros().containsKey(name)) {
             int opt = JOptionPane.showConfirmDialog(
-                    StaticRefs.getMainFrame(),
+                    StaticRefs.throwIfNull(StaticRefs.getMainFrame()),
                     "A macro with the name \"" + name + "\" already exists. "
                             + "Do you want to override it?"
             );

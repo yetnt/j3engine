@@ -45,7 +45,7 @@ public class LineJoin extends Subcommand {
             third = p3;
         }
 
-        Thing thing = StaticRefs.getSceneManager().findObjectParent(p1);
+        Thing thing = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).findObjectParent(p1);
 
         boolean isCurve;
         if (third == null) {
@@ -69,15 +69,15 @@ public class LineJoin extends Subcommand {
     }
 
     public void joinLine(Thing t, GPoint p1, GPoint p2) {
-        StaticRefs.getSceneManager().removeFromParent(p2, t);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).removeFromParent(p2, t);
         t.addObjs(
                 p1, p2, new GLine(p1, p2)
         );
     }
 
     public void joinCurve(Thing t, GPoint p1, GPoint p2, GPoint p3) {
-        StaticRefs.getSceneManager().removeFromParent(p2, t);
-        StaticRefs.getSceneManager().removeFromParent(p3, t);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).removeFromParent(p2, t);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).removeFromParent(p3, t);
         t.addObjs(
                 p1, p2, p3, new GCurve(p1, p3, p2)
         );

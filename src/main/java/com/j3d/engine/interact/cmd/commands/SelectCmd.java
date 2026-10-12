@@ -63,6 +63,6 @@ public class SelectCmd extends Command {
             );
             return;
         }
-        StaticRefs.getSceneManager().select(gobject);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).select(gobject);
     }
 }

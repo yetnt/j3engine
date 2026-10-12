@@ -15,8 +15,10 @@ import com.j3d.engine.scene.find.FindResult;
 import com.j3d.engine.scene.find.Finder;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GObject;
+import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.gen.grid.*;
 import com.j3d.gen.grid.Point;
+import com.j3d.ui.engine.EngineFrame;
 import com.j3d.ui.engine.FloatingPanel;
 import com.j3d.ui.theme.J3DTheme;
 import com.yetnt.utils.builders.InlineHTML;
@@ -32,13 +34,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-
-import static com.j3d.StaticRefs.getMainFrame;
-import static com.j3d.StaticRefs.getSceneManager;
 
 /**
  *
@@ -64,7 +64,7 @@ public class Grid2DPanel extends javax.swing.JPanel {
     private Vector3 v2 = Vector3.Z;
     private Vector3 origin = Vector3.ZERO;
 
-    private GridManager gm;
+    private final GridManager gm;
 
     /**
      * Creates new form Grid2DPanel
@@ -292,14 +292,15 @@ public class Grid2DPanel extends javax.swing.JPanel {
     }
 
     private Vector3 ask(String string) {
+        EngineFrame engineFrame = StaticRefs.throwIfNull(StaticRefs.getMainFrame());
         String input = JOptionPane.showInputDialog(
-                getMainFrame(),
+                engineFrame,
                 string
         );
         Vector3 v = parseV3Str(input);
         if (v == null) {
             JOptionPane.showMessageDialog(
-                    getMainFrame(),
+                    engineFrame,
                     "Invalid Vector3 format. Please use (x,y,z) format.",
                     "Error",
                     JOptionPane.ERROR_MESSAGE
@@ -350,7 +351,7 @@ public class Grid2DPanel extends javax.swing.JPanel {
         ORIGIN, V1, V2
     }
 
-    private HashMap<SpinnerIdentifier, Triple<JSpinner>> spinnerMap = new HashMap<>();
+    private final HashMap<SpinnerIdentifier, Triple<JSpinner>> spinnerMap = new HashMap<>();
 
     private void handleSpinners() {
         QuadFunction<JSpinner, Supplier<Vector3>, BiFunction<Vector3, Double, Vector3>, Consumer<Vector3>, ChangeListener> bi = (sp, v3, applier, setter) -> (ChangeListener) e -> {
@@ -717,25 +718,26 @@ public class Grid2DPanel extends javax.swing.JPanel {
         if (gridObjects1.stream().anyMatch(g -> g instanceof ReactivePoint)) {
             // prefer we just take the thing one of the points already is in.
 
-            thing = StaticRefs.getSceneManager().findObjectParent(
-                    gridObjects1.stream()
-                            .filter(g -> g instanceof ReactivePoint)
-                            .map(ReactivePoint.class::cast)
-                            .map(ReactivePoint::getGPoint)
-                            .findFirst()
-                            .get()
-            );
+            Optional<GPoint> first = gridObjects1.stream()
+                    .filter(g -> g instanceof ReactivePoint)
+                    .map(ReactivePoint.class::cast)
+                    .map(ReactivePoint::getGPoint)
+                    .findFirst();
+            if (first.isPresent())
+                thing = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).findObjectParent(
+                        first.get()
+                );
         }
 
         if (thing == null) {
 
             // find all stuff named render within the entire thing
-            ArrayList<FindResult> result = getSceneManager()
+            ArrayList<FindResult> result = StaticRefs.throwIfNull(StaticRefs.getSceneManager())
                     .finder().find(Thing.class, Finder.nameQuery(), "render");
 
             // create a new thing.
             thing = new Thing(
-                    StaticRefs.getSceneManager().usableLayer(),
+                    StaticRefs.throwIfNull(StaticRefs.getSceneManager()).usableLayer(),
                     "render" + result.size()
             );
         }
@@ -750,7 +752,7 @@ public class Grid2DPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_renderBtnActionPerformed
 
     private void presetComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_presetComboBoxActionPerformed
-        String item = presetComboBox.getSelectedItem().toString();
+        String item = presetComboBox.getSelectedItem() == null ? "" : presetComboBox.getSelectedItem().toString();
         // XY XZ YZ
         switch (item) {
             case "XY" -> {

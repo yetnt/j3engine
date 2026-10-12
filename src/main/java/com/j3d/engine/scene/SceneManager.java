@@ -19,6 +19,8 @@ import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.engine.scene.nodes.layer.LayerList;
 import com.j3d.gen.settings.Settings;
 import com.j3d.ui.theme.J3DTheme;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.*;
@@ -60,7 +62,7 @@ public final class SceneManager {
      * A list of overlap Runnables to be executed after rendering such that it's on top of everything else.
      * This is not for UI but mainly for debugging purposes.
      */
-    private HashMap<UUID, Consumer<Graphics2D>> overlaps = new HashMap<>();
+    private final HashMap<UUID, Consumer<Graphics2D>> overlaps = new HashMap<>();
 
     /**
      * The history manager for undo/redo functionality.
@@ -80,6 +82,7 @@ public final class SceneManager {
     }
 
     private final String usable = "Usable";
+    @NotNull
     public Layer usableLayer() {
         boolean l = layers.stream()
                 .anyMatch(la -> la.getName().equals(usable));
@@ -96,7 +99,7 @@ public final class SceneManager {
 
     }
 
-    public void axisGrid(Graphics2D g, Camera camera) {
+    public void axisGrid(@NotNull Graphics2D g, Camera camera) {
         int mult = Settings.sceneProperties.axisLength.getValue();
 
         int start = (int) (50*mult);
@@ -138,7 +141,7 @@ public final class SceneManager {
      * @param g The Graphics2D object to draw on.
      * @param camera The camera instance used for perspective transformation.
      */
-    public void axis(Graphics2D g, Camera camera) {
+    public void axis(@NotNull Graphics2D g, Camera camera) {
 //        double axisLength = camera.getPosition().magnitude() * 0.9;
         double axisLength = 20;
         int axisOffset = 2;
@@ -169,12 +172,10 @@ public final class SceneManager {
         g.setStroke(s);
     }
 
-    public void drawLine3D(Graphics2D g, Vector3 start, Vector3 end, Camera cam) {
+    public void drawLine3D(@NotNull Graphics2D g, @NotNull Vector3 start, @NotNull Vector3 end, Camera cam) {
         ScreenPoint p1 = start.toPoint(cam).toScreen();
         ScreenPoint p2 = end.toPoint(cam).toScreen();
-        if (p1 != null && p2 != null) {
-            g.drawLine(p1.x, p1.y, p2.x, p2.y);
-        }
+        g.drawLine(p1.x, p1.y, p2.x, p2.y);
     }
 
     /**
@@ -185,7 +186,7 @@ public final class SceneManager {
      * @param text The string to be drawn.
      * @param cam The {@link Camera} instance used for perspective transformation.
      */
-    public void drawText3D(Graphics2D g, Vector3 location, String text, Camera cam) {
+    public void drawText3D(@NotNull Graphics2D g, @NotNull Vector3 location, String text, Camera cam) {
         ScreenPoint p = location.toPoint(cam).toScreen();
         FontMetrics fm = g.getFontMetrics();
         int width = fm.stringWidth(text);
@@ -207,7 +208,7 @@ public final class SceneManager {
      * @param bgColor The background color for the text box.
      * @param fgColor The foreground color for the text.
      */
-    public void drawText3D(Graphics2D g, Vector3 location, String text, Camera cam, Color bgColor, Color fgColor) {
+    public void drawText3D(@NotNull Graphics2D g, @NotNull Vector3 location, String text, Camera cam, Color bgColor, Color fgColor) {
         ScreenPoint p = location.toPoint(cam).toScreen();
         FontMetrics fm = g.getFontMetrics();
         int width = fm.stringWidth(text);
@@ -219,7 +220,7 @@ public final class SceneManager {
         g.drawString(text, p.x, p.y - 2);
     }
 
-    public void drawPoly3D(Graphics2D g, ArrayList<Vector3> points) {
+    public void drawPoly3D(Graphics2D g, @NotNull ArrayList<Vector3> points) {
         int nPoints = points.size();
         int[] xPoints = new int[nPoints];
         int[] yPoints = new int[nPoints];
@@ -239,7 +240,7 @@ public final class SceneManager {
     /**
      * "Clears" the screen by drawing a white box over it.
      */
-    public void clear(Graphics2D graphics) {
+    public void clear(@NotNull Graphics2D graphics) {
 //        graphics.setColor(Color.WHITE); // or whatever your background is
         graphics.clearRect(0, 0, screenSize.width, screenSize.height);
     }
@@ -325,14 +326,14 @@ public final class SceneManager {
         return currentSelection;
     }
 
-    public SelectionManager select(Thing thing) {
+    public SelectionManager select(@NotNull Thing thing) {
         thing.getObjects()
                 .stream().filter(o -> !currentSelection.getSelected().contains(o))
                 .forEach(currentSelection.getSelected()::add);
         return currentSelection;
     }
 
-    public SelectionManager select(ArrayList<GObject> objects) {
+    public SelectionManager select(@NotNull ArrayList<GObject> objects) {
         objects.stream()
                 .filter(o -> !currentSelection.getSelected().contains(o))
                 .forEach(currentSelection.getSelected()::add);
@@ -373,6 +374,8 @@ public final class SceneManager {
         this.clipboard = clipboard;
     }
 
+    @NotNull
+    @Contract(value = " -> new", pure = true)
     public ArrayList<GObject> getClipboard() {
         return new ArrayList<>(clipboard);
     }
@@ -450,7 +453,7 @@ public final class SceneManager {
         currentSelection.clear();
         unparented.clear();
         history.clear(); // also clears backup.
-        StaticRefs.getMainPanel().repaint();
+        StaticRefs.throwIfNull(StaticRefs.getMainPanel()).repaint();
     }
 
     public void drawTriangle3D(Graphics2D graphics2D, Vector3 pos1, Vector3 pos2, Vector3 pos3) {
@@ -459,7 +462,7 @@ public final class SceneManager {
     }
 
     public void removeFromParent(GObject o, Thing t) {
-        Thing thing = StaticRefs.getSceneManager().findObjectParent(o);
+        Thing thing = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).findObjectParent(o);
         if (thing.equals(t)) return;
         thing.remove(o);
     }

@@ -3,6 +3,7 @@ package com.j3d.engine.scene.find;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.layer.Layer;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A container class for the results of a search operation performed by the {@link Finder}.
@@ -16,7 +17,7 @@ import com.j3d.engine.scene.nodes.layer.Layer;
  * @see GObject
  * @author Lehlogonolo Poole
  */
-public class FindResult {
+public final class FindResult {
     private Layer layer;
     private int layerIndex = -1;
     private Thing thing;
@@ -25,20 +26,20 @@ public class FindResult {
     private int gObjectIndex = -1;
     private boolean empty = false;
 
-    protected FindResult() {
+    FindResult() {
         empty = true;
     }
-    protected FindResult(Layer l, int i) {
+    FindResult(Layer l, int i) {
         layer = l;
         layerIndex = i;
     }
-    protected FindResult(Layer l, int i, Thing t, int f) {
+    FindResult(Layer l, int i, Thing t, int f) {
         layer = l;
         layerIndex = i;
         thing = t;
         thingIndex = f;
     }
-    protected FindResult(Layer l, int i, Thing t, int f, GObject g, int j) {
+    FindResult(Layer l, int i, Thing t, int f, GObject g, int j) {
         layer = l;
         layerIndex = i;
         thing = t;
@@ -91,7 +92,7 @@ public class FindResult {
      * Returns the found GObject.
      * @return The GObject, or null if no GObject was found.
      */
-    public GObject getgObject() {
+    @Nullable public GObject getgObject() {
         return gObject;
     }
 
@@ -107,7 +108,7 @@ public class FindResult {
      * Returns the found Layer.
      * @return The Layer, or null if no Layer was found.
      */
-    public Layer getLayer() {
+    @Nullable public Layer getLayer() {
         return layer;
     }
 
@@ -123,7 +124,7 @@ public class FindResult {
      * Returns the found Thing.
      * @return The Thing, or null if no Thing was found.
      */
-    public Thing getThing() {
+    @Nullable public Thing getThing() {
         return thing;
     }
 }

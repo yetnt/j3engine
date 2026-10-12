@@ -1,5 +1,6 @@
 package com.j3d.engine.interact.selection;
 
+import com.j3d.StaticRefs;
 import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GLine;
@@ -10,8 +11,6 @@ import com.j3d.engine.scene.nodes.layer.Layer;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.function.Predicate;
-
-import static com.j3d.StaticRefs.getSceneManager;
 
 /**
  * Manages the selection of GObjects within a collection of Layers and Things.
@@ -43,6 +42,7 @@ public class SelectionManager {
             for (Thing t : layer) {
                 for (GObject obj : t.getObjects()) {
                     HashSet<GObject> objectsToSelect = new HashSet<>();
+                    SceneManager sm = StaticRefs.throwIfNull(StaticRefs.getSceneManager());
                     switch (selectionQuery.type) {
                         case BOUNDS_STRICT -> {
                             // If the entire object is within the selection, it is considered selected.
@@ -62,7 +62,7 @@ public class SelectionManager {
                             }
                         }
                         case SUBTRACT -> {
-                            boolean wasSelected = getSceneManager().getSelected().contains(obj);
+                            boolean wasSelected = sm.getSelected().contains(obj);
                             boolean inBox = selectionQuery.has(obj, false);
 
                             if (wasSelected && !inBox)
@@ -70,10 +70,10 @@ public class SelectionManager {
                         }
                         case UNION -> {
                             // pre-add the current selected objects.
-                            getSceneManager().getSelected().stream()
+                            sm.getSelected().stream()
                                     .filter(o -> !selected.contains(o))
                                     .forEach(selected::add);
-                            boolean wasSelected = getSceneManager().getSelected().contains(obj);
+                            boolean wasSelected = sm.getSelected().contains(obj);
                             boolean inBox = selectionQuery.has(obj, false);
 
                             if (!wasSelected && inBox)

@@ -48,7 +48,7 @@ public final class Executor implements Artefact {
      */
     @Override
     public void run() {
-        StaticRefs.getSceneManager().layers.add(layer);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).layers.add(layer);
 
         Thing ngon = ngon(3);
         Thing cub = cube();
@@ -183,7 +183,7 @@ public final class Executor implements Artefact {
                 newkeyStroke
         );
         // rebind the keystroke
-        KeyBindings.UpdatedJ3Key updatedJ3Key = StaticRefs.getGlobalKeybinds().rebindJ3KeyKeystroke(
+        KeyBindings.UpdatedJ3Key updatedJ3Key = StaticRefs.throwIfNull(StaticRefs.getGlobalKeybinds()).rebindJ3KeyKeystroke(
                 oldkeyStroke,
                 SELECT_SUB.getKey()
         );
@@ -276,10 +276,10 @@ public final class Executor implements Artefact {
     }
 
     public void note(GPoint point, String label) {
-        StaticRefs.getSceneManager().scheduleOverlap(
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).scheduleOverlap(
                 point.getId(),
                 g ->
-                        StaticRefs.getSceneManager().drawText3D(
+                        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).drawText3D(
                                 g, point.getPivot(),
                                 label, StaticRefs.getCamera()
                         )

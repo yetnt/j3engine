@@ -34,8 +34,8 @@ public enum GlobalKeybinds {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (StaticRefs.getCommandParser().commandPalette.isDisabled()) return;
-                            StaticRefs.getMainFrame().getCommandPalette()
+                            if (StaticRefs.throwIfNull(StaticRefs.getCommandParser()).commandPalette.isDisabled()) return;
+                            StaticRefs.throwIfNull(StaticRefs.getMainFrame()).getCommandPalette()
                                     .inputField.requestFocusInWindow();
                         }
                     }
@@ -59,7 +59,7 @@ public enum GlobalKeybinds {
                                             getCamera().getForward().mult(mvSpeed)
                                     )
                             );
-                            StaticRefs.getMainFrame().repaint();
+                            StaticRefs.throwIfNull(StaticRefs.getMainFrame()).repaint();
                         }
                     }
             ), true
@@ -81,7 +81,7 @@ public enum GlobalKeybinds {
                                             getCamera().getForward().mult(mvSpeed)
                                     )
                             );
-                            StaticRefs.getMainFrame().repaint();
+                            StaticRefs.throwIfNull(StaticRefs.getMainFrame()).repaint();
                         }
                     }
             ), true
@@ -103,7 +103,7 @@ public enum GlobalKeybinds {
                                             getCamera().getRight().mult(mvSpeed)
                                     )
                             );
-                            StaticRefs.getMainFrame().repaint();
+                            StaticRefs.throwIfNull(StaticRefs.getMainFrame()).repaint();
                         }
                     }
             ), true
@@ -125,7 +125,7 @@ public enum GlobalKeybinds {
                                             getCamera().getRight().mult(mvSpeed)
                                     )
                             );
-                            StaticRefs.getMainFrame().repaint();
+                            StaticRefs.throwIfNull(StaticRefs.getMainFrame()).repaint();
                         }
                     }
             ), true
@@ -147,7 +147,7 @@ public enum GlobalKeybinds {
                                             getCamera().getUp().mult(mvSpeed)
                                     )
                             );
-                            StaticRefs.getMainFrame().repaint();
+                            StaticRefs.throwIfNull(StaticRefs.getMainFrame()).repaint();
                         }
                     }
             ), true
@@ -169,7 +169,7 @@ public enum GlobalKeybinds {
                                             getCamera().getUp().mult(mvSpeed)
                                     )
                             );
-                            StaticRefs.getMainFrame().repaint();
+                            StaticRefs.throwIfNull(StaticRefs.getMainFrame()).repaint();
                         }
                     }
             ), true
@@ -240,10 +240,10 @@ public enum GlobalKeybinds {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            StaticRefs.getCommandParser().commandPalette.setDisabled(
-                                    !StaticRefs.getCommandParser().commandPalette.isDisabled()
+                            StaticRefs.throwIfNull(StaticRefs.getCommandParser()).commandPalette.setDisabled(
+                                    !StaticRefs.throwIfNull(StaticRefs.getCommandParser()).commandPalette.isDisabled()
                             );
-                            StaticRefs.getMainFrame().repaint();
+                            StaticRefs.throwIfNull(StaticRefs.getMainFrame()).repaint();
                         }
                     }
             )
@@ -255,8 +255,8 @@ public enum GlobalKeybinds {
                     new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            StaticRefs.getSceneManager().selectAll();
-                            StaticRefs.getMainFrame().repaint();
+                            StaticRefs.throwIfNull(StaticRefs.getSceneManager()).selectAll();
+                            StaticRefs.throwIfNull(StaticRefs.getMainFrame()).repaint();
                         }
                     }
             )

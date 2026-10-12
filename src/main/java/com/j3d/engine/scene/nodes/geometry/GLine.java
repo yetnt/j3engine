@@ -25,8 +25,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.j3d.StaticRefs.getSceneManager;
-
 /**
  * GLine represents, you guessed it, a line.
  * <p>
@@ -91,7 +89,7 @@ public final class GLine extends GObject implements HasParents<GTri>, Idempotent
         B.attachListener(this);
         B.addParent(this);
 
-        StaticRefs.getSceneManager().hasNoParent(this);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).hasNoParent(this);
         A.addParent(this);
         B.attachListener(this);
         addProps();
@@ -176,13 +174,13 @@ public final class GLine extends GObject implements HasParents<GTri>, Idempotent
     @Override
     public void addParent(GTri parent) {
         parents.add(parent);
-        StaticRefs.getSceneManager().hasParent(this);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).hasParent(this);
     }
 
     @Override
     public void removeParent(GTri parent) {
         boolean su = parents.remove(parent);
-        StaticRefs.getSceneManager().hasNoParent(this);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).hasNoParent(this);
     }
 
     @Override
@@ -213,7 +211,7 @@ public final class GLine extends GObject implements HasParents<GTri>, Idempotent
         props.add(getId(), copy(a, b));
     }
 
-    protected GLine copy(GPoint copyA, GPoint copyB) {
+    private GLine copy(GPoint copyA, GPoint copyB) {
         GLine line = new GLine(
                 copyA,
                 copyB
@@ -246,7 +244,7 @@ public final class GLine extends GObject implements HasParents<GTri>, Idempotent
                     point.detachListener(this);
                 }
             });
-            getSceneManager().hasParent(this);
+            StaticRefs.throwIfNull(StaticRefs.getSceneManager()).hasParent(this);
             pointA = null;
             pointB = null;
             return pointsList;

@@ -45,7 +45,7 @@ public record Conversion(
     public static Conversion global() {
         return new Conversion(
                 Settings.sceneProperties.scale.getValue(),
-                StaticRefs.getSceneManager().screenSize
+                StaticRefs.throwIfNull(StaticRefs.getSceneManager()).screenSize
         );
     }
 }

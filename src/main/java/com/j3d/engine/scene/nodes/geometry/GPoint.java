@@ -74,9 +74,9 @@ public final class GPoint extends GObject implements HasParents<GObject>, Decomp
      * @param v3 The position of this point.
      */
     public GPoint(Vector3 v3) {
-        StaticRefs.getSceneManager().points.add(this);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).points.add(this);
         setPivot(v3);
-        StaticRefs.getSceneManager().hasNoParent(this);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).hasNoParent(this);
         addProps();
     }
 
@@ -92,7 +92,7 @@ public final class GPoint extends GObject implements HasParents<GObject>, Decomp
     @Override
     public boolean deleteSelf() {
         super.deleteSelf();
-        StaticRefs.getSceneManager().points.remove(this);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).points.remove(this);
         return true;
     }
 
@@ -116,13 +116,13 @@ public final class GPoint extends GObject implements HasParents<GObject>, Decomp
     @Override
     public void addParent(GObject parent) {
         parents.add(parent);
-        StaticRefs.getSceneManager().hasParent(this);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).hasParent(this);
     }
 
     @Override
     public void removeParent(GObject parent) {
         boolean su = parents.remove(parent);
-        StaticRefs.getSceneManager().hasNoParent(this);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).hasNoParent(this);
     }
 
     @Override

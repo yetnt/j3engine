@@ -16,9 +16,6 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import static com.j3d.StaticRefs.getSceneManager;
-
-
 /**
  *
  * @author yetnt
@@ -49,7 +46,7 @@ public class PropertiesPanel extends javax.swing.JPanel {
 
     public static void load() {
         StaticRefs.getPropertiesPanel().clear();
-        HashSet<GObject> selected = getSceneManager().getSelected();
+        HashSet<GObject> selected = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected();
         ArrayList<GObject> filtered =
                 PropertiesUI.getFilteredObjects(selected);
         StaticRefs.getPropertiesPanel().addAll(

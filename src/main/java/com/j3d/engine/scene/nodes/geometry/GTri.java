@@ -8,6 +8,7 @@ import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.react.events.IdempotentEventListener;
 import com.j3d.engine.react.events.payloads.GPointMovedEvent;
+import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.copy.CopyProperties;
 import com.j3d.engine.scene.copy.InvalidCopyException;
 import com.j3d.engine.scene.draw.RenderState;
@@ -31,8 +32,6 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static com.j3d.StaticRefs.getSceneManager;
 
 /**
  * GTri represents a Triangle. What'd you expect kau.
@@ -228,7 +227,7 @@ public final class GTri extends GObject implements IdempotentEventListener<GPoin
                 winding.toVector3List()
                 , Vector3::add).div(3));
         normal();
-        StaticRefs.getSceneManager().getRenderer().register(toRenderState());
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getRenderer().register(toRenderState());
         drawDist();
         addProps();
     }
@@ -257,7 +256,7 @@ public final class GTri extends GObject implements IdempotentEventListener<GPoin
 
         setPivot(Vector3.reduceToVector3(winding.toVector3List(), Vector3::add).div(3));
         normal();
-        StaticRefs.getSceneManager().getRenderer().register(toRenderState());
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getRenderer().register(toRenderState());
         drawDist();
         addProps();
     }
@@ -408,7 +407,7 @@ public final class GTri extends GObject implements IdempotentEventListener<GPoin
                     if (!line.hasParent()) line.deleteSelf();
                 }
         );
-        getSceneManager().removeOverlap(getId());
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).removeOverlap(getId());
         return true;
     }
 
@@ -521,11 +520,12 @@ public final class GTri extends GObject implements IdempotentEventListener<GPoin
      * Private method to draw the triangle's distance depth and normal overlays.
      */
     private void drawDist() {
-        getSceneManager().scheduleOverlap(getId(), g -> {
+        SceneManager sm = StaticRefs.throwIfNull(StaticRefs.getSceneManager());
+        sm.scheduleOverlap(getId(), g -> {
                     if (StaticConfig.isShowTriDistances()) {
                         // draw text showing the tris distance from camera
                         Vector3 triCentroid = this.getPivot();
-                        getSceneManager().drawText3D(g, triCentroid,
+                        sm.drawText3D(g, triCentroid,
                                 String.format("Dist: %.2f", this.getPivot().sub(StaticRefs.getCamera().getPosition()).magnitude()),
                                 StaticRefs.getCamera(),
                                 new Color(0, 0, 0),
@@ -535,7 +535,7 @@ public final class GTri extends GObject implements IdempotentEventListener<GPoin
                         // draw text showing the tris depth from camera
                         Vector3 triCentroid = this.getPivot();
                         double depth = this.calcDepth();
-                        getSceneManager().drawText3D(g, triCentroid.add(new Vector3(1, 0, 0)),
+                        sm.drawText3D(g, triCentroid.add(new Vector3(1, 0, 0)),
                                 String.format("Depth: %.2f", depth),
                                 StaticRefs.getCamera(),
                                 new Color(0, 0, 0),
@@ -544,14 +544,14 @@ public final class GTri extends GObject implements IdempotentEventListener<GPoin
                     if (StaticConfig.isShowNormals() || showNorm) {
                         // draw text showing the tris normal
                         Vector3 triCentroid = this.getPivot();
-//                        StaticRefs.getSceneManager().drawText3D(g, triCentroid.sub(new Vector3(4, 0, 0)),
+//                        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).drawText3D(g, triCentroid.sub(new Vector3(4, 0, 0)),
 //                                String.format("Normal: (%.2f, %.2f, %.2f)", normal().getX(), normal().getY(), normal().getZ()),
 //                                StaticRefs.getCamera(),
 //                                new Color(0, 0, 0),
 //                                this.getColour());
                         // The following code draws the normal
                         g.setColor(Color.RED);
-                        getSceneManager().drawLine3D(g, getPivot(), getPivot().add(normal().mult(0.5)), StaticRefs.getCamera());
+                        sm.drawLine3D(g, getPivot(), getPivot().add(normal().mult(0.5)), StaticRefs.getCamera());
                     }
                 }
         );

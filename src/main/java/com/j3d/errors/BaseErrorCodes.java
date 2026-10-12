@@ -20,10 +20,12 @@ import com.j3d.threads.ThreadsException;
  */
 public enum BaseErrorCodes {
 
+    GENERIC(10),
+
     /**
      * Base code for {@link GenException}
      */
-    GENERATION(10),
+    GENERATION(20),
     /**
      * Base code for {@link ThreadsException}
      */

@@ -76,7 +76,7 @@ public class History extends ArrayList<Action<?>> {
 
     private static void repaint() {
         if (StaticRefs.getMainPanel() != null)
-            StaticRefs.getMainPanel().repaint();
+            StaticRefs.throwIfNull(StaticRefs.getMainPanel()).repaint();
     }
 
     // YOU ARE CHEATING.

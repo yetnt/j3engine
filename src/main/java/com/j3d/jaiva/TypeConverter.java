@@ -101,7 +101,7 @@ public class TypeConverter {
         if (!(id instanceof UUID uuid))
             throw new IllegalArgumentException("Cannot convert " + object.getEngineProperties().getLast() + " objects.");
 
-        return StaticRefs.getSceneManager().finder().findFirst(
+        return StaticRefs.throwIfNull(StaticRefs.getSceneManager()).finder().findFirst(
                 GObject.class, Finder.idQuery(), uuid
         ).getgObject();
 
@@ -115,13 +115,13 @@ public class TypeConverter {
 
         UUID uuid = UUID.fromString(uuidString);
 
-        Thing t = StaticRefs.getSceneManager().finder().findFirst(
+        Thing t = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).finder().findFirst(
                 Thing.class, Finder.idQuery(), uuid
         ).getThing();
 
         if (t != null) return t;
 
-        return StaticRefs.getSceneManager().finder().findFirst(
+        return StaticRefs.throwIfNull(StaticRefs.getSceneManager()).finder().findFirst(
                 GObject.class, Finder.idQuery(), uuid
         ).getgObject();
     }

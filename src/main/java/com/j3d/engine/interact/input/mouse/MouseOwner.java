@@ -198,7 +198,7 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
      * the internal {@link #physicalMouse} state to reflect the new position.
      */
     public void sendMouseToCentre() {
-        EngineFrame frame = StaticRefs.getMainFrame();
+        EngineFrame frame = StaticRefs.throwIfNull(StaticRefs.getMainFrame());
         int centerX = frame.getX() + frame.getWidth() / 2;
         int centerY = frame.getY() + frame.getHeight() / 2;
         robot.mouseMove(centerX, centerY);
@@ -213,30 +213,30 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
      * @param e The {@link MouseEvent} containing the current mouse coordinates.
      */
     public void wrap(@NotNull MouseEvent e) {
-        if (e.getX() + 10 > StaticRefs.getSceneManager().screenSize.width) {
+        if (e.getX() + 10 > StaticRefs.throwIfNull(StaticRefs.getSceneManager()).screenSize.width) {
             // move the mouse to the oppsite side
             robot.mouseMove(
-                    StaticRefs.getMainFrame().getLocationOnScreen().x -
-                            (StaticRefs.getSceneManager().screenSize.width + 5),
+                    StaticRefs.throwIfNull(StaticRefs.getMainFrame()).getLocationOnScreen().x -
+                            (StaticRefs.throwIfNull(StaticRefs.getSceneManager()).screenSize.width + 5),
                     e.getY() /* +
-                            (StaticRefs.getSceneManager().screenSize.height - e.getY() )*/
+                            (StaticRefs.throwIfNull(StaticRefs.getSceneManager()).screenSize.height - e.getY() )*/
             );
             physicalMouse.addX(5);
             old = new Point(
                     5,
                     e.getPoint().y
             );
-        } else if (e.getX() - 8 <= 0 /*&& physicalMouse.getX() - StaticRefs.getSceneManager().screenSize.width > 0*/) {
+        } else if (e.getX() - 8 <= 0 /*&& physicalMouse.getX() - StaticRefs.throwIfNull(StaticRefs.getSceneManager()).screenSize.width > 0*/) {
             // move the mouse to the opposite side
             robot.mouseMove(
-                    StaticRefs.getMainFrame().getLocationOnScreen().x +
-                            (StaticRefs.getSceneManager().screenSize.width - 2),
+                    StaticRefs.throwIfNull(StaticRefs.getMainFrame()).getLocationOnScreen().x +
+                            (StaticRefs.throwIfNull(StaticRefs.getSceneManager()).screenSize.width - 2),
                     e.getY() /* +
-                            (StaticRefs.getSceneManager().screenSize.height - e.getY() )*/
+                            (StaticRefs.throwIfNull(StaticRefs.getSceneManager()).screenSize.height - e.getY() )*/
             );
             physicalMouse.addX(-2);
             old = new Point(
-                    StaticRefs.getSceneManager().screenSize.width - 2,
+                    StaticRefs.throwIfNull(StaticRefs.getSceneManager()).screenSize.width - 2,
                     e.getPoint().y
             );
         } else {
@@ -244,7 +244,7 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
             old = e.getPoint();
         }
 
-        StaticRefs.getHoverLabel().setText(
+        StaticRefs.throwIfNull(StaticRefs.getHoverLabel()).setText(
                 new InlineHTML("PHYS="+physicalMouse)
                         .addLn("MOUSE="+e.getPoint())
                         .wrapHTML()

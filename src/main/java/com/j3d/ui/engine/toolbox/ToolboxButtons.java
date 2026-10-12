@@ -91,19 +91,19 @@ public class ToolboxButtons {
                     if (currentViewableSubbox instanceof Subbox other)
                         other.delete();
                     sub.setBounds(
-                            StaticRefs.getMainFrame().getWidth() / 2 - (sub.getPreferredSize().width / 2),
-                            (StaticRefs.getMainFrame().getHeight() / 2 - (sub.getPreferredSize().height / 2)) - 30,
+                            StaticRefs.throwIfNull(StaticRefs.getMainFrame()).getWidth() / 2 - (sub.getPreferredSize().width / 2),
+                            (StaticRefs.throwIfNull(StaticRefs.getMainFrame()).getHeight() / 2 - (sub.getPreferredSize().height / 2)) - 30,
                             sub.getPreferredSize().width,
                             sub.getPreferredSize().height + 10
                     );
-                    StaticRefs.getMainFrame().getLayeredPane().add(sub, JLayeredPane.DRAG_LAYER +1);
+                    StaticRefs.throwIfNull(StaticRefs.getMainFrame()).getLayeredPane().add(sub, JLayeredPane.DRAG_LAYER +1);
 
                     s.setEnabled(true);
                     s.setVisible(true);
                     currentViewableSubbox = s;
                 }
-                StaticRefs.getMainFrame().repaint();
-                StaticRefs.getMainFrame().revalidate();
+                StaticRefs.throwIfNull(StaticRefs.getMainFrame()).repaint();
+                StaticRefs.throwIfNull(StaticRefs.getMainFrame()).revalidate();
             }
         });
         l.addMouseListener(new MouseAdapter() {

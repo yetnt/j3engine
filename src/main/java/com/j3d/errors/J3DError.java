@@ -24,7 +24,7 @@ public class J3DError extends RuntimeException {
      * The base category code for this error.
      * This helps categorize errors into broader groups.
      */
-    private int baseCode = 0;
+    private int baseCode;
 
     /**
      * Constructs a new {@code J3DError} with the specified detail message and base code.
@@ -49,6 +49,11 @@ public class J3DError extends RuntimeException {
      */
     public J3DError(String message, Throwable cause, int baseCode) {
         super(message, cause);
+        this.baseCode = baseCode;
+    }
+
+    public J3DError(Throwable cause, int baseCode) {
+        super(cause);
         this.baseCode = baseCode;
     }
 

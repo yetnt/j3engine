@@ -24,7 +24,7 @@ public class CopyCmd extends Subcommand {
     @Override
     public void run(@NotNull Invoker invoker, SafeJLabel logLabel, String aliasUsed, @NotNull Object[] args, @NotNull ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
-        HashSet<GObject> selected = StaticRefs.getSceneManager().getSelected();
+        HashSet<GObject> selected = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected();
         if (selected.isEmpty()) {
             logLabel.setText("Nothing to copy");
             return;
@@ -32,6 +32,6 @@ public class CopyCmd extends Subcommand {
 
         logLabel.setText("Copied " + selected.size() + " objects");
 
-        StaticRefs.getSceneManager().setClipboard(new ArrayList<>(selected));
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).setClipboard(new ArrayList<>(selected));
     }
 }

@@ -37,7 +37,7 @@ public class LongTask<T> {
     }
 
      public void run() {
-         Spinner throbber = new Spinner(StaticRefs.getMainFrame(), true);
+         Spinner throbber = new Spinner(StaticRefs.throwIfNull(StaticRefs.getMainFrame()), true);
 
          SwingWorker<Void, Void> worker = new SwingWorker<>() {
              T o;
@@ -62,7 +62,7 @@ public class LongTask<T> {
                      );
                  }
                  throbber.dispose();
-                 StaticRefs.getMainFrame().repaint();
+                 StaticRefs.throwIfNull(StaticRefs.getMainFrame()).repaint();
              }
          };
 

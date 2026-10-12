@@ -294,7 +294,7 @@ public final class Layer extends ArrayList<Thing> implements SceneObjectList {
 
     @Override
     public void instantDelete() {
-        StaticRefs.getSceneManager().layers.remove(this);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).layers.remove(this);
         for (Thing t : this) {
             t.instantDelete();
         }

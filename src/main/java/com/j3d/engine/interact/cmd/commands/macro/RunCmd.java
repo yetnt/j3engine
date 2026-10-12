@@ -47,7 +47,7 @@ public class RunCmd extends Subcommand {
             logLabel.setText("No macro with the name " + SafeJLabel.EMPH + " exists!", new InlineHTML(name).bold().italic());
         }
 
-        StaticRefs.getHoverLabel().setText(
+        StaticRefs.throwIfNull(StaticRefs.getHoverLabel()).setText(
                 "Running macro " + SafeJLabel.EMPH + ".",
                 new InlineHTML(name).bold().italic()
         );

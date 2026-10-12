@@ -55,14 +55,14 @@ public class QuickTranslateCmd extends Subcommand implements StatefulCommand<Voi
 
         CommandsManager.setAsCurrent(this);
 
-        if (StaticRefs.getSceneManager().getSelected().isEmpty()) {
+        if (StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected().isEmpty()) {
             logLabel.setText("No objects selected!");
             CommandsManager.clearCurrent();
             return;
         }
 
         StaticConfig.movementControls = false;
-        StaticRefs.getSceneManager().getSelected().stream()
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected().stream()
                 .filter(obj -> obj instanceof GPoint)
                 .map(o -> (GPoint)o)
                 .forEach(o -> {
@@ -79,8 +79,8 @@ public class QuickTranslateCmd extends Subcommand implements StatefulCommand<Voi
     public void onStart(Void object, SafeJLabel label) {
         qTranslateMouseOwner.requestOwnership();
         CursorManager.set(CursorNames.HAND_GRABBING);
-        StaticRefs.getMainPanel().repaint();
-        StaticRefs.getSceneManager().scheduleOverlap(qTransCmdUUID, c ->
+        StaticRefs.throwIfNull(StaticRefs.getMainPanel()).repaint();
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).scheduleOverlap(qTransCmdUUID, c ->
                 {
                     Vector3 m = qTranslateMouseOwner.mouseLoc();
                     if (m != null) {
@@ -103,12 +103,12 @@ public class QuickTranslateCmd extends Subcommand implements StatefulCommand<Voi
     public void cleanup(SafeJLabel label) {
         EngineFrame.setMouseOwner(null);
         CursorManager.setDefault();
-        StaticRefs.getSceneManager().removeOverlap(qTransCmdUUID);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).removeOverlap(qTransCmdUUID);
         label.clear();
         CommandsManager.clearCurrent();
         objectOriginalPosiions.clear();
         pointsToTransform.clear();
-        StaticRefs.getMainPanel().repaint();
+        StaticRefs.throwIfNull(StaticRefs.getMainPanel()).repaint();
         qTranslateMouseOwner.clear();
         StaticConfig.movementControls = true;
     }

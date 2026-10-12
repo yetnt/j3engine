@@ -35,7 +35,7 @@ public class JoinCmd extends Command implements SemiStatefulCommand {
         super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
         if (args.length < 1 || !(args[0] instanceof String s)) {
             // handle
-            HashSet<GObject> objects = StaticRefs.getSceneManager().getSelected();
+            HashSet<GObject> objects = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected();
             if (objects.isEmpty()) {
                 logLabel.setText("No objects selected");
                 return;
@@ -70,7 +70,7 @@ public class JoinCmd extends Command implements SemiStatefulCommand {
                 // ask the user to specify the control point.
                 CommandsManager.setAsCurrent(this);
 
-                StaticRefs.getSceneManager().getSelected().clear();
+                StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected().clear();
 
                 selectionPreCondition = new SelectionPreCondition(
                         () -> {
@@ -80,7 +80,7 @@ public class JoinCmd extends Command implements SemiStatefulCommand {
                             fire(true);
 
                             // check the new selection if it ahs a single point
-                            HashSet<GObject> newSelection = StaticRefs.getSceneManager().getSelected();
+                            HashSet<GObject> newSelection = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected();
                             if (newSelection.size() != 1) {
                                 label.setText(
                                         "Only a singular point can be selected!"
@@ -107,7 +107,7 @@ public class JoinCmd extends Command implements SemiStatefulCommand {
                         },
                         "(Reselect a point to use as the control point for the curve)"
                 );
-                StaticRefs.getMainFrame().requestFocusInWindow(); // Remove focus from the command pallete
+                StaticRefs.throwIfNull(StaticRefs.getMainFrame()).requestFocusInWindow(); // Remove focus from the command pallete
 
                 if (selectionPreCondition.execute(label)) {
                     selectionPreCondition.finaliseCleanup();

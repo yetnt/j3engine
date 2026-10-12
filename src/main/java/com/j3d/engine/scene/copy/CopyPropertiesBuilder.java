@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * @see CopyProperties
  * @see InvalidCopyException
  */
-public class CopyPropertiesBuilder {
+public final class CopyPropertiesBuilder {
     private CopyProperties properties;
 
     /**
@@ -24,7 +24,7 @@ public class CopyPropertiesBuilder {
      * @param objects The {@link ArrayList} of {@link GObject} instances
      *                for which these copy properties will apply.
      */
-    protected CopyPropertiesBuilder(ArrayList<GObject> objects) {
+    CopyPropertiesBuilder(ArrayList<GObject> objects) {
         properties = new CopyProperties(objects);
     }
 

@@ -97,12 +97,12 @@ public class TypingHints {
                                 c.getType() != CmdToken.Type.TAGGED && c.getType() != null
                 )
                 .collect(Collectors.toCollection(ArrayList::new));
-        StaticRefs.getCommandParser().safeJLabel().clearLower();
+        StaticRefs.throwIfNull(StaticRefs.getCommandParser()).safeJLabel().clearLower();
         // If the tokens are empty. Do nothing
         if (tokens.isEmpty()) return;
 
         if (tokens.getFirst().getType() != CmdToken.Type.CMD_NAME) {
-            StaticRefs.getCommandParser().safeJLabel().setText(
+            StaticRefs.throwIfNull(StaticRefs.getCommandParser()).safeJLabel().setText(
                     new InlineHTML("The first argument (command name) is usually a string bro")
                             .italic().wrapHTML()
             );
@@ -122,14 +122,14 @@ public class TypingHints {
                     partial.append(matches.getSecond().get(i)).append(" ");
             }
 
-            StaticRefs.getCommandParser().safeJLabel().setLower(
+            StaticRefs.throwIfNull(StaticRefs.getCommandParser()).safeJLabel().setLower(
                     new InlineHTML(likely + " " + partial)
                             .font("4")
                             .wrapHTML(),
                     20
             );
             // repaint cuz wtf is happening.
-            StaticRefs.getCommandParser().safeJLabel().repaint();
+            StaticRefs.throwIfNull(StaticRefs.getCommandParser()).safeJLabel().repaint();
 
             return;
         }
@@ -137,7 +137,7 @@ public class TypingHints {
         String commandAlias = tokens.getFirst().getInput();
         Command command = CommandsManager.getCommand(commandAlias);
         if (command == null) {
-            StaticRefs.getCommandParser().safeJLabel().setText(
+            StaticRefs.throwIfNull(StaticRefs.getCommandParser()).safeJLabel().setText(
                     "This shouldn't happen... No command " + commandAlias + " found..."
             );
             return;
@@ -146,7 +146,7 @@ public class TypingHints {
         ArrayList<String> usages = command.usages(commandAlias);
 
         if (!taggedArgErr)
-            StaticRefs.getCommandParser().safeJLabel().setText(
+            StaticRefs.throwIfNull(StaticRefs.getCommandParser()).safeJLabel().setText(
                     new InlineHTML(command.description).bold().wrapHTML(),
                     20
             );
@@ -155,13 +155,13 @@ public class TypingHints {
 
         // Just take the first element
         if (usag.isEmpty()) {
-            StaticRefs.getCommandParser().safeJLabel().setLower(
+            StaticRefs.throwIfNull(StaticRefs.getCommandParser()).safeJLabel().setLower(
                     "No usage found.... Try removing some characters"
             );
             return;
         }
 
-        StaticRefs.getCommandParser().safeJLabel().setLower(
+        StaticRefs.throwIfNull(StaticRefs.getCommandParser()).safeJLabel().setLower(
                 colourTaggedArgs(
                         colourGivenUsage(usag.getFirst(), tokens),
                         command,
@@ -369,7 +369,7 @@ public class TypingHints {
                         .orElse(alias);
 
 
-                StaticRefs.getCommandParser().setInputField(
+                StaticRefs.throwIfNull(StaticRefs.getCommandParser()).setInputField(
                         longestMatchedAlias + " " // Space so the typing hint can kick in.
                 );
 
@@ -387,7 +387,7 @@ public class TypingHints {
                 ).orElse(null);
                 toks.removeLast();
 
-                StaticRefs.getCommandParser().setInputField(
+                StaticRefs.throwIfNull(StaticRefs.getCommandParser()).setInputField(
                         CmdToken.toStr(toks) + " " + match + " " // Space so the typing hint can kick in.
                 );
             }

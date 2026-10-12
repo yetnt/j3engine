@@ -71,7 +71,7 @@ public class ExplodeCmd extends Command{
         super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
         if (args.length > 0) {
             // check for selection
-            if (StaticRefs.getSceneManager().getSelected().isEmpty()) {
+            if (StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected().isEmpty()) {
                 logLabel.setText(
                         "A selection is required (When any input is given that isnt tagged arguments)"
                 );
@@ -79,7 +79,7 @@ public class ExplodeCmd extends Command{
             }
         }
         AreYouSure aysDialogue = new AreYouSure(
-                StaticRefs.getMainFrame(), true // sets to modal
+                StaticRefs.throwIfNull(StaticRefs.getMainFrame()), true // sets to modal
                 , InlineHTML.htmlOf(
                         new InlineHTML(
                                 "This command CANNOT be undone."
@@ -96,7 +96,7 @@ public class ExplodeCmd extends Command{
 
         if (args.length > 0) {
             // be safe and use selection.
-            explode(StaticRefs.getSceneManager().getSelected());
+            explode(StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected());
             addHistory("selection");
             return;
         }
@@ -110,7 +110,7 @@ public class ExplodeCmd extends Command{
         TaggedArgValue<String> t1 =
                 TaggedArgUtil.getTaggedArg(taggedArgs, "thing", String.class);
         if (t1 != null) {
-            Thing t = StaticRefs.getSceneManager().findThing(t1.value);
+            Thing t = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).findThing(t1.value);
             if (t == null) {
                 logLabel.setText("No thing with the name \"" + t1.value + "\" exists.");
                 return;
@@ -124,7 +124,7 @@ public class ExplodeCmd extends Command{
         TaggedArgValue<String> t2 =
                 TaggedArgUtil.getTaggedArg(taggedArgs, "layer", String.class);
         if (t2 != null) {
-            Layer l = StaticRefs.getSceneManager().layers.find(t2.value);
+            Layer l = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).layers.find(t2.value);
             if (l == null) {
                 logLabel.setText("No layer with the name \"" + t2.value + "\" exists.");
                 return;
@@ -139,7 +139,7 @@ public class ExplodeCmd extends Command{
     }
 
     private void explodeAll() {
-        StaticRefs.getSceneManager().layers.forEach(layer -> {
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).layers.forEach(layer -> {
             layer.forEach(this::explode);
         });
         addHistory("all-layers");
@@ -163,7 +163,7 @@ public class ExplodeCmd extends Command{
                     }
                 });
         lines.forEach(thing::remove);
-        StaticRefs.getSceneManager().select(thing);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).select(thing);
     }
 
     private void explode(HashSet<GObject> obj) {
@@ -187,12 +187,12 @@ public class ExplodeCmd extends Command{
 
         while (!toRemove.isEmpty()) {
             GObject seed = toRemove.iterator().next();
-            Thing parent = StaticRefs.getSceneManager().findObjectParent(seed);
+            Thing parent = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).findObjectParent(seed);
 
             parent.getObjects().removeIf(toRemove::remove);
         }
 
-        StaticRefs.getSceneManager().select(new ArrayList<>(points));
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).select(new ArrayList<>(points));
     }
 
     private void addHistory(String operation) {

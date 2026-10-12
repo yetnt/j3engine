@@ -81,7 +81,7 @@ public final class Settings implements SettingsParent {
                                 cf.setSelectedFile(f2);
                             }
                         },
-                        StaticRefs.getMainFrame()
+                        StaticRefs.throwIfNull(StaticRefs.getMainFrame())
                 );
 
                 Function<File, File> isDir = f -> new File(f, "new.j3p");
@@ -128,7 +128,7 @@ public final class Settings implements SettingsParent {
             "macrosEditor",
             "Edit existing macros",
             (e, label, ignored) -> {
-                MacrosEditor editor = new MacrosEditor(StaticRefs.getMainFrame(), true);
+                MacrosEditor editor = new MacrosEditor(StaticRefs.throwIfNull(StaticRefs.getMainFrame()), true);
                 editor.setVisible(true);
                 return "macrosEditor";
             },

@@ -87,7 +87,7 @@ public class MacroPanel extends javax.swing.JPanel {
     private void macroEditBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_macroEditBtnActionPerformed
         Supplier<JKeyChooser> jKeyChooserSupplier =
                 wrapper.getKeyStroke() != null ?
-                        () -> new JKeyChooser(StaticRefs.getMainFrame(), wrapper.getKeyStroke()) :
+                        () -> new JKeyChooser(StaticRefs.throwIfNull(StaticRefs.getMainFrame()), wrapper.getKeyStroke()) :
                         () -> new JKeyChooser(StaticRefs.getMainFrame());
         JKeyChooser jk = jKeyChooserSupplier.get();
         KeyStroke ks = jk.getFinalKeyStroke();

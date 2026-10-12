@@ -216,9 +216,9 @@ public class EngineFrame extends javax.swing.JFrame {
         Runnable r = () -> {
             if (p.isHidden()) p.hideThis();
             p.setBounds(lastLocation.x, lastLocation.y, p.getPreferredSize().width, p.getPreferredSize().height);
-            StaticRefs.getMainFrame().getLayeredPane().add(p, JLayeredPane.POPUP_LAYER);
-            StaticRefs.getMainFrame().revalidate();
-            StaticRefs.getMainFrame().repaint();
+            StaticRefs.throwIfNull(StaticRefs.getMainFrame()).getLayeredPane().add(p, JLayeredPane.POPUP_LAYER);
+            StaticRefs.throwIfNull(StaticRefs.getMainFrame()).revalidate();
+            StaticRefs.throwIfNull(StaticRefs.getMainFrame()).repaint();
         };
         if (defer) floats.add(r);
         else r.run();
@@ -229,9 +229,9 @@ public class EngineFrame extends javax.swing.JFrame {
      * @param p The floating panel
      */
     public static void bringForward(FloatingPanel p) {
-        StaticRefs.getMainFrame().getLayeredPane().moveToFront(p);
-        StaticRefs.getMainFrame().revalidate();
-        StaticRefs.getMainFrame().repaint();
+        StaticRefs.throwIfNull(StaticRefs.getMainFrame()).getLayeredPane().moveToFront(p);
+        StaticRefs.throwIfNull(StaticRefs.getMainFrame()).revalidate();
+        StaticRefs.throwIfNull(StaticRefs.getMainFrame()).repaint();
     }
 
     /**
@@ -239,16 +239,16 @@ public class EngineFrame extends javax.swing.JFrame {
      * @param p The floating panel
      */
     public static void removeFloater(FloatingPanel p) {
-        StaticRefs.getMainFrame().getLayeredPane().remove(p);
-        StaticRefs.getMainFrame().revalidate();
-        StaticRefs.getMainFrame().repaint();
+        StaticRefs.throwIfNull(StaticRefs.getMainFrame()).getLayeredPane().remove(p);
+        StaticRefs.throwIfNull(StaticRefs.getMainFrame()).revalidate();
+        StaticRefs.throwIfNull(StaticRefs.getMainFrame()).repaint();
     }
     
     @Override
     public void dispose() {
         StaticRefs.getLog().println("[ENGINE-DISPOSAL] EngineFrame disposed.");
         StaticRefs.getErrs().ignore(DefaultObjectDeletionException.class);
-        StaticRefs.getSceneManager().resetScene();
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).resetScene();
         StaticRefs.clear();
         super.dispose();
     }
@@ -331,21 +331,21 @@ public class EngineFrame extends javax.swing.JFrame {
             @Override
             public void componentResized(ComponentEvent e) {
                 // Set values so other stuff know these values changed.
-                StaticConfig.screenSize = new Dim(StaticRefs.getMainFrame().getSize());
-                StaticRefs.getSceneManager().screenSize = StaticConfig.screenSize;
+                StaticConfig.screenSize = new Dim(StaticRefs.throwIfNull(StaticRefs.getMainFrame()).getSize());
+                StaticRefs.throwIfNull(StaticRefs.getSceneManager()).screenSize = StaticConfig.screenSize;
                 toolbox.setBounds(0, menuBarOffsetY, StaticConfig.screenSize.width - 10, toolbox.getPreferredSize().height);
-                StaticRefs.getMainPanel().setBounds(0, menuBarOffsetY, StaticConfig.screenSize.width, StaticConfig.screenSize.height);
+                StaticRefs.throwIfNull(StaticRefs.getMainPanel()).setBounds(0, menuBarOffsetY, StaticConfig.screenSize.width, StaticConfig.screenSize.height);
 
 
                 // Calculate new offsets (TODO: Idnetical to the previous offset calculation, extract?)
-                Rectangle bounds = StaticRefs.getMainFrame().getBounds();
+                Rectangle bounds = StaticRefs.throwIfNull(StaticRefs.getMainFrame()).getBounds();
                 Dimension size = commandPalette.getPreferredSize();
                 int x = ((bounds.width - size.width) / 2) - 10;
                 int y = bounds.height - size.height - 50;
                 commandPalette.setBounds(x, y, size.width, size.height);
 
-                StaticRefs.getMainFrame().repaint(); // repaint the frame
-                StaticRefs.getMainPanel().repaint(); // repaint the panel too.
+                StaticRefs.throwIfNull(StaticRefs.getMainFrame()).repaint(); // repaint the frame
+                StaticRefs.throwIfNull(StaticRefs.getMainPanel()).repaint(); // repaint the panel too.
             }
 
             @Override
@@ -433,7 +433,7 @@ public class EngineFrame extends javax.swing.JFrame {
         contextMenu = new ContextMenu(
                 // everytime this conte4xt menu is called this consumer is called
                 (c) -> {
-                    int amount = StaticRefs.getSceneManager().getSelected().size();
+                    int amount = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected().size();
                     if (amount > 0) {
                         c
                                 .menu(
@@ -531,7 +531,7 @@ public class EngineFrame extends javax.swing.JFrame {
 
         LongTask<ArrayList<SceneObjectList>> t = new LongTask<>(
                 ta -> {
-                    ArrayList<SceneObjectList> a = null;
+                    ArrayList<SceneObjectList> a;
                     try {
                         a = using.readFile(fileDir, fileName, ta);
                     } catch (Exception e) {
@@ -583,13 +583,13 @@ public class EngineFrame extends javax.swing.JFrame {
             public void windowClosing(WindowEvent e) {
                 boolean saved = StaticConfig.hasSaved;
                 if (saved) {
-                    StaticRefs.getMainFrame().dispose();
+                    StaticRefs.throwIfNull(StaticRefs.getMainFrame()).dispose();
                     System.exit(0);
                 }
-                AreYouSure ays = new AreYouSure(StaticRefs.getMainFrame(), true, "You have not saved this project. Progress will be lost.");
+                AreYouSure ays = new AreYouSure(StaticRefs.throwIfNull(StaticRefs.getMainFrame()), true, "You have not saved this project. Progress will be lost.");
                 ays.setVisible(true);
                 if (ays.canProceed()) {
-                    StaticRefs.getMainFrame().dispose();
+                    StaticRefs.throwIfNull(StaticRefs.getMainFrame()).dispose();
                     System.exit(0);
                 }
             }
@@ -633,16 +633,13 @@ public class EngineFrame extends javax.swing.JFrame {
      */
     public static void repaintL() {
         SwingUtilities.invokeLater(() -> {
-            if (StaticRefs.getDebugPanel() != null) {
-                StaticRefs.getDebugPanel().revalidate();
-                StaticRefs.getDebugPanel().repaint();
-            }
-            StaticRefs.getMainFrame().getCommandPalette().revalidate();
-            StaticRefs.getMainFrame().getCommandPalette().repaint();
-            if (StaticRefs.getMainFrame() != null) { // it cant be null if we're in this call. but you know java.
-                StaticRefs.getMainFrame().revalidate();
-                StaticRefs.getMainFrame().repaint();
-            }
+            StaticRefs.getDebugPanel().revalidate();
+            StaticRefs.getDebugPanel().repaint();
+            EngineFrame engineFrame = StaticRefs.throwIfNull(StaticRefs.getMainFrame());
+            engineFrame.getCommandPalette().revalidate();
+            engineFrame.getCommandPalette().repaint();
+            engineFrame.revalidate();
+            engineFrame.repaint();
         });
     }
 
@@ -980,7 +977,7 @@ public class EngineFrame extends javax.swing.JFrame {
             );
         }, this);
         if (file == null) return;
-//        StaticRefs.getSceneManager().resetScene();
+//        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).resetScene();
         this.dispose();
         Startup.engine(file, false);
 //        readProjectFile(file);
@@ -988,7 +985,7 @@ public class EngineFrame extends javax.swing.JFrame {
 
     private void saveProjectJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveProjectJMenuItemActionPerformed
 
-        if (!StaticRefs.getSceneManager().finder().findFirst(GObject.class, Finder.allQuery(), null).containsThing()) {
+        if (!StaticRefs.throwIfNull(StaticRefs.getSceneManager()).finder().findFirst(GObject.class, Finder.allQuery(), null).containsThing()) {
             JOptionPane.showMessageDialog(this, "This scene has nothing!");
             return;
         }
@@ -1011,9 +1008,9 @@ public class EngineFrame extends javax.swing.JFrame {
             Settings.projectOutputFile.setValue(new File(folder, fileName));
         }
 
-        (ProjectFile.getFromVersion(PF_VERSION)).writeFile(
+        StaticRefs.throwIfNull((ProjectFile.getFromVersion(PF_VERSION))).writeFile(
                 Settings.projectOutputFile.getValue().getParent(),
-                Settings.projectOutputFile.getValue().getName(), StaticRefs.getSceneManager().layers);
+                Settings.projectOutputFile.getValue().getName(), StaticRefs.throwIfNull(StaticRefs.getSceneManager()).layers);
     }//GEN-LAST:event_saveProjectJMenuItemActionPerformed
 
     private void newProjectJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newProjectJMenuItemActionPerformed
@@ -1031,7 +1028,7 @@ public class EngineFrame extends javax.swing.JFrame {
         }
         if (!canProceed) return;
         Settings.projectOutputFile.setValue(null);
-        StaticRefs.getSceneManager().resetScene();
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).resetScene();
     }//GEN-LAST:event_newProjectJMenuItemActionPerformed
 
     private void exportAsPNGJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportAsPNGJMenuItemActionPerformed
@@ -1060,7 +1057,7 @@ public class EngineFrame extends javax.swing.JFrame {
         File file = !o.isFile() ? new File(o, "export.png") : o;
 
         try {
-            StaticRefs.getMainPanel().exportAs("png", file);
+            StaticRefs.throwIfNull(StaticRefs.getMainPanel()).exportAs("png", file);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -1097,7 +1094,7 @@ public class EngineFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void pasteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteMenuItemActionPerformed
-        StaticRefs.getCommandParser()
+        StaticRefs.throwIfNull(StaticRefs.getCommandParser())
                 .run(
                         CommandsManager.commands.clipboardCmd,
                         new ArrayList<>(List.of("paste")), new ArrayList<>()
@@ -1105,7 +1102,7 @@ public class EngineFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_pasteMenuItemActionPerformed
 
     private void copyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyMenuItemActionPerformed
-        StaticRefs.getCommandParser()
+        StaticRefs.throwIfNull(StaticRefs.getCommandParser())
                 .run(
                         CommandsManager.commands.clipboardCmd,
                         new ArrayList<>(List.of("copy")), new ArrayList<>()
@@ -1162,7 +1159,7 @@ public class EngineFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                StaticRefs.getMainFrame().setVisible(true);
+                StaticRefs.throwIfNull(StaticRefs.getMainFrame()).setVisible(true);
             }
         });
     }

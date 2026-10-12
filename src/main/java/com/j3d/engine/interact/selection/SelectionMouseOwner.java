@@ -15,7 +15,6 @@ import java.awt.event.MouseEvent;
 import java.util.HashSet;
 
 import static com.j3d.StaticRefs.getLog;
-import static com.j3d.StaticRefs.getSceneManager;
 import static com.j3d.ui.engine.EngineFrame.mousePos;
 import static com.j3d.ui.engine.EngineFrame.selectionArea;
 
@@ -42,7 +41,7 @@ public class SelectionMouseOwner extends MouseOwner {
      */
     public void clearSelectionSquare() {
         selectionArea = new ScreenPoint[]{null, null};
-        StaticRefs.getMainFrame().repaint();
+        StaticRefs.throwIfNull(StaticRefs.getMainFrame()).repaint();
         CursorManager.setDefault();
     }
 
@@ -66,7 +65,7 @@ public class SelectionMouseOwner extends MouseOwner {
         mousePos = null;
         if (selectionArea[0] != null && selectionArea[1] != null) {
             StaticRefs.getLog().println("Final Selection Area: " + selectionArea[0] + " to " + selectionArea[1]);
-            HashSet<GObject> selected = getSceneManager().getSelected();
+            HashSet<GObject> selected = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected();
             getLog().println("Selected " + selected.size() + " objects.");
             broadcast(EventType.X_SELECTED, new SelectionEventPayload(this, selected, selectionArea, SelectionUI.inferredSelection));
 
@@ -81,7 +80,7 @@ public class SelectionMouseOwner extends MouseOwner {
         selectionArea[0] = mousePos;
         selectionArea[1] = getSelectionMouseLoc(e);
 //        selectionArea[1] = new ScreenPoint(e.getX(), e.getY());
-        StaticRefs.getMainFrame().repaint();
+        StaticRefs.throwIfNull(StaticRefs.getMainFrame()).repaint();
     }
 
 }

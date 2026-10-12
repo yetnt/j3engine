@@ -81,7 +81,7 @@ public class Handle {
             if (extraDetail != null) {
                 extraDetail.accept(g);
             }
-            StaticRefs.getSceneManager().drawText3D(
+            StaticRefs.throwIfNull(StaticRefs.getSceneManager()).drawText3D(
                     g, position.sub(new Vector3(0, 5, 0)),
                     handleType.name(), StaticRefs.getCamera(),
                     new Color(0x000000),

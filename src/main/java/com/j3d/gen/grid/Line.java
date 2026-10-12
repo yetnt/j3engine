@@ -98,7 +98,7 @@ public class Line implements GridObject<GLine> {
                 .toScreen();
 
         graphics2D.setColor(J3DTheme.TEXT_SECONDARY.color());
-        StaticRefs.getSceneManager().drawLine3D(
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).drawLine3D(
                 graphics2D,
                 pos1, pos2, StaticRefs.getCamera()
         );

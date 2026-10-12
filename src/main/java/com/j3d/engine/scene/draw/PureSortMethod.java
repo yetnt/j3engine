@@ -34,9 +34,5 @@ public enum PureSortMethod {
     /**
      * Triangles are sorted into buckets based on their depth values.
      */
-    BUCKETSORT,
-    /**
-     * Triangles are sorted based on their visibility.
-     */
-    VISIBLESORT;
+    BUCKETSORT
 }

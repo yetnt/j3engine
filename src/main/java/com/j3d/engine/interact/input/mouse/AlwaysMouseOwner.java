@@ -36,6 +36,6 @@ public class AlwaysMouseOwner extends MouseOwner {
         super.mousePressed(e);
         // only show if this was a right click.
         if (e.getButton() == MouseEvent.BUTTON3)
-            StaticRefs.getMainFrame().showContextMenu(e.getX(), e.getY());
+            StaticRefs.throwIfNull(StaticRefs.getMainFrame()).showContextMenu(e.getX(), e.getY());
     }
 }

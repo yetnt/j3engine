@@ -136,6 +136,6 @@ public interface PropertyPanel<T> {
         };
         action.run();
         history.add(action);
-        StaticRefs.getMainPanel().repaint();
+        StaticRefs.throwIfNull(StaticRefs.getMainPanel()).repaint();
     }
 }

@@ -81,7 +81,7 @@ public class OrbitMouseOwner extends MouseOwner {
 
         }
 
-        StaticRefs.getMainPanel().repaint();
+        StaticRefs.throwIfNull(StaticRefs.getMainPanel()).repaint();
     }
 
     /**

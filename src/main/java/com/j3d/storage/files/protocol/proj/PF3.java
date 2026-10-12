@@ -41,7 +41,7 @@ public final class PF3 extends ProjectFile {
                 writeHeader(dos); // Write J3D file header
                 getHeaderWriter().accept(dos); // Write PROJECT file header
 
-                LayerList layers = (LayerList) StaticRefs.getSceneManager().layers.clone();
+                LayerList layers = (LayerList) StaticRefs.throwIfNull(StaticRefs.getSceneManager()).layers.clone();
 
                 layers.removeIf(l -> l.getName().equals(Layer.BACKGROUND_ID)); // Remove "BACKG" layer
                 layers.removeIf(Layer::isForDeletion); // Remove layers that are deleted in memory
@@ -110,7 +110,7 @@ public final class PF3 extends ProjectFile {
     public <T extends ArrayList> T readFile(String path, String name, Spinner throbber) throws Exception {
         final ArrayList<SceneObjectList> sceneObjectLists =  new ArrayList<>();
 
-        StaticRefs.getSceneManager().layers.removeIf(l -> !Objects.equals(l.getName(), Layer.BACKGROUND_ID));
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).layers.removeIf(l -> !Objects.equals(l.getName(), Layer.BACKGROUND_ID));
 
 
         IOSupplier<DataInputStream> fileReader = dis -> {
@@ -141,7 +141,7 @@ public final class PF3 extends ProjectFile {
 
                 throbber.setTaskTitle("Finalizing");
 
-                StaticRefs.getSceneManager().layers.swingAddAll(layers.values());
+                StaticRefs.throwIfNull(StaticRefs.getSceneManager()).layers.swingAddAll(layers.values());
 
                 readSixNine(dis);
 

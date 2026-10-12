@@ -106,14 +106,10 @@ permits PF1, PF2, PF3 {
     }
 
     @Override
-    public <T extends ArrayList> T readFile(String path, String name, Spinner throbber) throws Exception {
-        return null;
-    }
+    public abstract <T extends ArrayList> T readFile(String path, String name, Spinner throbber) throws Exception;
 
     @Override
-    public <T extends ArrayList> void writeFile(String path, String name, T data) {
-
-    }
+    public abstract <T extends ArrayList> void writeFile(String path, String name, T data);
 
     @Override
     public Consumer<DataOutputStream> getHeaderWriter() {

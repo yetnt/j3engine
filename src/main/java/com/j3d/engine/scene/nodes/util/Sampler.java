@@ -8,8 +8,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.function.Function;
 
-import static com.j3d.StaticRefs.getSceneManager;
-
 public abstract class Sampler {
 
     /**
@@ -74,7 +72,7 @@ public abstract class Sampler {
         for (int i = 0; i < vector3list.size(); i++) {
             Vector3 vector3 = vector3list.get(i);
             Vector3 nextVector3 = vector3list.get((i + 1) % vector3list.size());
-            getSceneManager().drawLine3D(
+            StaticRefs.throwIfNull(StaticRefs.getSceneManager()).drawLine3D(
                     g, vector3, nextVector3, StaticRefs.getCamera()
             );
         }

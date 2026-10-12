@@ -60,7 +60,7 @@ public class SafeJLabel {
     public void setText(String text, int seconds) {
         SwingUtilities.invokeLater(() -> {
             label.setText(text);
-            StaticRefs.getMainFrame().repaint();
+            StaticRefs.throwIfNull(StaticRefs.getMainFrame()).repaint();
             addTimeoutWorker(true, SafeJLabel.this::clearHigher, seconds);
         });
     }
@@ -72,7 +72,7 @@ public class SafeJLabel {
     public void setLower(String text, int seconds) {
         SwingUtilities.invokeLater(() -> {
             label2.setText(text);
-            StaticRefs.getMainFrame().repaint();
+            StaticRefs.throwIfNull(StaticRefs.getMainFrame()).repaint();
             addTimeoutWorker(false, SafeJLabel.this::clearLower, seconds);
         });
     }
@@ -134,7 +134,7 @@ public class SafeJLabel {
             @Override
             public void run() {
                 label2.setText("");
-                StaticRefs.getMainFrame().repaint();
+                StaticRefs.throwIfNull(StaticRefs.getMainFrame()).repaint();
             }
         });
     }
@@ -144,7 +144,7 @@ public class SafeJLabel {
             @Override
             public void run() {
                 label.setText("");
-                StaticRefs.getMainFrame().repaint();
+                StaticRefs.throwIfNull(StaticRefs.getMainFrame()).repaint();
             }
         });
     }

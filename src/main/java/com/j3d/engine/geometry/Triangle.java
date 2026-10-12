@@ -3,6 +3,7 @@ package com.j3d.engine.geometry;
 import com.j3d.StaticConfig;
 import com.j3d.StaticRefs;
 import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.draw.ViewType;
 import com.j3d.engine.scene.nodes.geometry.GObject;
@@ -11,8 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.util.List;
 import java.util.UUID;
-
-import static com.j3d.StaticRefs.getSceneManager;
 
 public class Triangle implements Pure {
 
@@ -97,7 +96,8 @@ public class Triangle implements Pure {
                         );
                         g.setStroke(new BasicStroke(1));
                     }
-                    getSceneManager().drawText3D(
+                    SceneManager sm = StaticRefs.throwIfNull(StaticRefs.getSceneManager());
+                    sm.drawText3D(
                             g,
                             getPivot().sub(Vector3.UNIT),
                             "Tri-" + parent.getId().toString().substring(0, 4),

@@ -83,8 +83,8 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
                 ), -1
         );
 
-        StaticRefs.getMainFrame().requestFocusInWindow(); // get out of the command window focus. very important
-        StaticRefs.getCommandParser().disable(); // disable the command pallete input field.
+        StaticRefs.throwIfNull(StaticRefs.getMainFrame()).requestFocusInWindow(); // get out of the command window focus. very important
+        StaticRefs.throwIfNull(StaticRefs.getCommandParser()).disable(); // disable the command pallete input field.
 
         onStart(object, label); // Fire the starting stuff
         UUID esckey = java.util.UUID.randomUUID();
@@ -96,15 +96,15 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
                         new AbstractAction() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                StaticRefs.getGlobalKeybinds().removeJ3Key(esckey);
+                                StaticRefs.throwIfNull(StaticRefs.getGlobalKeybinds()).removeJ3Key(esckey);
                                 onEnter(object, label);
-                                StaticRefs.getMainFrame().repaint();
-                                StaticRefs.getCommandParser().enable();
+                                StaticRefs.throwIfNull(StaticRefs.getMainFrame()).repaint();
+                                StaticRefs.throwIfNull(StaticRefs.getCommandParser()).enable();
                                 CommandsManager.clearCurrent();
-                                StaticRefs.getHoverLabel().clear();
+                                StaticRefs.throwIfNull(StaticRefs.getHoverLabel()).clear();
                             }
                         });
-        StaticRefs.getGlobalKeybinds().registerJ3Key(enter);
+        StaticRefs.throwIfNull(StaticRefs.getGlobalKeybinds()).registerJ3Key(enter);
 
         // keystroke for when they bail with escape
         // Escape is already binded to something so it cant be a oneshot in practice
@@ -118,15 +118,15 @@ public interface StatefulCommand<T> extends SemiStatefulCommand {
                             @Override
                             public void actionPerformed(ActionEvent e) {
 //                                if (!CommandsManager.isCurrentStatefulRunning(t)) return;
-                                StaticRefs.getGlobalKeybinds().removeJ3Key(enter.getId());
+                                StaticRefs.throwIfNull(StaticRefs.getGlobalKeybinds()).removeJ3Key(enter.getId());
                                 onEsc(object, label);
-                                StaticRefs.getMainFrame().repaint();
-                                StaticRefs.getCommandParser().enable();
+                                StaticRefs.throwIfNull(StaticRefs.getMainFrame()).repaint();
+                                StaticRefs.throwIfNull(StaticRefs.getCommandParser()).enable();
                                 CommandsManager.clearCurrent();
-                                StaticRefs.getHoverLabel().clear();
+                                StaticRefs.throwIfNull(StaticRefs.getHoverLabel()).clear();
                             }
                         }
                 ).setId(esckey);
-        StaticRefs.getGlobalKeybinds().registerJ3Key(key);
+        StaticRefs.throwIfNull(StaticRefs.getGlobalKeybinds()).registerJ3Key(key);
     }
 }

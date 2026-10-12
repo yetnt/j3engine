@@ -41,7 +41,7 @@ public class MeasureCmd extends Command {
     public void run(@NotNull Invoker invoker, SafeJLabel logLabel, String aliasUsed, @NotNull Object[] args, @NotNull ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
         if (args.length < 1) {
-            HashSet<GObject> selected = StaticRefs.getSceneManager().getSelected();
+            HashSet<GObject> selected = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected();
             if (selected.isEmpty()) {
                 logLabel.setText("Select object(s) to infer a measurement on.");
                 return;

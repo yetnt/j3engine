@@ -63,7 +63,7 @@ public abstract class StaticConfig {
 
     public static void setTriangleSortMethod(PureSortMethod method) {
         Settings.sceneProperties.triangleSortMethod.setValue(method);
-        StaticRefs.getSceneManager().getRenderer().setSortMethod(method);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getRenderer().setSortMethod(method);
     }
 
     public static boolean isUseBackFaceCulling() {
@@ -96,7 +96,7 @@ public abstract class StaticConfig {
 
     public static void setShowNormals(boolean showNormals) {
         if (!showNormals) {
-            StaticRefs.getSceneManager().layers.stream()
+            StaticRefs.throwIfNull(StaticRefs.getSceneManager()).layers.stream()
                     .flatMap(Layer::usableLayersStream)
                     .flatMap(Thing::objectsStream)
                     .filter(t -> t instanceof GTri)

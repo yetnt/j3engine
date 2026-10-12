@@ -29,7 +29,7 @@ public class ObjectExplainerStep extends DoubleClickStep {
         built = true;
 
         // put a cube for the user to interact with.
-        StaticRefs.getCommandParser().run(
+        StaticRefs.throwIfNull(StaticRefs.getCommandParser()).run(
                 CommandsManager.commands.createCmd,
                 new ArrayList<>(List.of("cube")),
                 new ArrayList<>()
@@ -37,10 +37,11 @@ public class ObjectExplainerStep extends DoubleClickStep {
 
         // get all GPoints
         ArrayList<GPoint> points =
-                StaticRefs.getSceneManager().finder().find(
+                StaticRefs.throwIfNull(StaticRefs.getSceneManager()).finder().find(
                                 GPoint.class, Finder.allQuery(), null
                         ).stream()
                         .map(FindResult::getgObject)
+                        .map(StaticRefs::throwIfNull)
                         // finder guarantees they are all GPoints
                         .map(GPoint.class::cast)
                         // sort by the closest to the camera

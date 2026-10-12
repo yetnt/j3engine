@@ -30,7 +30,7 @@ public class Vector3Dialogue extends javax.swing.JDialog {
     }
     
     public Vector3Dialogue(Vector3 v, JButton editBtn) {
-        super(StaticRefs.getMainFrame(), true);
+        super(StaticRefs.throwIfNull(StaticRefs.getMainFrame()), true);
         initComponents();
         xLabel.setText(v.getX() + "");
         yLabel.setText(v.getY() + "");
@@ -186,10 +186,10 @@ public class Vector3Dialogue extends javax.swing.JDialog {
         StaticRefs.getPropertiesPanel().toggleHidden();
 
         // make sure the focus is on the main panel
-        StaticRefs.getMainPanel().requestFocus();
+        StaticRefs.throwIfNull(StaticRefs.getMainPanel()).requestFocus();
 
         // run the command.
-        StaticRefs.getCommandParser().run(
+        StaticRefs.throwIfNull(StaticRefs.getCommandParser()).run(
                 CommandsManager.commands.transform,
                 new ArrayList<>(List.of("translate", "p")),
                 new ArrayList<>()

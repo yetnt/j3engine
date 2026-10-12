@@ -50,9 +50,11 @@ public class TestPack extends BaseLibrary {
             checkParams(tFuncCall, scope); // will do parameter checking for me
 
             return TypeConverter.toJaivaReadable(
-                            StaticRefs.getSceneManager().finder()
+                            StaticRefs.throwIfNull(
+                                    StaticRefs.throwIfNull(StaticRefs.getSceneManager()).finder()
                                     .findFirst(GTri.class, (s, v) -> s.getId().toString().contains(v), "3")
                                     .getgObject()
+                            )
                     );
         }
     }
@@ -78,12 +80,12 @@ public class TestPack extends BaseLibrary {
             if (id instanceof String string) {
                 UUID uuid =  UUID.fromString(string);
 
-                FindResult result = StaticRefs.getSceneManager().finder().findFirst(
+                FindResult result = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).finder().findFirst(
                         GObject.class, Finder.idQuery(), uuid
                 );
 
                 if (result.containsGObject()) {
-                    return TypeConverter.toJaivaReadable(result.getgObject());
+                    return TypeConverter.toJaivaReadable(StaticRefs.throwIfNull(result.getgObject()));
                 }
             }
             return Token.voidValue(tFuncCall.lineNumber);

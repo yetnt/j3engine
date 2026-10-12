@@ -360,8 +360,8 @@ public class KeyBindings {
     };
 
     public static boolean commandPaletteFocusOwner() {
-        return StaticRefs.getMainFrame().getCommandPalette()
-                .inputField.isFocusOwner() && !StaticRefs.getMainPanel().isFocusOwner();
+        return StaticRefs.throwIfNull(StaticRefs.getMainFrame()).getCommandPalette()
+                .inputField.isFocusOwner() && !StaticRefs.throwIfNull(StaticRefs.getMainPanel()).isFocusOwner();
     }
 
     /**

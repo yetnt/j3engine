@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  * @see com.j3d.engine.interact.cmd.commands.clipboard.CopyCmd
  * @see com.j3d.engine.interact.cmd.commands.clipboard.PasteCmd
  */
-public class CopyProperties {
+public final class CopyProperties {
     private boolean softDependencies = false;
     private final HashSet<Copy> copies = new HashSet<>();
     private final ArrayList<GObject> objects;

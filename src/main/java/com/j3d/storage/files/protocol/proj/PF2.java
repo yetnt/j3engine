@@ -252,7 +252,7 @@ public final class PF2 extends ProjectFile {
         final HashMultiMap<String, GTri> trisParentsMap = new HashMultiMap<>();
         final HashMap<String, GTri> trisMap = new HashMap<>();
 
-        StaticRefs.getSceneManager().layers.removeIf(l -> !Objects.equals(l.getName(), Layer.BACKGROUND_ID));
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).layers.removeIf(l -> !Objects.equals(l.getName(), Layer.BACKGROUND_ID));
 
         IOSupplier<DataInputStream> fileReader = dis -> {
             try {
@@ -409,7 +409,7 @@ public final class PF2 extends ProjectFile {
 
                 throbber.setTaskTitle("Finalizing");
 
-                StaticRefs.getSceneManager().layers.addAll(layerOrder);
+                StaticRefs.throwIfNull(StaticRefs.getSceneManager()).layers.addAll(layerOrder);
 
                 StaticRefs.getLog().println("Project file loaded successfully from " + path);
                 msg("Project file loaded successfully");

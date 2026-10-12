@@ -25,7 +25,7 @@ import java.util.function.Supplier;
  * @see GObject
  * @author Lehlogonolo Poole
  */
-public class Finder {
+public final class Finder {
     /**
      * Supplies the {@link LayerList} containing all active layers in the engine.
      * This allows the Finder to access the current state of layers dynamically.

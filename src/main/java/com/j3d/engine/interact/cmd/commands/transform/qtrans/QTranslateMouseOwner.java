@@ -80,7 +80,7 @@ public class QTranslateMouseOwner extends MouseOwner {
         // apply to all stuff.
         pointsToTransform.forEach(p -> p.setPivot(p.getPivot().add(diff)));
 
-        StaticRefs.getMainPanel().repaint();
+        StaticRefs.throwIfNull(StaticRefs.getMainPanel()).repaint();
     }
 
     private Vector3 calculateCentre() {

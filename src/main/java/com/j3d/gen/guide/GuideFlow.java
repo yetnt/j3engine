@@ -64,7 +64,7 @@ public class GuideFlow extends EventEmitterAndListener {
         GuidePanelAdapter gpa = adapterSupplier.get();
         if (guides.isEmpty()) {
             JOptionPane.showMessageDialog(
-                    StaticRefs.getMainFrame(),
+                    StaticRefs.throwIfNull(StaticRefs.getMainFrame()),
                     "That's all for the guide! If you'd like to restart go back to the projects frame! (top right)"
             );
             gpa.repaint();

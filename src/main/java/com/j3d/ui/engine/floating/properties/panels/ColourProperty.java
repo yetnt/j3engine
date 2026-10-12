@@ -116,11 +116,11 @@ public class ColourProperty extends javax.swing.JPanel implements PropertyPanel<
 
     private void setBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setBtnActionPerformed
         if (CommandsManager.commandIsRunning()) {
-            StaticRefs.getHoverLabel().error("Finish running command first");
+            StaticRefs.throwIfNull(StaticRefs.getHoverLabel()).error("Finish running command first");
             return;
         }
         Color chosen = JColorChooser.showDialog(
-                StaticRefs.getMainFrame(),
+                StaticRefs.throwIfNull(StaticRefs.getMainFrame()),
                 "Choose a colour man",
                 getSingleProperty().getValueSupplier().get()
         );

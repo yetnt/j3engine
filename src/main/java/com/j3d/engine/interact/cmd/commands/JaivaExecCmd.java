@@ -38,7 +38,7 @@ public class JaivaExecCmd extends Command {
         } catch (Exception e) {
             if (e instanceof JaivaException j) {
                 logLabel.setText("Jaiva Execution Failed");
-                JOptionPane.showMessageDialog(StaticRefs.getMainFrame(), AnsiColour.remove(j.getRawMessage()),  "Jaiva Execution Failed", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(StaticRefs.throwIfNull(StaticRefs.getMainFrame()), AnsiColour.remove(j.getRawMessage()),  "Jaiva Execution Failed", JOptionPane.ERROR_MESSAGE);
                 StaticRefs.getLog().error("Jaiva Execution Failed: " + AnsiColour.remove(j.getRawMessage()));
             } else {
                 throw new RuntimeException(e);

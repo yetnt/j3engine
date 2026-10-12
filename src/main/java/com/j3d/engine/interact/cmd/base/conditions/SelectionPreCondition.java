@@ -65,8 +65,8 @@ public class SelectionPreCondition implements PreCommandExecution {
             @Override
             public <K> void onEvent(EventType event, EventPayload<K> properties) {
                 cleanup.run();
-                StaticRefs.getCommandParser().safeJLabel().clearHigher();
-                StaticRefs.getHoverLabel().error("No selection was made. Command Aborted");
+                StaticRefs.throwIfNull(StaticRefs.getCommandParser()).safeJLabel().clearHigher();
+                StaticRefs.throwIfNull(StaticRefs.getHoverLabel()).error("No selection was made. Command Aborted");
             }
         };
         AbstractAction quit =
@@ -88,13 +88,13 @@ public class SelectionPreCondition implements PreCommandExecution {
         J3Key quitKey = new J3Key("quit", true).setKeyStroke(
                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0)
         ).setAction(quit);
-        StaticRefs.getGlobalKeybinds().registerJ3Key(key);
-        StaticRefs.getGlobalKeybinds().registerJ3Key(quitKey);
+        StaticRefs.throwIfNull(StaticRefs.getGlobalKeybinds()).registerJ3Key(key);
+        StaticRefs.throwIfNull(StaticRefs.getGlobalKeybinds()).registerJ3Key(quitKey);
 
         cleanup = () -> {
             extraCleanup.run();
-            StaticRefs.getGlobalKeybinds().removeJ3Key(key.getId());
-            StaticRefs.getGlobalKeybinds().removeJ3Key(quitKey.getId());
+            StaticRefs.throwIfNull(StaticRefs.getGlobalKeybinds()).removeJ3Key(key.getId());
+            StaticRefs.throwIfNull(StaticRefs.getGlobalKeybinds()).removeJ3Key(quitKey.getId());
         };
         commandEndCleanup = () -> {
             getEventEmitterToAttachTo().detachListener(failListener);
@@ -150,6 +150,6 @@ public class SelectionPreCondition implements PreCommandExecution {
 
     @Override
     public Supplier<Boolean> getCondition() {
-        return () -> !StaticRefs.getSceneManager().getSelected().isEmpty();
+        return () -> !StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected().isEmpty();
     }
 }

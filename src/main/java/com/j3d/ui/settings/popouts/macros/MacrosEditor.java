@@ -167,7 +167,7 @@ public class MacrosEditor extends javax.swing.JDialog {
             if (wrapper.getKeyStroke() != null) {
                 if (keyStrokes.contains(wrapper.getKeyStroke())) {
                     JOptionPane.showMessageDialog(
-                            StaticRefs.getMainFrame(),
+                            StaticRefs.throwIfNull(StaticRefs.getMainFrame()),
                             "There is a keystroke collision for the following key:\n"
                             + "-> " + wrapper.getKeyStroke().toString(),
                             "Keystroke Collision",

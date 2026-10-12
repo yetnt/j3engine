@@ -102,17 +102,17 @@ public abstract class ButtonsRegistry {
                             Executors.newSingleThreadScheduledExecutor();
 
                     executor.scheduleAtFixedRate(() -> SwingUtilities.invokeLater(() -> {
-                        if (StaticRefs.getSceneManager() == null) return;
-                        int selected = StaticRefs.getSceneManager().getSelected().size();
+                        if (StaticRefs.throwIfNull(StaticRefs.getSceneManager()) == null) return;
+                        int selected = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected().size();
                         a.setText(
                                 (selected == 0 ? "No " : selected)
                                 + " Object"
                                 + (selected == 1 ? "" : "s") +
                                 " Selected"
                         );
-                        int layerSize = StaticRefs.getSceneManager().layers.size()-1;
+                        int layerSize = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).layers.size()-1;
                         b.setText(layerSize + (layerSize == 1 ? " layer" : " layers"));
-                        int things = Math.toIntExact(StaticRefs.getSceneManager().layers.thingStream().count());
+                        int things = Math.toIntExact(StaticRefs.throwIfNull(StaticRefs.getSceneManager()).layers.thingStream().count());
                         c.setText(things + (things == 1 ? " thing" : " things"));
                     }), 0, 1, TimeUnit.SECONDS);
 
@@ -249,19 +249,19 @@ public abstract class ButtonsRegistry {
      * Provides runnable actions for creating various geometric primitives.
      */
     public static class CreateTools {
-        public static final Runnable CUBE = () -> StaticRefs.getCommandParser().run(
+        public static final Runnable CUBE = () -> StaticRefs.throwIfNull(StaticRefs.getCommandParser()).run(
                 CommandsManager.commands.createCmd,
                 new ArrayList<>(Collections.singleton("cube")), new ArrayList<>()
         );
-        public static final Runnable TRI = () -> StaticRefs.getCommandParser().run(
+        public static final Runnable TRI = () -> StaticRefs.throwIfNull(StaticRefs.getCommandParser()).run(
                 CommandsManager.commands.createCmd,
                 new ArrayList<>(Collections.singleton("tri")), new ArrayList<>()
         );
-        public static final Runnable POINT = () -> StaticRefs.getCommandParser().run(
+        public static final Runnable POINT = () -> StaticRefs.throwIfNull(StaticRefs.getCommandParser()).run(
                 CommandsManager.commands.createCmd,
                 new ArrayList<>(Collections.singleton("point")), new ArrayList<>()
         );
-        public static final Runnable PRISM = () -> StaticRefs.getCommandParser().run(
+        public static final Runnable PRISM = () -> StaticRefs.throwIfNull(StaticRefs.getCommandParser()).run(
                 CommandsManager.commands.prismCmd,
                 new ArrayList<>(List.of(
                         Vector3.ZERO,
@@ -276,19 +276,19 @@ public abstract class ButtonsRegistry {
      * Provides runnable actions for various geometry manipulation tools.
      */
     public static class GeometryTools {
-        public static final Runnable JOIN = () -> StaticRefs.getCommandParser().run(
+        public static final Runnable JOIN = () -> StaticRefs.throwIfNull(StaticRefs.getCommandParser()).run(
                 CommandsManager.commands.joinCmd,
                 new ArrayList<>(), new ArrayList<>()
         );
-        public static final Runnable MEASURE = () -> StaticRefs.getCommandParser().run(
+        public static final Runnable MEASURE = () -> StaticRefs.throwIfNull(StaticRefs.getCommandParser()).run(
                 CommandsManager.commands.measureCmd,
                 new ArrayList<>(), new ArrayList<>()
         );
-        public static final Runnable EXPLODE = () -> StaticRefs.getCommandParser().run(
+        public static final Runnable EXPLODE = () -> StaticRefs.throwIfNull(StaticRefs.getCommandParser()).run(
                 CommandsManager.commands.explodeCmd,
                 new ArrayList<>(Collections.singleton("j")), new ArrayList<>()
         );
-        public static final Runnable EXTRUDE = () -> StaticRefs.getCommandParser().run(
+        public static final Runnable EXTRUDE = () -> StaticRefs.throwIfNull(StaticRefs.getCommandParser()).run(
                 CommandsManager.commands.extrudeCmd,
                 new ArrayList<>(), new ArrayList<>()
         );
@@ -298,19 +298,19 @@ public abstract class ButtonsRegistry {
      * Provides runnable actions for transforming selected objects.
      */
     public static class TransformOperations {
-        public static final Runnable QUICK_TRANSLATE = () -> StaticRefs.getCommandParser().run(
+        public static final Runnable QUICK_TRANSLATE = () -> StaticRefs.throwIfNull(StaticRefs.getCommandParser()).run(
                 CommandsManager.commands.quickTranslateCmd,
                 new ArrayList<>(), new ArrayList<>()
         );
-        public static final Runnable TRANSLATE = () -> StaticRefs.getCommandParser().run(
+        public static final Runnable TRANSLATE = () -> StaticRefs.throwIfNull(StaticRefs.getCommandParser()).run(
                 CommandsManager.commands.transform,
                 new ArrayList<>(List.of("translate")), new ArrayList<>()
         );
-        public static final Runnable ROTATE = () -> StaticRefs.getCommandParser().run(
+        public static final Runnable ROTATE = () -> StaticRefs.throwIfNull(StaticRefs.getCommandParser()).run(
                 CommandsManager.commands.transform,
                 new ArrayList<>(List.of("rotate")), new ArrayList<>()
         );
-        public static final Runnable SCALE = () -> StaticRefs.getCommandParser().run(
+        public static final Runnable SCALE = () -> StaticRefs.throwIfNull(StaticRefs.getCommandParser()).run(
                 CommandsManager.commands.transform,
                 new ArrayList<>(List.of("scale")), new ArrayList<>()
         );
@@ -320,11 +320,11 @@ public abstract class ButtonsRegistry {
      * Provides runnable actions for camera control and information.
      */
     public static class CameraOperations {
-        public static final Runnable ORBIT = () -> StaticRefs.getCommandParser().run(
+        public static final Runnable ORBIT = () -> StaticRefs.throwIfNull(StaticRefs.getCommandParser()).run(
                 CommandsManager.commands.camera,
                 new ArrayList<>(List.of("orbit")), new ArrayList<>()
         );
-        public static final Runnable LOOK_AT = () -> StaticRefs.getCommandParser().run(
+        public static final Runnable LOOK_AT = () -> StaticRefs.throwIfNull(StaticRefs.getCommandParser()).run(
                 CommandsManager.commands.camera,
                 new ArrayList<>(List.of("lookAt")), new ArrayList<>()
         );
@@ -335,7 +335,7 @@ public abstract class ButtonsRegistry {
                             new Vector3(0, 0, Settings.cameraProperties.focalLength.getValue())
                     );
         };
-        public static final Runnable INFO = () -> StaticRefs.getCommandParser().run(
+        public static final Runnable INFO = () -> StaticRefs.throwIfNull(StaticRefs.getCommandParser()).run(
                 CommandsManager.commands.camera,
                 new ArrayList<>(List.of("info")), new ArrayList<>()
         );

@@ -38,7 +38,7 @@ public class PasteCmd extends Subcommand {
     @Override
     public void run(@NotNull Invoker invoker, SafeJLabel logLabel, String aliasUsed, @NotNull Object[] args, @NotNull ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
-        ArrayList<GObject> copied = StaticRefs.getSceneManager().getClipboard();
+        ArrayList<GObject> copied = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getClipboard();
         if (copied.isEmpty()) {
             logLabel.setText("Nothing to paste");
             return;
@@ -81,7 +81,7 @@ public class PasteCmd extends Subcommand {
         Vector3 offset = Vector3.acrossX(10);
 
         Thing thing = new Thing(
-                StaticRefs.getSceneManager().usableLayer(),
+                StaticRefs.throwIfNull(StaticRefs.getSceneManager()).usableLayer(),
                 "copied" + copies.size()
                 );
 
@@ -93,16 +93,16 @@ public class PasteCmd extends Subcommand {
         // dont commit to history so only the user's movement gets commited.
 //        SceneManager.history.add(v);
 
-        StaticRefs.getHoverLabel().setText("Paste complete");
+        StaticRefs.throwIfNull(StaticRefs.getHoverLabel()).setText("Paste complete");
 
         // and now deselect everything.
-        StaticRefs.getSceneManager().deselectAll();
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).deselectAll();
 
         // select the thing
-        StaticRefs.getSceneManager().select(thing);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).select(thing);
 
         // and now run translate!
-        StaticRefs.getCommandParser().run(
+        StaticRefs.throwIfNull(StaticRefs.getCommandParser()).run(
                 CommandsManager.commands.transform,
                 new ArrayList<>(List.of("translate","p")),
                 new ArrayList<>(List.of(

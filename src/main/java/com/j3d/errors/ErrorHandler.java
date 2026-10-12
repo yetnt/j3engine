@@ -90,16 +90,16 @@ public class ErrorHandler {
             case J3DWarning j3w -> {
                 // Warnings get printed to the log, user debug log and also a little box to the user.
                 StaticRefs.getLog().error(err);
-                JOptionPane.showMessageDialog(StaticRefs.getMainFrame(), err.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(StaticRefs.throwIfNull(StaticRefs.getMainFrame()), err.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
             }
             case J3DFatal j3f -> {
                 // Fatal errors are unrecoverable.
                 if (J3Splash.isPlaying())
                     J3Splash.stop();
                 StaticRefs.getLog().error(err);
-                JOptionPane.showMessageDialog(StaticRefs.getMainFrame(), err.getMessage(), "Fatal Error " + err.errorCode(), JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(StaticRefs.throwIfNull(StaticRefs.getMainFrame()), err.getMessage(), "Fatal Error " + err.errorCode(), JOptionPane.ERROR_MESSAGE);
                 if (j3f.terminate()) {
-                    JOptionPane.showMessageDialog(StaticRefs.getMainFrame(),
+                    JOptionPane.showMessageDialog(StaticRefs.throwIfNull(StaticRefs.getMainFrame()),
                             "Due to the nature of the previous error, the app cannot continue in this state and will shut down.",
                             "Fatal Error " + err.errorCode(), JOptionPane.ERROR_MESSAGE);
                     System.exit(1);

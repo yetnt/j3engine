@@ -74,8 +74,8 @@ public final class Thing implements SceneObjectList {
             (o, t) -> {
                 if (this.isBg || this.hidden) return;
                 StaticRefs.getLog().println(name + " thing was selected in the tree.");
-                StaticRefs.getSceneManager().select(this);
-                StaticRefs.getMainPanel().repaint();
+                StaticRefs.throwIfNull(StaticRefs.getSceneManager()).select(this);
+                StaticRefs.throwIfNull(StaticRefs.getMainPanel()).repaint();
             };
 
     /**
@@ -180,7 +180,7 @@ public final class Thing implements SceneObjectList {
                                 .filter(s -> s instanceof GTri)
                                 .map(g -> (GTri)g)
                                 .map(GTri::toRenderState)
-                                .forEach(StaticRefs.getSceneManager().getRenderer()::register);
+                                .forEach(StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getRenderer()::register);
                         return null;
                     }
 
@@ -212,7 +212,7 @@ public final class Thing implements SceneObjectList {
      */
     public Thing(Layer l, String name, boolean invokeSwingHooks) {
         toggleSaved();
-        l = l == null ? StaticRefs.getSceneManager().layers.get(1) : l;
+        l = l == null ? StaticRefs.throwIfNull(StaticRefs.getSceneManager()).layers.get(1) : l;
         if (l.getName().equals(Layer.BACKGROUND_ID)) {
             isBg = true;
         }
@@ -235,7 +235,7 @@ public final class Thing implements SceneObjectList {
      */
     public Thing(Layer l, String name) {
         toggleSaved();
-        l = l == null ? StaticRefs.getSceneManager().layers.get(1) : l;
+        l = l == null ? StaticRefs.throwIfNull(StaticRefs.getSceneManager()).layers.get(1) : l;
         if (l.getName().equals(Layer.BACKGROUND_ID)) {
             isBg = true;
         }
@@ -308,8 +308,8 @@ public final class Thing implements SceneObjectList {
 //            graphics2D.setColor(new Color(52, 52, 52));
             graphics2D.setColor(J3DTheme.BACKGROUND.color());
             graphics2D.fillRect(0, 0, StaticConfig.screenSize.width, StaticConfig.screenSize.height);
-            StaticRefs.getSceneManager().axis(graphics2D, StaticRefs.getCamera());
-            StaticRefs.getSceneManager().axisGrid(graphics2D, StaticRefs.getCamera());
+            StaticRefs.throwIfNull(StaticRefs.getSceneManager()).axis(graphics2D, StaticRefs.getCamera());
+            StaticRefs.throwIfNull(StaticRefs.getSceneManager()).axisGrid(graphics2D, StaticRefs.getCamera());
             return;
         }
 
@@ -317,7 +317,7 @@ public final class Thing implements SceneObjectList {
         objects.stream()
                 .map(GObject::genericRenderStateList)
                 .flatMap(ArrayList::stream)
-                .forEach(StaticRefs.getSceneManager().getRenderer()::register);
+                .forEach(StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getRenderer()::register);
     }
 
     /**
@@ -401,7 +401,7 @@ public final class Thing implements SceneObjectList {
         // finder all parent Thing where the stuff live.
         HashSet<Thing> things = stuff
                 .stream()
-                .map(StaticRefs.getSceneManager()::findObjectParent)
+                .map(StaticRefs.throwIfNull(StaticRefs.getSceneManager())::findObjectParent)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toCollection(HashSet::new));
         for (Thing t : things) {
@@ -780,7 +780,7 @@ public final class Thing implements SceneObjectList {
         return new DirtyVoidAction() {
             @Override
             public void cleanup() throws Exception {
-                 StaticRefs.getSceneManager().removeThing(t);
+                 StaticRefs.throwIfNull(StaticRefs.getSceneManager()).removeThing(t);
                  t.instantDelete();
             }
 

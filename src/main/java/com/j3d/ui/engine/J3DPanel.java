@@ -37,7 +37,7 @@ public class J3DPanel extends JPanel {
         if (selectionAreaOld[0].equals(sA[0]) && selectionAreaOld[1].equals(sA[1])) {
             return selectionAreaOld;
         }
-        int offset = StaticRefs.getMainFrame().getJMenuBar().getSize().height + jMenuBarOffsetY;
+        int offset = StaticRefs.throwIfNull(StaticRefs.getMainFrame()).getJMenuBar().getSize().height + jMenuBarOffsetY;
         ScreenPoint a = new ScreenPoint(sA[0].x, sA[0].y - offset);
         ScreenPoint b = new ScreenPoint(sA[1].x, sA[1].y - offset);
         selectionAreaOld = new ScreenPoint[] {
@@ -56,7 +56,7 @@ public class J3DPanel extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        StaticRefs.getSceneManager().draw((Graphics2D) g);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).draw((Graphics2D) g);
         // draw selection area ontop of all render things.
         if (selectionArea[0] != null && selectionArea[1] != null)
             SelectionUI.run((Graphics2D)g, applySelectionAreaOffset(selectionArea), StaticRefs.getSceneManager());

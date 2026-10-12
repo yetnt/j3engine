@@ -1,5 +1,6 @@
 package com.j3d.gen.properties;
 
+import com.j3d.StaticRefs;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.nodes.Thing;
@@ -16,8 +17,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.UUID;
-
-import static com.j3d.StaticRefs.getSceneManager;
 
 public abstract class PropertiesUI {
 
@@ -55,10 +54,12 @@ public abstract class PropertiesUI {
      * before being passed into {@link #get(ArrayList)} such that stuff like Thing and layer can participate
      * and that there aren't any duplicate objects.
      */
+    @SuppressWarnings("unchecked")
     @NotNull
     @Contract("_ -> new")
     public static <T extends HasProperties> ArrayList<T> getFilteredObjects(@NotNull HashSet<GObject> objects) {
         HashSet<T> filtered = new HashSet<>();
+        SceneManager sm = StaticRefs.throwIfNull(StaticRefs.getSceneManager());
         objects.forEach(
                 o -> {
                     switch (selectionPropertiesFilter) {
@@ -76,10 +77,10 @@ public abstract class PropertiesUI {
                             if (o instanceof GCurve) filtered.add((T)o);
                         }
                         case THING -> filtered.add(
-                                (T) getSceneManager().findObjectParent(o)
+                                (T) sm.findObjectParent(o)
                         );
                         case LAYER -> filtered.add(
-                                (T) getSceneManager().findThingLayer(getSceneManager().findObjectParent(o))
+                                (T) sm.findThingLayer(sm.findObjectParent(o))
                         );
                     }
                 }

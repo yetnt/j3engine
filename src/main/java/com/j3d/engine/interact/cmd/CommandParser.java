@@ -199,7 +199,7 @@ public final class CommandParser {
 
         typingHints.taggedArgErr(false);
 
-        StaticRefs.getCommandParser().safeJLabel().repaint();
+        StaticRefs.throwIfNull(StaticRefs.getCommandParser()).safeJLabel().repaint();
     }
 
 
@@ -278,12 +278,12 @@ public final class CommandParser {
      * @param uuid The UUID of the GObject or Thing to finder.
      */
     private void argAddUUID(CmdToken tok, UUID uuid, boolean injected) {
-        GObject g = StaticRefs.getSceneManager().finder()
+        GObject g = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).finder()
                 .findFirst(GObject.class, Finder.idQuery(), uuid)
                 .getgObject();
         if (g == null) {
             // try to finder a Thing with the given UUID
-            Thing t = StaticRefs.getSceneManager().finder()
+            Thing t = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).finder()
                     .findFirst(
                             Thing.class,
                             Finder.idQuery(),
@@ -511,13 +511,13 @@ public final class CommandParser {
     private boolean runCommand(Command cmd, String cmdName, ArrayList<Object> arguments, ArrayList<TaggedArgValue<?>> taggedArguments, Invoker invoker) {
         if (StaticRefs.getMacroUtils().getMacroRunner().isRunning()) {
             if (invoker.isEngine() || invoker.isUser()) {
-                StaticRefs.getHoverLabel().error("Commands cannot be ran while a macro is active");
+                StaticRefs.throwIfNull(StaticRefs.getHoverLabel()).error("Commands cannot be ran while a macro is active");
                 return false;
             }
         }
         if (CommandsManager.commandIsRunning()) {
-            StaticRefs.getHoverLabel().error("Command is currently running: " + SafeJLabel.EMPH, CommandsManager.getCurrentCommandName());
-            StaticRefs.getMainFrame().requestFocusInWindow();
+            StaticRefs.throwIfNull(StaticRefs.getHoverLabel()).error("Command is currently running: " + SafeJLabel.EMPH, CommandsManager.getCurrentCommandName());
+            StaticRefs.throwIfNull(StaticRefs.getMainFrame()).requestFocusInWindow();
             return false;
         }
         if (cmd instanceof StatefulCommand<?> statefulCommand)
@@ -525,7 +525,7 @@ public final class CommandParser {
 
         cmd.run(invoker, label, cmdName, arguments.toArray(), taggedArguments);
         if (!(cmd instanceof HelpCmd))
-            StaticRefs.getHoverLabel().clear();
+            StaticRefs.throwIfNull(StaticRefs.getHoverLabel()).clear();
         return true;
     }
 
@@ -686,7 +686,7 @@ public final class CommandParser {
                         new AbstractAction() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                StaticRefs.getMainFrame().requestFocusInWindow();
+                                StaticRefs.throwIfNull(StaticRefs.getMainFrame()).requestFocusInWindow();
                             }
                         }
                 )

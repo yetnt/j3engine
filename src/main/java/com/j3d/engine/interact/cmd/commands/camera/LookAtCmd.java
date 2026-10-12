@@ -52,7 +52,7 @@ public class LookAtCmd extends Subcommand {
     public void run(@NotNull Invoker invoker, SafeJLabel logLabel, String aliasUsed, @NotNull Object[] args, @NotNull ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
         if (args.length != 1 || (!(args[0] instanceof String) && !(args[0] instanceof Vector3) && !(args[0] instanceof Thing))) {
-            HashSet<GObject> selected = StaticRefs.getSceneManager().getSelected();
+            HashSet<GObject> selected = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected();
             if (selected.isEmpty()) {
                 logLabel.setText("Invalid arguments. Usage: lookat <thing: String|Vector3|UUID> (or select something first)");
                 return;
@@ -72,7 +72,7 @@ public class LookAtCmd extends Subcommand {
 
         switch (args[0]) {
             case String thing -> {
-                Thing t = StaticRefs.getSceneManager().findThing(thing);
+                Thing t = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).findThing(thing);
                 if (t == null) {
                     logLabel.setText("No thing found with the name " + thing);
                     return;

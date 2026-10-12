@@ -4,7 +4,6 @@ import com.j3d.StaticRefs;
 import com.j3d.engine.scene.draw.methods.CamDepthSort;
 import com.j3d.engine.scene.draw.methods.CamDistSort;
 import com.j3d.engine.scene.draw.methods.DDUUIDSort;
-import com.j3d.engine.scene.draw.methods.VisibleSort;
 import com.j3d.engine.scene.nodes.geometry.GLine;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.engine.scene.nodes.geometry.GTri;
@@ -34,7 +33,6 @@ import java.util.UUID;
  * @see CamDepthSort
  * @see CamDistSort
  * @see DDUUIDSort
- * @see VisibleSort
  */
 public class SceneRenderer {
     /**
@@ -59,7 +57,6 @@ public class SceneRenderer {
     public void setSortMethod(PureSortMethod method) {
         queue = switch (method) {
             case CAMDISTSORT, NONE -> new CamDistSort();
-            case VISIBLESORT ->  new VisibleSort();
             case CAMDEPTHSORT -> new CamDepthSort();
             case DDUUIDSORT -> new DDUUIDSort();
             //case BUCKETSORT ->new BucketSort(registered);
@@ -126,9 +123,9 @@ public class SceneRenderer {
                 unregister(drawable.getId());
                 continue;
             }
-            if (drawable.getPure() instanceof GTri tri)
-                if (tri.isHidden()) continue;
-            if (StaticRefs.getSceneManager().getSelected().contains(drawable.getParent())) {
+//            if (drawable.getPure() instanceof GTri tri)
+//                if (tri.isHidden()) continue;
+            if (StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected().contains(drawable.getParent())) {
                 drawable.drawSelected(g);
             } else {
                 drawable.draw(g);

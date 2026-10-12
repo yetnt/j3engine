@@ -58,7 +58,7 @@ public class FloatingPanel extends javax.swing.JPanel {
             public void mouseMoved(MouseEvent e) {
                 Point newP = new Point(e.getX() - panel.getSize().width + 5, e.getY() - 35);
                 panel.setLocation(newP);
-                StaticRefs.getMainFrame().repaint();
+                StaticRefs.throwIfNull(StaticRefs.getMainFrame()).repaint();
                 lastLocation = newP;
             }
         };
@@ -85,7 +85,7 @@ public class FloatingPanel extends javax.swing.JPanel {
             frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
             attachButton.setVisible(false);
             EngineFrame.removeFloater(this);
-            StaticRefs.getMainFrame().revalidate();
+            StaticRefs.throwIfNull(StaticRefs.getMainFrame()).revalidate();
             frame.add(this);
             frame.pack();
             frame.setLocationRelativeTo(StaticRefs.getMainFrame());
@@ -104,7 +104,7 @@ public class FloatingPanel extends javax.swing.JPanel {
             EngineFrame.addFloaterAt(this, lastLocation);
             EngineFrame.bringForward(this);
             this.setVisible(true);
-            StaticRefs.getMainFrame().revalidate();
+            StaticRefs.throwIfNull(StaticRefs.getMainFrame()).revalidate();
         }
     }
 
@@ -126,7 +126,7 @@ public class FloatingPanel extends javax.swing.JPanel {
         if (isDocked) frame.setVisible(false);
         else {
             if (moving) {
-                StaticRefs.getHoverLabel().error("  Finish moving the panel first.");
+                StaticRefs.throwIfNull(StaticRefs.getHoverLabel()).error("  Finish moving the panel first.");
                 return;
             }
             this.setVisible(false);
@@ -209,17 +209,17 @@ public class FloatingPanel extends javax.swing.JPanel {
     private void attachButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attachButtonActionPerformed
         if (!isDocked) {
             if (!moving) {
-                StaticRefs.getMainFrame().addMouseMotionListener(msl);
+                StaticRefs.throwIfNull(StaticRefs.getMainFrame()).addMouseMotionListener(msl);
                 moving = true;
                 attachButton.setText("(detach)");
             } else {
-                StaticRefs.getMainFrame().removeMouseMotionListener(msl);
+                StaticRefs.throwIfNull(StaticRefs.getMainFrame()).removeMouseMotionListener(msl);
                 moving = false;
                 this.setLocation(lastLocation);
                 attachButton.setText("attach");
             }
         }
-        StaticRefs.getHoverLabel().clear();
+        StaticRefs.throwIfNull(StaticRefs.getHoverLabel()).clear();
     }//GEN-LAST:event_attachButtonActionPerformed
 
     private void dockButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dockButtonActionPerformed

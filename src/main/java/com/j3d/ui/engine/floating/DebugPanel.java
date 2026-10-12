@@ -7,12 +7,15 @@ package com.j3d.ui.engine.floating;
 import com.j3d.StaticConfig;
 import com.j3d.StaticRefs;
 import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.engine.scene.nodes.layer.Layer;
+import com.j3d.errors.GenericException;
 import com.j3d.threads.StatisticsThread;
 import com.j3d.ui.dialog.AreYouSure;
+import com.j3d.ui.engine.EngineFrame;
 import com.j3d.ui.engine.FloatingPanel;
 import com.j3d.ui.theme.J3DTheme;
 import com.j3d.ui.theme.swing.J3DScrollBarUI;
@@ -24,9 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
-
-import static com.j3d.StaticRefs.getMainFrame;
-import static com.j3d.StaticRefs.getSceneManager;
 
 /**
  *
@@ -55,7 +55,7 @@ public class DebugPanel extends javax.swing.JPanel {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
             SwingUtilities.updateComponentTreeUI(this); // 'this' refers to the panel
         } catch (Exception e) {
-            e.printStackTrace();
+            StaticRefs.getLog().error(new GenericException(e));
         }
         initComponents();
         floatingPanel.finish(this, (c) -> {});
@@ -321,7 +321,7 @@ public class DebugPanel extends javax.swing.JPanel {
         } else {
             StaticConfig.setShowNormals(false);
         }
-        StaticRefs.getMainPanel().repaint();
+        StaticRefs.throwIfNull(StaticRefs.getMainPanel()).repaint();
     }//GEN-LAST:event_showTriNormalsCheckBoxActionPerformed
 
     private void showTriDepthCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTriDepthCheckBoxActionPerformed
@@ -331,7 +331,7 @@ public class DebugPanel extends javax.swing.JPanel {
         } else {
             StaticConfig.setShowDepth(false);
         }
-        StaticRefs.getMainPanel().repaint();
+        StaticRefs.throwIfNull(StaticRefs.getMainPanel()).repaint();
     }//GEN-LAST:event_showTriDepthCheckBoxActionPerformed
 
     private void showTriDistCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTriDistCheckBoxActionPerformed
@@ -352,7 +352,7 @@ public class DebugPanel extends javax.swing.JPanel {
             if (showTriDepthCheckBox.isSelected()) showTriDepthCheckBox.doClick();
             if (showTriNormalsCheckBox.isSelected()) showTriNormalsCheckBox.doClick();
         }
-        StaticRefs.getMainPanel().repaint();
+        StaticRefs.throwIfNull(StaticRefs.getMainPanel()).repaint();
     }//GEN-LAST:event_NoneRadioButtonActionPerformed
 
     private void randomTriBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomTriBtnActionPerformed
@@ -386,27 +386,29 @@ public class DebugPanel extends javax.swing.JPanel {
 
         StaticRefs.getLog().println("Added random tri " + t.getId() + " to layer " + g);
 
-        StaticRefs.getMainPanel().repaint();
+        StaticRefs.throwIfNull(StaticRefs.getMainPanel()).repaint();
     }//GEN-LAST:event_randomTriBtnActionPerformed
 
     private void drawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawButtonActionPerformed
-        StaticRefs.getMainPanel().repaint();
+        StaticRefs.throwIfNull(StaticRefs.getMainPanel()).repaint();
     }//GEN-LAST:event_drawButtonActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        AreYouSure ays = new AreYouSure(getMainFrame(), true, "This will clear all layers.");
+        EngineFrame mainFrame = StaticRefs.throwIfNull(StaticRefs.getMainFrame());
+        SceneManager sm = StaticRefs.throwIfNull(StaticRefs.getSceneManager());
+        AreYouSure ays = new AreYouSure(mainFrame, true, "This will clear all layers.");
         ays.setVisible(true);
         if (!ays.canProceed()) return;
-        getSceneManager().layers.forEach(frame -> {
+        sm.layers.forEach(frame -> {
             if (!frame.getName().equals(Layer.BACKGROUND_ID)) frame.clear();
         });
-        StaticRefs.getMainPanel().repaint();
+        mainFrame.getDrawPanel().repaint();
     }//GEN-LAST:event_clearButtonActionPerformed
 
     public void startStatisticsThread() {
         statsLabelMap.put(StatisticsThread.IdEnum.REPAINTS_PER_SECOND.getId(), repaintsPerSecondLabel);
         statisticsThread.registerStatistic(StatisticsThread.IdEnum.REPAINTS_PER_SECOND.getId());
-        StaticRefs.getMainPanel().registerRunnable(
+        StaticRefs.throwIfNull(StaticRefs.getMainPanel()).registerRunnable(
                 () -> statisticsThread.increment(StatisticsThread.IdEnum.REPAINTS_PER_SECOND.getId())
         );
         statisticsThread.execute();

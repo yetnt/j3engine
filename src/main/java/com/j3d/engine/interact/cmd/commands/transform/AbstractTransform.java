@@ -212,14 +212,14 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
             };
         }
 
-        Stream<GTri> tris = StaticRefs.getSceneManager().getSelected().stream()
+        Stream<GTri> tris = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected().stream()
                 .filter(obj -> obj instanceof GTri)
                 .map(obj -> (GTri) obj);
 
         if (tris.findAny().isEmpty()) faceMode = FaceMode.POINTS;
 
         references = switch (faceMode) {
-            case TRIANGLES -> new ArrayList<>(StaticRefs.getSceneManager().getSelected().stream()
+            case TRIANGLES -> new ArrayList<>(StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected().stream()
                     .filter(obj -> obj instanceof GTri || obj instanceof GCurve)
                     .flatMap(obj -> {
                         if (obj instanceof GTri t) return t.getLegStream().flatMap(GLine::getPointStream);
@@ -229,14 +229,14 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
                         }
                     })
                     .collect(Collectors.toSet()));
-            case POINTS -> StaticRefs.getSceneManager().getSelected()
+            case POINTS -> StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected()
                     .stream()
                     .filter(obj -> obj instanceof GPoint)
                     .map(obj -> (GPoint) obj)
                     .collect(Collectors.toCollection(ArrayList::new));
-            case THING ->  StaticRefs.getSceneManager().getSelected()
+            case THING ->  StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected()
                     .stream()
-                    .map(g -> StaticRefs.getSceneManager().findObjectParent(g))
+                    .map(g -> StaticRefs.throwIfNull(StaticRefs.getSceneManager()).findObjectParent(g))
                     .filter(Objects::nonNull)
                     .flatMap(thing -> thing.getObjects().stream())
                     .filter(obj -> obj instanceof GPoint)
@@ -263,7 +263,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
     @Override
     public void onStart(Void object, SafeJLabel label) {
         mouseOwner.requestOwnership();
-        keys.forEach(StaticRefs.getGlobalKeybinds()::registerJ3Key);
+        keys.forEach(StaticRefs.throwIfNull(StaticRefs.getGlobalKeybinds())::registerJ3Key);
 
         center = calculateCentre();
 
@@ -351,7 +351,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
 
         overlapId = UUID.randomUUID();
 
-        StaticRefs.getSceneManager().scheduleOverlap(overlapId, drawScaleHandle);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).scheduleOverlap(overlapId, drawScaleHandle);
     }
 
     private Vector3 calculateCentre() {
@@ -370,12 +370,12 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
         selectionPivot = null;
         centreIsSelectionPivot = true;
         label1 = "";
-        keys.forEach(key -> StaticRefs.getGlobalKeybinds().removeJ3Key(key.getId()));
-        StaticRefs.getSceneManager().removeOverlap(overlapId);
+        keys.forEach(key -> StaticRefs.throwIfNull(StaticRefs.getGlobalKeybinds()).removeJ3Key(key.getId()));
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).removeOverlap(overlapId);
         lbl.clear();
         CommandsManager.clearCurrent();
-        StaticRefs.getSceneManager().deselectAll();
-        StaticRefs.getMainFrame().repaint();
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).deselectAll();
+        StaticRefs.throwIfNull(StaticRefs.getMainFrame()).repaint();
         KeyedStatefulCommand.super.finished(success, lbl);
     }
 

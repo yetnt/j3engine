@@ -20,7 +20,6 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 import static com.j3d.StaticRefs.getCamera;
-import static com.j3d.StaticRefs.getSceneManager;
 
 /**
  * A {@link MouseOwner} which enables child classes which extend it, the capability to snap to
@@ -117,14 +116,14 @@ public class SnapMouseOwner extends MouseOwner {
                     int[] yPoints = {sp.y - 5, sp.y + 5, sp.y + 5};
                     g.fillPolygon(xPoints, yPoints, 3);
                     if (isWithinRegion(sp)) {
-                        StaticRefs.getHoverLabel().setText("Snap to Midpoint of " + obj.getId().toString().substring(0, 5));
+                        StaticRefs.throwIfNull(StaticRefs.getHoverLabel()).setText("Snap to Midpoint of " + obj.getId().toString().substring(0, 5));
                         hoveringOver = obj;
                     }
                 } else { // It's a GPoint
                     g.setColor(java.awt.Color.MAGENTA);
                     g.fillOval(sp.x - 3, sp.y - 3, 6, 6);
                     if (isWithinRegion(sp)) {
-                        StaticRefs.getHoverLabel().setText("Snap to " + obj.getId().toString().substring(0, 5));
+                        StaticRefs.throwIfNull(StaticRefs.getHoverLabel()).setText("Snap to " + obj.getId().toString().substring(0, 5));
                         hoveringOver = obj;
                     }
                 }
@@ -186,9 +185,10 @@ public class SnapMouseOwner extends MouseOwner {
     public void mouseMoved(MouseEvent e) {
         super.mouseMoved(e);
         mouseLoc = getMouseLoc(e);
+        SceneManager sm = StaticRefs.throwIfNull(StaticRefs.getSceneManager());
         if (isNotOwner() || !enabled) return;
         if (!overlapScheduled) {
-            getSceneManager().scheduleOverlap(uuid, consumer());
+            sm.scheduleOverlap(uuid, consumer());
             overlapScheduled = true;
         }
         snappingCandidates.clear();
@@ -197,8 +197,8 @@ public class SnapMouseOwner extends MouseOwner {
                 new ScreenPoint(mouseLoc.x+offset, mouseLoc.y+offset),
                 SelectionType.BOUNDS_SOFT
         );
-        SelectionManager sm = new SelectionManager(getSceneManager().layers, sq);
-        sm.getSelected()
+        SelectionManager sem = new SelectionManager(sm.layers, sq);
+        sem.getSelected()
                 .stream()
                 .filter(t -> !(t instanceof GTri))
                 .sorted((a, b) -> {
@@ -220,7 +220,7 @@ public class SnapMouseOwner extends MouseOwner {
     @Override
     public void clear() {
         super.clear();
-        getSceneManager().removeOverlap(uuid);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).removeOverlap(uuid);
         overlapScheduled = false;
         snappingCandidates.clear();
         hoveringOver = null;

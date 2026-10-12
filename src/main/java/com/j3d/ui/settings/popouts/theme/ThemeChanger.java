@@ -358,7 +358,7 @@ public class ThemeChanger extends javax.swing.JFrame {
 
         J3DTheme.themeUpdater.update();
 
-        StaticRefs.getMainPanel().repaint();
+        StaticRefs.throwIfNull(StaticRefs.getMainPanel()).repaint();
 
         StaticRefs.getSettings().panel().dispose();
 

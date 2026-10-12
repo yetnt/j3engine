@@ -154,7 +154,7 @@ public abstract non-sealed class Setting<T> implements SettingsChild, EventEmitt
                 this, old, value
         ));
         if (StaticRefs.getMainPanel() != null)
-            StaticRefs.getMainPanel().repaint();
+            StaticRefs.throwIfNull(StaticRefs.getMainPanel()).repaint();
     }
 
     /**

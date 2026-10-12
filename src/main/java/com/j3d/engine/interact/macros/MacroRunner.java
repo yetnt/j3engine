@@ -187,7 +187,7 @@ public class MacroRunner implements EventListener {
      * @see #expectEvent
      */
     private boolean commandLine(String line) {
-        CommandParser cmdP = StaticRefs.getCommandParser();
+        CommandParser cmdP = StaticRefs.throwIfNull(StaticRefs.getCommandParser());
         cmdP.setInputField(line);
         ArrayList<CmdToken> tokens = new ArrayList<>(cmdP.getTokens());
         ArrayList<TaggedArgValue<?>> tagged = new ArrayList<>(cmdP.getTaggedArguments());
@@ -256,7 +256,7 @@ public class MacroRunner implements EventListener {
                                     .mapTo(ScreenPoint::new)
                         );
 
-        StaticRefs.getSceneManager().select(
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).select(
                 new SelectionQuery(
                         points.getFirst(), points.getSecond(),
                         switch (inferredSelectionType) {

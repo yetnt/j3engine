@@ -9,8 +9,10 @@ import com.j3d.engine.interact.cmd.args.TypedArg;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.interact.cmd.base.KeyedStatefulCommand;
 import com.j3d.engine.interact.input.keyboard.J3Key;
+import com.j3d.engine.interact.input.keyboard.KeyBindings;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.math.plane.AxisPlane;
+import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.engine.scene.nodes.util.Sampler;
@@ -26,8 +28,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.function.Consumer;
-
-import static com.j3d.StaticRefs.getSceneManager;
 
 /**
  * A command to create a prism.
@@ -140,8 +140,8 @@ public class PrismCmd extends Command implements KeyedStatefulCommand {
 
     private void editRadius(boolean add) {
         if (!add && radius-1 < 1) return;
-        if (add) radius += gearTrain[currentIndex];
-        else radius -= gearTrain[currentIndex];
+        if (add) radius = (int) (radius + gearTrain[currentIndex]);
+        else radius = (int) (radius - gearTrain[currentIndex]);
     }
 
     private void editSides(boolean add) {
@@ -236,12 +236,14 @@ public class PrismCmd extends Command implements KeyedStatefulCommand {
 
     @Override
     public void onStart(Void object, SafeJLabel label) {
-        keys.forEach(StaticRefs.getGlobalKeybinds()::registerJ3Key);
+        KeyBindings globalKeybinds = StaticRefs.throwIfNull(StaticRefs.getGlobalKeybinds());
+        SceneManager sm = StaticRefs.throwIfNull(StaticRefs.getSceneManager());
+        keys.forEach(globalKeybinds::registerJ3Key);
 
         Consumer<Graphics2D> drawGhosts = g -> {
             g.setColor(Color.WHITE);
             // Draw a line connecting the 2 centres
-            getSceneManager().drawLine3D(
+            sm.drawLine3D(
                     g, bottomFaceCenter, topFaceCenter, StaticRefs.getCamera()
             );
             // Draw 2 n-gons on the top and bottom face.
@@ -268,7 +270,7 @@ public class PrismCmd extends Command implements KeyedStatefulCommand {
             );
         };
 
-        getSceneManager().scheduleOverlap(overlapId, drawGhosts);
+        sm.scheduleOverlap(overlapId, drawGhosts);
     }
 
     @Override
@@ -282,7 +284,7 @@ public class PrismCmd extends Command implements KeyedStatefulCommand {
             return;
         }
         Layer l = new Layer(name);
-        getSceneManager().layers.add(l);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).layers.add(l);
         Solids.prism(
                 radius,
                 sides,
@@ -301,9 +303,10 @@ public class PrismCmd extends Command implements KeyedStatefulCommand {
     public void finished(boolean success, SafeJLabel label) {
         sides = 3;
         radius = 5;
-        getSceneManager().removeOverlap(overlapId);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).removeOverlap(overlapId);
+        KeyBindings globalKeybindings = StaticRefs.throwIfNull(StaticRefs.getGlobalKeybinds());
         label.clear();
-        keys.forEach(key -> StaticRefs.getGlobalKeybinds().removeJ3Key(key.getId()));
+        keys.forEach(key -> globalKeybindings.removeJ3Key(key.getId()));
         KeyedStatefulCommand.super.finished(success, label);
     }
 

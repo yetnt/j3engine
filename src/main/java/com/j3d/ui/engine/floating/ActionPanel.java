@@ -115,7 +115,7 @@ public class ActionPanel extends javax.swing.JPanel {
 
     private void jumpToBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jumpToBtnActionPerformed
         SceneManager.history.apply(action);
-        StaticRefs.getMainPanel().repaint();
+        StaticRefs.throwIfNull(StaticRefs.getMainPanel()).repaint();
     }//GEN-LAST:event_jumpToBtnActionPerformed
 
 

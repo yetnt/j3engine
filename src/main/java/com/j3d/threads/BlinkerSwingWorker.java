@@ -8,8 +8,6 @@ import javax.swing.*;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import static com.j3d.StaticRefs.getSceneManager;
-
 /**
  * A SwingWorker implementation designed to perform a blinking effect on a UI component.
  * It repeatedly executes a given {@link Runnable}, repainting the main panel,
@@ -60,8 +58,8 @@ public class BlinkerSwingWorker extends SwingWorker<Void, Void> {
             try {
                 Thread.sleep(waitMs);
                 runnable.run();
-                StaticRefs.getMainPanel().repaint();
-            } catch (InterruptedException e) {
+                StaticRefs.throwIfNull(StaticRefs.getMainPanel()).repaint();
+            } catch (InterruptedException _) {
 
             }
         }
@@ -74,9 +72,9 @@ public class BlinkerSwingWorker extends SwingWorker<Void, Void> {
      * @return {@code null} as this worker does not produce any intermediate results or a final result.
      */
     @Override
-    protected Void doInBackground() throws Exception {
+    protected Void doInBackground() {
         repeat();
-        getSceneManager().removeOverlap(idToRemove);
+        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).removeOverlap(idToRemove);
         return null;
     }
 }

@@ -45,7 +45,7 @@ public class RandomUUIDCmd extends Subcommand {
     @Override
     public void run(@NotNull Invoker invoker, SafeJLabel logLabel, String aliasUsed, @NotNull Object[] args, @NotNull ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
-        List<GObject> objects = StaticRefs.getSceneManager().layers
+        List<GObject> objects = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).layers
                 .objectStream().toList();
 
         GObject random = objects.get(new Random().nextInt(objects.size()));

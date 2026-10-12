@@ -102,8 +102,8 @@ public class CreateCmd extends Command {
     }
 
     public Thing usableThing(String name) {
-        Layer usable = StaticRefs.getSceneManager().usableLayer();
-        ArrayList<FindResult> results = StaticRefs.getSceneManager().finder().find(
+        Layer usable = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).usableLayer();
+        ArrayList<FindResult> results = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).finder().find(
                 Thing.class,
                 (t, v) -> t.getName().contains(v),
                 name

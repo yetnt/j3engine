@@ -6,6 +6,7 @@ import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.args.TypedArg;
 import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GLine;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
@@ -20,7 +21,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.j3d.StaticRefs.getCamera;
-import static com.j3d.StaticRefs.getSceneManager;
 
 /**
  *  * A subcommand of {@link MeasureCmd} that calculates and displays the volume of a solid
@@ -74,11 +74,12 @@ public class VolumeCmd extends Subcommand {
 
     private void registerGhost(Thing t, double volume) {
         UUID id = UUID.randomUUID();
+        SceneManager sm = StaticRefs.throwIfNull(StaticRefs.getSceneManager());
 
-        getSceneManager().scheduleOverlap(id, (c) -> {
+        sm.scheduleOverlap(id, (c) -> {
             ghost(t, c);
             Vector3 v = closestPoint(t).getPivot();
-            getSceneManager().drawText3D(
+            sm.drawText3D(
                     c, v, String.format("%.2f units cubed", volume),
                     getCamera()
             );

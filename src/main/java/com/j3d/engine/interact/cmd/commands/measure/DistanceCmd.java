@@ -1,10 +1,12 @@
 package com.j3d.engine.interact.cmd.commands.measure;
 
+import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.args.TypedArg;
 import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.threads.BlinkerSwingWorker;
 import com.j3d.ui.SafeJLabel;
@@ -15,7 +17,6 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import static com.j3d.StaticRefs.getCamera;
-import static com.j3d.StaticRefs.getSceneManager;
 
 /**
  * A subcommand of {@link MeasureCmd} that calculates and displays the distance between two points.
@@ -72,15 +73,16 @@ public class DistanceCmd extends Subcommand {
     private boolean draw = true;
 
     private void ghost(Vector3 A, Vector3 B, double d) {
+        SceneManager sm = StaticRefs.throwIfNull(StaticRefs.getSceneManager());
         UUID id = UUID.randomUUID();
-        getSceneManager().scheduleOverlap(id, (c) -> {
+        sm.scheduleOverlap(id, (c) -> {
             if (!draw) return;
             c.setColor(new Color(206, 0, 0));
             c.setStroke(new BasicStroke(1.8f));
-            getSceneManager().drawLine3D(
+            sm.drawLine3D(
                     c, A, B, getCamera()
             );
-            getSceneManager().drawText3D(
+            sm.drawText3D(
                     c, A.add(B).div(2), String.format("%.2f units long", d),
                     getCamera()
             );

@@ -15,6 +15,7 @@ import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.errors.ErrorHandler;
+import com.j3d.errors.GenericException;
 import com.j3d.gen.docs.DocsProvider;
 import com.j3d.gen.settings.Settings;
 import com.j3d.gen.settings.classes.CameraProperties;
@@ -35,6 +36,9 @@ import com.j3d.ui.engine.floating.grid2d.Grid2DPanel;
 import com.j3d.ui.engine.floating.properties.PropertiesPanel;
 import com.j3d.ui.engine.floating.tree.LayerTree;
 import com.j3d.ui.engine.toolbox.Toolbox;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,13 +57,27 @@ import java.net.URL;
  * @author Lehlogonolo Poole
  */
 public abstract class StaticRefs {
+
+    @Contract("null -> fail")
+    public static <T> T throwIfNull(@Nullable T input) {
+        if (input == null) {
+            getLog().error(
+                    // fatal error so it will call System.exit(-1)
+                    new GenericException("Expected a non-null value for the given input")
+                            .code(100)
+            );
+        }
+        return input;
+    }
+
     // References below are all initialised by EngineFrame and have a setter method that only EngineFrame should usz
     /**
      * The SceneManager Instance. A very important class initialized by {@link EngineFrame}
      * who's job it is to store all information and references to the scene.
      */
     private static SceneManager sceneManager = null;
-    public static SceneManager getSceneManager() {
+
+    @Nullable public static SceneManager getSceneManager() {
         return sceneManager;
     }
 
@@ -67,7 +85,7 @@ public abstract class StaticRefs {
      * @implSpec This should only be called by {@link EngineFrame}
      * @param instance The instance.
      */
-    public static void registerSceneManager(SceneManager instance) {
+    public static void registerSceneManager(@NotNull SceneManager instance) {
         sceneManager = instance;
     }
 
@@ -77,14 +95,14 @@ public abstract class StaticRefs {
      *  {@link StaticRefs#mainPanel}.repaint() instead of mainFrame.repaint() for better performance.
      */
     private static EngineFrame mainFrame = null;
-    public static EngineFrame getMainFrame() {
+    @Nullable public static EngineFrame getMainFrame() {
         return mainFrame;
     }
     /**
      * @implSpec This should only be called by {@link EngineFrame}
      * @param instance The instance.
      */
-    public static void registerMainFrame(EngineFrame instance) {
+    public static void registerMainFrame(@NotNull EngineFrame instance) {
         mainFrame = instance;
     }
 
@@ -94,14 +112,14 @@ public abstract class StaticRefs {
      * Initialised and owned by {@link EngineFrame}
      */
     private static CommandParser commandParser;
-    public static CommandParser getCommandParser() {
+    @Nullable public static CommandParser getCommandParser() {
         return commandParser;
     }
     /**
      * @implSpec This should only be called by {@link EngineFrame}
      * @param instance The instance.
      */
-    public static void registerCommandParser(CommandParser instance) {
+    public static void registerCommandParser(@NotNull CommandParser instance) {
         commandParser = instance;
     }
 
@@ -110,14 +128,14 @@ public abstract class StaticRefs {
      * Initialised by {@link EngineFrame}
      */
     private static J3DPanel mainPanel;
-    public static J3DPanel getMainPanel() {
+    @Nullable public static J3DPanel getMainPanel() {
         return mainPanel;
     }
     /**
      * @implSpec This should only be called by {@link EngineFrame}
      * @param instance The instance.
      */
-    public static void registerMainPanel(J3DPanel instance) {
+    public static void registerMainPanel(@NotNull J3DPanel instance) {
         mainPanel = instance;
     }
     /**
@@ -126,14 +144,14 @@ public abstract class StaticRefs {
      * @see J3Key
      */
     private static KeyBindings globalKeybinds;
-    public static KeyBindings getGlobalKeybinds() {
+    @Nullable public static KeyBindings getGlobalKeybinds() {
         return globalKeybinds;
     }
     /**
      * @implSpec This should only be called by {@link EngineFrame}
      * @param instance The instance.
      */
-    public static void registerGlobalKeybinds(KeyBindings instance) {
+    public static void registerGlobalKeybinds(@NotNull KeyBindings instance) {
         globalKeybinds = instance;
     }
 
@@ -142,14 +160,14 @@ public abstract class StaticRefs {
      * Initialised by {@link EngineFrame}
      */
     private static HoverJLabel hoverLabel;
-    public static HoverJLabel getHoverLabel() {
+    @Nullable public static HoverJLabel getHoverLabel() {
         return hoverLabel;
     }
     /**
      * @implSpec This should only be called by {@link EngineFrame}
      * @param instance The instance.
      */
-    public static void registerHoverLabel(HoverJLabel instance) {
+    public static void registerHoverLabel(@NotNull HoverJLabel instance) {
         hoverLabel = instance;
     }
 
@@ -178,6 +196,7 @@ public abstract class StaticRefs {
      * and can be accessed via it's {@link FloatingPanel} by the user within the {@link Toolbox}.
      */
     private static DebugPanel debugPanel;
+    @NotNull
     public static DebugPanel getDebugPanel() {
         if (debugPanel == null)
             debugPanel = new DebugPanel();
@@ -191,6 +210,7 @@ public abstract class StaticRefs {
      * user within the {@link Toolbox}.
      */
     private static PropertiesPanel propertiesPanel;
+    @NotNull
     public static PropertiesPanel getPropertiesPanel() {
         if (propertiesPanel == null)
             propertiesPanel = new PropertiesPanel();
@@ -203,6 +223,7 @@ public abstract class StaticRefs {
      * Lazily initialised.
      */
     private static PF1 projectFileV1;
+    @NotNull
     public static PF1 getProjectFileV1() {
         if (projectFileV1 == null) {
             projectFileV1 = new PF1();
@@ -214,6 +235,7 @@ public abstract class StaticRefs {
      * Lazily initialised.
      */
     private static PF2 projectFileV2;
+    @NotNull
     public static PF2 getProjectFileV2() {
         if (projectFileV2 == null) {
             projectFileV2 = new PF2();
@@ -225,6 +247,7 @@ public abstract class StaticRefs {
      * Lazily initialised.
      */
     private static PF3 projectFileV3;
+    @NotNull
     public static PF3 getProjectFileV3() {
         if (projectFileV3 == null) {
             projectFileV3 = new PF3();
@@ -238,6 +261,7 @@ public abstract class StaticRefs {
      * the {@link Toolbox}. Initialised by StaticRefs
      */
     private static LayerTree layerTree;
+    @NotNull
     public static LayerTree getLayerTree() {
         if (layerTree == null)
             layerTree = new LayerTree();
@@ -246,6 +270,7 @@ public abstract class StaticRefs {
     }
 
     private static Grid2DPanel grid2DPanel;
+    @NotNull
     public static Grid2DPanel getGrid2DPanel() {
         if (grid2DPanel == null)
             grid2DPanel = new Grid2DPanel();
@@ -259,6 +284,7 @@ public abstract class StaticRefs {
      * Lazily initialised by {@link EngineFrame}
      */
     private static Logger log;
+    @NotNull
     public static Logger getLog() {
         if (log == null)
             log = new Logger();
@@ -269,6 +295,7 @@ public abstract class StaticRefs {
      * {@code user.dir/J3Engine}. Lazily initialised by StaticRefs.
      */
     private static EngineFiles engineFiles;
+    @NotNull
     public static EngineFiles getEngineFiles() {
         if (engineFiles == null)
             engineFiles = new EngineFiles();
@@ -280,6 +307,7 @@ public abstract class StaticRefs {
      * statically. This instance is only really used to access it's UI. Initialised by StaticRefs
      */
     private static Settings settings;
+    @NotNull
     public static Settings getSettings() {
         if (settings == null)
             settings = new Settings();
@@ -289,6 +317,7 @@ public abstract class StaticRefs {
      * New help generator. No docs yet. lmao. Initialised by StaticRefs
      */
     private static DocsProvider docsProvider;
+    @NotNull
     public static DocsProvider getDocsProvider() {
         if (docsProvider == null)
             docsProvider = new DocsProvider();
@@ -299,6 +328,7 @@ public abstract class StaticRefs {
      * and gets all the commands otherwise. Initialised by StaticRefs
      */
     private static CommandsManager commandManager;
+    @NotNull
     public static CommandsManager getCommandManager() {
         if (commandManager == null)
             commandManager = new CommandsManager();
@@ -309,6 +339,7 @@ public abstract class StaticRefs {
      * The macro utils which is the... macro recording and fetching utils. whatd u expect
      */
     private static MacroUtils macroUtils;
+    @NotNull
     public static MacroUtils getMacroUtils() {
         if (macroUtils == null)
             macroUtils = new MacroUtils();
@@ -316,11 +347,13 @@ public abstract class StaticRefs {
     }
 
     private static final ErrorHandler errs = new ErrorHandler();
+    @NotNull
     public static ErrorHandler getErrs() {
         return errs;
     }
 
     private static final JaivaInstanceManager jaivaInstanceManager = new JaivaInstanceManager();
+    @NotNull
     public static JaivaInstanceManager getJaivaInstanceManager() {
         return jaivaInstanceManager;
     }
@@ -329,6 +362,7 @@ public abstract class StaticRefs {
      * Returns an {@link Image} of the J3Engine 1:1 logo for the app icon.
      * @return an Image
      */
+    @Nullable
     public static Image logo() {
         URL imgURL = StaticRefs.class.getResource("/art/logo/J3Dicon.png");
         if (imgURL != null) {

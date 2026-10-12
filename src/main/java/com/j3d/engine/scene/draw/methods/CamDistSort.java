@@ -24,8 +24,8 @@ public class CamDistSort extends SortMethod {
 
     @Override
     public boolean add(RenderState<?, ?> gTri) {
-        if (gTri.getPure() instanceof GTri t)
-            if (backFaceCulled(t)) return false;
+//        if (gTri.getPure() instanceof GTri t)
+//            if (backFaceCulled(t)) return false;
         if (this.contains(gTri)) {
 //            sort();
             return false;
@@ -43,7 +43,7 @@ public class CamDistSort extends SortMethod {
         new ArrayList<>(this).stream()
                 .peek(s -> {
                     if (s == null)
-                        remove(s);
+                        remove(null);
                 })
                 .filter(Objects::nonNull)
                 .filter(t -> !t.isValid()

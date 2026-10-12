@@ -61,7 +61,7 @@ public class HelpCmd extends Command {
                         .append(new InlineHTML("and like " + (commands.size()-max) + " more...").italic());
             }
 
-            StaticRefs.getHoverLabel().setText(
+            StaticRefs.throwIfNull(StaticRefs.getHoverLabel()).setText(
                     new InlineHTML(stringBuilder.toString()).wrapHTML()
             );
             return;
@@ -109,7 +109,7 @@ public class HelpCmd extends Command {
 
         // print
 
-        StaticRefs.getHoverLabel().setText(new InlineHTML(stringBuilder.toString()).wrapHTML());
+        StaticRefs.throwIfNull(StaticRefs.getHoverLabel()).setText(new InlineHTML(stringBuilder.toString()).wrapHTML());
     }
 
     private static ArrayList<Command> getCommands(AtomicInteger maxCmd, int max, StringBuilder stringBuilder) {

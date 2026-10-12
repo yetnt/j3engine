@@ -79,7 +79,7 @@ public class GuideInfo extends EventEmitterAndListener {
      */
     public void breakdown() {
         // remove components
-        components.forEach(StaticRefs.getMainFrame().getGuideManager().getAdapter()::remove);
+        components.forEach(StaticRefs.throwIfNull(StaticRefs.getMainFrame()).getGuideManager().getAdapter()::remove);
         // remove listener
         if (listeningTo != null)
             listeningTo.detachListener(this);
@@ -108,12 +108,12 @@ public class GuideInfo extends EventEmitterAndListener {
      * @param adapter The GuidePanelAdapter to which the counter label will be added.
      */
     public void guideCounter(GuidePanelAdapter adapter) {
-        int index =(StaticRefs.getMainFrame().getGuideManager().getFlow().indexOf(this)+1);
-        int total = StaticRefs.getMainFrame().getGuideManager().getFlow().totalSize();
+        int index =(StaticRefs.throwIfNull(StaticRefs.getMainFrame()).getGuideManager().getFlow().indexOf(this)+1);
+        int total = StaticRefs.throwIfNull(StaticRefs.getMainFrame()).getGuideManager().getFlow().totalSize();
 
         JButton back = new JButton("(go back)");
         back.addActionListener((e) -> {
-            StaticRefs.getMainFrame().getGuideManager().getFlow().back();
+            StaticRefs.throwIfNull(StaticRefs.getMainFrame()).getGuideManager().getFlow().back();
         });
         JLabel label = new JLabel(
                 new InlineHTML(index + " of " + total)

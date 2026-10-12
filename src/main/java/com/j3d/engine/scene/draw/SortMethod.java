@@ -18,7 +18,6 @@ import java.util.ArrayList;
  * @author Lehlogonolo Poole
  * @see ArrayList
  * @see GTri
- * @see PureListener
  * @see SceneRenderer
  */
 public abstract class SortMethod extends ArrayList<RenderState<?, ?>> {
@@ -44,7 +43,7 @@ public abstract class SortMethod extends ArrayList<RenderState<?, ?>> {
                 if (r.isValid())
                     sm.add(drawable);
                 else {
-                    StaticRefs.getSceneManager().getRenderer().unregister(drawable);
+                    StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getRenderer().unregister(drawable);
                     sm.remove(d);
                 }
             });

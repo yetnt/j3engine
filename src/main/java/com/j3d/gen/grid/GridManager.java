@@ -13,6 +13,7 @@ import com.j3d.engine.react.events.EventListener;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.react.events.payloads.ReactivePointInvalidatedPayload;
+import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.find.FindResult;
 import com.j3d.engine.scene.find.Finder;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
@@ -32,7 +33,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static com.j3d.StaticRefs.*;
 import static com.j3d.ui.engine.floating.grid2d.Grid2DPanel.mousePosInPanel;
 
 public class GridManager implements EventListener {
@@ -81,7 +81,7 @@ public class GridManager implements EventListener {
     }
 
     public void addExistingPoints() {
-        ArrayList<FindResult> findResults = StaticRefs.getSceneManager().finder()
+        ArrayList<FindResult> findResults = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).finder()
                 .find(GPoint.class, Finder.allQuery(), null);
 
         ArrayList<GPoint> foundObjects = findResults.stream()
@@ -144,6 +144,7 @@ public class GridManager implements EventListener {
      * </ul>
      */
     private void init() {
+        SceneManager sm = StaticRefs.throwIfNull(StaticRefs.getSceneManager());
         ((Grid)panel.getDrawPanel()).setConsumer((g) -> {
             // Draw the origin point
             ConversionWithOffset props = new ConversionWithOffset(
@@ -183,7 +184,7 @@ public class GridManager implements EventListener {
                 s.accept(g);
             });
         });
-        getSceneManager().scheduleOverlap(
+        sm.scheduleOverlap(
                 panel.getOverlapId(),
                 (g) -> {
                     if (panel.floatingPanel.isHidden()) return;
@@ -197,12 +198,12 @@ public class GridManager implements EventListener {
                     Vector3 point = p
                             .toWorld(mousePosInPanel);
                     ScreenPoint sp =
-                            point.toPoint(getCamera())
+                            point.toPoint(StaticRefs.getCamera())
                                     .toScreen();
                     g.setColor(Color.cyan);
                     g.drawOval(sp.x - ovalRadius, sp.y - ovalRadius, ovalRadius *2, ovalRadius *2);
                     g.setColor(Color.white);
-                    getMainPanel().repaint();
+                    (StaticRefs.throwIfNull(StaticRefs.getMainPanel())).repaint();
                     objects.forEach(gr -> gr.drawWorld(g, p));
                 }
         );
@@ -352,6 +353,7 @@ public class GridManager implements EventListener {
      * @param plane The plane in question
      */
     public static void drawMouse(Graphics2D g, CartesianPoint mousePos, AxisPlane plane) {
+        SceneManager sm = StaticRefs.throwIfNull(StaticRefs.getSceneManager());
         int arrowSize = 1;
         double sideLength = 0.25;
         // not really the side length since this is more the offset to make the diagonal
@@ -370,20 +372,20 @@ public class GridManager implements EventListener {
                 .stream().map(plane::toWorld)
                 .collect(Collectors.toCollection(ArrayList::new));
 
-        getSceneManager().drawLine3D(
-                g, points2.getFirst(), points2.get(1), getCamera()
+        sm.drawLine3D(
+                g, points2.getFirst(), points2.get(1), StaticRefs.getCamera()
         );
-        getSceneManager().drawLine3D(
-                g, points2.getFirst(), points2.get(2), getCamera()
+        sm.drawLine3D(
+                g, points2.getFirst(), points2.get(2), StaticRefs.getCamera()
         );
-        getSceneManager().drawLine3D(
-                g, points2.getFirst(), points2.get(3), getCamera()
+        sm.drawLine3D(
+                g, points2.getFirst(), points2.get(3), StaticRefs.getCamera()
         );
 
-        getSceneManager().drawText3D(
+        sm.drawText3D(
                 g, points2.getFirst(),
                 mousePos.friendlyString() +" -> " + points2.getFirst().toCommandPaletteString() + " | " + StaticRefs.getGrid2DPanel().getScale(),
-                getCamera(),
+                StaticRefs.getCamera(),
                 J3DTheme.UI_SURFACE.color(),
                 J3DTheme.TEXT_PRIMARY.color()
         );
@@ -410,14 +412,16 @@ public class GridManager implements EventListener {
                 .stream().map(plane::toWorld)
                 .collect(Collectors.toCollection(ArrayList::new));
 
-        getSceneManager().drawLine3D(
-                g, points2.getFirst(), points2.get(1), getCamera()
+        SceneManager sm = StaticRefs.throwIfNull(StaticRefs.getSceneManager());
+
+        sm.drawLine3D(
+                g, points2.getFirst(), points2.get(1), StaticRefs.getCamera()
         );
-        getSceneManager().drawLine3D(
-                g, points2.getFirst(), points2.get(2), getCamera()
+        sm.drawLine3D(
+                g, points2.getFirst(), points2.get(2), StaticRefs.getCamera()
         );
-        getSceneManager().drawLine3D(
-                g, points2.getFirst(), points2.get(3), getCamera()
+        sm.drawLine3D(
+                g, points2.getFirst(), points2.get(3), StaticRefs.getCamera()
         );
 
 //        getSceneManager().drawText3D(
