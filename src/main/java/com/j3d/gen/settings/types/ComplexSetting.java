@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class ComplexSetting<T> extends Setting<T> {
+public final class ComplexSetting<T> extends Setting<T> {
 
     private final TriFunction<ActionEvent, JLabel, PopoutSPanel<T>, T> onOpen;
     private final Supplier<String> onCreate;

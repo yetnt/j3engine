@@ -15,7 +15,7 @@ import com.j3d.ui.theme.J3DTheme;
  *
  * @author ACER
  */
-public class BooleanValueSPanel extends AbstractPanel<BooleanSetting, Boolean> {
+public final class BooleanValueSPanel extends AbstractPanel<BooleanSetting, Boolean> {
 
     /**
      * Creates new form BooleanValueSPanel

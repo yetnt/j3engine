@@ -6,6 +6,7 @@ import com.j3d.engine.interact.selection.SelectionUI;
 import com.j3d.engine.interact.selection.SelectionUtils;
 import com.j3d.ui.engine.EngineFrame;
 import com.yetnt.utils.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -65,7 +66,7 @@ public class KeyBindings {
         };
     }
 
-    public KeyBindings(EngineFrame e) {
+    public KeyBindings(@NotNull EngineFrame e) {
         this(e.getDrawPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW), e.getDrawPanel().getActionMap());
 
         StringBuilder sb = new StringBuilder();
@@ -182,14 +183,15 @@ public class KeyBindings {
         rJ3Key(key);
     }
 
-    private void updateLinks(J3Key leader, KeyStroke newKeyStroke) {
+    private void updateLinks(@NotNull J3Key leader, KeyStroke newKeyStroke) {
         if (leader.getLink() == null) return;
         Pair<J3Key, Integer> child = leader.getLink();
         inputMap.remove(child.getFirst().getKeyStroke());
+        //noinspection MagicConstant
         child.getFirst().setKeyStroke(
                 KeyStroke.getKeyStroke(
                         newKeyStroke.getKeyCode(),
-                        child.getSecond().intValue() | newKeyStroke.getModifiers(),
+                        child.getSecond() | newKeyStroke.getModifiers(),
                         child.getFirst().getKeyStroke().isOnKeyRelease()
                 )
         );
@@ -259,7 +261,7 @@ public class KeyBindings {
      * @see KeyEvent
      * @see J3Key
      */
-    public static boolean childModifiersClash(J3Key leader) {
+    public static boolean childModifiersClash(@NotNull J3Key leader) {
         if (leader.getLink() == null) return false;
         int leaderModifier = leader.getKeyStroke().getModifiers();
 
@@ -281,7 +283,7 @@ public class KeyBindings {
      * @param key The key in question
      * @return An {@link UpdatedJ3Key} object that indicates the result of the update.
      */
-    public UpdatedJ3Key rebindJ3KeyKeystroke(KeyStroke old, J3Key key) {
+    public UpdatedJ3Key rebindJ3KeyKeystroke(KeyStroke old, @NotNull J3Key key) {
         if (prohibited.contains(key.getKeyStroke())) {
             StaticRefs.getLog().error("Attempted to add prohibited key binding: " + key.getKeyStroke());
             key.setKeyStroke(old);

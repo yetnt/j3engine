@@ -17,7 +17,7 @@ import java.util.ArrayList;
  *
  * @author ACER
  */
-public class ButtonGroupSPanel<E extends Enum> extends AbstractPanel<EnumSetting<E>, E> {
+public final class ButtonGroupSPanel<E extends Enum> extends AbstractPanel<EnumSetting<E>, E> {
 
     private ArrayList<JRadioButton> buttons = new ArrayList<>();
 

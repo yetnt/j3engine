@@ -7,6 +7,8 @@ import com.j3d.engine.math.rot.Rotation;
 import com.j3d.engine.react.events.EventEmitter;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.react.events.payloads.CameraUpdatedEventPayload;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents the virtual camera in the 3D scene.
@@ -20,7 +22,7 @@ import com.j3d.engine.react.events.payloads.CameraUpdatedEventPayload;
  * @see Vector3
  * @see MatrixMath
  */
-public class Camera extends EventEmitter {
+public final class Camera extends EventEmitter {
 
     /**
      * The 3D position of the camera in the world (c).
@@ -140,6 +142,7 @@ public class Camera extends EventEmitter {
      *
      * @return A normalized {@link Vector3} representing the direction the camera is pointing.
      */
+    @Contract(pure = true, value = "-> new")
     public Vector3 getForward() {
         return Vector3.of(
                 MatrixMath.mult(
@@ -159,6 +162,7 @@ public class Camera extends EventEmitter {
      * using the camera's current yaw and pitch.
      * @return A normalized {@link Vector3} representing the direction the camera is pointing.
      */
+    @Contract(pure = true, value = "-> new")
     public Vector3 getRight() {
         return Vector3.of(
                 MatrixMath.mult(
@@ -178,6 +182,7 @@ public class Camera extends EventEmitter {
      * using the camera's current yaw and pitch. Roll is ignored.
      * @return A normalized {@link Vector3} representing the direction the camera is pointing.
      */
+    @Contract(pure = true, value = "-> new")
     public Vector3 getUp() {
         return Vector3.of(
                 MatrixMath.mult(
@@ -198,7 +203,7 @@ public class Camera extends EventEmitter {
      *
      * @param target The world-space {@link Vector3} point to look at.
      */
-    public void lookAt(Vector3 target) {
+    public void lookAt(@NotNull Vector3 target) {
         Vector3 dir = target.sub(getPosition()).normalize();
 
         // Calculate yaw (horizontal angle) from the X and Z components
@@ -221,6 +226,8 @@ public class Camera extends EventEmitter {
      * This plane is defined by the camera's position and its forward-facing direction.
      * @return A {@link NormalPlane} representing the camera's view plane.
      */
+    @NotNull
+    @Contract(" -> new")
     public NormalPlane viewPlane() {
         return new NormalPlane(
                 position,

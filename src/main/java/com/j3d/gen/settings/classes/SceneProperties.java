@@ -14,7 +14,7 @@ import com.j3d.ui.settings.SettingsParentPanel;
 
 import java.util.ArrayList;
 
-public class SceneProperties implements SettingsParent {
+public final class SceneProperties implements SettingsParent {
     /**
      * An integer setting that defines the number of lines to be displayed for the scene's axes.
      * A higher value is NOT recommended.

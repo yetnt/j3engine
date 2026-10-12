@@ -6,7 +6,7 @@ import com.j3d.ui.settings.panels.ButtonGroupSPanel;
 import java.util.function.Function;
 
 
-public class EnumSetting<T extends Enum> extends Setting<T> {
+public final class EnumSetting<T extends Enum> extends Setting<T> {
     private final T[] values;
 
     public EnumSetting(String name, T value, String description, T[] values) {

@@ -106,7 +106,7 @@ public class MacroRecorder implements EventListener {
             if (invoker.isUser() || invoker.isEngine()) {
 
                 String line = CmdToken.toStr(payload.getArgsCopy());
-                MacroLine mLine = new MacroLine(InstructionType.COMMAND_EXEC, (payload.emitter.aliases.getFirst() + " " + line).trim());
+                MacroLine mLine = new MacroLine(InstructionType.COMMAND_EXEC, (payload.getEmitter().aliases.getFirst() + " " + line).trim());
 
                 instructions.add(mLine);
 

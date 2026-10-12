@@ -8,6 +8,8 @@ import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.draw.ViewType;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.UUID;
@@ -21,7 +23,9 @@ public class Point extends Vector3 implements Pure {
         super(x, y, z);
     }
 
-    public static Point from(Vector3 v) {
+    @NotNull
+    @Contract("_ -> new")
+    public static Point from(@NotNull Vector3 v) {
         return new Point(v.getX(), v.getY(), v.getZ());
     }
 

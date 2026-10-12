@@ -11,6 +11,7 @@ import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.ui.SafeJLabel;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -60,7 +61,7 @@ public class CreateCmd extends Command {
     }
 
     @Override
-    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+    public void run(@NotNull Invoker invoker, SafeJLabel logLabel, String aliasUsed, @NotNull Object[] args, @NotNull ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
         if (args.length < 1 || !(args[0] instanceof String arg)) {
             logLabel.setText("Invalid arguments. Usage: create " + argSet.toUseString());

@@ -15,7 +15,7 @@ import java.util.ArrayList;
  *     This interface is implemented by {@link SettingsParent} and {@link Setting}.
  * </p>
  */
-public interface SettingsChild {
+public sealed interface SettingsChild permits SettingsParent, Setting {
     String getDescription();
     String getName();
     default String serializedName() {

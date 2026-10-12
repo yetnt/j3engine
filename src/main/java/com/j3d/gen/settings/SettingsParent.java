@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  * other folders or individual settings. This is useful for organizing a large number of settings in a logical way.
  * </p>
  */
-public interface SettingsParent extends SettingsChild {
+public non-sealed interface SettingsParent extends SettingsChild {
     ArrayList<SettingsChild> getAllChildren();
     @Override
     default ArrayList<String> serialize() {

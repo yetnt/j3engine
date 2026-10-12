@@ -29,7 +29,7 @@ import java.util.function.Consumer;
  * SceneManager is the class. The main class that handles the rendering of 3D objects onto a 2D screen.
  * @see Graphics2D
  */
-public class SceneManager {
+public final class SceneManager {
     /**
      * The dimensions of the window.
      */

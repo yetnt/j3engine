@@ -22,32 +22,41 @@
         </pluginRepository>
     </pluginRepositories>
 
+    <properties>
+        <jaiva.version>6.1.2</jaiva.version>
+        <maven.compiler.source>25</maven.compiler.source>
+        <maven.compiler.target>25</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <dependencies>
         <dependency>
+<!--            hmm what could this be for. testing of course.-->
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>5.9.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <!-- Personal esoteric programming language parsing and runtime, so it can be embedded. -->
+<!--             Personal esoteric programming language parsing and runtime, so it can be embedded. -->
             <groupId>com.github.yetnt.jaiva</groupId>
             <artifactId>core</artifactId>
-            <version>6.1.2</version>
+            <version>${jaiva.version}</version>
         </dependency>
         <dependency>
-            <!-- Personal shared utility tuples and functions between this and jaiva (on mvn central) -->
+<!--             Personal shared utility tuples and functions between this and jaiva (on mvn central) -->
             <groupId>io.github.yetnt</groupId>
             <artifactId>ytils</artifactId>
             <version>1.2.0</version>
         </dependency>
+        <dependency>
+<!--            annotations are cool-->
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>13.0</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
-
-    <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 
 
     <build>
@@ -57,7 +66,7 @@
             <plugin>
                 <groupId>com.github.yetnt.jaiva</groupId>
                 <artifactId>lib-tooling-plugin</artifactId>
-                <version>6.0.0</version>
+                <version>${jaiva.version}</version>
                 <executions>
                     <execution>
                         <id>json-gen</id>

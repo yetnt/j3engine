@@ -17,6 +17,7 @@ import com.j3d.ui.SafeJLabel;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.ui.theme.cursors.CursorManager;
 import com.j3d.ui.theme.cursors.CursorNames;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class QuickTranslateCmd extends Subcommand implements StatefulCommand<Voi
     }
 
     @Override
-    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+    public void run(@NotNull Invoker invoker, SafeJLabel logLabel, String aliasUsed, @NotNull Object[] args, @NotNull ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
         boolean fromTransformCmd = invoker.getInvokedFromParent() instanceof TransformCmd;
         boolean isCurrentCommand = CommandsManager.isCurrentStatefulRunning(this);

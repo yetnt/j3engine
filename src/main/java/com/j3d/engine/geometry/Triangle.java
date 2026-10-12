@@ -6,6 +6,7 @@ import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.draw.ViewType;
 import com.j3d.engine.scene.nodes.geometry.GObject;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.List;
@@ -29,7 +30,7 @@ public class Triangle implements Pure {
     public double area() {
         return area(p1, p2, p3);
     }
-    public static double area(Vector3 A, Vector3 B, Vector3 C) {
+    public static double area(Vector3 A, @NotNull Vector3 B, @NotNull Vector3 C) {
         return
                 B.sub(A).cross(C.sub(A)).magnitude() / 2;
     }

@@ -5,7 +5,7 @@ import com.j3d.ui.settings.panels.EnterValueSPanel;
 
 import java.util.function.Function;
 
-public class StringSetting extends Setting<String> {
+public final class StringSetting extends Setting<String> {
     public StringSetting(String name, String value, String description) {
         super(name, value, description);
     }

@@ -2,6 +2,8 @@ package com.j3d.engine.math.convert;
 import com.j3d.engine.math.CartesianPoint;
 import com.j3d.engine.math.Dim;
 import com.j3d.engine.math.ScreenPoint;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A specialisation of the {@link Conversion} record which stores the conversion required to turn a
@@ -35,7 +37,9 @@ public record ConversionWithOffset(
      * @param conversion The Conversion properties to convert
      * @return A ConversioNWithOffset which is functionally identical to the original
      */
-    public static ConversionWithOffset from(Conversion conversion) {
+    @NotNull
+    @Contract("_ -> new")
+    public static ConversionWithOffset from(@NotNull Conversion conversion) {
         return new ConversionWithOffset(
                 conversion.scale(),
                 conversion.size(),

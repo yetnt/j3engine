@@ -17,6 +17,7 @@ import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.ui.SafeJLabel;
 import com.yetnt.utils.collection.buckets.Buckets;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class PasteCmd extends Subcommand {
     }
 
     @Override
-    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+    public void run(@NotNull Invoker invoker, SafeJLabel logLabel, String aliasUsed, @NotNull Object[] args, @NotNull ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
         ArrayList<GObject> copied = StaticRefs.getSceneManager().getClipboard();
         if (copied.isEmpty()) {

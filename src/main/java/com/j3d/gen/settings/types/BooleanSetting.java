@@ -5,7 +5,7 @@ import com.j3d.ui.settings.panels.BooleanValueSPanel;
 
 import java.util.function.Function;
 
-public class BooleanSetting extends Setting<Boolean> {
+public final class BooleanSetting extends Setting<Boolean> {
     public BooleanSetting(String name, Boolean value, String description) {
         super(name, value, description);
     }

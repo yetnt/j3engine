@@ -9,6 +9,7 @@ import com.j3d.engine.interact.macros.MacroRecorder;
 import com.j3d.engine.interact.macros.MacroRunner;
 import com.j3d.ui.SafeJLabel;
 import com.yetnt.utils.builders.InlineHTML;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -24,7 +25,7 @@ public class RunCmd extends Subcommand {
     }
 
     @Override
-    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+    public void run(@NotNull Invoker invoker, SafeJLabel logLabel, String aliasUsed, @NotNull Object[] args, @NotNull ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
         if (args.length < 1) {
             logLabel.setText("Not enough arguments given. Usage: "

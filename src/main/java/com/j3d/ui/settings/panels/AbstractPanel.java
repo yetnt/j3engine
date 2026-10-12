@@ -16,7 +16,8 @@ import javax.swing.*;
  * @param <R> The type of the value held by the {@link Setting} ({@code T}).
  * @author Lehlogonolo Poole
  */
-public class AbstractPanel<T extends Setting<R>, R> extends JPanel implements SettingPanel {
+public abstract sealed class AbstractPanel<T extends Setting<R>, R> extends JPanel implements SettingPanel
+permits BooleanValueSPanel, ButtonGroupSPanel, EnterValueSPanel, NumberValueSPanel, PopoutSPanel {
 
     /**
      * The {@link Setting} object that this panel represents and interacts with.

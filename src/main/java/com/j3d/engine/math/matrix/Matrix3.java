@@ -1,6 +1,8 @@
 package com.j3d.engine.math.matrix;
 
 import com.j3d.StaticRefs;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a final, specialized 3x3 matrix.
@@ -35,6 +37,8 @@ public final class Matrix3 implements MatrixInterface {
      *
      * @return A new {@code Matrix3} instance representing the identity matrix.
      */
+    @NotNull
+    @Contract(value = " -> new", pure = true)
     public static Matrix3 identity() {
         return new Matrix3(
                 new double[][]{
@@ -52,7 +56,9 @@ public final class Matrix3 implements MatrixInterface {
      * @return A new {@code Matrix3} instance with the same data.
      * @throws RuntimeException if the input matrix is not 3x3.
      */
-    public static Matrix3 of(MatrixInterface m) {
+    @NotNull
+    @Contract("_ -> new")
+    public static Matrix3 of(@NotNull MatrixInterface m) {
         if (m.rows() != 3 || m.cols() != 3) StaticRefs.getErrs().handle(
                 MatrixException.exactDimensionException(
                         identity(), m
@@ -67,7 +73,9 @@ public final class Matrix3 implements MatrixInterface {
      * @param v The vector to be transformed.
      * @return A new {@link Vector3} representing the result of the multiplication.
      */
-    public Vector3 transform(Vector3 v) {
+    @NotNull
+    @Contract("_ -> new")
+    public Vector3 transform(@NotNull Vector3 v) {
         return new Vector3(
                 v.getX() * data[0][0] + v.getY() * data[0][1] + v.getZ() * data[0][2],
                 v.getX() * data[1][0] + v.getY() * data[1][1] + v.getZ() * data[1][2],
@@ -100,6 +108,7 @@ public final class Matrix3 implements MatrixInterface {
         return data[row][col];
     }
 
+    @NotNull
     @Override
     public double[][] get() {
         return data;
@@ -110,6 +119,7 @@ public final class Matrix3 implements MatrixInterface {
      *
      * @return A new {@code Matrix3} instance with the same values.
      */
+    @NotNull
     @Override
     public MatrixInterface copy() {
         double[][] newData = new double[3][3];

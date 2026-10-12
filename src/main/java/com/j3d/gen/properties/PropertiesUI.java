@@ -8,6 +8,8 @@ import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.ui.engine.floating.properties.PropertyEntry;
 import com.j3d.ui.engine.floating.properties.panels.*;
 import com.yetnt.utils.collection.HashMultiMap;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +19,7 @@ import java.util.UUID;
 
 import static com.j3d.StaticRefs.getSceneManager;
 
-public class PropertiesUI {
+public abstract class PropertiesUI {
 
     public static SelectionPropertiesFilter selectionPropertiesFilter = SelectionPropertiesFilter.DEFAULT;
 
@@ -29,6 +31,7 @@ public class PropertiesUI {
      * @param <T> The type of objects, which must extend {@link HasProperties}.
      * @return An ArrayList of JPanels, each representing a merged property.
      */
+    @NotNull
     public static <T extends HasProperties> ArrayList<JPanel> get(ArrayList<T> objects) {
         ArrayList<Property<?, ?>> properties = switchFilter(objects);
         ArrayList<JPanel> panels = merge(properties);
@@ -52,7 +55,9 @@ public class PropertiesUI {
      * before being passed into {@link #get(ArrayList)} such that stuff like Thing and layer can participate
      * and that there aren't any duplicate objects.
      */
-    public static <T extends HasProperties> ArrayList<T> getFilteredObjects(HashSet<GObject> objects) {
+    @NotNull
+    @Contract("_ -> new")
+    public static <T extends HasProperties> ArrayList<T> getFilteredObjects(@NotNull HashSet<GObject> objects) {
         HashSet<T> filtered = new HashSet<>();
         objects.forEach(
                 o -> {
@@ -89,7 +94,9 @@ public class PropertiesUI {
      * @return A JPanel tailored to the property type.
      * @throws Exception If no specific panel is found for the given property type.
      */
-    private static JPanel getSpecificPanel(ArrayList<Property<?, ?>> list) throws Exception {
+    @NotNull
+    @Contract("_ -> new")
+    private static JPanel getSpecificPanel(@NotNull ArrayList<Property<?, ?>> list) throws Exception {
         Class<?> expected = list.getFirst().getPropertyType();
         if (expected == Integer.class) {
             return new IntProperty(list);
@@ -113,6 +120,7 @@ public class PropertiesUI {
     /**
      * Filters properties based on the {@link PropertiesUI#selectionPropertiesFilter}.
      */
+    @NotNull
     private static <T extends HasProperties> ArrayList<Property<?, ?>> switchFilter(ArrayList<T> objects) {
         return switch (selectionPropertiesFilter) {
             case DEFAULT -> {
@@ -153,7 +161,8 @@ public class PropertiesUI {
      * @param clazz The class to filter properties by.
      * @return An ArrayList of common properties.
      */
-    private static <T extends HasProperties> ArrayList<Property<?, ?>> filterCommonProperties(ArrayList<T> objects, Class<?> clazz) {
+    @NotNull
+    private static <T extends HasProperties> ArrayList<Property<?, ?>> filterCommonProperties(@NotNull ArrayList<T> objects, Class<?> clazz) {
         ArrayList<Property<?, ?>> properties = new ArrayList<>();
         for (HasProperties object : objects) {
             for (Property<?, ?> property : object.getProperties()) {
@@ -185,7 +194,8 @@ public class PropertiesUI {
      * @param properties The ArrayList of properties to merge.
      * @return An ArrayList of JPanels, each representing a merged property.
      */
-    private static ArrayList<JPanel> merge(ArrayList<Property<?, ?>> properties) {
+    @NotNull
+    private static ArrayList<JPanel> merge(@NotNull ArrayList<Property<?, ?>> properties) {
         ArrayList<JPanel> panels = new ArrayList<>();
         HashMultiMap<PropertyKey<?, ?>, Property<?, ?>> map = new HashMultiMap<>();
         properties.forEach(
@@ -212,6 +222,7 @@ public class PropertiesUI {
      * @param innerPanel The JPanel to be wrapped.
      * @return A {@link PropertyEntry} containing the inner panel.
      */
+    @NotNull
     private static PropertyEntry buildPanel(JPanel innerPanel) {
         PropertyEntry propertyEntry = new PropertyEntry(innerPanel);
         propertyEntry.revalidate();

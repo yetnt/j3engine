@@ -5,7 +5,7 @@ import com.j3d.ui.settings.panels.NumberValueSPanel;
 
 import java.util.function.Function;
 
-public class IntSetting extends Setting<Integer> {
+public final class IntSetting extends Setting<Integer> {
     private final int min;
     private final int max;
 

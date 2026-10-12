@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class PF3 extends ProjectFile {
+public final class PF3 extends ProjectFile {
 
     public PF3() {
         super(3,

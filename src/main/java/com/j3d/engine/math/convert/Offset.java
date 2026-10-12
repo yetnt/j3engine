@@ -4,6 +4,8 @@ import com.j3d.engine.math.CartesianPoint;
 import com.j3d.engine.math.ScreenPoint;
 import com.yetnt.utils.tuple.MutablePair;
 import com.yetnt.utils.tuple.SamePair;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A simple immutable class which stores an {@code X} and {@code Y} offset when converting
@@ -33,7 +35,7 @@ public class Offset extends SamePair<Integer> {
      * Constructor from a same pair of integers
      * @param samePair The same pair
      */
-    public Offset(SamePair<Integer> samePair) {
+    public Offset(@NotNull SamePair<Integer> samePair) {
         super(samePair.getFirst(), samePair.getSecond());
     }
 
@@ -59,7 +61,9 @@ public class Offset extends SamePair<Integer> {
      * @return A new immutable {@link Offset} instance
      * @param <T> The type held by the MutablePair, in this case it has to be an {@link Integer}
      */
-    public static <T extends Integer> Offset fromMutablePair(MutablePair<T, T> mutablePair) {
+    @NotNull
+    @Contract("_ -> new")
+    public static <T extends Integer> Offset fromMutablePair(@NotNull MutablePair<T, T> mutablePair) {
         return new Offset(mutablePair.getFirst(), mutablePair.getSecond());
     }
 }

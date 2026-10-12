@@ -17,7 +17,7 @@ import java.awt.event.ActionEvent;
  *
  * @author ACER
  */
-public class PopoutSPanel<T> extends AbstractPanel<ComplexSetting<T>, T> {
+public final class PopoutSPanel<T> extends AbstractPanel<ComplexSetting<T>, T> {
 
     TriFunction<ActionEvent, JLabel, PopoutSPanel<T>, T> onOpen;
     ComplexSetting<T> setting;

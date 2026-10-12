@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class ReactivePoint extends Point implements EventListener, EventEmitterInterface {
+public class ReactivePoint extends Point implements EventEmitterAndListenerInterface {
 
     GPoint gp;
     Supplier<AxisPlane> axisPlaneSuppler;

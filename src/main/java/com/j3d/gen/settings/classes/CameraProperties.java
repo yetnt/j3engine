@@ -9,7 +9,7 @@ import com.j3d.ui.settings.SettingsParentPanel;
 
 import java.util.ArrayList;
 
-public class CameraProperties implements SettingsParent {
+public final class CameraProperties implements SettingsParent {
     public DoubleSetting movementSpeed = new DoubleSetting(
             "Movement Speed",
             0.5,

@@ -6,6 +6,7 @@ import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.interact.cmd.args.*;
 import com.j3d.engine.scene.nodes.geometry.GObjectRegistry;
 import com.j3d.ui.SafeJLabel;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,7 +47,7 @@ public class Command {
     /**
      * A flag indicating whether this command accepts a variable number of tagged arguments (e.g., key:value pairs).
      */
-    private boolean variadicTaggedArgs = true;
+    private final boolean variadicTaggedArgs = true;
 
     protected ArrayList<String> usages = new ArrayList<>();
 
@@ -100,7 +101,7 @@ public class Command {
      * @param args       The arguments passed to the command.
      * @param taggedArgs Tagged arguments passed to the command.
      */
-    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+    public void run(@NotNull Invoker invoker, SafeJLabel logLabel, String aliasUsed, @NotNull Object[] args, @NotNull ArrayList<TaggedArgValue<?>> taggedArgs) {
         // To be overridden by subclasses
         StaticRefs.getLog().cmdPrintln(
                 (this instanceof Subcommand ? "Subcommand" : "Command") +
@@ -188,6 +189,7 @@ public class Command {
                     }
                     StringBuilder usageAccumulatorEntry = usageAccumulator.get(i);
                     if (GObjectRegistry.isGObject(cls)) {
+                        //noinspection DataFlowIssue
                         usageAccumulatorEntry.append("<").append(GObjectRegistry.fromClass(cls).getSimpleName()).append(tArg.isOptional() ? "?" : "").append("> ");
                         continue;
                     }

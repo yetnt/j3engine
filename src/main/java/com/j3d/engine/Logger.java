@@ -7,6 +7,7 @@ import com.j3d.errors.severity.J3DFatal;
 import com.j3d.errors.severity.J3DMild;
 import com.j3d.errors.severity.J3DWarning;
 import com.yetnt.utils.builders.AnsiColour;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.time.format.DateTimeFormatter;
@@ -21,7 +22,7 @@ import java.util.Arrays;
  * @see com.j3d.ui.engine.floating.DebugPanel#logTextArea
  * @see StaticRefs
  */
-public class Logger {
+public final class Logger {
     // Prefix for standard log messages
     private static final String PREFIX = "[J3D] ";
     // Prefix for error log messages
@@ -44,6 +45,7 @@ public class Logger {
      *
      * @return The current timestamp as a string.
      */
+    @NotNull
     private String getTimestamp() {
         return "<" + java.time.LocalTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME) + ">";
     }
@@ -115,7 +117,7 @@ public class Logger {
         }
     }
 
-    public void error(J3DError err) {
+    public void error(@NotNull J3DError err) {
         String message = switch (err) {
             case J3DMild i -> "!![MILD] ";
             case J3DWarning w -> "!![WARN] ";

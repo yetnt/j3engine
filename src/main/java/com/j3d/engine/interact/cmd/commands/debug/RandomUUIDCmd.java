@@ -7,6 +7,7 @@ import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.utility.ClipboardUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,7 @@ public class RandomUUIDCmd extends Subcommand {
     }
 
     @Override
-    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+    public void run(@NotNull Invoker invoker, SafeJLabel logLabel, String aliasUsed, @NotNull Object[] args, @NotNull ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
         List<GObject> objects = StaticRefs.getSceneManager().layers
                 .objectStream().toList();

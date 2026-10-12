@@ -6,6 +6,8 @@ import com.j3d.engine.math.Dim;
 import com.j3d.engine.math.ScreenPoint;
 import com.j3d.gen.settings.Settings;
 import com.j3d.ui.engine.EngineFrame;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Generic conversion record which stores the conversion required to turn a
@@ -38,6 +40,8 @@ public record Conversion(
      * </p>
      * @return The Converison properties of the main draw panel.
      */
+    @NotNull
+    @Contract(" -> new")
     public static Conversion global() {
         return new Conversion(
                 Settings.sceneProperties.scale.getValue(),

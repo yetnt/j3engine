@@ -10,7 +10,7 @@ import java.util.function.Function;
 
 import static com.j3d.StaticRefs.getSceneManager;
 
-public class Sampler {
+public abstract class Sampler {
 
     /**
      * Generates a list of points forming a regular N-gon (polygon) on a specified axisPlane.

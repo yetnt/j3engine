@@ -42,17 +42,17 @@ import static com.j3d.StaticRefs.getSceneManager;
  * @see GPoint
  * @see GTri
  */
-public class GLine extends GObject implements HasParents<GTri>, IdempotentEventListener<GPointMovedEvent, Vector3>, DecomposeWhenDrawn<Segment> {
+public final class GLine extends GObject implements HasParents<GTri>, IdempotentEventListener<GPointMovedEvent, Vector3>, DecomposeWhenDrawn<Segment> {
     /**
      * The startpoint of this line
      */
-    protected GPoint pointA;
+    private GPoint pointA;
     /**
      * The endPoint of this line.
      */
-    protected GPoint pointB;
-    protected boolean deletedState = false;
-    private HashSet<GTri> parents = new HashSet<>();
+    private GPoint pointB;
+    private boolean deletedState = false;
+    private final HashSet<GTri> parents = new HashSet<>();
 
     /**
      * Constructs a GLine.

@@ -3,6 +3,7 @@ package com.j3d.engine.math.rot;
 import com.j3d.engine.math.matrix.Matrix3;
 import com.j3d.engine.math.matrix.MatrixInterface;
 import com.j3d.engine.math.matrix.MatrixMath;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Implements the {@link RotationMatrixDirection} interface to create rotation matrices
@@ -21,7 +22,7 @@ import com.j3d.engine.math.matrix.MatrixMath;
  * @see Matrix3
  * @see MatrixMath
  */
-public class WorldToCamDirection implements RotationMatrixDirection {
+public final class WorldToCamDirection implements RotationMatrixDirection {
 
     final private double pitch, yaw, roll;
 
@@ -44,6 +45,7 @@ public class WorldToCamDirection implements RotationMatrixDirection {
      *
      * @return A 3x3 {@link MatrixInterface} for inverse pitch rotation.
      */
+    @NotNull
     @Override
     public Matrix3 rotPitch() {
         double c = Math.cos(pitch);
@@ -63,6 +65,7 @@ public class WorldToCamDirection implements RotationMatrixDirection {
      *
      * @return A 3x3 {@link MatrixInterface} for inverse yaw rotation.
      */
+    @NotNull
     @Override
     public Matrix3 rotYaw() {
         double c = Math.cos(yaw);
@@ -82,6 +85,7 @@ public class WorldToCamDirection implements RotationMatrixDirection {
      *
      * @return A 3x3 {@link MatrixInterface} for inverse roll rotation.
      */
+    @NotNull
     @Override
     public Matrix3 rotRoll() {
         double c = Math.cos(roll);
@@ -95,6 +99,7 @@ public class WorldToCamDirection implements RotationMatrixDirection {
         ));
     }
 
+    @NotNull
     @Override
     public Matrix3 matrix() {
         return Matrix3.of(MatrixMath.mult(

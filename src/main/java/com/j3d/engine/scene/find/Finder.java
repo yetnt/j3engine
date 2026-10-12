@@ -6,6 +6,8 @@ import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.engine.scene.nodes.layer.LayerList;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -59,6 +61,8 @@ public class Finder {
      * @return A {@link Query} instance that takes a {@link SceneObject} and a {@link String} (name)
      *         and returns {@code true} if their names are equal.
      */
+    @NotNull
+    @Contract(pure = true)
     public static <T extends SceneObject> Query<T, String> nameQuery() {
         return (t, v) -> t.getName().equals(v);
     }
@@ -71,11 +75,15 @@ public class Finder {
      * @return A {@link Query} instance that takes a {@link SceneObject} and a {@link UUID} (ID)
      *         and returns {@code true} if their IDs are equal.
      */
+    @NotNull
+    @Contract(pure = true)
     public static <T extends SceneObject> Query<T, UUID> idQuery() {
         return (t, v) -> t.getId().equals(v);
     }
 
 
+    @NotNull
+    @Contract(pure = true)
     public static <T extends SceneObject> Query<T, Object> allQuery() {
         return (t, v) -> true;
     }
@@ -88,6 +96,8 @@ public class Finder {
      * @return A {@link Query} instance that takes two {@link SceneObject}s and returns {@code true}
      *         if they are considered equal by their {@code equals} method.
      */
+    @NotNull
+    @Contract(pure = true)
     public static <T extends SceneObject> Query<T, T> instanceQuery() {
         return Object::equals;
     }
@@ -118,6 +128,8 @@ public class Finder {
      * @see Thing
      * @see GObject
      */
+    @NotNull
+    @Contract(pure = true)
     public <T extends SceneObject, V> FindResult findFirst(Class<T> clazz, Query<T, V> query, V value) {
         // search through each layer
         for (Layer l : getLayers()) {
@@ -131,11 +143,7 @@ public class Finder {
                         // search inside GObject
                         for (GObject g : t.getObjects()) {
                             // if the GObject isnt what we're looking for:
-                            if (!clazz.isInstance(g)) {
-                                // then youre looking for something that just wouldn't exist in this list.
-                                continue;
-//                                return new FindResult();
-                            } else {
+                            if (clazz.isInstance(g)) {
                                 // if we do find a GObject, apply the query
                                 if (query.apply((T) g, value)) {
                                     return new FindResult(
@@ -185,6 +193,8 @@ public class Finder {
      * @see Query
      * @see SceneObject
      */
+    @NotNull
+    @Contract(pure = true)
     public <T extends SceneObject, V> ArrayList<FindResult> find(Class<T> clazz, Query<T, V> query, V value) {
         ArrayList<FindResult> results = new ArrayList<>();
         // search through each layer
@@ -199,9 +209,7 @@ public class Finder {
                         // search inside GObject
                         for (GObject g : t.getObjects()) {
                             // if the GObject isnt what we're looking for:
-                            if (!clazz.isInstance(g)) {
-                                // then youre looking for something that just wouldn't exist in this list.
-                            } else {
+                            if (clazz.isInstance(g)) {
                                 // if we do find a GObject, apply the query
                                 if (query.apply((T) g, value)) {
                                     results.add(new FindResult(
@@ -211,6 +219,7 @@ public class Finder {
                                     ));
                                 }
                             }
+                            // then youre looking for something that just wouldn't exist in this list.
                         }
                         // end of GObject for
                     } else {

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public class Settings implements SettingsParent {
+public final class Settings implements SettingsParent {
 
     private static boolean savedPreferences = true;
     public static boolean isPreferencesSaved() {

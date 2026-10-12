@@ -28,6 +28,7 @@ import com.j3d.ui.SafeJLabel;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.ui.theme.J3DTheme;
 import com.yetnt.utils.builders.InlineHTML;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.time.LocalTime;
@@ -186,7 +187,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
      * initiates the stateful transformation mode.
      */
     @Override
-    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+    public void run(@NotNull Invoker invoker, SafeJLabel logLabel, String aliasUsed, @NotNull Object[] args, @NotNull ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
         this.label = logLabel;
 

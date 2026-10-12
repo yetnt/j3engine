@@ -8,7 +8,7 @@ import com.j3d.ui.settings.SettingsParentPanel;
 
 import java.util.ArrayList;
 
-public class EditorProperties implements SettingsParent {
+public final class EditorProperties implements SettingsParent {
 
     public IntSetting handleSize = new IntSetting(
             "Transform Handle Size",

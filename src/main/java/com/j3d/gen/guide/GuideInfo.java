@@ -5,6 +5,8 @@ import com.j3d.engine.react.events.*;
 import com.j3d.engine.react.events.payloads.GuideInfoClosingPayload;
 import com.j3d.ui.theme.J3DTheme;
 import com.yetnt.utils.builders.InlineHTML;
+import org.intellij.lang.annotations.MagicConstant;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +15,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class GuideInfo extends EventEmitter implements EventListener {
+public class GuideInfo extends EventEmitterAndListener {
 
     private final ArrayList<Component> components = new ArrayList<>();
     private EventEmitterInterface listeningTo;
@@ -210,7 +212,12 @@ public class GuideInfo extends EventEmitter implements EventListener {
      * @param offX The horizontal offset from the calculated anchor position. (Use {@link Anchor#offsetRight(int)} and {@link Anchor#offsetLeft(int)})
      * @param offY The vertical offset from the calculated anchor position. (Use {@link Anchor#offsetUp(int)} and {@link Anchor#offsetDown(int)})
      */
-    public void addCompAt(GuidePanelAdapter adapter, Component l, int anchor, int offX, int offY) {
+    public void addCompAt(
+            @NotNull GuidePanelAdapter adapter,
+            @NotNull Component l,
+            @MagicConstant(flagsFromClass = Anchor.class)
+            int anchor,
+            int offX, int offY) {
         int x = 0;
         int y = 0;
         int pX = adapter.getWidth();
@@ -248,7 +255,8 @@ public class GuideInfo extends EventEmitter implements EventListener {
      * @param l The Component to add.
      * @param anchor A bitmask representing the desired anchor point (e.g., {@link Anchor#NORTH}, {@link Anchor#SOUTH}, {@link Anchor#EAST}, {@link Anchor#WEST}, {@link Anchor#CENTRE}).
      */
-    public void addCompAt(GuidePanelAdapter adapter, Component l, int anchor) {
+    public void addCompAt(GuidePanelAdapter adapter, Component l,
+                          @MagicConstant(flagsFromClass = Anchor.class) int anchor) {
         addCompAt(adapter, l, anchor, 0 ,0);
     }
 

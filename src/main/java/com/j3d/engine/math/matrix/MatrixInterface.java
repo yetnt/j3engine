@@ -1,5 +1,8 @@
 package com.j3d.engine.math.matrix;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Defines the core contract for a matrix implementation. This interface provides
  * methods for accessing dimensions, getting and setting individual elements,
@@ -13,7 +16,7 @@ package com.j3d.engine.math.matrix;
  * @see Vector3
  * @see Matrix3
  */
-public interface MatrixInterface {
+public sealed interface MatrixInterface permits Vector3, Matrix3, ArbitraryMatrix {
     /**
      * Returns the number of rows in the matrix.
      *
@@ -42,6 +45,7 @@ public interface MatrixInterface {
      *
      * @return A 2D double array containing the matrix values.
      */
+    @NotNull
     double[][] get();
 
     /**
@@ -49,6 +53,8 @@ public interface MatrixInterface {
      *
      * @return A new {@link MatrixInterface} instance with the same values as the original.
      */
+    @NotNull
+    @Contract(" -> new")
     MatrixInterface copy();
 
     /**
@@ -58,6 +64,7 @@ public interface MatrixInterface {
      *
      * @return A string representing the formatted matrix.
      */
+    @Contract(pure = true)
     default String toMatrixString() {
         // First, compute max width per column
         int[] colWidths = new int[cols()];
@@ -94,7 +101,7 @@ public interface MatrixInterface {
         // Bottom row: ┕ ... ┙
         sb.append("┕");
         for (int j = 0; j < cols(); j++) {
-            sb.append(" ".repeat(Math.max(0, colWidths[j])));
+            sb.repeat(" ", Math.max(0, colWidths[j]));
             if (j < cols() - 1) sb.append(" ");
         }
         sb.append("┙");

@@ -39,7 +39,8 @@ import java.util.function.Supplier;
  * @see PF3
  * @author Lehlogonolo Poole
  */
-public class ProjectFile extends GenericFileProtocol implements FileProtocol {
+public abstract sealed class ProjectFile extends GenericFileProtocol implements FileProtocol
+permits PF1, PF2, PF3 {
 
     private final int VERSION;
     private final String HEADER = "PROJECT";

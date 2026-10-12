@@ -37,7 +37,7 @@ import java.util.*;
  * @see GLine
  * @see GTri
  */
-public class GPoint extends GObject implements HasParents<GObject>, DecomposeWhenDrawn<Point> {
+public final class GPoint extends GObject implements HasParents<GObject>, DecomposeWhenDrawn<Point> {
 
     /**
      * The diameter of the point when drawn on screen.

@@ -3,6 +3,8 @@ package com.j3d.engine.math;
 import com.j3d.engine.math.convert.Conversion;
 import com.j3d.engine.math.convert.ConversionWithOffset;
 import com.j3d.engine.math.matrix.Vector3;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
@@ -16,7 +18,7 @@ import java.awt.*;
  * @see Vector3
  * @see BasePoint
  */
-public class ScreenPoint extends BasePoint<Integer> {
+public final class ScreenPoint extends BasePoint<Integer> {
 
     /**
      * Default Constructor
@@ -44,6 +46,7 @@ public class ScreenPoint extends BasePoint<Integer> {
      * @implSpec If this is being used to reverse {@link CartesianPoint#toScreen(Conversion)}, it will not be accurate.
      * @implNote This is just a wrapper over {{@link #toPoint(ConversionWithOffset)}}
      */
+    @Contract(pure = true)
     public CartesianPoint toPoint(Conversion conversion) {
         return toPoint(
                 ConversionWithOffset.from(conversion)
@@ -55,7 +58,8 @@ public class ScreenPoint extends BasePoint<Integer> {
      * @return The {@link CartesianPoint} coordinates of this ScreenPoint.
      * @implSpec If this is being used to reverse {@link CartesianPoint#toScreen(ConversionWithOffset)}, it will not be accurate.
      */
-    public CartesianPoint toPoint(ConversionWithOffset conversion) {
+    @Contract(pure = true)
+    public CartesianPoint toPoint(@NotNull ConversionWithOffset conversion) {
         double adjustedX = (((x)- conversion.size().width / 2.0) / conversion.scale()) - conversion.offset().getXOffset();
         double adjustedY = ((conversion.size().height / 2.0 - y) / conversion.scale()) -  conversion.offset().getYOffset();
         return new CartesianPoint(adjustedX, adjustedY);
@@ -73,7 +77,9 @@ public class ScreenPoint extends BasePoint<Integer> {
         return "[" + x + ";" + y + "]";
     }
 
-    public static ScreenPoint fromMacroPoint(String macroPoint) {
+    @NotNull
+    @Contract("_ -> new")
+    public static ScreenPoint fromMacroPoint(@NotNull String macroPoint) {
         String arg = macroPoint.substring(1, macroPoint.length() - 1);
         String[] split = arg.split(";");
         int x = Integer.parseInt(split[0]);

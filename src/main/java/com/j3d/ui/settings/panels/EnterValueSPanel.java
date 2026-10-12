@@ -15,7 +15,7 @@ import com.j3d.ui.theme.J3DTheme;
  *
  * @author ACER
  */
-public class EnterValueSPanel extends AbstractPanel<StringSetting, String> {
+public final class EnterValueSPanel extends AbstractPanel<StringSetting, String> {
 
     /**
      * Creates new form EnterValueSPanel

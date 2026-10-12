@@ -8,6 +8,7 @@ import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.react.events.*;
 import com.j3d.ui.engine.EngineFrame;
 import com.yetnt.utils.builders.InlineHTML;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -105,7 +106,7 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
      * @param e The {@link MouseEvent} containing the raw mouse coordinates.
      * @return A {@link ScreenPoint} representing the adjusted mouse location on the screen.
      */
-    protected ScreenPoint getMouseLoc(MouseEvent e) {
+    protected ScreenPoint getMouseLoc(@NotNull MouseEvent e) {
         return new ScreenPoint(
                 e.getX() - 4,
                 e.getY() - ((2 * StaticConfig.jMenuBarOffsetY)) - 10);
@@ -130,7 +131,7 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
      * @param e The {@link MouseEvent} containing the raw mouse coordinates.
      * @return A {@link ScreenPoint} representing the adjusted mouse location specifically for selection.
      */
-    protected ScreenPoint getSelectionMouseLoc(MouseEvent e) {
+    protected ScreenPoint getSelectionMouseLoc(@NotNull MouseEvent e) {
         return new ScreenPoint(
                 e.getX() - 4,
                 e.getY() - 2) ;
@@ -211,7 +212,7 @@ public class MouseOwner extends MouseAdapter implements EventEmitterInterface {
      * it is repositioned to the corresponding opposite edge.
      * @param e The {@link MouseEvent} containing the current mouse coordinates.
      */
-    public void wrap(MouseEvent e) {
+    public void wrap(@NotNull MouseEvent e) {
         if (e.getX() + 10 > StaticRefs.getSceneManager().screenSize.width) {
             // move the mouse to the oppsite side
             robot.mouseMove(

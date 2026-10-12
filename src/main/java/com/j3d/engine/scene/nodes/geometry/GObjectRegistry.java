@@ -2,6 +2,7 @@ package com.j3d.engine.scene.nodes.geometry;
 
 import com.j3d.engine.interact.cmd.CmdToken;
 import com.j3d.jaiva.EngineObject;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
@@ -102,6 +103,7 @@ public enum GObjectRegistry {
      * @param clazz The class to look up.
      * @return The corresponding {@code GObjectRegistry} entry, or {@code null} if not found.
      */
+    @Nullable
     public static GObjectRegistry fromClass(Class<?> clazz) {
         for (GObjectRegistry registry : values()) {
             if (registry.getClazz().equals(clazz)) {
@@ -130,6 +132,7 @@ public enum GObjectRegistry {
      * @param clazz The class for which to get the simple name.
      * @return The simple name string, or {@code null} if the class is not a registered GObject.
      */
+    @Nullable
     public static String getSimpleName(Class<?> clazz) {
         for (GObjectRegistry registry : values()) {
             if (registry.getClazz().equals(clazz)) {

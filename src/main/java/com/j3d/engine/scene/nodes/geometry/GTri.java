@@ -58,24 +58,24 @@ import static com.j3d.StaticRefs.getSceneManager;
  * @see GPoint
  * @see GLine
  */
-public class GTri extends GObject implements IdempotentEventListener<GPointMovedEvent, Vector3>, DecomposeWhenDrawn<Triangle> {
+public final class GTri extends GObject implements IdempotentEventListener<GPointMovedEvent, Vector3>, DecomposeWhenDrawn<Triangle> {
     /**
      * Leg A, connected to Leg B and Leg C
      */
-    protected GLine LegA;
+    private GLine LegA;
     /**
      * Leg B, connected to Leg A and Leg C
      */
-    protected GLine LegB;
+    private GLine LegB;
     /**
      * Leg C, connected to Leg A and Leg B
      */
-    protected GLine LegC;
+    private GLine LegC;
 
     /**
      * The winding of the triangle
      */
-    protected Winding winding;
+    private Winding winding;
 
     /**
      * Whether this triangle is double sided or not. If it is, it's unaffected by back-face culling.
@@ -83,7 +83,7 @@ public class GTri extends GObject implements IdempotentEventListener<GPointMoved
      */
     private boolean doubleSided = true;
 
-    protected boolean deletedState = false;
+    private boolean deletedState = false;
 
     // TODO: I actually have no clue where the fuck this is used?? Uhm finder this out??
     private boolean hidden = false;

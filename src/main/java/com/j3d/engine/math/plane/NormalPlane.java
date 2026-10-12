@@ -3,6 +3,8 @@ package com.j3d.engine.math.plane;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.yetnt.utils.tuple.SamePair;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -24,6 +26,7 @@ public record NormalPlane(
      * forming a local coordinate system for the plane.
      * @return A new {@code AxisPlane} representing the same plane.
      */
+    @NotNull
     public AxisPlane toAxisPlane() {
         Vector3 ref = Math.abs(normal.getY()) < 0.9
                 ? Vector3.acrossY(1)
@@ -38,7 +41,7 @@ public record NormalPlane(
      * @param pos The 3D point to check.
      * @return {@code true} if the point is on the plane (within a small epsilon tolerance), {@code false} otherwise.
      */
-    public boolean onPlane(Vector3 pos) {
+    public boolean onPlane(@NotNull Vector3 pos) {
         return Math.abs(pos.sub(origin).dot(normal)) < EPSILON;
     }
 
@@ -47,6 +50,8 @@ public record NormalPlane(
      * This can be useful in contexts where a pair of identical objects is required.
      * @return A {@code SamePair} with both elements being this {@code NormalPlane}.
      */
+    @NotNull
+    @Contract(value = " -> new", pure = true)
     public SamePair<NormalPlane> pair() {
         return new SamePair<>(this, this);
     }
@@ -60,7 +65,8 @@ public record NormalPlane(
      * @param C The third point.
      * @return A new {@code NormalPlane} defined by the three points.
      */
-    public static NormalPlane from(Vector3 A, Vector3 B, Vector3 C) {
+    @NotNull
+    public static NormalPlane from(Vector3 A, @NotNull Vector3 B, @NotNull Vector3 C) {
         Vector3 normal = (B.sub(A)).cross(C.sub(A)).normalize();
         return new NormalPlane(A, normal);
     }
@@ -72,7 +78,9 @@ public record NormalPlane(
      * @param tri The {@code GTri} from which to create the {@code NormalPlane}.
      * @return A new {@code NormalPlane} defined by the triangle.
      */
-    public static NormalPlane from(GTri tri) {
+    @NotNull
+    @Contract("_ -> new")
+    public static NormalPlane from(@NotNull GTri tri) {
         return new NormalPlane(
                 tri.getLegA().getA().getPivot(),
                 tri.normal()
@@ -85,6 +93,8 @@ public record NormalPlane(
      * @param origin The origin point on the plane.
      * @return A new {@code NormalPlane} parallel to the XZ-plane.
      */
+    @NotNull
+    @Contract("_ -> new")
     public static NormalPlane XZ(Vector3 origin) {
         return new NormalPlane(origin, Vector3.Y);
     }
@@ -95,6 +105,8 @@ public record NormalPlane(
      * @param origin The origin point on the plane.
      * @return A new {@code NormalPlane} parallel to the XY-plane.
      */
+    @NotNull
+    @Contract("_ -> new")
     public static NormalPlane XY(Vector3 origin) {
         return new NormalPlane(origin, Vector3.Z);
     }
@@ -105,6 +117,8 @@ public record NormalPlane(
      * @param origin The origin point on the plane.
      * @return A new {@code NormalPlane} parallel to the ZY-plane.
      */
+    @NotNull
+    @Contract("_ -> new")
     public static NormalPlane ZY(Vector3 origin) {
         return new NormalPlane(origin, Vector3.X);
     }
@@ -121,6 +135,7 @@ public record NormalPlane(
         return Objects.hash(origin(), normal());
     }
 
+    @NotNull
     @Override
     public String toString() {
         return

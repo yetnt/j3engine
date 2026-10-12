@@ -52,7 +52,7 @@ import java.util.stream.Stream;
  * @see Vector3
  * @see Action
  */
-public class Thing implements SceneObjectList {
+public final class Thing implements SceneObjectList {
 
     /** The centroid of the Thing, calculated from the GPoints it contains. */
     private Vector3 centroid;

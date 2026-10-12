@@ -3,6 +3,8 @@ package com.j3d.engine.math.plane;
 import com.j3d.engine.math.CartesianPoint;
 import com.j3d.engine.math.matrix.Vector3;
 import com.yetnt.utils.tuple.SamePair;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -20,7 +22,9 @@ public record AxisPlane(
         Vector3 v1,
         Vector3 v2
 ) {
-    public static AxisPlane usingOrigin(Vector3 origin, AxisPlane original) {
+    @NotNull
+    @Contract("_, _ -> new")
+    public static AxisPlane usingOrigin(Vector3 origin, @NotNull AxisPlane original) {
         return new AxisPlane(
                 origin,
                 original.v1(),
@@ -28,13 +32,16 @@ public record AxisPlane(
         );
     }
 
-    public Vector3 toWorld(CartesianPoint point) {
+    @Contract(pure = true)
+    public Vector3 toWorld(@NotNull CartesianPoint point) {
         return origin
                 .add(v1.scale(point.x))
                 .add(v2.scale(point.y));
     }
 
-    public CartesianPoint fromWorld(Vector3 point) {
+    @NotNull
+    @Contract("_ -> new")
+    public CartesianPoint fromWorld(@NotNull Vector3 point) {
         Vector3 d = point.sub(origin);
 
         double v1v1 = v1.dot(v1);
@@ -59,6 +66,8 @@ public record AxisPlane(
      * Normalises the vectors
      * @return A new plane with the normalised vectors
      */
+    @NotNull
+    @Contract(" -> new")
     public AxisPlane normalize() {
         return new AxisPlane(
                 origin,
@@ -71,6 +80,8 @@ public record AxisPlane(
      * Converts this AxisPlane to a {@link NormalPlane}.
      * @return A new {@link NormalPlane} with the same origin and a normal derived from this AxisPlane.
      */
+    @NotNull
+    @Contract(" -> new")
     public NormalPlane toNormalPlane() {
         return new NormalPlane(origin, v1.cross(v2).normalize());
     }
@@ -79,6 +90,8 @@ public record AxisPlane(
      * Returns a {@link SamePair} containing two references to this plane.
      * @return A {@link SamePair} of this plane.
      */
+    @NotNull
+    @Contract(value = " -> new", pure = true)
     public SamePair<AxisPlane> pair() {
         return new SamePair<>(this, this);
     }
@@ -91,6 +104,8 @@ public record AxisPlane(
      * @return A {@link SamePair} of {@link AxisPlane} instances with the specified origins.
      * @implNote This method discards the original {@link #origin} in favour of the new ones.
      */
+    @NotNull
+    @Contract("_, _ -> new")
     public SamePair<AxisPlane> sameAxes(Vector3 origin1, Vector3 origin2) {
         return AxisPlane.sameAxes(
                 v1, v2, origin1, origin2
@@ -105,6 +120,8 @@ public record AxisPlane(
      * @param originB The origin for the second {@link AxisPlane}.
      * @return A {@link SamePair} of {@link AxisPlane} instances.
      */
+    @NotNull
+    @Contract("_, _, _, _ -> new")
     public static SamePair<AxisPlane> sameAxes(Vector3 v1, Vector3 v2, Vector3 originA, Vector3 originB) {
         return new SamePair<>(
                 new AxisPlane(originA, v1, v2)
@@ -116,6 +133,8 @@ public record AxisPlane(
      * @param origin The origin of the plane.
      * @return The XZ-plane.
      */
+    @NotNull
+    @Contract("_ -> new")
     public static AxisPlane XZ(Vector3 origin) {
         return new AxisPlane(origin, Vector3.X, Vector3.Z);
     }
@@ -124,6 +143,8 @@ public record AxisPlane(
      * @param origin The origin of the plane.
      * @return The XY-plane.
      */
+    @NotNull
+    @Contract("_ -> new")
     public static AxisPlane XY(Vector3 origin) {
         return new AxisPlane(origin, Vector3.X, Vector3.Y);
     }
@@ -132,6 +153,8 @@ public record AxisPlane(
      * @param origin The origin of the plane.
      * @return The ZY-plane.
      */
+    @NotNull
+    @Contract("_ -> new")
     public static AxisPlane ZY(Vector3 origin) {
         return new AxisPlane(origin, Vector3.Z, Vector3.Y);
     }

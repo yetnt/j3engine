@@ -122,7 +122,7 @@ public class CommandPaletteStep extends GuideInfo {
         if (event == EventType.STATEFUL_COMMAND_COMPLETED) {
             StatefulCommandCompletedPayload
                     payload =(StatefulCommandCompletedPayload) properties;
-            if (payload.emitter instanceof OrbitCmd) {
+            if (payload.getEmitter() instanceof OrbitCmd) {
                 close();
             }
         }

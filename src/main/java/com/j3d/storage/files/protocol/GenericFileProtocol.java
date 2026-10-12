@@ -2,6 +2,7 @@ package com.j3d.storage.files.protocol;
 
 import com.j3d.StaticRefs;
 import com.j3d.storage.errs.J3DFileException;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -26,7 +27,7 @@ public class GenericFileProtocol {
      * @param dos The DataOutputStream to write the header to.
      * @throws IOException If an I/O error occurs.
      */
-    public void writeHeader(DataOutputStream dos) {
+    public void writeHeader(@NotNull DataOutputStream dos) {
         try {
             dos.writeUTF(HEADER_TOP);
             dos.writeInt(VERSION);

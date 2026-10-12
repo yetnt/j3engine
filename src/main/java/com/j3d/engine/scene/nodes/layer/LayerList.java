@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class LayerList extends ArrayList<Layer> {
+public final class LayerList extends ArrayList<Layer> {
 
     public LayerList() {
         super();

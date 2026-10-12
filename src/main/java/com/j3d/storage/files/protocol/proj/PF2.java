@@ -94,7 +94,7 @@ import java.util.stream.Collectors;
  * </p>
  * @implSpec {@link PF2} can convert from {@link PF1} but cannot convert to it.
  */
-public class PF2 extends ProjectFile {
+public final class PF2 extends ProjectFile {
 
     public PF2() {
         super(2,

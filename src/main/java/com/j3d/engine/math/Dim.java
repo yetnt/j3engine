@@ -12,7 +12,7 @@ import java.awt.*;
  * @author Lehlogonolo Poole
  * @see java.awt.Dimension
  */
-public class Dim extends Dimension {
+public final class Dim extends Dimension {
     /**
      * Default constructor
      * @param width Given width

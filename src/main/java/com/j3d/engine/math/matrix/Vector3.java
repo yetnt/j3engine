@@ -7,8 +7,10 @@ import com.j3d.gen.settings.Settings;
 import com.j3d.jaiva.EngineObject;
 import com.j3d.jaiva.packs.getters.GettersPack;
 import com.yetnt.utils.tuple.Triple;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.beans.ConstructorProperties;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -38,7 +40,7 @@ import java.util.stream.Stream;
  *     <li>{@link #ZERO}</li>
  * </ul>
  */
-public class Vector3 implements MatrixInterface {
+public non-sealed class Vector3 implements MatrixInterface {
     private final double x;
     private final double y;
     private final double z;
@@ -48,7 +50,7 @@ public class Vector3 implements MatrixInterface {
      * @param m The 2d matrix double array
      * @implSpec The matrix must be 3x1
      */
-    public Vector3(double[][] m) {
+    public Vector3(@NotNull double[][] m) {
         x = m[0][0];
         y = m[1][0];
         z = m[2][0];
@@ -62,7 +64,6 @@ public class Vector3 implements MatrixInterface {
      * @param y The Y component.
      * @param z The Z component.
      */
-    @ConstructorProperties({"getX", "getY", "getZ"})
     public Vector3(double x, double y, double z) {
         this.x = x;
         this.y = y;
@@ -107,7 +108,9 @@ public class Vector3 implements MatrixInterface {
      * @return A new {@code Vector3} instance.
      * @throws RuntimeException if the matrix is not 3x1.
      */
-    public static Vector3 of(MatrixInterface m) {
+    @NotNull
+    @Contract("_ -> new")
+    public static Vector3 of(@NotNull MatrixInterface m) {
         if (m.rows() != 3 || m.cols() != 1) StaticRefs.getErrs().handle(
                 MatrixException.exactDimensionException(Vector3.Y, m)
         );
@@ -141,15 +144,17 @@ public class Vector3 implements MatrixInterface {
      * @param v The other vector.
      * @return The scalar dot product.
      */
-    public double dot(Vector3 v) {
+    @Contract(pure = true)
+    public double dot(@NotNull Vector3 v) {
         return x * v.getX() + y * v.getY() + z * v.getZ();
     }
 
     /**
-     * Normalizes the vector to have a magnitude of 1.
+     * Normalises the vector to have a magnitude of 1.
      *
      * @return A new, normalized {@code Vector3}.
      */
+    @Contract(pure = true)
     public Vector3 normalize() {
         double magnitude = Math.sqrt(x * x + y * y + z * z);
         if (magnitude == 0) return Vector3.ZERO;
@@ -162,7 +167,8 @@ public class Vector3 implements MatrixInterface {
      * @param v The vector to add.
      * @return A new {@code Vector3} representing the sum.
      */
-    public Vector3 add(Vector3 v) {
+    @Contract(pure = true, value = "_ -> new")
+    public Vector3 add(@NotNull Vector3 v) {
         return new Vector3(this.x + v.x, this.y + v.y, this.z + v.z);
     }
 
@@ -171,6 +177,7 @@ public class Vector3 implements MatrixInterface {
      *
      * @return The magnitude of the vector.
      */
+    @Contract(pure = true)
     public double magnitude() {
         return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
     }
@@ -181,6 +188,7 @@ public class Vector3 implements MatrixInterface {
      * @param scalar The scalar value to multiply by.
      * @return A new, scaled {@code Vector3}.
      */
+    @Contract(pure = true, value = "_ -> new")
     public Vector3 mult(double scalar) {
         return new Vector3(this.x * scalar, this.y * scalar, this.z * scalar);
     }
@@ -191,7 +199,8 @@ public class Vector3 implements MatrixInterface {
      * @param B The vector to multiply by.
      * @return A new {@code Vector3} with the component-wise product.
      */
-    public Vector3 mult(Vector3 B) {
+    @Contract(pure = true, value = "_ -> new")
+    public Vector3 mult(@NotNull Vector3 B) {
         return new Vector3(this.x * B.getX(), this.y * B.getY(), this.z * B.getZ());
     }
 
@@ -201,6 +210,7 @@ public class Vector3 implements MatrixInterface {
      * @param scalar The scalar value to divide by.
      * @return A new {@code Vector3} with the divided values.
      */
+    @Contract(pure = true, value = "_ -> new")
     public Vector3 div(double scalar) {
         if (scalar == 0) throw new ArithmeticException("Cannot divide by zero.");
         return new Vector3(this.x / scalar, this.y / scalar, this.z / scalar);
@@ -212,7 +222,8 @@ public class Vector3 implements MatrixInterface {
      * @param B The other vector.
      * @return A new {@code Vector3} representing the cross product, which is orthogonal to both vectors.
      */
-    public Vector3 cross(Vector3 B) {
+    @Contract(pure = true, value = "_ -> new")
+    public Vector3 cross(@NotNull Vector3 B) {
         return new Vector3(
                 y * B.getZ() - z * B.getY(),
                 z * B.getX() - x * B.getZ(),
@@ -226,7 +237,8 @@ public class Vector3 implements MatrixInterface {
      * @param B The vector to subtract.
      * @return A new {@code Vector3} representing the difference.
      */
-    public Vector3 sub(Vector3 B) {
+    @Contract(pure = true, value = "_ -> new")
+    public Vector3 sub(@NotNull Vector3 B) {
         return new Vector3(this.x - B.x, this.y - B.y, this.z - B.z);
     }
 
@@ -236,7 +248,8 @@ public class Vector3 implements MatrixInterface {
      * @param B The other vector.
      * @return The distance between the two points.
      */
-    public double distance(Vector3 B) {
+    @Contract(pure = true)
+    public double distance(@NotNull Vector3 B) {
         return Math.sqrt(Math.pow(x - B.getX(), 2) + Math.pow(y - B.getY(), 2) + Math.pow(z - B.getZ(), 2));
     }
 
@@ -247,7 +260,9 @@ public class Vector3 implements MatrixInterface {
      * @param high The upper bound vector for the range.
      * @return A new random {@code Vector3}.
      */
-    public static Vector3 random(Vector3 low, Vector3 high) {
+    @NotNull
+    @Contract("_, _ -> new")
+    public static Vector3 random(@NotNull Vector3 low, @NotNull Vector3 high) {
         return new Vector3(
                 Math.random() * (high.getX() - low.getX()) + low.getX(),
                 Math.random() * (high.getY() - low.getY()) + low.getY(),
@@ -260,6 +275,7 @@ public class Vector3 implements MatrixInterface {
      *
      * @return A new {@code Vector3} instance with the same X, Y, and Z values.
      */
+    @NotNull
     @Override
     public Vector3 copy() {
         return new Vector3(this.x, this.y, this.z);
@@ -273,7 +289,8 @@ public class Vector3 implements MatrixInterface {
      * @param cam The camera defining the viewpoint and projection.
      * @return The resulting 2D {@link CartesianPoint}.
      */
-    public CartesianPoint toPoint(Camera cam) {
+    @Contract(pure = true)
+    public CartesianPoint toPoint(@NotNull Camera cam) {
         Vector3 c = cam.getPosition();
 
         // Transform the point from world space to camera space
@@ -317,7 +334,8 @@ public class Vector3 implements MatrixInterface {
      * @param point The 2D point.
      * @return The squared distance in the XY plane.
      */
-    public double distanceSquaredTo(CartesianPoint point) {
+    @SuppressWarnings("unused") // might need later
+    public double distanceSquaredTo(@NotNull CartesianPoint point) {
         double dx = this.x - point.x;
         double dy = this.y - point.y;
         return dx * dx + dy * dy;
@@ -330,7 +348,7 @@ public class Vector3 implements MatrixInterface {
      * @param reducer A {@link BiFunction} that combines two vectors into one.
      * @return The final reduced {@code Vector3}.
      */
-    public static Vector3 reduceToVector3(List<Vector3> vectors, BiFunction<Vector3, Vector3, Vector3> reducer) {
+    public static Vector3 reduceToVector3(@Nullable List<Vector3> vectors, @NotNull BiFunction<Vector3, Vector3, Vector3> reducer) {
         if (vectors == null || vectors.isEmpty()) return Vector3.ZERO;
         Vector3 result = vectors.getFirst();
         for (int i = 1; i < vectors.size(); i++) {
@@ -348,7 +366,8 @@ public class Vector3 implements MatrixInterface {
      * @param <K>          The type of the accumulated value.
      * @return The final accumulated value.
      */
-    public static <K> K reduce(ArrayList<Vector3> vectors, BiFunction<Vector3, K, K> reducer, K initialValue) {
+    @SuppressWarnings("unused") // might need later
+    public static <K> K reduce(@Nullable ArrayList<Vector3> vectors, @NotNull BiFunction<Vector3, K, K> reducer, @NotNull K initialValue) {
         K result = initialValue;
         if (vectors == null) return result;
         for (Vector3 vector : vectors) {
@@ -363,13 +382,14 @@ public class Vector3 implements MatrixInterface {
     }
 
     /**
-     * Rotates this vector around a given axis by a specified angle using Rodrigues' rotation formula.
+     * Rotates this vector around a given axis by a specified angle using Rodriguez' rotation formula.
      *
-     * @param axis         The axis to rotate around (should be a normalized vector).
+     * @param axis         The axis to rotate around (should be a normalised vector).
      * @param angleDegrees The angle in degrees to rotate.
      * @return A new {@code Vector3} representing the rotated vector.
      */
-    public Vector3 rotateAroundAxis(Vector3 axis, double angleDegrees) {
+    @Contract(pure = true, value = "_, _ -> new")
+    public Vector3 rotateAroundAxis(@NotNull Vector3 axis, double angleDegrees) {
         double angleRad = Math.toRadians(angleDegrees);
         double cosTheta = Math.cos(angleRad);
         double sinTheta = Math.sin(angleRad);
@@ -389,6 +409,7 @@ public class Vector3 implements MatrixInterface {
      * @param d The scalar value to multiply by.
      * @return A new, scaled {@code Vector3}.
      */
+    @Contract(pure = true, value = "_ -> new")
     public Vector3 scale(double d) {
         return new Vector3(x * d, y * d, z * d);
     }
@@ -443,6 +464,7 @@ public class Vector3 implements MatrixInterface {
      *
      * @return A new 2D double array {@code {{X}, {Y}, {Z}}}.
      */
+    @NotNull
     @Override
     public double[][] get() {
         return new double[][]{
@@ -460,15 +482,19 @@ public class Vector3 implements MatrixInterface {
         return String.format("(%f, %f, %f)", x, y, z);
     }
 
+    @Contract(pure = true)
     public EngineObject toObject() {
         return new EngineObject(EngineObject.Type.VECTOR3)
                 .addProperty(x).addProperty(y).addProperty(z);
     }
 
+    @Contract(pure = true)
     public Stream<Double> stream() {
         return Stream.of(x, y, z);
     }
 
+    @Contract(pure = true)
+    @SuppressWarnings("unused") // might need later
     public Triple<Double> triple() {
         return new Triple<>(x, y, z);
     }
@@ -479,6 +505,8 @@ public class Vector3 implements MatrixInterface {
      * @param x The magnitude along the X-axis.
      * @return A new {@code Vector3} (x, 0, 0).
      */
+    @NotNull
+    @Contract(value = "_ -> new", pure = true)
     public static Vector3 acrossX(double x) {
         return new Vector3(x, 0, 0);
     }
@@ -489,6 +517,8 @@ public class Vector3 implements MatrixInterface {
      * @param y The magnitude along the Y-axis.
      * @return A new {@code Vector3} (0, y, 0).
      */
+    @NotNull
+    @Contract(value = "_ -> new", pure = true)
     public static Vector3 acrossY(double y) {
         return new Vector3(0, y, 0);
     }
@@ -499,6 +529,8 @@ public class Vector3 implements MatrixInterface {
      * @param z The magnitude along the Z-axis.
      * @return A new {@code Vector3} (0, 0, z).
      */
+    @NotNull
+    @Contract(value = "_ -> new", pure = true)
     public static Vector3 acrossZ(double z) {
         return new Vector3(0, 0, z);
     }
@@ -521,16 +553,19 @@ public class Vector3 implements MatrixInterface {
     /**
      * A static constant representing the unit vector along the negative Y-axis (0, -1, 0).
      */
+    @SuppressWarnings("unused")
     public static Vector3 NY = Vector3.acrossY(-1);
 
     /**
      * A static constant representing the unit vector along the negative X-axis (-1, 0, 0).
      */
+    @SuppressWarnings("unused")
     public static Vector3 NX = Vector3.acrossX(-1);
 
     /**
      * A static constant representing the unit vector along the negative Z-axis (0, 0, -1).
      */
+    @SuppressWarnings("unused")
     public static Vector3 NZ = Vector3.acrossZ(-1);
 
     /**
@@ -542,7 +577,9 @@ public class Vector3 implements MatrixInterface {
      */
     public static Vector3 UNIT = new Vector3(1, 1, 1);
 
-    public static Vector3 setXComponent(Vector3 original, double xComp) {
+    @NotNull
+    @Contract("_, _ -> new")
+    public static Vector3 setXComponent(@NotNull Vector3 original, double xComp) {
         return new Vector3(
                 xComp,
                 original.getY(),
@@ -550,7 +587,9 @@ public class Vector3 implements MatrixInterface {
         );
     }
 
-    public static Vector3 setYComponent(Vector3 original, double yComp) {
+    @NotNull
+    @Contract("_, _ -> new")
+    public static Vector3 setYComponent(@NotNull Vector3 original, double yComp) {
         return new Vector3(
                 original.getX(),
                 yComp,
@@ -558,7 +597,9 @@ public class Vector3 implements MatrixInterface {
         );
     }
 
-    public static Vector3 setZComponent(Vector3 original, double zComp) {
+    @NotNull
+    @Contract("_, _ -> new")
+    public static Vector3 setZComponent(@NotNull Vector3 original, double zComp) {
         return new Vector3(
                 original.getX(),
                 original.getY(),
@@ -566,7 +607,10 @@ public class Vector3 implements MatrixInterface {
         );
     }
 
-    public static Vector3 fromObject(GettersPack.CallProperties callProperties, EngineObject obj) {
+    @NotNull
+    @Contract("_, _ -> new")
+    // method requires call properties for generic method as function nonsense I do.
+    public static Vector3 fromObject(@SuppressWarnings("unused") GettersPack.CallProperties callProperties, @NotNull EngineObject obj) {
         return new Vector3(
                 (double)obj.getProperties().getFirst(),
                 (double)obj.getProperties().get(1),

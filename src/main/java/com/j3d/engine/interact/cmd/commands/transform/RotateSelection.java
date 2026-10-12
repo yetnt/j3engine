@@ -11,6 +11,7 @@ import com.j3d.engine.interact.cmd.commands.transform.mouse.RotateMouseOwner;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.ui.SafeJLabel;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.function.Supplier;
@@ -99,7 +100,7 @@ public class RotateSelection extends AbstractTransform {
     }
 
     @Override
-    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+    public void run(@NotNull Invoker invoker, SafeJLabel logLabel, String aliasUsed, @NotNull Object[] args, @NotNull ArrayList<TaggedArgValue<?>> taggedArgs) {
         axis = new Vector3(true);
         if (args.length > 1 && args[1] instanceof Vector3 a)
             axis = a.normalize();

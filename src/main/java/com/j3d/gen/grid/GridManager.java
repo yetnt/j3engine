@@ -127,7 +127,7 @@ public class GridManager implements EventListener {
             ReactivePointInvalidatedPayload payload =
                     (ReactivePointInvalidatedPayload) properties;
 
-            removeReactivePoint(payload.emitter);
+            removeReactivePoint(payload.getEmitter());
         }
     }
 

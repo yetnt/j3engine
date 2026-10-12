@@ -1,6 +1,8 @@
 package com.j3d.engine.math.rot;
 
 import com.j3d.engine.math.matrix.Matrix3;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Defines the contract for generating individual rotation matrices for pitch, yaw, and roll.
@@ -13,12 +15,14 @@ import com.j3d.engine.math.matrix.Matrix3;
  * @see CamToWorldDirection
  * @see WorldToCamDirection
  */
-public interface RotationMatrixDirection {
+public sealed interface RotationMatrixDirection permits CamToWorldDirection, WorldToCamDirection {
     /**
      * Creates a rotation matrix for pitch (rotation around the X-axis).
      *
      * @return A {@link Matrix3} representing the pitch rotation.
      */
+    @NotNull
+    @Contract(value=" -> new",pure=true)
     Matrix3 rotPitch();
 
     /**
@@ -26,6 +30,8 @@ public interface RotationMatrixDirection {
      *
      * @return A {@link Matrix3} representing the yaw rotation.
      */
+    @NotNull
+    @Contract(value=" -> new",pure=true)
     Matrix3 rotYaw();
 
     /**
@@ -33,6 +39,10 @@ public interface RotationMatrixDirection {
      *
      * @return A {@link Matrix3} representing the roll rotation.
      */
+    @NotNull
+    @Contract(value=" -> new",pure=true)
     Matrix3 rotRoll();
+    @NotNull
+    @Contract(value=" -> new",pure=true)
     Matrix3 matrix();
 }

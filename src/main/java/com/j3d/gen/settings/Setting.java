@@ -7,6 +7,7 @@ import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.react.events.payloads.SettingUpdatedPayload;
 import com.j3d.gen.settings.classes.CameraProperties;
+import com.j3d.gen.settings.types.*;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -37,12 +38,12 @@ import static com.j3d.engine.react.events.EventEmitter.*;
  * @see EventEmitterInterface
  * @author Lehlogonolo Poole
  */
-public class Setting<T> implements SettingsChild, EventEmitterInterface {
+public abstract non-sealed class Setting<T> implements SettingsChild, EventEmitterInterface {
     private T value;
     private final String description;
     private final T defaultValue;
     private final String name;
-    private ArrayList<EventListener> registered = new ArrayList<>();
+    private final ArrayList<EventListener> registered = new ArrayList<>();
     private Function<T, Void> callback;
 
     /**

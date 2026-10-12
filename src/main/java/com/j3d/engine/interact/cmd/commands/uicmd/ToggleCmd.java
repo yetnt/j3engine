@@ -9,6 +9,7 @@ import com.j3d.engine.react.history.History;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.ui.engine.floating.DebugPanel;
 import com.j3d.ui.engine.floating.tree.LayerTree;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -55,7 +56,7 @@ public class ToggleCmd extends Subcommand {
     }
 
     @Override
-    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+    public void run(@NotNull Invoker invoker, SafeJLabel logLabel, String aliasUsed, @NotNull Object[] args, @NotNull ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
         if (args.length != 1 || !(args[0] instanceof String targetPanel)) {
             logLabel.setText("Invalid arguments. Usage: ui " + aliasUsed + " " + argSet.toUseString());

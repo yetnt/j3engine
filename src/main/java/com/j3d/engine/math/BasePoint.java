@@ -1,5 +1,8 @@
 package com.j3d.engine.math;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Base Point is a generic 2D point base class
  * @param <T> The type of the given point, which can either be an {@link Integer} or {@link Double} or any other thing that extends {@link Number}
@@ -8,7 +11,7 @@ package com.j3d.engine.math;
  * @see ScreenPoint
  * @see java.awt.Point
  */
-public abstract class BasePoint<T extends Number> {
+public abstract sealed class BasePoint<T extends Number> permits CartesianPoint, ScreenPoint {
     /**
      * Tge X-Value
      */
@@ -35,7 +38,8 @@ public abstract class BasePoint<T extends Number> {
      * @param p3 Poit 3
      * @return A boolean value indicating whether the points are collinear or not.
      */
-    public static boolean areCollinear(CartesianPoint p1, CartesianPoint p2, CartesianPoint p3) {
+    @Contract(pure = true)
+    public static boolean areCollinear(@NotNull CartesianPoint p1, @NotNull CartesianPoint p2, @NotNull CartesianPoint p3) {
         double area = p1.x * (p2.y - p3.y) +
                 p2.x * (p3.y - p1.y) +
                 p3.x * (p1.y - p2.y);

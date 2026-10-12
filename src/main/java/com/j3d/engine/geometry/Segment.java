@@ -3,6 +3,7 @@ package com.j3d.engine.geometry;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.nodes.geometry.GObject;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.UUID;
@@ -74,7 +75,7 @@ public class Segment implements Pure {
     }
 
 
-    public void swingDraw(Graphics2D graphics2D) {
+    public void swingDraw(@NotNull Graphics2D graphics2D) {
         graphics2D.drawLine(
                 start.toPoint(getCamera()).toScreen().x,
                 start.toPoint(getCamera()).toScreen().y,

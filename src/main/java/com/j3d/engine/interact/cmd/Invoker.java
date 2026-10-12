@@ -1,6 +1,8 @@
 package com.j3d.engine.interact.cmd;
 
 import com.j3d.engine.interact.cmd.base.Command;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -33,7 +35,7 @@ import java.util.ArrayList;
  * @see Command
  * @author Lehlogonolo Poole
  */
-public class Invoker {
+public final class Invoker {
     /**
      * Indicates if the invocation originated from a user action.
      */
@@ -68,6 +70,8 @@ public class Invoker {
      *
      * @return An Invoker instance representing a user invocation.
      */
+    @NotNull
+    @Contract(value = " -> new", pure = true)
     public static Invoker byUser() {
         return new Invoker(true, false, false,null, null);
     }
@@ -76,6 +80,8 @@ public class Invoker {
      *
      * @return An Invoker instance representing a macro invocation.
      */
+    @NotNull
+    @Contract(value = " -> new", pure = true)
     public static Invoker byMacro() {
         return new Invoker(false, false, true, null, null);
     }
@@ -85,6 +91,8 @@ public class Invoker {
      *
      * @return An Invoker instance representing an engine invocation.
      */
+    @NotNull
+    @Contract(value = " -> new", pure = true)
     public static Invoker byEngine() {
         return new Invoker(false, true, false, null, null);
     }
@@ -95,6 +103,8 @@ public class Invoker {
      * @param command The parent command.
      * @return An Invoker instance.
      */
+    @NotNull
+    @Contract(value = "_ -> new", pure = true)
     public static Invoker byParentCommand(Command command) {
         return new Invoker(false, false, false, command, null);
     }
@@ -105,6 +115,8 @@ public class Invoker {
      * @param command The command that was called.
      * @return An Invoker instance.
      */
+    @NotNull
+    @Contract(value = "_ -> new", pure = true)
     public static Invoker byCommandCall(Command command) {
         return new Invoker(false, false, false, null, command);
     }
@@ -147,6 +159,7 @@ public class Invoker {
      * with an indication of whether it was a subcommand or a direct call.
      * @return A string representing the invoker.
      */
+    @NotNull
     public String getString() {
         if (user || engine || macro) {
             return user ? "USER" : macro ? "MACRO" : "ENGINE";

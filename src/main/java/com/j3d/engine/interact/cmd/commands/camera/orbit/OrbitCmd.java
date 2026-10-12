@@ -19,6 +19,7 @@ import com.j3d.ui.theme.cursors.CursorManager;
 import com.j3d.ui.theme.cursors.CursorNames;
 import com.yetnt.utils.builders.InlineHTML;
 import com.yetnt.utils.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class OrbitCmd extends Subcommand implements StatefulCommand<Pair<Vector3
     }
 
     @Override
-    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+    public void run(@NotNull Invoker invoker, SafeJLabel logLabel, String aliasUsed, @NotNull Object[] args, @NotNull ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
         CommandsManager.setAsCurrent(this);
 

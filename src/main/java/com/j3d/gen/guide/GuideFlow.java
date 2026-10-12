@@ -1,10 +1,7 @@
 package com.j3d.gen.guide;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.react.events.EventEmitter;
-import com.j3d.engine.react.events.EventListener;
-import com.j3d.engine.react.events.EventPayload;
-import com.j3d.engine.react.events.EventType;
+import com.j3d.engine.react.events.*;
 import com.j3d.engine.react.events.payloads.GuideInfoClosingPayload;
 
 import javax.swing.*;
@@ -13,7 +10,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.function.Supplier;
 
-public class GuideFlow extends EventEmitter implements EventListener {
+public class GuideFlow extends EventEmitterAndListener {
     ArrayList<GuideInfo> guides = new ArrayList<>();
     private int totalSize = 0;
     LinkedHashSet<GuideInfo> allGuides = new LinkedHashSet<>();

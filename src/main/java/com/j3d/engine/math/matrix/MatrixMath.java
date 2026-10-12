@@ -1,6 +1,8 @@
 package com.j3d.engine.math.matrix;
 
 import com.j3d.StaticRefs;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Provides a collection of static utility methods for performing mathematical operations
@@ -25,6 +27,7 @@ public abstract class MatrixMath {
      * @param m The 2D double array to validate.
      * @throws IllegalStateException if the array is not a valid matrix structure.
      */
+    @Contract(pure = true)
     protected static void validate(double[][] m) {
         // 1. is an array with another array in it
         if (m == null || m.length == 0 || !m[0].getClass().isArray()) {
@@ -69,15 +72,13 @@ public abstract class MatrixMath {
      *          to ensure the new matrix is independent of the original array.
      * @return A new {@link MatrixInterface} implementation containing a copy of the provided data.
      * @throws IllegalStateException if the array is not a valid matrix structure (e.g., jagged rows, NaN values).
-     * @implNote <strong>Data Safety:</strong> This method creates a deep copy of the input {@code m} array.
+     * @implNote This method creates a deep copy of the input {@code m} array.
      * This ensures that the returned matrix is completely independent of the original array. Modifications
      * to the original array will not affect the matrix, and modifications to the matrix will not
      * affect the original array.
-     * @implNote <strong>Mutability:</strong> The mutability of the returned matrix depends on the
-     * specific implementation returned. While {@code Matrix3} and {@code Matrix4} may be mutable,
-     * the generic fallback wrapper is <strong>read-only</strong> as it does not implement the
-     * {@code set} method.
      */
+    @Contract(pure = true)
+    @NotNull
     public static MatrixInterface matrixOf(double[][] m) {
         validate(m);
         String size = "" + m.length + m[0].length;
@@ -88,7 +89,7 @@ public abstract class MatrixMath {
         return switch (size) {
             case "33" -> new Matrix3(mCopy);
             case "31" -> new Vector3(mCopy);
-            default -> new MatrixInterface() {
+            default -> new ArbitraryMatrix() {
                 @Override
                 public int rows() {
                     return mCopy.length;
@@ -104,11 +105,13 @@ public abstract class MatrixMath {
                     return mCopy[row][col];
                 }
 
+                @NotNull
                 @Override
                 public double[][] get() {
                     return mCopy;
                 }
 
+                @NotNull
                 @Override
                 public MatrixInterface copy() {
                     return matrixOf(mCopy);
@@ -124,7 +127,7 @@ public abstract class MatrixMath {
      * @param m2 The second matrix.
      * @return {@code true} if both matrices have identical dimensions, {@code false} otherwise.
      */
-    public static boolean equalsRowsEqualCols(MatrixInterface m1, MatrixInterface m2) {
+    public static boolean equalsRowsEqualCols(@NotNull MatrixInterface m1, @NotNull MatrixInterface m2) {
         return m1.rows() == m2.rows() && m1.cols() == m2.cols();
     }
 
@@ -136,6 +139,8 @@ public abstract class MatrixMath {
      * @return A new {@link MatrixInterface} containing the result of the addition.
      * @throws MatrixException if the matrices do not have the same dimensions.
      */
+    @NotNull
+    @Contract(pure = true)
     public static MatrixInterface add(MatrixInterface m1, MatrixInterface m2) {
         if (!equalsRowsEqualCols(m1, m2)) StaticRefs.getErrs().handle(
                 MatrixException.sameDimensionsException("addition")
@@ -159,6 +164,8 @@ public abstract class MatrixMath {
      * @return A new {@link MatrixInterface} containing the result of the subtraction.
      * @throws MatrixException if the matrices do not have the same dimensions.
      */
+    @NotNull
+    @Contract(pure = true)
     public static MatrixInterface sub(MatrixInterface m1, MatrixInterface m2) {
         if (!equalsRowsEqualCols(m1, m2)) StaticRefs.getErrs().handle(
                 MatrixException.sameDimensionsException("subtraction")
@@ -183,7 +190,8 @@ public abstract class MatrixMath {
      * @return A new {@link MatrixInterface} containing the result of the multiplication.
      * @throws MatrixException if the number of columns in m1 does not equal the number of rows in m2.
      */
-    public static MatrixInterface mult(MatrixInterface m1, MatrixInterface m2) {
+    @Contract(pure = true) @NotNull
+    public static MatrixInterface mult(@NotNull MatrixInterface m1, @NotNull MatrixInterface m2) {
         if (m1.cols() != m2.rows()) StaticRefs.getErrs().handle(
                 new MatrixException("Matrix multiplication is not defined for the 2 matrices")
                         .code(105)

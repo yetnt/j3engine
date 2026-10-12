@@ -7,6 +7,11 @@
  *     part at any time of execution.
  * </p>
  * <p>
+ *     <strong>This is not an event bus type of event stuff. The listener has to know and attach itself to the
+ *     instance of the class it will listen to events from.
+ *     </strong>
+ * </p>
+ * <p>
  *     Any class which extends {@link com.j3d.engine.react.events.EventEmitter} inherits event emitting
  *     capabilities to any class which it attaches that implements {@link com.j3d.engine.react.events.EventListener}.
  *     Classes which cannot directly extends EventEmitter can instead implement {@link com.j3d.engine.react.events.EventEmitterInterface}
@@ -52,6 +57,14 @@
  *     <li>
  *         An {@link com.j3d.engine.react.events.EventType} is an enum that categorises different types
  *         of events, allowing listeners to filter and handle specific event types.
+ *     </li>
+ *     <li>
+ *         An {@link EventEmitterAndListener} is a class which other classes can extend which itself
+ *         extends {@link EventEmitter} and implements {@link EventListener} for both capabilities
+ *     </li>
+ *     <li>
+ *         {@link EventEmitterAndListenerInterface} is the previous, but interface version for classes
+ *         which cant extend {@link EventEmitterAndListener} directly
  *     </li>
  * </ul>
  * @author Lehlogonolo Poole

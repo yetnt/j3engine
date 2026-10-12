@@ -3,6 +3,8 @@ package com.j3d.engine.math;
 import com.j3d.engine.math.convert.Conversion;
 import com.j3d.engine.math.convert.ConversionWithOffset;
 import com.j3d.engine.math.matrix.Vector3;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +23,7 @@ import java.util.Objects;
  * @see BasePoint
  * @see Vector3
  */
-public class CartesianPoint extends BasePoint<Double> {
+public final class CartesianPoint extends BasePoint<Double> {
 
     /**
      * used for comparing double values without running into
@@ -59,6 +61,7 @@ public class CartesianPoint extends BasePoint<Double> {
      * defined by {@link Conversion#global()}
      * @return A ScreenPoint
      */
+    @Contract(pure = true)
     public ScreenPoint toScreen() {
         return toScreen(
                 Conversion.global()
@@ -80,7 +83,8 @@ public class CartesianPoint extends BasePoint<Double> {
      * @param conversion The conversion properties
      * @return A sScreenPoint representing the converted coordinates
      */
-    public ScreenPoint toScreen(ConversionWithOffset conversion) {
+    @Contract(pure = true)
+    public ScreenPoint toScreen(@NotNull ConversionWithOffset conversion) {
         double adjustedX = (x + conversion.offset().getXOffset()) * conversion.scale();
         double adjustedY = (y + conversion.offset().getYOffset()) * conversion.scale();
 
@@ -97,6 +101,8 @@ public class CartesianPoint extends BasePoint<Double> {
      * @param arr The array.
      * @return The new cartesian point
      */
+    @NotNull
+    @Contract("null -> fail")
     public static CartesianPoint fromList(ArrayList<? extends Number> arr) {
         if (arr == null || arr.size() != 2) {
             throw new IllegalArgumentException("Input list must contain exactly 2 numbers.");
@@ -136,7 +142,7 @@ public class CartesianPoint extends BasePoint<Double> {
      * @param other The other point.
      * @return The distance.
      */
-    public double distanceTo(CartesianPoint other) {
+    public double distanceTo(@NotNull CartesianPoint other) {
         double dx = this.x - other.x;
         double dy = this.y - other.y;
         return Math.sqrt(dx * dx + dy * dy);
@@ -147,7 +153,7 @@ public class CartesianPoint extends BasePoint<Double> {
      * @param other The other point.
      * @return The distance.
      */
-    public double distanceSquaredTo(CartesianPoint other) {
+    public double distanceSquaredTo(@NotNull CartesianPoint other) {
         double dx = this.x - other.x;
         double dy = this.y - other.y;
         return dx * dx + dy * dy;

@@ -24,7 +24,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class GCurve extends GObject implements IdempotentEventListener<GPointMovedEvent, SamePair<Double>>, DecomposeWhenDrawn<Segment> {
+public final class GCurve extends GObject implements IdempotentEventListener<GPointMovedEvent, SamePair<Double>>, DecomposeWhenDrawn<Segment> {
 
     private GPoint start;
     private GPoint controlPoint;

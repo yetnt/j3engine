@@ -44,7 +44,7 @@ import java.util.stream.Stream;
  * @see GObject
  * @see ArrayList
  */
-public class Layer extends ArrayList<Thing> implements SceneObjectList {
+public final class Layer extends ArrayList<Thing> implements SceneObjectList {
 
     private final String identifier;
     private final UUID UUIDidentifer = UUID.randomUUID();

@@ -32,7 +32,7 @@ import java.util.Random;
  * @see GTri
  * @see Sampler
  */
-public class Solids {
+public abstract class Solids {
     /**
      * Creates a triangle for the top or bottom face of a prism.
      *

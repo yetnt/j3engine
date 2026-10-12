@@ -58,7 +58,7 @@ public class CommandFiredPayload extends EventPayload<Command> {
     }
 
     public Command getCommand() {
-        return emitter;
+        return getEmitter();
     }
 
     public Invoker getInvoker() {

@@ -5,7 +5,7 @@ import com.j3d.ui.settings.panels.NumberValueSPanel;
 
 import java.util.function.Function;
 
-public class DoubleSetting extends Setting<Double> {
+public final class DoubleSetting extends Setting<Double> {
     private final double min;
     private final double max;
 

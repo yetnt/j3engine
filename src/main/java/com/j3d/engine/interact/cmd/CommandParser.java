@@ -18,6 +18,8 @@ import com.j3d.ui.SafeJLabel;
 import com.j3d.ui.engine.CommandPalette;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.utility.Parsing;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -47,7 +49,7 @@ import static com.j3d.engine.interact.cmd.CommandsManager.getCommand;
  * @see RunHistory
  * @see TypingHints
  */
-public class CommandParser {
+public final class CommandParser {
     /**
      * Collected argument objects for the current command invocation. Elements may be
      * instances of {@link String}, {@link UUID}, {@link Vector3},
@@ -257,7 +259,8 @@ public class CommandParser {
      * @param col the colour to convert
      * @return a string in the palette colour format, including surrounding '#'
      */
-    public static String colourToCommandPaletteString(Color col) {
+    @NotNull
+    public static String colourToCommandPaletteString(@NotNull Color col) {
         return String.format(
                 "#%d:%d:%d:%d#",
                 col.getRed(),
@@ -311,7 +314,7 @@ public class CommandParser {
      * @param injected A boolean indicating whether the argument was injected programmatically.
      *                 If true, the argument's string representation will be appended to the input field.
      */
-    private void addArg(CmdToken cmdToken, Object arg, CmdToken.Type t, boolean injected) {
+    private void addArg(@NotNull CmdToken cmdToken, Object arg, CmdToken.Type t, boolean injected) {
         cmdToken.parsedAs(arg, t);
         if (t == CmdToken.Type.TAGGED) {
             taggedArguments.add((TaggedArgValue<?>) arg);
@@ -334,7 +337,7 @@ public class CommandParser {
      * {@link #arguments} or {@link #taggedArguments} list.
      * @param token The {@link CmdToken} to parse.
      */
-    private void parse(CmdToken token) {
+    private void parse(@NotNull CmdToken token) {
         String accumulator = token.getInput().trim();
         accumulator = accumulator.trim();
         if (accumulator.isEmpty()) {
@@ -413,7 +416,7 @@ public class CommandParser {
      * @param accumulator the token to parse
      * @param otherwise a fallback consumer called when the token is not numeric
      */
-    private void parseAsNumberOrBool(CmdToken token, String accumulator, Consumer<String> otherwise) {
+    private void parseAsNumberOrBool(CmdToken token, @NotNull String accumulator, Consumer<String> otherwise) {
         try {
             addArg(token, Integer.parseInt(accumulator.trim()), CmdToken.Type.INT, false);
         } catch (NumberFormatException e) {
@@ -494,13 +497,13 @@ public class CommandParser {
      * @param caller The command that is invoking this command.
      * @return {@code true} if the command was run successfully, {@code false} otherwise
      */
-    public boolean run(Command cmd, ArrayList<Object> arguments, ArrayList<TaggedArgValue<?>> taggedArguments, Command caller) {
+    public boolean run(@NotNull Command cmd, ArrayList<Object> arguments, ArrayList<TaggedArgValue<?>> taggedArguments, Command caller) {
         String alias = cmd.aliases.getFirst();
         Invoker invoker1 = caller == null ? Invoker.byEngine() : Invoker.byCommandCall(caller);
         return runCommand(cmd, alias, arguments, taggedArguments, invoker1);
     }
 
-    public boolean runMacro(Command cmd, ArrayList<Object> arguments, ArrayList<TaggedArgValue<?>> taggedArguments) {
+    public boolean runMacro(@NotNull Command cmd, ArrayList<Object> arguments, ArrayList<TaggedArgValue<?>> taggedArguments) {
         String alias = cmd.aliases.getFirst();
         return runCommand(cmd, alias, arguments, taggedArguments, Invoker.byMacro());
     }
@@ -539,7 +542,8 @@ public class CommandParser {
      * @param input the colour string (without surrounding hashes)
      * @return a {@link Color} instance if parsing succeeds, or {@code null} on failure
      */
-    private Color parseColor(String input) {
+    @Nullable
+    private Color parseColor(@NotNull String input) {
         // if 4 colons, if so, assume R:G:B:A format
         // if 3 colons, assume R:G:B format
         // if no colons, assume hex format

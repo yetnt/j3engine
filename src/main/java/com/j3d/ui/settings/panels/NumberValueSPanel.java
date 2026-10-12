@@ -19,7 +19,7 @@ import java.util.function.Function;
  *
  * @author ACER
  */
-public class NumberValueSPanel<T extends Number> extends AbstractPanel<Setting<T>, T> {
+public final class NumberValueSPanel<T extends Number> extends AbstractPanel<Setting<T>, T> {
 
     private Function<T, Integer> toInt;
     private Function<Integer, T> toT;

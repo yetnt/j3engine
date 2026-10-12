@@ -5,6 +5,8 @@ import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.ui.engine.floating.properties.PropertiesPanel;
 import com.j3d.ui.engine.floating.properties.PropertyEntry;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,7 +42,7 @@ import java.util.function.Supplier;
  * @see PropertyEntry
  * @author Lehlogonolo Poole
  */
-public class Property<T, G extends HasProperties> {
+public final class Property<T, G extends HasProperties> {
     /**
      * The property's label
      */
@@ -192,6 +194,8 @@ public class Property<T, G extends HasProperties> {
                         Objects.equals(getPropertyProvider(), property.getPropertyProvider());
     }
 
+    @NotNull
+    @Contract(" -> new")
     public PropertyKey<T, G> getKey() {
         return new PropertyKey<>(
                 name,

@@ -1,6 +1,7 @@
 package com.j3d.engine.math.rot;
 
 import com.j3d.engine.math.matrix.Vector3;
+import org.jetbrains.annotations.Contract;
 
 /**
  * Represents an object's orientation in 3D space using Tait-Bryan angles (yaw, pitch, and roll).
@@ -48,6 +49,7 @@ public class Rotation {
      *
      * @return A new {@link WorldToCamDirection} instance configured with this rotation's angles.
      */
+    @Contract(pure = true)
     public WorldToCamDirection worldToCam() {
         return new WorldToCamDirection(
                 Math.toRadians(pitch),
@@ -61,6 +63,7 @@ public class Rotation {
      *
      * @return A new {@link CamToWorldDirection} instance configured with this rotation's angles.
      */
+    @Contract(pure = true)
     public CamToWorldDirection camToWorld() {
         return new CamToWorldDirection(
                 Math.toRadians(pitch),
@@ -123,6 +126,7 @@ public class Rotation {
      *
      * @return A {@link Vector3} containing the pitch, yaw, and roll angles in radians.
      */
+    @Contract(pure = true)
     public Vector3 toRadVector3() {
         return new Vector3(Math.toRadians(getPitch()), Math.toRadians(getYaw()), Math.toRadians(getRoll()));
     }
@@ -131,6 +135,7 @@ public class Rotation {
      * Creates a copy of this Rotation object.
      * @return A new Rotation object with the same pitch, yaw, and roll angles as this one.
      */
+    @Contract(pure = true)
     public Rotation copy() {
         return new Rotation(pitch, yaw, roll);
     }

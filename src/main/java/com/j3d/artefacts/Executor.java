@@ -39,7 +39,7 @@ import java.util.Random;
  * @see Artefact
  * @author Lehlogonolo Poole
  */
-public class Executor implements Artefact {
+public final class Executor implements Artefact {
 
     private final Layer layer = new Layer("exec");
 
@@ -79,6 +79,7 @@ public class Executor implements Artefact {
 //                cone.rotate(Vector3.acrossX(5), 5)
         ));
         actions.forEach(Action::run);
+        //noinspection UseBulkOperation (We specifically override add with extra functionality.)
         actions.forEach(SceneManager.history::add);
 
     }

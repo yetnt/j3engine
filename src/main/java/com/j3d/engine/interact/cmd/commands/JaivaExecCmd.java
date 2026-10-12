@@ -9,6 +9,7 @@ import com.j3d.jaiva.TypeConverter;
 import com.j3d.ui.SafeJLabel;
 import com.jaiva.errors.JaivaException;
 import com.yetnt.utils.builders.AnsiColour;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class JaivaExecCmd extends Command {
     }
 
     @Override
-    public void run(Invoker invoker, SafeJLabel logLabel, String aliasUsed, Object[] args, ArrayList<TaggedArgValue<?>> taggedArgs) {
+    public void run(@NotNull Invoker invoker, SafeJLabel logLabel, String aliasUsed, @NotNull Object[] args, @NotNull ArrayList<TaggedArgValue<?>> taggedArgs) {
         super.run(invoker, logLabel, aliasUsed, args, taggedArgs);
 
         ArrayList<Object> arr = new ArrayList<>();

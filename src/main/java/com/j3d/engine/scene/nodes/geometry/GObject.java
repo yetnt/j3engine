@@ -2,10 +2,7 @@ package com.j3d.engine.scene.nodes.geometry;
 
 import com.j3d.engine.geometry.Pure;
 import com.j3d.engine.math.matrix.Vector3;
-import com.j3d.engine.react.events.EventEmitter;
-import com.j3d.engine.react.events.EventListener;
-import com.j3d.engine.react.events.EventPayload;
-import com.j3d.engine.react.events.EventType;
+import com.j3d.engine.react.events.*;
 import com.j3d.engine.scene.SceneObject;
 import com.j3d.engine.scene.copy.CanCopy;
 import com.j3d.engine.scene.copy.CopyProperties;
@@ -42,7 +39,8 @@ import java.util.UUID;
  * @see GLine
  * @see GTri
  */
-public abstract class GObject extends EventEmitter implements EventListener, CanCopy, SceneObject {
+public abstract sealed class GObject extends EventEmitterAndListener implements CanCopy, SceneObject
+permits GPoint, GLine, GTri, GCurve {
     protected Color col = Color.BLACK;
     /**
      * The pivot point of this geometry. Unless a {@link GPoint} where this represents the actual location
