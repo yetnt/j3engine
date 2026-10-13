@@ -66,12 +66,12 @@ public class  ScaleSelection extends AbstractTransform {
                 argSet
         ).parseUsages();
 
-        Supplier<Vector3> scaleAxisCalculator = () -> scaleMouseOwner.selectedHandle == null ? new Vector3(true) :
+        Supplier<Vector3> scaleAxisCalculator = () -> scaleMouseOwner.selectedHandle == null ? new Vector3() :
                 switch (scaleMouseOwner.selectedHandle.handleType()) {
                     case HandleType.X -> new Vector3(1, 0, 0);
                     case HandleType.Y -> new Vector3(0, 1, 0);
                     case HandleType.Z -> new Vector3(0, 0, 1);
-                    case null -> new Vector3(true);
+                    case null -> new Vector3();
                 };
 
         setUpKey(
@@ -101,7 +101,7 @@ public class  ScaleSelection extends AbstractTransform {
     }
 
     public void upKey(GPoint gpoint, Vector3 scaleAxis) {
-        if (scaleAxis.isNotEmpty()) {
+        if (scaleAxis.isNotZero()) {
             Vector3 fromCenter = gpoint.getPivot().sub(center);
 
             Vector3 scaled = new Vector3(
@@ -118,7 +118,7 @@ public class  ScaleSelection extends AbstractTransform {
     }
 
     public void downKey(GPoint gpoint, Vector3 scaleAxis) {
-        if (scaleAxis.isNotEmpty()) {
+        if (scaleAxis.isNotZero()) {
             Vector3 fromCenter = gpoint.getPivot().sub(center);
 
             Vector3 scaled = new Vector3(

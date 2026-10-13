@@ -61,8 +61,8 @@ public final class SceneProperties implements SettingsParent {
             "The method the sceneManager should make use of to sort triangles.",
             PureSortMethod.values()
     ).onSetValue((PureSortMethod l) -> {
-        if (StaticRefs.throwIfNull(StaticRefs.getSceneManager()) != null)
-            StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getRenderer().setSortMethod(l);
+        if (StaticRefs.getSceneManager() != null)
+           StaticRefs.getSceneManager().getRenderer().setSortMethod(l);
         return null;
     });
     public BooleanSetting useBackFaceCulling = new BooleanSetting(

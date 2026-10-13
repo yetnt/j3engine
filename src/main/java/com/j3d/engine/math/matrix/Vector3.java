@@ -41,6 +41,7 @@ import java.util.stream.Stream;
  * </ul>
  */
 public non-sealed class Vector3 implements MatrixInterface {
+
     private final double x;
     private final double y;
     private final double z;
@@ -78,26 +79,13 @@ public non-sealed class Vector3 implements MatrixInterface {
         y = 0;
         z = 0;
     }
-
-    public Vector3(boolean empty) {
-        if (empty) {
-            x = Double.MAX_VALUE;
-            y = Double.MAX_VALUE;
-            z = Double.MAX_VALUE;
-        } else {
-            x = 0;
-            y = 0;
-            z = 0;
-        }
-    }
-
     /**
-     * Checks if the vector is not set to the special "empty" value.
+     * Checks if the vector is not zero.
      *
      * @return {@code true} if the vector holds meaningful data, {@code false} otherwise.
      */
-    public boolean isNotEmpty() {
-        return x != Double.MAX_VALUE || y != Double.MAX_VALUE || z != Double.MAX_VALUE;
+    public boolean isNotZero() {
+        return x != 0 || y != 0 || z != 0;
     }
 
 
@@ -538,44 +526,44 @@ public non-sealed class Vector3 implements MatrixInterface {
     /**
      * A static constant representing the unit vector along the positive Y-axis (0, 1, 0).
      */
-    public static Vector3 Y = Vector3.acrossY(1);
+    public static final Vector3 Y = Vector3.acrossY(1);
 
     /**
      * A static constant representing the unit vector along the positive X-axis (1, 0, 0).
      */
-    public static Vector3 X = Vector3.acrossX(1);
+    public static final Vector3 X = Vector3.acrossX(1);
 
     /**
      * A static constant representing the unit vector along the positive Z-axis (0, 0, 1).
      */
-    public static Vector3 Z = Vector3.acrossZ(1);
+    public static final Vector3 Z = Vector3.acrossZ(1);
 
     /**
      * A static constant representing the unit vector along the negative Y-axis (0, -1, 0).
      */
     @SuppressWarnings("unused")
-    public static Vector3 NY = Vector3.acrossY(-1);
+    public static final Vector3 NY = Vector3.acrossY(-1);
 
     /**
      * A static constant representing the unit vector along the negative X-axis (-1, 0, 0).
      */
     @SuppressWarnings("unused")
-    public static Vector3 NX = Vector3.acrossX(-1);
+    public static final Vector3 NX = Vector3.acrossX(-1);
 
     /**
      * A static constant representing the unit vector along the negative Z-axis (0, 0, -1).
      */
     @SuppressWarnings("unused")
-    public static Vector3 NZ = Vector3.acrossZ(-1);
+    public static final Vector3 NZ = Vector3.acrossZ(-1);
 
     /**
      * A static constant representing the zero vector (0, 0, 0).
      */
-    public static Vector3 ZERO = new Vector3();
+    public static final Vector3 ZERO = new Vector3();
     /**
      * A static constant representing the unit vector (1, 1, 1).
      */
-    public static Vector3 UNIT = new Vector3(1, 1, 1);
+    public static final Vector3 UNIT = new Vector3(1, 1, 1);
 
     @NotNull
     @Contract("_, _ -> new")

@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 public class RotateMouseOwner extends TransformMouseOwner {
 
     public Handle handle;
-    public Vector3 axis = new Vector3(true);
+    public Vector3 axis = new Vector3();
 
     public RotateMouseOwner() {
         super(MOwner.ROTATE_HANDLE);
@@ -48,7 +48,7 @@ public class RotateMouseOwner extends TransformMouseOwner {
         Vector3 center = Vector3.reduceToVector3(
                 references.stream().map(GPoint::getPivot).collect(Collectors.toCollection(ArrayList::new))
                 , Vector3::add).div(references.size());
-        if (axis.isNotEmpty()) {
+        if (axis.isNotZero()) {
             handles.getFirst().extraDetailRegardless(
                     g -> {
                         // the handle we choose doesnt matter. we need to create point A and B from the centre.

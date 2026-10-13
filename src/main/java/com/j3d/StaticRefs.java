@@ -61,7 +61,7 @@ public abstract class StaticRefs {
     @Contract("null -> fail")
     public static <T> T throwIfNull(@Nullable T input) {
         if (input == null) {
-            getLog().error(
+            getErrs().handle(
                     // fatal error so it will call System.exit(-1)
                     new GenericException("Expected a non-null value for the given input")
                             .code(100)
@@ -183,7 +183,7 @@ public abstract class StaticRefs {
      *  </p>
      */
     private static final Camera camera = new Camera()
-            .setPosition(new Vector3(20, 50, -90))
+            .setPositionNoEvent(new Vector3(20, 50, -90))
             .setProjectionPlane(
                     new Vector3(0, 0, Settings.cameraProperties.focalLength.getValue())
             );

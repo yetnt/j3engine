@@ -66,7 +66,7 @@ import java.util.function.Supplier;
 public class RotateSelection extends AbstractTransform {
 
     public static RotateMouseOwner rotateMouseOwner = new RotateMouseOwner();
-    private Vector3 axis = new Vector3(true);
+    private Vector3 axis = new Vector3();
 
     RotateSelection() {
         super(
@@ -78,7 +78,7 @@ public class RotateSelection extends AbstractTransform {
                 new TypedArg("arbitraryAxis", "An arbitrary axis to rotate around.", true, Vector3.class)
         ).parseUsages();
 
-        Supplier<Vector3> supplier = () -> axis.isNotEmpty() ? axis :
+        Supplier<Vector3> supplier = () -> axis.isNotZero() ? axis :
                 rotateMouseOwner.selectedHandle == null ? new Vector3(0, 1, 0) :
                         switch (rotateMouseOwner.selectedHandle.handleType()) {
                             case HandleType.X -> new Vector3(1, 0, 0);
@@ -101,7 +101,7 @@ public class RotateSelection extends AbstractTransform {
 
     @Override
     public void run(@NotNull Invoker invoker, SafeJLabel logLabel, String aliasUsed, @NotNull Object[] args, @NotNull ArrayList<TaggedArgValue<?>> taggedArgs) {
-        axis = new Vector3(true);
+        axis = new Vector3();
         if (args.length > 1 && args[1] instanceof Vector3 a)
             axis = a.normalize();
         rotateMouseOwner.axis = axis;
