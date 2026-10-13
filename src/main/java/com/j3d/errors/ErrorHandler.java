@@ -23,7 +23,7 @@ import java.util.ArrayList;
  * @see J3ErrSeverity
  * @author Lehlogonolo Poole
  */
-public class ErrorHandler {
+public final class ErrorHandler {
     private final ArrayList<Class<?>> ignored = new ArrayList<>();
 
     /**

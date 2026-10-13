@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class TWParagraph extends TWrapper {
 
-    private ArrayList<TText> paragraph;
+    private final ArrayList<TText> paragraph;
 
     public TWParagraph(ArrayList<TText> text) {
         super(WrapperType.PARAGRAPH, new ArrayList<>());

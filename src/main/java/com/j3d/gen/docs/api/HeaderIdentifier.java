@@ -20,7 +20,7 @@ import java.util.function.BiConsumer;
  * {@link #parseId(LinkedHashMap)} must be called at some point after the constructor.
  * @author Lehlogonolo Poole
  */
-public class HeaderIdentifier {
+public final class HeaderIdentifier {
     /**
      * The {@link TWHeader} token associated with this identifier, if it represents a specific header.
      */

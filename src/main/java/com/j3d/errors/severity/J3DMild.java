@@ -10,7 +10,7 @@ package com.j3d.errors.severity;
  * @author Lehlogonolo Poole
  * @see J3ErrSeverity
  */
-public interface J3DMild extends J3ErrSeverity {
+public non-sealed interface J3DMild extends J3ErrSeverity {
     @Override
     default String logHead() {
         return "[MILD]";

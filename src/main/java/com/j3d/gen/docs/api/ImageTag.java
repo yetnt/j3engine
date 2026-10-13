@@ -25,7 +25,7 @@ import java.io.IOException;
  * @see DocsGenException
  * @see ErrorHandler
  */
-public class ImageTag {
+public final class ImageTag {
     private TWhtmlTag tag;
     private String altText;
     private JarPath imagePath;
