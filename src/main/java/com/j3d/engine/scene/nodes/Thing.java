@@ -166,8 +166,10 @@ public final class Thing implements SceneObjectList {
                 new ConstructorAction() {
                     @Override
                     public void cleanup() throws Exception {
-                        parent.remove(thing);
-                        thing.instantDelete();
+                        if (isForDeletion()) {
+                            parent.remove(thing);
+                            thing.instantDelete();
+                        }
                     }
 
                     private final Thing thing = Thing.this;

@@ -22,9 +22,7 @@ import com.j3d.gen.settings.classes.CameraProperties;
 import com.j3d.jaiva.JaivaInstanceManager;
 import com.j3d.storage.files.engine.EngineFiles;
 import com.j3d.storage.files.engine.LogFile;
-import com.j3d.storage.files.protocol.proj.PF1;
-import com.j3d.storage.files.protocol.proj.PF2;
-import com.j3d.storage.files.protocol.proj.PF3;
+import com.j3d.storage.files.protocol.proj.*;
 import com.j3d.threads.StatisticsThread;
 import com.j3d.ui.HoverJLabel;
 import com.j3d.ui.engine.CommandPalette;
@@ -253,6 +251,17 @@ public abstract class StaticRefs {
             projectFileV3 = new PF3();
         }
         return projectFileV3;
+    }
+
+    /**
+     * Unimplemented.
+     */
+    private static PF4 projectFileV4;
+    public static PF4 getProjectFileV4() {
+        if (projectFileV4 == null) {
+            projectFileV4 = new PF4();
+        }
+        return projectFileV4;
     }
 
     /**

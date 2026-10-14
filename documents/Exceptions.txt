@@ -32,6 +32,8 @@ JCCXXX -> J3DErr (prefixed J cuz why not)
 43101 -> MouseOwner could not instantiate a Robot instance
 
 41101 -> Copy Exception - Connection severed.
+41200 -> Generic History or Action-related Exception
+41201 -> Action could not be cleaned as it ran into an error
 
 42101 -> Matrix Math: Invalid 2D array input
 42102 -> Matrix Math: Row lengths do not match
@@ -75,3 +77,14 @@ JCCXXX -> J3DErr (prefixed J cuz why not)
 51363 -> PF3 could not find the winding point referenced by the current triangle.
 51364 -> PF3 could not find the point referenced by the curve.
 51365 -> PF3 could not find the layer referenced by the thing.
+51400 -> PF4 experienced a generic WRITE issue
+51450 -> PF4 experieced a generic READ issue
+51451 -> PF4 expected the start of a list.
+51452 -> PF4 expected the end of a list.
+51453 -> PF4 expected the before element delimiter.
+51454 -> PF4 expected the end of file magic number (69).
+51461 -> PF4 could not find the point referenced by the current line
+51462 -> PF4 could not find the line referenced by the current triangle
+51463 -> PF4 could not find the winding point referenced by the current triangle.
+51464 -> PF4 could not find the point referenced by the curve.
+51465 -> PF4 could not find the layer referenced by the thing.

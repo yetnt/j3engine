@@ -29,7 +29,7 @@ public final class PF3 extends ProjectFile {
 
     public PF3() {
         super(3,
-                Set.of(),     // Can convert to
+                Set.of(PF.V4),     // Can convert to
                 Set.of(PF.V2)  // Can convert from
         );
     }
@@ -701,57 +701,16 @@ public final class PF3 extends ProjectFile {
         }
     }
 
-    /**
-     * A utility class that extends {@link Pair} to store two maps related to some {@link GObject}.
-     * It holds a {@link HashMultiMap} to map parent thing IDs to a list of geometric objects,
-     * and a {@link HashMap} to map individual geometric object IDs to the objects themselves.
-     * @implNote Rather than calling {@link #first} and {@link #second}, this class
-     * allows you to call the convenience methods instead, being {@link #getThingParentMap()}
-     * and {@link #getIdMap()} respectively
-     *
-     * @param <T> The type of {@link GObject} stored in the maps.
-     */
-    // Named it SuperMAp cuz funny
-    public static class SuperMap<T extends GObject> extends Pair<
-            HashMultiMap<String, T>,
-            HashMap<String, T>
-            > {
+    private static class SuperMap<T extends GObject> extends
+            com.j3d.storage.files.protocol.proj.SuperMap<String, T> {
         /**
          * Constructs a new {@code SuperMap} with the given parent map and ID map.
          *
          * @param thingParentMap A {@link HashMultiMap} mapping parent thing IDs to geometric objects.
-         * @param idMap A {@link HashMap} mapping geometric object IDs to geometric objects.
+         * @param idMap          A {@link HashMap} mapping geometric object IDs to geometric objects.
          */
         public SuperMap(HashMultiMap<String, T> thingParentMap, HashMap<String, T> idMap) {
             super(thingParentMap, idMap);
-        }
-        /**
-         * Returns the {@link HashMultiMap} that maps parent thing IDs to geometric objects.
-         *
-         * @return The parent thing map.
-         */
-        public HashMultiMap<String, T> getThingParentMap() {
-            return first;
-        }
-        /**
-         * Returns the {@link HashMap} that maps geometric object IDs to geometric objects.
-         *
-         * @return The ID map.
-         */
-        public HashMap<String, T> getIdMap() {
-            return second;
-        }
-        /**
-         * Retrieves a list of geometric objects associated with a specific parent thing ID.
-         * If no objects are found for the given thing ID, an empty {@link ArrayList} is returned.
-         *
-         * @param thingId The ID of the parent thing.
-         * @return An {@link ArrayList} of geometric objects belonging to the specified thing.
-         */
-        public ArrayList<T> fromThing(String thingId) {
-            HashMultiMap<String, T> map = getThingParentMap();
-            ArrayList<T> values = map.getValues(thingId);
-            return values == null ? new ArrayList<>() : values;
         }
     }
 }

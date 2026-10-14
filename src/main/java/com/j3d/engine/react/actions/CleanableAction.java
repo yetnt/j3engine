@@ -14,4 +14,8 @@ public interface CleanableAction {
      * @throws Exception if an error occurs during clean-up.
      */
     void cleanup() throws Exception;
+
+    default LifetimePolicy getLifetimePolicy() {
+        return LifetimePolicy.CLEANUP;
+    }
 }

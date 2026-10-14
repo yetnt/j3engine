@@ -1,10 +1,7 @@
 package com.j3d.engine.scene.nodes.layer;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.react.actions.Action;
-import com.j3d.engine.react.actions.ConstructorAction;
-import com.j3d.engine.react.actions.DirtyAction;
-import com.j3d.engine.react.actions.DirtyVoidAction;
+import com.j3d.engine.react.actions.*;
 import com.j3d.engine.scene.DefaultObjectDeletionException;
 import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.nodes.SceneObjectList;
@@ -157,6 +154,12 @@ public final class Layer extends ArrayList<Thing> implements SceneObjectList {
         treeNode = StaticRefs.getLayerTree().addNode(null, treeNodeIdentity);
         SceneManager.history.add(
                 new ConstructorAction() {
+
+                    @Override
+                    public LifetimePolicy getLifetimePolicy() {
+                        return LifetimePolicy.NONE;
+                    }
+
                     @Override
                     public void cleanup() {
                         StaticRefs.getErrs().handle(
@@ -166,6 +169,7 @@ public final class Layer extends ArrayList<Thing> implements SceneObjectList {
                                 )
                         );
                     }
+
                     @Override
                     public boolean isReversible() {
                         return false;

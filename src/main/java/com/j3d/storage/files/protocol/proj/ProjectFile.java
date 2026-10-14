@@ -40,7 +40,7 @@ import java.util.function.Supplier;
  * @author Lehlogonolo Poole
  */
 public abstract sealed class ProjectFile extends GenericFileProtocol implements FileProtocol
-permits PF1, PF2, PF3 {
+permits PF1, PF2, PF3, PF4 {
 
     private final int VERSION;
     private final String HEADER = "PROJECT";
@@ -225,7 +225,8 @@ permits PF1, PF2, PF3 {
     public enum PF {
         V1(StaticRefs::getProjectFileV1),
         V2(StaticRefs::getProjectFileV2),
-        V3(StaticRefs::getProjectFileV3);
+        V3(StaticRefs::getProjectFileV3),
+        V4(StaticRefs::getProjectFileV4);
 
         PF(Supplier<ProjectFile> pf) {
             projectFile = pf;

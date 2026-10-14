@@ -406,10 +406,8 @@ public class Projects extends javax.swing.JFrame {
         );
 
         jSeparator1.setForeground(J3DTheme.ACCENT_SECONDARY.color());
-        jSeparator1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
         jSeparator2.setForeground(J3DTheme.ACCENT_SECONDARY.color());
-        jSeparator2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
         javax.swing.GroupLayout scrollpanepanelLayout = new javax.swing.GroupLayout(scrollpanepanel);
         scrollpanepanel.setLayout(scrollpanepanelLayout);

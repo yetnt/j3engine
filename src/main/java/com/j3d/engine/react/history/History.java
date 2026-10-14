@@ -2,7 +2,9 @@ package com.j3d.engine.react.history;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.react.actions.Action;
+import com.j3d.engine.react.actions.ActionException;
 import com.j3d.engine.react.actions.CleanableAction;
+import com.j3d.engine.react.actions.LifetimePolicy;
 import com.j3d.ui.engine.floating.ActionPanel;
 import com.j3d.ui.engine.floating.HistoryPanel;
 
@@ -97,12 +99,14 @@ public class History extends ArrayList<Action<?>> {
         if (this.size() >= MAX_HISTORY_SIZE) {
             Action<?> a = this.remove(1);
             StaticRefs.getLog().println(logHead + "History head removed -> " + a.getDescription());
-            if (a instanceof CleanableAction cl) {
+            if (a instanceof CleanableAction cl && cl.getLifetimePolicy() == LifetimePolicy.CLEANUP) {
                 try {
-//                    cl.resourceCleanup();
+                    cl.cleanup();
                     StaticRefs.getLog().println(logHead + "Cleaned up (as a result of being too old) -> " + a.getDescription());
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    StaticRefs.getErrs().handle(
+                            ActionException.cleanupErr(a, e)
+                    );
                 }
             }
         }
@@ -124,7 +128,9 @@ public class History extends ArrayList<Action<?>> {
                 try {
                     c.cleanup();
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    StaticRefs.getErrs().handle(
+                            ActionException.cleanupErr(h, e)
+                    );
                 }
             }
         };
