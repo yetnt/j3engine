@@ -1,5 +1,6 @@
 package com.j3d.engine.math;
 
+import java.util.UUID;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,6 +21,7 @@ public abstract sealed class BasePoint<T extends Number> permits CartesianPoint,
      * The Y-Value
      */
     public final T y;
+    private UUID id = UUID.randomUUID(); 
 
     /**
      * Default Constructor Initializing the point.
@@ -30,6 +32,15 @@ public abstract sealed class BasePoint<T extends Number> permits CartesianPoint,
         this.x = xcord;
         this.y = ycord;
     }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
 
     /**
      * A static class that checks if 3 {@link CartesianPoint}s lie on the same line (Are collinear)

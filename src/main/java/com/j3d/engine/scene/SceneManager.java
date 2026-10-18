@@ -4,8 +4,11 @@ import com.j3d.StaticRefs;
 import com.j3d.engine.interact.selection.SelectionManager;
 import com.j3d.engine.interact.selection.SelectionQuery;
 import com.j3d.engine.interact.selection.SelectionType;
+import com.j3d.engine.math.CartesianPoint;
 import com.j3d.engine.math.Dim;
 import com.j3d.engine.math.ScreenPoint;
+import com.j3d.engine.math.matrix.Matrix3;
+import com.j3d.engine.math.matrix.MatrixMath;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.react.history.History;
 import com.j3d.engine.scene.draw.SceneRenderer;
@@ -173,8 +176,54 @@ public final class SceneManager {
     }
 
     public void drawLine3D(@NotNull Graphics2D g, @NotNull Vector3 start, @NotNull Vector3 end, Camera cam) {
-        ScreenPoint p1 = start.toPoint(cam).toScreen();
-        ScreenPoint p2 = end.toPoint(cam).toScreen();
+        Vector3 c = cam.getPosition();
+        Matrix3 worldToCamMatrix = cam.getRotation().worldToCam().matrix();
+
+        // 1. Transform both points from World Space to Camera Space
+        Vector3 d1 = Vector3.of(MatrixMath.mult(worldToCamMatrix, start.sub(c)));
+        Vector3 d2 = Vector3.of(MatrixMath.mult(worldToCamMatrix, end.sub(c)));
+
+        // 2. Define a safe near clipping plane (0.1 prevents wild stretching)
+        double nearPlane = 0.1;
+
+        // Case A: Both points are behind the camera lens. Don't draw anything.
+        if (d1.getZ() < nearPlane && d2.getZ() < nearPlane) {
+            return; 
+        }
+
+        // Case B: The 'end' point went behind the camera
+        if (d2.getZ() < nearPlane) {
+            double t = (nearPlane - d1.getZ()) / (d2.getZ() - d1.getZ());
+            d2 = new Vector3(
+                d1.getX() + t * (d2.getX() - d1.getX()),
+                d1.getY() + t * (d2.getY() - d1.getY()),
+                nearPlane
+            );
+        } 
+        // Case C: The 'start' point went behind the camera
+        else if (d1.getZ() < nearPlane) {
+            double t = (nearPlane - d1.getZ()) / (d2.getZ() - d1.getZ());
+            d1 = new Vector3(
+                d1.getX() + t * (d2.getX() - d1.getX()),
+                d1.getY() + t * (d2.getY() - d1.getY()),
+                nearPlane
+            );
+        }
+
+        // 3. Perform your exact perspective projection on the safe camera-space points
+        Vector3 e = cam.getProjectionPlane();
+
+        double x1 = (e.getZ() / d1.getZ()) * d1.getX() + e.getX();
+        double y1 = (e.getZ() / d1.getZ()) * d1.getY() + e.getY();
+
+        double x2 = (e.getZ() / d2.getZ()) * d2.getX() + e.getX();
+        double y2 = (e.getZ() / d2.getZ()) * d2.getY() + e.getY();
+
+        // 4. Convert your projected Cartesian coordinates straight to ScreenPoints
+        ScreenPoint p1 = new CartesianPoint(x1, y1).toScreen();
+        ScreenPoint p2 = new CartesianPoint(x2, y2).toScreen();
+
+        // 5. Draw the safe, clipped line!
         g.drawLine(p1.x, p1.y, p2.x, p2.y);
     }
 

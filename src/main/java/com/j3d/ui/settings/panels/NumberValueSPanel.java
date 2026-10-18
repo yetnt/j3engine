@@ -114,7 +114,7 @@ public final class NumberValueSPanel<T extends Number> extends AbstractPanel<Set
         settingLabel1.setForeground(J3DTheme.TEXT_PRIMARY.color());
         settingLabel1.setText("SettingLabel (hover for desc)");
 
-        jSlider1.setBackground(J3DTheme.UI_SURFACE.color());
+        jSlider1.setBackground(J3DTheme.TEXT_SECONDARY.color());
         jSlider1.setForeground(J3DTheme.TEXT_PRIMARY.color());
 
         jSpinner1.setOpaque(true);
@@ -130,9 +130,9 @@ public final class NumberValueSPanel<T extends Number> extends AbstractPanel<Set
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(settingLabel1)
-                .addGap(18, 18, 18)
+                .addGap(18, 51, Short.MAX_VALUE)
                 .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(resetButton)

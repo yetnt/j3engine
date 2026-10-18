@@ -10,21 +10,13 @@ import com.j3d.StaticRefs;
 import com.j3d.artefacts.Artefact;
 import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.CommandsManager;
-import com.j3d.engine.interact.cmd.commands.camera.orbit.OrbitCmd;
-import com.j3d.engine.interact.cmd.commands.camera.orbit.OrbitMouseOwner;
+import com.j3d.engine.interact.cmd.commands.camera.orbit.*;
 import com.j3d.engine.interact.cmd.commands.engine.ExitCmd;
-import com.j3d.engine.interact.cmd.commands.transform.RotateSelection;
-import com.j3d.engine.interact.cmd.commands.transform.ScaleSelection;
-import com.j3d.engine.interact.cmd.commands.transform.TranslateSelection;
-import com.j3d.engine.interact.cmd.commands.transform.mouse.RotateMouseOwner;
-import com.j3d.engine.interact.cmd.commands.transform.mouse.ScaleMouseOwner;
-import com.j3d.engine.interact.cmd.commands.transform.mouse.TranslateMouseOwner;
+import com.j3d.engine.interact.cmd.commands.transform.*;
+import com.j3d.engine.interact.cmd.commands.transform.mouse.*;
 import com.j3d.engine.interact.cmd.commands.transform.qtrans.QuickTranslateCmd;
 import com.j3d.engine.interact.input.keyboard.KeyBindings;
-import com.j3d.engine.interact.input.mouse.AlwaysMouseOwner;
-import com.j3d.engine.interact.input.mouse.MOwner;
-import com.j3d.engine.interact.input.mouse.MouseOwner;
-import com.j3d.engine.interact.input.mouse.NoMouseOwner;
+import com.j3d.engine.interact.input.mouse.*;
 import com.j3d.engine.interact.selection.SelectionManager;
 import com.j3d.engine.interact.selection.SelectionQuery;
 import com.j3d.engine.interact.selection.SelectionUI;
@@ -42,9 +34,7 @@ import com.j3d.errors.J3DError;
 import com.j3d.gen.guide.GuideManager;
 import com.j3d.gen.settings.Settings;
 import com.j3d.storage.files.FilesUtility;
-import com.j3d.storage.files.protocol.proj.PF1;
-import com.j3d.storage.files.protocol.proj.PF2;
-import com.j3d.storage.files.protocol.proj.ProjectFile;
+import com.j3d.storage.files.protocol.proj.*;
 import com.j3d.threads.LongTask;
 import com.j3d.ui.HoverJLabel;
 import com.j3d.ui.dialog.AreYouSure;
@@ -93,7 +83,7 @@ import static com.j3d.engine.interact.input.keyboard.KeyBindings.commandPaletteF
  * @see SceneManager
  * @author Lehlogonolo Poole
  */
-public class EngineFrame extends javax.swing.JFrame {
+public final class EngineFrame extends javax.swing.JFrame {
     /**
      * Boolean flag to run {@link FloatingPanel} instances only if the engine is in a "running" state
      */
@@ -185,13 +175,6 @@ public class EngineFrame extends javax.swing.JFrame {
      * @param artifact The artefact to run
      */
     public EngineFrame(Artefact artifact, boolean showTutorial) {
-        try {
-            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-            SwingUtilities.updateComponentTreeUI(this); // 'this' refers to the frame
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         buildContextMenu();
         initMouseOwners();
         initComponents();
@@ -263,7 +246,7 @@ public class EngineFrame extends javax.swing.JFrame {
         // create the layered pane where all the panels will be layered on top of each other.
         JLayeredPane layeredPane = this.getLayeredPane();
         // initialise the menu bar offset
-        final int menuBarOffsetY = (this.getJMenuBar().getSize().height + StaticConfig.jMenuBarOffsetY);
+        final int menuBarOffsetY = (this.getJMenuBar().getSize().height + 30);
         // initialise extra properties of this frame
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(StaticConfig.screenSize.width, StaticConfig.screenSize.height);
@@ -707,9 +690,6 @@ public class EngineFrame extends javax.swing.JFrame {
 
         getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
 
-        jMenuBar1.setBackground(J3DTheme.UI_SURFACE.color().brighter());
-        jMenuBar1.setOpaque(true);
-
         jMenu1.setText("File");
 
         saveProjectJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
@@ -1119,50 +1099,6 @@ public class EngineFrame extends javax.swing.JFrame {
         Settings.macrosEditor.open();
     }//GEN-LAST:event_macroEditorMenuActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EngineFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EngineFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EngineFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EngineFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
-                 UnsupportedLookAndFeelException e) {
-            throw new RuntimeException(e);
-        }
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                StaticRefs.throwIfNull(StaticRefs.getMainFrame()).setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem copyMenuItem;

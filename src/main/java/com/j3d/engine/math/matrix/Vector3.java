@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
@@ -45,6 +46,8 @@ public non-sealed class Vector3 implements MatrixInterface {
     private final double x;
     private final double y;
     private final double z;
+    private final UUID id = UUID.randomUUID(); 
+// for stuff that need an id, useful to an implementor but does not necessarily identify a Vector3
 
     /**
      * Constructs a new vector 3 from a 2d matrix double array
@@ -79,6 +82,11 @@ public non-sealed class Vector3 implements MatrixInterface {
         y = 0;
         z = 0;
     }
+
+    public UUID getId() {
+        return id;
+    }
+    
     /**
      * Checks if the vector is not zero.
      *

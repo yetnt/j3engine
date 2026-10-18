@@ -19,7 +19,7 @@ public abstract class StaticConfig {
     /**
      * A constant number to offset all components which get pushed down by the JMenuBar
      */
-    public static final int jMenuBarOffsetY = 20;
+    public static final int jMenuBarOffsetY = 0;
     public static boolean hasSaved = false;
     /**
      * Generic lock flag for when the user has CAPS LOCK enabled.

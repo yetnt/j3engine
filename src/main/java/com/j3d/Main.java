@@ -4,6 +4,7 @@
  */
 package com.j3d;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import com.j3d.artefacts.Artefact;
 import com.j3d.gen.settings.Settings;
 import com.j3d.ui.theme.J3DTheme;
@@ -12,6 +13,7 @@ import java.io.File;
 
 public class Main {
     public static void main(String[] args) {
+        FlatDarkLaf.setup();
         StaticRefs.none();
         J3DTheme.loadTheme(
                 Settings.changeTheme.getValue()

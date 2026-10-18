@@ -4,6 +4,7 @@
  */
 package com.j3d;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import com.j3d.artefacts.Artefact;
 import com.j3d.artefacts.Executor;
 import com.j3d.threads.FakeLongTask;
@@ -23,18 +24,13 @@ public class Startup {
         Projects frame = new Projects();
         frame.setVisible(true);
     };
-    public static void main(String[] args) {
-
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
-                 UnsupportedLookAndFeelException e) {
-            throw new RuntimeException(e);
-        }
-
-        // Just set the user
-        run();
-    }
+//    public static void main(String[] args) {
+//
+//        FlatDarkLaf.setup();
+//
+//        // Just set the user
+//        run();
+//    }
 
     public static void run() {
         Projects frame = new Projects();
@@ -48,12 +44,6 @@ public class Startup {
     }
 
     public static void engine(Object o, boolean showTutorial) {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
-                 UnsupportedLookAndFeelException e) {
-            throw new RuntimeException(e);
-        }
 
         FakeLongTask flt = getFakeLongTask(o, showTutorial);
 
@@ -77,6 +67,7 @@ public class Startup {
             EngineFrame e = switch (o) {
                 case File f -> new EngineFrame(f);
                 case Artefact b -> new EngineFrame(b, showTutorial);
+                case Boolean a -> new EngineFrame(() -> {}, showTutorial);
                 default -> throw new IllegalStateException("Unexpected value: " + o);
             };
             e.setResizable(true);

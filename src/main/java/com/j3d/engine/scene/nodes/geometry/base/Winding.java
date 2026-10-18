@@ -58,6 +58,10 @@ public record Winding(GPoint first, GPoint second, GPoint third) {
         Vector3 B = second.getPivot();
         Vector3 C = third.getPivot();
 
+        return normal(A, B, C);
+    }
+
+    public static Vector3 normal(Vector3 A, Vector3 B, Vector3 C) {
         Vector3 AB = B.sub(A);
         Vector3 AC = C.sub(A);
 

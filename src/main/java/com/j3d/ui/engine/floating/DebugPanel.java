@@ -51,12 +51,6 @@ public class DebugPanel extends javax.swing.JPanel {
      * Creates new form NewJPanel
      */
     public DebugPanel() {
-        try {
-            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-            SwingUtilities.updateComponentTreeUI(this); // 'this' refers to the panel
-        } catch (Exception e) {
-            StaticRefs.getLog().error(new GenericException(e));
-        }
         initComponents();
         floatingPanel.finish(this, (c) -> {});
         J3DScrollBarUI.setBars(jScrollPane1);

@@ -28,43 +28,6 @@ public class ToolboxButtons {
 
         ButtonsRegistry.registerAll();
 
-
-//        // another for example
-//        register("Toggle Spinner", e -> {
-//            String nString = JOptionPane.showInputDialog("Input time in ms to sleep");
-//            if (nString == null) return;
-//            int n = Integer.parseInt(nString);
-//            LongTask<Void> task = new LongTask<>(
-//                    t -> {
-//                        int max = 10;
-//                        t.progressStart("Doing stuff", max);
-//                        try {
-//                            for (int i = 0; i < max; i++) {
-//                                Thread.sleep(n);
-//                                t.updateProgress(i);
-//                            }
-//                        } catch (InterruptedException ex) {
-//                            throw new RuntimeException(ex);
-//                        }
-//                        return null;
-//                    },
-//                    (t, i, completed)-> {
-//                        // No clean-up needed.
-//                    }
-//            );
-//            task.run();
-//        });
-//        register("Dump to Debug", e -> {
-//            long current = System.currentTimeMillis();
-//            Camera cam = StaticRefs.getCamera();
-//            try (PrintWriter out = StaticRefs.getEngineFiles().debugDump.writer(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss")) + ".csv")) {
-//                DebugDump.print(out, current, cam);
-//                Desktop.getDesktop().open(StaticRefs.getEngineFiles().debugDump.getFolder());
-//            } catch (RuntimeException | IOException ex) {
-//                throw new RuntimeException(ex);
-//            }
-//        });
-
     }
 
     static void registerComplex(String label, String tooltip, Subbox sub, String imageFileName) {
@@ -128,20 +91,24 @@ public class ToolboxButtons {
 
     static JButton register(String label, String tooltip, ActionListener actionListener) {
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setMaximumSize(new Dimension(100, 120));
-        buttonPanel.setMinimumSize(new Dimension(120, 120));
-        buttonPanel.setPreferredSize(new Dimension(100, 120));
+        final Dimension panelDim = new Dimension(100, 120);
+        buttonPanel.setMaximumSize(panelDim);
+        buttonPanel.setMinimumSize(panelDim);
+        buttonPanel.setPreferredSize(panelDim);
         BoxLayout bl = new BoxLayout(buttonPanel, BoxLayout.Y_AXIS);
         buttonPanel.setLayout(bl);
         buttonPanel.setBackground(J3DTheme.UI_SURFACE.color());
+        
+        panelSeparator(buttonPanel);
 
         JButton btnA = new JButton();
         btnA.setToolTipText(tooltip);
         btnA.setText("examplebtn");
         btnA.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        btnA.setMaximumSize(new Dimension(100, 100));
-        btnA.setMinimumSize(new Dimension(100, 100));
-        btnA.setPreferredSize(new Dimension(100, 100));
+        final Dimension btnDim = new Dimension(100, 100);
+        btnA.setMaximumSize(btnDim);
+        btnA.setMinimumSize(btnDim);
+        btnA.setPreferredSize(btnDim);
         btnA.addActionListener(actionListener);
         btnA.setBackground(J3DTheme.BACKGROUND.color());
         btnA.setForeground(J3DTheme.TEXT_PRIMARY.color());
@@ -165,6 +132,16 @@ public class ToolboxButtons {
         return btnA;
     }
 
+    private static void panelSeparator(JPanel buttonPanel) {
+        JSeparator sep = new JSeparator(JSeparator.HORIZONTAL);
+        final Dimension sepDim = new Dimension(1, 5);
+        sep.setMaximumSize(sepDim);
+        sep.setMinimumSize(sepDim);
+        sep.setPreferredSize(sepDim);
+        sep.setOpaque(true);
+        buttonPanel.add(sep);
+    }
+
     static void tripleText(String t1, String t2, String t3, int d, TrinaryConsumer<JLabel> after) {
 
         JPanel buttonPanel = new JPanel();
@@ -174,6 +151,8 @@ public class ToolboxButtons {
         buttonPanel.setMinimumSize(new Dimension(120*d, 120));
         buttonPanel.setPreferredSize(new Dimension(100*d, 120));
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+        
+        panelSeparator(buttonPanel);
 
         ArrayList<String> content = new ArrayList<>(List.of(t1, t2, t3));
         ArrayList<JLabel> labels = new ArrayList<>();

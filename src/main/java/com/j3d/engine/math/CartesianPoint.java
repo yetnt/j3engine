@@ -111,6 +111,16 @@ public final class CartesianPoint extends BasePoint<Double> {
         return new CartesianPoint(arr.get(0).doubleValue(), arr.get(1).doubleValue());
     }
 
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+    
+    
+
     /**
      * Reverse of {@link CartesianPoint#fromList(ArrayList)}
      * @return A 2 Dimensional ArrayList of doubles.
