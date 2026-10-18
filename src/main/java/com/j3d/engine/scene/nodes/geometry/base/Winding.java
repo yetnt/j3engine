@@ -1,7 +1,7 @@
 package com.j3d.engine.scene.nodes.geometry.base;
 
 import com.j3d.engine.math.matrix.Vector3;
-import com.j3d.engine.scene.draw.SortMethod;
+import com.j3d.engine.scene.draw.methods.SortMethod;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.engine.scene.nodes.geometry.GTri;
 

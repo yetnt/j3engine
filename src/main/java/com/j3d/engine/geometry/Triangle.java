@@ -15,11 +15,13 @@ import java.util.UUID;
 
 public class Triangle implements Pure {
 
-    private Vector3 p1;
-    private Vector3 p2;
-    private Vector3 p3;
+    private final Vector3 p1;
+    private final Vector3 p2;
+    private final Vector3 p3;
     private boolean isValid = true;
-
+    
+    private boolean doubleSided = false;
+    
     public Triangle(Vector3 p1, Vector3 p2, Vector3 p3) {
         this.p1 = p1;
         this.p2 = p2;
@@ -55,6 +57,15 @@ public class Triangle implements Pure {
     public Vector3 getP3() {
         return p3;
     }
+
+    public boolean isDoubleSided() {
+        return doubleSided;
+    }
+
+    public void setDoubleSided(boolean doubleSided) {
+        this.doubleSided = doubleSided;
+    }
+    
 
     @Override
     public RenderState<Triangle, GObject> toRenderState(GObject parent) {

@@ -65,7 +65,7 @@ public class J3Splash extends javax.swing.JFrame {
         getContentPane().setLayout(new java.awt.GridLayout(1, 0));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/art/logo/anim2.gif"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/art/logo/anim2_fix.gif"))); // NOI18N
         getContentPane().add(jLabel1);
         transparency();
 

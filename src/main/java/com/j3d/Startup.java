@@ -24,13 +24,6 @@ public class Startup {
         Projects frame = new Projects();
         frame.setVisible(true);
     };
-//    public static void main(String[] args) {
-//
-//        FlatDarkLaf.setup();
-//
-//        // Just set the user
-//        run();
-//    }
 
     public static void run() {
         Projects frame = new Projects();

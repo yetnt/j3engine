@@ -1,9 +1,12 @@
-package com.j3d.engine.scene.draw;
+package com.j3d.engine.scene.draw.methods;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.geometry.Triangle;
 import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.engine.scene.nodes.geometry.base.DecomposeWhenDrawn;
+import com.j3d.engine.scene.nodes.geometry.base.Winding;
 import com.j3d.gen.settings.Settings;
 
 import java.util.ArrayList;
@@ -20,7 +23,8 @@ import java.util.ArrayList;
  * @see GTri
  * @see SceneRenderer
  */
-public abstract class SortMethod extends ArrayList<RenderState<?, ?>> {
+public abstract sealed class SortMethod extends ArrayList<RenderState<?, ?>> 
+        permits CamDepthSort, CamDistSort, DDUUIDSort {
 
     public SortMethod() {
         super();
@@ -29,28 +33,25 @@ public abstract class SortMethod extends ArrayList<RenderState<?, ?>> {
     @Override
     public boolean add(RenderState<?, ?> drawable) {
         SortMethod sm = this;
-//        if (drawable instanceof Pure s) {
-//            if (s.isValid())
-//                return super.add(drawable);
-//            else {
-//                SceneRenderer.unregister(s);
-//                this.remove(s);
-//                return false;
-//            }
-//        }
-        if (drawable instanceof DecomposeWhenDrawn<?> d) {
-            d.getDecomposeList().forEach(r-> {
-                if (r.isValid())
-                    sm.add(drawable);
-                else {
-                    StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getRenderer().unregister(drawable);
-                    sm.remove(d);
-                }
-            });
-            return true;
-        } else {
-            return super.add(drawable);
+        if (this.contains(drawable)) {
+            return false;
+        } 
+        if (drawable.getPure() instanceof Triangle triangle) {
+            if (backFaceCulled(triangle)) return false;
         }
+//        else if (drawable instanceof DecomposeWhenDrawn<?> d) {
+//            d.getDecomposeList().forEach(r-> {
+//                if (r.isValid())
+//                    sm.add(drawable);
+//                else {
+//                    StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getRenderer().unregister(drawable);
+//                    sm.remove(d);
+//                }
+//            });
+//            return true;
+//        } else {
+            return super.add(drawable);
+//        }
     }
 
     /**
@@ -59,11 +60,11 @@ public abstract class SortMethod extends ArrayList<RenderState<?, ?>> {
      * @return {@code true} if the triangle should be culled, {@code false} otherwise.
      * @implNote If {@link Settings#sceneProperties#backFaceCulled(GTri)} is false, this exits early.
      */
-    public boolean backFaceCulled(GTri tri) {
+    public boolean backFaceCulled(Triangle tri) {
         if (tri.isDoubleSided()) return false;
         if (!Settings.sceneProperties.useBackFaceCulling.getValue()) return false;
-        Vector3 N = tri.normal();
-        Vector3 P = StaticRefs.getCamera().getPosition().sub(tri.getLegA().getA().getPivot());
+        Vector3 N = Winding.normal(tri.getP1(), tri.getP2(), tri.getP3());
+        Vector3 P = StaticRefs.getCamera().getPosition().sub(tri.getP1());
         return N.dot(P) < 0;
     }
 

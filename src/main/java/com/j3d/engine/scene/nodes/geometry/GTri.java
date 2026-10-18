@@ -13,7 +13,7 @@ import com.j3d.engine.scene.copy.CopyProperties;
 import com.j3d.engine.scene.copy.InvalidCopyException;
 import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.draw.SceneRenderer;
-import com.j3d.engine.scene.draw.SortMethod;
+import com.j3d.engine.scene.draw.methods.SortMethod;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.base.DecomposeWhenDrawn;
 import com.j3d.engine.scene.nodes.geometry.base.Winding;
@@ -170,6 +170,7 @@ public final class GTri extends GObject implements IdempotentEventListener<GPoin
         if (renderState != null) renderState.invalidate();
         if (renderState == null || !renderState.isValid()) {
             renderState = toTriangle().toRenderState(this);
+            renderState.getPure().setDoubleSided(doubleSided);
         }
         return renderState;
     }
@@ -425,6 +426,7 @@ public final class GTri extends GObject implements IdempotentEventListener<GPoin
      */
     public void setDoubleSided(boolean doubleSided) {
         this.doubleSided = doubleSided;
+        decompose();
     }
 
     /**
@@ -544,12 +546,6 @@ public final class GTri extends GObject implements IdempotentEventListener<GPoin
                     if (StaticConfig.isShowNormals() || showNorm) {
                         // draw text showing the tris normal
                         Vector3 triCentroid = this.getPivot();
-//                        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).drawText3D(g, triCentroid.sub(new Vector3(4, 0, 0)),
-//                                String.format("Normal: (%.2f, %.2f, %.2f)", normal().getX(), normal().getY(), normal().getZ()),
-//                                StaticRefs.getCamera(),
-//                                new Color(0, 0, 0),
-//                                this.getColour());
-                        // The following code draws the normal
                         g.setColor(Color.RED);
                         sm.drawLine3D(g, getPivot(), getPivot().add(normal().mult(0.5)), StaticRefs.getCamera());
                     }

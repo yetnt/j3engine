@@ -2,6 +2,7 @@ package com.j3d.engine.scene.nodes.geometry;
 
 import com.j3d.engine.interact.cmd.CmdToken;
 import com.j3d.jaiva.EngineObject;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -39,7 +40,11 @@ public enum GObjectRegistry {
     /**
      * a curve
      */
-    CURVE(GCurve.class, "curve", CmdToken.Type.ID_CURVE, EngineObject.Type.GCURVE);
+    CURVE(GCurve.class, "curve", CmdToken.Type.ID_CURVE, EngineObject.Type.GCURVE),
+    /**
+     * a polygon
+     */
+    GPOLYGON(GPolygon.class, "polygon", CmdToken.Type.ID_POLYGON, EngineObject.Type.GPOLYGON);;
 
     /**
      * The actual class
@@ -64,6 +69,7 @@ public enum GObjectRegistry {
 
     }
 
+    @NotNull
     public static ArrayList<Class<?>> getClasses() {
         ArrayList<Class<?>> classes = new ArrayList<>();
         for (GObjectRegistry registry : values()) {

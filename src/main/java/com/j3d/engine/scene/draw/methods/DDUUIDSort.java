@@ -2,7 +2,6 @@ package com.j3d.engine.scene.draw.methods;
 
 import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.draw.SceneRenderer;
-import com.j3d.engine.scene.draw.SortMethod;
 import com.j3d.engine.scene.nodes.geometry.GTri;
 
 import static com.j3d.engine.scene.draw.methods.CamDepthSort.calcDepth;
@@ -19,23 +18,10 @@ import static com.j3d.engine.scene.draw.methods.CamDepthSort.calcDepth;
  * @see SortMethod
  * @see SceneRenderer
  */
-public class DDUUIDSort extends SortMethod {
+public final class DDUUIDSort extends SortMethod {
 
     public DDUUIDSort() {
         super();
-    }
-
-    @Override
-    public boolean add(RenderState<?, ?> gTri) {
-//        if (gTri.getPure() instanceof GTri t)
-//            if (backFaceCulled(t)) return false;
-        if (this.contains(gTri)) {
-//            sort();
-            return false;
-        }
-        boolean changed = super.add(gTri);
-//        sort();
-        return changed;
     }
 
     /**

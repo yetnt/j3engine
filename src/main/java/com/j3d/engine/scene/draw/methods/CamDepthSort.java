@@ -4,7 +4,6 @@ import com.j3d.StaticRefs;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.draw.SceneRenderer;
-import com.j3d.engine.scene.draw.SortMethod;
 import com.j3d.engine.scene.nodes.geometry.GTri;
 
 /**
@@ -16,23 +15,10 @@ import com.j3d.engine.scene.nodes.geometry.GTri;
  * @see SortMethod
  * @see SceneRenderer
  */
-public class CamDepthSort extends SortMethod {
+public final class CamDepthSort extends SortMethod {
 
     public CamDepthSort() {
         super();
-    }
-
-    @Override
-    public boolean add(RenderState<?, ?> gTri) {
-//        if (gTri.getPure() instanceof GTri t)
-//            if (backFaceCulled(t)) return false;
-        if (this.contains(gTri)) {
-//            sort();
-            return false;
-        }
-        boolean changed = super.add(gTri);
-//        sort();
-        return changed;
     }
 
     /**

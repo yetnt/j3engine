@@ -40,7 +40,7 @@ import java.util.UUID;
  * @see GTri
  */
 public abstract sealed class GObject extends EventEmitterAndListener implements CanCopy, SceneObject
-permits GPoint, GLine, GTri, GCurve {
+permits GPoint, GLine, GTri, GCurve, GPolygon {
     protected Color col = Color.BLACK;
     /**
      * The pivot point of this geometry. Unless a {@link GPoint} where this represents the actual location

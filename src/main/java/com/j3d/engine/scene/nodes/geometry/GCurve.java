@@ -202,7 +202,7 @@ public final class GCurve extends GObject implements IdempotentEventListener<GPo
         props.add(getId(), copy(a, control, b));
     }
 
-    protected GCurve copy(GPoint copyA, GPoint control, GPoint copyB) {
+    private GCurve copy(GPoint copyA, GPoint control, GPoint copyB) {
         GCurve curve = new GCurve(
                 copyA,
                 control,

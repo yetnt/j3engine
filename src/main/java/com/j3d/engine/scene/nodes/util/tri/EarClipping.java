@@ -7,6 +7,8 @@ import com.j3d.engine.math.plane.AxisPlane;
 import com.j3d.engine.math.plane.NormalPlane;
 import com.j3d.engine.scene.nodes.geometry.base.Winding;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -50,7 +52,7 @@ public final class EarClipping extends Triangulation {
         ArrayList<CartesianPoint> workingPoints = new ArrayList<>(planarPoints);
         
         // Build an O(1) map to quickly recover the original Vector3 reference using the ID stored in CartesianPoint
-        java.util.Map<java.util.UUID, Vector3> worldLookup = v3s.stream()
+        Map<UUID, Vector3> worldLookup = v3s.stream()
                 .collect(Collectors.toMap(Vector3::getId, v3 -> v3));
 
         while (workingPoints.size() > 3) {
@@ -65,7 +67,7 @@ public final class EarClipping extends Triangulation {
                 CartesianPoint curr = workingPoints.get(currIdx);
                 CartesianPoint next = workingPoints.get(nextIdx);
 
-                // 1. Check if the corner is convex (turns inward toward the shape)
+                // 1. Check if the corner is convex
                 if (isConvex(prev, curr, next)) {
                     
                     // 2. Ensure no other remaining polygon point lies inside this candidate triangle
@@ -79,7 +81,7 @@ public final class EarClipping extends Triangulation {
                         }
                     }
 
-                    // 3. If it's a valid ear, slice the corner off!
+                    // 3. If it's a valid ear, slice the corner off
                     if (isEarClean) {
                         Vector3 wPrev = worldLookup.get(prev.getId());
                         Vector3 wNext = worldLookup.get(next.getId());
@@ -95,7 +97,7 @@ public final class EarClipping extends Triangulation {
                 }
             }
 
-            // Loop safety: Abort if the polygon structure is self-intersecting or broken
+            // Abort if the polygon structure is self-intersecting or broken
             if (!earFound) {
                 return null;
             }
@@ -112,7 +114,6 @@ public final class EarClipping extends Triangulation {
         double dx2 = p3.getX() - p2.getX();
         double dy2 = p3.getY() - p2.getY();
         
-        // 2D determinant matching your custom winding conventions
         return (dx1 * dy2 - dy1 * dx2) > 0;
     }
 

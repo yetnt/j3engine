@@ -146,7 +146,7 @@ public final class SceneManager {
      */
     public void axis(@NotNull Graphics2D g, Camera camera) {
 //        double axisLength = camera.getPosition().magnitude() * 0.9;
-        double axisLength = 20;
+        double axisLength = 100;
         int axisOffset = 2;
         Stroke s = g.getStroke();
         Vector3 origin = new Vector3(0, 0, 0);
@@ -156,19 +156,19 @@ public final class SceneManager {
         g.setColor(J3DTheme.TEXT_PRIMARY.color());
         g.setColor(Color.RED);
         this.drawLine3D(g,
-                origin.add(offset).sub(new Vector3(2, 0, 0)),
+                origin.add(offset).sub(new Vector3(100, 0, 0)),
                 origin.add(new Vector3(axisLength, 0, 0)),
                 camera);
         this.drawText3D(g, origin.add(new Vector3(axisLength+axisOffset, 0, 0)), "X+", camera);
 
         g.setColor(Color.GREEN);
-        this.drawLine3D(g, origin.add(offset).sub(new Vector3(0, 30, 0)),
+        this.drawLine3D(g, origin.add(offset).sub(new Vector3(0, 100, 0)),
                 origin.add(new Vector3(0, axisLength, 0)),
                 camera);
         this.drawText3D(g, origin.add(new Vector3(0, axisLength+axisOffset, 0)), "Y+", camera);
 
         g.setColor(Color.BLUE);
-        this.drawLine3D(g, origin.add(offset).sub(new Vector3(0, 0, 2)),
+        this.drawLine3D(g, origin.add(offset).sub(new Vector3(0, 0, 100)),
                 origin.add(new Vector3(0, 0, axisLength)),
                 camera);
         this.drawText3D(g, origin.add(new Vector3(0, 0, axisLength+axisOffset)), "Z+", camera);

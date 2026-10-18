@@ -16,6 +16,7 @@ import com.j3d.storage.files.protocol.UnsupportedVersionException;
 import com.j3d.ui.dialog.Spinner;
 import com.yetnt.utils.collection.HashMultiMap;
 import com.yetnt.utils.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.io.DataInputStream;
@@ -698,7 +699,7 @@ public final class PF4 extends ProjectFile {
      * @param code The error code to associate with the {@link ProjectFileException}.
      * @param objs A variable argument list of {@link SceneObject}s to check for null.
      */
-    private static void ifAnyNull(String errStr, UUID id,  String label, int code, SceneObject...objs) {
+    private static void ifAnyNull(String errStr, UUID id, String label, int code, @NotNull SceneObject...objs) {
         for (SceneObject o : objs) {
             if (o == null) {
                 StaticRefs.getErrs().handle(

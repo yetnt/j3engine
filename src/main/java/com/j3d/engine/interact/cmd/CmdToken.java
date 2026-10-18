@@ -141,7 +141,8 @@ public class CmdToken {
         INT(Integer.class, "num"),
         DOUBLE(Double.class, "num"),
         BOOL(Boolean.class, "bool"),
-        TAGGED(TaggedArgValue.class, "");
+        TAGGED(TaggedArgValue.class, ""),
+        ID_POLYGON(GPoint.class, "polygon");
 
         /**
          * Constructs a Type enum constant.

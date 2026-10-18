@@ -14,8 +14,6 @@ public class ContextSubMenu extends JMenu {
     public ContextSubMenu(String text) {
         super(text);
         setFont(Font.getFont("Segoe UI"));
-        setBackground(J3DTheme.UI_SURFACE.color());
-//        setForeground(J3DTheme.TEXT_PRIMARY.color());
     }
 
     public ArrayList<Locator> getLocators() {

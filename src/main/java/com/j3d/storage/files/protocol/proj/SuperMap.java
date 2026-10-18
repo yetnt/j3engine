@@ -16,9 +16,11 @@ import java.util.UUID;
  * allows you to call the convenience methods instead, being {@link #getThingParentMap()}
  * and {@link #getIdMap()} respectively
  *
+ * @param <R> The key type used to identify values in both maps. This is abstracted since
+ *           {@link PF3} uses strings, but {@link PF4} uses the actual {@link UUID} value
  * @param <T> The type of {@link GObject} stored in the maps.
  */
-public class SuperMap<R, T extends GObject> extends Pair<
+class SuperMap<R, T extends GObject> extends Pair<
         HashMultiMap<R, T>,
         HashMap<R, T>
         > {

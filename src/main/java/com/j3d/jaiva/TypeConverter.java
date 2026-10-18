@@ -87,7 +87,7 @@ public class TypeConverter {
             case VECTOR3 -> Vector3.fromObject(null, engineObject);
             case COLOUR -> colorFromObject(null, engineObject);
             case UUID -> UUIDfromObject(engineObject);
-            case GPOINT, GLINE, GTRI, GCURVE -> getGObject(engineObject);
+            case GPOINT, GLINE, GTRI, GCURVE, GPOLYGON -> getGObject(engineObject);
             case REF -> getReference(engineObject);
         };
     }

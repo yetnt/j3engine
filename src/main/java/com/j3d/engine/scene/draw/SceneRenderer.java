@@ -1,5 +1,6 @@
 package com.j3d.engine.scene.draw;
 
+import com.j3d.engine.scene.draw.methods.SortMethod;
 import com.j3d.StaticRefs;
 import com.j3d.engine.scene.draw.methods.CamDepthSort;
 import com.j3d.engine.scene.draw.methods.CamDistSort;

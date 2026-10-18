@@ -35,8 +35,6 @@ public class ContextMenu extends JPopupMenu {
 
     public void styleSelf() {
         J3DTheme.commitAsGenericUi(this);
-        setBackground(J3DTheme.UI_SURFACE.color());
-        setForeground(J3DTheme.TEXT_PRIMARY.color());
         setFont(Font.getFont("Segoe UI"));
         setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
     }
@@ -45,7 +43,6 @@ public class ContextMenu extends JPopupMenu {
         JMenuItem item = new JMenuItem(text);
         item.setMnemonic(keyMnemonic);
         item.setFont(Font.getFont("Segoe UI"));
-        item.setBackground(J3DTheme.UI_SURFACE.color());
         Locator l = J3DTheme.commitAsGenericUi(this);
         locators.add(l);
         item.addActionListener(e -> action.run());
