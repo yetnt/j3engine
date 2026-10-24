@@ -1,5 +1,8 @@
 package com.j3d.utility;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -25,6 +28,8 @@ public class ImageUtils {
      * @return An {@link ImageIcon} representing the cropped and scaled image.
      * @throws RuntimeException if an error occurs during image reading or processing.
      */
+    @NotNull
+    @Contract("_, _, _, _ -> new")
     public static ImageIcon createCroppedIcon(File file, int width, int height, int multiplier) {
         try {
             BufferedImage original = ImageIO.read(file);

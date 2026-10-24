@@ -18,6 +18,7 @@ public final class GPolygon extends GObject implements
 
     private ArrayList<GLine> lineSegments = new ArrayList<>();
     private WindingDir windingDir = WindingDir.CLOCKWISE;
+    // TODO: hmm?
     private ArrayList<RenderState<Triangle, GObject>> triangles = new ArrayList<>();
 
     public GPolygon(ArrayList<GPoint> points) {

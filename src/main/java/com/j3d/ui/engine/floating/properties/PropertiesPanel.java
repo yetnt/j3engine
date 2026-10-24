@@ -42,6 +42,7 @@ public class PropertiesPanel extends javax.swing.JPanel {
         J3DTheme.commitAsGenericUi(this);
         J3DTheme.commitAsGenericLbl(jLabel2, false);
         J3DTheme.commitAsGenericLbl(comboBox, true);
+        forceScrollbarAtEnd();
     }
 
     public static void load() {
@@ -64,11 +65,15 @@ public class PropertiesPanel extends javax.swing.JPanel {
         panelArrayList.forEach(propertiesPanel::add);
         propertiesPanel.revalidate();
         propertiesPanel.setPreferredSize(null);
+        forceScrollbarAtEnd();
+        jScrollPane1.getHorizontalScrollBar().setEnabled(false);
+    }
+
+    public void forceScrollbarAtEnd() {
         SwingUtilities.invokeLater(() -> {
             JScrollBar bar = jScrollPane1.getHorizontalScrollBar();
             bar.setValue(bar.getMaximum());
         });
-        jScrollPane1.getHorizontalScrollBar().setEnabled(false);
     }
 
     private static void debug(JPanel p, String name) {

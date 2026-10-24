@@ -335,12 +335,12 @@ public final class GLine extends GObject implements HasParents<GTri>, Idempotent
 
     // assuming the incoming engine object is a type of GObject
     public static class EngineObjectUtils {
-        public static EngineObject getPointA(GettersPack.CallProperties call, EngineObject object) throws J3DGetterException {
+        public static EngineObject getPointA(GettersPack.WrappedProperties call, EngineObject object) throws J3DGetterException {
             TypeConverter.expectObjectType(object, EngineObject.Type.GLINE, call);
             ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(3));
             return TypeConverter.fromArr(arr);
         }
-        public static EngineObject getPointB(GettersPack.CallProperties call, EngineObject object) throws J3DGetterException{
+        public static EngineObject getPointB(GettersPack.WrappedProperties call, EngineObject object) throws J3DGetterException{
             TypeConverter.expectObjectType(object, EngineObject.Type.GLINE, call);
             ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(4));
             return TypeConverter.fromArr(arr);

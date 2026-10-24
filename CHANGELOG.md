@@ -159,3 +159,13 @@ instead of passing it up the chain
 * Removed `JarPath` in favour of `com.yetnt.io.JarPath`
 * Added public test flag in `StaticConfig` such that everything can be aware
 of the current testing environment.
+* Change look and feel (to FlatDarkLaf) which fixes ALOT of things
+  * Removes all fucking ass Nimbus shit.
+  * JMenu and OS window title bar are now unified
+  * UI is a bit smaller, may fix
+  * Buttons, combo boxes, scrollbars, now look modern
+* Start implementing polygon shi
+* Fix back face culling
+* Update to latest Jaiva
+* Update to latest ytils
+* Add Jetbrains annotationz

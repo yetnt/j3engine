@@ -4,12 +4,14 @@ import com.j3d.engine.interact.cmd.CommandParser;
 import com.j3d.engine.interact.cmd.args.TaggedArgUtil;
 import com.yetnt.utils.tuple.Pair;
 import com.yetnt.utils.tuple.SamePair;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 
 import java.util.ArrayList;
 
 /**
- * Parsing utilities used by {@link CommandParser}. This code is borrowed from the
+ * Parsing utilities used by {@link CommandParser}. This code (brace and quote checking specifically)_is borrowed from the
  * {@linkplain <a href="https://github.com/yetnt/jaiva">Jaiva Programming Language</a>}, my custom
  * personal project.
  * <p>
@@ -30,7 +32,8 @@ public class Parsing {
      * @param line The string to search for quotation mark pairs.
      * @return An {@link ArrayList} of {@link SamePair} where each pair represents the start and end index of a quotation block.
      */
-    public static ArrayList<SamePair<Integer>> quotationPairs(String line) {
+    @NotNull
+    public static ArrayList<SamePair<Integer>> quotationPairs(@NotNull String line) {
         ArrayList<SamePair<Integer>> arr = new ArrayList<>();
         int oldCharIndex = -1;
 
@@ -59,7 +62,9 @@ public class Parsing {
      * @return A {@link BracePairs} instance containing a {@link Pair} with an {@link ArrayList} of {@link SamePair} for closed brace pairs (start and end index),
      *         and an {@link ArrayList} of {@link Pair} for unclosed braces (index and character).
      */
-    public static BracePairs bracePairs(String line) {
+    @NotNull
+    @Contract("_ -> new")
+    public static BracePairs bracePairs(@NotNull String line) {
         ArrayList<SamePair<Integer>> finalArr = new ArrayList<>();
         ArrayList<Pair<Integer, Character>> stack = new ArrayList<>();
         ArrayList<Pair<Integer, Character>> danglingClose = new ArrayList<>();
@@ -93,7 +98,8 @@ public class Parsing {
      * @param input The string to convert to camelCase.
      * @return The camelCase version of the input string.
      */
-    public static String toCamelCase(String input) {
+    @NotNull
+    public static String toCamelCase(@NotNull String input) {
         StringBuilder sb = new StringBuilder();
         boolean isFirst = false;
         for (char c : input.toCharArray()) {
@@ -130,7 +136,8 @@ public class Parsing {
      * @return A new string with all HTML tags removed.
      * @implSpec (Might want to replace &lt;br&gt; with a new line to preserve line breaks)
      */
-    public static String removeHTML(String input) {
+    @NotNull
+    public static String removeHTML(@NotNull String input) {
         StringBuilder result = new StringBuilder();
         boolean inside = false;
         char open = '<', close = '>';
@@ -158,6 +165,7 @@ public class Parsing {
      * @param c The character to split the string by.
      * @return An {@link ArrayList} of strings, where each string is a segment of the input string.
      */
+    @NotNull
     public static ArrayList<String> split(String input, char c) {
         BracePairs bracePairs = bracePairs(input);
         ArrayList<SamePair<Integer>> quotePairs = quotationPairs(input);

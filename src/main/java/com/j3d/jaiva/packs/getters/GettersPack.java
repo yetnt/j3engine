@@ -5,23 +5,20 @@ import com.j3d.engine.scene.nodes.geometry.GObjectRegistry;
 import com.j3d.jaiva.EngineObject;
 import com.j3d.jaiva.TypeConverter;
 import com.jaiva.errors.JaivaException;
-import com.jaiva.interpreter.Primitives;
-import com.jaiva.interpreter.Scope;
-import com.jaiva.interpreter.libBuilders.func.Argument;
-import com.jaiva.interpreter.libBuilders.func.Arguments;
-import com.jaiva.interpreter.libBuilders.func.FunctionBuilder;
+import com.jaiva.interpreter.libBuilders.func.*;
 import com.jaiva.interpreter.libBuilders.func.arg.AArgument;
 import com.jaiva.interpreter.libs.BaseLibrary;
 import com.jaiva.interpreter.libs.annotation.PublicLibrary;
-import com.jaiva.interpreter.runtime.IConfig;
 import com.jaiva.interpreter.symbol.BaseFunction;
+import com.jaiva.interpreter.symbol.CallProperties;
 import com.jaiva.interpreter.symbol.Symbol;
 import com.jaiva.tokenizer.jdoc.JDoc;
 import com.jaiva.tokenizer.jdoc.JDocBuilder;
 import com.jaiva.tokenizer.tokens.Token;
-import com.jaiva.tokenizer.tokens.specific.TFuncCall;
 import com.yetnt.utils.functional.function.ThrowableTriFunction;
 import com.yetnt.utils.functional.function.TriFunction;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -34,30 +31,29 @@ import java.util.function.Consumer;
 )
 public class GettersPack extends BaseLibrary {
 
+    /**
+     * @param props its a record. cant be extended directly unfortunately.
+     */
+    public record WrappedProperties(CallProperties props) {}
+
     @FunctionalInterface
     public interface Getter {
-        Object applyExc(CallProperties call, EngineObject object) throws JaivaException;
+        Object applyExc(WrappedProperties call, EngineObject object) throws JaivaException;
     }
 
     @FunctionalInterface
     public interface GetterOf<T> {
-        T applyExc(CallProperties call, EngineObject object) throws JaivaException;
+        T applyExc(WrappedProperties call, EngineObject object) throws JaivaException;
     }
 
-    public record CallProperties (
-            TFuncCall call,
-            Scope scope,
-            IConfig<Object> config
-    ) {}
-
     public static final ThrowableTriFunction<
-            GetterOf<EngineObject>, CallProperties,
+            GetterOf<EngineObject>, WrappedProperties,
             EngineObject, Object,
             JaivaException
             > referenceTransformer = (f, t, e) -> {
         EngineObject reference = f.applyExc(t, e);
         Object obj = TypeConverter.getReference(reference);
-        if (obj == null) return Token.voidValue(t.call.lineNumber);
+        if (obj == null) return Token.voidValue(t.props().getLineNumber());
         return TypeConverter.toJaivaReadable(obj);
     };
 
@@ -114,7 +110,7 @@ public class GettersPack extends BaseLibrary {
         );
     }
 
-    public static void putAliases(BiConsumer<Symbol, String[]> addConsumer, String namespace, JDocBuilder jDocBuilder, Getter getter, String ...labels) {
+    public static void putAliases(BiConsumer<Symbol, String[]> addConsumer, String namespace, JDocBuilder jDocBuilder, Getter getter, @NotNull String ...labels) {
         String name = "get_" + namespace + "_" + labels[0];
         BaseFunction bf = of(name, jDocBuilder, getter);
         String[] newLabels =  new String[labels.length];
@@ -125,12 +121,14 @@ public class GettersPack extends BaseLibrary {
         addConsumer.accept(bf, newLabels);
     }
 
-    public static void put(Consumer<Symbol> addConsumer, String namespace, String label, JDocBuilder jDocBuilder, Getter getter) {
+    public static void put(@NotNull Consumer<Symbol> addConsumer, String namespace, String label, JDocBuilder jDocBuilder, Getter getter) {
         String name = "get_" + namespace + "_" + label;
         BaseFunction bf = of(name, jDocBuilder, getter);
         addConsumer.accept(bf);
     }
 
+    @NotNull
+    @Contract("_, _, _ -> new")
     public static BaseFunction of(String name, JDocBuilder docs, Getter getter) {
         return new AbstractFunction(
                 name,
@@ -154,18 +152,17 @@ public class GettersPack extends BaseLibrary {
         }
 
         @Override
-        public Object call(TFuncCall tFuncCall, ArrayList<Object> params, IConfig<Object> config, Scope scope) throws Exception {
-            checkParams(tFuncCall, scope);
+        public Object call(com.jaiva.interpreter.symbol.CallProperties callProperties) throws Exception {
+            checkParams(callProperties.toCheckParams());
 
-            Object arr = Primitives.toPrimitive(params.getFirst(), false, config, scope);
-
+            Object arr = callProperties.params().getFirst();
             if(arr instanceof ArrayList<?> s) {
                 return getter.applyExc(
-                        new CallProperties(tFuncCall, scope, config)
+                        new WrappedProperties(callProperties)
                         , TypeConverter.fromArr(s));
             }
 
-            return Token.voidValue(tFuncCall.lineNumber);
+            return Token.voidValue(callProperties.getLineNumber());
         }
     }
 }

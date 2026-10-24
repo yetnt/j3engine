@@ -16,13 +16,5 @@ import com.j3d.errors.J3DError;
  * @see ErrorHandler
  * @author Lehlogonolo Poole
  */
-public sealed interface J3ErrSeverity permits J3DFatal, J3DMild, J3DWarning {
-    /**
-     * Returns a string representing the header to be used when logging
-     * messages of this specific error severity.
-     * For example, an implementation for a "WARNING" severity might return "[WARNING]".
-     *
-     * @return A {@code String} representing the log header for this severity.
-     */
-    String logHead();
+public sealed interface J3ErrSeverity permits J3DFatal, J3DMild, J3DWarning, J3DInfo {
 }

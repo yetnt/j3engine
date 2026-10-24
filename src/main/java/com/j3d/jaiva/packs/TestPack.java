@@ -19,6 +19,7 @@ import com.jaiva.interpreter.libs.annotation.Exports;
 import com.jaiva.interpreter.libs.annotation.PublicLibrary;
 import com.jaiva.interpreter.runtime.IConfig;
 import com.jaiva.interpreter.symbol.BaseFunction;
+import com.jaiva.interpreter.symbol.CallProperties;
 import com.jaiva.tokenizer.tokens.Token;
 import com.jaiva.tokenizer.tokens.specific.TFuncCall;
 
@@ -46,8 +47,8 @@ public class TestPack extends BaseLibrary {
         }
 
         @Override
-        public Object call(TFuncCall tFuncCall, ArrayList<Object> params, IConfig<Object> config, Scope scope) throws Exception {
-            checkParams(tFuncCall, scope); // will do parameter checking for me
+        public Object call(CallProperties callProperties) throws Exception {
+            checkParams(callProperties.toCheckParams()); // will do parameter checking for me
 
             return TypeConverter.toJaivaReadable(
                             StaticRefs.throwIfNull(
@@ -72,10 +73,10 @@ public class TestPack extends BaseLibrary {
         }
 
         @Override
-        public Object call(TFuncCall tFuncCall, ArrayList<Object> params, IConfig<Object> config, Scope scope) throws Exception {
-            checkParams(tFuncCall, scope);
+        public Object call(CallProperties callProperties) throws Exception {
+            checkParams(callProperties.toCheckParams());
 
-            Object id = Primitives.toPrimitive(params.getFirst(), false, config, scope);
+            Object id = callProperties.params().getFirst();
 
             if (id instanceof String string) {
                 UUID uuid =  UUID.fromString(string);
@@ -88,7 +89,7 @@ public class TestPack extends BaseLibrary {
                     return TypeConverter.toJaivaReadable(StaticRefs.throwIfNull(result.getgObject()));
                 }
             }
-            return Token.voidValue(tFuncCall.lineNumber);
+            return Token.voidValue(callProperties.getLineNumber());
         }
     }
 
@@ -105,10 +106,10 @@ public class TestPack extends BaseLibrary {
         }
 
         @Override
-        public Object call(TFuncCall tFuncCall, ArrayList<Object> params, IConfig<Object> config, Scope scope) throws Exception {
-            checkParams(tFuncCall, scope);
+        public Object call(CallProperties callProperties) throws Exception {
+            checkParams(callProperties.toCheckParams());
 
-            Object possibleArr = Primitives.toPrimitive(params.getFirst(),  false, config, scope);
+            Object possibleArr = callProperties.params().getFirst();
 
             if (!(possibleArr instanceof ArrayList<?> array))
                 throw new IllegalArgumentException("An input array was not given");

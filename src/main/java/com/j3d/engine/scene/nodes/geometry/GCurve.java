@@ -228,22 +228,22 @@ public final class GCurve extends GObject implements IdempotentEventListener<GPo
 
     // assuming the incoming engine object is a type of GObject
     public static class EngineObjectUtils {
-        public static EngineObject getStart(GettersPack.CallProperties call, EngineObject object) throws J3DGetterException {
+        public static EngineObject getStart(GettersPack.WrappedProperties call, EngineObject object) throws J3DGetterException {
             TypeConverter.expectObjectType(object, EngineObject.Type.GCURVE, call);
             ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(3));
             return TypeConverter.fromArr(arr);
         }
-        public static EngineObject getControlPoint(GettersPack.CallProperties call, EngineObject object) throws J3DGetterException {
+        public static EngineObject getControlPoint(GettersPack.WrappedProperties call, EngineObject object) throws J3DGetterException {
             TypeConverter.expectObjectType(object, EngineObject.Type.GCURVE, call);
             ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(4));
             return TypeConverter.fromArr(arr);
         }
-        public static EngineObject getEnd(GettersPack.CallProperties call, EngineObject object) throws J3DGetterException {
+        public static EngineObject getEnd(GettersPack.WrappedProperties call, EngineObject object) throws J3DGetterException {
             TypeConverter.expectObjectType(object, EngineObject.Type.GCURVE, call);
             ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(5));
             return TypeConverter.fromArr(arr);
         }
-        public static int getAmount(GettersPack.CallProperties call, EngineObject object) throws J3DGetterException {
+        public static int getAmount(GettersPack.WrappedProperties call, EngineObject object) throws J3DGetterException {
             TypeConverter.expectObjectType(object, EngineObject.Type.GCURVE, call);
             return TypeConverter.expectType(object.getProperties().get(6), Integer.class);
         }

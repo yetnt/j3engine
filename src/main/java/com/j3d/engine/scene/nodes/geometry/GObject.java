@@ -230,15 +230,15 @@ permits GPoint, GLine, GTri, GCurve, GPolygon {
 
     // assuming the incoming engine object is a type of GObject
     public static class EngineObjectUtils {
-        public static EngineObject getUuid(GettersPack.CallProperties call, EngineObject object) {
+        public static EngineObject getUuid(GettersPack.WrappedProperties call, EngineObject object) {
             ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().getFirst());
             return TypeConverter.fromArr(arr);
         }
-        public static EngineObject getPivot(GettersPack.CallProperties call, EngineObject object) {
+        public static EngineObject getPivot(GettersPack.WrappedProperties call, EngineObject object) {
             ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(1));
             return TypeConverter.fromArr(arr);
         }
-        public static EngineObject getColour(GettersPack.CallProperties call, EngineObject object) {
+        public static EngineObject getColour(GettersPack.WrappedProperties call, EngineObject object) {
             ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(2));
             return TypeConverter.fromArr(arr);
         }

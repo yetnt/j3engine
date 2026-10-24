@@ -11,6 +11,7 @@ import com.jaiva.interpreter.libBuilders.func.arg.AArgument;
 import com.jaiva.interpreter.libs.BaseLibrary;
 import com.jaiva.interpreter.runtime.IConfig;
 import com.jaiva.interpreter.symbol.BaseFunction;
+import com.jaiva.interpreter.symbol.CallProperties;
 import com.jaiva.tokenizer.jdoc.JDoc;
 import com.jaiva.tokenizer.tokens.Token;
 import com.jaiva.tokenizer.tokens.specific.TFuncCall;
@@ -24,13 +25,13 @@ public class Vector3Getters extends BaseLibrary {
     public Vector3Getters() {
         super();
 
-        TriFunction<GettersPack.CallProperties, EngineObject, String, Object> g = (cp, eo, str) -> {
+        TriFunction<GettersPack.WrappedProperties, EngineObject, String, Object> g = (cp, eo, str) -> {
             Vector3 v = Vector3.fromObject(cp, eo);
             return switch (str) {
                 case "x" -> v.getX();
                 case "y" -> v.getY();
                 case "z" -> v.getZ();
-                default -> Token.voidValue(cp.call().lineNumber); // shouldn't happen
+                default -> Token.voidValue(cp.props().tFuncCall().lineNumber); // shouldn't happen
             };
         };
 
@@ -110,15 +111,16 @@ public class Vector3Getters extends BaseLibrary {
         }
 
         @Override
-        public Object call(TFuncCall tFuncCall, ArrayList<Object> params, IConfig<Object> config, Scope scope) throws Exception {
+        public Object call(CallProperties callProperties) throws Exception {
             ArrayList<Object> list = new ArrayList<>(List.of(vector.getX(), vector.getY(), vector.getZ()));
 
-            if (params.isEmpty() || (params.size() == 1 && params.getFirst() == null))
+            if (
+                    callProperties.params().isEmpty() ||
+                            (callProperties.params().size() == 1 && callProperties.params().getFirst() == null)
+            )
                 return list;
 
-            Object token = params.getFirst();
-
-            Object value = Primitives.toPrimitive(token, false, config, scope);
+            Object value = callProperties.params().getFirst();
 
             return switch (value) {
                 case String s -> {
@@ -127,7 +129,7 @@ public class Vector3Getters extends BaseLibrary {
                         case "x": yield vector.getX();
                         case "y": yield vector.getY();
                         case "z": yield vector.getZ();
-                        default: yield Token.voidValue(tFuncCall.lineNumber);
+                        default: yield Token.voidValue(callProperties.getLineNumber());
                     }
                 }
                 case Integer i -> {
@@ -135,13 +137,13 @@ public class Vector3Getters extends BaseLibrary {
                         case 0: yield vector.getX();
                         case 1: yield vector.getY();
                         case 2: yield vector.getZ();
-                        default: yield Token.voidValue(tFuncCall.lineNumber);
+                        default: yield Token.voidValue(callProperties.getLineNumber());
                     }
                 }
                 case BaseFunction function -> function.call(
-                        list, config, scope, tFuncCall
+                        list, callProperties.config(), callProperties.scope(), callProperties.tFuncCall()
                 );
-                default -> Token.voidValue(tFuncCall.lineNumber);
+                default -> Token.voidValue(callProperties.getLineNumber());
             };
         }
     }

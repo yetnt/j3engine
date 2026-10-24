@@ -8,6 +8,7 @@ import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.geometry.GObjectRegistry;
 import com.j3d.jaiva.packs.getters.GettersPack;
 import com.j3d.jaiva.packs.getters.J3DGetterException;
+import com.jaiva.interpreter.symbol.CallProperties;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -59,13 +60,13 @@ public class TypeConverter {
         };
     }
 
-    public static void expectObjectType(EngineObject object, EngineObject.Type type, GettersPack.CallProperties callProperties) throws J3DGetterException {
+    public static void expectObjectType(EngineObject object, EngineObject.Type type, GettersPack.WrappedProperties callProperties) throws J3DGetterException {
         if (object.getType() == type) return;
         throw new J3DGetterException(
-                callProperties.scope(),
+                callProperties.props().scope(),
                 type,
                 object.getType(),
-                callProperties.call().lineNumber
+                callProperties.props().tFuncCall().lineNumber
         );
     }
 
@@ -160,7 +161,7 @@ public class TypeConverter {
                 .addProperty(color.getAlpha());
     }
 
-    public static Color colorFromObject(GettersPack.CallProperties cp, EngineObject color) {
+    public static Color colorFromObject(GettersPack.WrappedProperties cp, EngineObject color) {
         return new Color(
                 (int)color.getProperties().getFirst(),
                 (int)color.getProperties().get(1),

@@ -49,7 +49,7 @@ import java.util.stream.Stream;
  *     it is also stored within {@link SceneRenderer} for draw ordering.
  * </p>
  * @implSpec Triangles rely on {@link Winding} order to define normal calculations and
- * back face culling via {@link SortMethod#backFaceCulled(GTri)}.
+ * back face culling via {@link SortMethod#backFaceCulled(Triangle)}.
  * Normals are expected to point outward from solids.
  * @author Lehlogonolo Poole
  * @see SceneRenderer
@@ -572,37 +572,37 @@ public final class GTri extends GObject implements IdempotentEventListener<GPoin
 
     // assuming the incoming engine object is a type of GObject
     public static class EngineObjectUtils {
-        public static EngineObject getLegA(GettersPack.CallProperties c, EngineObject object) throws J3DGetterException {
+        public static EngineObject getLegA(GettersPack.WrappedProperties c, EngineObject object) throws J3DGetterException {
             TypeConverter.expectObjectType(object, EngineObject.Type.GTRI, c);
             ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(3));
             return TypeConverter.fromArr(arr);
         }
-        public static EngineObject getLegB(GettersPack.CallProperties c, EngineObject object) throws J3DGetterException {
+        public static EngineObject getLegB(GettersPack.WrappedProperties c, EngineObject object) throws J3DGetterException {
             TypeConverter.expectObjectType(object, EngineObject.Type.GTRI, c);
             ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(4));
             return TypeConverter.fromArr(arr);
         }
-        public static EngineObject getLegC(GettersPack.CallProperties c, EngineObject object) throws J3DGetterException{
+        public static EngineObject getLegC(GettersPack.WrappedProperties c, EngineObject object) throws J3DGetterException{
             TypeConverter.expectObjectType(object, EngineObject.Type.GTRI, c);
             ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(5));
             return TypeConverter.fromArr(arr);
         }
-        public static EngineObject getWindingA(GettersPack.CallProperties c, EngineObject object) throws J3DGetterException {
+        public static EngineObject getWindingA(GettersPack.WrappedProperties c, EngineObject object) throws J3DGetterException {
             TypeConverter.expectObjectType(object, EngineObject.Type.GTRI, c);
             ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(6));
             return TypeConverter.fromArr(arr);
         }
-        public static EngineObject getWindingB(GettersPack.CallProperties c, EngineObject object) throws J3DGetterException {
+        public static EngineObject getWindingB(GettersPack.WrappedProperties c, EngineObject object) throws J3DGetterException {
             TypeConverter.expectObjectType(object, EngineObject.Type.GTRI, c);
             ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(7));
             return TypeConverter.fromArr(arr);
         }
-        public static EngineObject getWindingC(GettersPack.CallProperties c, EngineObject object) throws J3DGetterException {
+        public static EngineObject getWindingC(GettersPack.WrappedProperties c, EngineObject object) throws J3DGetterException {
             TypeConverter.expectObjectType(object, EngineObject.Type.GTRI, c);
             ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(8));
             return TypeConverter.fromArr(arr);
         }
-        public static boolean getIsDoubleSided(GettersPack.CallProperties t, EngineObject object) {
+        public static boolean getIsDoubleSided(GettersPack.WrappedProperties t, EngineObject object) {
             return TypeConverter.expectType(object.getProperties().get(9), Boolean.class);
         }
     }

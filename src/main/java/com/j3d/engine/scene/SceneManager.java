@@ -175,7 +175,7 @@ public final class SceneManager {
         g.setStroke(s);
     }
 
-    public void drawLine3D(@NotNull Graphics2D g, @NotNull Vector3 start, @NotNull Vector3 end, Camera cam) {
+    public void drawLine3D(@NotNull Graphics2D g, @NotNull Vector3 start, @NotNull Vector3 end, @NotNull Camera cam) {
         Vector3 c = cam.getPosition();
         Matrix3 worldToCamMatrix = cam.getRotation().worldToCam().matrix();
 
@@ -210,7 +210,7 @@ public final class SceneManager {
             );
         }
 
-        // 3. Perform your exact perspective projection on the safe camera-space points
+        // 3. Perform da perspective projection on the safe camera-space points
         Vector3 e = cam.getProjectionPlane();
 
         double x1 = (e.getZ() / d1.getZ()) * d1.getX() + e.getX();
@@ -219,7 +219,7 @@ public final class SceneManager {
         double x2 = (e.getZ() / d2.getZ()) * d2.getX() + e.getX();
         double y2 = (e.getZ() / d2.getZ()) * d2.getY() + e.getY();
 
-        // 4. Convert your projected Cartesian coordinates straight to ScreenPoints
+        // 4. Convert the projected Cartesian coordinates straight to ScreenPoints
         ScreenPoint p1 = new CartesianPoint(x1, y1).toScreen();
         ScreenPoint p2 = new CartesianPoint(x2, y2).toScreen();
 
@@ -301,8 +301,6 @@ public final class SceneManager {
      * @param graphics The Graphics2D object to draw on.
      */
     public void draw(Graphics2D graphics) {
-//        ArrayList<UUID> visibleObjects = buff.draw(layers);
-//        ArrayList<UUID> visibleObjects = new ArrayList<>();
         layers.forEach(layer -> layer.draw(graphics));
         getRenderer().draw(graphics);
         // Draw overlaps

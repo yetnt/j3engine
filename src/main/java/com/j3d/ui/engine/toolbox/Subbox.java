@@ -121,6 +121,7 @@ public class Subbox extends javax.swing.JPanel {
         toolboxScrollpane = new javax.swing.JScrollPane();
         toolboxInnerPanel = new javax.swing.JPanel();
 
+        setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createMatteBorder(4, 4, 4, 4, new java.awt.Color(0, 0, 0)), javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED)), javax.swing.BorderFactory.createEtchedBorder()));
         setMaximumSize(new java.awt.Dimension(1000, 32767));
         setPreferredSize(new java.awt.Dimension(1000, 134));
 
@@ -140,11 +141,11 @@ public class Subbox extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(toolboxScrollpane, javax.swing.GroupLayout.DEFAULT_SIZE, 1000, Short.MAX_VALUE)
+            .addComponent(toolboxScrollpane, javax.swing.GroupLayout.DEFAULT_SIZE, 984, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(toolboxScrollpane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+            .addComponent(toolboxScrollpane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 

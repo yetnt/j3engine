@@ -1,11 +1,9 @@
 package com.j3d.errors;
 
 import com.j3d.StaticRefs;
-import com.j3d.errors.severity.J3DFatal;
-import com.j3d.errors.severity.J3DMild;
-import com.j3d.errors.severity.J3DWarning;
-import com.j3d.errors.severity.J3ErrSeverity;
+import com.j3d.errors.severity.*;
 import com.j3d.ui.engine.J3Splash;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -71,7 +69,7 @@ public final class ErrorHandler {
      *
      * @param err The {@link J3DError} instance to be handled.
      */
-    public void handle(J3DError err) {
+    public void handle(@NotNull J3DError err) {
 //        String msg = logHead+ err.getMessage() + " - " +  ( err.cause != null ? err.cause.getMessage() : "");
 
         if (ignored.contains(err.getClass())) {
@@ -87,10 +85,15 @@ public final class ErrorHandler {
                 // mild errors only get printed to the log as the user need not know of this.
                 StaticRefs.getLog().error(err);
             }
-            case J3DWarning j3w -> {
+            case J3DWarning _ -> {
                 // Warnings get printed to the log, user debug log and also a little box to the user.
                 StaticRefs.getLog().error(err);
                 JOptionPane.showMessageDialog(StaticRefs.throwIfNull(StaticRefs.getMainFrame()), err.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
+            }
+            case J3DInfo _ -> {
+                // Warnings get printed to the log, user debug log and also a little box to the user.
+                StaticRefs.getLog().error(err);
+                JOptionPane.showMessageDialog(StaticRefs.throwIfNull(StaticRefs.getMainFrame()), err.getMessage(), "Info", JOptionPane.INFORMATION_MESSAGE);
             }
             case J3DFatal j3f -> {
                 // Fatal errors are unrecoverable.

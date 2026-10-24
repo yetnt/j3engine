@@ -19,7 +19,7 @@ import java.util.stream.Stream;
  * @param first The first point in the winding.
  * @param second The second point in the winding.
  * @param third The third point in the winding.
- * @see SortMethod#backFaceCulled(GTri)
+ * @see SortMethod#backFaceCulled(com.j3d.engine.geometry.Triangle)
  * @see GTri
  * @see GPoint
  * @see Vector3

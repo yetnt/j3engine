@@ -25,7 +25,7 @@ public abstract sealed class Triangulation permits EarClipping {
     ) {}
     
     static record Triangulated(
-        ArrayList<Vector3> newPoints,
+        ArrayList<Vector3> newPoints, // sometimes empty (EatClipping creates no new points)
         ArrayList<Segment> segments
     ) {}
     

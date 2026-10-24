@@ -9,7 +9,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlwaysMouseOwner extends MouseOwner {
+public final class AlwaysMouseOwner extends MouseOwner {
 
     public static final AlwaysMouseOwner instance = new AlwaysMouseOwner();
 
@@ -19,6 +19,7 @@ public class AlwaysMouseOwner extends MouseOwner {
 
     public static final ArrayList<MOwner> ignore = new ArrayList<>(
             List.of(
+                    // this mouse owner does not fire if these ones own mouse input
                     MOwner.TRANSLATE_HANDLE, MOwner.ORBIT, MOwner.ROTATE_HANDLE, MOwner.SCALE_HANDLE
             )
     );
@@ -29,13 +30,12 @@ public class AlwaysMouseOwner extends MouseOwner {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        // we dont gaf about ownership here.
         broadcast(EventType.MOUSE_CLICKED, new MouseClickPayload(this, e));
         if (ignore.contains(EngineFrame.getMouseOwner()))
             return;
         super.mousePressed(e);
         // only show if this was a right click.
-        if (e.getButton() == MouseEvent.BUTTON3)
+        if (e.getButton() == MouseEvent.BUTTON3 && e.isPopupTrigger())
             StaticRefs.throwIfNull(StaticRefs.getMainFrame()).showContextMenu(e.getX(), e.getY());
     }
 }

@@ -5,6 +5,7 @@ import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.Command;
 import com.j3d.engine.scene.nodes.geometry.GObject;
+import com.j3d.jaiva.JaivaRunException;
 import com.j3d.jaiva.TypeConverter;
 import com.j3d.ui.SafeJLabel;
 import com.jaiva.errors.JaivaException;
@@ -31,15 +32,13 @@ public class JaivaExecCmd extends Command {
         }
         try {
             StaticRefs.getJaivaInstanceManager().getCommandBundler().execute(
-                    "C:\\Users\\ACER\\Documents\\code\\Jaiva3dEngine\\lib\\me.jiv",
-                    1, // config value, we dont use it and it cant be null so... 1
+                    "C:\\Users\\ACER\\Documents\\code\\Jaiva3dEngine\\src\\main\\resources\\file.jiv",
                     arr // input to pass to the file that jaiva gets via getCallerValue()
             );
         } catch (Exception e) {
             if (e instanceof JaivaException j) {
                 logLabel.setText("Jaiva Execution Failed");
-                JOptionPane.showMessageDialog(StaticRefs.throwIfNull(StaticRefs.getMainFrame()), AnsiColour.remove(j.getRawMessage()),  "Jaiva Execution Failed", JOptionPane.ERROR_MESSAGE);
-                StaticRefs.getLog().error("Jaiva Execution Failed: " + AnsiColour.remove(j.getRawMessage()));
+                StaticRefs.getErrs().handle(new JaivaRunException(j));
             } else {
                 throw new RuntimeException(e);
             }

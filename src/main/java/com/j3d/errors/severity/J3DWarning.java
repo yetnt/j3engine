@@ -9,8 +9,4 @@ package com.j3d.errors.severity;
  * @see J3ErrSeverity
  */
 public non-sealed interface J3DWarning extends J3ErrSeverity {
-    @Override
-    default String logHead() {
-        return "[WARNING]";
-    }
 }

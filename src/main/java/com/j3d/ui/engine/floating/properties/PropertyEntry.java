@@ -77,7 +77,7 @@ public class PropertyEntry extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(461, 40));
         setLayout(new java.awt.GridLayout(1, 0, 0, -1));
 
-        propertyLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        propertyLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         propertyLabel.setForeground(J3DTheme.TEXT_PRIMARY.color());
         propertyLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         propertyLabel.setText("lbl");

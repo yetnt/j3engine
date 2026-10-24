@@ -10,10 +10,6 @@ package com.j3d.errors.severity;
  * @see J3ErrSeverity
  */
 public non-sealed interface J3DFatal extends J3ErrSeverity {
-    @Override
-    default String logHead() {
-        return "[FATAL]";
-    }
 
     /**
      * Specifies whether the application should terminate after a fatal error.

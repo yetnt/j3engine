@@ -10,7 +10,7 @@ import com.j3d.StaticRefs;
  *
  * @author ACER
  */
-public class CommandPalette extends javax.swing.JPanel {
+public final class CommandPalette extends javax.swing.JPanel {
 
     /**
      * Creates new form CommandPalette

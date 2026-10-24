@@ -4,6 +4,7 @@ import com.j3d.StaticConfig;
 import com.j3d.StaticRefs;
 import com.j3d.errors.J3DError;
 import com.j3d.errors.severity.J3DFatal;
+import com.j3d.errors.severity.J3DInfo;
 import com.j3d.errors.severity.J3DMild;
 import com.j3d.errors.severity.J3DWarning;
 import com.yetnt.utils.builders.AnsiColour;
@@ -71,7 +72,7 @@ public final class Logger {
                         AnsiColour.print(appendIfTest(message) + logMessage, AnsiColour.FONT.UNDERLINE)
                         : message.contains("[SHUTDOWN]") ?
                         AnsiColour.print(appendIfTest(message) + logMessage, AnsiColour.FONT.BOLD, AnsiColour.BACK.BRIGHT_PURPLE, AnsiColour.FORE.BLACK)
-                        : AnsiColour.print(appendIfTest(message) + logMessage, AnsiColour.FORE.BRIGHT_BLACK, AnsiColour.FONT.ITALIC)
+                        : AnsiColour.print(appendIfTest(message) + logMessage, AnsiColour.FORE.BRIGHT_CYAN, AnsiColour.FONT.ITALIC)
         );
         if (logArea != null) {
             logArea.append(appendIfTest(message) + logMessage + getTimestamp() + "\n");
@@ -121,6 +122,7 @@ public final class Logger {
         String message = switch (err) {
             case J3DMild i -> "!![MILD] ";
             case J3DWarning w -> "!![WARN] ";
+            case J3DInfo i -> "!!![INFO] ";
             case J3DFatal f -> "!!![FATAL] ";
             default -> ERROR_PREFIX;
         } + "[" + err.errorCode() + "]("+err.getClass().getSimpleName() +") " + err.getMessage() +

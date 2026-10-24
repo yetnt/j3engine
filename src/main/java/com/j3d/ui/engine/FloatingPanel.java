@@ -11,6 +11,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.function.Consumer;
 
 /**
@@ -83,6 +85,13 @@ public class FloatingPanel extends javax.swing.JPanel {
             frame.setMaximumSize(this.getMaximumSize());
             frame.setPreferredSize(this.getPreferredSize());
             frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+            frame.addWindowStateListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    super.windowClosing(e);
+                    isHidden = true;
+                }
+            });
             attachButton.setVisible(false);
             EngineFrame.removeFloater(this);
             StaticRefs.throwIfNull(StaticRefs.getMainFrame()).revalidate();
@@ -155,6 +164,7 @@ public class FloatingPanel extends javax.swing.JPanel {
         propertiesPanel = new javax.swing.JPanel();
 
         setBackground(J3DTheme.UI_SURFACE.color());
+        setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED), javax.swing.BorderFactory.createEtchedBorder()));
         setMaximumSize(new java.awt.Dimension(862, 580));
         setLayout(new java.awt.BorderLayout());
 
@@ -165,6 +175,9 @@ public class FloatingPanel extends javax.swing.JPanel {
         dockButton.setBackground(J3DTheme.BACKGROUND.color());
         dockButton.setForeground(J3DTheme.TEXT_PRIMARY.color());
         dockButton.setText("dock");
+        dockButton.setMaximumSize(new java.awt.Dimension(72, 30));
+        dockButton.setMinimumSize(new java.awt.Dimension(72, 30));
+        dockButton.setPreferredSize(new java.awt.Dimension(72, 30));
         dockButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dockButtonActionPerformed(evt);
@@ -183,6 +196,9 @@ public class FloatingPanel extends javax.swing.JPanel {
         attachButton.setBackground(J3DTheme.BACKGROUND.color());
         attachButton.setForeground(J3DTheme.TEXT_PRIMARY.color());
         attachButton.setText("attach");
+        attachButton.setMaximumSize(new java.awt.Dimension(72, 30));
+        attachButton.setMinimumSize(new java.awt.Dimension(72, 30));
+        attachButton.setPreferredSize(new java.awt.Dimension(72, 30));
         attachButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 attachButtonActionPerformed(evt);
@@ -196,11 +212,11 @@ public class FloatingPanel extends javax.swing.JPanel {
         propertiesPanel.setLayout(propertiesPanelLayout);
         propertiesPanelLayout.setHorizontalGroup(
             propertiesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 288, Short.MAX_VALUE)
+            .addGap(0, 280, Short.MAX_VALUE)
         );
         propertiesPanelLayout.setVerticalGroup(
             propertiesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 267, Short.MAX_VALUE)
+            .addGap(0, 252, Short.MAX_VALUE)
         );
 
         add(propertiesPanel, java.awt.BorderLayout.CENTER);

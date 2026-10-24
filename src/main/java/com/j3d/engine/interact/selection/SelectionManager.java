@@ -7,6 +7,7 @@ import com.j3d.engine.scene.nodes.geometry.GLine;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.engine.scene.nodes.layer.Layer;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -114,10 +115,8 @@ public class SelectionManager {
      * @param other The other SelectionManager whose selected GObjects are to be included.
      * @return This SelectionManager instance, allowing for method chaining.
      */
-    public SelectionManager include(SelectionManager other) {
-        for (GObject obj : other.getSelected()) {
-            if (!selected.contains(obj)) selected.add(obj);
-        }
+    public SelectionManager include(@NotNull SelectionManager other) {
+        selected.addAll(other.getSelected());
         return this;
     }
 
@@ -129,7 +128,7 @@ public class SelectionManager {
      * @param other The other SelectionManager whose selected GObjects are to be excluded.
      * @return This SelectionManager instance, allowing for method chaining.
      */
-    public SelectionManager exclude(SelectionManager other) {
+    public SelectionManager exclude(@NotNull SelectionManager other) {
         for (GObject obj : other.getSelected()) {
             selected.remove(obj);
         }

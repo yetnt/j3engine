@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.j3d.ui.engine;
 
 import com.j3d.Startup;
@@ -48,6 +44,7 @@ import com.j3d.ui.theme.J3DTheme;
 import com.j3d.ui.theme.cursors.CursorManager;
 import com.j3d.ui.theme.cursors.CursorNames;
 import com.yetnt.utils.builders.InlineHTML;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -495,7 +492,7 @@ public final class EngineFrame extends javax.swing.JFrame {
      *           redundant processing when a fallback to an older version has already been handled.
      *           The `LOADED_OLD` flag is reset at the beginning of the success callback.
      */
-    public static void readFileUsingVers(File file, int vers) {
+    public static void readFileUsingVers(@NotNull File file, int vers) {
         String path = file.getAbsolutePath();
         StaticRefs.getLog().println(path);
         Path p = Paths.get(path);

@@ -9,7 +9,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
-public class ContextMenu extends JPopupMenu {
+public final class ContextMenu extends JPopupMenu {
 
     Consumer<ContextMenu> builder;
     ArrayList<Locator> locators = new ArrayList<>();

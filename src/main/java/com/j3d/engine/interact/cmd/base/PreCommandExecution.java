@@ -1,6 +1,5 @@
 package com.j3d.engine.interact.cmd.base;
 
-import com.j3d.engine.interact.cmd.base.conditions.SelectionPreCondition;
 import com.j3d.engine.react.events.EventEmitterInterface;
 import com.j3d.engine.react.events.EventReactor;
 import com.j3d.ui.SafeJLabel;
@@ -25,7 +24,7 @@ import java.util.function.Supplier;
  * @see StatefulCommand
  * @author Lehlogonolo Poole
  */
-public interface PreCommandExecution {
+public sealed interface PreCommandExecution permits SelectionPreCondition {
     /**
      * The main event reactor to run if the condition is met on startup or is later called by the
      * {@link #getEventEmitterToAttachTo()}.

@@ -606,7 +606,7 @@ public non-sealed class Vector3 implements MatrixInterface {
     @NotNull
     @Contract("_, _ -> new")
     // method requires call properties for generic method as function nonsense I do.
-    public static Vector3 fromObject(@SuppressWarnings("unused") GettersPack.CallProperties callProperties, @NotNull EngineObject obj) {
+    public static Vector3 fromObject(@SuppressWarnings("unused") GettersPack.WrappedProperties callProperties, @NotNull EngineObject obj) {
         return new Vector3(
                 (double)obj.getProperties().getFirst(),
                 (double)obj.getProperties().get(1),

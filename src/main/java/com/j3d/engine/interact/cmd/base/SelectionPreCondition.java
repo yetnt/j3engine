@@ -1,8 +1,6 @@
-package com.j3d.engine.interact.cmd.base.conditions;
+package com.j3d.engine.interact.cmd.base;
 
 import com.j3d.StaticRefs;
-import com.j3d.engine.interact.cmd.base.PreCommandExecution;
-import com.j3d.engine.interact.cmd.base.SemiStatefulCommand;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 import com.j3d.engine.interact.input.keyboard.J3Key;
 import com.j3d.engine.interact.selection.SelectionManager;
@@ -42,13 +40,13 @@ import java.util.function.Supplier;
  * @see TransformCmd
  * @author Lehlogonolo Poole
  */
-public class SelectionPreCondition implements PreCommandExecution {
+public final class SelectionPreCondition implements PreCommandExecution {
 
     private final EventReactor passListener;
     private final EventReactor failListener;
     private final Runnable cleanup;
     private final Runnable commandEndCleanup;
-    private String text;
+    private final String  text;
 
     public SelectionPreCondition(Runnable success, Runnable extraCleanup, String text) {
         this.text = text;

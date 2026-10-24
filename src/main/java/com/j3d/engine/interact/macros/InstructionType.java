@@ -10,6 +10,7 @@ package com.j3d.engine.interact.macros;
  * @author Lehlogonlo Poole
  */
 public enum InstructionType {
+
     /**
      * The line is a command execution string to be pasted into the command palette
      */
