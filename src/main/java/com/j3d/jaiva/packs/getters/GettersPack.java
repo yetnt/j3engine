@@ -26,7 +26,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 @PublicLibrary(
-        path = "j3d/objects/getters",
+        path = "j3d/obj/get",
         description = "Contains all the functions to get properties from the given array"
 )
 public class GettersPack extends BaseLibrary {
@@ -65,6 +65,8 @@ public class GettersPack extends BaseLibrary {
         add(new LineGetters()); // line getters
         add(new Vector3Getters());
         add(new ColourGetters());
+        add(new ThingGetters());
+        add(new LayerGetters());
 
         GObjectRegistry.forEach(
                 (object) -> {
@@ -146,6 +148,7 @@ public class GettersPack extends BaseLibrary {
                             Arguments.getInstance()
                                     .add(new AArgument("array", "The array to extract the information from", false, Argument.Type.ARRAY))
                     )
+                    .setLib("j3d/obj/get")
                     .docs(docs)
             );
             this.getter = getter;

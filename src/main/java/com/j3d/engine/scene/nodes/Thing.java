@@ -14,11 +14,16 @@ import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.gen.properties.Property;
+import com.j3d.jaiva.EngineObject;
+import com.j3d.jaiva.TypeConverter;
+import com.j3d.jaiva.packs.getters.GettersPack;
+import com.j3d.jaiva.packs.getters.J3DGetterException;
 import com.j3d.storage.files.protocol.proj.PF1;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.ui.dialog.Spinner;
 import com.j3d.ui.engine.floating.tree.TreeNodeIdentity;
 import com.j3d.ui.theme.J3DTheme;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
@@ -830,5 +835,62 @@ public final class Thing implements SceneObjectList {
         calculateCentroid(
                 getObjects().toArray(new GObject[0])
         );
+    }
+
+    public EngineObject asReference() {
+        return new EngineObject(EngineObject.Type.REF)
+                .addProperty(EngineObject.Type.THING)
+                .addProperty(getId().toString());
+    }
+
+    public EngineObject toObject() {
+        return new EngineObject(EngineObject.Type.THING)
+                .addProperty(TypeConverter.convertUUID(getId()))
+                .addProperty(getCentroid().toObject())
+                .addProperty(getName())
+                .addProperty(isSolid())
+                .addProperty(isHidden())
+                .addProperty(isForDeletion())
+                .addProperty(objectsStream().map(GObject::asReference).collect(Collectors.toCollection(ArrayList::new)));
+    }
+
+
+
+    // assuming the incoming engine object is a type of GObject
+    public static class EngineObjectUtils {
+        @NotNull
+        public static EngineObject getUuid(GettersPack.WrappedProperties c, EngineObject object) throws J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.THING, c);
+            ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().getFirst());
+            return TypeConverter.fromArr(arr);
+        }
+        @NotNull
+        public static EngineObject getCentroid(GettersPack.WrappedProperties c, EngineObject object) throws J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.THING, c);
+            ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(1));
+            return TypeConverter.fromArr(arr);
+        }
+        public static String getName(GettersPack.WrappedProperties c, EngineObject object) throws J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.THING, c);
+            return TypeConverter.expectType(object.getProperties().get(2), String.class);
+        }
+        public static boolean getIsSolid(GettersPack.WrappedProperties c, EngineObject object) throws J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.THING, c);
+            return TypeConverter.expectType(object.getProperties().get(3), Boolean.class);
+        }
+        public static boolean getIsHidden(GettersPack.WrappedProperties c, EngineObject object) throws J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.THING, c);
+            return TypeConverter.expectType(object.getProperties().get(4), Boolean.class);
+        }
+        public static boolean getIsForDeletion(GettersPack.WrappedProperties c, EngineObject object) throws J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.THING, c);
+            return TypeConverter.expectType(object.getProperties().get(5), Boolean.class);
+        }
+        @NotNull
+        public static ArrayList<EngineObject> getObjects(GettersPack.WrappedProperties c, EngineObject object) throws J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.THING, c);
+            ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(6));
+            return TypeConverter.fromArrOfArr(arr);
+        }
     }
 }

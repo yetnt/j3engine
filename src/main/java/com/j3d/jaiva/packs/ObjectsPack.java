@@ -9,9 +9,9 @@ import com.jaiva.interpreter.libs.annotation.PublicLibrary;
 import com.jaiva.interpreter.symbol.BaseVariable;
 import com.jaiva.tokenizer.jdoc.JDoc;
 
-@Exports(GettersPack.class)
+@Exports({GettersPack.class, NewPack.class})
 @PublicLibrary(
-        path = "j3d/objects",
+        path = "j3d/obj",
         description = "Objects pack which just holds the array type constants" +
                 " along with all the functions to do stuff"
 )

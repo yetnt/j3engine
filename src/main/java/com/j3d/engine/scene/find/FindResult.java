@@ -2,7 +2,9 @@ package com.j3d.engine.scene.find;
 
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GObject;
+import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.engine.scene.nodes.layer.Layer;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -126,5 +128,14 @@ public final class FindResult {
      */
     @Nullable public Thing getThing() {
         return thing;
+    }
+
+    @Nullable
+    @Contract(pure = true)
+    public <T> T getgObjectAs(Class<T> clazz) {
+        if (containsGObject()) {
+            return clazz.isInstance(gObject) ? (T) gObject : null;
+        }
+        return null;
     }
 }

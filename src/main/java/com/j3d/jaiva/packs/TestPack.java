@@ -22,12 +22,12 @@ import com.jaiva.interpreter.symbol.BaseFunction;
 import com.jaiva.interpreter.symbol.CallProperties;
 import com.jaiva.tokenizer.tokens.Token;
 import com.jaiva.tokenizer.tokens.specific.TFuncCall;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
-@Exports(ObjectsPack.class)
-@PublicLibrary(path = "j3d")
+@PublicLibrary(path = "j3d/test", description = "tes")
 public class TestPack extends BaseLibrary {
 
     public TestPack() {
@@ -42,6 +42,7 @@ public class TestPack extends BaseLibrary {
         public FEcho() {
             super(FunctionBuilder.start()
                     .name("echo")
+                    .setLib("j3d/test")
             );
             freeze(); // freeze so user cant edit
         }
@@ -64,6 +65,7 @@ public class TestPack extends BaseLibrary {
         public FFind() {
             super(FunctionBuilder.start()
                     .name("find")
+                    .setLib("j3d/test")
                     .arguments(
                             Arguments.getInstance()
                                     .add(new AArgument("id", "the id to find", false, Argument.Type.STRING))
@@ -73,7 +75,7 @@ public class TestPack extends BaseLibrary {
         }
 
         @Override
-        public Object call(CallProperties callProperties) throws Exception {
+        public Object call(@NotNull CallProperties callProperties) throws Exception {
             checkParams(callProperties.toCheckParams());
 
             Object id = callProperties.params().getFirst();
@@ -97,6 +99,7 @@ public class TestPack extends BaseLibrary {
         public FValidate() {
             super(FunctionBuilder.start()
                     .name("isValid")
+                    .setLib("j3d/test")
                     .arguments(
                             Arguments.getInstance()
                                     .add(new AArgument("array", "The array object to validate", false, Argument.Type.ARRAY))
@@ -117,8 +120,8 @@ public class TestPack extends BaseLibrary {
             EngineObject out = TypeConverter.fromArr(array);
 
             if (GObjectRegistry.isGObject(out.getType())) {
-                GObject t = TypeConverter.getGObject(out);
-                return t != null;
+                Object t = TypeConverter.getGObject(out, null);
+                return t instanceof GObject;
             }
             return false;
         }

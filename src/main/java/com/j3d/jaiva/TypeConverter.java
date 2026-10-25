@@ -2,13 +2,18 @@ package com.j3d.jaiva;
 
 import com.j3d.StaticRefs;
 import com.j3d.engine.math.matrix.Vector3;
+import com.j3d.engine.scene.SceneObject;
+import com.j3d.engine.scene.find.FindResult;
 import com.j3d.engine.scene.find.Finder;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.geometry.GObjectRegistry;
+import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.jaiva.packs.getters.GettersPack;
 import com.j3d.jaiva.packs.getters.J3DGetterException;
 import com.jaiva.interpreter.symbol.CallProperties;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -41,7 +46,7 @@ public class TypeConverter {
         return a;
     }
 
-    public static <T> T expectType(Object a, Class<T> expected) {
+    public static <T> T expectType(Object a, @NotNull Class<T> expected) {
         if (!(expected.isInstance(a)))
             throw new IllegalArgumentException(
                     "Expected " + expected.getName() + " instead of " + a.getClass()
@@ -49,10 +54,10 @@ public class TypeConverter {
         return expected.cast(a);
     }
 
-    public static EngineObject toObject(Object object) {
+    public static EngineObject toObject(@NotNull Object object) {
         // rigorously, check
         return switch (object) {
-            case GObject gObject -> gObject.toObject();
+            case SceneObject gObject -> gObject.toObject();
             case UUID id -> convertUUID(id);
             case Color color -> convertColor(color);
             case Vector3 vector3 -> vector3.toObject();
@@ -60,7 +65,7 @@ public class TypeConverter {
         };
     }
 
-    public static void expectObjectType(EngineObject object, EngineObject.Type type, GettersPack.WrappedProperties callProperties) throws J3DGetterException {
+    public static void expectObjectType(@NotNull EngineObject object, EngineObject.Type type, GettersPack.WrappedProperties callProperties) throws J3DGetterException {
         if (object.getType() == type) return;
         throw new J3DGetterException(
                 callProperties.props().scope(),
@@ -70,30 +75,59 @@ public class TypeConverter {
         );
     }
 
-    public static EngineObject fromArr(ArrayList<?> objects) {
+    @NotNull
+    public static EngineObject fromArr(@NotNull ArrayList<?> objects) {
         if (objects.size() != 2) throw  new IllegalArgumentException(
                 "Cannot convert " + objects.size() + " objects."
         );
         if (objects.getFirst() instanceof ArrayList<?> s) {
             if (s.size() != 2) throw new IllegalArgumentException("Cannot convert " + s.size() + " objects.");
-
             return EngineObject.from(objects);
         }
 
         throw new IllegalArgumentException("Cannot convert " + objects.size() + " objects.");
     }
 
-    public static Object from(EngineObject engineObject) {
+    @NotNull
+    public static ArrayList<EngineObject> fromArrOfArr(@NotNull ArrayList<?> objects) {
+        ArrayList<EngineObject> list = new ArrayList<>();
+        for (Object object : objects) {
+            ArrayList<?> expect = expectArr(object);
+            list.add(fromArr(expect));
+        }
+        return list;
+    }
+
+    public static Object from(@NotNull EngineObject engineObject) {
         return switch (EngineObject.Type.valueOf(engineObject.getEngineProperties().getLast())) {
             case VECTOR3 -> Vector3.fromObject(null, engineObject);
             case COLOUR -> colorFromObject(null, engineObject);
             case UUID -> UUIDfromObject(engineObject);
-            case GPOINT, GLINE, GTRI, GCURVE, GPOLYGON -> getGObject(engineObject);
+            case LAYER -> findLayer(engineObject);
+            case GPOINT, GLINE, GTRI, GCURVE, GPOLYGON -> getGObject(engineObject, null);
+            case THING -> getGObject(engineObject, EngineObject.Type.THING);
             case REF -> getReference(engineObject);
         };
     }
 
-    public static GObject getGObject(EngineObject object) {
+    public static Layer findLayer(EngineObject object) {
+        // Just find by name
+        if (object == null) return null;
+        if (!(object.getProperties().getFirst() instanceof ArrayList<?>))
+            throw new IllegalArgumentException("Cannot convert " + object.getEngineProperties().getLast() + " objects.");
+        Object id = object.getProperties().get(1);
+        if (!(id instanceof String uuid))
+            throw new IllegalArgumentException("Cannot convert " + object.getEngineProperties().getLast() + " objects.");
+
+        FindResult first = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).finder().findFirst(
+                Layer.class, Finder.nameQuery(), uuid
+        );
+
+        return first.getLayer();
+
+    }
+
+    public static Object getGObject(EngineObject object, @Nullable EngineObject.Type searchType) {
         // Just find by ID
         if (object == null) return null;
         if (!(object.getProperties().getFirst() instanceof ArrayList<?> uuidProperties))
@@ -102,9 +136,10 @@ public class TypeConverter {
         if (!(id instanceof UUID uuid))
             throw new IllegalArgumentException("Cannot convert " + object.getEngineProperties().getLast() + " objects.");
 
-        return StaticRefs.throwIfNull(StaticRefs.getSceneManager()).finder().findFirst(
-                GObject.class, Finder.idQuery(), uuid
-        ).getgObject();
+        FindResult first = StaticRefs.throwIfNull(StaticRefs.getSceneManager()).finder().findFirst(
+                SceneObject.class, Finder.idQuery(), uuid
+        );
+        return searchType == EngineObject.Type.THING ? first.getThing() : first.getgObject();
 
     }
 
@@ -127,9 +162,9 @@ public class TypeConverter {
         ).getgObject();
     }
 
-    public static Object toJaivaReadable(Object o) {
+    public static Object toJaivaReadable(@NotNull Object o) {
         return switch (o) {
-            case GObject g -> toObject(g);
+            case SceneObject g -> toObject(g);
             case UUID id -> toObject(id);
             case Color c -> toObject(c);
             case Vector3 vector3 -> toObject(vector3);

@@ -1,5 +1,8 @@
 package com.j3d.jaiva;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +10,7 @@ public class EngineObject extends ArrayList<Object> {
     private final ArrayList<String> engineProperties;
     private final ArrayList<Object> objects;
 
-    public EngineObject(Type type) {
+    public EngineObject(@NotNull Type type) {
         super();
         engineProperties = new ArrayList<>(List.of("J3Engine"));
         this.add(engineProperties);
@@ -16,7 +19,7 @@ public class EngineObject extends ArrayList<Object> {
         this.add(objects);
     }
 
-    private EngineObject(ArrayList<?> objects) {
+    private EngineObject(@NotNull ArrayList<?> objects) {
         if (objects.size() != 2) throw  new IllegalArgumentException("Cannot convert " + objects.size() + " objects.");
         if (!(objects.getFirst() instanceof ArrayList<?> engineProps))
             throw new IllegalArgumentException("Cannot convert " + objects.size() + " objects.");
@@ -27,6 +30,8 @@ public class EngineObject extends ArrayList<Object> {
         this.addAll(objects);
     }
 
+    @NotNull
+    @Contract("_ -> new")
     public static EngineObject from(ArrayList<?> objects) {
         return new EngineObject(objects);
     }
@@ -49,6 +54,6 @@ public class EngineObject extends ArrayList<Object> {
     }
 
     public enum Type {
-        VECTOR3, COLOUR, UUID, GPOINT, GLINE, GTRI, GCURVE, REF, GPOLYGON;
+        VECTOR3, COLOUR, UUID, GPOINT, GLINE, GTRI, GCURVE, REF, GPOLYGON, THING, LAYER;
     }
 }

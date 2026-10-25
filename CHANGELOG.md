@@ -166,6 +166,7 @@ of the current testing environment.
   * Buttons, combo boxes, scrollbars, now look modern
 * Start implementing polygon shi
 * Fix back face culling
-* Update to latest Jaiva
+* Update to Jaiva v7
 * Update to latest ytils
 * Add Jetbrains annotationz
+* Fix bug where context menu was unclickable when opened.

@@ -338,6 +338,23 @@ public non-sealed class Vector3 implements MatrixInterface {
     }
 
     /**
+     * Clamps the vector3, by checking if any of it's values are close to zero. if so it sets said value to zero.
+     * @param power The power to use in the epsilon value. so a value of {@code 12} corresponds to {@code 10^-12}
+     * @return A new clamped vector3
+     */
+    @Contract("_ -> new")
+    public Vector3 zeroClampUsing(double power) {
+        return toTriple()
+                .map(t -> Math.abs(t) < Math.pow(10, -power) ? 0 : t)
+                .mapTo(Vector3::new);
+    }
+
+    @Contract("-> new")
+    public Vector3 zeroClamp() {
+        return zeroClampUsing(10);
+    }
+
+    /**
      * Reduces a list of vectors into a single vector using a binary reducer function.
      *
      * @param vectors The list of vectors to reduce.
@@ -612,5 +629,9 @@ public non-sealed class Vector3 implements MatrixInterface {
                 (double)obj.getProperties().get(1),
                 (double)obj.getProperties().getLast()
         );
+    }
+
+    public Triple<Double> toTriple() {
+        return new Triple<>(x, y, z);
     }
 }

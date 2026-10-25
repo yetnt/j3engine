@@ -1,37 +1,42 @@
 @ jaiva script to just query the engine
 
 tsea "jaiva/debug"!
+tsea "jaiva/arrays"!
 tsea "jaiva/j3d"!
+tsea "jaiva/math"!
 
-maak triangle <- getCallerValue()! @ random GObject from command palette input
-@ if its not a triangle the next call will error
+maak ls <- a_filter(layers(), f~(layer) : get_layer_name(layer) != "BACKG")!
+maak layer <- ls[1]!
+khuluma(get_layer_name(layer))!
+maak stuff <- get_layer_things(layer)!
+khuluma(stuff)!
+maak first <- stuff[0]!
+khuluma(first)!
+maak id <- get_thing_id(first)!
+khuluma(id)!
+khuluma(get_thing_centre(first))!
 
-if (triangle~ = 0) ->
-    cima <== "No input given"!
+maak rot <- v3_rot(get_thing_centre(first), arrLit(0, 1, 0), 90)!
+khuluma(rot)!
+khuluma(v3_zeroClamp(rot))!
+
+khuluma(v3_cross(arrLit(1, 1, 2), arrLit(9, 3, 1)))!
+
+khuluma(v3_dot(arrLit(1, 1, 2), arrLit(9, 3, 1)))!
+
+maak oldPoint <- idk!
+colonize (i <- 0 <| i < 360*5 <| i + 45) ->
+    maak new <- new_point(arrLit(i, m_sin(m_toRad(i))*40, 0), id)!
+    sif (oldPoint != idk) ?> joinn(oldPoint, get_uuid_value(get_point_id(new)), id)!
+    oldPoint <- get_uuid_value(get_point_id(new))!
 <~
 
-maak pivot <- get_tri_pivot(triangle)!
-
-maak colour <- get_tri_colour( triangle)!
-
-maak lineA <- get_tri_lineA(triangle)!
-
-maak windingPointB <- get_tri_windingB(triangle)!
-
-maak uuid <- get_tri_id( triangle )!
-
-khuluma( "Triangle properties" )!
-khuluma( triangle )!
-khuluma( "Triangle pivot" )!
-khuluma( pivot )!
-khuluma( "Triangle pivot (Sum of the properties multiplied by 10)" )!
-khuluma( get_vector3_asFunc(pivot)(f~(x,y,z) : (x+y+z))*10 )!
-khuluma( "Colour of tri" )!
-khuluma( colour )!
-khuluma( "Line A" )!
-khuluma( lineA )!
-khuluma( "winding point b")!
-khuluma( windingPointB )!
-khuluma( "Triangle uuid" )!
-khuluma( uuid )!
-khuluma( get_uuid_value(uuid) )!
+@ circle.
+@ maak r <- 10!
+@
+@ colonize (i <- 0 <| i < 360 <| +) ->
+@     maak x <- r * m_cos(m_toRad(i))!
+@     maak y <- r * m_sin(m_toRad(i))!
+@
+@     new_point(arrLit(x, y, 0), id, arrLit(0, 255, 0))!
+@ <~

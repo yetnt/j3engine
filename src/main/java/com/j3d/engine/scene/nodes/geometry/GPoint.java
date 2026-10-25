@@ -171,6 +171,7 @@ public final class GPoint extends GObject implements HasParents<GObject>, Decomp
         return getDecomposeList();
     }
 
+
     @Override
     public EngineObject.Type getEngineObjectType() {
         return EngineObject.Type.GPOINT;

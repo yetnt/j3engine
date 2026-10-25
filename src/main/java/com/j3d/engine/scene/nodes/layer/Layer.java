@@ -9,7 +9,12 @@ import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.gen.properties.Property;
+import com.j3d.jaiva.EngineObject;
+import com.j3d.jaiva.TypeConverter;
+import com.j3d.jaiva.packs.getters.GettersPack;
+import com.j3d.jaiva.packs.getters.J3DGetterException;
 import com.j3d.ui.engine.floating.tree.TreeNodeIdentity;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
@@ -19,6 +24,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.UUID;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -206,6 +212,7 @@ public final class Layer extends ArrayList<Thing> implements SceneObjectList {
     public UUID getId() {
         return UUIDidentifer;
     }
+
 
     @Override
     public ArrayList<Property<?, ?>> getProperties() {
@@ -428,5 +435,46 @@ public final class Layer extends ArrayList<Thing> implements SceneObjectList {
     @Override
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
+    }
+
+
+    @Override
+    public EngineObject toObject() {
+        return new EngineObject(EngineObject.Type.LAYER)
+                .addProperty(getId())
+                .addProperty(getName())
+                .addProperty(isHidden())
+                .addProperty(isForDeletion())
+                .addProperty(stream().map(Thing::asReference)
+                        .collect(Collectors.toCollection(ArrayList::new)));
+    }
+
+
+    // assuming the incoming engine object is a type of GObject
+    public static class EngineObjectUtils {
+        @NotNull
+        public static EngineObject getUuid(GettersPack.WrappedProperties c, EngineObject object) throws J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.LAYER, c);
+            ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().getFirst());
+            return TypeConverter.fromArr(arr);
+        }
+        public static String getName(GettersPack.WrappedProperties c, EngineObject object) throws J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.LAYER, c);
+            return TypeConverter.expectType(object.getProperties().get(1), String.class);
+        }
+        public static boolean getIsHidden(GettersPack.WrappedProperties c, EngineObject object) throws J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.LAYER, c);
+            return TypeConverter.expectType(object.getProperties().get(2), Boolean.class);
+        }
+        public static boolean getIsForDeletion(GettersPack.WrappedProperties c, EngineObject object) throws J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.LAYER, c);
+            return TypeConverter.expectType(object.getProperties().get(3), Boolean.class);
+        }
+        @NotNull
+        public static ArrayList<EngineObject> getObjects(GettersPack.WrappedProperties c, EngineObject object) throws J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.LAYER, c);
+            ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(4));
+            return TypeConverter.fromArrOfArr(arr);
+        }
     }
 }

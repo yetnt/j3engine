@@ -25,6 +25,7 @@ import com.j3d.jaiva.packs.getters.J3DGetterException;
 import com.j3d.storage.files.protocol.proj.PF1;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.ui.dialog.Spinner;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.*;
@@ -572,37 +573,43 @@ public final class GTri extends GObject implements IdempotentEventListener<GPoin
 
     // assuming the incoming engine object is a type of GObject
     public static class EngineObjectUtils {
+        @NotNull
         public static EngineObject getLegA(GettersPack.WrappedProperties c, EngineObject object) throws J3DGetterException {
             TypeConverter.expectObjectType(object, EngineObject.Type.GTRI, c);
             ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(3));
             return TypeConverter.fromArr(arr);
         }
+        @NotNull
         public static EngineObject getLegB(GettersPack.WrappedProperties c, EngineObject object) throws J3DGetterException {
             TypeConverter.expectObjectType(object, EngineObject.Type.GTRI, c);
             ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(4));
             return TypeConverter.fromArr(arr);
         }
+        @NotNull
         public static EngineObject getLegC(GettersPack.WrappedProperties c, EngineObject object) throws J3DGetterException{
             TypeConverter.expectObjectType(object, EngineObject.Type.GTRI, c);
             ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(5));
             return TypeConverter.fromArr(arr);
         }
+        @NotNull
         public static EngineObject getWindingA(GettersPack.WrappedProperties c, EngineObject object) throws J3DGetterException {
             TypeConverter.expectObjectType(object, EngineObject.Type.GTRI, c);
             ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(6));
             return TypeConverter.fromArr(arr);
         }
+        @NotNull
         public static EngineObject getWindingB(GettersPack.WrappedProperties c, EngineObject object) throws J3DGetterException {
             TypeConverter.expectObjectType(object, EngineObject.Type.GTRI, c);
             ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(7));
             return TypeConverter.fromArr(arr);
         }
+        @NotNull
         public static EngineObject getWindingC(GettersPack.WrappedProperties c, EngineObject object) throws J3DGetterException {
             TypeConverter.expectObjectType(object, EngineObject.Type.GTRI, c);
             ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(8));
             return TypeConverter.fromArr(arr);
         }
-        public static boolean getIsDoubleSided(GettersPack.WrappedProperties t, EngineObject object) {
+        public static boolean getIsDoubleSided(GettersPack.WrappedProperties t, @NotNull EngineObject object) {
             return TypeConverter.expectType(object.getProperties().get(9), Boolean.class);
         }
     }
