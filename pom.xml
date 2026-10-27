@@ -23,7 +23,7 @@
     </pluginRepositories>
 
     <properties>
-        <jaiva.version>7.0.0-beta.1</jaiva.version>
+        <jaiva.version>7.0.0-beta.2</jaiva.version>
         <maven.compiler.source>25</maven.compiler.source>
         <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -38,7 +38,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-<!--             Personal esoteric programming language parsing and runtime, so it can be embedded. -->
+<!--             Personal programming language, so it can be embedded. (its
+            required for the app to work but its cool for scripting) -->
             <groupId>com.github.yetnt.jaiva</groupId>
             <artifactId>core</artifactId>
             <version>${jaiva.version}</version>
@@ -57,23 +58,23 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+<!--            because nimbus is ass.-->
             <groupId>com.formdev</groupId>
             <artifactId>flatlaf</artifactId>
-            <version>3.5.4</version> <!-- Use the latest version available -->
+            <version>3.5.4</version>
         </dependency>
     </dependencies>
 
 
     <build>
-
         <plugins>
-
             <plugin>
                 <groupId>com.github.yetnt.jaiva</groupId>
                 <artifactId>lib-tooling-plugin</artifactId>
                 <version>${jaiva.version}</version>
                 <executions>
                     <execution>
+<!--                        Generates the JSON files in /projectdir/jaiva for vscode users to pull from for tooltips-->
                         <id>json-gen</id>
                         <goals><goal>json</goal></goals>
                         <configuration>
@@ -82,6 +83,7 @@
                         </configuration>
                     </execution>
                     <execution>
+<!--                        Same as JSON but just documentation-->
                         <id>md-gen</id>
                         <goals><goal>markdown</goal></goals>
                         <configuration>
@@ -133,7 +135,7 @@
             <plugin>
                 <groupId>org.panteleyev</groupId>
                 <artifactId>jpackage-maven-plugin</artifactId>
-                <version>1.6.0</version>
+                <version>1.8.0</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
