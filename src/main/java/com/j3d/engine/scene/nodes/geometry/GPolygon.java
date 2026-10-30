@@ -9,6 +9,7 @@ import com.j3d.engine.react.events.payloads.GPointMovedEvent;
 import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.nodes.geometry.base.DecomposeWhenDrawn;
 import com.j3d.engine.scene.nodes.geometry.base.WindingDir;
+import com.j3d.engine.scene.nodes.util.tri.Triangulation;
 import com.j3d.jaiva.EngineObject;
 
 import java.util.ArrayList;
@@ -18,11 +19,11 @@ public final class GPolygon extends GObject implements
 
     private ArrayList<GLine> lineSegments = new ArrayList<>();
     private WindingDir windingDir = WindingDir.CLOCKWISE;
-    // TODO: hmm?
-    private ArrayList<RenderState<Triangle, GObject>> triangles = new ArrayList<>();
+
+    private Triangulation.Triangulated triangles;
 
     public GPolygon(ArrayList<GPoint> points) {
-
+        triangles = Triangulation.Fetch.earClipping.apply(points);
     }
 
     @Override

@@ -24,19 +24,19 @@ khuluma(v3_cross(arrLit(1, 1, 2), arrLit(9, 3, 1)))!
 
 khuluma(v3_dot(arrLit(1, 1, 2), arrLit(9, 3, 1)))!
 
-maak oldPoint <- idk!
+maak oldPoint!
 colonize (i <- 0 <| i < 360*5 <| i + 45) ->
     maak new <- new_point(arrLit(i, m_sin(m_toRad(i))*40, 0), id)!
-    sif (oldPoint != idk) ?> joinn(oldPoint, get_uuid_value(get_point_id(new)), id)!
+    sif (oldPoint?') ?> joinn(oldPoint, get_uuid_value(get_point_id(new)), id)!
     oldPoint <- get_uuid_value(get_point_id(new))!
 <~
 
 @ circle.
-@ maak r <- 10!
-@
-@ colonize (i <- 0 <| i < 360 <| +) ->
-@     maak x <- r * m_cos(m_toRad(i))!
-@     maak y <- r * m_sin(m_toRad(i))!
-@
-@     new_point(arrLit(x, y, 0), id, arrLit(0, 255, 0))!
-@ <~
+maak r <- 10!
+
+colonize (z <- 0 <| z < 360 <| +) ->
+    maak x <- r * m_cos(m_toRad(z))!
+    maak y <- r * m_sin(m_toRad(z))!
+
+    new_point(arrLit(x, y, 0), id, arrLit(0, 255, 0))!
+<~

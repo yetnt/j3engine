@@ -5,11 +5,13 @@ import com.j3d.engine.math.CartesianPoint;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.math.plane.AxisPlane;
 import com.j3d.engine.math.plane.NormalPlane;
+import com.j3d.engine.scene.nodes.geometry.GPoint;
 import com.j3d.engine.scene.nodes.geometry.base.Winding;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,95 +19,77 @@ import org.jetbrains.annotations.Nullable;
 public final class EarClipping extends Triangulation {
     @Nullable
     @Override
-    public Triangulated apply(@NotNull ArrayList<Vector3> v3s) {
-        
-        if (v3s.size() < 3) return null; 
-        
-        // method doesnt enforce points are sequential the implementor shouldve done that
-        // also doesnt enforce on same plane. implementors problem
-        
-        ArrayList<Vector3> newPoints = new ArrayList<>(); // any newly created points by either segment intersections or likewise
-        ArrayList<Segment> segments = new ArrayList<>(); // list of records which just store 2 V3s that should be joined.
-        
-        if (v3s.size() == 3) {
-            segments.add(new Segment(v3s.get(0), v3s.get(1)));
-            segments.add(new Segment(v3s.get(1), v3s.get(2)));
-            segments.add(new Segment(v3s.get(2), v3s.get(0)));
-            return new Triangulated(newPoints, segments);
+    public Triangulated apply(@NotNull ArrayList<GPoint> gPoints) {
+        if (gPoints.size() < 3) return null;
+
+        ArrayList<Vector3> newPoints = new ArrayList<>(); // stays empty for plain ear clipping
+        ArrayList<Tri> tris = new ArrayList<>();
+
+        if (gPoints.size() == 3) {
+            tris.add(new Tri(gPoints.getFirst(), gPoints.get(1), gPoints.get(2)));
+            return new Triangulated(newPoints, tris);
         }
-        
-        Vector3 normal = Winding.normal(v3s.getFirst(), v3s.get(1), v3s.get(2));
-        NormalPlane normPlane = new NormalPlane(v3s.getFirst(), normal); // use random vector as plane origin. shouldnt matter in this case
+
+        Vector3 normal = Winding.normal(
+                gPoints.getFirst().getPivot(),
+                gPoints.get(1).getPivot(),
+                gPoints.get(2).getPivot());
+        NormalPlane normPlane = new NormalPlane(gPoints.getFirst().getPivot(), normal);
         AxisPlane axisPlane = normPlane.toAxisPlane();
-        
-        ArrayList<CartesianPoint> planarPoints = v3s
-                .stream()
-                .map(v3 -> {
-                    CartesianPoint cp = axisPlane.fromWorld(v3);
-                    cp.setId(v3.getId()); // so we can map existing v3s to their cartesian point versions.
-                    return cp;
-                })
-                .collect(Collectors.toCollection(ArrayList::new));
-        
-     
-        // We work on a copy of planarPoints so we can destructively remove ear tips
-        ArrayList<CartesianPoint> workingPoints = new ArrayList<>(planarPoints);
-        
-        // Build an O(1) map to quickly recover the original Vector3 reference using the ID stored in CartesianPoint
-        Map<UUID, Vector3> worldLookup = v3s.stream()
-                .collect(Collectors.toMap(Vector3::getId, v3 -> v3));
+
+        Map<UUID, GPoint> lookup = new HashMap<>();
+        ArrayList<CartesianPoint> workingPoints = new ArrayList<>();
+        for (GPoint g : gPoints) {
+            CartesianPoint cp = axisPlane.fromWorld(g.getPivot());
+            UUID id = UUID.randomUUID();
+            cp.setId(id);
+            lookup.put(id, g);
+            workingPoints.add(cp);
+        }
 
         while (workingPoints.size() > 3) {
             boolean earFound = false;
 
             for (int i = 0; i < workingPoints.size(); i++) {
                 int prevIdx = (i - 1 + workingPoints.size()) % workingPoints.size();
-                int currIdx = i;
                 int nextIdx = (i + 1) % workingPoints.size();
 
                 CartesianPoint prev = workingPoints.get(prevIdx);
-                CartesianPoint curr = workingPoints.get(currIdx);
+                CartesianPoint curr = workingPoints.get(i);
                 CartesianPoint next = workingPoints.get(nextIdx);
 
-                // 1. Check if the corner is convex
-                if (isConvex(prev, curr, next)) {
-                    
-                    // 2. Ensure no other remaining polygon point lies inside this candidate triangle
-                    boolean isEarClean = true;
-                    for (int j = 0; j < workingPoints.size(); j++) {
-                        if (j == prevIdx || j == currIdx || j == nextIdx) continue;
-                        
-                        if (isPointInTriangle(workingPoints.get(j), prev, curr, next)) {
-                            isEarClean = false;
-                            break;
-                        }
+                if (!isConvex(prev, curr, next)) continue;
+
+                boolean isEarClean = true;
+                for (int j = 0; j < workingPoints.size(); j++) {
+                    if (j == prevIdx || j == i || j == nextIdx) continue;
+                    if (isPointInTriangle(workingPoints.get(j), prev, curr, next)) {
+                        isEarClean = false;
+                        break;
                     }
+                }
 
-                    // 3. If it's a valid ear, slice the corner off
-                    if (isEarClean) {
-                        Vector3 wPrev = worldLookup.get(prev.getId());
-                        Vector3 wNext = worldLookup.get(next.getId());
-
-                        // Add the diagonal segment splitting this ear from the rest of the shape
-                        segments.add(new Segment(wPrev, wNext));
-
-                        // Remove the ear tip from our active processing loop
-                        workingPoints.remove(currIdx);
-                        earFound = true;
-                        break; 
-                    }
+                if (isEarClean) {
+                    tris.add(new Tri(
+                            lookup.get(prev.getId()),
+                            lookup.get(curr.getId()),
+                            lookup.get(next.getId())));
+                    workingPoints.remove(i);
+                    earFound = true;
+                    break;
                 }
             }
 
-            // Abort if the polygon structure is self-intersecting or broken
-            if (!earFound) {
-                return null;
-            }
+            if (!earFound) return null; // self-intersecting or broken polygon
         }
 
-        // Return the structural information; newPoints can stay empty for simple Ear Clipping 
-        // as standard polygon slicing does not require synthesizing new geometric coordinates.
-        return new Triangulated(newPoints, segments);
+        // The last 3 remaining points form the final triangle
+        tris.add(new Tri(
+                lookup.get(workingPoints.get(0).getId()),
+                lookup.get(workingPoints.get(1).getId()),
+                lookup.get(workingPoints.get(2).getId())));
+
+        return new Triangulated(newPoints, tris);
     }
 
     private boolean isConvex(@NotNull CartesianPoint p1, @NotNull CartesianPoint p2, @NotNull CartesianPoint p3) {

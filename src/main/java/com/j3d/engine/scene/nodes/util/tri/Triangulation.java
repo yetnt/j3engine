@@ -4,8 +4,12 @@
  */
 package com.j3d.engine.scene.nodes.util.tri;
 
+import com.j3d.engine.geometry.Triangle;
 import com.j3d.engine.math.matrix.Vector3;
 import java.util.ArrayList;
+
+import com.j3d.engine.scene.nodes.geometry.GPoint;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,21 +18,29 @@ import org.jetbrains.annotations.Nullable;
  * @author yetnt
  */
 public abstract sealed class Triangulation permits EarClipping {
-    
-    public static final EarClipping earClipping = new EarClipping();
-    
-    // in the event a polygon wants to flip the order/direciton of connected lines
-    // not to be confused with the renderer's segment.
-    static record Segment(
-        Vector3 A,
-        Vector3 B
+
+    public static final Fetch Fetch = new Fetch();
+
+    public record Tri(GPoint A, GPoint B, GPoint C) {
+
+        @NotNull
+        @Contract(" -> new")
+        public Tri flip() {
+            return new Tri(C, B, A);
+        }
+
+        @NotNull
+        @Contract(" -> new")
+        public Triangle toTriangle() {
+            return new Triangle(A.toPoint(), B.toPoint(), C.toPoint());
+        }
+    }
+
+    public record Triangulated(
+            ArrayList<Vector3> newPoints,
+            ArrayList<Tri> tris
     ) {}
-    
-    static record Triangulated(
-        ArrayList<Vector3> newPoints, // sometimes empty (EatClipping creates no new points)
-        ArrayList<Segment> segments
-    ) {}
-    
+
     @Nullable
-    public abstract Triangulated apply(@NotNull ArrayList<Vector3> v3s);
+    public abstract Triangulated apply(@NotNull ArrayList<GPoint> v3s);
 }

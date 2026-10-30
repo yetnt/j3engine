@@ -8,7 +8,7 @@ public class JaivaInstanceManager {
     private final JBundler commandBundler;
 
     public JaivaInstanceManager() {
-        commandBundler = new JBundler(TestPack.class, ObjectsPack.class, GettersPack.class, BasePack.class, NewPack.class, Vec3Pack.class);
+        commandBundler = new JBundler("com.j3d.jaiva.packs");
     }
 
     public JBundler getCommandBundler() {
