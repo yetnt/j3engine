@@ -71,22 +71,16 @@ public final class GPolygon extends GObject implements
         });
     }
 
-    // only exist because i havent made enums as dropdowns in properties yet.
-    private boolean getWindingDirAsBool() {
-        return windingDir == WindingDir.CLOCKWISE;
-    }
-
-    private void setWindingDirFromBool(boolean isClockwise) {
-        setWindingDir(isClockwise ? WindingDir.CLOCKWISE : WindingDir.COUNTERCLOCKWISE);
-        decompose();
-    }
-
     private void addProps() {
         properties.addAll(List.of(
-                new Property<>("Winding Direction", this::getWindingDirAsBool, GPolygon.class)
-                        .setNewValueConsumer(this::setWindingDirFromBool)
-                        .holds(Boolean.class)
-                        .setDescription("The direction which the triangles are wound in. Clockwise (true) is front facing"),
+                new Property<>("Winding Direction", this::getWindingDir, GPolygon.class)
+                        .setNewValueConsumer(this::setWindingDir)
+                        .holds(WindingDir.class)
+                        .setDescription("The direction which the triangles are wound in. Clockwise is front facing"),
+                new Property<>("Triangulation Method", this::getTriangulation, GPolygon.class)
+                        .setNewValueConsumer(this::setTriangulation)
+                        .holds(Triangulation.class)
+                        .setDescription("The method to use for triangulation. This should preferably not be messed with"),
                 new Property<>("Triangle Amount", this.getTriangles().tris()::size, GPolygon.class)
                         .constant()
                         .holds(Integer.class)
@@ -159,6 +153,11 @@ public final class GPolygon extends GObject implements
 
     public void setTriangulation(Triangulation triangulation) {
         this.triangulation = triangulation;
+        decompose();
+    }
+
+    public Triangulation getTriangulation() {
+        return triangulation;
     }
 
     @NotNull
@@ -166,12 +165,6 @@ public final class GPolygon extends GObject implements
     public HashSet<GLine> generateOutline() {
 
         HashSet<GLine> lines = new HashSet<>();
-//        for (int i = 0; i < points.size(); i++) {
-//            GPoint p1 = points.get(i);
-//            GPoint p2 = points.get((i + 1) % points.size()); // Connect last point to first
-//            GLine lnInCirc = GLine.getInstance(lines, p1, p2); // the line that is part of the ngon
-//            lines.add(lnInCirc);
-//        }
         getTriangles().tris().forEach(tri -> {
             GLine l1 = GLine.getInstance(lines, tri.A(), tri.B());
             GLine l2 = GLine.getInstance(lines, tri.B(), tri.C());

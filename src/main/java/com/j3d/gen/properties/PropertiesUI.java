@@ -112,6 +112,8 @@ public abstract class PropertiesUI {
             return new Vector3Property(list);
         } else if (expected == UUID.class) {
             return new IDProperty(list);
+        } else if (expected.isEnum() || (expected.getSuperclass() != null && expected.getSuperclass().isEnum())) {
+            return new DropdownProperty<>(list);
         } else if (expected == Boolean.class) {
             return new BooleanProperty(list);
         } else if (expected == Color.class) {
