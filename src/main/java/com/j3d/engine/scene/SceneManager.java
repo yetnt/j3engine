@@ -20,7 +20,6 @@ import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.engine.scene.nodes.geometry.base.HasParents;
 import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.engine.scene.nodes.layer.LayerList;
-import com.j3d.engine.scene.nodes.util.tri.Triangulation;
 import com.j3d.gen.settings.Settings;
 import com.j3d.ui.theme.J3DTheme;
 import org.jetbrains.annotations.Contract;
@@ -53,7 +52,7 @@ public final class SceneManager {
         return finder;
     }
     private final SceneRenderer renderer = new SceneRenderer();
-    private Triangulation polygonTriangulateMethod = Triangulation.EARCLIPPING;
+
     public SceneRenderer getRenderer() {
         return renderer;
     }
@@ -516,11 +515,4 @@ public final class SceneManager {
         thing.remove(o);
     }
 
-    public void setPolygonTriangulateMethod(Triangulation l) {
-        polygonTriangulateMethod = l;
-    }
-
-    public Triangulation getPolygonTriangulateMethod() {
-        return polygonTriangulateMethod;
-    }
 }

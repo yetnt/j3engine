@@ -33,13 +33,15 @@ public final class GPolygon extends GObject implements
     private TriangulationMethod.Triangulated triangles;
     private ArrayList<RenderState<Triangle, GObject>> renderState = new ArrayList<>();
 
+    private Triangulation triangulation = Settings.sceneProperties.polygonTriangulateMethod.getValue();
 
     @NotNull
-    @Contract("_, _, _, _ -> new")
-    public static GPolygon fromRaw(String id, Color col, ArrayList<GPoint> points, WindingDir windingDir) {
+    @Contract("_, _, _, _, _ -> new")
+    public static GPolygon fromRaw(String id, Color col, ArrayList<GPoint> points, Triangulation triangulation, WindingDir windingDir) {
         GPolygon gt = new GPolygon(points);
         gt.setId(UUID.fromString(id));
         gt.setColour(col);
+        gt.setTriangulation(triangulation);
         gt.setWindingDir(windingDir);
         return gt;
     }
@@ -153,6 +155,10 @@ public final class GPolygon extends GObject implements
 
     public ArrayList<Triangle> getTrianglesForSelectionPurposes() {
         return triangles.tris().stream().map(TriangulationMethod.Tri::toTriangle).collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public void setTriangulation(Triangulation triangulation) {
+        this.triangulation = triangulation;
     }
 
     @NotNull

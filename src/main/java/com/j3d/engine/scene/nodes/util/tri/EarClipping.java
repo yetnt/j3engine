@@ -14,14 +14,14 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 
 public final class EarClipping extends TriangulationMethod {
-    @Nullable
+    @NotNull
     @Override
     public Triangulated apply(@NotNull ArrayList<GPoint> gPoints) throws InvalidTriangulationException {
         if (gPoints.size() < 3) StaticRefs.getErrs().handleThenThrow(InvalidTriangulationException.lessThan3Points());
+        verifyCoplanar(gPoints);
 
         ArrayList<Vector3> newPoints = new ArrayList<>(); // stays empty for plain ear clipping
         ArrayList<Tri> tris = new ArrayList<>();

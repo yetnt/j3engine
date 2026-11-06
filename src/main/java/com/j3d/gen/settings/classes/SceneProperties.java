@@ -70,24 +70,11 @@ public final class SceneProperties implements SettingsParent {
         return null;
     });
     public EnumSetting<Triangulation> polygonTriangulateMethod = new EnumSetting<>(
-            "Polygon Triangulation Method",
-            Triangulation.EARCLIPPING,
-            "The method the sceneManager should make use of to sort triangles.",
+            "Default Polygon Triangulation Method",
+            Triangulation.DELAUNAY,
+            "The default method to use for triangulating new polygons.",
             Triangulation.values()
-    ).onSetValue((Triangulation l) -> {
-        if (StaticRefs.getSceneManager() != null) {
-            StaticRefs.getSceneManager().setPolygonTriangulateMethod(l);
-            // invalidate all polygons in the scene
-            ArrayList<FindResult> results = StaticRefs.getSceneManager().finder().find(
-                    GPolygon.class, Finder.allQuery(), null
-            );
-            results.forEach(g -> {
-                if (g.containsGObject() && g.getgObject() instanceof GPolygon poly)
-                    poly.invalidateAll();
-            });
-        }
-        return null;
-    });
+    );
     public BooleanSetting useBackFaceCulling = new BooleanSetting(
             "Use Back Face Culling",
             true,

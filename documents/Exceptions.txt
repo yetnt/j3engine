@@ -45,7 +45,12 @@ JCCXXX -> J3DErr (prefixed J cuz why not)
 43101 -> MouseOwner could not instantiate a Robot instance
 
 44101 -> Polygon has less than 3 points.
+44102 -> All polygon points are collinear.
+44103 -> Polygon points aren't coplanar (with specifics)
 44201 -> (Ear-Clipping) Self-intersecting or broken polygon
+44300 -> Seidel failed to triangulate
+44301 -> (Seidel) Polygon has zero area or collinear points.
+
 
 51000 -> Generic project File Exception
 51001 -> Attempt at loading a PF version which this version of J3Engine cant load
