@@ -16,6 +16,7 @@ import com.j3d.jaiva.TypeConverter;
 import com.j3d.jaiva.packs.getters.GettersPack;
 import com.j3d.jaiva.packs.getters.J3DGetterException;
 import com.yetnt.utils.tuple.SamePair;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public final class GCurve extends GObject implements IdempotentEventListener<GPo
     private int amount = 50;
     private boolean deletedState;
 
+    @NotNull
     public static GCurve fromRaw(String id, GPoint st, GPoint cp, GPoint en, Color col, int amount) {
         GCurve gp = new GCurve(st, cp, en);
         gp.setId(UUID.fromString(id));
@@ -40,7 +42,7 @@ public final class GCurve extends GObject implements IdempotentEventListener<GPo
         return gp;
     }
 
-    public GCurve(GPoint start, GPoint controlPoint, GPoint end) {
+    public GCurve(@NotNull GPoint start, @NotNull GPoint controlPoint, @NotNull GPoint end) {
 
         this.start = start;
         this.controlPoint = controlPoint;

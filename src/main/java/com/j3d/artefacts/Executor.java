@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * Executor is a generic debugging artefact. This is available to any use via the {@link com.j3d.ui.home.Projects} UI
@@ -93,16 +94,25 @@ public final class Executor implements Artefact {
                 max,
                 GPoint::new
         );
+        ArrayList<GPoint> translated = points
+                .stream()
+                .map(p -> new GPoint(p.getPivot()))
+                .peek(p -> p.setPivot(p.getPivot().add(Vector3.acrossY(20))))
+                .collect(Collectors.toCollection(ArrayList::new));
 
         // winding purposes.
         points = new ArrayList<>(points.reversed());
 
         GPolygon poly = new GPolygon(points);
         poly.setColour(Color.ORANGE);
+        GPolyline polyline = new GPolyline(translated);
+        polyline.setColour(Color.ORANGE);
 
         return new Thing(layer, "Polygon!!!!!")
                 .addObjs(centre)
                 .addObjs(points.toArray(new GPoint[0]))
+                .addObjs(translated.toArray(new GPoint[0]))
+                .addObjs(polyline)
                 .addObjs(poly.generateOutline().toArray(new GLine[0]))
                 .addObjs(poly);
     }

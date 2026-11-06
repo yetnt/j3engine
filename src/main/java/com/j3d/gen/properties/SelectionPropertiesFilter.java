@@ -7,5 +7,5 @@ public enum SelectionPropertiesFilter {
     TRI,
     THING,
     CURVE, LAYER,
-    POLYGON
+    POLYGON, POLYLINE
 }

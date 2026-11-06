@@ -30,7 +30,7 @@ public enum GObjectRegistry {
      */
     POINT(GPoint.class, "point", CmdToken.Type.ID_POINT, EngineObject.Type.GPOINT),
     /**
-     * a curve
+     * a line
      */
     LINE(GLine.class, "line", CmdToken.Type.ID_LINE, EngineObject.Type.GLINE),
     /**
@@ -44,8 +44,11 @@ public enum GObjectRegistry {
     /**
      * a polygon
      */
-    GPOLYGON(GPolygon.class, "polygon", CmdToken.Type.ID_POLYGON, EngineObject.Type.GPOLYGON);;
-
+    PGON(GPolygon.class, "polygon", CmdToken.Type.ID_POLYGON, EngineObject.Type.GPOLYGON),
+    /**
+     * a polyline
+     */
+    PLINE(GPolyline.class, "polyline", CmdToken.Type.ID_POLYLINE, EngineObject.Type.GPOLYLINE);
     /**
      * The actual class
      */

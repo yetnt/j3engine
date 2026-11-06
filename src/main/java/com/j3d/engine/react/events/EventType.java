@@ -71,5 +71,6 @@ public enum EventType {
     /**
      * The camera moved. Broadcast by {@link Camera} with a payload class of {@link CameraUpdatedEventPayload}
      */
-    CAMERA_MOVED
+    CAMERA_MOVED,
+    EMITTED_ERROR
 }

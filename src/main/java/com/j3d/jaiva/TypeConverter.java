@@ -104,7 +104,7 @@ public class TypeConverter {
             case COLOUR -> colorFromObject(null, engineObject);
             case UUID -> UUIDfromObject(engineObject);
             case LAYER -> findLayer(engineObject);
-            case GPOINT, GLINE, GTRI, GCURVE, GPOLYGON -> getGObject(engineObject, null);
+            case GPOINT, GLINE, GTRI, GCURVE, GPOLYGON, GPOLYLINE -> getGObject(engineObject, null);
             case THING -> getGObject(engineObject, EngineObject.Type.THING);
             case REF -> getReference(engineObject);
         };

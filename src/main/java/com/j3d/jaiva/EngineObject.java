@@ -54,6 +54,6 @@ public class EngineObject extends ArrayList<Object> {
     }
 
     public enum Type {
-        VECTOR3, COLOUR, UUID, GPOINT, GLINE, GTRI, GCURVE, REF, GPOLYGON, THING, LAYER;
+        VECTOR3, COLOUR, UUID, GPOINT, GLINE, GTRI, GCURVE, REF, GPOLYGON, THING, LAYER, GPOLYLINE;
     }
 }

@@ -53,10 +53,15 @@ public class SelectionQuery extends Rectangle {
             case GLine l -> has(l.toSegment(), soft);
             case GPoint p -> has(p.toPoint());
             case GCurve curve -> has(curve, soft);
+            case GPolyline poly -> {
+                ArrayList<Segment> segments = poly.toSegments();
+                yield soft ? segments.stream().anyMatch(l -> has(l, true))
+                        : segments.stream().allMatch(l -> has(l, false));
+            }
             case GPolygon poly -> {
                 ArrayList<Triangle> triangles = poly.getTrianglesForSelectionPurposes();
-                yield soft ? triangles.stream().anyMatch(t -> has(t, soft))
-                        : triangles.stream().allMatch(t -> has(t, soft));
+                yield soft ? triangles.stream().anyMatch(t -> has(t, true))
+                        : triangles.stream().allMatch(t -> has(t, false));
             }
             default -> throw new IllegalStateException("Unexpected value: " + obj);
         };

@@ -1,8 +1,13 @@
 package com.j3d.errors;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.react.events.CapableEventEmitter;
+import com.j3d.engine.react.events.CapableEventListener;
+import com.j3d.engine.react.events.EventPayload;
+import com.j3d.engine.react.events.EventType;
 import com.j3d.errors.severity.*;
 import com.j3d.ui.engine.J3Splash;
+import com.yetnt.utils.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -21,7 +26,12 @@ import java.util.ArrayList;
  * @see J3ErrSeverity
  * @author Lehlogonolo Poole
  */
-public final class ErrorHandler {
+public final class ErrorHandler extends CapableEventEmitter<Boolean> {
+
+    public ErrorHandler() {
+        super(Boolean.class);
+    }
+
     private final ArrayList<Class<?>> ignored = new ArrayList<>();
 
     /**
@@ -138,5 +148,18 @@ public final class ErrorHandler {
     public void handleThenThrow(J3DError err) throws J3DError {
         handle(err);
         throw err;
+    }
+
+    public void emitThenThrow(J3DError err) throws J3DError {
+        Pair<CapableEventListener<Boolean>, Boolean> t = capableBroadcast(EventType.EMITTED_ERROR, new EventPayload<Object>(this) {
+        });
+        if (t == null) {
+            handleThenThrow(err);
+            return;
+        }
+        if (t.getSecond() instanceof Boolean b)
+            if (!b) handleThenThrow(err);
+        handleThenThrow(err);
+
     }
 }

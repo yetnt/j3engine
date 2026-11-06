@@ -142,7 +142,8 @@ public class CmdToken {
         DOUBLE(Double.class, "num"),
         BOOL(Boolean.class, "bool"),
         TAGGED(TaggedArgValue.class, ""),
-        ID_POLYGON(GPolygon.class, "polygon"); // TODO: when polygons start going thru this entry allo0ws em to work :)
+        ID_POLYGON(GPolygon.class, "polygon"),
+        ID_POLYLINE(GPolyline.class, "polyline");
 
         /**
          * Constructs a Type enum constant.

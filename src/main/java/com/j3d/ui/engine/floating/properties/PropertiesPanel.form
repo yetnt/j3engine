@@ -100,9 +100,10 @@
                 <StringItem index="2" value="line"/>
                 <StringItem index="3" value="tri"/>
                 <StringItem index="4" value="curve"/>
-                <StringItem index="5" value="polygon"/>
-                <StringItem index="6" value="thing"/>
-                <StringItem index="7" value="layer"/>
+                <StringItem index="6" value="polyline"/>
+                <StringItem index="7" value="polygon"/>
+                <StringItem index="8" value="thing"/>
+                <StringItem index="9" value="layer"/>
               </StringArray>
             </Property>
           </Properties>

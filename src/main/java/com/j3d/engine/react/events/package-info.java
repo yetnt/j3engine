@@ -66,6 +66,17 @@
  *         {@link EventEmitterAndListenerInterface} is the previous, but interface version for classes
  *         which cant extend {@link EventEmitterAndListener} directly
  *     </li>
+ *     <li>
+ *         {@link CapableEventListener} is a specialisation of an {@link EventListener} which is capable
+ *         of returning a value via {@link CapableEventListener#capableOnEvent(EventType, EventPayload)}
+ *         and only able to be listened/further returned by {@link CapableEventEmitter#capableBroadcast(EventType, EventPayload)}
+ *     </li>
+ *     <li>
+ *         {@link CapableEventEmitter} is a specialisation of an {@link EventEmitter} which simply adds
+ *         {@link CapableEventEmitter#capableBroadcast(EventType, EventPayload)} which if the return type
+ *         that the implementor registers it to listen for is returned by any {@link CapableEventListener},
+ *         it returns it. (It can also normally listen to other events if no capable event listener is present)
+ *     </li>
  * </ul>
  * @author Lehlogonolo Poole
  */
