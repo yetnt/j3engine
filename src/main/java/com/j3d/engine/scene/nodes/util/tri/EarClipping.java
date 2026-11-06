@@ -1,6 +1,7 @@
 package com.j3d.engine.scene.nodes.util.tri;
 
 
+import com.j3d.StaticRefs;
 import com.j3d.engine.math.CartesianPoint;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.math.plane.AxisPlane;
@@ -16,11 +17,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public final class EarClipping extends Triangulation {
+public final class EarClipping extends TriangulationMethod {
     @Nullable
     @Override
-    public Triangulated apply(@NotNull ArrayList<GPoint> gPoints) {
-        if (gPoints.size() < 3) return null;
+    public Triangulated apply(@NotNull ArrayList<GPoint> gPoints) throws InvalidTriangulationException {
+        if (gPoints.size() < 3) StaticRefs.getErrs().handleThenThrow(InvalidTriangulationException.lessThan3Points());
 
         ArrayList<Vector3> newPoints = new ArrayList<>(); // stays empty for plain ear clipping
         ArrayList<Tri> tris = new ArrayList<>();
@@ -80,7 +81,10 @@ public final class EarClipping extends Triangulation {
                 }
             }
 
-            if (!earFound) return null; // self-intersecting or broken polygon
+            if (!earFound) StaticRefs.getErrs().handleThenThrow(
+                    new InvalidTriangulationException("Self-intersecting or broken polygon.")
+                            .code(4201)
+            ); // self-intersecting or broken polygon
         }
 
         // The last 3 remaining points form the final triangle

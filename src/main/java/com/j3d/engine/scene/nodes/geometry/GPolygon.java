@@ -1,6 +1,5 @@
 package com.j3d.engine.scene.nodes.geometry;
 
-import com.j3d.engine.geometry.Pure;
 import com.j3d.engine.geometry.Triangle;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.react.events.EventType;
@@ -8,32 +7,111 @@ import com.j3d.engine.react.events.IdempotentEventListener;
 import com.j3d.engine.react.events.payloads.GPointMovedEvent;
 import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.nodes.geometry.base.DecomposeWhenDrawn;
+import com.j3d.engine.scene.nodes.geometry.base.Winding;
 import com.j3d.engine.scene.nodes.geometry.base.WindingDir;
 import com.j3d.engine.scene.nodes.util.tri.Triangulation;
+import com.j3d.engine.scene.nodes.util.tri.TriangulationMethod;
+import com.j3d.gen.properties.Property;
+import com.j3d.gen.settings.Settings;
 import com.j3d.jaiva.EngineObject;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public final class GPolygon extends GObject implements
         IdempotentEventListener<GPointMovedEvent, Vector3>, DecomposeWhenDrawn<Triangle> {
 
-    private ArrayList<GPoint> lineSegments = new ArrayList<>();
+    private final ArrayList<GPoint> points = new ArrayList<>();
     private WindingDir windingDir = WindingDir.CLOCKWISE;
 
-    private Triangulation.Triangulated triangles;
+    private TriangulationMethod.Triangulated triangles;
+    private ArrayList<RenderState<Triangle, GObject>> renderState = new ArrayList<>();
+
+
+    @NotNull
+    @Contract("_, _, _, _ -> new")
+    public static GPolygon fromRaw(String id, Color col, ArrayList<GPoint> points, WindingDir windingDir) {
+        GPolygon gt = new GPolygon(points);
+        gt.setId(UUID.fromString(id));
+        gt.setColour(col);
+        gt.setWindingDir(windingDir);
+        return gt;
+    }
 
     public GPolygon(ArrayList<GPoint> points) {
-        triangles = Triangulation.Fetch.earClipping.apply(points);
+        super(Color.BLACK);
+        triangulate(points);
+        this.points.addAll(points);
+        points.forEach(point -> {
+            point.attachListener(this);
+            point.addParent(this);
+        });
+        setPivot(Vector3.reduceToVector3(points.stream().map(GPoint::getPivot).toList(), Vector3::add).div(points.size()));
+        addProps();
+    }
+
+    private void triangulate(ArrayList<GPoint> points) {
+        triangles = Settings.sceneProperties.polygonTriangulateMethod.getValue().getTriangulationMethod().apply(points);
+        renderState.forEach(RenderState::invalidate);
+        renderState.clear();
+        triangles.tris().forEach(tri -> {
+            if (windingDir == WindingDir.COUNTERCLOCKWISE)
+                tri.flip();
+            RenderState<Triangle, GObject> r = tri.toTriangle().toRenderState(this);
+            r.getPure().setDoubleSided(false); // polygons always experience back-face cullin.
+            renderState.add(r);
+        });
+    }
+
+    // only exist because i havent made enums as dropdowns in properties yet.
+    private boolean getWindingDirAsBool() {
+        return windingDir == WindingDir.CLOCKWISE;
+    }
+
+    private void setWindingDirFromBool(boolean isClockwise) {
+        setWindingDir(isClockwise ? WindingDir.CLOCKWISE : WindingDir.COUNTERCLOCKWISE);
+        decompose();
+    }
+
+    private void addProps() {
+        properties.addAll(List.of(
+                new Property<>("Winding Direction", this::getWindingDirAsBool, GPolygon.class)
+                        .setNewValueConsumer(this::setWindingDirFromBool)
+                        .holds(Boolean.class)
+                        .setDescription("The direction which the triangles are wound in. Clockwise (true) is front facing"),
+                new Property<>("Triangle Amount", this.getTriangles().tris()::size, GPolygon.class)
+                        .constant()
+                        .holds(Integer.class)
+                        .setDescription("The amount of triangles this polygon is made up off"),
+                new Property<>("Produced Points", this.getTriangles().newPoints()::size, GPolygon.class)
+                        .constant()
+                        .holds(Integer.class)
+                        .setDescription("The amount of points that this polygon introduced as a side effect.")
+        ));
+        pivotProperty // provided by GObject so override its default.
+                .setDescription("The geometric centre of this polygon")
+                .constant(); // cannot be edited.
     }
 
     @Override
     public Vector3 getDupeObjectToCheck() {
-        return null;
+        return getPivot();
     }
 
     @Override
     public void handlePossibleDuplicates(EventType type, GPointMovedEvent payload) {
-
+        Vector3 newPiv = Vector3.reduceToVector3(points.stream().map(GPoint::getPivot).toList(), Vector3::add).div(points.size());
+        if (!newPiv.equals(getDupeObjectToCheck())) {
+            setPivot(newPiv);
+            invalidateAll();
+            decompose();
+        }
     }
 
     @Override
@@ -43,11 +121,60 @@ public final class GPolygon extends GObject implements
 
     @Override
     public void decompose() {
-
+        triangulate(points);
     }
 
     @Override
     public ArrayList<RenderState<Triangle, GObject>> getDecomposeList() {
-        return null;
+        return renderState;
+    }
+
+    @Override
+    public ArrayList genericRenderStateList() {
+        decompose();
+        return getDecomposeList();
+    }
+
+    public WindingDir getWindingDir() {
+        return windingDir;
+    }
+
+    public void setWindingDir(WindingDir windingDir) {
+        this.windingDir = windingDir;
+    }
+
+    public TriangulationMethod.Triangulated getTriangles() {
+        return triangles;
+    }
+
+    public ArrayList<GPoint> generatedPoints() {
+        return points;
+    }
+
+    public ArrayList<Triangle> getTrianglesForSelectionPurposes() {
+        return triangles.tris().stream().map(TriangulationMethod.Tri::toTriangle).collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    @NotNull
+    @Contract("->new")
+    public HashSet<GLine> generateOutline() {
+
+        HashSet<GLine> lines = new HashSet<>();
+//        for (int i = 0; i < points.size(); i++) {
+//            GPoint p1 = points.get(i);
+//            GPoint p2 = points.get((i + 1) % points.size()); // Connect last point to first
+//            GLine lnInCirc = GLine.getInstance(lines, p1, p2); // the line that is part of the ngon
+//            lines.add(lnInCirc);
+//        }
+        getTriangles().tris().forEach(tri -> {
+            GLine l1 = GLine.getInstance(lines, tri.A(), tri.B());
+            GLine l2 = GLine.getInstance(lines, tri.B(), tri.C());
+            GLine l3 = GLine.getInstance(lines, tri.C(), tri.A());
+            lines.add(l1);
+            lines.add(l2);
+            lines.add(l3);
+        });
+
+        return lines;
     }
 }

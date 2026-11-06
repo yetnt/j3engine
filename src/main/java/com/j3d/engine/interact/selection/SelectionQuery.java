@@ -28,8 +28,6 @@ public class SelectionQuery extends Rectangle {
     public SelectionType type;
     public ScreenPoint[] points = new ScreenPoint[2];
 
-    // TODO: GPolygon? although idk if itd just decompose here naturally since we alreqdy handle Triangle. just check to make sure :)
-
     /**
      * Constructs a SelectionQuery object with the given screen points and selection type.
      * @param i The first screen point.
@@ -55,6 +53,11 @@ public class SelectionQuery extends Rectangle {
             case GLine l -> has(l.toSegment(), soft);
             case GPoint p -> has(p.toPoint());
             case GCurve curve -> has(curve, soft);
+            case GPolygon poly -> {
+                ArrayList<Triangle> triangles = poly.getTrianglesForSelectionPurposes();
+                yield soft ? triangles.stream().anyMatch(t -> has(t, soft))
+                        : triangles.stream().allMatch(t -> has(t, soft));
+            }
             default -> throw new IllegalStateException("Unexpected value: " + obj);
         };
     }

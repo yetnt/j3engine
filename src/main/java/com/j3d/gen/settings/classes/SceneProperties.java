@@ -4,6 +4,10 @@ import com.j3d.StaticRefs;
 import com.j3d.engine.math.CartesianPoint;
 import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.scene.draw.PureSortMethod;
+import com.j3d.engine.scene.find.FindResult;
+import com.j3d.engine.scene.find.Finder;
+import com.j3d.engine.scene.nodes.geometry.GPolygon;
+import com.j3d.engine.scene.nodes.util.tri.Triangulation;
 import com.j3d.gen.settings.SettingsChild;
 import com.j3d.gen.settings.SettingsParent;
 import com.j3d.gen.settings.types.BooleanSetting;
@@ -65,6 +69,25 @@ public final class SceneProperties implements SettingsParent {
            StaticRefs.getSceneManager().getRenderer().setSortMethod(l);
         return null;
     });
+    public EnumSetting<Triangulation> polygonTriangulateMethod = new EnumSetting<>(
+            "Polygon Triangulation Method",
+            Triangulation.EARCLIPPING,
+            "The method the sceneManager should make use of to sort triangles.",
+            Triangulation.values()
+    ).onSetValue((Triangulation l) -> {
+        if (StaticRefs.getSceneManager() != null) {
+            StaticRefs.getSceneManager().setPolygonTriangulateMethod(l);
+            // invalidate all polygons in the scene
+            ArrayList<FindResult> results = StaticRefs.getSceneManager().finder().find(
+                    GPolygon.class, Finder.allQuery(), null
+            );
+            results.forEach(g -> {
+                if (g.containsGObject() && g.getgObject() instanceof GPolygon poly)
+                    poly.invalidateAll();
+            });
+        }
+        return null;
+    });
     public BooleanSetting useBackFaceCulling = new BooleanSetting(
             "Use Back Face Culling",
             true,
@@ -92,6 +115,7 @@ public final class SceneProperties implements SettingsParent {
             add(useBackFaceCulling);
             add(scale);
             add(triangleSortMethod);
+            add(polygonTriangulateMethod);
         }};
     }
 

@@ -9,10 +9,7 @@ import com.j3d.engine.react.actions.Action;
 import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.nodes.Thing;
-import com.j3d.engine.scene.nodes.geometry.GCurve;
-import com.j3d.engine.scene.nodes.geometry.GLine;
-import com.j3d.engine.scene.nodes.geometry.GPoint;
-import com.j3d.engine.scene.nodes.geometry.GTri;
+import com.j3d.engine.scene.nodes.geometry.*;
 import com.j3d.engine.scene.nodes.geometry.base.Winding;
 import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.engine.scene.nodes.util.Sampler;
@@ -65,7 +62,9 @@ public final class Executor implements Artefact {
         );
         Thing cone = cone(20, 20);
 
+        Thing polygon = polygon(10, 20);
         ArrayList<VoidAction> actions = new ArrayList<>(List.of(
+                polygon.scale(5),
                 cub.rotate(Vector3.Z, 45),
                 cub.translate(new Vector3(4, 2, 3)),
                 cub.scale(0.4),
@@ -82,6 +81,30 @@ public final class Executor implements Artefact {
         //noinspection UseBulkOperation (We specifically override add with extra functionality.)
         actions.forEach(SceneManager.history::add);
 
+    }
+
+    public Thing polygon(int max, int ngonRadius) {
+        GPoint centre = new GPoint(Vector3.ZERO.add(Vector3.acrossZ(30)));
+        AxisPlane axisPlane = AxisPlane.XZ(centre.getPivot());
+
+        ArrayList<GPoint> points = Sampler.ngon(
+                ngonRadius,
+                axisPlane,
+                max,
+                GPoint::new
+        );
+
+        // winding purposes.
+        points = new ArrayList<>(points.reversed());
+
+        GPolygon poly = new GPolygon(points);
+        poly.setColour(Color.ORANGE);
+
+        return new Thing(layer, "Polygon!!!!!")
+                .addObjs(centre)
+                .addObjs(points.toArray(new GPoint[0]))
+                .addObjs(poly.generateOutline().toArray(new GLine[0]))
+                .addObjs(poly);
     }
 
     public Thing cone(int max, int height) {

@@ -25,6 +25,7 @@ import com.j3d.jaiva.packs.getters.J3DGetterException;
 import com.j3d.storage.files.protocol.proj.PF1;
 import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.ui.dialog.Spinner;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -158,6 +159,8 @@ public final class GTri extends GObject implements IdempotentEventListener<GPoin
         addProps();
     }
 
+    @NotNull
+    @Contract(" -> new")
     public Triangle toTriangle() {
         return new Triangle(
                 winding.first().getPivot(),
@@ -187,7 +190,7 @@ public final class GTri extends GObject implements IdempotentEventListener<GPoin
      * @implSpec This constructor assumes winding by checking that each edge's start point is unique
      * and similar to the end point.
      */
-    public GTri(Color c, GLine A, GLine B, GLine C) {
+    public GTri(Color c, @NotNull GLine A, @NotNull GLine B, @NotNull GLine C) {
         super(c);
         GPoint[] points = {
                 A.getA(), A.getB(),

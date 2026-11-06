@@ -29,7 +29,6 @@ JCCXXX -> J3DErr (prefixed J cuz why not)
 20231 -> (another sill doing)
 
 
-43101 -> MouseOwner could not instantiate a Robot instance
 
 41101 -> Copy Exception - Connection severed.
 41200 -> Generic History or Action-related Exception
@@ -43,6 +42,10 @@ JCCXXX -> J3DErr (prefixed J cuz why not)
 42106 -> Input matrix does not match expected dimensions
 42107 -> Matrix Resolve: Row/Column Index out of bounds
 
+43101 -> MouseOwner could not instantiate a Robot instance
+
+44101 -> Polygon has less than 3 points.
+44201 -> (Ear-Clipping) Self-intersecting or broken polygon
 
 51000 -> Generic project File Exception
 51001 -> Attempt at loading a PF version which this version of J3Engine cant load

@@ -76,6 +76,9 @@ public abstract class PropertiesUI {
                         case CURVE -> {
                             if (o instanceof GCurve) filtered.add((T)o);
                         }
+                        case POLYGON -> {
+                            if (o instanceof GPolygon) filtered.add((T) o);
+                        }
                         case THING -> filtered.add(
                                 (T) sm.findObjectParent(o)
                         );
@@ -150,6 +153,7 @@ public abstract class PropertiesUI {
             case POINT -> filterCommonProperties(objects, GPoint.class);
             case LINE -> filterCommonProperties(objects, GLine.class);
             case TRI -> filterCommonProperties(objects, GTri.class);
+            case POLYGON -> filterCommonProperties(objects, GPolygon.class);
             case CURVE -> filterCommonProperties(objects, GCurve.class);
             case THING -> filterCommonProperties(objects, Thing.class);
             case LAYER -> filterCommonProperties(objects, Layer.class);

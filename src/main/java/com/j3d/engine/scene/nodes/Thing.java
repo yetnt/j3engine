@@ -23,6 +23,7 @@ import com.j3d.storage.files.protocol.proj.ProjectFile;
 import com.j3d.ui.dialog.Spinner;
 import com.j3d.ui.engine.floating.tree.TreeNodeIdentity;
 import com.j3d.ui.theme.J3DTheme;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -261,7 +262,8 @@ public final class Thing implements SceneObjectList {
      * Adds one or more GObjects to this Thing.
      * @param gObjects The GObjects to add.
      */
-    public Thing addObjs(GObject ...gObjects) {
+    @Contract("_ -> this")
+    public Thing addObjs(@NotNull GObject ...gObjects) {
         toggleSaved();
         if (gObjects.length == 0) {
             return this;
@@ -271,7 +273,7 @@ public final class Thing implements SceneObjectList {
         return this;
     }
 
-    private void calculateCentroid(GObject[] gObjects) {
+    private void calculateCentroid(@NotNull GObject[] gObjects) {
         ArrayList<Vector3> pts = new ArrayList<>();
         for (GObject ob : gObjects) {
             if (ob instanceof GPoint p) {
