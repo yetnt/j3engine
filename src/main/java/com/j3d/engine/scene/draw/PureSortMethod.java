@@ -10,7 +10,6 @@ import com.j3d.gen.settings.classes.SceneProperties;
  * @author Lehlogonolo Poole
  * @see SceneProperties#triangleSortMethod
  * @see SceneRenderer
- * @see SortMethod
  * @see GTri
  */
 public enum PureSortMethod {
@@ -30,9 +29,5 @@ public enum PureSortMethod {
     /**
      * Triangles are sorted like CamDepth then CamDist then lastly based on their unique identifiers (UUIDs).
      */
-    DDUUIDSORT,
-    /**
-     * Triangles are sorted into buckets based on their depth values.
-     */
-    BUCKETSORT
+    DDUUIDSORT
 }

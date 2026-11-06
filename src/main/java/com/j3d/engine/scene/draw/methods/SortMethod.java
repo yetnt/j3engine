@@ -8,20 +8,20 @@ import com.j3d.engine.scene.nodes.geometry.GTri;
 import com.j3d.engine.scene.nodes.geometry.base.DecomposeWhenDrawn;
 import com.j3d.engine.scene.nodes.geometry.base.Winding;
 import com.j3d.gen.settings.Settings;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
 /**
- * SortMethod is an abstract class which extends ArrayList of GTri and represents
- * a method for sorting triangles.
- * @implSpec What a sort method should do is, when a triangle is added via {@link #add(Object)},
+ * SortMethod is itself just an arraylist of {@link RenderState} objects.
+ * @implSpec What a sort method should do is, when a render state is added via {@link #add(Object)},
  * it should sort the list according to its own sorting algorithm.
- * It should also probably override {@link #clear()} to re-add all non-dirty triangles from the registered listeners but
+ * It should also probably override {@link #clear()} to re-add all non-dirty render states from the registered listeners but
  * that's up to the implementation.
  * @author Lehlogonolo Poole
  * @see ArrayList
  * @see GTri
- * @see SceneRenderer
+ * @see com.j3d.engine.scene.draw.SceneRenderer
  */
 public abstract sealed class SortMethod extends ArrayList<RenderState<?, ?>> 
         permits CamDepthSort, CamDistSort, DDUUIDSort {
@@ -32,26 +32,11 @@ public abstract sealed class SortMethod extends ArrayList<RenderState<?, ?>>
 
     @Override
     public boolean add(RenderState<?, ?> drawable) {
-        SortMethod sm = this;
-        if (this.contains(drawable)) {
+        if (this.contains(drawable))
             return false;
-        } 
-        if (drawable.getPure() instanceof Triangle triangle) {
+        if (drawable.getPure() instanceof Triangle triangle)
             if (backFaceCulled(triangle)) return false;
-        }
-//        else if (drawable instanceof DecomposeWhenDrawn<?> d) {
-//            d.getDecomposeList().forEach(r-> {
-//                if (r.isValid())
-//                    sm.add(drawable);
-//                else {
-//                    StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getRenderer().unregister(drawable);
-//                    sm.remove(d);
-//                }
-//            });
-//            return true;
-//        } else {
-            return super.add(drawable);
-//        }
+        return super.add(drawable);
     }
 
     /**
@@ -60,7 +45,7 @@ public abstract sealed class SortMethod extends ArrayList<RenderState<?, ?>>
      * @return {@code true} if the triangle should be culled, {@code false} otherwise.
      * @implNote If {@link Settings#sceneProperties#backFaceCulled(GTri)} is false, this exits early.
      */
-    public boolean backFaceCulled(Triangle tri) {
+    public boolean backFaceCulled(@NotNull Triangle tri) {
         if (tri.isDoubleSided()) return false;
         if (!Settings.sceneProperties.useBackFaceCulling.getValue()) return false;
         Vector3 N = Winding.normal(tri.getP1(), tri.getP2(), tri.getP3());

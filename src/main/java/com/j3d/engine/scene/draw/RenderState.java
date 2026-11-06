@@ -11,17 +11,19 @@ import java.util.function.Consumer;
 
 
 /**
- * Represents the rendering state for a graphical object, linking a pure geometric definition
- * with its graphical object representation. It manages drawing logic and selection state.
+ * Represents the rendering state for a graphics object, linking a pure geometric definition
+ * with its graphics object representation. It manages drawing logic and selection state.
  *
  * @param <P> The type of the pure geometric object, extending {@link Pure}.
- * @param <O> The type of the graphical object, extending {@link GObject}.
+ * @param <G> The type of the graphics object, extending {@link GObject}.
+ *
+ * @author Lehlogonolo Poole
  */
-public class RenderState<P extends Pure, O extends GObject> implements Drawable {
+public class RenderState<P extends Pure, G extends GObject> implements Drawable {
     /**
      * The graphical object instance that this render state belongs to.
      */
-    private final O parent;
+    private final G parent;
     /**
      * The pure geometric definition associated with this render state.
      */
@@ -34,7 +36,7 @@ public class RenderState<P extends Pure, O extends GObject> implements Drawable 
     private Consumer<Graphics2D> onDraw = (g) -> {};
     private Consumer<Graphics2D> onDrawSelected = (g) -> {};
 
-    public RenderState(P pureInstance, O parentInstance) {
+    public RenderState(P pureInstance, G parentInstance) {
         id = parentInstance.getId();
         this.pure = pureInstance;
         this.parent = parentInstance;
@@ -58,7 +60,7 @@ public class RenderState<P extends Pure, O extends GObject> implements Drawable 
         return valid;
     }
 
-    public O getParent() {
+    public G getParent() {
         return parent;
     }
 

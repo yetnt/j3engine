@@ -4,13 +4,14 @@ import com.j3d.StaticRefs;
 import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.draw.SceneRenderer;
 import com.j3d.engine.scene.nodes.geometry.GTri;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * CamDistSort is a sorting method that sorts GTri objects based on their distance from the camera.
- * GTri objects farther from the camera are placed before those closer to the camera.
+ * CamDistSort is a sorting method that sorts objects based on their distance from the camera.
+ * Objects farther from the camera are placed before those closer to the camera.
  * @author Lehlogonolo Poole
  * @see SortMethod
  * @see SceneRenderer
@@ -22,7 +23,7 @@ public final class CamDistSort extends SortMethod {
     }
 
     /**
-     * Clears the list and re-adds all non-dirty GTri objects from the registered listeners.
+     * Clears the list and re-adds all non-dirty objects from the registered listeners.
      */
     @Override
     public void clear() {
@@ -40,20 +41,12 @@ public final class CamDistSort extends SortMethod {
     }
 
     /**
-     * Sorts the GTri objects in the list based on their distance from the camera.
-     * GTri objects farther from the camera are placed before those closer to the camera.
+     * Sorts the objects in the list based on their distance from the camera.
+     * Objects farther from the camera are placed before those closer to the camera.
      */
     @Override
     public void sort() {
         this.sort((tri1, tri2) -> {
-//            PureListener listener1 = registered.stream().filter(
-//                    listener -> listener.triID.equals(tri1.getId())
-//            ).findFirst().orElse(null);
-//            PureListener listener2 = registered.stream().filter(
-//                    listener -> listener.triID.equals(tri2.getId())
-//            ).findFirst().orElse(null);
-//            if (listener1 == null || listener2 == null)
-//                return 0;
                 // fall back to euclideanDist() if depths are equal
                 double euclidDist1 = euclideanDist(tri1);
                 double euclidDist2 = euclideanDist(tri2);
@@ -61,7 +54,7 @@ public final class CamDistSort extends SortMethod {
         });
     }
 
-    public double euclideanDist(RenderState<?, ?> d) {
+    public double euclideanDist(@NotNull RenderState<?, ?> d) {
         return d.getPivot().sub(StaticRefs.getCamera().getPosition()).magnitude();
     }
 }

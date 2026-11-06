@@ -4,6 +4,7 @@ import com.j3d.StaticRefs;
 import com.j3d.engine.react.actions.*;
 import com.j3d.engine.scene.DefaultObjectDeletionException;
 import com.j3d.engine.scene.SceneManager;
+import com.j3d.engine.scene.SceneObjectTags;
 import com.j3d.engine.scene.nodes.SceneObjectList;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GObject;
@@ -59,7 +60,8 @@ public final class Layer extends ArrayList<Thing> implements SceneObjectList {
 
     private boolean hidden = false;
     private boolean forDeletion = false;
-    private ArrayList<Property<?, ?>> properties = new ArrayList<>();
+    private final ArrayList<Property<?, ?>> properties = new ArrayList<>();
+    private final SceneObjectTags objectTags = new SceneObjectTags();
 
     private TreeNodeIdentity<Layer> treeNodeIdentity;
     private DefaultMutableTreeNode treeNode;
@@ -447,6 +449,11 @@ public final class Layer extends ArrayList<Thing> implements SceneObjectList {
                 .addProperty(isForDeletion())
                 .addProperty(stream().map(Thing::asReference)
                         .collect(Collectors.toCollection(ArrayList::new)));
+    }
+
+    @Override
+    public SceneObjectTags getTags() {
+        return objectTags;
     }
 
 

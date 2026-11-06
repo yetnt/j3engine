@@ -111,7 +111,7 @@ This has a lot of things from the over a year of dev so like yeah ill briefly me
 * Removed unused background music from resources. Cluttering build
 * Change `jaiva` import to be of the released github version such as to allow JavaDoc to build and not the locally installed version.
 
-# v1.3.0 Grid2d & Tests
+# v2.0.0 PF4, Grid2d, Tests, Polygons & Polylines
 
 ## Repo
 
@@ -170,3 +170,4 @@ of the current testing environment.
 * Update to latest ytils
 * Add Jetbrains annotationz
 * Fix bug where context menu was unclickable when opened.
+* Implement `GPolygon` and begin

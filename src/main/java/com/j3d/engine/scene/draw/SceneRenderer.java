@@ -1,31 +1,32 @@
 package com.j3d.engine.scene.draw;
 
+import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.draw.methods.SortMethod;
 import com.j3d.StaticRefs;
 import com.j3d.engine.scene.draw.methods.CamDepthSort;
 import com.j3d.engine.scene.draw.methods.CamDistSort;
 import com.j3d.engine.scene.draw.methods.DDUUIDSort;
-import com.j3d.engine.scene.nodes.geometry.GLine;
-import com.j3d.engine.scene.nodes.geometry.GPoint;
+import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GTri;
+import com.j3d.engine.scene.nodes.layer.Layer;
+import com.j3d.ui.engine.J3DPanel;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Objects;
-import java.util.UUID;
 
 /**
- * SceneRenderer is a static class that manages all GTri objects in the scene
- * and their rendering order based on their distance from the camera.
- * The main purpose of this class is to optimize the rendering process by
- * maintaining a sorted list of GTri objects, allowing for efficient rendering
- * based on whichever method is chosen as this class will have multiple methods for
- * sorting GTri in the future.
+ * SceneRenderer is a class which has the sole responsibility of referencing a single {@link SortMethod}
+ * and hence drawing every single {@link com.j3d.engine.geometry.Pure} wrapped in a {@link RenderState}
+ * which is provided to it.
  * <p>
- *     The inner package "methods" contains the different sorting methods that SceneRenderer can use.
- *     It's configured by the SceneManager (or debug settings) to choose which method to use for sorting GTri objects.
- *     This is mostly for testing and performance comparison purposes, as when a method is chosen,
- *     it will be used for all rendering cycles until changed.
+ *     The "methods" which in reality are just plain {@link ArrayList} with special sorting done when things are
+ *     added. Examples include:
+ *     <ul>
+ *         <li>{@link CamDistSort} sorts by Euclidean distance to the camera</li>
+ *         <li>{@link CamDepthSort} sorts by camera's depth value</li>
+ *         <li>{@link DDUUIDSort} attempts to sort by <strong>D</strong>istance, then <strong>D</strong>epth, and finally falls
+ *         back to <strong>UUID</strong></li>
+ *     </ul>
  * </p>
  * @author Lehlogonolo Poole
  * @see GTri
@@ -35,9 +36,9 @@ import java.util.UUID;
  * @see CamDistSort
  * @see DDUUIDSort
  */
-public class SceneRenderer {
+public final class SceneRenderer {
     /**
-     * A list used for sorting GTri based on whichever method SceneRenderer uses.
+     * A list used for sorting {@link RenderState} objects based on whichever method SceneRenderer uses.
      * The list is cleared after each render cycle.
      * @implNote This more references a deque but for reusability and clarity
      * an ArrayList was used instead.
@@ -66,43 +67,12 @@ public class SceneRenderer {
     }
 
     /**
-     * Registers a GTri with SceneRenderer.
-     * @implSpec This method should only be called when a GTri is instantiated.
-     * This is due to the fact that it will live its entirely lifetime within
-     * SceneRenderer. Therefore only {@link GTri#GTri(Color, GLine, GLine, GLine)}
-     * or the other constructor {@link GTri#GTri(Color, GPoint, GPoint, GPoint)}
-     * should ever have to call this method.
-     * @param tri The GTri to register.
+     * Registers a {@link RenderState} with SceneRenderer.
+     * @implSpec This method should only be called by {@link com.j3d.engine.scene.nodes.Thing}
+     * @param renderState The render state to register.
      */
-    public void register(RenderState<?, ?> tri) {
-        queue.add(tri);
-    }
-
-    /**
-     * Unregisters a triangle from SceneRenderer
-     * @param tri The triangle to unregister.
-     * @implSpec Much like the docs within {@link SceneRenderer#register(RenderState)}
-     * however here only {@link GTri#deleteSelf()} may call this method or
-     * any other destructive method.
-     */
-    public void unregister(RenderState<?, ?> tri) {
-        // finder listener that matches tri id
-        new ArrayList<>(queue).stream().filter(
-                listener -> listener.getId().equals(tri.getId())
-        ).findFirst().ifPresent(
-                queue::remove
-        );
-    }
-
-    public void unregister(UUID uuid) {
-        // finder listener that matches tri id
-        new ArrayList<>(queue).stream()
-                .filter(Objects::nonNull)
-                .filter(
-                listener -> listener.getId().equals(uuid)
-        ).forEach(
-                queue::remove
-        );
+    public void register(RenderState<?, ?> renderState) {
+        queue.add(renderState);
     }
 
     /**
@@ -113,29 +83,32 @@ public class SceneRenderer {
     }
 
     /**
-     * Draws all the triangles that have been sorted within the queue.
+     * Draws all the Render State that have been sorted within the queue.
      * @param g The Graphics2D context.
+     * @implNote This method will clear the queue after drawing, as its expected the flow to be as follows:
+     * <ol>
+     *     <li>{@link J3DPanel} calls {@link SceneManager#draw(Graphics2D)}</li>
+     *     <li>{@link SceneManager} calls {@link Layer#draw(Graphics2D)}</li>
+     *     <li>{@link Layer} calls {@link Thing#draw(Graphics2D)}</li>
+     *     <li>A {@link Thing} calls {@link #register(RenderState)}
+     *     for all its constituent objects.</li>
+     *     <li>Finally, back in {@link SceneManager#draw(Graphics2D)}, it calls, this method.</li>
+     *     <li>Repeat each draw/frame (Don't ask me how the engine runs so well at almost 10k triangles even when we do this every single redraw/frame)</li>
+     * </ol>
+     * @see J3DPanel#paint(Graphics) 
+     * @see SceneManager#draw(Graphics2D) 
+     * @see Layer#draw(Graphics2D) 
+     * @see Thing#draw(Graphics2D)
      */
     public void draw(Graphics2D g) {
         queue.sort();
         for  (RenderState<?, ?> drawable : new ArrayList<>(queue)) {
-            if (!drawable.isValid()) {
-                unregister(drawable);
-                unregister(drawable.getId());
-                continue;
-            }
-//            if (drawable.getPure() instanceof GTri tri)
-//                if (tri.isHidden()) continue;
-            if (StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected().contains(drawable.getParent())) {
+            if (!drawable.isValid()) continue;
+            if (StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected().contains(drawable.getParent()))
                 drawable.drawSelected(g);
-            } else {
-                drawable.draw(g);
-            }
+            else drawable.draw(g);
         }
         clearQueue();
     }
 
-    public int pureRegistered() {
-        return queue.size();
-    }
 }

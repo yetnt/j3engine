@@ -8,6 +8,7 @@ import com.j3d.engine.react.actions.ConstructorAction;
 import com.j3d.engine.react.actions.DirtyVoidAction;
 import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.engine.scene.SceneManager;
+import com.j3d.engine.scene.SceneObjectTags;
 import com.j3d.engine.scene.nodes.geometry.GLine;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
@@ -72,6 +73,7 @@ public final class Thing implements SceneObjectList {
     private String name = "Thing";
 
     private final ArrayList<Property<?, ?>> properties = new ArrayList<>();
+    private final SceneObjectTags objectTags = new SceneObjectTags();
 
     /**
      * What the thing should do when it gets selected within the tree GUI
@@ -287,24 +289,6 @@ public final class Thing implements SceneObjectList {
             Vector3 sum = Vector3.reduceToVector3(pts, Vector3::add);
             centroid = sum.div(pts.size());
         }
-//        else {
-//            HashSet<GPoint> discovered = Stream.of(gObjects)
-//                    .flatMap(gObject -> {
-//                        return switch (gObject) {
-//                            case GTri tri -> tri.getLegStream().flatMap(GLine::getPointStream);
-//                            case GLine line -> line.getPointStream();
-//                            case GCurve curve -> curve.getPointStream();
-//                            case null, default -> Stream.of((GPoint) gObject);
-//                        };
-//                    })
-//                    .collect(Collectors.toCollection(HashSet::new));
-//            Vector3 sum = Vector3.reduceToVector3(
-//                    new ArrayList<>(discovered.stream().map(GPoint::getPivot).toList()),
-//                    Vector3::add
-//            );
-//            centroid = sum.div(discovered.size());
-//            points.addAll(discovered);
-//        }
     }
 
     /**
@@ -404,6 +388,11 @@ public final class Thing implements SceneObjectList {
         name = s;
         getIdentity().setLabel(s);
         toggleSaved();
+    }
+
+    @Override
+    public SceneObjectTags getTags() {
+        return objectTags;
     }
 
     public static void moveObjects(ArrayList<GObject> stuff, Thing to) {

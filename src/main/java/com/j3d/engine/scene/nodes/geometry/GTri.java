@@ -232,7 +232,6 @@ public final class GTri extends GObject implements IdempotentEventListener<GPoin
                 winding.toVector3List()
                 , Vector3::add).div(3));
         normal();
-        StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getRenderer().register(toRenderState());
         drawDist();
         addProps();
     }

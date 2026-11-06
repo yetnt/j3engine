@@ -4,6 +4,7 @@ import com.j3d.engine.geometry.Pure;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.react.events.*;
 import com.j3d.engine.scene.SceneObject;
+import com.j3d.engine.scene.SceneObjectTags;
 import com.j3d.engine.scene.copy.CanCopy;
 import com.j3d.engine.scene.copy.CopyProperties;
 import com.j3d.engine.scene.copy.InvalidCopyException;
@@ -52,6 +53,7 @@ permits GPoint, GLine, GTri, GCurve, GPolygon {
      */
     private UUID Id;
     protected ArrayList<Property<?, ?>> properties = new ArrayList<>();
+    private final SceneObjectTags objectTags = new SceneObjectTags();
 
     /**
      * Default Constructor.
@@ -226,6 +228,11 @@ permits GPoint, GLine, GTri, GCurve, GPolygon {
         return new EngineObject(EngineObject.Type.REF)
                 .addProperty(getEngineObjectType().toString())
                 .addProperty(getId().toString());
+    }
+
+    @Override
+    public SceneObjectTags getTags() {
+        return objectTags;
     }
 
     // assuming the incoming engine object is a type of GObject

@@ -5,9 +5,10 @@ import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.react.events.EventType;
 import com.j3d.engine.react.events.IdempotentEventListener;
 import com.j3d.engine.react.events.payloads.GPointMovedEvent;
+import com.j3d.engine.scene.copy.CopyProperties;
+import com.j3d.engine.scene.copy.InvalidCopyException;
 import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.nodes.geometry.base.DecomposeWhenDrawn;
-import com.j3d.engine.scene.nodes.geometry.base.Winding;
 import com.j3d.engine.scene.nodes.geometry.base.WindingDir;
 import com.j3d.engine.scene.nodes.util.tri.Triangulation;
 import com.j3d.engine.scene.nodes.util.tri.TriangulationMethod;
@@ -46,7 +47,7 @@ public final class GPolygon extends GObject implements
         return gt;
     }
 
-    public GPolygon(ArrayList<GPoint> points) {
+    public GPolygon(ArrayList<GPoint> points) throws TriangulationMethod.InvalidTriangulationException {
         super(Color.BLACK);
         triangulate(points);
         this.points.addAll(points);
@@ -58,7 +59,7 @@ public final class GPolygon extends GObject implements
         addProps();
     }
 
-    private void triangulate(ArrayList<GPoint> points) {
+    private void triangulate(ArrayList<GPoint> points) throws TriangulationMethod.InvalidTriangulationException {
         triangles = Settings.sceneProperties.polygonTriangulateMethod.getValue().getTriangulationMethod().apply(points);
         renderState.forEach(RenderState::invalidate);
         renderState.clear();
@@ -131,6 +132,12 @@ public final class GPolygon extends GObject implements
         return getDecomposeList();
     }
 
+    @Override
+    public void copy(CopyProperties props) throws InvalidCopyException {
+        super.copy(props); // TODO: implement soon.
+    }
+
+
     public WindingDir getWindingDir() {
         return windingDir;
     }
@@ -173,7 +180,7 @@ public final class GPolygon extends GObject implements
             lines.add(l2);
             lines.add(l3);
         });
-
+        lines.forEach(line -> line.tag("volatile", getClass(), this));
         return lines;
     }
 }
