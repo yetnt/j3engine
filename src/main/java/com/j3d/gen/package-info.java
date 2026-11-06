@@ -27,6 +27,12 @@
  *          {@link com.j3d.gen.docs}. Documentation generation backend. Handles parsing and rendering of markdown
  *          custom documentation files.
  *     </li>
+ *     <li>
+ *          {@link com.j3d.gen.guide}. Guide/Tutorial that shows up when you click it in projects
+ *     </li>
+ *     <li>
+ *          {@link com.j3d.gen.grid}. All the nasty stuff related to {@link com.j3d.ui.engine.floating.grid2d.Grid2DPanel}
+ *     </li>
  * </ul>
  * @author Lehlogonolo Poole
  */

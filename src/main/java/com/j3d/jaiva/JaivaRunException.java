@@ -5,9 +5,10 @@ import com.j3d.errors.J3DError;
 import com.j3d.errors.severity.J3DInfo;
 import com.jaiva.errors.JaivaException;
 import com.yetnt.utils.builders.AnsiColour;
+import org.jetbrains.annotations.NotNull;
 
 public class JaivaRunException extends GenericException implements J3DInfo {
-    public JaivaRunException(JaivaException exception) {
+    public JaivaRunException(@NotNull JaivaException exception) {
         super(AnsiColour.remove(exception.getRawMessage()));
     }
 }

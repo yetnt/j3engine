@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public final class GPolygon extends GObject implements
         IdempotentEventListener<GPointMovedEvent, Vector3>, DecomposeWhenDrawn<Triangle> {
 
-    private ArrayList<GLine> lineSegments = new ArrayList<>();
+    private ArrayList<GPoint> lineSegments = new ArrayList<>();
     private WindingDir windingDir = WindingDir.CLOCKWISE;
 
     private Triangulation.Triangulated triangles;
@@ -38,7 +38,7 @@ public final class GPolygon extends GObject implements
 
     @Override
     public EngineObject.Type getEngineObjectType() {
-        return null;
+        return EngineObject.Type.GPOLYGON;
     }
 
     @Override
