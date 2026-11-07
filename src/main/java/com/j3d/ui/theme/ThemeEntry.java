@@ -73,6 +73,8 @@ public class ThemeEntry {
         return themeType;
     }
 
+    // relaistically speaking the theme type is never used. literally only user loaded to differeniate
+    // between engine themes and user themes. the others arent used.
     public enum ThemeType {
         LIGHT, DARK, HIGH_CONTRAST, SATURATED, USER_LOADED;
 

@@ -33,6 +33,12 @@ JCCXXX -> J3DErr (prefixed J cuz why not)
 41101 -> Copy Exception - Connection severed.
 41200 -> Generic History or Action-related Exception
 41201 -> Action could not be cleaned as it ran into an error
+41701 -> Polygon has less than 3 points.
+41702 -> All polygon points are collinear.
+41703 -> Polygon points aren't coplanar (with specifics)
+41801 -> (Ear-Clipping) Self-intersecting or broken polygon
+41900 -> Seidel failed to triangulate
+41901 -> (Seidel) Polygon has zero area or collinear points.
 
 42101 -> Matrix Math: Invalid 2D array input
 42102 -> Matrix Math: Row lengths do not match
@@ -43,13 +49,6 @@ JCCXXX -> J3DErr (prefixed J cuz why not)
 42107 -> Matrix Resolve: Row/Column Index out of bounds
 
 43101 -> MouseOwner could not instantiate a Robot instance
-
-44101 -> Polygon has less than 3 points.
-44102 -> All polygon points are collinear.
-44103 -> Polygon points aren't coplanar (with specifics)
-44201 -> (Ear-Clipping) Self-intersecting or broken polygon
-44300 -> Seidel failed to triangulate
-44301 -> (Seidel) Polygon has zero area or collinear points.
 
 
 51000 -> Generic project File Exception

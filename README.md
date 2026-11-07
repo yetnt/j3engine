@@ -25,7 +25,7 @@ a few minor differences)
 
 ## Installation & Run
 
-Man just run the `.jar` or `.msi` man with like Java 21 and you good.
+Man just run the `.jar` or `.msi` man with like Java 25 and you good.
 
 ## Screenshots & Features
 
@@ -158,5 +158,10 @@ once hidden.](imgs/Screenshot%202026-09-13%20063938.png)
 - `engine <subcommand>` : [Engine](./src/main/java/com/j3d/engine/interact/cmd/commands/engine/EngineCmd.java) related subcommands
   - `engine exit <boolean>` : Run the engine shutdown sequence
   - `engine files` : Open the location of J3Engine user files where things such as custom themes, preferences, log files, projects frame relating things are.
+- `macro <subcommand>` : [Macro](./src/main/java/com/j3d/engine/interact/cmd/commands/macro/MacroCmd.java) related actions
+  - `macro record <string>` : Begin recording a macro
+  - `macro end` : Finish a macro recording
+  - `macro run <string>` : Run a macro
+  - `macro list` : List all availble macros
 - `select <any>` : [Selects](./src/main/java/com/j3d/engine/interact/cmd/commands/SelectCmd.java) the given geometry.
 - `help <any>` : Provides [help](./src/main/java/com/j3d/engine/interact/cmd/commands/HelpCmd.java) on the given command.

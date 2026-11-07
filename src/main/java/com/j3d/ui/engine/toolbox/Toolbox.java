@@ -54,7 +54,7 @@ public class Toolbox extends javax.swing.JPanel {
         toolboxInnerPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, -4));
 
         ToolboxButtons.getToolboxButtons().forEach(
-            toolboxInnerPanel::add
+                toolboxInnerPanel::add
         );
 
         toolboxScrollpane.setViewportView(toolboxInnerPanel);
@@ -62,12 +62,12 @@ public class Toolbox extends javax.swing.JPanel {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(toolboxScrollpane, javax.swing.GroupLayout.DEFAULT_SIZE, 1000, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(toolboxScrollpane, javax.swing.GroupLayout.DEFAULT_SIZE, 1000, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(toolboxScrollpane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(toolboxScrollpane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 

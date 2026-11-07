@@ -9,6 +9,7 @@ import com.j3d.engine.interact.selection.SelectionMouseOwner;
 import com.j3d.engine.react.events.payloads.*;
 import com.j3d.engine.scene.Camera;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
+import com.j3d.errors.J3DError;
 import com.j3d.gen.guide.GuideInfo;
 import com.j3d.gen.settings.Setting;
 
@@ -67,10 +68,20 @@ public enum EventType {
      * payload class of {@link MouseClickPayload}
      */
     MOUSE_CLICKED,
+    /**
+     * Specifically for {@link com.j3d.ui.engine.floating.grid2d.Grid} and its subsequent {@link com.j3d.gen.grid.GridManager}
+     * for invalidating reactive points. with the payload of {@link ReactivePointInvalidatedPayload}
+     */
     REACTIVE_POINT_INVALIDATED,
     /**
      * The camera moved. Broadcast by {@link Camera} with a payload class of {@link CameraUpdatedEventPayload}
      */
     CAMERA_MOVED,
+    /**
+     * For cases where some sub system, uses {@link com.j3d.errors.ErrorHandler#emitThenThrow(J3DError)}
+     * instead of {@link com.j3d.errors.ErrorHandler#handleThenThrow(J3DError)} which allows any other
+     * subsystem to intercept it via the whole {@link CapableEventListener} and {@link CapableEventEmitter}.
+     * With a payload class of {@link EmittedErrorEventPayload}
+     */
     EMITTED_ERROR
 }

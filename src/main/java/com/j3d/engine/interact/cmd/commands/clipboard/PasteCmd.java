@@ -11,10 +11,7 @@ import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.engine.scene.copy.CopyProperties;
 import com.j3d.engine.scene.copy.InvalidCopyException;
 import com.j3d.engine.scene.nodes.Thing;
-import com.j3d.engine.scene.nodes.geometry.GLine;
-import com.j3d.engine.scene.nodes.geometry.GObject;
-import com.j3d.engine.scene.nodes.geometry.GPoint;
-import com.j3d.engine.scene.nodes.geometry.GTri;
+import com.j3d.engine.scene.nodes.geometry.*;
 import com.j3d.ui.SafeJLabel;
 import com.yetnt.utils.collection.buckets.Buckets;
 import org.jetbrains.annotations.NotNull;
@@ -59,7 +56,9 @@ public class PasteCmd extends Subcommand {
 
         // split
         ArrayList<ArrayList<GObject>> buckets =
-                Buckets.of(copied, GPoint.class, GLine.class, GTri.class);
+                // tris depend on lines & points
+                // lines, curves, polylines and polygons depend on points.
+                Buckets.of(copied, GPoint.class, GLine.class, GTri.class, GCurve.class, GPolyline.class, GPolygon.class);
 
         try {
             for (ArrayList<GObject> bucket : buckets) {

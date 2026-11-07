@@ -76,7 +76,8 @@ public abstract sealed class TriangulationMethod permits EarClipping, Delaunay, 
         }
 
         if (normal == null) {
-            StaticRefs.getErrs().handleThenThrow(new InvalidTriangulationException("All polygon points are collinear.").code(4102));
+            StaticRefs.getErrs().handleThenThrow(new InvalidTriangulationException("All polygon points are collinear.")
+                    .code(702));
             return;
         }
 
@@ -85,7 +86,8 @@ public abstract sealed class TriangulationMethod permits EarClipping, Delaunay, 
             double dist = Math.abs(pt.sub(p0).dot(normal));
             if (dist > COPLANAR_TOLERANCE) {
                 StaticRefs.getErrs().emitThenThrow(
-                        new InvalidTriangulationException("Polygon points are not coplanar (point at index " + i + " deviates from plane by " + dist + ").").code(4103)
+                        new InvalidTriangulationException("Polygon points are not coplanar (point at index " + i + " deviates from plane by " + dist + ").")
+                                .code(703)
                 );
                 return;
             }
@@ -108,7 +110,7 @@ public abstract sealed class TriangulationMethod permits EarClipping, Delaunay, 
                 public boolean terminate() {
                     return true;
                 }
-            }.code(4101);
+            }.code(701);
         }
     }
 }

@@ -83,7 +83,7 @@ public final class EarClipping extends TriangulationMethod {
 
             if (!earFound) StaticRefs.getErrs().emitThenThrow(
                     new InvalidTriangulationException("Self-intersecting or broken polygon.")
-                            .code(4201)
+                            .code(801)
             ); // self-intersecting or broken polygon
         }
 

@@ -7,8 +7,10 @@ import com.j3d.engine.scene.SceneObject;
 import com.j3d.engine.scene.nodes.SceneObjectList;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.*;
+import com.j3d.engine.scene.nodes.geometry.base.WindingDir;
 import com.j3d.engine.scene.nodes.layer.Layer;
 import com.j3d.engine.scene.nodes.layer.LayerList;
+import com.j3d.engine.scene.nodes.util.tri.Triangulation;
 import com.j3d.storage.errs.ProjectFileException;
 import com.j3d.storage.files.FilesUtility;
 import com.j3d.storage.files.IOSupplier;
@@ -56,6 +58,8 @@ public final class PF4 extends ProjectFile {
                 ArrayList<Pair<UUID, GLine>> lines = new ArrayList<>();
                 ArrayList<Pair<UUID, GTri>> tris = new ArrayList<>();
                 ArrayList<Pair<UUID, GCurve>> curves = new ArrayList<>();
+                ArrayList<Pair<UUID, GPolyline>> polylines = new ArrayList<>();
+                ArrayList<Pair<UUID, GPolygon>> polygons = new ArrayList<>();
                 ArrayList<Pair<String, Thing>> things = new ArrayList<>();
 
                 layers.forEach(layer -> layer.forEach(thing -> {
@@ -69,6 +73,10 @@ public final class PF4 extends ProjectFile {
                                     tris.add(new Pair<>(thing.getId(), gt));
                                 } else if (obj instanceof GCurve c) {
                                     curves.add(new Pair<>(thing.getId(), c));
+                                } else if (obj instanceof GPolygon c) {
+                                    polygons.add(new Pair<>(thing.getId(), c));
+                                } else if (obj instanceof GPolyline c) {
+                                    polylines.add(new Pair<>(thing.getId(), c));
                                 }
                             });
                         })
@@ -86,7 +94,11 @@ public final class PF4 extends ProjectFile {
                 // CURVES
                 writeCurves(dos, curves);
 
-                // POLYLINES WILL GO HERE
+                // POLYLINES
+                writePolylines(dos, polylines);
+
+                // POLYGONS
+                writePolygons(dos, polygons);
 
                 // THINGS
                 writeThings(dos, things);
@@ -113,7 +125,6 @@ public final class PF4 extends ProjectFile {
 
         StaticRefs.throwIfNull(StaticRefs.getSceneManager()).layers.removeIf(l -> !Objects.equals(l.getName(), Layer.BACKGROUND_ID));
 
-
         IOSupplier<DataInputStream> fileReader = dis -> {
             try {
                 readHeader(dis);
@@ -128,6 +139,8 @@ public final class PF4 extends ProjectFile {
                 final SuperMap<GLine> lines = readLines(dis, points, throbber);
                 final SuperMap<GTri> tris = readTris(dis, lines, points, throbber);
                 final SuperMap<GCurve> curves = readCurves(dis, points, throbber);
+                final SuperMap<GPolygon> polygons = readPolygons(dis, points, throbber);
+                final SuperMap<GPolyline> polylines = readPolylines(dis, points, throbber);
 
                 HashMap<UUID, Thing> things = readThings(dis, layers, throbber);
                 sceneObjectLists.addAll(things.values());
@@ -138,6 +151,8 @@ public final class PF4 extends ProjectFile {
                                 .addObjs(lines.fromThing(s).toArray(GLine[]::new))
                                 .addObjs(tris.fromThing(s).toArray(GTri[]::new))
                                 .addObjs(curves.fromThing(s).toArray(GCurve[]::new))
+                                .addObjs(polygons.fromThing(s).toArray(GPolygon[]::new))
+                                .addObjs(polylines.fromThing(s).toArray(GPolyline[]::new))
                 );
 
                 throbber.setTaskTitle("Finalizing");
@@ -163,12 +178,13 @@ public final class PF4 extends ProjectFile {
         return (T) sceneObjectLists;
     }
 
-    private static void writeUUID(DataOutputStream dos, UUID id) throws IOException {
+    private static void writeUUID(@NotNull DataOutputStream dos, @NotNull UUID id) throws IOException {
         dos.writeLong(id.getMostSignificantBits());
         dos.writeLong(id.getLeastSignificantBits());
     }
 
-    public static UUID readUUID(DataInputStream dis) throws IOException {
+    @NotNull
+    public static UUID readUUID(@NotNull DataInputStream dis) throws IOException {
         long most = dis.readLong();
         long least = dis.readLong();
         return new UUID(most, least);
@@ -285,6 +301,177 @@ public final class PF4 extends ProjectFile {
         }
         consumeEndList(dis, "things");
         return out;
+    }
+    /**
+     * Writes a list of {@link GPolygon} objects to the provided {@link DataOutputStream}.
+     *
+     * @param dos The {@link DataOutputStream} to write to.
+     * @param polygons An {@link ArrayList} of {@link Pair}s, where each pair contains the parent {@link UUID} and the {@link GPolygon} to write.
+     * @throws IOException If an I/O error occurs.
+     */
+    private static void writePolygons(DataOutputStream dos, ArrayList<Pair<UUID, GPolygon>> polygons) throws IOException {
+        beginList(dos);
+        int amt = polygons.size();
+        dos.writeInt(amt);
+        if (!polygons.isEmpty()) {
+            for (Pair<UUID, GPolygon> pair : polygons) {
+                beforeElement(dos);
+                GPolygon gt = pair.getSecond();
+                writeUUID(dos, gt.getId());
+                UUID parent = pair.getFirst();
+                writeUUID(dos, parent);
+                dos.writeInt(colToInt(gt.getColour()));
+
+                dos.writeBoolean(gt.getWindingDir().asBoolean());
+                dos.writeByte(gt.getTriangulation().getId());
+
+                beginList(dos);
+                int polylineAmt = gt.getPoints().size();
+                dos.writeInt(polylineAmt);
+
+                for (GPoint point :  gt.getPoints()) {
+                    beforeElement(dos);
+                    writeUUID(dos, point.getId());
+                }
+
+                endList(dos);
+            }
+        }
+        endList(dos);
+    }
+
+    /**
+     * Reads a list of {@link GPolygon} objects from the provided {@link DataInputStream}.
+     *
+     * @param dis The {@link DataInputStream} to read from.
+     * @param points A {@link SuperMap} containing {@link GPoint} objects, used to resolve polygons
+     * @param sp The {@link Spinner} to update progress.
+     * @return A {@link SuperMap} containing the read {@link GPolygon} objects, mapped by their ID and parent thing ID.
+     * @throws IOException If an I/O error occurs or the file is corrupted.
+     */
+    private static SuperMap<GPolygon> readPolygons(DataInputStream dis, SuperMap<GPoint> points, Spinner sp) throws IOException {
+        consumeBeginList(dis, "polygons");
+        HashMap<UUID, GPolygon> idMap = new HashMap<>();
+        HashMultiMap<UUID, GPolygon> thingParentMap = new HashMultiMap<>();
+        int triAmt = dis.readInt();
+        sp.progressStart("Reading polygons", triAmt);
+        for (int i = 0; i < triAmt; i++) {
+            consumeBeforeElement(dis, "polygons", i);
+            UUID id = readUUID(dis);
+            UUID parent = readUUID(dis);
+            int colour = dis.readInt();
+            Color col = intToCol(colour);
+            WindingDir windingDir = WindingDir.fromBoolean(dis.readBoolean());
+            Triangulation triangulation = Triangulation.fromId(dis.readByte());
+            consumeBeginList(dis, "polygons points");
+            int ptAmt = dis.readInt();
+            ArrayList<GPoint> points1 = new ArrayList<>();
+            for (int j = 0; j < ptAmt; j++) {
+                consumeBeforeElement(dis, "polygons points", j);
+                UUID pointId = readUUID(dis);
+                GPoint point = points.getIdMap().get(pointId);
+                points1.add(point);
+            }
+            consumeEndList(dis, "polygons points");
+
+            ifAnyNull(
+                    "polygon", id, "points", 362, points1.toArray(new GPoint[0])
+            );
+
+            GPolygon pLine = GPolygon.fromRaw(
+                    id.toString(), col,
+                    points1, triangulation, windingDir
+            );
+            sp.updateProgress(i + 1);
+            idMap.put(id, pLine);
+            thingParentMap.putValue(parent, pLine);
+        }
+        consumeEndList(dis, "polygons");
+        return new SuperMap<>(thingParentMap, idMap);
+    }
+
+
+    /**
+     * Writes a list of {@link GPolyline} objects to the provided {@link DataOutputStream}.
+     *
+     * @param dos The {@link DataOutputStream} to write to.
+     * @param polylines An {@link ArrayList} of {@link Pair}s, where each pair contains the parent {@link UUID} and the {@link GPolyline} to write.
+     * @throws IOException If an I/O error occurs.
+     */
+    private static void writePolylines(DataOutputStream dos, ArrayList<Pair<UUID, GPolyline>> polylines) throws IOException {
+        beginList(dos);
+        int triAmt = polylines.size();
+        dos.writeInt(triAmt);
+        if (!polylines.isEmpty()) {
+            for (Pair<UUID, GPolyline> pair : polylines) {
+                beforeElement(dos);
+                GPolyline gt = pair.getSecond();
+                writeUUID(dos, gt.getId());
+                UUID parent = pair.getFirst();
+                writeUUID(dos, parent);
+                dos.writeInt(colToInt(gt.getColour()));
+
+                beginList(dos);
+                int polylineAmt = gt.getPoints().size();
+                dos.writeInt(polylineAmt);
+
+                for (GPoint point :  gt.getPoints()) {
+                    beforeElement(dos);
+                    writeUUID(dos, point.getId());
+                }
+
+                endList(dos);
+            }
+        }
+        endList(dos);
+    }
+
+    /**
+     * Reads a list of {@link GPolyline} objects from the provided {@link DataInputStream}.
+     *
+     * @param dis The {@link DataInputStream} to read from.
+     * @param points A {@link SuperMap} containing {@link GPoint} objects, used to resolve polylines
+     * @param sp The {@link Spinner} to update progress.
+     * @return A {@link SuperMap} containing the read {@link GPolyline} objects, mapped by their ID and parent thing ID.
+     * @throws IOException If an I/O error occurs or the file is corrupted.
+     */
+    private static SuperMap<GPolyline> readPolylines(DataInputStream dis, SuperMap<GPoint> points, Spinner sp) throws IOException {
+        consumeBeginList(dis, "polylines");
+        HashMap<UUID, GPolyline> idMap = new HashMap<>();
+        HashMultiMap<UUID, GPolyline> thingParentMap = new HashMultiMap<>();
+        int triAmt = dis.readInt();
+        sp.progressStart("Reading polylines", triAmt);
+        for (int i = 0; i < triAmt; i++) {
+            consumeBeforeElement(dis, "polylines", i);
+            UUID id = readUUID(dis);
+            UUID parent = readUUID(dis);
+            int colour = dis.readInt();
+            Color col = intToCol(colour);
+            consumeBeginList(dis, "polylines points");
+            int ptAmt = dis.readInt();
+            ArrayList<GPoint> points1 = new ArrayList<>();
+            for (int j = 0; j < ptAmt; j++) {
+                consumeBeforeElement(dis, "polylines points", j);
+                UUID pointId = readUUID(dis);
+                GPoint point = points.getIdMap().get(pointId);
+                points1.add(point);
+            }
+            consumeEndList(dis, "polylines points");
+
+            ifAnyNull(
+                    "polyline", id, "points", 362, points1.toArray(new GPoint[0])
+            );
+
+            GPolyline pLine = GPolyline.fromRaw(
+                    id.toString(), col,
+                    points1
+            );
+            sp.updateProgress(i + 1);
+            idMap.put(id, pLine);
+            thingParentMap.putValue(parent, pLine);
+        }
+        consumeEndList(dis, "polylines");
+        return new SuperMap<>(thingParentMap, idMap);
     }
 
     /**

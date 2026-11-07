@@ -73,7 +73,8 @@ public final class Seidel extends TriangulationMethod {
 
         double area = signedArea(pts2d);
         if (Math.abs(area) < 1e-12) {
-            StaticRefs.getErrs().emitThenThrow(new InvalidTriangulationException("Polygon has zero area or collinear points.").code(4301));
+            StaticRefs.getErrs().emitThenThrow(new InvalidTriangulationException("Polygon has zero area or collinear points.")
+                    .code(901));
         }
 
         boolean originallyCCW = area > 0;
@@ -110,7 +111,8 @@ public final class Seidel extends TriangulationMethod {
         }
 
         if (resultTris.isEmpty()) {
-            StaticRefs.getErrs().emitThenThrow(new InvalidTriangulationException("Could not triangulate polygon using Seidel's method.").code(4300));
+            StaticRefs.getErrs().emitThenThrow(new InvalidTriangulationException("Could not triangulate polygon using Seidel's method.")
+                    .code(900));
         }
 
         return new Triangulated(newPoints, resultTris);
