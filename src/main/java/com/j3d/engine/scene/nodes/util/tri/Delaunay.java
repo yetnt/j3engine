@@ -54,7 +54,7 @@ public final class Delaunay extends TriangulationMethod {
     @Override
     public Triangulated apply(@NotNull ArrayList<GPoint> gPoints) throws InvalidTriangulationException {
         if (gPoints.size() < 3) {
-            StaticRefs.getErrs().handleThenThrow(InvalidTriangulationException.lessThan3Points());
+            StaticRefs.getErrs().emitThenThrow(InvalidTriangulationException.lessThan3Points());
         }
         verifyCoplanar(gPoints);
 

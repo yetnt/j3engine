@@ -89,13 +89,19 @@ public class RotateSelection extends AbstractTransform {
         setUpKey(
                 supplier,
                 ignored -> false,
-                axis -> references.forEach(gPoint -> rotateUpKey(axis, gPoint))
+                axis -> {
+                    references.forEach(gPoint -> rotateUpKey(axis, gPoint));
+                    pointReferenceConstraintChecker.updateCopy(references);
+                }
         );
 
         setDownKey(
                 supplier,
                 ignored -> false,
-                axis -> references.forEach(gPoint -> rotateDownKey(axis, gPoint))
+                axis -> {
+                    references.forEach(gPoint -> rotateDownKey(axis, gPoint));
+                    pointReferenceConstraintChecker.updateCopy(references);
+                }
         );
     }
 

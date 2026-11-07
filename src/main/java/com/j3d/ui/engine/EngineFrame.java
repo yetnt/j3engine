@@ -25,11 +25,13 @@ import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.draw.ViewType;
 import com.j3d.engine.scene.find.Finder;
 import com.j3d.engine.scene.nodes.SceneObjectList;
+import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.errors.J3DError;
 import com.j3d.gen.guide.GuideManager;
 import com.j3d.gen.settings.Settings;
 import com.j3d.storage.files.FilesUtility;
+import com.j3d.storage.files.Wavefront;
 import com.j3d.storage.files.protocol.proj.*;
 import com.j3d.threads.LongTask;
 import com.j3d.ui.HoverJLabel;
@@ -1107,7 +1109,32 @@ public final class EngineFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_macroEditorMenuActionPerformed
 
     private void importObjJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importObjJMenuItemActionPerformed
-        // TODO add your handling code here:
+
+        File file = FilesUtility.fileChooser(jfcConfig -> {
+            jfcConfig.setDialogTitle("choose a filel");
+            jfcConfig.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            jfcConfig.setAcceptAllFileFilterUsed(false);
+            jfcConfig.setFileFilter(
+                    new FileFilter() {
+                        @Override
+                        public boolean accept(File f) {
+                            return f.getName().endsWith(".obj") || !f.isFile();
+                        }
+
+                        @Override
+                        public String getDescription() {
+                            return "Wavefront Object File";
+                        }
+                    }
+            );
+        }, this);
+        if (file == null) return;
+
+        ArrayList<Thing> things = Wavefront.read(file);
+
+        StaticRefs.throwIfNull(StaticRefs.getHoverLabel())
+                .setText("Imported " + things.size() + " stuff.");
+
     }//GEN-LAST:event_importObjJMenuItemActionPerformed
 
 

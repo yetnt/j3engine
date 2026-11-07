@@ -20,7 +20,7 @@ public final class EarClipping extends TriangulationMethod {
     @NotNull
     @Override
     public Triangulated apply(@NotNull ArrayList<GPoint> gPoints) throws InvalidTriangulationException {
-        if (gPoints.size() < 3) StaticRefs.getErrs().handleThenThrow(InvalidTriangulationException.lessThan3Points());
+        if (gPoints.size() < 3) StaticRefs.getErrs().emitThenThrow(InvalidTriangulationException.lessThan3Points());
         verifyCoplanar(gPoints);
 
         ArrayList<Vector3> newPoints = new ArrayList<>(); // stays empty for plain ear clipping
@@ -81,7 +81,7 @@ public final class EarClipping extends TriangulationMethod {
                 }
             }
 
-            if (!earFound) StaticRefs.getErrs().handleThenThrow(
+            if (!earFound) StaticRefs.getErrs().emitThenThrow(
                     new InvalidTriangulationException("Self-intersecting or broken polygon.")
                             .code(4201)
             ); // self-intersecting or broken polygon

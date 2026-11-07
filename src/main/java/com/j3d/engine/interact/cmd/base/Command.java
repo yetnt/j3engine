@@ -4,6 +4,8 @@ import com.j3d.StaticRefs;
 import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.interact.cmd.args.*;
+import com.j3d.engine.react.events.CapableEventEmitter;
+import com.j3d.engine.react.events.EventEmitterAndListener;
 import com.j3d.engine.scene.nodes.geometry.GObjectRegistry;
 import com.j3d.ui.SafeJLabel;
 import org.jetbrains.annotations.NotNull;

@@ -69,7 +69,7 @@ public final class GPolygon extends GObject implements
         renderState.clear();
         triangles.tris().forEach(tri -> {
             if (windingDir == WindingDir.COUNTERCLOCKWISE)
-                tri.flip();
+                tri = tri.flip();
             RenderState<Triangle, GObject> r = tri.toTriangle().toRenderState(this);
             r.getPure().setDoubleSided(false); // polygons always experience back-face cullin.
             renderState.add(r);
@@ -145,6 +145,10 @@ public final class GPolygon extends GObject implements
                 point.detachListener(this);
             }
         });
+        return points;
+    }
+
+    public ArrayList<GPoint> getPoints() {
         return points;
     }
 

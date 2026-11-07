@@ -5,6 +5,7 @@ import com.j3d.engine.react.events.CapableEventEmitter;
 import com.j3d.engine.react.events.CapableEventListener;
 import com.j3d.engine.react.events.EventPayload;
 import com.j3d.engine.react.events.EventType;
+import com.j3d.engine.react.events.payloads.EmittedErrorEventPayload;
 import com.j3d.errors.severity.*;
 import com.j3d.ui.engine.J3Splash;
 import com.yetnt.utils.tuple.Pair;
@@ -79,7 +80,7 @@ public final class ErrorHandler extends CapableEventEmitter<Boolean> {
      *
      * @param err The {@link J3DError} instance to be handled.
      */
-    public void handle(@NotNull J3DError err) {
+    public boolean handle(@NotNull J3DError err) {
 //        String msg = logHead+ err.getMessage() + " - " +  ( err.cause != null ? err.cause.getMessage() : "");
 
         if (ignored.contains(err.getClass())) {
@@ -88,7 +89,7 @@ public final class ErrorHandler extends CapableEventEmitter<Boolean> {
                     "[IGNORE-ERR(consumed)] " + err.getClass().getSimpleName()
                     + " has been consumed."
             );
-            return;
+            return true;
         }
         switch (err) {
             case J3DMild j3m -> {
@@ -128,6 +129,8 @@ public final class ErrorHandler extends CapableEventEmitter<Boolean> {
                 );
             }
         }
+
+        return false;
     }
 
     /**
@@ -146,19 +149,48 @@ public final class ErrorHandler extends CapableEventEmitter<Boolean> {
      *                   after it has been processed by the {@link #handle(J3DError)} method.
      */
     public void handleThenThrow(J3DError err) throws J3DError {
-        handle(err);
-        throw err;
+        if (!handle(err))
+            throw err;
     }
 
+    /**
+     * Broadcasts an {@link EventType#EMITTED_ERROR} event to registered listeners before re-throwing the error.
+     * <p>
+     * Unlike {@link #handleThenThrow(J3DError)},  this method uses
+     * {@link CapableEventEmitter} to query registered {@link CapableEventListener} instances via
+     * {@link #capableBroadcast(EventType, EventPayload)}.
+     * </p>
+     * <p>
+     * This allows listeners to intercept the error and return a {@link Boolean} response indicating whether
+     * standard handling should be suppressed or executed:
+     * <ul>
+     *     <li>If no {@link CapableEventListener} is present to intercept the event, it falls back to {@link #handleThenThrow(J3DError)}.</li>
+     *     <li>If a listener intercepts the event, its boolean result dictates subsequent handling before throwing.</li>
+     * </ul>
+     * If the listener return a boolean {@code true} result, the error is considered handled and is never thrown
+     * </p>
+     *
+     * @param err The {@link J3DError} instance to be emitted and thrown.
+     * @throws J3DError The error passed in, thrown after event emission and handling.
+     * @see CapableEventEmitter
+     * @see CapableEventListener
+     * @see EmittedErrorEventPayload
+     * @see #handleThenThrow(J3DError)
+     * @implSpec For {@link CapableEventListener}, the error is only considered "handled" if the listener returns
+     * a boolean {@code true} value.
+     * @implNote To allow shit that might want to intercept an error that it doesn't have control over but it may cause
+     */
     public void emitThenThrow(J3DError err) throws J3DError {
-        Pair<CapableEventListener<Boolean>, Boolean> t = capableBroadcast(EventType.EMITTED_ERROR, new EventPayload<Object>(this) {
-        });
+        Pair<CapableEventListener<Boolean>, Boolean> t = capableBroadcast(EventType.EMITTED_ERROR, new EmittedErrorEventPayload(this, err));
         if (t == null) {
             handleThenThrow(err);
             return;
         }
-        if (t.getSecond() instanceof Boolean b)
-            if (!b) handleThenThrow(err);
+        if (t.getSecond() instanceof Boolean b) {
+            if (!b) {
+                handleThenThrow(err);
+            } else return;
+        }
         handleThenThrow(err);
 
     }

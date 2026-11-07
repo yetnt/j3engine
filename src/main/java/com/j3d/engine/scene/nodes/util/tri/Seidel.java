@@ -42,7 +42,7 @@ public final class Seidel extends TriangulationMethod {
     @Override
     public Triangulated apply(@NotNull ArrayList<GPoint> gPoints) throws InvalidTriangulationException {
         if (gPoints.size() < 3) {
-            StaticRefs.getErrs().handleThenThrow(InvalidTriangulationException.lessThan3Points());
+            StaticRefs.getErrs().emitThenThrow(InvalidTriangulationException.lessThan3Points());
         }
         verifyCoplanar(gPoints);
 
@@ -73,7 +73,7 @@ public final class Seidel extends TriangulationMethod {
 
         double area = signedArea(pts2d);
         if (Math.abs(area) < 1e-12) {
-            StaticRefs.getErrs().handleThenThrow(new InvalidTriangulationException("Polygon has zero area or collinear points.").code(4301));
+            StaticRefs.getErrs().emitThenThrow(new InvalidTriangulationException("Polygon has zero area or collinear points.").code(4301));
         }
 
         boolean originallyCCW = area > 0;
@@ -110,7 +110,7 @@ public final class Seidel extends TriangulationMethod {
         }
 
         if (resultTris.isEmpty()) {
-            StaticRefs.getErrs().handleThenThrow(new InvalidTriangulationException("Could not triangulate polygon using Seidel's method.").code(4300));
+            StaticRefs.getErrs().emitThenThrow(new InvalidTriangulationException("Could not triangulate polygon using Seidel's method.").code(4300));
         }
 
         return new Triangulated(newPoints, resultTris);

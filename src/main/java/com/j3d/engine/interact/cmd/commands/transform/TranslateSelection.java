@@ -82,10 +82,12 @@ public class TranslateSelection extends AbstractTransform {
                 () -> null,
                 (o) -> translateMouseOwner.selectedHandle != null,
                 (o) -> references.forEach(
-                        gpoint ->
-                                gpoint.setPivot(
-                                        gpoint.getPivot().sub(new Vector3(getCurrentStepSize(), 0, 0))
-                                )
+                        gpoint -> {
+                            gpoint.setPivot(
+                                    gpoint.getPivot().sub(new Vector3(getCurrentStepSize(), 0, 0))
+                            );
+                            pointReferenceConstraintChecker.updateCopy(references);
+                        }
                 ));
 
 
@@ -94,10 +96,12 @@ public class TranslateSelection extends AbstractTransform {
                 () -> null,
                 (o) -> translateMouseOwner.selectedHandle != null,
                 (o) -> references.forEach(
-                        gpoint ->
-                                gpoint.setPivot(
-                                        gpoint.getPivot().add(new Vector3(getCurrentStepSize(), 0, 0))
-                                )
+                        gpoint -> {
+                            gpoint.setPivot(
+                                    gpoint.getPivot().add(new Vector3(getCurrentStepSize(), 0, 0))
+                            );
+                            pointReferenceConstraintChecker.updateCopy(references);
+                        }
                 ));
 
         setUpKey(
@@ -121,6 +125,7 @@ public class TranslateSelection extends AbstractTransform {
                                             }
                                     )
                             );
+                            pointReferenceConstraintChecker.updateCopy(references);
                         }
                 )
         );
@@ -146,6 +151,7 @@ public class TranslateSelection extends AbstractTransform {
                                             }
                                     )
                             );
+                            pointReferenceConstraintChecker.updateCopy(references);
                         }
                 )
         );

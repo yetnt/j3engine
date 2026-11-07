@@ -63,10 +63,14 @@ public final class GPoint extends GObject implements HasParents<GObject>, Decomp
 
     @Override
     public void setPivot(Vector3 pivot) {
+        setPivotNoEvent(pivot);
+        this.broadcast(EventType.GPOINT_RECALC_PIVOT, new GPointMovedEvent(this));
+    }
+
+    public void setPivotNoEvent(Vector3 pivot) {
         super.setPivot(pivot);
         invalidateAll();
         decompose();
-        this.broadcast(EventType.GPOINT_RECALC_PIVOT, new GPointMovedEvent(this));
     }
 
     /**

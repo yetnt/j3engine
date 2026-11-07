@@ -25,7 +25,7 @@ public abstract sealed class TriangulationMethod permits EarClipping, Delaunay, 
 
     public static final Fetch Fetch = new Fetch();
 
-    public static final double COPLANAR_TOLERANCE = 1e-4;
+    public static final double COPLANAR_TOLERANCE = 1e-1;
 
     public record Tri(GPoint A, GPoint B, GPoint C) {
 
@@ -84,7 +84,7 @@ public abstract sealed class TriangulationMethod permits EarClipping, Delaunay, 
             Vector3 pt = gPoints.get(i).getPivot();
             double dist = Math.abs(pt.sub(p0).dot(normal));
             if (dist > COPLANAR_TOLERANCE) {
-                StaticRefs.getErrs().handleThenThrow(
+                StaticRefs.getErrs().emitThenThrow(
                         new InvalidTriangulationException("Polygon points are not coplanar (point at index " + i + " deviates from plane by " + dist + ").").code(4103)
                 );
                 return;

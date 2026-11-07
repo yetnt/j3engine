@@ -6,19 +6,25 @@ import com.j3d.engine.interact.cmd.CommandsManager;
 import com.j3d.engine.interact.cmd.Invoker;
 import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
+import com.j3d.engine.interact.cmd.base.PointReferenceConstraintChecker;
 import com.j3d.engine.interact.cmd.base.StatefulCommand;
 import com.j3d.engine.interact.cmd.commands.transform.TransformCmd;
 import com.j3d.engine.math.ScreenPoint;
 import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.react.actions.VoidAction;
 import com.j3d.engine.scene.SceneManager;
+import com.j3d.engine.scene.copy.InvalidCopyException;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
+import com.j3d.engine.scene.nodes.util.tri.TriangulationMethod;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.ui.engine.EngineFrame;
 import com.j3d.ui.theme.cursors.CursorManager;
 import com.j3d.ui.theme.cursors.CursorNames;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -37,6 +43,8 @@ public class QuickTranslateCmd extends Subcommand implements StatefulCommand<Voi
 
     ArrayList<Vector3> objectOriginalPosiions = new ArrayList<>();
     ArrayList<GPoint> pointsToTransform = new ArrayList<>();
+
+    private PointReferenceConstraintChecker pointReferenceConstraintChecker;
 
     public QuickTranslateCmd() {
         super("quick", "Translate quickly.");
@@ -70,8 +78,27 @@ public class QuickTranslateCmd extends Subcommand implements StatefulCommand<Voi
                     pointsToTransform.add(o);
                 });
 
+        pointReferenceConstraintChecker =
+                new PointReferenceConstraintChecker(
+                        this,
+                        TriangulationMethod.InvalidTriangulationException.class,
+                        pointsToTransform.stream().map(GPoint::getPivot).collect(Collectors.toCollection(ArrayList::new)),
+                        (ref) -> {
+                            JOptionPane.showMessageDialog(StaticRefs.throwIfNull(StaticRefs.getMainFrame()),
+                                    "Transformation cannot be applied as it will break the triangulation of a polygon.",
+                                    "Err", JOptionPane.ERROR_MESSAGE);
+                            pointsToTransform.forEach(p -> p.setPivotNoEvent(objectOriginalPosiions.get(pointsToTransform.indexOf(p))));
+                            try {
+                                new Robot().keyPress(KeyEvent.VK_ESCAPE);
+                            } catch (AWTException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+
+
+        qTranslateMouseOwner.using(pointsToTransform, pointReferenceConstraintChecker);
         qTranslateMouseOwner.requestOwnership();
-        qTranslateMouseOwner.using(pointsToTransform);
+
         run(this, "qTrans", null, logLabel);
     }
 
@@ -100,7 +127,7 @@ public class QuickTranslateCmd extends Subcommand implements StatefulCommand<Voi
 
     }
 
-    public void cleanup(SafeJLabel label) {
+    public void cleanup(@NotNull SafeJLabel label) {
         EngineFrame.setMouseOwner(null);
         CursorManager.setDefault();
         StaticRefs.throwIfNull(StaticRefs.getSceneManager()).removeOverlap(qTransCmdUUID);

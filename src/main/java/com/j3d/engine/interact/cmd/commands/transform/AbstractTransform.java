@@ -9,6 +9,7 @@ import com.j3d.engine.interact.cmd.args.Subcommand;
 import com.j3d.engine.interact.cmd.args.TaggedArgUtil;
 import com.j3d.engine.interact.cmd.args.TaggedArgValue;
 import com.j3d.engine.interact.cmd.base.KeyedStatefulCommand;
+import com.j3d.engine.interact.cmd.base.PointReferenceConstraintChecker;
 import com.j3d.engine.interact.cmd.commands.transform.handles.Handle;
 import com.j3d.engine.interact.cmd.commands.transform.handles.HandleType;
 import com.j3d.engine.interact.cmd.commands.transform.mouse.TransformMouseOwner;
@@ -23,6 +24,7 @@ import com.j3d.engine.react.events.payloads.ChangeCentreEventPayload;
 import com.j3d.engine.scene.SceneManager;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.*;
+import com.j3d.engine.scene.nodes.util.tri.TriangulationMethod;
 import com.j3d.gen.settings.Settings;
 import com.j3d.ui.SafeJLabel;
 import com.j3d.ui.engine.EngineFrame;
@@ -30,7 +32,9 @@ import com.j3d.ui.theme.J3DTheme;
 import com.yetnt.utils.builders.InlineHTML;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -119,6 +123,8 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
     private GPoint selectionPivot = null;
     private String label1 = "";
 
+    protected PointReferenceConstraintChecker pointReferenceConstraintChecker;
+
     /**
      * Constructs the abstract base for a transformation command.
      *
@@ -128,7 +134,7 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
      * @param mouseOwner  The specific mouse owner that will handle handle interaction.
      * @param gearTrain   An array of step sizes for the command's "gear" system.
      */
-    public AbstractTransform(String commandName, String commandDesc, String eventName, TransformMouseOwner mouseOwner, double[] gearTrain) {
+    public AbstractTransform(String commandName, String commandDesc, String eventName, @NotNull TransformMouseOwner mouseOwner, double[] gearTrain) {
         super(commandName, commandDesc);
         this.mouseOwner = mouseOwner;
         this.eventName = eventName;
@@ -220,13 +226,14 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
 
         references = switch (faceMode) {
             case TRIANGLES -> new ArrayList<>(StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected().stream()
-                    .filter(obj -> obj instanceof GTri || obj instanceof GCurve)
+                    .filter(obj -> obj instanceof GTri || obj instanceof GCurve || obj instanceof GPolygon || obj instanceof GPolyline)
                     .flatMap(obj -> {
-                        if (obj instanceof GTri t) return t.getLegStream().flatMap(GLine::getPointStream);
-                        else {
-                            GCurve c = (GCurve) obj;
-                            return c.getPointStream();
-                        }
+                        return switch (obj) {
+                            case GTri t -> t.getLegStream().flatMap(GLine::getPointStream);
+                            case GCurve o -> o.getPointStream();
+                            case GPolyline o -> o.getPoints().stream();
+                            default -> ((GPolygon) obj).getPoints().stream();
+                        };
                     })
                     .collect(Collectors.toSet()));
             case POINTS -> StaticRefs.throwIfNull(StaticRefs.getSceneManager()).getSelected()
@@ -253,7 +260,26 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
             return;
         }
 
+
+        pointReferenceConstraintChecker =
+                new PointReferenceConstraintChecker(
+                        this,
+                        TriangulationMethod.InvalidTriangulationException.class,
+                        references.stream().map(GPoint::getPivot).collect(Collectors.toCollection(ArrayList::new)),
+                        (ref) -> {
+                            JOptionPane.showMessageDialog(StaticRefs.throwIfNull(StaticRefs.getMainFrame()),
+                                    "Transformation cannot be applied as it will break the triangulation of a polygon.",
+                                    "Err", JOptionPane.ERROR_MESSAGE);
+                            references.forEach(p -> p.setPivot(ref.get(references.indexOf(p))));
+                            try {
+                                new Robot().keyPress(KeyEvent.VK_ESCAPE);
+                            } catch (AWTException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+
         originalPointPos = references.stream().map(GObject::getPivot).collect(Collectors.toCollection(ArrayList::new));
+//        pointReferenceConstraintChecker.updateCopy(references);
         run(this, eventName, null, logLabel);
     }
 
@@ -370,6 +396,8 @@ public abstract class AbstractTransform extends Subcommand implements KeyedState
         selectionPivot = null;
         centreIsSelectionPivot = true;
         label1 = "";
+        pointReferenceConstraintChecker.finish();
+        pointReferenceConstraintChecker = null;
         keys.forEach(key -> StaticRefs.throwIfNull(StaticRefs.getGlobalKeybinds()).removeJ3Key(key.getId()));
         StaticRefs.throwIfNull(StaticRefs.getSceneManager()).removeOverlap(overlapId);
         lbl.clear();

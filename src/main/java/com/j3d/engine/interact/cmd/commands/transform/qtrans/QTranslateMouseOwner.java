@@ -1,6 +1,7 @@
 package com.j3d.engine.interact.cmd.commands.transform.qtrans;
 
 import com.j3d.StaticRefs;
+import com.j3d.engine.interact.cmd.base.PointReferenceConstraintChecker;
 import com.j3d.engine.interact.input.mouse.MOwner;
 import com.j3d.engine.interact.input.mouse.MouseOwner;
 import com.j3d.engine.math.CartesianPoint;
@@ -31,9 +32,9 @@ import java.util.stream.Collectors;
 public class QTranslateMouseOwner extends MouseOwner {
 
     ArrayList<GPoint> pointsToTransform = new ArrayList<>();
+    PointReferenceConstraintChecker pointReferenceConstraintChecker;
     AxisPlane cachedPlane = null;
     Vector3 cachedCentre = null;
-
 
     public QTranslateMouseOwner() {
         super(MOwner.QTRANS, 0);
@@ -78,7 +79,12 @@ public class QTranslateMouseOwner extends MouseOwner {
         Vector3 diff = worldMouseLoc.sub(centre);
 
         // apply to all stuff.
-        pointsToTransform.forEach(p -> p.setPivot(p.getPivot().add(diff)));
+        for (GPoint p : pointsToTransform) {
+            if (pointReferenceConstraintChecker.isErrorCaught())
+                break;
+            p.setPivot(p.getPivot().add(diff));
+            pointReferenceConstraintChecker.updateCopy(pointsToTransform);
+        }
 
         StaticRefs.throwIfNull(StaticRefs.getMainPanel()).repaint();
     }
@@ -93,13 +99,16 @@ public class QTranslateMouseOwner extends MouseOwner {
     public void clear() {
         super.clear();
         pointsToTransform.clear();
+        pointReferenceConstraintChecker.finish();
+        pointReferenceConstraintChecker = null;
         cachedPlane = null;
         cachedCentre = null;
         setOldPoint(new Point(0, 0));
     }
 
-    public void using(ArrayList<GPoint> pointsToTransform) {
+    public void using(ArrayList<GPoint> pointsToTransform, PointReferenceConstraintChecker pointReferenceConstraintChecker) {
         this.pointsToTransform = pointsToTransform;
+        this.pointReferenceConstraintChecker = pointReferenceConstraintChecker;
     }
 
     Vector3 mouseLoc;

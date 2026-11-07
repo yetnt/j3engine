@@ -120,6 +120,10 @@ public final class GPolyline extends GObject implements IdempotentEventListener<
         return seg;
     }
 
+    public ArrayList<GPoint> getPoints() {
+        return points;
+    }
+
     @Override
     public void decompose() {
         segments.forEach(RenderState::invalidate);

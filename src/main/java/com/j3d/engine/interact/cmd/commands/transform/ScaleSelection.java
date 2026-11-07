@@ -77,20 +77,24 @@ public class  ScaleSelection extends AbstractTransform {
         setUpKey(
                 scaleAxisCalculator,
                 ignored -> false,
-                scaleAxis ->
-                        references.stream().map(obj -> (GPoint) obj).forEach(
-                                gpoint -> upKey(gpoint, scaleAxis)
-                        )
+                scaleAxis -> {
+                    references.stream().map(obj -> (GPoint) obj).forEach(
+                            gpoint -> upKey(gpoint, scaleAxis)
+                    );
+                    pointReferenceConstraintChecker.updateCopy(references);
+                }
 
         );
 
         setDownKey(
                 scaleAxisCalculator,
                 ignored -> false,
-                scaleAxis ->
-                        references.stream().map(obj -> (GPoint) obj).forEach(
-                                gpoint -> downKey(gpoint, scaleAxis)
-                        )
+                scaleAxis -> {
+                    references.stream().map(obj -> (GPoint) obj).forEach(
+                            gpoint -> downKey(gpoint, scaleAxis)
+                    );
+                    pointReferenceConstraintChecker.updateCopy(references);
+                }
 
         );
     }
