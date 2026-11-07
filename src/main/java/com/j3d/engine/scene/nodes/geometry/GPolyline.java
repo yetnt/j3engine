@@ -9,10 +9,11 @@ import com.j3d.engine.scene.copy.CopyProperties;
 import com.j3d.engine.scene.copy.InvalidCopyException;
 import com.j3d.engine.scene.draw.RenderState;
 import com.j3d.engine.scene.nodes.geometry.base.DecomposeWhenDrawn;
-import com.j3d.gen.properties.HasProperties;
 import com.j3d.gen.properties.Property;
 import com.j3d.jaiva.EngineObject;
-import com.yetnt.utils.tuple.SamePair;
+import com.j3d.jaiva.TypeConverter;
+import com.j3d.jaiva.packs.getters.GettersPack;
+import com.j3d.jaiva.packs.getters.J3DGetterException;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -139,6 +140,22 @@ public final class GPolyline extends GObject implements IdempotentEventListener<
     public ArrayList genericRenderStateList() {
         decompose();
         return getDecomposeList();
+    }
+
+    @Override
+    public EngineObject toObject() {
+        return super.toObject()
+                .addProperty(points.stream().map(GPoint::asReference).collect(Collectors.toCollection(ArrayList::new)));
+    }
+
+    public static class EngineObjectUtils {
+        @NotNull
+        public static ArrayList<EngineObject> getObjects(GettersPack.WrappedProperties c, EngineObject object) throws
+        J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.GPOLYLINE, c);
+            ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(3));
+            return TypeConverter.fromArrOfArr(arr);
+        }
     }
 
 }

@@ -24,12 +24,14 @@ khuluma(v3_cross(arrLit(1, 1, 2), arrLit(9, 3, 1)))!
 
 khuluma(v3_dot(arrLit(1, 1, 2), arrLit(9, 3, 1)))!
 
-maak oldPoint!
+maak points <-|!
 colonize (i <- 0 <| i < 360*5 <| i + 45) ->
     maak new <- new_point(arrLit(i, m_sin(m_toRad(i))*40, 0), id)!
-    sif (oldPoint?') ?> joinn(oldPoint, get_uuid_value(get_point_id(new)), id)!
-    oldPoint <- get_uuid_value(get_point_id(new))!
+    points <- arrLit(points:::)!
+        |> get_uuid_value(get_point_id(new))!
 <~
+
+join(points, id)!
 
 @ circle.
 maak r <- 10!

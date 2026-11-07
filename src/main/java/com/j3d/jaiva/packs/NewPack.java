@@ -5,7 +5,9 @@ import com.j3d.engine.math.matrix.Vector3;
 import com.j3d.engine.scene.find.Finder;
 import com.j3d.engine.scene.nodes.Thing;
 import com.j3d.engine.scene.nodes.geometry.GLine;
+import com.j3d.engine.scene.nodes.geometry.GObject;
 import com.j3d.engine.scene.nodes.geometry.GPoint;
+import com.j3d.engine.scene.nodes.geometry.GPolyline;
 import com.j3d.jaiva.TypeConverter;
 import com.jaiva.errors.InterpreterException;
 import com.jaiva.interpreter.libBuilders.func.Argument;
@@ -82,10 +84,9 @@ public class NewPack extends BaseLibrary {
     static class FJoin extends BaseFunction {
         public FJoin() {
             super(FunctionBuilder.start()
-                    .name("joinn")
+                    .name("join")
                     .arguments(Arguments.getInstance()
-                            .add(new AArgument("point1", "The first point. Id or object", false, Argument.Type.ANY))
-                            .add(new AArgument("point2", "The second point. Id or object", false, Argument.Type.ANY))
+                            .add(new AArgument("pointList", "The list of points", false, Argument.Type.ARRAY))
                             .add(new AArgument("target", "The Id of the thing to add this to. Either a UUID object or string.", false, Argument.Type.ANY))
                     )
                     .setLib("j3d/obj/new")
@@ -96,29 +97,34 @@ public class NewPack extends BaseLibrary {
         public Object call(CallProperties callProperties) throws Exception {
             checkParams(callProperties.toCheckParams());
 
-            UUID idPointA = BasePack.parseId(callProperties.params().getFirst(), callProperties, this, 1);
-            UUID idPointB = BasePack.parseId(callProperties.params().get(1), callProperties, this, 2);
-            UUID thingIdA = BasePack.parseId(callProperties.params().get(2), callProperties, this, 3);
-
-            GPoint A = StaticRefs.throwIfNull(StaticRefs.getSceneManager())
-                    .finder().findFirst(GPoint.class, Finder.idQuery(), idPointA)
-                    .getgObjectAs(GPoint.class);
-            if (A == null)
-                throw new InterpreterException.WtfAreYouDoingException(
-                        callProperties.scope(),
-                        "The id you put for point A... does not exist",
-                        callProperties.getLineNumber()
+            Object arr =  callProperties.params().getFirst();
+            ArrayList<GPoint> points = new ArrayList<>();
+            if (!(arr instanceof ArrayList<?> arrList))
+                throw new InterpreterException.FunctionParametersException(
+                        callProperties.scope(), this, "1", arr, ArrayList.class, callProperties.getLineNumber()
                 );
 
-            GPoint B = StaticRefs.throwIfNull(StaticRefs.getSceneManager())
-                    .finder().findFirst(GPoint.class, Finder.idQuery(), idPointB)
-                    .getgObjectAs(GPoint.class);
-            if (B == null)
-                throw new InterpreterException.WtfAreYouDoingException(
-                        callProperties.scope(),
-                        "The id you put for point B... does not exist",
-                        callProperties.getLineNumber()
-                );
+            if (arrList.size() < 2)
+                throw new InterpreterException.WtfAreYouDoingException(callProperties.scope(), "Yeah Join less than 2 points bro.", callProperties.getLineNumber());
+
+            for (Object o : arrList) {
+                UUID idPointA = BasePack.parseId(o, callProperties, this, 1);
+
+                GPoint A = StaticRefs.throwIfNull(StaticRefs.getSceneManager())
+                        .finder().findFirst(GPoint.class, Finder.idQuery(), idPointA)
+                        .getgObjectAs(GPoint.class);
+                if (A == null)
+                    throw new InterpreterException.WtfAreYouDoingException(
+                            callProperties.scope(),
+                            "The id you put for one of the points in the list... does not exist",
+                            callProperties.getLineNumber()
+                    );
+
+                points.add(A);
+            }
+
+
+            UUID thingIdA = BasePack.parseId(callProperties.params().get(1), callProperties, this, 2);
 
             Thing target = StaticRefs.throwIfNull(StaticRefs.getSceneManager())
                     .finder().findFirst(Thing.class, Finder.idQuery(), thingIdA)
@@ -130,10 +136,10 @@ public class NewPack extends BaseLibrary {
                         callProperties.getLineNumber()
                 );
 
-            GLine line = new GLine(A, B);
+            GPolyline line = new GPolyline(points);
             target.addObjs(line);
 
-            Thing.moveObjects(new ArrayList<>(List.of(A, B)), target);
+            Thing.moveObjects((ArrayList) points, target);
 
             return TypeConverter.toJaivaReadable(line);
         }

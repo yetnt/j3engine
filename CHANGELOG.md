@@ -121,7 +121,7 @@ This has a lot of things from the over a year of dev so like yeah ill briefly me
   * Github Issue Templates for feature requests and bugs
   * GNU GPLv3 license
 
-## 1.3.0
+## 2.0.0
 
 * Fix bug where curves could not be moved in point/tri mode
 * Change `ConversionProperties` to be `Conversion` and add `ConversionWithOffset` and an `Offset` class for converting between `ScreenPoint` and `CartesianPoint`
@@ -170,4 +170,6 @@ of the current testing environment.
 * Update to latest ytils
 * Add Jetbrains annotationz
 * Fix bug where context menu was unclickable when opened.
-* Implement `GPolygon` and begin
+* New `GPolygon`
+* New `GPolyline`
+* Add `CapableEvent(Listener/Emitter)`

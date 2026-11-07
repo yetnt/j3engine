@@ -15,6 +15,9 @@ import com.j3d.engine.scene.nodes.util.tri.TriangulationMethod;
 import com.j3d.gen.properties.Property;
 import com.j3d.gen.settings.Settings;
 import com.j3d.jaiva.EngineObject;
+import com.j3d.jaiva.TypeConverter;
+import com.j3d.jaiva.packs.getters.GettersPack;
+import com.j3d.jaiva.packs.getters.J3DGetterException;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,6 +38,7 @@ public final class GPolygon extends GObject implements
     private ArrayList<RenderState<Triangle, GObject>> renderState = new ArrayList<>();
 
     private Triangulation triangulation = Settings.sceneProperties.polygonTriangulateMethod.getValue();
+    private boolean deletedState = false;
 
     @NotNull
     @Contract("_, _, _, _, _ -> new")
@@ -132,11 +136,34 @@ public final class GPolygon extends GObject implements
         return getDecomposeList();
     }
 
-    @Override
-    public void copy(CopyProperties props) throws InvalidCopyException {
-        super.copy(props); // TODO: implement soon.
+    public ArrayList<GPoint> explode() {
+        deletedState = true;
+        points.forEach(point -> {
+            if (point != null) {
+                point.explode(this);
+                detachListener(point);
+                point.detachListener(this);
+            }
+        });
+        return points;
     }
 
+    public void copy(CopyProperties props) throws InvalidCopyException {
+        ArrayList<GPoint> copies = new ArrayList<>();
+        for (GPoint gPoint : points) {
+            GPoint point = props.existsOrElse(gPoint.getId(), gPoint::copySelf);
+            copies.add(point);
+        }
+        props.add(getId(), copy(copies));
+    }
+
+    public GPolygon copy(ArrayList<GPoint> newPoints) {
+        GPolygon pgon = new GPolygon(newPoints);
+        pgon.setColour(getColour());
+        pgon.setTriangulation(triangulation);
+        pgon.setWindingDir(windingDir);
+        return pgon;
+    }
 
     public WindingDir getWindingDir() {
         return windingDir;
@@ -182,5 +209,31 @@ public final class GPolygon extends GObject implements
         });
         lines.forEach(line -> line.tag("volatile", getClass(), this));
         return lines;
+    }
+
+    @Override
+    public EngineObject toObject() {
+        return super.toObject()
+                .addProperty(windingDir.name())
+                .addProperty(triangulation.name())
+                .addProperty(points.stream().map(GPoint::asReference).collect(Collectors.toCollection(ArrayList::new)));
+    }
+
+    public static class EngineObjectUtils {
+        public static String getWindingDir(GettersPack.WrappedProperties call, EngineObject object) throws J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.GPOLYGON, call);
+            return TypeConverter.expectType(object.getProperties().get(3), String.class);
+        }
+        public static String getTriangulation(GettersPack.WrappedProperties call, EngineObject object) throws J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.GPOLYGON, call);
+            return TypeConverter.expectType(object.getProperties().get(4), String.class);
+        }
+        @NotNull
+        public static ArrayList<EngineObject> getObjects(GettersPack.WrappedProperties c, EngineObject object) throws
+                J3DGetterException {
+            TypeConverter.expectObjectType(object, EngineObject.Type.GPOLYGON, c);
+            ArrayList<?> arr = TypeConverter.expectArr(object.getProperties().get(5));
+            return TypeConverter.fromArrOfArr(arr);
+        }
     }
 }

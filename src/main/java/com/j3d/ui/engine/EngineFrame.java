@@ -647,7 +647,7 @@ public final class EngineFrame extends javax.swing.JFrame {
         openProjectMenuItem = new javax.swing.JMenuItem();
         newProjectJMenuItem = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        importObjJMenuItem = new javax.swing.JMenuItem();
         settingsMenuItem = new javax.swing.JMenuItem();
         editJMenu = new javax.swing.JMenu();
         copyMenuItem = new javax.swing.JMenuItem();
@@ -727,9 +727,14 @@ public final class EngineFrame extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem1);
 
-        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_1, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem2.setText("Import Obj");
-        jMenu1.add(jMenuItem2);
+        importObjJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_1, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        importObjJMenuItem.setText("Import Obj");
+        importObjJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importObjJMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu1.add(importObjJMenuItem);
 
         settingsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_DOWN_MASK));
         settingsMenuItem.setText("Settings");
@@ -1101,16 +1106,20 @@ public final class EngineFrame extends javax.swing.JFrame {
         Settings.macrosEditor.open();
     }//GEN-LAST:event_macroEditorMenuActionPerformed
 
+    private void importObjJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importObjJMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_importObjJMenuItemActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JMenu editJMenu;
     private javax.swing.JMenuItem exportAsPNGJMenuItem;
     private javax.swing.JMenu exportJMenuItemDropDown;
+    private javax.swing.JMenuItem importObjJMenuItem;
     private javax.swing.JMenu jMenu1;
     public javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem macroEditorMenu;
     private javax.swing.JMenu macroJMenu;
     private javax.swing.JMenu macroMainMenu;

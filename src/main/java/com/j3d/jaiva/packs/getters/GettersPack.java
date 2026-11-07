@@ -67,6 +67,7 @@ public class GettersPack extends BaseLibrary {
         add(new ColourGetters());
         add(new ThingGetters());
         add(new LayerGetters());
+        add(new PolyGetters());
 
         GObjectRegistry.forEach(
                 (object) -> {

@@ -63,7 +63,7 @@ public final class Executor implements Artefact {
         );
         Thing cone = cone(20, 20);
 
-        Thing polygon = polygon(10, 20);
+        Thing polygon = polygon(10, 10);
         ArrayList<VoidAction> actions = new ArrayList<>(List.of(
                 polygon.scale(5),
                 cub.rotate(Vector3.Z, 45),
